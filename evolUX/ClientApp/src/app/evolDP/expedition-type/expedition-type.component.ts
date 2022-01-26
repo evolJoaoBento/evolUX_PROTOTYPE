@@ -9,9 +9,8 @@ import { HttpClient } from '@angular/common/http';
 export class ExpeditionTypeComponent implements OnInit {
   public data: any;
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<any[]>(baseUrl + 'api/ExpeditionType').subscribe(result => {
+    http.get<any[]>(baseUrl + 'expeditiontype').subscribe(result => {
       this.data = result;
-      console.log(this.data);
     }, error => console.error(error));
   }
 

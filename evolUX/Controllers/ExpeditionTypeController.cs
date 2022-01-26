@@ -8,7 +8,7 @@ using evolUX.Models;
 namespace evolUX.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class ExpeditionTypeController : ControllerBase
     {
         private IConfiguration _configuration;
