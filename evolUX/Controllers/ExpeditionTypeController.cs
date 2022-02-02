@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using evolUX.Models;
+using Dapper;
+using evolUX.Interfaces;
 
 namespace evolUX.Controllers
 {
@@ -11,41 +13,27 @@ namespace evolUX.Controllers
     [Route("[controller]")]
     public class ExpeditionTypeController : ControllerBase
     {
-        private IConfiguration _configuration;
+        private readonly IExpeditionTypeRepository _expeditionTypeRepository;
 
-        public ExpeditionTypeController(IConfiguration configuration)
+        public ExpeditionTypeController(IExpeditionTypeRepository expeditionTypeRepository)
         {
-            _configuration = configuration;
+            _expeditionTypeRepository = expeditionTypeRepository;
         }
 
         // GET: api/<ExpeditionTypeController>
         [HttpGet]
-        public ActionResult<List<ExpeditionType>> ExpeditionType()
+        public async Task<ActionResult<List<ExpeditionType>>> GetExpeditionType()
         {
-            List<ExpeditionType> expeditionTypeList = new List<ExpeditionType>();
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                string sql = "SELECT * FROM RD_EXPEDITION_TYPE";
-                SqlCommand myCommand = new SqlCommand(sql, connection);
-
-                using (SqlDataReader dataReader = myCommand.ExecuteReader())
-                {
-                    while (dataReader.Read())
-                    {
-                        ExpeditionType expeditionType = new ExpeditionType();
-                        expeditionType.ExpeditionTypeId = Convert.ToInt32(dataReader["ExpeditionType"]);
-                        expeditionType.Priority = Convert.ToInt32(dataReader["Priority"]);
-                        expeditionType.Description = Convert.ToString(dataReader["Description"]);
-
-                        expeditionTypeList.Add(expeditionType);
-                    }
-                }
-                connection.Close();
+                var expeditionTypeList = await _expeditionTypeRepository.GetExpeditionTypes();
+                return Ok(expeditionTypeList);
             }
-            var list = expeditionTypeList;
-            return expeditionTypeList;
+            catch (Exception ex)
+            {
+                //log error
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

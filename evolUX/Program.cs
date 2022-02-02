@@ -1,7 +1,15 @@
+using evolUX.Context;
+using evolUX.Interfaces;
+using evolUX.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Server.IISIntegration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddScoped<IExpeditionTypeRepository, ExpeditionTypeRepository>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
