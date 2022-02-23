@@ -21,16 +21,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   display: flex;
   flex-flow: column;
   height: 100vh;
-  overflow: hidden;
 }
 
 .content-wrapper {
   width: 100%;
-  flex: 1 1 auto;
+  height: 100%;
   display: flex;
 }
 .router-wrapper {
   padding: 25px;
   overflow-y: auto;
-  height: 500px;
+  flex: 1 1 100%;
 }

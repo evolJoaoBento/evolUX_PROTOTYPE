@@ -12,6 +12,12 @@ export class SidebarInnerMenuComponent implements OnInit {
 
   public innerContent = temp;
 
+  expanded: boolean = true;
+
   ngOnInit(): void {
+  }
+
+  expand() {
+    this.expanded = !this.expanded
   }
 }

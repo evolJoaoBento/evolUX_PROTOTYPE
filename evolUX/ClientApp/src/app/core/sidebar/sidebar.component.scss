@@ -1,5 +1,4 @@
 .sidebar-wrapper {
-  width: 350px;
   height: 100%;
   float: left;
   display: flex;
@@ -18,10 +17,9 @@
   border: 2px solid rgba(233,60,82,1);
 }
 .navigation-col {
-  flex: 0 0 100px;
+  width: 100px;
   background-color: #f7f7f7;
 }
 .inner-col {
-  width: 250px;
   background-color: white;
 }

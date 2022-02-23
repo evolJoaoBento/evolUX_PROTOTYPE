@@ -3,7 +3,8 @@
     <div class="sidebar-circle circle"
         matTooltip="tooltip example 1"
         matTooltipShowDelay="250"
-        matTooltipPosition="right"></div>
+        matTooltipPosition="right"
+        (click)="toggleSidebar()"></div>
     <div class="sidebar-circle circle"
         matTooltip="tooltip example 2"
         matTooltipShowDelay="250"
@@ -17,7 +18,7 @@
         matTooltipShowDelay="250"
         matTooltipPosition="right"></div>
   </div>
-  <div class="inner-col">
+  <div class="inner-col" *ngIf="innerActive">
     <app-sidebar-inner-menu></app-sidebar-inner-menu>
   </div>
 </div>

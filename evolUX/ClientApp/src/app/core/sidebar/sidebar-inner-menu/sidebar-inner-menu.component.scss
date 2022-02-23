@@ -3,6 +3,12 @@
 .inner-wrapper {
   background-color: #e6e6e6;
   height: 100%;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+}
+.inner-expanded {
+  width: 50px;
 }
 .inner-title-wrapper {
   display: flex;
@@ -20,7 +26,7 @@
 }
 .inner-link-wrapper {
   margin-top: 10px;
-  overflow-y: auto;
+  overflow-y: auto
 }
 .inner-link {
   display: flex;
@@ -45,4 +51,14 @@
   line-height: 16px;
   padding: 0;
   margin: 0;
+}
+
+.minimizer-wrapper {
+  display: flex; /* adjusted */
+  flex: 1;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.minimizer-circle {
+    margin-bottom: 15px;
 }

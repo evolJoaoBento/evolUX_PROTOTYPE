@@ -9,7 +9,12 @@ export class SidebarComponent implements OnInit {
 
   constructor() { }
 
+  innerActive: boolean = false;
+
   ngOnInit(): void {
   }
 
+  toggleSidebar() {
+    this.innerActive = !this.innerActive;
+  }
 }
