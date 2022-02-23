@@ -1,0 +1,26 @@
+.footer-wrapper {
+  width: 100%;
+  flex: 0 1 20px;
+  font-size: 10px;
+  font-weight: 500;
+  background-color: #cecece;
+  color: #717171;
+  line-height: 19px;
+}
+
+.footer-col {
+    width: 50%;
+    display: inline-block;
+}
+.footer-text {
+    margin:0;
+    padding:0;
+}
+.footer-left {
+    margin-left: 10px;
+    text-align: left;
+}
+.footer-right {
+    margin-right: 10px;
+    text-align: right;
+}

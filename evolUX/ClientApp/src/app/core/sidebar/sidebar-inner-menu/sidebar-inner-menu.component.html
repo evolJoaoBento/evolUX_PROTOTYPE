@@ -1,0 +1,15 @@
+<div class="inner-wrapper">
+  <div class="inner-title-wrapper {{innerContent.theme}}">
+    <p class="inner-title-text">{{ innerContent.title }}</p>
+  </div>
+  <div class="inner-link-wrapper">
+    <div class="inner-link" *ngFor="let link of innerContent.links" [routerLink]=[link.routerLink]>
+      <div class="circle inner-link-circle"
+           [routerLinkActive]=[innerContent.theme]
+           [routerLinkActiveOptions]="{ exact: true }"></div>
+      <a class="inner-link-text"
+         [routerLinkActive]=[innerContent.selected]
+         [routerLinkActiveOptions]="{ exact: true }">{{ link.text }}</a>
+    </div>
+  </div>
+</div>

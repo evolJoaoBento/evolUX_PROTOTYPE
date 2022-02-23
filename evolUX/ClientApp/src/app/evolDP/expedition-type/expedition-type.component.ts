@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-expedition-type',
   templateUrl: './expedition-type.component.html',
-  styleUrls: ['./expedition-type.component.css']
+  styleUrls: ['./expedition-type.component.scss']
 })
 export class ExpeditionTypeComponent implements OnInit {
   public data: any;
