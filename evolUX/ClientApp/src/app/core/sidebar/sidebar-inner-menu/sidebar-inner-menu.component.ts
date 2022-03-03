@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import temp from '../../../evolDP/sidebar.config.json';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar-inner-menu',
@@ -7,10 +6,8 @@ import temp from '../../../evolDP/sidebar.config.json';
   styleUrls: ['./sidebar-inner-menu.component.scss']
 })
 export class SidebarInnerMenuComponent implements OnInit {
-
-  constructor() { }
-
-  public innerContent = temp;
+  @Input() innerContent: any;
+  constructor() {}
 
   expanded: boolean = true;
 

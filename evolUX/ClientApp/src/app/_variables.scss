@@ -1,10 +1,20 @@
 $es-gradient: linear-gradient(66deg, rgba(233,60,82,1) 3%, rgba(245,126,72,1) 15%, rgba(87,82,150,1) 44%, rgba(90, 205, 239, 1) 62%);
 $evoldp-gradient: linear-gradient(66deg, rgba(233,60,82,1) 10%, rgba(245,126,72,1) 80%);
+$evolflow-gradient: linear-gradient(66deg, rgba(87,82,150,1) 10%, rgba(233,60,82,1) 80%);
 
 .evoldp-theme {
     background: $evoldp-gradient;
 }
 .evoldp-selected {
   color: rgba(233,60,82,1) !important;
+  text-decoration: underline !important;
+}
+
+.evolflow-theme {
+  background: $evolflow-gradient;
+}
+
+.evolflow-selected {
+  color: rgba(87,82,150,1) !important;
   text-decoration: underline !important;
 }
