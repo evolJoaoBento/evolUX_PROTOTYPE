@@ -361,3 +361,5 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/evolUX/ClientApp/.angular/cache/13.1.4/angular-webpack
+/evolUX/ClientApp/.angular/cache/13.1.4/babel-webpack
