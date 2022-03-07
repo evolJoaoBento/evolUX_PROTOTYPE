@@ -1,5 +1,3 @@
-@import "../../../_variables.scss";
-
 .inner-wrapper {
   background-color: #e6e6e6;
   height: 100%;
@@ -31,7 +29,7 @@
 .inner-link {
   display: flex;
   width: 100%;
-  height: 45px;
+  height: 38px;
   align-items: center;
 }
 .inner-link:hover {
@@ -49,7 +47,7 @@
   color: black;
   text-decoration: none;
   line-height: 16px;
-  padding: 0;
+  padding: 0 15px 0 0;
   margin: 0;
 }
 

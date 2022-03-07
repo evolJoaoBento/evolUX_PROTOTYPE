@@ -12,7 +12,7 @@
            matTooltipShowDelay="150"
            matTooltipPosition="right"></div>
       <a class="inner-link-text"
-         [routerLinkActive]=[innerContent.selected]
+         [routerLinkActive]=[innerContent.linkTheme]
          [routerLinkActiveOptions]="{ exact: true }"
          *ngIf="expanded">{{ link.text }}</a>
     </div>

@@ -1,5 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { DataService } from '../../core/services/handlers/data.service';
 
 @Component({
   selector: 'app-expedition-type',
@@ -7,13 +7,16 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./expedition-type.component.scss']
 })
 export class ExpeditionTypeComponent implements OnInit {
-  public data: any;
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<any[]>(baseUrl + 'expeditiontype').subscribe(result => {
-      this.data = result;
-    }, error => console.error(error));
-  }
+  public expeditionType: any;
+  constructor(public data: DataService) {}
 
   ngOnInit() {
+    this.getExpeditionType();
+  }
+
+  getExpeditionType() {
+    this.data.getExpeditionType().subscribe(result => {
+      this.expeditionType = result;
+    });
   }
 }

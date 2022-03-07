@@ -10,14 +10,5 @@
     <div class="settings-circle circle mid-circle"></div>
     <div class="settings-circle circle"></div>
   </div>
-  <!--
-  <a [routerLink]="['/']">{{ 'home' | translate }}</a>
-
-        <a [routerLink]="['/exp']">ExpeditionZone</a>
-
-        <a (click)="changeLang()"
-          matTooltip="{{ 'lang-warning' | translate }}"
-          matTooltipShowDelay="500">{{ 'lang' | translate }}</a>
-  -->
 </div>
-<div class="topbar-gradient"></div>
+<div class="topbar-gradient {{appController.currentTheme}}"></div>

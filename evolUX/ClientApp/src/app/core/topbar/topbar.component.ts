@@ -9,12 +9,11 @@ import { ApplicationControllerService } from '../services/applicationcontroller.
 })
 export class TopBarComponent implements OnInit {
 
-  constructor(private appController: ApplicationControllerService) { }
+  constructor(public appController: ApplicationControllerService) { }
 
   changeLang() {
     this.appController.changeLang();
   }
   ngOnInit(): void {
   }
-
 }

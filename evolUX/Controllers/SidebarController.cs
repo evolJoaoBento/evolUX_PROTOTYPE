@@ -41,6 +41,7 @@ namespace evolUX.Controllers
                         row.routerPrefix = Convert.ToString(dataReader["routerPrefix"]);
                         row.theme = Convert.ToString(dataReader["theme"]);
                         row.selectedTheme = Convert.ToString(dataReader["selectedTheme"]);
+                        row.linkTheme = Convert.ToString(dataReader["linkTheme"]);
                         row.links = GetInnerButtons(row.id);
 
                         result.Add(row);

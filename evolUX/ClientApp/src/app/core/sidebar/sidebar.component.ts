@@ -1,5 +1,7 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+
+import { DataService } from '../services/handlers/data.service';
+import { ApplicationControllerService } from '../services/applicationcontroller.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,16 +9,21 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  public data: any;
-  constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    http.get<any[]>(baseUrl + 'sidebar/GetMain').subscribe(result => {
-      this.data = result;
-    }, error => console.error(error));
-  }
+
+  constructor(public data: DataService, public appController: ApplicationControllerService) {}
   innerActive: boolean = false;
+  innerContent: any;
   public selectedInnerContent: any;
 
   ngOnInit(): void {
+    this.getSidebar();
+  }
+
+  getSidebar() {
+    this.data.getSidebar().subscribe(result => {
+      this.innerContent = result;
+      console.log(result);
+    });
   }
 
   toggleSidebar(inner: any) {
@@ -26,13 +33,18 @@ export class SidebarComponent implements OnInit {
       if (this.selectedInnerContent.id != inner.id) {
         this.assignInner(inner);
       } else {
-        this.innerActive = !this.innerActive;
+        this.resetInner();
       }
     }
   }
-
   assignInner(_inner: any) {
     this.selectedInnerContent = _inner;
     this.innerActive = true;
+    this.appController.assignInnerSidebar(this.selectedInnerContent);
+  }
+  resetInner() {
+    this.selectedInnerContent = null;
+    this.innerActive = false;
+    this.appController.assignInnerSidebar();
   }
 }
