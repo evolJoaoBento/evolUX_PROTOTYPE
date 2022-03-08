@@ -22,7 +22,6 @@ export class SidebarComponent implements OnInit {
   getSidebar() {
     this.data.getSidebar().subscribe(result => {
       this.innerContent = result;
-      console.log(result);
     });
   }
 

@@ -7,7 +7,8 @@ const PROXY_CONFIG = [
   {
     context: [
       "/expeditiontype",
-      "/sidebar/GetMain"
+      "/sidebar/GetMain",
+      "/envelopemedia/get"
    ],
     target: target,
     secure: false

@@ -17,6 +17,7 @@ export class ExpeditionTypeComponent implements OnInit {
   getExpeditionType() {
     this.data.getExpeditionType().subscribe(result => {
       this.expeditionType = result;
+      console.log(result);
     });
   }
 }

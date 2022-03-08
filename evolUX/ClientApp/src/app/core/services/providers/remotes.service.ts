@@ -16,7 +16,9 @@ export class RemotesService {
 	public getExpeditionType(): Observable<any> {
 		return this.http.get<any[]>(this.baseUrl + 'expeditiontype');
 	}
-
+    public getEnvelopeMedia(): Observable<any> {
+        return this.http.get<any[]>(this.baseUrl + 'envelopemedia/get');
+    }
 	public get(pre: string, path: string): Observable<any> {
 		return this.http.get<any[]>(this.baseUrl + pre + "/" + path);
 	}

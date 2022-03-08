@@ -16,6 +16,9 @@ export class DataService {
   public getExpeditionType(): Observable<any> {
     return this.remotes.getExpeditionType();
   }
+  public getEnvelopeMedia(): Observable<any> {
+    return this.remotes.getEnvelopeMedia();
+  }
 
   /* Examples */
   public getSidebarAlt(): Observable<any> {

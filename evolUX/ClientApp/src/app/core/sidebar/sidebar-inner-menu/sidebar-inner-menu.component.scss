@@ -6,7 +6,7 @@
   flex-direction: column;
 }
 .inner-expanded {
-  width: 50px;
+  width: 65px;
 }
 .inner-title-wrapper {
   display: flex;
@@ -23,8 +23,9 @@
   color: white;
 }
 .inner-link-wrapper {
-  margin-top: 10px;
-  overflow-y: auto
+  padding-top: 10px;
+  overflow-y: auto;
+  flex: 0 1 100%;
 }
 .inner-link {
   display: flex;
@@ -52,11 +53,17 @@
 }
 
 .minimizer-wrapper {
-  display: flex; /* adjusted */
+  display: flex;
   flex: 1;
   flex-direction: column;
   justify-content: flex-end;
+  padding-top: 10px;
 }
 .minimizer-circle {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
+}
+.temp-inter {
+  background-color: transparent;
+  border: 3px solid #cbcbcb;
+  box-shadow: 0px 0px 0px 0px;
 }

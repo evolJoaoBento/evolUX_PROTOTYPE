@@ -21,15 +21,17 @@ import { HomeComponent } from './home/home.component';
 //core
 import { TopBarComponent } from './core/topbar/topbar.component';
 import { SidebarComponent } from './core/sidebar/sidebar.component';
+import { SidebarInnerMenuComponent } from './core/sidebar/sidebar-inner-menu/sidebar-inner-menu.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { HelpComponent } from './core/help/help.component';
 import { LoginComponent } from './core/login/login.component';
+import { ComponentToolboxComponent } from './core/component-toolbox/component-toolbox.component';
 
 //evolDP
 import { ExpeditionTypeComponent } from './evolDP/expedition-type/expedition-type.component';
+import { EnvelopeMediaComponent } from './evolDP/envelope-media/envelope-media.component';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SidebarInnerMenuComponent } from './core/sidebar/sidebar-inner-menu/sidebar-inner-menu.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +43,9 @@ import { SidebarInnerMenuComponent } from './core/sidebar/sidebar-inner-menu/sid
     FooterComponent,
     HelpComponent,
     LoginComponent,
-    SidebarInnerMenuComponent
+    SidebarInnerMenuComponent,
+    ComponentToolboxComponent,
+    EnvelopeMediaComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -58,6 +62,7 @@ import { SidebarInnerMenuComponent } from './core/sidebar/sidebar-inner-menu/sid
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'exp', component: ExpeditionTypeComponent },
+      { path: 'env', component: EnvelopeMediaComponent }
     ]),
     NoopAnimationsModule,
     MatTooltipModule

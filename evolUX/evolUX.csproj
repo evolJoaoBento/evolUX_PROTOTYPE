@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\core\component-toolbox\file.ts" />
     <None Remove="ClientApp\src\app\json-typings.d.ts" />
   </ItemGroup>
 
