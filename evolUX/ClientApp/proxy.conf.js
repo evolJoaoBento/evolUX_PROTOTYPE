@@ -6,7 +6,9 @@ const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_H
 const PROXY_CONFIG = [
   {
     context: [
-      "/expeditiontype"
+      "/expeditiontype",
+      "/sidebar/GetMain",
+      "/envelopemedia/get"
    ],
     target: target,
     secure: false

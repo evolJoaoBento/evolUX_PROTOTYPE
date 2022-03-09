@@ -1,0 +1,13 @@
+<div class="toolbox-wrapper">
+  <div class="navigation-col">
+    <div class="circle temp-inter"></div>
+    <div class="navigation-wrapper">
+      <div class="navigation-link" *ngFor="let l of test; let i = index">
+        <div *ngIf="i > 0" class="navigation-seperator">\</div><a>{{l.label}}</a>
+      </div>
+    </div>
+  </div>
+  <div class="toolbox-col">
+    <div class="circle temp-inter"></div>
+  </div>
+</div>

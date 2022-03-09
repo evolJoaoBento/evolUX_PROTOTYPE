@@ -1,0 +1,64 @@
+{
+  "title": "Gestão evolDP",
+  "translate-title": "evoldp.title",
+  "router-prefix": "evoldp",
+  "theme": "evoldp-theme",
+  "selected": "evoldp-selected",
+  "links": [
+    {
+      "text": "Tipos de Documentos",
+      "translate-text": "evoldp.doctype",
+      "routerLink": "/"
+    },
+    {
+      "text": "Gamas de Envelopes",
+      "translate-text": "evoldp.doctype",
+      "routerLink": "/a"
+    },
+    {
+      "text": "Materiais",
+      "translate-text": "evoldp.doctype",
+      "routerLink": "/a"
+    },
+    {
+      "text": "Companhias de Serviços",
+      "translate-text": "evoldp.doctype",
+      "routerLink": "/a"
+    },
+    {
+      "text": "Serviços por Companhia",
+      "translate-text": "evoldp.doctype",
+      "routerLink": "/a"
+    },
+    {
+      "text": "Companhia de Expedição",
+      "translate-text": "evoldp.doctype",
+      "routerLink": "/a"
+    },
+    {
+      "text": "Códigos Tratamento/Expedição",
+      "translate-text": "evoldp.doctype",
+      "routerLink": "/a"
+    },
+    {
+      "text": "Versões de Projectos",
+      "translate-text": "evoldp.doctype",
+      "routerLink": "/a"
+    },
+    {
+      "text": "Parâmetros Expurgos",
+      "translate-text": "evoldp.doctype",
+      "routerLink": "/a"
+    },
+    {
+      "text": "Tipos de Expedição",
+      "translate-text": "evoldp.doctype",
+      "routerLink": "/a"
+    },
+    {
+      "text": "Zonas de Expedição",
+      "translate-text": "evoldp.doctype",
+      "routerLink": "/exp"
+    }
+  ]
+}

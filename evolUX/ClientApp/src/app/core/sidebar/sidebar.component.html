@@ -1,0 +1,13 @@
+<div class="sidebar-wrapper" *ngIf="innerContent">
+	<div class="navigation-col">
+		<div *ngFor="let b of innerContent" class="sidebar-circle circle"
+			[ngClass]="appController.activeSidebarId === b.id ? b.selectedTheme : ''"
+			matTooltip="{{b.title}}"
+			matTooltipShowDelay="250"
+			matTooltipPosition="right"
+			(click)="toggleSidebar(b)"></div>
+	</div>
+	<div class="inner-col" *ngIf="innerActive">
+		<app-sidebar-inner-menu [innerContent]="selectedInnerContent"></app-sidebar-inner-menu>
+	</div>
+</div>

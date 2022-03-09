@@ -1,3 +1,11 @@
-<div *ngIf="data">
-  <p *ngFor="let d of data">{{d.description}}</p>
-</div>
+<table class="table table-bordered table-sm table-striped" *ngIf="expeditionType">
+  <thead>
+    <tr><th>Id do Tipo</th><th>Tipo da Expedição</th></tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let d of expeditionType">
+      <td>{{d.expeditionTypeId}}</td>
+      <td>{{d.description}}</td>
+    </tr>
+  </tbody>
+</table>
