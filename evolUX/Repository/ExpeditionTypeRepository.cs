@@ -16,7 +16,7 @@ namespace evolUX.Repository
         public async Task<List<ExpeditionType>> GetExpeditionTypes()
         {
             var expeditionTypeList = new List<ExpeditionType>();
-            string sql = "SELECT * FROM RD_EXPEDITION_TYPE";
+            string sql = $"SELECT ExpeditionType AS {nameof(ExpeditionType.Id)}, Priority, Description FROM RD_EXPEDITION_TYPE";
             
             using (var connection = _context.CreateConnection())
             {

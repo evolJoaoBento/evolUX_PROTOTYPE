@@ -12,7 +12,7 @@ namespace evolUX.Repository
         }
         public Task<dynamic> GetRunsOngoing()
         {
-            dynamic obj;
+            dynamic obj="";
             string sql = "";
 
             using (var connection = _context.CreateConnection())
