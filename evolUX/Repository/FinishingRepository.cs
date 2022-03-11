@@ -21,5 +21,17 @@ namespace evolUX.Repository
             }
             return obj;
         }
+
+        public Task<dynamic> GetPendingRegist()
+        {
+            dynamic obj = "";
+            string sql = "";
+
+            using (var connection = _context.CreateConnection())
+            {
+
+            }
+            return obj;
+        }
     }
 }

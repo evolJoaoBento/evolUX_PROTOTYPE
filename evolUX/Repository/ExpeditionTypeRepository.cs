@@ -1,7 +1,6 @@
 ﻿using Dapper;
 using evolUX.Context;
 using evolUX.Interfaces;
-using evolUX.Models;
 
 namespace evolUX.Repository
 {
@@ -13,14 +12,14 @@ namespace evolUX.Repository
             _context = context;
         }
 
-        public async Task<List<ExpeditionType>> GetExpeditionTypes()
+        public async Task<List<dynamic>> GetExpeditionTypes()
         {
-            var expeditionTypeList = new List<ExpeditionType>();
-            string sql = $"SELECT ExpeditionType AS {nameof(ExpeditionType.Id)}, Priority, Description FROM RD_EXPEDITION_TYPE";
+            var expeditionTypeList = new List<dynamic>();
+            string sql = $"SELECT ExpeditionType as [id], Priority as [priority], Description as [description] FROM RD_EXPEDITION_TYPE";
             
             using (var connection = _context.CreateConnection())
             {
-                expeditionTypeList = (List<ExpeditionType>) await connection.QueryAsync<ExpeditionType>(sql);
+                expeditionTypeList = (List<dynamic>) await connection.QueryAsync<dynamic>(sql);
                 return expeditionTypeList;
             }
         }

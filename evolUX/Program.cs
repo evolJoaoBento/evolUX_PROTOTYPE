@@ -4,13 +4,17 @@ using evolUX.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Server.IISIntegration;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddScoped<IExpeditionTypeRepository, ExpeditionTypeRepository>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IEnvelopeMediaRepository, EnvelopeMediaRepository>();
+builder.Services.AddScoped<IFinishingRepository, FinishingRepository>();
+builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
+
 
 var app = builder.Build();
 

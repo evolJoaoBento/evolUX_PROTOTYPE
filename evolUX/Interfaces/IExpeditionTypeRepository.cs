@@ -4,6 +4,6 @@ namespace evolUX.Interfaces
 {
     public interface IExpeditionTypeRepository
     {
-        public Task<List<ExpeditionType>> GetExpeditionTypes();
+        public Task<List<dynamic>> GetExpeditionTypes();
     }
 }

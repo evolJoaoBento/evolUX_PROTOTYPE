@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;
 using System.Data.SqlClient;
 using System.Data;
+using evolUX.Interfaces;
+using evolUX.Models;
 
 namespace evolUX.Controllers
 {
@@ -10,81 +12,43 @@ namespace evolUX.Controllers
     [ApiController]
     public class EnvelopeMediaController : Controller
     {
-        private IConfiguration _configuration;
+        private IEnvelopeMediaRepository _envelopeMediaRepository;
 
-        public EnvelopeMediaController(IConfiguration configuration)
+        public EnvelopeMediaController(IEnvelopeMediaRepository envelopeMediaRepository)
         {
-            _configuration = configuration;
+            _envelopeMediaRepository = envelopeMediaRepository;
         }
 
         [HttpGet]
         [ActionName("get")]
-        public async Task<ActionResult<List<ExpandoObject>>> GetEnvelopeMedia()
+        public async Task<ActionResult<List<dynamic>>> GetEnvelopeMedia()
         {
-            List<ExpandoObject> result = new List<ExpandoObject>();
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            await using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                string sql = @"select EnvMediaID as [Id],
-	                        EnvMediaName as [Nome da Gama],
-	                        [Description] as [Descrição]
-                            from RD_ENVELOPE_MEDIA";
-
-                SqlCommand myCommand = new SqlCommand(sql, connection);
-
-                using (SqlDataReader dataReader = myCommand.ExecuteReader())
-                {
-                    while (dataReader.Read())
-                    {
-                        dynamic row = new ExpandoObject();
-                        row.id = Convert.ToInt32(dataReader["Id"]);
-                        row.name = Convert.ToString(dataReader["Nome da Gama"]);
-                        row.description = Convert.ToString(dataReader["Descrição"]);
-
-                        result.Add(row);
-                    }
-                }
-                connection.Close();
+                var envelopeMediaList = await _envelopeMediaRepository.GetEnvelopeMedia();
+                return Ok(envelopeMediaList);
             }
-            return result;
+            catch (Exception ex)
+            {
+                //log error
+                return StatusCode(500, ex.Message);
+            }
         }
+
         [HttpGet]
         [ActionName("getOne")]
-        public async Task<ActionResult<List<ExpandoObject>>> GetEnvelopeMediaGroups()
+        public async Task<ActionResult<List<dynamic>>> GetEnvelopeMediaGroups()
         {
-            List<ExpandoObject> result = new List<ExpandoObject>();
-            string connectionString = _configuration.GetConnectionString("DefaultConnection");
-            await using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                string sql = @"SELECT  
-                            CAST(emg.EnvMediaGroupID as varchar) as [Id], 
-                            emg.[Description] as [Description],
-                            CAST(emg.DefaultEnvMediaID as varchar) as [DefaultEnvMediaId],     
-                            em.[Description] as [Omission]
-		                    FROM  RD_ENVELOPE_MEDIA_GROUP emg,
-			                    RD_ENVELOPE_MEDIA em
-		                    WHERE emg.DefaultEnvMediaID = em.EnvMediaID"; ;
-
-                SqlCommand myCommand = new SqlCommand(sql, connection);
-
-                using (SqlDataReader dataReader = myCommand.ExecuteReader())
-                {
-                    while (dataReader.Read())
-                    {
-                        dynamic row = new ExpandoObject();
-                        row.id = Convert.ToInt32(dataReader["Id"]);
-                        row.defaultenvmediaid = Convert.ToString(dataReader["DefaultEnvMediaId"]);
-                        row.description = Convert.ToString(dataReader["Description"]);
-                        row.omission = Convert.ToString(dataReader["Omission"]);
-
-                        result.Add(row);
-                    }
-                }
-                connection.Close();
+                var envelopeMediaGroupList = await _envelopeMediaRepository.GetEnvelopeMediaGroups();
+                return Ok(envelopeMediaGroupList);
             }
-            return result;
+            catch (Exception ex)
+            {
+                //log error
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }
