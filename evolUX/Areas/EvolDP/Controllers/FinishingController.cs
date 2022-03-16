@@ -1,15 +1,18 @@
 ﻿using evolUX.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace evolUX.Controllers
+namespace evolUX.Areas.EvolDP.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
     public class FinishingController : ControllerBase
     {
-        private readonly IFinishingRepository _finishingRepository;
-        public FinishingController(IFinishingRepository finishingRepository){
-            _finishingRepository = finishingRepository;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly ILoggerManager _logger;
+        public FinishingController(IRepositoryWrapper repositoryWrapper, ILoggerManager logger)
+        {
+            _repositoryWrapper = repositoryWrapper;
+            _logger = logger;
         }
 
         // GET: api/<ExpeditionTypeController>
@@ -18,7 +21,7 @@ namespace evolUX.Controllers
         {
             try
             {
-                var runs = await _finishingRepository.GetRunsOngoing();
+                var runs = await _repositoryWrapper.Finishing.GetRunsOngoing();
                 return Ok(runs);
             }
             catch (Exception ex)
@@ -33,7 +36,7 @@ namespace evolUX.Controllers
         {
             try
             {
-                var runs = await _finishingRepository.GetPendingRegist(); ;
+                var runs = await _repositoryWrapper.Finishing.GetPendingRegist(); 
                 return Ok(runs);
             }
             catch (Exception ex)

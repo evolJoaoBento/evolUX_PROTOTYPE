@@ -61,7 +61,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'exp', component: ExpeditionTypeComponent },
+      { path: 'exptype', component: ExpeditionTypeComponent },
       { path: 'env', component: EnvelopeMediaComponent }
     ]),
     NoopAnimationsModule,

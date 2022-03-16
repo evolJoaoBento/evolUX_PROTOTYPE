@@ -1,20 +1,23 @@
 using evolUX.Context;
 using evolUX.Interfaces;
 using evolUX.Repository;
+using evolUX.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Server.IISIntegration;
 using Newtonsoft.Json.Serialization;
+using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSingleton<DapperContext>();
-builder.Services.AddScoped<IExpeditionTypeRepository, ExpeditionTypeRepository>();
-builder.Services.AddScoped<IEnvelopeMediaRepository, EnvelopeMediaRepository>();
-builder.Services.AddScoped<IFinishingRepository, FinishingRepository>();
-builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
+LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
 
+builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
+builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+builder.Services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNameCaseInsensitive = true);
+builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
 
@@ -27,8 +30,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseRouting();
 
+
+app.MapControllerRoute(
+    name: "MyAreas",
+    pattern: "{area:exists}/{controller}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

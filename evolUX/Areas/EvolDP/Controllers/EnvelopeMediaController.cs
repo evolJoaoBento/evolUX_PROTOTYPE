@@ -6,17 +6,19 @@ using System.Data;
 using evolUX.Interfaces;
 using evolUX.Models;
 
-namespace evolUX.Controllers
+namespace evolUX.Areas.EvolDP.Controllers
 {
-    [Route("[controller]/[action]")]
+    [Route("evoldp/[controller]/[action]")]
     [ApiController]
     public class EnvelopeMediaController : Controller
     {
-        private IEnvelopeMediaRepository _envelopeMediaRepository;
+        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly ILoggerManager _logger;
 
-        public EnvelopeMediaController(IEnvelopeMediaRepository envelopeMediaRepository)
+        public EnvelopeMediaController(IRepositoryWrapper repositoryWrapper, ILoggerManager logger)
         {
-            _envelopeMediaRepository = envelopeMediaRepository;
+            _repositoryWrapper = repositoryWrapper;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -25,7 +27,7 @@ namespace evolUX.Controllers
         {
             try
             {
-                var envelopeMediaList = await _envelopeMediaRepository.GetEnvelopeMedia();
+                var envelopeMediaList = await _repositoryWrapper.EnvelopeMedia.GetEnvelopeMedia();
                 return Ok(envelopeMediaList);
             }
             catch (Exception ex)
@@ -41,7 +43,7 @@ namespace evolUX.Controllers
         {
             try
             {
-                var envelopeMediaGroupList = await _envelopeMediaRepository.GetEnvelopeMediaGroups();
+                var envelopeMediaGroupList = await _repositoryWrapper.EnvelopeMedia.GetEnvelopeMediaGroups();
                 return Ok(envelopeMediaGroupList);
             }
             catch (Exception ex)
