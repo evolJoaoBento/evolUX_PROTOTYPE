@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
     <PackageReference Include="NLog.Extensions.Logging" Version="1.7.4" />
@@ -32,11 +35,11 @@
 
   <ItemGroup>
     <Folder Include="Areas\Finishing\" />
-    <Folder Include="Areas\Core\" />
     <Folder Include="ClientApp\src\app\core\services\handlers\" />
     <Folder Include="ClientApp\src\app\core\services\providers\" />
     <Folder Include="ClientApp\src\assets\i18n\" />
     <Folder Include="Extensions\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 
   <ItemGroup>

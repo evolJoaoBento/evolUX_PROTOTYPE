@@ -22,7 +22,7 @@ namespace evolUX.Controllers
         public async Task<ActionResult<List<ExpandoObject>>> GetSidebarButtons()
         {
             List<ExpandoObject> result = new List<ExpandoObject>();
-            string connectionString = _configuration.GetConnectionString("IdentityConnection");
+            string connectionString = _configuration.GetConnectionString("EvolFlowConnection");
             await using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -60,7 +60,7 @@ namespace evolUX.Controllers
         public List<ExpandoObject> GetInnerButtons(int id)
         {
             List<ExpandoObject> result = new List<ExpandoObject>();
-            string connectionString = _configuration.GetConnectionString("IdentityConnection");
+            string connectionString = _configuration.GetConnectionString("EvolFlowConnection");
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();

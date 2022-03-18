@@ -5,35 +5,40 @@ using System.Data.SqlClient;
 using System.Data;
 using evolUX.Interfaces;
 using evolUX.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace evolUX.Areas.EvolDP.Controllers
 {
-    [Route("evoldp/[controller]/[action]")]
+    [Route("evoldp/envelopemedia/[action]")]
     [ApiController]
     public class EnvelopeMediaController : Controller
     {
-        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly IWrapperRepository _repository;
         private readonly ILoggerManager _logger;
 
-        public EnvelopeMediaController(IRepositoryWrapper repositoryWrapper, ILoggerManager logger)
+        public EnvelopeMediaController(IWrapperRepository repositoryWrapper, ILoggerManager logger)
         {
-            _repositoryWrapper = repositoryWrapper;
+            _repository = repositoryWrapper;
             _logger = logger;
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]
         [ActionName("get")]
         public async Task<ActionResult<List<dynamic>>> GetEnvelopeMedia()
         {
             try
             {
-                var envelopeMediaList = await _repositoryWrapper.EnvelopeMedia.GetEnvelopeMedia();
+                var envelopeMediaList = await _repository.EnvelopeMedia.GetEnvelopeMedia();
+                _logger.LogInfo("Envelope Media Get");
                 return Ok(envelopeMediaList);
             }
             catch (Exception ex)
             {
                 //log error
-                return StatusCode(500, ex.Message);
+                _logger.LogError($"Something went wrong inside GetEnvelopeMedia action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
             }
         }
 
@@ -43,13 +48,15 @@ namespace evolUX.Areas.EvolDP.Controllers
         {
             try
             {
-                var envelopeMediaGroupList = await _repositoryWrapper.EnvelopeMedia.GetEnvelopeMediaGroups();
+                var envelopeMediaGroupList = await _repository.EnvelopeMedia.GetEnvelopeMediaGroups();
+                _logger.LogInfo("Return envelope media group list from database");
                 return Ok(envelopeMediaGroupList);
             }
             catch (Exception ex)
             {
                 //log error
-                return StatusCode(500, ex.Message);
+                _logger.LogError($"Something went wrong inside GetEnvelopeMediaGroups action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
             }
         }
     }

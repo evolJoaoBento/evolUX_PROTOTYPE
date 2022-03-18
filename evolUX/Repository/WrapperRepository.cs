@@ -3,12 +3,14 @@ using evolUX.Interfaces;
 
 namespace evolUX.Repository
 {
-    public class RepositoryWrapper : IRepositoryWrapper
+    public class WrapperRepository : IWrapperRepository
     {
         private readonly DapperContext _context;
         private IEnvelopeMediaRepository _envelopeMedia;
         private IExpeditionTypeRepository _expeditionType;
         private IFinishingRepository _finishing;
+        private IUserRepository _user;
+
 
         public IEnvelopeMediaRepository EnvelopeMedia
         {
@@ -22,7 +24,7 @@ namespace evolUX.Repository
             }
         }
 
-        public IExpeditionTypeRepository ExpeditionType 
+        public IExpeditionTypeRepository ExpeditionType
         {
             get
             {
@@ -46,7 +48,19 @@ namespace evolUX.Repository
             }
         }
 
-        public RepositoryWrapper(DapperContext context)
+        public IUserRepository User
+        {
+            get
+            {
+                if(_user == null)
+                {
+                    _user = new UserRepository(_context);
+                }
+                return _user;
+            }
+        }
+
+        public WrapperRepository(DapperContext context)
         {
             _context = context;
         }

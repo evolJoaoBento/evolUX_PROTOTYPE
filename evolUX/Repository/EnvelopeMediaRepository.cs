@@ -19,7 +19,7 @@ namespace evolUX.Repository
 	                        EnvMediaName as [name],
 	                        [Description] as [description]
                             from RD_ENVELOPE_MEDIA";
-            using (var connection = _context.CreateConnection())
+            using (var connection = _context.CreateConnectionEvolDP())
             {
                 envelopeMediaList =(List<dynamic>) await connection.QueryAsync(sql);
                 return envelopeMediaList;
@@ -37,7 +37,7 @@ namespace evolUX.Repository
 		                    FROM  RD_ENVELOPE_MEDIA_GROUP emg,
 			                    RD_ENVELOPE_MEDIA em
 		                    WHERE emg.DefaultEnvMediaID = em.EnvMediaID";
-            using (var connection = _context.CreateConnection())
+            using (var connection = _context.CreateConnectionEvolDP())
             {
                 envelopeMediaGroupList = (List<dynamic>)await connection.QueryAsync<dynamic>(sql);
                 return envelopeMediaGroupList;

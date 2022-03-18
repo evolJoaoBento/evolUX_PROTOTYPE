@@ -17,7 +17,7 @@ namespace evolUX.Repository
             var expeditionTypeList = new List<dynamic>();
             string sql = $"SELECT ExpeditionType as [id], Priority as [priority], Description as [description] FROM RD_EXPEDITION_TYPE";
             
-            using (var connection = _context.CreateConnection())
+            using (var connection = _context.CreateConnectionEvolDP())
             {
                 expeditionTypeList = (List<dynamic>) await connection.QueryAsync<dynamic>(sql);
                 return expeditionTypeList;

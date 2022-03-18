@@ -7,11 +7,11 @@ namespace evolUX.Areas.EvolDP.Controllers
     [Route("[controller]/[action]")]
     public class FinishingController : ControllerBase
     {
-        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly IWrapperRepository _repository;
         private readonly ILoggerManager _logger;
-        public FinishingController(IRepositoryWrapper repositoryWrapper, ILoggerManager logger)
+        public FinishingController(IWrapperRepository repositoryWrapper, ILoggerManager logger)
         {
-            _repositoryWrapper = repositoryWrapper;
+            _repository = repositoryWrapper;
             _logger = logger;
         }
 
@@ -21,7 +21,7 @@ namespace evolUX.Areas.EvolDP.Controllers
         {
             try
             {
-                var runs = await _repositoryWrapper.Finishing.GetRunsOngoing();
+                var runs = await _repository.Finishing.GetRunsOngoing();
                 return Ok(runs);
             }
             catch (Exception ex)
@@ -36,7 +36,7 @@ namespace evolUX.Areas.EvolDP.Controllers
         {
             try
             {
-                var runs = await _repositoryWrapper.Finishing.GetPendingRegist(); 
+                var runs = await _repository.Finishing.GetPendingRegist(); 
                 return Ok(runs);
             }
             catch (Exception ex)

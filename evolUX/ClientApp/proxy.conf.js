@@ -8,7 +8,8 @@ const PROXY_CONFIG = [
     context: [
       "/evoldp/expeditiontype",
       "/sidebar/GetMain",
-      "/evoldp/envelopemedia/get"
+      "/evoldp/envelopemedia/get",
+      "/evoldp/envelopemedia/getOne"
    ],
     target: target,
     secure: false

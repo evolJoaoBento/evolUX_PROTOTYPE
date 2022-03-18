@@ -1,9 +1,10 @@
 ﻿namespace evolUX.Interfaces
 {
-    public interface IRepositoryWrapper
+    public interface IWrapperRepository
     {
         IEnvelopeMediaRepository EnvelopeMedia { get; }
         IExpeditionTypeRepository ExpeditionType { get; }
         IFinishingRepository Finishing { get; }
+        IUserRepository User { get; }
     }
 }

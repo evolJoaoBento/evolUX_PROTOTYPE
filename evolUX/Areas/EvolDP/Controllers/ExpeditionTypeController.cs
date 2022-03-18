@@ -13,12 +13,12 @@ namespace evolUX.Areas.EvolDP.Controllers
     [Route("evoldp/[controller]")]
     public class ExpeditionTypeController : ControllerBase
     {
-        private readonly IRepositoryWrapper _repositoryWrapper;
+        private readonly IWrapperRepository _repository;
         private readonly ILoggerManager _logger;
 
-        public ExpeditionTypeController(IRepositoryWrapper repositoryWrapper, ILoggerManager logger)
+        public ExpeditionTypeController(IWrapperRepository repositoryWrapper, ILoggerManager logger)
         {
-            _repositoryWrapper = repositoryWrapper;
+            _repository = repositoryWrapper;
             _logger = logger;
         }
 
@@ -28,15 +28,15 @@ namespace evolUX.Areas.EvolDP.Controllers
         {
             try
             {
-                var expeditionTypeList = await _repositoryWrapper.ExpeditionType.GetExpeditionTypes();
+                var expeditionTypeList = await _repository.ExpeditionType.GetExpeditionTypes();
                 _logger.LogInfo("Expedition Type Get");
                 return Ok(expeditionTypeList);
             }
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError(ex.Message);
-                return StatusCode(500, ex.Message);
+                _logger.LogError($"Something went wrong inside GetEnvelopeMedia action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
             }
         }
     }
