@@ -6,19 +6,21 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Username { get; set; }
-        public string Token { get; set; }
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
 
         public string Roles { get; set; }
 
 
-        public AuthenticateResponse(UserModel user, string token)
+        public AuthenticateResponse(UserModel user, string accessToken)
         {
             Id = user.Id;
             FirstName = user.FirstName;
             LastName = user.LastName;
             Username = user.Username;
             Roles = user.Roles;
-            Token = token;
+            AccessToken = accessToken;
+            RefreshToken = user.RefreshToken;
         }
     }
 }

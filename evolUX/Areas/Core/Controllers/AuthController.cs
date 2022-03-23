@@ -1,5 +1,6 @@
 ﻿using evolUX.Interfaces;
 using evolUX.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,7 +29,7 @@ namespace evolUX.Areas.Core.Controllers
         }
 
         [Authorize(AuthenticationSchemes = NegotiateDefaults.AuthenticationScheme)]
-        [ActionName("GetToken")]
+        [ActionName("login")]
         [HttpGet]
         public IActionResult GetToken()
         {
@@ -41,15 +42,22 @@ namespace evolUX.Areas.Core.Controllers
                     return BadRequest(new { message = "Username or password is incorrect" });
                 }
                 //EXEMPLO
-                user.Roles = "Officer";
+                user.Roles = "Manager";
 
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim(ClaimTypes.Role, user.Roles)
                 };
-                var token = _jwtService.GenerateJwtToken(claims);
-                return Ok(new AuthenticateResponse(user, token));
+                var accessToken = _jwtService.GenerateJwtToken(claims);
+                var refreshToken = _jwtService.GenerateRefreshToken();
+
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+
+                _repository.User.UpdateUserRefreshTokenAndTime(user);
+
+                return Ok(new AuthenticateResponse(user, accessToken));
             }
             catch(Exception ex)
             {
@@ -61,31 +69,68 @@ namespace evolUX.Areas.Core.Controllers
         }
 
         [HttpPost]
-        [ActionName("login")]
-        public IActionResult Login([FromBody] AuthenticateRequest model)
+        [ActionName("refresh")]
+        public IActionResult Refresh([FromBody] TokenApiModel tokenApiModel)
         {
-            if (model == null)
+            if (tokenApiModel is null)
             {
                 return BadRequest("Invalid client request");
             }
-            var user = _repository.User.GetAllUsers().Result.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
-
-            if (user == null)
+            string accessToken = tokenApiModel.AccessToken;
+            string refreshToken = tokenApiModel.RefreshToken;
+            var principal = _jwtService.GetPrincipalFromExpiredToken(accessToken);
+            var username = principal.Identity?.Name; //this is mapped to the Name claim by default
+            var user = _repository.User.GetAllUsers().Result.SingleOrDefault(u => u.Username == username);
+            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             {
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest("Invalid client request");
             }
-
-            //EXEMPLO
-            user.Roles = "Officer";
-
-            var claims = new List<Claim>
+            var newAccessToken = _jwtService.GenerateJwtToken(principal.Claims.ToList());
+            var newRefreshToken = _jwtService.GenerateRefreshToken();
+            
+            _repository.User.UpdateUserRefreshToken(username, newRefreshToken);
+            return new ObjectResult(new
             {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, user.Roles)
-            };
-            var token = _jwtService.GenerateJwtToken(claims);
-
-            return Ok(new AuthenticateResponse(user, token));
+                accessToken = newAccessToken,
+                refreshToken = newRefreshToken
+            });
         }
+
+        [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [ActionName("revoke")]
+        public IActionResult Revoke()
+        {
+            var username = User.Identity?.Name;
+            _repository.User.DeleteRefreshToken(username);
+            return NoContent();
+        }
+
+        //[HttpPost]
+        //[ActionName("login")]
+        //public IActionResult Login([FromBody] AuthenticateRequest model)
+        //{
+        //    if (model == null)
+        //    {
+        //        return BadRequest("Invalid client request");
+        //    }
+        //    var user = _repository.User.GetAllUsers().Result.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
+
+        //    if (user == null)
+        //    {
+        //        return BadRequest(new { message = "Username or password is incorrect" });
+        //    }
+
+        //    //EXEMPLO
+        //    user.Roles = "Officer";
+
+        //    var claims = new List<Claim>
+        //    {
+        //        new Claim(ClaimTypes.Name, user.Username),
+        //        new Claim(ClaimTypes.Role, user.Roles)
+        //    };
+        //    var token = _jwtService.GenerateJwtToken(claims);
+
+        //    return Ok(new AuthenticateResponse(user, token));
+        //}
     }
 }
