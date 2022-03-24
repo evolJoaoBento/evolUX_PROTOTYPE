@@ -38,6 +38,7 @@
     <Folder Include="ClientApp\src\app\core\services\handlers\" />
     <Folder Include="ClientApp\src\app\core\services\providers\" />
     <Folder Include="ClientApp\src\assets\i18n\" />
+    <Folder Include="Controllers\" />
     <Folder Include="Extensions\" />
     <Folder Include="Helpers\" />
   </ItemGroup>

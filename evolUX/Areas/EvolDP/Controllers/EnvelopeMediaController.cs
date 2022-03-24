@@ -43,6 +43,7 @@ namespace evolUX.Areas.EvolDP.Controllers
         }
 
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]
         [ActionName("getOne")]
         public async Task<ActionResult<List<dynamic>>> GetEnvelopeMediaGroups()
         {

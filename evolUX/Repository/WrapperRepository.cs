@@ -10,6 +10,7 @@ namespace evolUX.Repository
         private IExpeditionTypeRepository _expeditionType;
         private IFinishingRepository _finishing;
         private IUserRepository _user;
+        private ISidebarRepository _sidebar;
 
 
         public IEnvelopeMediaRepository EnvelopeMedia
@@ -52,11 +53,23 @@ namespace evolUX.Repository
         {
             get
             {
-                if(_user == null)
+                if (_user == null)
                 {
                     _user = new UserRepository(_context);
                 }
                 return _user;
+            }
+        }
+
+        public ISidebarRepository Sidebar
+        {
+            get
+            {
+                if (_sidebar == null) 
+                { 
+                    _sidebar = new SidebarRepository(_context); 
+                }
+                return _sidebar;
             }
         }
 

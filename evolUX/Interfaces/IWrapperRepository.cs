@@ -6,5 +6,7 @@
         IExpeditionTypeRepository ExpeditionType { get; }
         IFinishingRepository Finishing { get; }
         IUserRepository User { get; }
+
+        ISidebarRepository Sidebar { get; }
     }
 }

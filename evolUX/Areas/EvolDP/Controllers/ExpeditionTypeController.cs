@@ -6,6 +6,8 @@ using System.Data.SqlClient;
 using evolUX.Models;
 using Dapper;
 using evolUX.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace evolUX.Areas.EvolDP.Controllers
 {
@@ -24,6 +26,7 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         // GET: api/<ExpeditionTypeController>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]
         public async Task<ActionResult<List<dynamic>>> Get()
         {
             try
