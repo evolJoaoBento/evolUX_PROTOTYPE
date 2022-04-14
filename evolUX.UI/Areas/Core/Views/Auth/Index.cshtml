@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Home Page";
+    var errorMessage = TempData["resultError"] as ErrorResult;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bem vindo ao EvolUx</h1>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <p>@User.Identity.Name</p>
+        foreach(var claim in User.Claims)
+        {
+            <p>@claim.Type: @claim.Value</p>
+        }
+
+    }else{
+        <a class="btn btn-primary" asp-area="core" asp-controller="auth" asp-action="LoginPost">Entrar</a>
+        if( @errorMessage != null)
+        {
+            @*<p>Erro @ViewBag.ErrorMessage.errorCode: @ViewBag.ErrorMessage.message</p>*@
+            <p>Erro @errorMessage.Code: @errorMessage.Message</p>
+        }
+        
+    }
+    
+</div>

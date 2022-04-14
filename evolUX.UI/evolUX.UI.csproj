@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\EvolDP\Controllers\" />
+    <Folder Include="Areas\EvolDP\Models\" />
+    <Folder Include="Areas\EvolDP\Views\" />
+    <Folder Include="Areas\Finishing\Controllers\" />
+    <Folder Include="Areas\Finishing\Models\" />
+    <Folder Include="Areas\Finishing\Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Flurl" Version="3.0.4" />
+    <PackageReference Include="Flurl.Http" Version="3.2.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
+  </ItemGroup>
+
+</Project>

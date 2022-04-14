@@ -1,4 +1,4 @@
-﻿namespace evolUX.Interfaces
+﻿namespace evolUX.API.Data.Interfaces
 {
     public interface IWrapperRepository
     {

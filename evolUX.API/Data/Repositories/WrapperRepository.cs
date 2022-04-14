@@ -1,7 +1,7 @@
-﻿using evolUX.Context;
-using evolUX.Interfaces;
+﻿using evolUX.API.Data.Context;
+using evolUX.API.Data.Interfaces;
 
-namespace evolUX.Repository
+namespace evolUX.API.Data.Repositories
 {
     public class WrapperRepository : IWrapperRepository
     {
