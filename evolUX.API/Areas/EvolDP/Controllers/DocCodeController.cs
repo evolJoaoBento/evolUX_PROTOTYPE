@@ -1,5 +1,8 @@
-﻿using evolUX.API.Data.Interfaces;
-using evolUX.API.Services.Interfaces;
+﻿using evolUX.API.Areas.Core.Services.Interfaces;
+using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using evolUX.API.Data.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -9,24 +12,28 @@ using System.Dynamic;
 namespace evolUX.Areas.EvolDP.Controllers
 {
     [Route("evoldp/doccode/[action]")]
+
     [ApiController]
     public class DocCodeController : ControllerBase
     {
         private readonly IWrapperRepository _repository;
         private readonly ILoggerManager _logger;
-        public DocCodeController(IWrapperRepository repository, ILoggerManager logger)
+        private readonly IDocCodeService _docCodeService;
+        public DocCodeController(IWrapperRepository repository, ILoggerManager logger, IDocCodeService docCodeService)
         {
             _repository = repository;
             _logger = logger;
+            _docCodeService = docCodeService;
         }
 
         [HttpGet]
         [ActionName("getDocCode")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<dynamic>>> GetDocCode()
         {
             try
             {
-                var docCodeList = await _repository.DocCode.GetDocCode();
+                var docCodeList = await _docCodeService.GetDocCode();
                 _logger.LogInfo("DocCode Get");
                 return Ok(docCodeList);
             }
@@ -46,7 +53,7 @@ namespace evolUX.Areas.EvolDP.Controllers
             {
                 var converter = new ExpandoObjectConverter();
                 var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
-                var docCodeList = await _repository.DocCode.GetDocCodeLevel1(exObjExpandoObject);
+                var docCodeList = await _docCodeService.GetDocCodeLevel1(exObjExpandoObject);
                 _logger.LogInfo("DocCodeLevel1 Get");
                 return Ok(docCodeList);
             }
@@ -66,7 +73,8 @@ namespace evolUX.Areas.EvolDP.Controllers
             {
                 var converter = new ExpandoObjectConverter();
                 var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
-                var docCodeList = await _repository.DocCode.GetDocCodeLevel2(exObjExpandoObject);
+                //var docCodeList = await _repository.DocCode.GetDocCodeLevel2(exObjExpandoObject);
+                var docCodeList = await _docCodeService.GetDocCodeLevel2(exObjExpandoObject);
                 _logger.LogInfo("DocCodeLevel2 Get");
                 return Ok(docCodeList);
             }
@@ -86,7 +94,8 @@ namespace evolUX.Areas.EvolDP.Controllers
             {
                 var converter = new ExpandoObjectConverter();
                 var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
-                var docCodeConfig = await _repository.DocCode.GetDocCodeConfig(exObjExpandoObject);
+                //var docCodeConfig = await _repository.DocCode.GetDocCodeConfig(exObjExpandoObject);
+                var docCodeConfig = await _docCodeService.GetDocCodeConfig(exObjExpandoObject);
                 _logger.LogInfo("DocCodeConfig Get");
                 return Ok(docCodeConfig);
             }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using evolUX.API.Data.Interfaces;
-using evolUX.API.Services.Interfaces;
+using evolUX.API.Areas.Core.Services.Interfaces;
+using evolUX.API.Areas.EvolDP.Services.Interfaces;
 
 namespace evolUX.API.Areas.EvolDP.Controllers
 {
@@ -10,13 +10,13 @@ namespace evolUX.API.Areas.EvolDP.Controllers
     [Route("evoldp/[controller]")]
     public class ExpeditionTypeController : ControllerBase
     {
-        private readonly IWrapperRepository _repository;
         private readonly ILoggerManager _logger;
+        private readonly IExpeditionTypeService _expeditionTypeService;
 
-        public ExpeditionTypeController(IWrapperRepository repositoryWrapper, ILoggerManager logger)
+        public ExpeditionTypeController(ILoggerManager logger, IExpeditionTypeService expeditionTypeService)
         {
-            _repository = repositoryWrapper;
             _logger = logger;
+            _expeditionTypeService = expeditionTypeService;
         }
 
         // GET: api/<ExpeditionTypeController>
@@ -26,7 +26,8 @@ namespace evolUX.API.Areas.EvolDP.Controllers
         {
             try
             {
-                var expeditionTypeList = await _repository.ExpeditionType.GetExpeditionTypes();
+                //var expeditionTypeList = await _repository.ExpeditionType.GetExpeditionTypes();
+                var expeditionTypeList = await _expeditionTypeService.GetExpeditionTypes();
                 _logger.LogInfo("Expedition Type Get");
                 return Ok(expeditionTypeList);
             }

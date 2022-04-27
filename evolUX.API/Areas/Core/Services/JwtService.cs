@@ -1,11 +1,11 @@
-﻿using evolUX.API.Services.Interfaces;
+﻿using evolUX.API.Areas.Core.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace evolUX.API.Services
+namespace evolUX.API.Areas.Core.Services
 {
     public class JwtService : IJwtService
     {
@@ -23,10 +23,11 @@ namespace evolUX.API.Services
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: "https://localhost:7067",
+                issuer: "https://localhost:7107",
                 audience: "https://localhost:7067",
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(5),
+                expires: DateTime.Now.AddMinutes(1),
+
                 signingCredentials: signinCredentials
             );
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);

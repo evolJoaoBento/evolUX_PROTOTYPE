@@ -7,12 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\EvolDP\Controllers\" />
+    <Content Remove="wwwroot\fonts\EvolsolutionsV8.ttf" />
+    <Content Remove="wwwroot\images\left-top-es.jpg" />
+    <Content Remove="wwwroot\images\right-top-es.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Areas\EvolDP\Models\" />
-    <Folder Include="Areas\EvolDP\Views\" />
     <Folder Include="Areas\Finishing\Controllers\" />
     <Folder Include="Areas\Finishing\Models\" />
     <Folder Include="Areas\Finishing\Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\fonts\EvolsolutionsV8.ttf" />
+    <None Include="wwwroot\images\left-top-es.jpg" />
+    <None Include="wwwroot\images\right-top-es.jpg" />
   </ItemGroup>
 
   <ItemGroup>

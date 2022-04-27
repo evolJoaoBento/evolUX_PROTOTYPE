@@ -1,9 +1,10 @@
+using evolUX.API.Areas.Core.Services;
+using evolUX.API.Areas.Core.Services.Interfaces;
+using evolUX.API.Areas.EvolDP.Services;
+using evolUX.API.Areas.EvolDP.Services.Interfaces;
 using evolUX.API.Data.Context;
 using evolUX.API.Data.Interfaces;
 using evolUX.API.Data.Repositories;
-using evolUX.API.Services;
-using evolUX.API.Services.Interfaces;
-using evolUX.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Builder;
@@ -20,8 +21,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddMvc();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
+builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
+builder.Services.AddSingleton<IEnvelopeMediaService, EnvelopeMediaService>();
+builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
+builder.Services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
 builder.Services.AddSingleton<DapperContext>();
-builder.Services.AddScoped<IWrapperRepository, WrapperRepository>();
+builder.Services.AddSingleton<IWrapperRepository, WrapperRepository>();
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
@@ -42,8 +48,20 @@ builder.Services.AddAuthentication(opt =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = "https://localhost:7107",
-        ValidAudience = "https://localhost:7107",
+        ValidAudience = "https://localhost:7067",
+        ClockSkew = TimeSpan.Zero,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("AppSettings:Secret")))
+    };
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+            {
+                context.Response.Headers.Add("Token-Expired", "true");
+            }
+            return Task.CompletedTask;
+        }
     };
 });
 

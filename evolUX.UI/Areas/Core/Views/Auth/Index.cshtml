@@ -4,26 +4,103 @@
 @{
     ViewData["Title"] = "Home Page";
     var errorMessage = TempData["resultError"] as ErrorResult;
-}
+    var returnUrl = ViewData["returnUrl"];
 
-<div class="text-center">
-    <h1 class="display-4">Bem vindo ao EvolUx</h1>
+}
+@model UserLogin
+
+<div class="align-items-center">
     @if (User.Identity.IsAuthenticated)
     {
+        <h1 class="display-4 text-center">Bem vindo ao <span class="evol-font">evolUX</span></h1>
         <p>@User.Identity.Name</p>
-        foreach(var claim in User.Claims)
+        foreach (var claim in User.Claims)
         {
             <p>@claim.Type: @claim.Value</p>
         }
-
-    }else{
-        <a class="btn btn-primary" asp-area="core" asp-controller="auth" asp-action="LoginPost">Entrar</a>
-        if( @errorMessage != null)
-        {
-            @*<p>Erro @ViewBag.ErrorMessage.errorCode: @ViewBag.ErrorMessage.message</p>*@
-            <p>Erro @errorMessage.Code: @errorMessage.Message</p>
-        }
-        
     }
-    
+    else
+    {
+        <div class="container-auth">
+            <div class="tittle">
+                <h1 class="evol-font"></h1>
+            </div>
+            <div id="form-wrap" class="login-form">
+                <form id="credentials-form" asp-area="core" asp-controller="auth" asp-action="LoginCredentials" method="post" style="width:100%; display:none; height:100px;">
+                    <label style="display: block; padding-left:10px; font-weight:bold">Username:</label>
+                    <input type="text" asp-for="Username" style="width:100%;border:none; background:rgb(230,230,230)">
+                    <label style="display: block;padding-left:10px; font-weight:bold">Password:</label>
+                    <input type="password" asp-for="Password" style="width:100%; border:none;background:rgb(230,230,230)">
+                    <input type="hidden" name="returnUrl" value="@returnUrl">
+
+                </form>
+                <form id="windows-form" asp-area="core" asp-controller="auth" asp-action="LoginWindowsAuthentication" method="get" style="justify-self:center; height:100px; ">
+                    <h4 style="margin:0">Entrar com o windows autentication</h4>
+                    <input type="hidden" name="returnUrl" value="@returnUrl">
+                </form>
+                <div class="auth-error">
+                    @if (@errorMessage != null)
+                    {
+                        <p style="margin:0;">Erro @errorMessage.Code: @errorMessage.Message</p>
+                    }
+                </div>
+
+            </div>
+            <div class="pick-login">
+                <div id="windows-btn" class=" circle windows"></div>
+                <div id="credentials-btn" class=" circle credentials"></div>
+            </div>
+            <div class="login-btn-wrap">
+                <button id="login-btn">Login</button>
+            </div>
+        </div>
+    }
+
+    @*<div class="row d-flex justify-content-center h-100">
+
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+
+        @if (User.Identity.IsAuthenticated)
+        {
+        <p>@User.Identity.Name</p>
+        foreach (var claim in User.Claims)
+        {
+        <p>@claim.Type: @claim.Value</p>
+        }
+
+        }
+        else
+        {
+        <div class="card p-5 shadow-2-strong" style="background-color: rgb(248 248 248); border-radius:0px;">
+        <div id="loginForm" class="card-body " style="display:none;">
+        <div class="form-outline mb-4">
+        <label class="form-label text-start" for="typeEmailX-2">Email</label>
+        <input type="email" id="typeEmailX-2" class="form-control form-control-sm" />
+        </div>
+
+        <div class="form-outline mb-4">
+        <label class="form-label text-start" for="typePasswordX-2">Password</label>
+        <input type="password" id="typePasswordX-2" class="form-control form-control-sm" />
+        </div>
+        <div>
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+        </div>
+        </div>
+        <div class="card-body align-items-center" style="margin: 0 auto;">
+
+        <a class="btn btn-primary" asp-area="core" asp-controller="auth" asp-action="LoginWindowsAuthentication">Entrar</a>
+        <div id="loginFormBtn" class="btn btn-primary">Entrar Admin</div>
+
+        </div>
+        @if (@errorMessage != null)
+        {
+        <p style="color: red; padding-left:10px;">Erro @errorMessage.Code: @errorMessage.Message</p>
+        }
+        </div>
+        }
+
+        </div>
+        </div>*@
+
+
 </div>

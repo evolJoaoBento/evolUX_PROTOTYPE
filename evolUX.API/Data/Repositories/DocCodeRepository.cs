@@ -18,9 +18,9 @@ namespace evolUX.API.Data.Repositories
         {
             var docCodeList = new List<dynamic>();
             string sql = @"SELECT	 
-d.DocLayout[Layout do Documento],
-d.DocType[Subtipo do Documento],
-d1.Description[Descrição] 
+d.DocLayout,
+d.DocType,
+d1.Description 
 FROM RD_DOCCODE d with(nolock)
 LEFT OUTER JOIN 
 RD_DOCCODE d1 with(nolock) ON d1.DocLayout = d.DocLayout 

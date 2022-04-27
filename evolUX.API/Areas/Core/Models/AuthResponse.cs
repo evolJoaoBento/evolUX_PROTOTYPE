@@ -2,7 +2,7 @@
 
 namespace evolUX.API.Areas.Core.Models
 {
-    public class AuthenticateResponse
+    public class AuthResponse
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
@@ -14,7 +14,7 @@ namespace evolUX.API.Areas.Core.Models
         public List<RolesModel> Roles { get; set; }
 
 
-        public AuthenticateResponse(UserModel user, string accessToken)
+        public AuthResponse(UserModel user, string accessToken)
         {
             Id = user.Id;
             FirstName = user.FirstName;

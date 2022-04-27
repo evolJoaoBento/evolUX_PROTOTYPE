@@ -1,4 +1,4 @@
-﻿namespace evolUX.API.Services.Interfaces
+﻿namespace evolUX.API.Areas.Core.Services.Interfaces
 {
     public interface ILoggerManager
     {

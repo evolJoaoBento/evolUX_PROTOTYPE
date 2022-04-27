@@ -1,0 +1,86 @@
+﻿header {
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    top: 0;
+}
+.topbar-wrapper {
+    width: 100%;
+    height: 80px;
+    flex: 0 1 50px;
+    display: flex;
+}
+
+.topbar-gradient {
+    height: 10px;
+    width: 100%;
+}
+
+.es-circle {
+    width: 50px;
+    height: 50px;
+    margin-left: 15px;
+    padding-top: 3px;
+    overflow: hidden;
+}
+
+.settings-circle {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}
+
+    .settings-circle:hover {
+        box-shadow: 0px 0px 6px 1px #9a9a9a;
+    }
+
+.mid-circle {
+    margin: 0px 15px;
+}
+
+.col {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.es-col {
+    background-image: url('../images/left-top-es.jpg');
+    background-repeat: no-repeat;
+}
+
+.settings-col {
+    justify-content: right;
+    background-image: url('../images/right-top-es.jpg');
+    background-repeat: no-repeat;
+    background-position-y: bottom;
+    background-position-x: right;
+}
+
+.title-col {
+    flex: 0;
+    text-align: center;
+    background:white;
+}
+
+.es-title {
+    padding: 0;
+    margin: 0;
+    font-size: 40px;
+    color: #d5d5d5;
+}
+.circle {
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0px 0px 4px 1px #ccc;
+    display: inline-block;
+}
+    .circle:hover {
+        box-shadow: 0px 0px 6px 1px #9a9a9a;
+    }
+    
+
+.logo-topbar{
+    display: block;
+    width: 50px;
+}

@@ -1,8 +1,8 @@
-﻿using evolUX.API.Services.Interfaces;
+﻿using evolUX.API.Areas.Core.Services.Interfaces;
 using NLog;
 using ILogger = NLog.ILogger;
 
-namespace evolUX.Services
+namespace evolUX.API.Areas.Core.Services
 {
     public class LoggerManager : ILoggerManager
     {

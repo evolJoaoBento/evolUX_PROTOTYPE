@@ -4,41 +4,74 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - evolUX.UI</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/icon.png">
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/topbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/sidebar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/evolUX.UI.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">evolUX.UI</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Core" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Core" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+        <div class="topbar-wrapper">
+            <div class="col es-col">
+                <div class="es-circle circle"><a href="/"><img class="logo-topbar" src="~/images/icon.png"></a></div>
             </div>
-        </nav>
+            <div class="col title-col">
+                <p class="es-title evol-font">evolUX</p>
+            </div>
+            <div class="col settings-col">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="settings-circle circle"></div>
+                    <div class="settings-circle circle mid-circle"></div>
+                    <div class="settings-circle circle" style="margin-right:25px;">
+                        <a class="settings-circle circle" asp-area="Core" asp-controller="Auth" asp-action="Logout" style="color:black;">
+                            <i class='bx bx-log-out' style="margin: 9px 6px; font-size:24px;"></i>
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+        <div id="topbar-gradient" class="topbar-gradient es-theme"></div>
     </header>
-    <div class="container">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <partial name="~/Views/Shared/_PartialLayout.cshtml" />
+    }
+    @{
+        var breadCrumbList = ViewBag.Breadcrumbs as List<Breadcrumb>;
+    }
+    <div id="page-content-wrapper" class="home-section" style="@(User.Identity.IsAuthenticated ? "":"left: 0;width: 100%;")">
+        @if (ViewBag.Breadcrumbs != null && @breadCrumbList.Count > 1)
+        {
+            <nav aria-label="breadcrumb" style="">
+                <ol class="breadcrumb bg-white justify-content-center justify-content-md-start justify-content-lg-start justify-content-xl-start">
+                    @foreach (var breadcrumb in @breadCrumbList)
+                    {
+                        if (breadcrumb.Active)
+                        {
+                            <li class="breadcrumb-item active"><a asp-action="@breadcrumb.Action" asp-controller="@breadcrumb.Controller" asp-area="@breadcrumb.Area">@Html.Raw(@breadcrumb.Text)</a></li>
+                        }
+                        else
+                        {
+                            <li class="breadcrumb-item" aria-current="page">@breadcrumb.Text</li>
+                        }
+                    }
+                </ol>
+            </nav>
+        }
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - evolUX.UI - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+
+    <footer class="border-top text-muted">
+        <div>
+            &copy; 2022 - evolUX
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

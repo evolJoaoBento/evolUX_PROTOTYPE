@@ -1,6 +1,6 @@
 ﻿using evolUX.API.Areas.Core.Models;
+using evolUX.API.Areas.Core.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
-using evolUX.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
@@ -16,121 +16,113 @@ namespace evolUX.API.Areas.Core.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IWrapperRepository _repository;
-        private readonly IJwtService _jwtService;
+        private readonly IAuthenticationService _authenticationService;
         private readonly ILoggerManager _logger;
 
-        public AuthController(IWrapperRepository wrapperRepository, IJwtService jwtService, ILoggerManager logger)
+        public AuthController(ILoggerManager logger, IAuthenticationService authenticationService)
         {
-            _repository = wrapperRepository;
-            _jwtService = jwtService;
             _logger = logger;
+            _authenticationService = authenticationService;
         }
 
         [AllowAnonymous]
         [ActionName("login")]
         [HttpGet]
-        public IActionResult GetToken(string username)
+        public async Task<IActionResult> GetToken(string username)
         {
             try
             {
-                var user = _repository.User.GetUserByUsername(username).Result;
-                if (user == null)
+                if (username == null)
+                {
+                    return BadRequest("Invalid client request");
+                }
+                var userAndToken = await _authenticationService.WindowsAuth(new AuthRequest { Username = username, Password = "" });
+                if (userAndToken == null)
                 {
                     return NotFound(new ErrorResult { Message = $"User {username} Not Found", Code = 404 });
                 }
-                //Roles
-                var roles = _repository.User.GetRolesByUsername(username);
-                user.Roles = roles.Result;
+                return Ok(userAndToken);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside login action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
 
-                var claims = new List<Claim>
+        [AllowAnonymous]
+        [HttpPost]
+        [ActionName("logincredentials")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest model)
+        {
+            try
+            {
+                if (model == null)
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
-                };
-                claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
-                var accessToken = new TokenResponse();
-                accessToken.Token = _jwtService.GenerateJwtToken(claims);
-                var refreshToken = _jwtService.GenerateRefreshToken();
-
-                user.RefreshToken = refreshToken;
-                user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
-
-                _repository.User.UpdateUserRefreshTokenAndTime(user);
-
-                return Ok(new AuthenticateResponse(user, accessToken.Token));
+                    return BadRequest("Invalid client request");
+                }
+                var userAndToken = await _authenticationService.CredentialsAuth(new AuthRequest { Username = model.Username, Password = model.Password });
+                if (userAndToken == null)
+                {
+                    return NotFound(new ErrorResult { Message = $"User {model.Username} Not Found", Code = 404 });
+                }
+                return Ok(userAndToken);
             }
             catch(Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside GetToken action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Logincredentials action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ActionName("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] TokenApiModel tokenApiModel)
+        {
+            try
+            {
+                if (tokenApiModel is null)
+                {
+                    return BadRequest("Invalid client request");
+                }
+                var result = await _authenticationService.RefreshToken(tokenApiModel.AccessToken, tokenApiModel.RefreshToken);
+                if (result == null)
+                {
+                    return BadRequest("Refresh Token invalid");
+                }
+                return Ok(result);
+            }
+            catch(Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside refresh action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
         }
 
         [HttpPost]
-        [ActionName("refresh")]
-        public IActionResult Refresh([FromBody] TokenApiModel tokenApiModel)
-        {
-            if (tokenApiModel is null)
-            {
-                return BadRequest("Invalid client request");
-            }
-            string accessToken = tokenApiModel.AccessToken;
-            string refreshToken = tokenApiModel.RefreshToken;
-            var principal = _jwtService.GetPrincipalFromExpiredToken(accessToken);
-            var username = principal.Identity?.Name; //this is mapped to the Name claim by default
-            var user = _repository.User.GetAllUsers().Result.SingleOrDefault(u => u.Username == username);
-            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
-            {
-                return BadRequest("Invalid client request");
-            }
-            var newAccessToken = _jwtService.GenerateJwtToken(principal.Claims.ToList());
-            var newRefreshToken = _jwtService.GenerateRefreshToken();
-            
-            _repository.User.UpdateUserRefreshToken(username, newRefreshToken);
-            return new ObjectResult(new
-            {
-                accessToken = newAccessToken,
-                refreshToken = newRefreshToken
-            });
-        }
-
-        [HttpPost, Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         [ActionName("revoke")]
         public IActionResult Revoke()
         {
-            var username = User.Identity?.Name;
-            _repository.User.DeleteRefreshToken(username);
-            return NoContent();
+            try
+            {
+                var username = User.Identity?.Name;
+                _authenticationService.DeleteRefreshToken(username);
+                return NoContent();
+            }
+            catch(Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside revoke action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+
         }
 
-        //[HttpPost]
-        //[ActionName("login")]
-        //public IActionResult Login([FromBody] AuthenticateRequest model)
-        //{
-        //    if (model == null)
-        //    {
-        //        return BadRequest("Invalid client request");
-        //    }
-        //    var user = _repository.User.GetAllUsers().Result.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
-
-        //    if (user == null)
-        //    {
-        //        return BadRequest(new { message = "Username or password is incorrect" });
-        //    }
-
-        //    //EXEMPLO
-        //    user.Roles = "Officer";
-
-        //    var claims = new List<Claim>
-        //    {
-        //        new Claim(ClaimTypes.Name, user.Username),
-        //        new Claim(ClaimTypes.Role, user.Roles)
-        //    };
-        //    var token = _jwtService.GenerateJwtToken(claims);
-
-        //    return Ok(new AuthenticateResponse(user, token));
-        //}
     }
 }

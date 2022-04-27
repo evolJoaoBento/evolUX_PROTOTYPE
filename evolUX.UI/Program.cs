@@ -1,5 +1,10 @@
+using evolUX.UI.Areas.Core.Services;
+using evolUX.UI.Areas.Core.Services.Interfaces;
+using evolUX.UI.Areas.EvolDP.Services;
+using evolUX.UI.Areas.EvolDP.Services.Interfaces;
+using evolUX.UI.Filters;
 using evolUX.UI.Repositories;
-using evolUX.UI.Services;
+using Flurl.Http.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
-    options.LoginPath = "/Core/Auth/LoginPost";
+    options.LoginPath = "/Core/Auth/Index";
     options.LogoutPath = "/Core/Auth/Logout";
     options.AccessDeniedPath = "/Core/Auth/AccessDenied";
     options.Cookie.HttpOnly = true;
@@ -33,9 +38,14 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IAuthRepository, AuthRepository>();
+builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
+builder.Services.AddSingleton<IDocCodeRepository, DocCodeRepository>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<IFlurlClientFactory, PerBaseUrlFlurlClientFactory>();
 builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add(new AuthorizeFilter("Cookie"));
+    options.Filters.Add<BreadcrumbActionFilter>();
 });
 var app = builder.Build();
 

@@ -29,7 +29,7 @@ namespace evolUX.API.Data.Repositories
         public async Task<UserModel> GetUserByUsername(string username)
         {
             var user = new UserModel();
-            string sql = "SELECT UserId AS [Id], UserName AS [Username], RefreshToken, RefreshTokenExpiryTime FROM USERS Where UserName = @USERNAME";
+            string sql = "SELECT UserId AS [Id], UserName AS [Username], Password, RefreshToken, RefreshTokenExpiryTime FROM USERS Where UserName = @USERNAME";
             var parameters = new DynamicParameters();
             parameters.Add("USERNAME", username ,DbType.String);
             using (var connection = _context.CreateConnectionEvolFlow())

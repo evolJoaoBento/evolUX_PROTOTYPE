@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Data.Interfaces;
-using evolUX.API.Services.Interfaces;
+using evolUX.API.Areas.Core.Services.Interfaces;
+using evolUX.API.Areas.EvolDP.Services.Interfaces;
 
 namespace evolUX.API.Areas.EvolDP.Controllers
 {
@@ -10,23 +11,24 @@ namespace evolUX.API.Areas.EvolDP.Controllers
     [ApiController]
     public class EnvelopeMediaController : Controller
     {
-        private readonly IWrapperRepository _repository;
         private readonly ILoggerManager _logger;
+        private readonly IEnvelopeMediaService _envelopeMediaService;
 
-        public EnvelopeMediaController(IWrapperRepository repositoryWrapper, ILoggerManager logger)
+        public EnvelopeMediaController(ILoggerManager logger, IEnvelopeMediaService envelopeMediaService)
         {
-            _repository = repositoryWrapper;
             _logger = logger;
+            _envelopeMediaService = envelopeMediaService;
         }
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]
-        [ActionName("get")]
+        [ActionName("GetEnvelopeMedia")]
         public async Task<ActionResult<List<dynamic>>> GetEnvelopeMedia()
         {
             try
             {
-                var envelopeMediaList = await _repository.EnvelopeMedia.GetEnvelopeMedia();
+                //var envelopeMediaList = await _repository.EnvelopeMedia.GetEnvelopeMedia();
+                var envelopeMediaList = await _envelopeMediaService.GetEnvelopeMedia();
                 _logger.LogInfo("Envelope Media Get");
                 return Ok(envelopeMediaList);
             }
@@ -40,12 +42,13 @@ namespace evolUX.API.Areas.EvolDP.Controllers
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]
-        [ActionName("getOne")]
+        [ActionName("GetEnvelopeMediaGroups")]
         public async Task<ActionResult<List<dynamic>>> GetEnvelopeMediaGroups()
         {
             try
             {
-                var envelopeMediaGroupList = await _repository.EnvelopeMedia.GetEnvelopeMediaGroups();
+                //var envelopeMediaGroupList = await _repository.EnvelopeMedia.GetEnvelopeMediaGroups();
+                var envelopeMediaGroupList = await _envelopeMediaService.GetEnvelopeMediaGroups();
                 _logger.LogInfo("Return envelope media group list from database");
                 return Ok(envelopeMediaGroupList);
             }
