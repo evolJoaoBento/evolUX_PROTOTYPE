@@ -45,13 +45,13 @@
 }
 
 .es-col {
-    background-image: url('../images/left-top-es.jpg');
+    background-image: url('../images/left-top-es.png');
     background-repeat: no-repeat;
 }
 
 .settings-col {
     justify-content: right;
-    background-image: url('../images/right-top-es.jpg');
+    background-image: url('../images/right-top-es.png');
     background-repeat: no-repeat;
     background-position-y: bottom;
     background-position-x: right;

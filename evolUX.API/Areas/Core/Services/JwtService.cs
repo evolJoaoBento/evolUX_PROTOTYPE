@@ -9,7 +9,10 @@ namespace evolUX.API.Areas.Core.Services
 {
     public class JwtService : IJwtService
     {
-        
+        //https://localhost:7107/ api dev
+        //http://localhost:5100/ api prod
+        //https://localhost:7067 ui dev
+        //http://localhost:86 ui prod
         private readonly IConfiguration _configuration;
         public JwtService(IConfiguration configuration)
         {
@@ -23,7 +26,7 @@ namespace evolUX.API.Areas.Core.Services
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: "https://localhost:7107",
+                issuer: "https://localhost:7107/",
                 audience: "https://localhost:7067",
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(1),

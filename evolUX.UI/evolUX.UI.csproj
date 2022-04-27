@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\fonts\EvolsolutionsV8.ttf" />
     <Content Remove="wwwroot\images\left-top-es.jpg" />
     <Content Remove="wwwroot\images\right-top-es.jpg" />
   </ItemGroup>
@@ -20,9 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\fonts\EvolsolutionsV8.ttf" />
-    <None Include="wwwroot\images\left-top-es.jpg" />
-    <None Include="wwwroot\images\right-top-es.jpg" />
+    <None Include="wwwroot\css\EvolsolutionsV8.ttf" />
   </ItemGroup>
 
   <ItemGroup>

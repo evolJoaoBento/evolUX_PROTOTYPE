@@ -47,7 +47,11 @@ builder.Services.AddAuthentication(opt =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = "https://localhost:7107",
+        //https://localhost:7107/ api dev
+        //http://localhost:5100/ api prod
+        //https://localhost:7067 ui dev
+        //http://localhost:86 ui prod
+        ValidIssuer = "https://localhost:7107/",
         ValidAudience = "https://localhost:7067",
         ClockSkew = TimeSpan.Zero,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetValue<string>("AppSettings:Secret")))

@@ -126,6 +126,8 @@ namespace evolUX.UI.Areas.Core.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
+            Response.Cookies.Delete("X-Access-Token");
+            Response.Cookies.Delete("X-Refresh-Token");
             return RedirectToAction("Index", "Auth");
         }
 
@@ -161,7 +163,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             {
                 HttpOnly = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddMinutes(5)
+                Expires = DateTime.UtcNow.AddMinutes(1)
                 
             };
             Response.Cookies.Append("X-Access-Token", JWToken, cookieOptions);
