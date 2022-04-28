@@ -24,6 +24,7 @@ builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IEnvelopeMediaService, EnvelopeMediaService>();
+builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
 builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 builder.Services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
 builder.Services.AddSingleton<DapperContext>();

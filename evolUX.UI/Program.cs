@@ -40,6 +40,8 @@ builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IAuthRepository, AuthRepository>();
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IDocCodeRepository, DocCodeRepository>();
+builder.Services.AddSingleton<IExpeditionTypeRepository, ExpeditionTypeRepository>();
+builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IFlurlClientFactory, PerBaseUrlFlurlClientFactory>();
 builder.Services.AddControllersWithViews(options =>

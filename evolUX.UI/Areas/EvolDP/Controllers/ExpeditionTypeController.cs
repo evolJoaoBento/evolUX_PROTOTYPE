@@ -1,41 +1,40 @@
-﻿using evolUX.UI.Areas.Core.Models;
-using evolUX.UI.Areas.EvolDP.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using evolUX.UI.Areas.EvolDP.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using System.Net;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
     [Area("EvolDP")]
-    public class DocCodeController : Controller
+    public class ExpeditionTypeController : Controller
     {
-        private readonly IDocCodeService _docCodeService;
-        public DocCodeController(IDocCodeService docCodeService)
-        {
-            _docCodeService = docCodeService;
-        }
+        private readonly IExpeditionTypeService _expeditionTypeService;
 
-        public async Task<IActionResult> DocCodeIndex()
+        public ExpeditionTypeController(IExpeditionTypeService expeditionTypeService)
         {
-            
-            var response = await _docCodeService.GetDocCode();
+            _expeditionTypeService = expeditionTypeService;
+        }
+        public async Task<IActionResult> ExpeditionType()
+        {
+            var response = await _expeditionTypeService.GetExpeditionTypes();
             //if (response.StatusCode == ((int)HttpStatusCode.NotFound))
             //{
             //    var resultError = response.GetJsonAsync<ErrorResult>().Result;
             //}
-            if(response.StatusCode == ((int)HttpStatusCode.Unauthorized))
+            if (response.StatusCode == ((int)HttpStatusCode.Unauthorized))
             {
                 if (response.Headers.Contains("Token-Expired"))
                 {
                     var header = response.Headers.FirstOrDefault("Token-Expired");
                     var returnUrl = Request.Path.Value;
-                    //var url = Url.RouteUrl("MyAreas", )
                     
-                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl=returnUrl });
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
                 }
                 else
                 {
+                    await HttpContext.SignOutAsync();
+                    Response.Cookies.Delete("X-Access-Token");
+                    Response.Cookies.Delete("X-Refresh-Token");
                     return RedirectToAction("Index", "Auth", new { Area = "Core" });
                 }
             }
@@ -43,7 +42,5 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             var list = (dynamic)result.ToList();
             return View(list);
         }
-
-
     }
 }

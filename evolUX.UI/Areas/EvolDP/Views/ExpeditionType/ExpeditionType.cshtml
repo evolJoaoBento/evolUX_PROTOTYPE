@@ -1,0 +1,27 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model IEnumerable<dynamic>
+<table class="table table-bordered table-sm table-striped">
+    <thead>
+        <tr><th>Id do Tipo</th><th>Tipo da Expedição</th></tr>
+    </thead>
+    <tbody>
+        @if (Model == null)
+        {
+            <tr><td colspan="5" class="text-center">No Model Data</td></tr>
+        }
+        else
+        {
+            @foreach (var p in Model)
+            {
+                <tr>
+                    <td>@p.id</td>
+                    <td>@p.description</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -163,7 +163,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             {
                 HttpOnly = true,
                 SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddMinutes(1)
+                Expires = DateTime.UtcNow.AddDays(7)
                 
             };
             Response.Cookies.Append("X-Access-Token", JWToken, cookieOptions);

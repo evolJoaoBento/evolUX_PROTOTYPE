@@ -7,7 +7,7 @@ using evolUX.API.Areas.EvolDP.Services.Interfaces;
 namespace evolUX.API.Areas.EvolDP.Controllers
 {
     [ApiController]
-    [Route("evoldp/[controller]")]
+    [Route("evoldp/expeditiontype/[action]")]
     public class ExpeditionTypeController : ControllerBase
     {
         private readonly ILoggerManager _logger;
@@ -19,9 +19,9 @@ namespace evolUX.API.Areas.EvolDP.Controllers
             _expeditionTypeService = expeditionTypeService;
         }
 
-        // GET: api/<ExpeditionTypeController>
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]
+        [ActionName("GetExpeditionTypes")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<dynamic>>> Get()
         {
             try
