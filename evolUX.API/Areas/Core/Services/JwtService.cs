@@ -26,8 +26,8 @@ namespace evolUX.API.Areas.Core.Services
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             var tokeOptions = new JwtSecurityToken(
-                issuer: "https://localhost:7107/",
-                audience: "https://localhost:7067",
+                issuer: _configuration.GetValue<string>("APIurl"),
+                audience: _configuration.GetValue<string>("UIurl"),
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(1),
 

@@ -6,7 +6,7 @@ namespace evolUX.UI.Repositories
 {
     public class DocCodeRepository : RepositoryBase, IDocCodeRepository
     {
-        public DocCodeRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor) : base(flurlClientFactory, httpContextAccessor)
+        public DocCodeRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
 

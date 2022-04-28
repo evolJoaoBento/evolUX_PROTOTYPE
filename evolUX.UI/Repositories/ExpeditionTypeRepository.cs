@@ -6,7 +6,7 @@ namespace evolUX.UI.Repositories
 {
     public class ExpeditionTypeRepository : RepositoryBase, IExpeditionTypeRepository
     {
-        public ExpeditionTypeRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor) : base(flurlClientFactory, httpContextAccessor)
+        public ExpeditionTypeRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
 

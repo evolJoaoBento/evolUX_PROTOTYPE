@@ -7,15 +7,16 @@ namespace evolUX.UI.Repositories
     {
         protected readonly IFlurlClient _flurlClient;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IConfiguration _configuration;
         //https://localhost:7107/ dev
         //http://localhost:5100/ prod
 
         public RepositoryBase(IFlurlClientFactory flurlClientFactory,
-                              IHttpContextAccessor httpContextAccessor)
+                              IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
         {
             _httpContextAccessor = httpContextAccessor;
-
-            _flurlClient = flurlClientFactory.Get("https://localhost:7107/");
+            _configuration = configuration;
+            _flurlClient = flurlClientFactory.Get(_configuration.GetValue<string>("APIurl"));
 
             _flurlClient.BeforeCall(flurlCall =>
             {

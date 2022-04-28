@@ -8,7 +8,7 @@ namespace evolUX.UI.Repositories
 {
     public class AuthRepository : RepositoryBase, IAuthRepository
     {
-        public AuthRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor) : base(flurlClientFactory, httpContextAccessor)
+        public AuthRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
 
