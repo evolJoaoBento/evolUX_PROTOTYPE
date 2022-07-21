@@ -6,5 +6,6 @@
         public Task<List<dynamic>> GetDocCodeLevel1(dynamic data);
         public Task<List<dynamic>> GetDocCodeLevel2(dynamic data);
         public Task<List<dynamic>> GetDocCodeConfig(dynamic data);
+        public Task<List<dynamic>> GetDocCodeExceptionOptions(dynamic data);
     }
 }

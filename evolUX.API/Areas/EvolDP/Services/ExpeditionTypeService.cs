@@ -12,7 +12,7 @@ namespace evolUX.API.Areas.EvolDP.Services
         }
         public async Task<List<dynamic>> GetExpeditionTypes()
         {
-            var expeditionTypeList = await _repository.EnvelopeMedia.GetEnvelopeMedia();
+            var expeditionTypeList = await _repository.ExpeditionType.GetExpeditionTypes();
             if (expeditionTypeList == null)
             {
 

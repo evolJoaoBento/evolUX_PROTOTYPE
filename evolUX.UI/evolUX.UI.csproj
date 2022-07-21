@@ -12,7 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\EvolDP\Models\" />
     <Folder Include="Areas\Finishing\Controllers\" />
     <Folder Include="Areas\Finishing\Models\" />
     <Folder Include="Areas\Finishing\Views\" />

@@ -29,7 +29,7 @@ namespace evolUX.API.Areas.Core.Services
                 issuer: _configuration.GetValue<string>("APIurl"),
                 audience: _configuration.GetValue<string>("UIurl"),
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddMinutes(10),
 
                 signingCredentials: signinCredentials
             );

@@ -16,7 +16,9 @@ namespace evolUX.API.Data.Repositories
         public async Task<List<dynamic>> GetExpeditionTypes()
         {
             var expeditionTypeList = new List<dynamic>();
-            string sql = $"SELECT ExpeditionType as [id], Priority as [priority], Description as [description] FROM RD_EXPEDITION_TYPE";
+            string sql = $"SELECT ExpeditionType as [id], " +
+                            $"Priority as [priority], " +
+                            $"Description as [description] FROM RD_EXPEDITION_TYPE";
             
             using (var connection = _context.CreateConnectionEvolDP())
             {

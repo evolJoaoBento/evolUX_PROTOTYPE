@@ -7,7 +7,9 @@ namespace evolUX.API.Data.Repositories
     {
         private readonly DapperContext _context;
         private IEnvelopeMediaRepository _envelopeMedia;
+        private IExpeditionCompaniesRepository _expeditionCompanies;
         private IExpeditionTypeRepository _expeditionType;
+        private IExpeditionZoneRepository _expeditionZone;
         private IFinishingRepository _finishing;
         private IUserRepository _user;
         private ISidebarRepository _sidebar;
@@ -30,6 +32,17 @@ namespace evolUX.API.Data.Repositories
                 return _envelopeMedia;
             }
         }
+        public IExpeditionCompaniesRepository ExpeditionCompanies
+        {
+            get
+            {
+                if (_expeditionCompanies == null)
+                {
+                    _expeditionCompanies = new ExpeditionCompaniesRepository(_context);
+                }
+                return _expeditionCompanies;
+            }
+        }
 
         public IExpeditionTypeRepository ExpeditionType
         {
@@ -40,6 +53,18 @@ namespace evolUX.API.Data.Repositories
                     _expeditionType = new ExpeditionTypeRepository(_context);
                 }
                 return _expeditionType;
+            }
+        }
+
+        public IExpeditionZoneRepository ExpeditionZone
+        {
+            get
+            {
+                if (_expeditionZone == null)
+                {
+                    _expeditionZone = new ExpeditionZoneRepository(_context);
+                }
+                return _expeditionZone;
             }
         }
 

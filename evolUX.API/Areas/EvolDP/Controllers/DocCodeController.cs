@@ -27,7 +27,7 @@ namespace evolUX.Areas.EvolDP.Controllers
         }
 
         [HttpGet]
-        [ActionName("getDocCode")]
+        [ActionName("DocCode")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<List<dynamic>>> GetDocCode()
         {
@@ -40,13 +40,13 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside GetDocCode action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get DocCode action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }
 
         [HttpGet]
-        [ActionName("getDocCodeLevel1")]
+        [ActionName("DocCodeLevel1")]
         public async Task<ActionResult<List<dynamic>>> GetDocCodeLevel1([FromBody] dynamic data)
         {
             try
@@ -60,13 +60,13 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside GetDocCode action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get DocCodeLevel1 action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }
 
         [HttpGet]
-        [ActionName("getDocCodeLevel2")]
+        [ActionName("DocCodeLevel2")]
         public async Task<ActionResult<List<dynamic>>> GetDocCodeLevel2([FromBody] dynamic data)
         {
             try
@@ -81,13 +81,13 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside GetDocCode action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get DocCodeLevel2 action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }
 
         [HttpGet]
-        [ActionName("getDocCodeConfig")]
+        [ActionName("DocCodeConfig")]
         public async Task<ActionResult<dynamic>> GetDocCodeConfig([FromBody] dynamic data)
         {
             try
@@ -102,13 +102,13 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside GetDocCode action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get DocCodeConfig action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }
 
         [HttpGet]
-        [ActionName("addExceptionDocCode")]
+        [ActionName("DocCodeExceptionOptions")]
         public async Task<ActionResult<dynamic>> AddExceptionDocCode([FromBody] dynamic data)
         {
             try
@@ -116,14 +116,14 @@ namespace evolUX.Areas.EvolDP.Controllers
                 var converter = new ExpandoObjectConverter();
                 var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
                 //dynamic 
-                //var docCodeConfig = await _repository.DocCode.GetDocCodeConfig(exObjExpandoObject);
-                //_logger.LogInfo("DocCodeConfig Get");
+                var docCodeConfig = await _docCodeService.GetDocCodeExceptionOptions(exObjExpandoObject);
+                _logger.LogInfo("DocCodeException Get");
                 return Ok();
             }
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside GetDocCode action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 

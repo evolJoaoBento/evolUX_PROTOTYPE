@@ -48,5 +48,14 @@ namespace evolUX.API.Areas.EvolDP.Services
             }
             return docList;
         }
+        public async Task<List<dynamic>> GetDocCodeExceptionOptions(dynamic data)
+        {
+            var docList = await _repository.DocCode.GetDocCodeExceptionOptions(data);
+            if (docList == null)
+            {
+
+            }
+            return docList;
+        }
     }
 }

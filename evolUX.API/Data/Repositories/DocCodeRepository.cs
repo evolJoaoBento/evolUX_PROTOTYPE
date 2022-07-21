@@ -157,5 +157,19 @@ SET NOCOUNT OFF";
 			}
 
 		}
+		
+		public async Task<dynamic> GetDocCodeExceptionOptions(dynamic data)
+		{
+			string sql = "RD_GET_DOCCODE_CONFIG";
+			var parameters = new DynamicParameters();
+			parameters.Add("DocCodeID", data.doccodeid, DbType.String);
+			parameters.Add("DocStartDate", data.docstartdate, DbType.Int64);
+			using (var connection = _context.CreateConnectionEvolDP())
+			{
+				var docCodeConfig = (dynamic)await connection.QueryAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+				return docCodeConfig;
+			}
+
+		}
 	}
 }
