@@ -8,6 +8,3 @@ This Code is relevant to any function necessary for the DocCode User Interface. 
 - GET DocCodeConfig/{ID}/details
 - GET DocCodeException/{ID}
 - POST DocCodeException
-
-## GET DocCode
-This method
