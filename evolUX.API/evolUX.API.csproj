@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Finishing\" />
+    <Folder Include="Wiki\" />
   </ItemGroup>
 
 </Project>
