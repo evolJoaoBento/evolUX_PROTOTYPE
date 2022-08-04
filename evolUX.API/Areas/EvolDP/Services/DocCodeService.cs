@@ -1,18 +1,20 @@
-﻿using evolUX.API.Areas.EvolDP.Services.Interfaces;
+﻿using evolUX.API.Areas.EvolDP.Models;
+using evolUX.API.Areas.EvolDP.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 
 namespace evolUX.API.Areas.EvolDP.Services
 {
     public class DocCodeService : IDocCodeService
     {
+        //TODO VIEWMODEL RETURNS
         private readonly IWrapperRepository _repository;
         public DocCodeService(IWrapperRepository repository)
         {
             _repository = repository;
         }
-        public async Task<List<dynamic>> GetDocCode()
+        public async Task<IEnumerable<DocCode>> GetDocCodeGroup()
         {
-            var docCodeList = await _repository.DocCode.GetDocCode();
+            IEnumerable<DocCode> docCodeList = await _repository.DocCode.GetDocCodeGroup();
             if(docCodeList == null)
             {
 
@@ -20,42 +22,236 @@ namespace evolUX.API.Areas.EvolDP.Services
             return docCodeList;
         }
 
-        public async Task<List<dynamic>> GetDocCodeLevel1(dynamic data)
+        public async Task<IEnumerable<DocCode>> GetDocCode(string docLayout, string docType)
         {
-            var docList = await _repository.DocCode.GetDocCodeLevel1(data);
-            if (docList == null)
+            IEnumerable<DocCode> docCodeList = await _repository.DocCode.GetDocCode(docLayout, docType);
+            if (docCodeList == null)
             {
 
             }
-            return docList;
+            return docCodeList;
         }        
-        public async Task<List<dynamic>> GetDocCodeLevel2(dynamic data)
+        public async Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(string ID)
         {
-            var docList = await _repository.DocCode.GetDocCodeLevel2(data);
-            if (docList == null)
+            IEnumerable<DocCodeConfig> docCodeConfigList = await _repository.DocCode.GetDocCodeConfig(ID);
+            if (docCodeConfigList == null)
             {
 
             }
-            return docList;
+            return docCodeConfigList;
         }        
 
-        public async Task<List<dynamic>> GetDocCodeConfig(dynamic data)
+        public async Task<DocCodeConfig> GetDocCodeConfig(string ID, int startdate)
         {
-            var docList = await _repository.DocCode.GetDocCodeConfig(data);
-            if (docList == null)
+            DocCodeConfig docCodeConfig = await _repository.DocCode.GetDocCodeConfig(ID,startdate);
+            if (docCodeConfig == null)
             {
 
             }
-            return docList;
+            return docCodeConfig;
         }
-        public async Task<List<dynamic>> GetDocCodeExceptionOptions(dynamic data)
+
+        public async Task<DocCodeConfig> GetDocCodeConfigOptions(string ID)
         {
-            var docList = await _repository.DocCode.GetDocCodeExceptionOptions(data);
-            if (docList == null)
+            DocCodeConfig docCodeConfig = await _repository.DocCode.GetDocCodeConfigOptions(ID);
+            if (docCodeConfig == null)
             {
 
             }
-            return docList;
+            return docCodeConfig;
+        }
+
+        public async Task<IEnumerable<DocException>> GetDocExceptionsLevel1()
+        {
+            IEnumerable<DocException> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel1();
+            if (docExceptionList == null)
+            {
+
+            }
+            return docExceptionList;
+        }
+
+        public async Task<IEnumerable<DocException>> GetDocExceptionsLevel2()
+        {
+            IEnumerable<DocException> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel2();
+            if (docExceptionList == null)
+            {
+
+            }
+            return docExceptionList;
+        }
+
+        public async Task<IEnumerable<DocException>> GetDocExceptionsLevel3()
+        {
+            IEnumerable<DocException> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel3();
+            if (docExceptionList == null)
+            {
+
+            }
+            return docExceptionList;
+        }
+
+        public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMediaGroups(string envMediaGroupID)
+        {
+            if(envMediaGroupID == null)
+            {
+                IEnumerable<EnvelopeMedia> envMediaList = await _repository.DocCode.GetEnvelopeMediaGroups();
+                if (envMediaList == null)
+                {
+
+                }
+                return envMediaList;
+            }
+            else
+            {
+                IEnumerable<EnvelopeMedia> envMediaList = await _repository.DocCode.GetEnvelopeMediaGroups(envMediaGroupID);
+                if (envMediaList == null)
+                {
+
+                }
+                return envMediaList;
+            }
+            
+            
+        }
+
+        public async Task<IEnumerable<int>> GetAggregationList(string aggrCompatibility)
+        {
+            IEnumerable<int> aggregationList = await _repository.DocCode.GetAggregationList(aggrCompatibility);
+            if (aggregationList == null)
+            {
+
+            }
+            return aggregationList;
+        }
+
+        public async Task<IEnumerable<Company>> GetExpeditionCompanies(string companyName)
+        {
+            if(companyName == null)
+            {
+                IEnumerable<Company> companyList = await _repository.DocCode.GetExpeditionCompanies();
+                if (companyList == null)
+                {
+
+                }
+                return companyList;
+            }
+            else
+            {
+                IEnumerable<Company> companyList = await _repository.DocCode.GetExpeditionCompanies(companyName);
+                if (companyList == null)
+                {
+
+                }
+                return companyList;
+            }
+            
+        }
+
+        public async Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(string expeditionType)
+        {
+            if (expeditionType==null)
+            {
+                IEnumerable<ExpeditionsType> expeditionTypeList = await _repository.DocCode.GetExpeditionTypes();
+                if (expeditionTypeList == null)
+                {
+
+                }
+                return expeditionTypeList;
+            }
+            else
+            {
+                IEnumerable<ExpeditionsType> expeditionTypeList = await _repository.DocCode.GetExpeditionTypes(expeditionType);
+                if (expeditionTypeList == null)
+                {
+
+                }
+                return expeditionTypeList;
+            }
+        }
+         
+
+        public async Task<IEnumerable<TreatmentType>> GetTreatmentTypes(string treatmentType)
+        {
+            if (treatmentType==null)
+            {
+                IEnumerable<TreatmentType> treatmentTypeList = await _repository.DocCode.GetTreatmentTypes();
+                if (treatmentTypeList == null)
+                {
+
+                }
+                return treatmentTypeList;
+            }
+            else
+            {
+                IEnumerable<TreatmentType> treatmentTypeList = await _repository.DocCode.GetTreatmentTypes(treatmentType);
+                if (treatmentTypeList == null)
+                {
+
+                }
+                return treatmentTypeList;
+            }
+            
+        }
+
+        public async Task<IEnumerable<int>> GetFinishingList(string finishing)
+        {
+            IEnumerable<int> finishingList = await _repository.DocCode.GetFinishingList(finishing);
+            if (finishingList == null)
+            {
+
+            }
+            return finishingList;
+        }
+
+        public async Task<IEnumerable<int>> GetArchiveList(string archive)
+        {
+            IEnumerable<int> archiveList = await _repository.DocCode.GetArchiveList(archive);
+            if (archiveList == null)
+            {
+
+            }
+            return archiveList;
+        }
+
+        public async Task<IEnumerable<Email>> GetEmailList(string email)
+        {
+            IEnumerable<Email> emailList = await _repository.DocCode.GetEmailList(email);
+            if (emailList == null)
+            {
+
+            }
+            return emailList;
+        }
+
+        public async Task<IEnumerable<int>> GetEmailHideList(string emailHide)
+        {
+            IEnumerable<int> emailHideList = await _repository.DocCode.GetEmailHideList(emailHide);
+            if (emailHideList == null)
+            {
+
+            }
+            return emailHideList;
+        }
+
+        public async Task<IEnumerable<Electronic>> GetElectronicList(string electronic)
+        {
+            IEnumerable<Electronic> electronicList = await _repository.DocCode.GetElectronicList(electronic);
+            if (electronicList == null)
+            {
+
+            }
+            return electronicList;
+        }
+
+        public async Task<IEnumerable<int>> GetElectronicHideList(string electronicHide)
+        {
+            IEnumerable<int> electronicHideList = await _repository.DocCode.GetElectronicHideList(electronicHide);
+            if (electronicHideList == null)
+            {
+
+            }
+            return electronicHideList;
         }
     }
 }

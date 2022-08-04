@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Finishing\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

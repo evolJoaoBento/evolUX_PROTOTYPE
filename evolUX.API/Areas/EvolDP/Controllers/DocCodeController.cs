@@ -1,4 +1,6 @@
 ﻿using evolUX.API.Areas.Core.Services.Interfaces;
+using evolUX.API.Areas.EvolDP.Models;
+using evolUX.API.Areas.EvolDP.ViewModels;
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -25,17 +27,39 @@ namespace evolUX.Areas.EvolDP.Controllers
             _logger = logger;
             _docCodeService = docCodeService;
         }
-
+        //TODO: DOCUMENT UNTESTED
+        //TODO: HANDLE HTTP RESPONSES
         [HttpGet]
         [ActionName("DocCode")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<List<dynamic>>> GetDocCode()
+        public async Task<ActionResult<DocCodeViewModel>> GetDocCodeGroup()
         {
             try
             {
-                var docCodeList = await _docCodeService.GetDocCode();
+                DocCodeViewModel viewmodel = new DocCodeViewModel();
+                viewmodel.DocCodeList = await _docCodeService.GetDocCodeGroup();
+                _logger.LogInfo("DocCodeGroup Get");
+                return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get DocCodeGroup action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+        //TODO: DOCUMENT UNTESTED
+        //TODO: HANDLE HTTP RESPONSES
+        [HttpGet("details")]
+        [ActionName("DocCode")]
+        public async Task<ActionResult<DocCodeViewModel>> GetDocCode([FromQuery] string docLayout, [FromQuery] string docType)
+        {
+            try
+            {
+                DocCodeViewModel viewmodel = new DocCodeViewModel();
+                viewmodel.DocCodeList = await _docCodeService.GetDocCode(docLayout,docType);
                 _logger.LogInfo("DocCode Get");
-                return Ok(docCodeList);
+                return Ok(viewmodel);
             }
             catch (Exception ex)
             {
@@ -45,38 +69,18 @@ namespace evolUX.Areas.EvolDP.Controllers
             }
         }
 
-        [HttpGet]
-        [ActionName("DocCodeLevel1")]
-        public async Task<ActionResult<List<dynamic>>> GetDocCodeLevel1([FromBody] dynamic data)
+        //TODO: DOCUMENT UNTESTED
+        //TODO: HANDLE HTTP RESPONSES
+        [HttpGet("{ID}")]
+        [ActionName("DocCodeConfig")]
+        public async Task<ActionResult<DocCodeConfigViewModel>> GetDocCodeConfig([FromRoute] string ID)
         {
             try
             {
-                var converter = new ExpandoObjectConverter();
-                var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
-                var docCodeList = await _docCodeService.GetDocCodeLevel1(exObjExpandoObject);
-                _logger.LogInfo("DocCodeLevel1 Get");
-                return Ok(docCodeList);
-            }
-            catch (Exception ex)
-            {
-                //log error
-                _logger.LogError($"Something went wrong inside Get DocCodeLevel1 action: {ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
-        [HttpGet]
-        [ActionName("DocCodeLevel2")]
-        public async Task<ActionResult<List<dynamic>>> GetDocCodeLevel2([FromBody] dynamic data)
-        {
-            try
-            {
-                var converter = new ExpandoObjectConverter();
-                var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
-                //var docCodeList = await _repository.DocCode.GetDocCodeLevel2(exObjExpandoObject);
-                var docCodeList = await _docCodeService.GetDocCodeLevel2(exObjExpandoObject);
-                _logger.LogInfo("DocCodeLevel2 Get");
-                return Ok(docCodeList);
+                DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
+                viewmodel.DocCodeConfigList = await _docCodeService.GetDocCodeConfig(ID);
+                _logger.LogInfo("DocCodeConfig Get");
+                return Ok(viewmodel);
             }
             catch (Exception ex)
             {
@@ -86,18 +90,20 @@ namespace evolUX.Areas.EvolDP.Controllers
             }
         }
 
-        [HttpGet]
+        //TODO: DOCUMENT UNTESTED
+        //TODO: HANDLE HTTP RESPONSES
+        [HttpGet("{ID}/details")]
         [ActionName("DocCodeConfig")]
-        public async Task<ActionResult<dynamic>> GetDocCodeConfig([FromBody] dynamic data)
+        public async Task<ActionResult<DocCodeConfigViewModel>> GetDocCodeConfig([FromRoute] string ID, [FromQuery] int startdate)
         {
             try
             {
-                var converter = new ExpandoObjectConverter();
-                var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
-                //var docCodeConfig = await _repository.DocCode.GetDocCodeConfig(exObjExpandoObject);
-                var docCodeConfig = await _docCodeService.GetDocCodeConfig(exObjExpandoObject);
+                DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
+                List<DocCodeConfig> list = new List<DocCodeConfig>();
+                list.Add(await _docCodeService.GetDocCodeConfig(ID, startdate));
+                viewmodel.DocCodeConfigList = list;
                 _logger.LogInfo("DocCodeConfig Get");
-                return Ok(docCodeConfig);
+                return Ok(viewmodel);
             }
             catch (Exception ex)
             {
@@ -107,18 +113,67 @@ namespace evolUX.Areas.EvolDP.Controllers
             }
         }
 
-        [HttpGet]
-        [ActionName("DocCodeExceptionOptions")]
-        public async Task<ActionResult<dynamic>> AddExceptionDocCode([FromBody] dynamic data)
+        //TODO: DOCUMENT UNTESTED
+        //TODO: HANDLE HTTP RESPONSES
+        [HttpGet("{ID}")]
+        [ActionName("DocCodeException")]
+        public async Task<ActionResult<DocCodeExceptionOptionsViewModel>> AddExceptionDocCode([FromRoute] string ID)
         {
             try
             {
-                var converter = new ExpandoObjectConverter();
-                var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
-                //dynamic 
-                var docCodeConfig = await _docCodeService.GetDocCodeExceptionOptions(exObjExpandoObject);
+                DocCodeExceptionOptionsViewModel viewmodel = new DocCodeExceptionOptionsViewModel();
+                viewmodel.DocCodeConfig = await _docCodeService.GetDocCodeConfigOptions(ID);
+                viewmodel.DocExceptionslevel1 = await _docCodeService.GetDocExceptionsLevel1();
+                viewmodel.DocExceptionslevel2 = await _docCodeService.GetDocExceptionsLevel2();
+                viewmodel.DocExceptionslevel3 = await _docCodeService.GetDocExceptionsLevel3();
+                viewmodel.EnvelopeMediaGroups = await _docCodeService.GetEnvelopeMediaGroups(viewmodel.DocCodeConfig.EnvMedia);
+                viewmodel.AggregationList = await _docCodeService.GetAggregationList(viewmodel.DocCodeConfig.AggrCompatibility);
+                viewmodel.ExpeditionCompanies = await _docCodeService.GetExpeditionCompanies(viewmodel.DocCodeConfig.CompanyName);
+                viewmodel.ExpeditionTypes = await _docCodeService.GetExpeditionTypes(viewmodel.DocCodeConfig.ExpeditionType);
+                viewmodel.TreatmentTypes = await _docCodeService.GetTreatmentTypes(viewmodel.DocCodeConfig.TreatmentType);
+                viewmodel.FinishingList = await _docCodeService.GetFinishingList(viewmodel.DocCodeConfig.Finishing);
+                viewmodel.ArchiveList = await _docCodeService.GetArchiveList(viewmodel.DocCodeConfig.Archive);
+                viewmodel.EmailList = await _docCodeService.GetEmailList(viewmodel.DocCodeConfig.Email);
+                viewmodel.EmailHideList = await _docCodeService.GetEmailHideList(viewmodel.DocCodeConfig.EmailHide);
+                viewmodel.ElectronicList = await _docCodeService.GetElectronicList(viewmodel.DocCodeConfig.Electronic);
+                viewmodel.ElectronicHideList = await _docCodeService.GetElectronicHideList(viewmodel.DocCodeConfig.ElectronicHide);
                 _logger.LogInfo("DocCodeException Get");
-                return Ok();
+                return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+
+        }
+
+
+        [HttpPost()]
+        [ActionName("DocCodeException")]
+        public async Task<ActionResult<DocCodeExceptionViewModel>> AddExceptionDocCode([FromBody] DocCodeExceptionModel model)
+        {
+            try
+            {
+                DocCodeExceptionViewModel viewmodel = new DocCodeExceptionViewModel();
+                viewmodel.DocCodeConfig = await _docCodeService.GetDocCodeConfigOptions(ID);
+                viewmodel.DocExceptionslevel1 = await _docCodeService.GetDocExceptionsLevel1();
+                viewmodel.DocExceptionslevel2 = await _docCodeService.GetDocExceptionsLevel2();
+                viewmodel.DocExceptionslevel3 = await _docCodeService.GetDocExceptionsLevel3();
+                viewmodel.EnvelopeMediaGroups = await _docCodeService.GetEnvelopeMediaGroups(model.DocCodeConfig.EnvMedia);
+                viewmodel.AggregationList = await _docCodeService.GetAggregationList(model.DocCodeConfig.AggrCompatibility);
+                viewmodel.ExpeditionCompanies = await _docCodeService.GetExpeditionCompanies(model.DocCodeConfig.CompanyName);
+                viewmodel.ExpeditionTypes = await _docCodeService.GetExpeditionTypes(model.DocCodeConfig.ExpeditionType);
+                viewmodel.TreatmentTypes = await _docCodeService.GetTreatmentTypes(model.DocCodeConfig.TreatmentType);
+                viewmodel.FinishingList = await _docCodeService.GetFinishingList(model.DocCodeConfig.Finishing);
+                viewmodel.ArchiveList = await _docCodeService.GetArchiveList(model.DocCodeConfig.Archive);
+                viewmodel.EmailList = await _docCodeService.GetEmailList(model.DocCodeConfig.Email);
+                viewmodel.EmailHideList = await _docCodeService.GetEmailHideList(model.DocCodeConfig.EmailHide);
+                viewmodel.ElectronicList = await _docCodeService.GetElectronicList(model.DocCodeConfig.Electronic);
+                viewmodel.ElectronicHideList = await _docCodeService.GetElectronicHideList(model.DocCodeConfig.ElectronicHide);
+                _logger.LogInfo("DocCodeException Get");
+                return Ok(viewmodel);
             }
             catch (Exception ex)
             {
