@@ -1,5 +1,6 @@
 ﻿using evolUX.API.Areas.EvolDP.Models;
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using evolUX.API.Areas.EvolDP.ViewModels;
 using evolUX.API.Data.Interfaces;
 
 namespace evolUX.API.Areas.EvolDP.Services
@@ -252,6 +253,48 @@ namespace evolUX.API.Areas.EvolDP.Services
 
             }
             return electronicHideList;
+        }
+        public async Task PostDocCodeConfig(DocCodeConfig model)
+        {
+            await _repository.DocCode.PostDocCodeConfig(model);
+            
+
+        }
+        public async Task<IEnumerable<string>> DeleteDocCode(string ID)
+        {
+            IEnumerable<string>  results = await _repository.DocCode.DeleteDocCode(ID);
+            if (results == null)
+            {
+
+            }
+            return results;
+
+        }
+
+
+        public async Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(string ID)
+        {
+            IEnumerable<AggregateDocCode> aggregateDocCodes = await _repository.DocCode.GetAggregateDocCodes(ID);
+            if (aggregateDocCodes == null)
+            {
+
+            }
+            return aggregateDocCodes;
+        }
+
+        public async Task<AggregateDocCode> GetAggregateDocCode(string ID)
+        {
+            AggregateDocCode aggregateDocCode = await _repository.DocCode.GetAggregateDocCode(ID);
+            if (aggregateDocCode == null)
+            {
+
+            }
+            return aggregateDocCode;
+        }
+
+        public async Task ChangeCompatibility(DocCodeCompatabilityViewModel model)
+        {
+            await _repository.DocCode.ChangeCompatibility(model);
         }
     }
 }

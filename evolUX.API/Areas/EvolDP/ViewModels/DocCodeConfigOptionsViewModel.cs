@@ -2,7 +2,7 @@
 
 namespace evolUX.API.Areas.EvolDP.ViewModels
 {
-    public class DocCodeExceptionOptionsViewModel
+    public class DocCodeConfigOptionsViewModel
     {
         public DocCodeConfig DocCodeConfig { get; set; }
         public IEnumerable<DocException> DocExceptionslevel1 { get; set; }

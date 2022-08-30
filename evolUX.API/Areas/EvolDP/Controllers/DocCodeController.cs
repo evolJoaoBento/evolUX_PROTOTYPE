@@ -57,7 +57,7 @@ namespace evolUX.Areas.EvolDP.Controllers
             try
             {
                 DocCodeViewModel viewmodel = new DocCodeViewModel();
-                viewmodel.DocCodeList = await _docCodeService.GetDocCode(docLayout,docType);
+                viewmodel.DocCodeList = await _docCodeService.GetDocCode(docLayout, docType);
                 _logger.LogInfo("DocCode Get");
                 return Ok(viewmodel);
             }
@@ -116,12 +116,12 @@ namespace evolUX.Areas.EvolDP.Controllers
         //TODO: DOCUMENT UNTESTED
         //TODO: HANDLE HTTP RESPONSES
         [HttpGet("{ID}")]
-        [ActionName("DocCodeException")]
-        public async Task<ActionResult<DocCodeExceptionOptionsViewModel>> AddExceptionDocCode([FromRoute] string ID)
+        [ActionName("DocCodeConfigOptions")]
+        public async Task<ActionResult<DocCodeConfigOptionsViewModel>> AddDocCodeConfig([FromRoute] string ID)
         {
             try
             {
-                DocCodeExceptionOptionsViewModel viewmodel = new DocCodeExceptionOptionsViewModel();
+                DocCodeConfigOptionsViewModel viewmodel = new DocCodeConfigOptionsViewModel();
                 viewmodel.DocCodeConfig = await _docCodeService.GetDocCodeConfigOptions(ID);
                 viewmodel.DocExceptionslevel1 = await _docCodeService.GetDocExceptionsLevel1();
                 viewmodel.DocExceptionslevel2 = await _docCodeService.GetDocExceptionsLevel2();
@@ -149,31 +149,83 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         }
 
-
+        //TODO: DOCUMENT UNTESTED
+        //TODO: HANDLE HTTP RESPONSES
         [HttpPost()]
-        [ActionName("DocCodeException")]
-        public async Task<ActionResult<DocCodeExceptionViewModel>> AddExceptionDocCode([FromBody] DocCodeExceptionModel model)
+        [ActionName("DocCodeConfig")]
+        public async Task<ActionResult<DocCodeConfigViewModel>> AddDocCodeConfig([FromBody] DocCodeConfig model)
         {
             try
             {
-                DocCodeExceptionViewModel viewmodel = new DocCodeExceptionViewModel();
-                viewmodel.DocCodeConfig = await _docCodeService.GetDocCodeConfigOptions(ID);
-                viewmodel.DocExceptionslevel1 = await _docCodeService.GetDocExceptionsLevel1();
-                viewmodel.DocExceptionslevel2 = await _docCodeService.GetDocExceptionsLevel2();
-                viewmodel.DocExceptionslevel3 = await _docCodeService.GetDocExceptionsLevel3();
-                viewmodel.EnvelopeMediaGroups = await _docCodeService.GetEnvelopeMediaGroups(model.DocCodeConfig.EnvMedia);
-                viewmodel.AggregationList = await _docCodeService.GetAggregationList(model.DocCodeConfig.AggrCompatibility);
-                viewmodel.ExpeditionCompanies = await _docCodeService.GetExpeditionCompanies(model.DocCodeConfig.CompanyName);
-                viewmodel.ExpeditionTypes = await _docCodeService.GetExpeditionTypes(model.DocCodeConfig.ExpeditionType);
-                viewmodel.TreatmentTypes = await _docCodeService.GetTreatmentTypes(model.DocCodeConfig.TreatmentType);
-                viewmodel.FinishingList = await _docCodeService.GetFinishingList(model.DocCodeConfig.Finishing);
-                viewmodel.ArchiveList = await _docCodeService.GetArchiveList(model.DocCodeConfig.Archive);
-                viewmodel.EmailList = await _docCodeService.GetEmailList(model.DocCodeConfig.Email);
-                viewmodel.EmailHideList = await _docCodeService.GetEmailHideList(model.DocCodeConfig.EmailHide);
-                viewmodel.ElectronicList = await _docCodeService.GetElectronicList(model.DocCodeConfig.Electronic);
-                viewmodel.ElectronicHideList = await _docCodeService.GetElectronicHideList(model.DocCodeConfig.ElectronicHide);
+                DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
+                await _docCodeService.PostDocCodeConfig(model);
+                List<DocCodeConfig> list = new List<DocCodeConfig>();
+                list.Add(await _docCodeService.GetDocCodeConfig(model.DocCodeID, int.Parse(model.StartDate)));
+                viewmodel.DocCodeConfigList = list;
                 _logger.LogInfo("DocCodeException Get");
                 return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+
+        }
+
+        //TODO: DOCUMENT UNTESTED
+        //TODO: HANDLE HTTP RESPONSES
+        [HttpDelete("{ID}")]
+        [ActionName("DocCode")]
+        public async Task<ActionResult<ResultsViewModel>> DeleteDocCode([FromRoute] string ID)
+        {
+            try
+            {
+                ResultsViewModel viewmodel = new ResultsViewModel();
+                viewmodel.Results = await _docCodeService.DeleteDocCode(ID);
+                _logger.LogInfo("DocCodeException Get");
+                return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+
+        }
+        //Podia se mandar um aviso sobre algo nao ser compativel no futuro
+        [HttpGet("{ID}")]
+        [ActionName("Compatibility")]
+        public async Task<ActionResult<DocCodeCompatabilityViewModel>> CompatibilityOptions([FromRoute] string ID)
+        {
+            try
+            {
+                DocCodeCompatabilityViewModel viewmodel = new DocCodeCompatabilityViewModel();
+                viewmodel.DocCode = await _docCodeService.GetAggregateDocCode(ID);
+                viewmodel.DocCodeList = await _docCodeService.GetAggregateDocCodes(ID);
+                _logger.LogInfo("DocCodeException Get");
+                return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+
+        }
+
+        [HttpPut()]
+        [ActionName("Compatibility")]
+        public async Task<ActionResult<ResultsViewModel>> DeleteDocCode([FromBody] DocCodeCompatabilityViewModel model)
+        {
+            try
+            {
+                await _docCodeService.ChangeCompatibility(model);
+                _logger.LogInfo("DocCodeException Get");
+                return Ok();
             }
             catch (Exception ex)
             {

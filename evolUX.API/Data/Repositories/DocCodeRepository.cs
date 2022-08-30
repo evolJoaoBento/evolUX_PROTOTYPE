@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using evolUX.API.Areas.EvolDP.Models;
+using evolUX.API.Areas.EvolDP.ViewModels;
 using evolUX.API.Data.Context;
 using evolUX.API.Data.Interfaces;
 using System.Data;
@@ -596,6 +597,261 @@ namespace evolUX.API.Data.Repositories
 			}
 			IEnumerable<int> enumerable = ilist as IEnumerable<int>;
 			return enumerable;
+		}
+		
+		public async Task PostDocCodeConfig(DocCodeConfig model)
+        {
+			string sql = @"EXEC RDC_GET_SUPORTTYPE_BY_CONFIG 
+								@DOCFINISHING ,
+								@DOCARCHIVE ,
+								'@DOCELECTRONICFORMAT',
+								@DOCEMAILHIDE,
+								'@DOCEMAIL',
+								@DOCELECTRONICFORMATHIDE";
+			var parameters = new DynamicParameters();
+			parameters.Add("DOCFINISHING", model.Finishing, DbType.String);
+			parameters.Add("DOCARCHIVE", model.Archive, DbType.String);
+			parameters.Add("DOCEMAIL", model.Email, DbType.String);
+			parameters.Add("DOCEMAILHIDE", model.EmailHide, DbType.String);
+			parameters.Add("DOCELECTRONICFORMATHIDE", model.ElectronicHide, DbType.String);
+			parameters.Add("DOCELECTRONICFORMAT", model.Electronic, DbType.String);
+			string sql2 = @"EXEC RD_NEW_DOCCODE_CONFIG 
+								'@DOCLAYOUT',
+								'@DOCSUBTYPE',
+								@DOCSTARTDATE, 
+								@DOCAGGREGATION,
+								@DOCENVMEDIAID, 
+								@DOCEXPTYPEID, 
+								@DOCEXPCOMPANYID, 
+								@DOCSERVICETASK,
+								@DOCSUPPORTTYPE,
+								@DOCPRIORITY, 
+								0, 
+								'@DOCCADUCITYDATE', 
+								'@DOCMAXPRODDATE', 
+								@DOCMAXSHEETS,
+								@DOCEXCEPTIONLEVEL1, 
+								@DOCEXCEPTIONLEVEL2, 
+								@DOCEXCEPTIONLEVEL3,
+								'@DOCDESCRIPTION',
+								'@DOCARCHCADUCITY'";
+			var parameters2 = new DynamicParameters();
+			parameters2.Add("DOCLAYOUT", model.DocLayout, DbType.String);
+			parameters2.Add("DOCSUBTYPE", model.DocType, DbType.String);
+			parameters2.Add("DOCSTARTDATE", model.StartDate, DbType.String);
+			parameters2.Add("DOCAGGREGATION", model.AggrCompatibility, DbType.String);
+			parameters2.Add("DOCENVMEDIAID", model.EnvMedia, DbType.String);
+			parameters2.Add("DOCEXPTYPEID", model.ExpeditionType, DbType.String);
+			parameters2.Add("DOCEXPCOMPANYID", model.CompanyName, DbType.String);
+			parameters2.Add("DOCSERVICETASK", model.TreatmentType, DbType.String);
+			
+			parameters2.Add("DOCCADUCITYDATE", model.CaducityDate, DbType.String);
+			parameters2.Add("DOCMAXPRODDATE", model.MaxProdDate, DbType.String);
+			parameters2.Add("DOCMAXSHEETS", model.ProdMaxSheets, DbType.String);
+			parameters2.Add("DOCEXCEPTIONLEVEL1", model.DocExceptionLevel1.ExceptionLevelID, DbType.String);
+			parameters2.Add("DOCEXCEPTIONLEVEL2", model.DocExceptionLevel2.ExceptionLevelID, DbType.String);
+			parameters2.Add("DOCEXCEPTIONLEVEL3", model.DocExceptionLevel3.ExceptionLevelID, DbType.String);
+			parameters2.Add("DOCDESCRIPTION", model.DocDescription, DbType.String);
+			parameters2.Add("DOCARCHCADUCITY", model.ArchCaducityDate, DbType.String);
+
+			using (var connection = _context.CreateConnectionEvolDP())
+			{
+				string supportType = await connection.QueryFirstOrDefaultAsync<string>(sql,parameters);
+				parameters2.Add("DOCSUPPORTTYPE", supportType, DbType.String);
+				IEnumerable<Electronic> treatmentTypes = await connection.QueryAsync<Electronic>(sql2,parameters2);
+				return;
+			}
+		}
+		
+		public async Task<IEnumerable<string>> DeleteDocCode(string ID)
+        {
+			string sql = @"SET NOCOUNT ON  
+								IF (EXISTS(SELECT TOP 1 * FROM RT_DOCUMENT WHERE DocCodeID = @ID ))   
+								BEGIN    
+									SELECT 'Existem Documentos registados com este Tipo de Documento!<BR>Não foi possível apagar Tipo de Documento!' RESULTADO   
+								END   
+							ELSE	
+								BEGIN    
+									IF (EXISTS(SELECT TOP 1 * FROM RT_DOCUMENT_SET WHERE DocCodeID = @ID ))   
+										BEGIN     
+											SELECT 'Existem Conjuntos de Documentos registados com este Tipo de Documento!<BR>Não foi possível apagar Tipo de Documento!' RESULTADO    
+										END    
+									ELSE    
+										BEGIN     
+											DELETE RD_DOCCODE_CONFIG    
+												WHERE DocCodeID = @ID        
+											DELETE RD_DOCCODE_AGGREGATION_COMPATIBILITY     
+												WHERE RefDocCodeID = @ID       
+													OR AggDocCodeID = @ID        
+											DELETE RD_DOCCODE     
+												WHERE DocCodeID = @ID        
+												SELECT 'Tipo de Documento Apagado com Sucesso!' RESULTADO    
+										END   
+								END   
+				SET NOCOUNT OFF";
+			var parameters = new DynamicParameters();
+			parameters.Add("ID", ID, DbType.String);
+
+			using (var connection = _context.CreateConnectionEvolDP())
+			{
+				IEnumerable<string> results = await connection.QueryAsync<string>(sql,parameters);
+				return results;
+			}
+		}
+		
+
+		//HANDLE TEXT RESPONSES ON HIGHER LEVELS aggrCompatibility
+        public async Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(string ID)
+        {
+            string sql = $@"SELECT	d.DocLayout, 
+									d.DocType, 
+									e1.ExceptionLevelID,
+									e1.ExceptionCode,
+									e1.ExceptionDescription,
+									e2.ExceptionLevelID,
+									e2.ExceptionCode,
+									e2.ExceptionDescription,
+									e3.ExceptionLevelID,
+									e3.ExceptionCode,
+									d.[Description] as DocDescription,
+									ISNULL(CAST(d.DocCodeID as varchar),'') [Campatible],
+									ISNULL(CASE WHEN dac.AggDocCodeID is null then 0 else 1 end, '') [CheckStatus]
+							FROM
+								RD_DOCCODE d
+							LEFT OUTER JOIN
+
+								RD_DOCCODE_AGGREGATION_COMPATIBILITY dac
+							ON d.DocCodeID = dac.AggDocCodeID
+
+								AND RefDocCodeID = @DOCCODEID
+							LEFT OUTER JOIN
+								RD_DOCCODE dc1
+							ON dc1.DocCodeID = @DOCCODEID
+
+								AND dc1.DocCodeID<> d.DocCodeID
+							 LEFT OUTER JOIN
+
+								RDC_EXCEPTION_LEVEL1 e1 WITH(NOLOCK)
+							ON e1.ExceptionLevelID = d.ExceptionLevel1ID
+							LEFT OUTER JOIN
+								RDC_EXCEPTION_LEVEL2 e2 WITH(NOLOCK)
+							ON e2.ExceptionLevelID = d.ExceptionLevel2ID
+							LEFT OUTER JOIN
+								RDC_EXCEPTION_LEVEL3 e3 WITH(NOLOCK)
+							ON e3.ExceptionLevelID = d.ExceptionLevel3ID
+							ORDER BY dc1.DocCodeID ASC, d.DocLayout,d.DocType,d.ExceptionLevel1ID,d.ExceptionLevel2ID,d.ExceptionLevel3ID";
+			var parameters = new DynamicParameters();
+			parameters.Add("DOCCODEID", ID, DbType.String);
+			
+			using (var connection = _context.CreateConnectionEvolDP())
+			{
+				IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, DocException, DocException, DocException, AggregateDocCode>(sql,
+										(d, e1, e2, e3) =>
+										{
+											AggregateDocCode docCode = d;
+											docCode.DocExceptionLevel1 = e1;
+											docCode.DocExceptionLevel2 = e2;
+											docCode.DocExceptionLevel3 = e3;
+											return docCode;
+										}, parameters, splitOn: "ExceptionLevelID");
+				return docCodeList;
+			}
+        }
+
+		//HANDLE TEXT RESPONSES ON HIGHER LEVELS aggrCompatibility
+		public async Task<AggregateDocCode> GetAggregateDocCode(string ID)
+        {
+			string sql = $@"SELECT  d.DocCodeID,
+									d.DocLayout
+									d.DocType,
+									e1.ExceptionLevelID,
+									e1.ExceptionCode,
+									e1.ExceptionDescription,
+									e2.ExceptionLevelID,
+									e2.ExceptionCode,
+									e2.ExceptionDescription,
+									e3.ExceptionLevelID,
+									e3.ExceptionCode,
+									e3.ExceptionDescription,
+									d.[Description] as DocDescription
+									dc.AggrCompatibility
+							FROM [DMS_evolDP].[dbo].[RD_DOCCODE] d
+							INNER JOIN
+								[DMS_evolDP].[dbo].[RD_DOCCODE_CONFIG] dc
+							ON d.DocCodeID = dc.DocCodeID
+							LEFT OUTER JOIN
+								[DMS_evolDP].[dbo].[RDC_EXCEPTION_LEVEL1] e1 WITH(NOLOCK)
+							ON	e1.ExceptionLevelID = d.ExceptionLevel1ID
+							LEFT OUTER JOIN
+								[DMS_evolDP].[dbo].[RDC_EXCEPTION_LEVEL2] e2 WITH(NOLOCK)
+							ON	e2.ExceptionLevelID = d.ExceptionLevel2ID
+							LEFT OUTER JOIN
+								[DMS_evolDP].[dbo].[RDC_EXCEPTION_LEVEL3] e3 WITH(NOLOCK)
+							ON	e3.ExceptionLevelID = d.ExceptionLevel3ID
+							WHERE d.DocCodeID = @DOCCODEID
+								AND dc.StartDate = (SELECT MAX(StartDate)
+											FROM [DMS_evolDP].[dbo].[RD_DOCCODE_CONFIG]
+											WHERE DocCodeID = dc.DocCodeID
+												AND StartDate <= CONVERT(varchar,CURRENT_TIMESTAMP,112))";
+			var parameters = new DynamicParameters();
+			parameters.Add("DOCCODEID", ID, DbType.String);
+
+			using (var connection = _context.CreateConnectionEvolDP())
+			{
+				IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, DocException, DocException, DocException, AggregateDocCode>(sql,
+										(d, e1, e2, e3) =>
+										{
+											AggregateDocCode docCode = d;
+											docCode.DocExceptionLevel1 = e1;
+											docCode.DocExceptionLevel2 = e2;
+											docCode.DocExceptionLevel3 = e3;
+											return docCode;
+										}, parameters, splitOn: "ExceptionLevelID");
+				return docCodeList.First();
+			}
+		}
+
+		public async Task ChangeCompatibility(DocCodeCompatabilityViewModel model)
+        {
+			string itemsChecked = "";
+			string finalString = "";
+			foreach (AggregateDocCode selection in model.DocCodeList)
+			{
+				if (model.DocCodeList.Last()==(selection))
+				{
+					itemsChecked += selection;
+				}
+				else
+				{
+					itemsChecked += selection.DocCodeID + ", ";
+				}
+			}
+			if (string.IsNullOrEmpty(itemsChecked))
+			{
+				finalString = "is NULL";
+			}
+			else
+			{
+				finalString = "in (" + itemsChecked + ")";
+			}
+			string sql = $@"EXEC RD_SET_DOCCODE_AGGREGATION @ID, @FINALSTRING";
+			var parameters = new DynamicParameters();
+			parameters.Add("ID", model.DocCode.DocCodeID, DbType.String);
+			parameters.Add("FINALSTRING", finalString, DbType.String);
+
+			using (var connection = _context.CreateConnectionEvolDP())
+			{
+				IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, DocException, DocException, DocException, AggregateDocCode>(sql,
+										(d, e1, e2, e3) =>
+										{
+											AggregateDocCode docCode = d;
+											docCode.DocExceptionLevel1 = e1;
+											docCode.DocExceptionLevel2 = e2;
+											docCode.DocExceptionLevel3 = e3;
+											return docCode;
+										}, parameters, splitOn: "ExceptionLevelID");
+				return;
+			}
 		}
     }
 }

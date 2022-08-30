@@ -1,4 +1,5 @@
 ﻿using evolUX.API.Areas.EvolDP.Models;
+using evolUX.API.Areas.EvolDP.ViewModels;
 
 namespace evolUX.API.Areas.EvolDP.Services.Interfaces
 {
@@ -23,5 +24,10 @@ namespace evolUX.API.Areas.EvolDP.Services.Interfaces
         public Task<IEnumerable<int>> GetEmailHideList(string emailHide);
         public Task<IEnumerable<Electronic>> GetElectronicList(string electronic);
         public Task<IEnumerable<int>> GetElectronicHideList(string electronicHide);
+        public Task PostDocCodeConfig(DocCodeConfig model);
+        public Task<IEnumerable<string>> DeleteDocCode(string ID);
+        public Task ChangeCompatibility(DocCodeCompatabilityViewModel model);
+        public Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(string ID);
+        public Task<AggregateDocCode> GetAggregateDocCode(string ID);
     }
 }

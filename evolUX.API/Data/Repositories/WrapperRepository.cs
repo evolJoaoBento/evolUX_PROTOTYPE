@@ -14,6 +14,8 @@ namespace evolUX.API.Data.Repositories
         private IUserRepository _user;
         private ISidebarRepository _sidebar;
         private IDocCodeRepository _docCode;
+        private IProductionReportRepository _productionReport;
+        private ISessionRepository _session;
 
         public WrapperRepository(DapperContext context)
         {
@@ -113,6 +115,30 @@ namespace evolUX.API.Data.Repositories
                     _docCode = new DocCodeRepository(_context);
                 }
                 return _docCode;
+            }
+        }
+        
+        public IProductionReportRepository ProductionReport
+        {
+            get
+            {
+                if(_productionReport == null)
+                {
+                    _productionReport = new ProductionReportRepository(_context);
+                }
+                return _productionReport;
+            }
+        }
+
+        public ISessionRepository Session
+        {
+            get
+            {
+                if(_session == null)
+                {
+                    _session = new SessionRepository(_context);
+                }
+                return _session;
             }
         }
 

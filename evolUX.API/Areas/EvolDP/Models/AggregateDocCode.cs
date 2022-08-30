@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace evolUX.API.Areas.EvolDP.Models
 {
-    public class DocCode
+    public class AggregateDocCode
     {
-        //TODO: CLEANUP
         public int DocCodeID { get; set; }
         public string DocLayout { get; set; }
         public string DocType { get; set; }
@@ -16,6 +15,8 @@ namespace evolUX.API.Areas.EvolDP.Models
         public DocException DocExceptionLevel1 { get; set; }
         public DocException DocExceptionLevel2 { get; set; }
         public DocException DocExceptionLevel3 { get; set; }
-
+        public string Campatible { get; set; }
+        public string CheckStatus { get; set; }
+        public string AggrCompatibility { get; set; }
     }
 }

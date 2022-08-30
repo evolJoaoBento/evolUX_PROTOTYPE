@@ -1,4 +1,5 @@
 ﻿using evolUX.API.Areas.EvolDP.Models;
+using evolUX.API.Areas.EvolDP.ViewModels;
 
 namespace evolUX.API.Data.Interfaces
 {
@@ -8,7 +9,7 @@ namespace evolUX.API.Data.Interfaces
         public Task<IEnumerable<DocCode>> GetDocCode(string docLayout, string docType);
         public  Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(string ID);
         public  Task<DocCodeConfig> GetDocCodeConfig(string ID, int startdate);
-        public Task<DocCodeConfig> GetDocCodeConfigOptions(string iD);
+        public Task<DocCodeConfig> GetDocCodeConfigOptions(string ID);
         public Task<IEnumerable<DocException>> GetDocExceptionsLevel1();
         public Task<IEnumerable<DocException>> GetDocExceptionsLevel2();
         public Task<IEnumerable<DocException>> GetDocExceptionsLevel3();
@@ -29,5 +30,10 @@ namespace evolUX.API.Data.Interfaces
         public Task<IEnumerable<Electronic>> GetElectronicList(string electronic);
         public Task<IEnumerable<Electronic>> GetElectronicList();
         public Task<IEnumerable<int>> GetElectronicHideList(string electronicHide);
+        public Task PostDocCodeConfig(DocCodeConfig model);
+        public Task<IEnumerable<string>> DeleteDocCode(string ID);
+        Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(string ID);
+        Task<AggregateDocCode> GetAggregateDocCode(string ID);
+        Task ChangeCompatibility(DocCodeCompatabilityViewModel model);
     }
 }

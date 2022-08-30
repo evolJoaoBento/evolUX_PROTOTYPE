@@ -17,6 +17,9 @@
         ISidebarRepository Sidebar { get; }
 
         IDocCodeRepository DocCode { get; }
+        IProductionReportRepository ProductionReport { get; }
+        ISessionRepository Session { get; }
+
 
     }
 }
