@@ -1,6 +1,6 @@
 ﻿
 
-namespace evolUX.API.Areas.Core.Models
+namespace evolUX.API.Areas.Core.ViewModels
 {
     public class AuthResponse
     {

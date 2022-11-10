@@ -2,22 +2,24 @@
 using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Areas.Core.Services.Interfaces;
 //using evolUX.API.Areas.Finishing.Models;
-using evolUX.API.Areas.Finishing.ViewModels;
+using SharedModels.ViewModels.Areas.Finishing;
+using SharedModels.Models.Areas.Finishing;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
-using evolUX.API.Areas.Finishing.Models;
+using SharedModels.Models.Areas.Finishing;
 using System.Data;
+using Newtonsoft.Json;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/finishing/[controller]/[action]")]
     [ApiController]
     public class ProductionReportController : ControllerBase
     {
         private readonly IWrapperRepository _repository;
-        private readonly ILoggerManager _logger;
+        private readonly ILoggerService _logger;
         private readonly IProductionReportService _productionReportService;
-        public ProductionReportController(IWrapperRepository repository, ILoggerManager logger, IProductionReportService productionReportService)
+        public ProductionReportController(IWrapperRepository repository, ILoggerService logger, IProductionReportService productionReportService)
         {
             _repository = repository;
             _logger = logger;
@@ -28,8 +30,9 @@ namespace evolUX.API.Areas.Finishing.Controllers
         //THE SERVICECOMPANYLIST SHOULD USE A SESSION VARIABLE IN THE UI LAYER
         [HttpGet]
         [ActionName("ProductionRunReport")]
-        public async Task<ActionResult<ProductionRunReportViewModel>> GetProductionRunReport([FromBody] DataTable ServiceCompanyList)
+        public async Task<ActionResult<ProductionRunReportViewModel>> GetProductionRunReport([FromBody] string ServiceCompanyListJSON)
         {
+            DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
             try
             {
                 ProductionRunReportViewModel viewmodel = new ProductionRunReportViewModel();
@@ -56,7 +59,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 viewmodel.ProductionReport = await _productionReportService.GetProductionReport(RunID, ServiceCompanyID);
                 foreach(ProductionDetailInfo pdi in viewmodel.ProductionReport)
                 {
-                    pdi.ProductionDetailReport = await _productionReportService.GetProductionDetailReport(pdi.RunID,pdi.ServiceCompanyID,pdi.PaperMediaID,pdi.StationMediaID,pdi.ExpeditionType,pdi.ExpCode,pdi.HasColorPages);
+                    pdi.ProductionDetailReport = await _productionReportService.GetProductionDetailReport(RunID,ServiceCompanyID,pdi.PaperMediaID,pdi.StationMediaID,pdi.ExpeditionType,pdi.ExpCode,pdi.HasColorPages);
                 }
                 _logger.LogInfo("ProductionReport Get");
                 return Ok(viewmodel);

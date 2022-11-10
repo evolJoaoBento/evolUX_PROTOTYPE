@@ -26,17 +26,18 @@
                 <h1 class="evol-font"></h1>
             </div>
             <div id="form-wrap" class="login-form">
-                <form id="credentials-form" asp-area="core" asp-controller="auth" asp-action="LoginCredentials" method="post" style="width:100%; display:none; height:100px;">
+                <form id="credentials-form" asp-area="core" asp-controller="auth" asp-action="LoginCredentials" method="get" style="width:100%; display:none; height:100px;">
                     <label style="display: block; padding-left:10px; font-weight:bold">Username:</label>
                     <input type="text" asp-for="Username" style="width:100%;border:none; background:rgb(230,230,230)">
                     <label style="display: block;padding-left:10px; font-weight:bold">Password:</label>
                     <input type="password" asp-for="Password" style="width:100%; border:none;background:rgb(230,230,230)">
                     <input type="hidden" name="returnUrl" value="@returnUrl">
-
+                    <input type="submit" name="Submit" class="btn btn-block btn-outline-success" />
                 </form>
                 <form id="windows-form" asp-area="core" asp-controller="auth" asp-action="LoginWindowsAuthentication" method="get" style="justify-self:center; height:100px; ">
                     <h4 style="margin:0">Entrar com o windows autentication</h4>
                     <input type="hidden" name="returnUrl" value="@returnUrl">
+                    <input type="submit" name="Submit" class="btn btn-block btn-success" />
                 </form>
                 <div class="auth-error">
                     @if (@errorMessage != null)
@@ -50,9 +51,9 @@
                 <div id="windows-btn" class=" circle windows"></div>
                 <div id="credentials-btn" class=" circle credentials"></div>
             </div>
-            <div class="login-btn-wrap">
+            @*<div class="login-btn-wrap">
                 <button id="login-btn">Login</button>
-            </div>
+            </div>*@
         </div>
     }
 

@@ -7,14 +7,14 @@ using evolUX.API.Areas.EvolDP.Services.Interfaces;
 
 namespace evolUX.API.Areas.EvolDP.Controllers
 {
-    [Route("evoldp/envelopemedia/[action]")]
+    [Route("api/evoldp/envelopemedia/[action]")]
     [ApiController]
     public class EnvelopeMediaController : Controller
     {
-        private readonly ILoggerManager _logger;
+        private readonly ILoggerService _logger;
         private readonly IEnvelopeMediaService _envelopeMediaService;
 
-        public EnvelopeMediaController(ILoggerManager logger, IEnvelopeMediaService envelopeMediaService)
+        public EnvelopeMediaController(ILoggerService logger, IEnvelopeMediaService envelopeMediaService)
         {
             _logger = logger;
             _envelopeMediaService = envelopeMediaService;

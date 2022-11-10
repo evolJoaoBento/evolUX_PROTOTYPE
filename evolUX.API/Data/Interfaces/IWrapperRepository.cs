@@ -17,8 +17,18 @@
         ISidebarRepository Sidebar { get; }
 
         IDocCodeRepository DocCode { get; }
+
         IProductionReportRepository ProductionReport { get; }
+
+        IPrintRepository  Print {get; } 
+
         ISessionRepository Session { get; }
+
+        IConcludedPrintRepository ConcludedPrint { get; }
+
+        IConcludedEnvelopeRepository ConcludedEnvelope { get; }
+
+        IRecuperationRepository Recuperation { get; }
 
 
     }

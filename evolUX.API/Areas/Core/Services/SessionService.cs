@@ -1,6 +1,6 @@
 ﻿using evolUX.API.Areas.Core.Services.Interfaces;
-using evolUX.API.Areas.Finishing.Models;
-using evolUX.API.Areas.Finishing.ViewModels;
+using SharedModels.Models.Areas.Finishing;
+using SharedModels.ViewModels.Areas.Finishing;
 using evolUX.API.Data.Interfaces;
 using System.Data;
 
@@ -14,9 +14,9 @@ namespace evolUX.API.Areas.Core.Services
             _repository = repository;
         }
 
-        public async Task<string> GetProfile(int user)
+        public async Task<IEnumerable<int>> GetProfile(int user)
         {
-            string profiles = await _repository.Session.GetProfile(user);
+            IEnumerable<int> profiles = await _repository.Session.GetProfile(user);
             if (profiles == null)
             {
 
@@ -24,9 +24,9 @@ namespace evolUX.API.Areas.Core.Services
             return profiles;
         }
 
-        public async Task<IEnumerable<string>> GetServers(string profile)
+        public async Task<IEnumerable<string>> GetServers(IEnumerable<int> profiles)
         {
-            IEnumerable<string> servers = await _repository.Session.GetServers(profile);
+            IEnumerable<string> servers = await _repository.Session.GetServers(profiles);
             if (servers == null)
             {
 

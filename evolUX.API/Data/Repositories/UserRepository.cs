@@ -2,7 +2,7 @@
 using evolUX.API.Data.Interfaces;
 using Dapper;
 using System.Data;
-using evolUX.API.Areas.Core.Models;
+using evolUX.API.Areas.Core.ViewModels;
 
 namespace evolUX.API.Data.Repositories
 {

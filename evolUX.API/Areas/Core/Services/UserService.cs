@@ -1,4 +1,4 @@
-﻿using evolUX.API.Areas.Core.Models;
+﻿using evolUX.API.Areas.Core.ViewModels;
 using evolUX.API.Areas.Core.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 using System.Security.Authentication;

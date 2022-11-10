@@ -1,4 +1,4 @@
-﻿using evolUX.API.Areas.Core.Models;
+﻿using evolUX.API.Areas.Core.ViewModels;
 
 namespace evolUX.API.Data.Interfaces
 {

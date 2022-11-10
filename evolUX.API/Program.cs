@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Session;
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -22,11 +23,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddMvc();
 builder.Services.AddTransient<IJwtService, JwtService>();
-builder.Services.AddSingleton<ILoggerManager, LoggerManager>();
+builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IProductionReportService, ProductionReportService>();
-builder.Services.AddSingleton<IEnvelopeMediaService, EnvelopeMediaService>();
+builder.Services.AddSingleton<IPrintService, PrintService>();
+builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
+builder.Services.AddSingleton<IConcludedEnvelopeService, ConcludedEnvelopeService>();
+builder.Services.AddSingleton<IRecuperationService, RecuperationService>();
 builder.Services.AddSingleton<IExpeditionCompaniesService, ExpeditionCompaniesService>();
 builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
 builder.Services.AddSingleton<IExpeditionZoneService, ExpeditionZoneService>();
@@ -91,7 +95,7 @@ builder.Services.AddSwaggerGen(option =>
         BearerFormat = "JWT",
         Scheme = "Bearer"
     });
-
+    //option.CustomSchemaIds(type => type.ToString());
     option.AddSecurityRequirement(new OpenApiSecurityRequirement
     {
         {

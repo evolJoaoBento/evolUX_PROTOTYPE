@@ -11,6 +11,10 @@
     <p>
         <strong>Request ID:</strong> <code>@Model?.RequestId</code>
     </p>
+    <p>
+        <strong>Status Code:</strong> <code>@Model?.errorResult?.Code</code>
+        <strong>Message:</strong> @Model?.errorResult?.Message
+    </p>
 }
 
 <h3>Development Mode</h3>

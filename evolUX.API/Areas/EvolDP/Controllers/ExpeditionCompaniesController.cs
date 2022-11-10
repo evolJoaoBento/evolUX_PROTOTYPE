@@ -10,14 +10,14 @@ using System.Dynamic;
 
 namespace evolUX.API.Areas.EvolDP.Controllers
 {
-    [Route("evoldp/envelopemedia/[action]")]
+    [Route("api/evoldp/envelopemedia/[action]")]
     [ApiController]
     public class ExpeditionCompaniesController : Controller
     {
-        private readonly ILoggerManager _logger;
+        private readonly ILoggerService _logger;
         private readonly IExpeditionCompaniesService _expeditionCompaniesService;
 
-        public ExpeditionCompaniesController (ILoggerManager logger, IExpeditionCompaniesService expeditionCompaniesService)
+        public ExpeditionCompaniesController (ILoggerService logger, IExpeditionCompaniesService expeditionCompaniesService)
         {
             _logger = logger;
             _expeditionCompaniesService = expeditionCompaniesService;

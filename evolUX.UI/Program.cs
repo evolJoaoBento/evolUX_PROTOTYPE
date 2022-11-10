@@ -2,6 +2,8 @@ using evolUX.UI.Areas.Core.Services;
 using evolUX.UI.Areas.Core.Services.Interfaces;
 using evolUX.UI.Areas.EvolDP.Services;
 using evolUX.UI.Areas.EvolDP.Services.Interfaces;
+using evolUX.UI.Areas.Finishing.Services;
+using evolUX.UI.Areas.Finishing.Services.Interfaces;
 using evolUX.UI.Filters;
 using evolUX.UI.Repositories;
 using Flurl.Http.Configuration;
@@ -42,6 +44,14 @@ builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IDocCodeRepository, DocCodeRepository>();
 builder.Services.AddSingleton<IExpeditionTypeRepository, ExpeditionTypeRepository>();
 builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
+builder.Services.AddSingleton<IProductionReportService, ProductionReportService>();
+builder.Services.AddSingleton<IProductionReportRepository, ProductionReportRepository>();
+builder.Services.AddSingleton<IPrintRepository, PrintRepository>();
+builder.Services.AddSingleton<IPrintService, PrintService>();
+builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
+builder.Services.AddSingleton<IConcludedPrintRepository, ConcludedPrintRepository>();
+builder.Services.AddSingleton<IConcludedEnvelopeService, ConcludedEnvelopeService>();
+builder.Services.AddSingleton<IConcludedEnvelopeRepository, ConcludedEnvelopeRepository>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IFlurlClientFactory, PerBaseUrlFlurlClientFactory>();
 builder.Services.AddControllersWithViews(options =>
@@ -49,6 +59,10 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add(new AuthorizeFilter("Cookie"));
     options.Filters.Add<BreadcrumbActionFilter>();
 });
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -65,7 +79,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthentication();
-app.UseAuthorization();
+app.UseAuthorization(); 
+app.UseSession();
 
 app.MapControllerRoute(
     name: "MyAreas",
@@ -73,6 +88,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Core}/{controller=Auth}/{action=Index}/{id?}");
+
 
 
 app.Run();

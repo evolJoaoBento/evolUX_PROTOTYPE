@@ -15,7 +15,12 @@ namespace evolUX.API.Data.Repositories
         private ISidebarRepository _sidebar;
         private IDocCodeRepository _docCode;
         private IProductionReportRepository _productionReport;
+        private IPrintRepository _print;
         private ISessionRepository _session;
+        private IConcludedPrintRepository _concludedPrint;
+        private IConcludedEnvelopeRepository _concludedEnvelope;
+        private IRecuperationRepository _recuperation;
+
 
         public WrapperRepository(DapperContext context)
         {
@@ -129,6 +134,18 @@ namespace evolUX.API.Data.Repositories
                 return _productionReport;
             }
         }
+        
+        public IPrintRepository Print
+        {
+            get
+            {
+                if(_print == null)
+                {
+                    _print = new PrintRepository(_context);
+                }
+                return _print;
+            }
+        }
 
         public ISessionRepository Session
         {
@@ -139,6 +156,41 @@ namespace evolUX.API.Data.Repositories
                     _session = new SessionRepository(_context);
                 }
                 return _session;
+            }
+        }
+
+        public IConcludedPrintRepository ConcludedPrint
+        {
+            get
+            {
+                if(_concludedPrint == null)
+                {
+                    _concludedPrint = new ConcludedPrintRepository(_context);
+                }
+                return _concludedPrint;
+            }
+        }
+        public IConcludedEnvelopeRepository ConcludedEnvelope
+        {
+            get
+            {
+                if(_concludedEnvelope == null)
+                {
+                    _concludedEnvelope = new ConcludedEnvelopeRepository(_context);
+                }
+                return _concludedEnvelope;
+            }
+        }
+        
+        public IRecuperationRepository Recuperation
+        {
+            get
+            {
+                if(_recuperation == null)
+                {
+                    _recuperation = new RecuperationRepository(_context);
+                }
+                return _recuperation;
             }
         }
 

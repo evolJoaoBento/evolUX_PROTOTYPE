@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace evolUX.API.Areas.Core.Models
+namespace evolUX.API.Areas.Core.ViewModels
 {
     public class UserModel
     {

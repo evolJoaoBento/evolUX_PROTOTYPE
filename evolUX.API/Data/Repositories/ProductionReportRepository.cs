@@ -1,8 +1,10 @@
 ﻿using Dapper;
-using evolUX.API.Areas.Finishing.Models;
+using SharedModels.Models.Areas.Finishing;
 using evolUX.API.Data.Context;
 using evolUX.API.Data.Interfaces;
 using System.Data;
+using System.Data.SqlClient;
+using evolUX.API.Extensions;
 
 namespace evolUX.API.Data.Repositories
 {
@@ -14,6 +16,8 @@ namespace evolUX.API.Data.Repositories
             _context = context;
         }
 
+        
+        //SUM TOTAL AND DYNAMICS
         //FOR REFERENCE https://www.faqcode4u.com/faq/530844/dapper-mapping-dynamic-pivot-columns-from-stored-procedure
         //              https://stackoverflow.com/questions/8229927/looping-through-each-element-in-a-datarow
         public async Task<IEnumerable<ProductionInfo>> GetProductionDetailReport(int runID, int serviceCompanyID, int paperMediaID,
@@ -21,21 +25,15 @@ namespace evolUX.API.Data.Repositories
         {
             var lookup = new Dictionary<int, ProductionInfo>();
 
-            string sql = @"EXEC RP_UX_PRODUCTION_REPORT     @ServiceCompanyID, 
-                                                            @RunID, 
-                                                            @PaperMediaID, 
-                                                            @StationMediaID, 
-                                                            @ExpeditionMediaID, 
-                                                            @ExpCode, 
-                                                            @HasColorPages ";
+            string sql = @"RP_UX_PRODUCTION_REPORT";
             var parameters = new DynamicParameters();
             parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
             parameters.Add("RunID", runID, DbType.Int64);
             parameters.Add("PaperMediaID", paperMediaID, DbType.Int64);
             parameters.Add("StationMediaID", stationMediaID, DbType.Int64);
-            parameters.Add("ExpeditionMediaID", expeditionType, DbType.Int64);
-            parameters.Add("ExpCode", expCode, DbType.Int64);
-            parameters.Add("HasColorPages", hasColorPages, DbType.Binary);
+            parameters.Add("ExpeditionType", expeditionType, DbType.Int64);
+            parameters.Add("ExpCode", expCode, DbType.String);
+            parameters.Add("HasColorPages", hasColorPages, DbType.Boolean);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -55,21 +53,24 @@ namespace evolUX.API.Data.Repositories
                     productionInfo.FileName = (string)r["FileName"];
                     productionInfo.ShortFileName = (string)r["ShortFileName"];
                     productionInfo.FilePrinterSpecs = (string)r["FilePrinterSpecs"];
-                    productionInfo.RegistShortFileName = (string)r["RegistShortFileName"];
-                    productionInfo.RegistFilePrinterSpecs = (string)r["RegistFilePrinterSpecs"];
-                    productionInfo.ServiceTaskCode = (int)r["ServiceTaskCode"];
-                    productionInfo.PrinterOperator = (string)r["PrinterOperator"];
-                    productionInfo.Printer = (string)r["Printer"];
-                    productionInfo.PlexCode = (int)r["PlexCode"];
+                    productionInfo.RegistDetailFileName = (string)r["RegistDetailFileName"];
+                    productionInfo.RegistDetailShortFileName = (string)r["RegistDetailShortFileName"];
+                    productionInfo.RegistDetailFilePrinterSpecs = (string)r["RegistDetailFilePrinterSpecs"];
+                    productionInfo.RegistDetailFilePrintedFlag = (bool)r["RegistDetailFilePrintedFlag"];
+                    productionInfo.ServiceTaskCode = (string)r["ServiceTaskCode"];
+                    productionInfo.PrinterOperator = r["PrinterOperator"].ConvertFromDBVal<string>();
+                    productionInfo.Printer = r["Printer"].ConvertFromDBVal<string>();
+                    productionInfo.PlexCode = (string)r["PlexCode"];
                     productionInfo.TotalPrint = (int)r["TotalPrint"];
                     productionInfo.StartSeqNum = (int)r["StartSeqNum"];
                     productionInfo.EndSeqNum = (int)r["EndSeqNum"];
                     productionInfo.FullFillMaterialRef = (string)r["FullFillMaterialRef"];
+                    productionInfo.FullFillMaterialCode = (string)r["FullFillMaterialCode"];
                     productionInfo.TotalPostObjs = (int)r["TotalPostObjs"];
                     productionInfo.ExpLevel = (int)r["ExpLevel"];
-                    productionInfo.ExpCompanyCode = (int)r["ExpCompanyCode"];
-                    productionInfo.ExpCenterCodeDesc = (string)r["ExpCenterCodeDesc"];
-                    productionInfo.ExpeditionZone = (string)r["ExpeditionZone"];
+                    productionInfo.ExpCompanyCode = (string)r["ExpCompanyCode"];
+                    productionInfo.ExpCenterCode = (string)r["ExpCenterCode"];//expCenterCode
+                    productionInfo.ExpeditionZone = (string)r["ExpZone"];
 
                     for (int i = 21; i < dt.Columns.Count; i++)
                     {
@@ -95,14 +96,15 @@ namespace evolUX.API.Data.Repositories
 
         public async Task<IEnumerable<ProductionDetailInfo>> GetProductionReport(int runID, int serviceCompanyID)
         {
-            string sql = @"EXEC RP_UX_PRODUCTION_DETAIL_REPORT      @ServiceCompanyID
-                                                                    @RunID";
+            string sql = @"RP_UX_PRODUCTION_DETAIL_REPORT";
             var parameters = new DynamicParameters();
             parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
             parameters.Add("RunID", runID, DbType.Int64);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
+                //pass all servicecompany runid
+
                 IEnumerable<ProductionDetailInfo> envelopeMediaList = await connection.QueryAsync<ProductionDetailInfo>(sql, parameters,
                             commandType: CommandType.StoredProcedure);
                 return envelopeMediaList;
@@ -114,12 +116,28 @@ namespace evolUX.API.Data.Repositories
         public async Task<IEnumerable<ProductionRunInfo>> GetProductionRunReport(DataTable ServiceCompanyList)
         {
             
-            string sql = @"EXEC RP_UX_PRODUCTION_RUN_REPORT     @ServiceCompanyList";
+            string sql = @"RP_UX_PRODUCTION_RUN_REPORT";
             var parameters = new DynamicParameters();
             parameters.Add("ServiceCompanyList", ServiceCompanyList.AsTableValuedParameter("IDlist"));
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
+                
+                //DataTable dt = new DataTable();
+                //SqlConnection conn = new SqlConnection(connection.ConnectionString);
+                //SqlCommand cmd = new SqlCommand(sql, conn); 
+                //cmd.Parameters.Add(new SqlParameter("@ServiceCompanyList", ServiceCompanyList));
+                //cmd.CommandType = CommandType.StoredProcedure;
+
+                //conn.Open();
+
+                //// create data adapter
+                //SqlDataAdapter da = new SqlDataAdapter(cmd);
+                //// this will query your database and return the result to your datatable
+                //da.Fill(dt);
+                //conn.Close();
+                //da.Dispose();
+
                 IEnumerable<ProductionRunInfo> productionRunReport = await connection.QueryAsync<ProductionRunInfo, ProductionRunDetail,
                             ProductionRunDetail, ProductionRunDetail, ProductionRunDetail, ProductionRunDetail, ProductionRunDetail,
                             ProductionRunInfo>(sql, (r, d1, d2, d3, d4, d5, d6) =>
@@ -132,10 +150,11 @@ namespace evolUX.API.Data.Repositories
                     runInfo.FullFill = d5;
                     runInfo.Expedition = d6;
                     return runInfo;
-                }, parameters, commandType: CommandType.StoredProcedure, splitOn: "Total");
+                }, parameters, commandType: CommandType.StoredProcedure, splitOn: "TotalProcessed, TotalToPrint, TotalS2Printer, TotalPrinted, TotalFullFill, TotalExpedition");
                 return productionRunReport;
             }
-        }
 
+        }
+       
     }
 }

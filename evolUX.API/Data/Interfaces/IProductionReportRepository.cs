@@ -1,6 +1,6 @@
 ﻿
 
-using evolUX.API.Areas.Finishing.Models;
+using SharedModels.Models.Areas.Finishing;
 using System.Data;
 
 namespace evolUX.API.Data.Interfaces

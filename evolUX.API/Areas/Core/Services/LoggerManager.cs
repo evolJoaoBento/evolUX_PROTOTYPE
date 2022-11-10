@@ -4,7 +4,7 @@ using ILogger = NLog.ILogger;
 
 namespace evolUX.API.Areas.Core.Services
 {
-    public class LoggerManager : ILoggerManager
+    public class LoggerService : ILoggerService
     {
         private static ILogger logger = LogManager.GetCurrentClassLogger();
         public void LogDebug(string message) => logger.Debug(message);

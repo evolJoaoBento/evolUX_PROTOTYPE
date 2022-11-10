@@ -1,4 +1,4 @@
-﻿using evolUX.API.Areas.Core.Models;
+﻿using evolUX.API.Areas.Core.ViewModels;
 using evolUX.API.Areas.Core.Services.Interfaces;
 using System.Security.Authentication;
 using System.Security.Claims;
@@ -71,7 +71,7 @@ namespace evolUX.API.Areas.Core.Services
             var user = _userService.GetUserByUsername(username).Result;
             if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             {
-                return new {message= "Invalid client request" };
+                return null;
             }
             var newAccessToken = _jwtService.GenerateJwtToken(principal.Claims.ToList());
             var newRefreshToken = _jwtService.GenerateRefreshToken();
@@ -81,7 +81,8 @@ namespace evolUX.API.Areas.Core.Services
             return new
             {
                 accessToken = newAccessToken,
-                refreshToken = newRefreshToken
+                refreshToken = newRefreshToken,
+                userModel = user
             };
         }
 

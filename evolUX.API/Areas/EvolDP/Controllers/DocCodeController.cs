@@ -13,15 +13,15 @@ using System.Dynamic;
 
 namespace evolUX.Areas.EvolDP.Controllers
 {
-    [Route("evoldp/doccode/[action]")]
+    [Route("api/evoldp/doccode/[action]")]
 
     [ApiController]
     public class DocCodeController : ControllerBase
     {
         private readonly IWrapperRepository _repository;
-        private readonly ILoggerManager _logger;
+        private readonly ILoggerService _logger;
         private readonly IDocCodeService _docCodeService;
-        public DocCodeController(IWrapperRepository repository, ILoggerManager logger, IDocCodeService docCodeService)
+        public DocCodeController(IWrapperRepository repository, ILoggerService logger, IDocCodeService docCodeService)
         {
             _repository = repository;
             _logger = logger;
@@ -178,11 +178,11 @@ namespace evolUX.Areas.EvolDP.Controllers
         //TODO: HANDLE HTTP RESPONSES
         [HttpDelete("{ID}")]
         [ActionName("DocCode")]
-        public async Task<ActionResult<ResultsViewModel>> DeleteDocCode([FromRoute] string ID)
+        public async Task<ActionResult<DocCodeResultsViewModel>> DeleteDocCode([FromRoute] string ID)
         {
             try
             {
-                ResultsViewModel viewmodel = new ResultsViewModel();
+                DocCodeResultsViewModel viewmodel = new DocCodeResultsViewModel();
                 viewmodel.Results = await _docCodeService.DeleteDocCode(ID);
                 _logger.LogInfo("DocCodeException Get");
                 return Ok(viewmodel);
@@ -219,7 +219,7 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         [HttpPut()]
         [ActionName("Compatibility")]
-        public async Task<ActionResult<ResultsViewModel>> DeleteDocCode([FromBody] DocCodeCompatabilityViewModel model)
+        public async Task<ActionResult<DocCodeResultsViewModel>> DeleteDocCode([FromBody] DocCodeCompatabilityViewModel model)
         {
             try
             {

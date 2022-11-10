@@ -1,10 +1,14 @@
 ﻿using evolUX.UI.Areas.Core.Models;
 using evolUX.UI.Areas.Core.Services.Interfaces;
+using evolUX.UI.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.Net;
 using System.Security.Claims;
 using System.Text.Json;
@@ -21,9 +25,21 @@ namespace evolUX.UI.Areas.Core.Controllers
             _authService = authService;
         }
         [AllowAnonymous]
-        public IActionResult Index(string returnUrl)
+        public async Task<IActionResult> Index(string returnUrl)
         {
-
+            //use claims to check user and load session variables
+            
+            if (User.Identity.IsAuthenticated)
+            {
+                if (HttpContext.Session.Keys.Count() == 0)
+                {
+                    int status = await HiddenRefresh();
+                    if (status != 200)
+                    {
+                        return await Logout();
+                    }
+                }
+            }
             var errorResult = TempData["resultError"]?.ToString();
             if (errorResult != null)
                 TempData["resultError"] = JsonSerializer.Deserialize<ErrorResult>(errorResult);
@@ -51,6 +67,10 @@ namespace evolUX.UI.Areas.Core.Controllers
             //    HttpOnly = true,
             //    SameSite = SameSiteMode.Strict
             //});
+
+            GetSessionVariables(result);
+
+
             SetJWTCookie(result.AccessToken);
             SetRTCookie(result.RefreshToken);
             var claims = new List<Claim>
@@ -77,13 +97,12 @@ namespace evolUX.UI.Areas.Core.Controllers
 
         }
 
-        [AllowAnonymous]
-        public IActionResult LoginCredentials()
-        {
-            return View();
-        }
+        //[AllowAnonymous]
+        //public IActionResult LoginCredentialsIndex()
+        //{
+        //    return View();
+        //}
 
-        [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> LoginCredentials(UserLogin model, string returnUrl = null)
         {
@@ -95,6 +114,10 @@ namespace evolUX.UI.Areas.Core.Controllers
                 return RedirectToAction("Index", "Auth");
             }
             var result = response.GetJsonAsync<AuthenticateResponse>().Result;
+
+            GetSessionVariables(result);
+            
+
             SetJWTCookie(result.AccessToken);
             SetRTCookie(result.RefreshToken);
 
@@ -133,13 +156,37 @@ namespace evolUX.UI.Areas.Core.Controllers
 
         public async Task<IActionResult> Refresh(string returnUrl)
         {
+            //also use claims to refresh session variables
             var token = Request.Cookies["X-Access-Token"];
             var refresh = Request.Cookies["X-Refresh-Token"];
             var response = await _authService.GetRefreshToken(token, refresh);
+            if (response.StatusCode != Ok().StatusCode)
+                return null;
             var result = await response.GetJsonAsync();
             SetJWTCookie(((dynamic)result).accessToken);
             SetRTCookie(((dynamic)result).refreshToken);
+            AuthenticateResponse user = new AuthenticateResponse();
+            user.Id = (int)((dynamic)result).userModel.id;
+            user.Username = ((dynamic)result).userModel.username;
+            await GetSessionVariables(user) ;
             return Redirect(returnUrl);
+        }
+        public async Task<int> HiddenRefresh()
+        {
+            //also use claims to refresh session variables
+            var token = Request.Cookies["X-Access-Token"];
+            var refresh = Request.Cookies["X-Refresh-Token"];
+            var response = await _authService.GetRefreshToken(token, refresh);
+            if (response.StatusCode != Ok().StatusCode)
+                return response.StatusCode;
+            var result = await response.GetJsonAsync();
+            SetJWTCookie(((dynamic)result).accessToken);
+            SetRTCookie(((dynamic)result).refreshToken);
+            AuthenticateResponse user = new AuthenticateResponse();
+            user.Id = (int)((dynamic)result).userModel.id;
+            user.Username = ((dynamic)result).userModel.username;
+            await GetSessionVariables(user);
+            return response.StatusCode;
         }
         public IActionResult AccessDenied(string returnUrl)
         {
@@ -168,6 +215,20 @@ namespace evolUX.UI.Areas.Core.Controllers
             };
             Response.Cookies.Append("X-Access-Token", JWToken, cookieOptions);
         }
-
+         private async Task GetSessionVariables(AuthenticateResponse user)
+        {
+            Dictionary<string, string> dictionary = await _authService.GetSessionVariables(user.Id);
+            if (dictionary.IsNullOrEmpty())
+            {
+                //log error
+            }
+            else
+            {
+                foreach (string key in dictionary.Keys)
+                {
+                    HttpContext.Session.SetString(key, dictionary[key]);
+                }
+            }
+        }
     }
 }

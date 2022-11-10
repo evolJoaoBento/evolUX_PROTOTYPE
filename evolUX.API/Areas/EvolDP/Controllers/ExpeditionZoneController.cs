@@ -8,13 +8,13 @@ using evolUX.API.Areas.EvolDP.Services.Interfaces;
 namespace evolUX.API.Areas.EvolDP.Controllers
 {
     [ApiController]
-    [Route("evoldp/expeditionzone/[action]")]
+    [Route("api/evoldp/expeditionzone/[action]")]
     public class ExpeditionZoneController : ControllerBase
     {
-        private readonly ILoggerManager _logger;
+        private readonly ILoggerService _logger;
         private readonly IExpeditionZoneService _expeditionZoneService;
 
-        public ExpeditionZoneController(ILoggerManager logger, IExpeditionZoneService expeditionZoneService)
+        public ExpeditionZoneController(ILoggerService logger, IExpeditionZoneService expeditionZoneService)
         {
             _logger = logger;
             _expeditionZoneService = expeditionZoneService;

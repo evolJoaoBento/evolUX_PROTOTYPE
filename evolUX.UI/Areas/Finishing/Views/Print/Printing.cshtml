@@ -1,0 +1,80 @@
+﻿@using evolUX.API.Areas.Finishing.Models
+@using evolUX.API.Areas.Finishing.ViewModels
+@using Newtonsoft.Json;
+@model ResoursesViewModel
+@*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
+
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+    
+</div>
+
+<div class="d-flex justify-content-center">
+    <h3 class="display-4 text-center"> Print File</h3>
+</div><div class="d-flex justify-content-center">
+    <h4 class="display-6 text-center">@Model.FileName</h4>
+</div>
+<div class="my-5">
+    <div class ="d-flex justify-content-center my-1">
+        <b class="mx-3">Printer</b>
+        <form id="some" asp-area="Finishing" asp-controller="Print" asp-action="Print"
+              data-ajax="true"
+              data-ajax-method="POST"
+              data-ajax-mode="replace"
+              data-ajax-update="response"
+              data-ajax-loading="myLoader">
+            
+            <select name="Description" asp-items="@(new SelectList(Model.Resources.Where(r => r.MatchFilter == true),nameof(ResourceInfo.ResID),nameof(ResourceInfo.Description),nameof(ResourceInfo.ResValue)))">
+            </select>
+        </form>
+        <form id="all" style="display:none" asp-area="Finishing" asp-controller="Print" asp-action="Print"
+              data-ajax="true"
+              data-ajax-method="POST"
+              data-ajax-mode="replace"
+              data-ajax-update="response"
+              data-ajax-loading="myLoader">
+
+            <select name="Description" asp-items="@(new SelectList(Model.Resources,nameof(ResourceInfo.ResID),nameof(ResourceInfo.Description),nameof(ResourceInfo.ResValue)))">
+            </select>
+        </form>
+    </div>
+    <div class="checkbox d-flex justify-content-center">
+        <label>All Printers @Html.CheckBox("check", false)</label>
+    </div>
+    <div class ="d-flex justify-content-center">
+        <button type="button" class="btn btn-primary" id="submit">Submit Print</button>
+    </div>
+    <div id="response"></div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $("#check").click(function () {
+                if ($(this).is(':checked')) {
+                    $("#all").show();
+                    $("#some").hide();
+                } else {
+                    $("#all").hide();
+                    $("#some").show();
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $("#submit").click(function () {
+                if ($('#check').is(':checked')) {
+                    document.getElementById("all").submit();
+                } else {
+                    document.getElementById("some").submit();
+                }
+            });
+        });
+    </script>
+}
+
+
+

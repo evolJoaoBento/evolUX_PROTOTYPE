@@ -7,13 +7,13 @@ using evolUX.API.Areas.EvolDP.Services.Interfaces;
 namespace evolUX.API.Areas.EvolDP.Controllers
 {
     [ApiController]
-    [Route("evoldp/expeditiontype/[action]")]
+    [Route("api/evoldp/expeditiontype/[action]")]
     public class ExpeditionTypeController : ControllerBase
     {
-        private readonly ILoggerManager _logger;
+        private readonly ILoggerService _logger;
         private readonly IExpeditionTypeService _expeditionTypeService;
 
-        public ExpeditionTypeController(ILoggerManager logger, IExpeditionTypeService expeditionTypeService)
+        public ExpeditionTypeController(ILoggerService logger, IExpeditionTypeService expeditionTypeService)
         {
             _logger = logger;
             _expeditionTypeService = expeditionTypeService;

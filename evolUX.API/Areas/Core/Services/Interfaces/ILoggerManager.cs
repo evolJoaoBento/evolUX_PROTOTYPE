@@ -1,6 +1,6 @@
 ﻿namespace evolUX.API.Areas.Core.Services.Interfaces
 {
-    public interface ILoggerManager
+    public interface ILoggerService
     {
         void LogInfo(string message);
         void LogWarn(string message);

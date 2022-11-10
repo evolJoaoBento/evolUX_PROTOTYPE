@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>15e99b04-4840-4fcf-93ab-7cc310017e67</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,9 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Finishing\Controllers\" />
-    <Folder Include="Areas\Finishing\Models\" />
-    <Folder Include="Areas\Finishing\Views\" />
+    <Folder Include="BindingModels\Core\" />
+    <Folder Include="BindingModels\evolDP\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,7 +25,19 @@
     <PackageReference Include="Flurl" Version="3.0.4" />
     <PackageReference Include="Flurl.Http" Version="3.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Negotiate" Version="6.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\evolUX.API\evolUX.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Shared\ResponsePartialView.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

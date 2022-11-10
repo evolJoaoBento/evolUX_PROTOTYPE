@@ -1,4 +1,4 @@
-﻿using evolUX.API.Areas.Core.Models;
+﻿using evolUX.API.Areas.Core.ViewModels;
 using evolUX.API.Areas.Core.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,16 +12,16 @@ using System.Text;
 
 namespace evolUX.API.Areas.Core.Controllers
 {
-    [Route("core/auth/[action]")]
+    [Route("api/core/[controller]/[action]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;
-        private readonly ILoggerManager _logger;
+        //private readonly ILoggerService _logger;
 
-        public AuthController(ILoggerManager logger, IAuthenticationService authenticationService)
+        public AuthController(/*ILoggerService logger,*/ IAuthenticationService authenticationService)
         {
-            _logger = logger;
+            //_logger = logger;
             _authenticationService = authenticationService;
         }
 
@@ -46,14 +46,14 @@ namespace evolUX.API.Areas.Core.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside login action: {ex.Message}");
+                //_logger.LogError($"Something went wrong inside login action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }
 
         [AllowAnonymous]
-        [HttpPost]
         [ActionName("logincredentials")]
+        [HttpGet]
         public async Task<IActionResult> Login([FromBody] LoginRequest model)
         {
             try
@@ -72,7 +72,7 @@ namespace evolUX.API.Areas.Core.Controllers
             catch(Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Logincredentials action: {ex.Message}");
+                //_logger.LogError($"Something went wrong inside Logincredentials action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }
@@ -98,7 +98,7 @@ namespace evolUX.API.Areas.Core.Controllers
             catch(Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside refresh action: {ex.Message}");
+                //_logger.LogError($"Something went wrong inside refresh action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
@@ -118,7 +118,7 @@ namespace evolUX.API.Areas.Core.Controllers
             catch(Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside revoke action: {ex.Message}");
+                //_logger.LogError($"Something went wrong inside revoke action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 

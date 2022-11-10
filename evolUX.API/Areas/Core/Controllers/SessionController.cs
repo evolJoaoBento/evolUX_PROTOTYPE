@@ -2,21 +2,22 @@
 using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Areas.Core.Services.Interfaces;
 //using evolUX.API.Areas.Finishing.Models;
-using evolUX.API.Areas.Finishing.ViewModels;
+using SharedModels.ViewModels.Areas.Finishing;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 using System.Data;
+using Newtonsoft.Json;
 
 namespace evolUX.API.Areas.Core.Controllers
 {
-    [Route("core/auth/[action]")]
+    [Route("api/core/[controller]/[action]")]
     [ApiController]
     public class SessionController : ControllerBase
     {
         private readonly IWrapperRepository _repository;
-        private readonly ILoggerManager _logger;
+        private readonly ILoggerService _logger;
         private readonly ISessionService _sessionService;
-        public SessionController(IWrapperRepository repository, ILoggerManager logger, ISessionService sessionService)
+        public SessionController(IWrapperRepository repository, ILoggerService logger, ISessionService sessionService)
         {
             _repository = repository;
             _logger = logger;
@@ -27,17 +28,18 @@ namespace evolUX.API.Areas.Core.Controllers
         //MISSING SYSTEM VARIABLES & FLOW VARIABLES & ACTION PARAMETERS(XML READ)
         [HttpGet]
         [ActionName("SessionVariables")]
-        public async Task<ActionResult<Dictionary<string,object>>> GetSessionVariables([FromBody] int User)
+        public async Task<ActionResult<Dictionary<string,string>>> GetSessionVariables([FromQuery] int User)
         {
             try
             {
-                Dictionary<string,object> result = new Dictionary<string,object>();
-                string profile = await _sessionService.GetProfile(User);
-                result.Add("evolDP/Profile", profile);
-                IEnumerable<string> servers = await _sessionService.GetServers(profile);
+                Dictionary<string,string> result = new Dictionary<string,string>();
+                IEnumerable<int> profiles = await _sessionService.GetProfile(User);
+                result.Add("evolDP/Profiles", JsonConvert.SerializeObject(profiles));
+                IEnumerable<string> servers = await _sessionService.GetServers(profiles);
                 DataTable serviceCompanies = await _sessionService.GetServiceCompanies(servers);
-                result.Add("evolDP/ServiceCompanies", serviceCompanies);
+                //TODO: PermissionLevel
                 _logger.LogInfo("SessionVariables Get");
+                result.Add("evolDP/ServiceCompanies", JsonConvert.SerializeObject(serviceCompanies));
                 return Ok(result);
             }
             catch (Exception ex)

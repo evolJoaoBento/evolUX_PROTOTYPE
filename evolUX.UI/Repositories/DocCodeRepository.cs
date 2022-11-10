@@ -14,7 +14,7 @@ namespace evolUX.UI.Repositories
         {
             try
             {
-                var response = await _flurlClient.Request("/evoldp/doccode/getDocCode")
+                var response = await _flurlClient.Request("/API/evoldp/doccode/getDocCode")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .GetAsync();
                 //var response = await BaseUrl

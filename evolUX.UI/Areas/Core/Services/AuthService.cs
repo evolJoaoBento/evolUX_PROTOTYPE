@@ -31,5 +31,11 @@ namespace evolUX.UI.Areas.Core.Services
             var response = await _authRepository.GetRefreshToken(accessToken, refreshToken);
             return response;
         }
+
+        public async Task<Dictionary<string, string>> GetSessionVariables(int ID)
+        {
+            var response = await _authRepository.GetSessionVariables(ID);
+            return response;
+        }
     }
 }
