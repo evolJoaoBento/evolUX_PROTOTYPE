@@ -1,6 +1,6 @@
-﻿using SharedModels.Models.Areas.Finishing;
+﻿using Shared.Models.Areas.Finishing;
 
-namespace SharedModels.ViewModels.Areas.Finishing
+namespace Shared.ViewModels.Areas.Finishing
 {
     public class ProductionReportViewModel
     {

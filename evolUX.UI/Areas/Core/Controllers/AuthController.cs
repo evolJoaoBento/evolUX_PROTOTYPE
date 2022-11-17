@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Models.Areas.Core;
 using System.Data;
 using System.Net;
 using System.Security.Claims;
@@ -76,6 +77,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, result.Username),
+                new Claim(ClaimTypes.NameIdentifier, result.Id.ToString()),
             };
             claims.AddRange(result.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -124,6 +126,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, result.Username),
+                new Claim(ClaimTypes.NameIdentifier, result.Id.ToString()),
             };
             claims.AddRange(result.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

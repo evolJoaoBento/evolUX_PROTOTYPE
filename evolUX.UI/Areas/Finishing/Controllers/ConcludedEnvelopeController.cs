@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Data;
 using evolUX.UI.Extensions;
-using SharedModels.ViewModels.General;
+using Shared.ViewModels.General;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {

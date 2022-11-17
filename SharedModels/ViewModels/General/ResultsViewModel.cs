@@ -1,6 +1,6 @@
-﻿using SharedModels.Models.General;
+﻿using Shared.Models.General;
 
-namespace SharedModels.ViewModels.General
+namespace Shared.ViewModels.General
 {
     public class ResultsViewModel
     {

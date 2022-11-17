@@ -1,10 +1,12 @@
 ﻿using Dapper;
-using SharedModels.Models.Areas.Finishing;
+using Shared.Models.Areas.Finishing;
 using evolUX.API.Data.Context;
 using evolUX.API.Data.Interfaces;
 using System.Data;
 using System.Data.SqlClient;
-using evolUX.API.Extensions;
+using Shared.Models.General;
+using Shared.;
+using System.Transactions;
 
 namespace evolUX.API.Data.Repositories
 {
@@ -43,7 +45,7 @@ namespace evolUX.API.Data.Repositories
             }
         }
 
-        public async Task<FlowInfo> GetFlowID(string serviceCompanyCode)
+        public async Task<FlowInfo> GetFlow(string serviceCompanyCode)
         {
             string sql = @" SELECT f.FlowID, f.DefaultPriority Priority
                             FROM FLOWS f WITH(NOLOCK)
@@ -73,7 +75,7 @@ namespace evolUX.API.Data.Repositories
                 return flowInfo;
             }
         } 
-        public async Task<IEnumerable<FlowParameters>> GetFlowParameters(int flowID)
+        public async Task<IEnumerable<FlowParameter>> GetFlowParameters(int flowID)
         {
             string sql = @" SELECT  FlowID, ParameterName, ParameterValue
                             FROM    FLOWS_DATA
@@ -86,9 +88,67 @@ namespace evolUX.API.Data.Repositories
             {
                 //pass all servicecompany runid
 
-                IEnumerable<FlowParameters> flowParameters = await connection.QueryAsync<FlowParameters>(sql, parameters);
+                IEnumerable<FlowParameter> flowParameters = await connection.QueryAsync<FlowParameter>(sql, parameters);
                 return flowParameters;
             }
         }
+
+        public async Task<IEnumerable<Result>> TryPrint(IEnumerable<FlowParameter> flowparameters, FlowInfo flowinfo, int userID)
+        {
+            using (var transactionScope = new TransactionScope())
+            {
+                string sql = @"REGIST_NEW_JOB";
+                var parameters = new DynamicParameters();
+                parameters.Add("FlowID", flowinfo.FlowID, DbType.Int32);
+                parameters.Add("Priority", flowinfo.Priority, DbType.Int32);
+                parameters.Add("Description", "PRINT", DbType.String);
+                parameters.Add("UserID", userID, DbType.Int32);
+
+                using (var connection = _context.CreateConnectionEvolFlow())
+                {
+                    //pass all servicecompany runid
+
+                    int JobID = await connection.QueryFirstOrDefaultAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
+
+                    foreach (FlowParameter p in flowparameters)
+                    {
+                        sql = @"   INSERT INTO JOB_DATA(JobID, ParameterNr, ParameterName, ParameterValue)
+                                SELECT @JobID, ISNULL(MAX(ParameterNr),0)+1, '@ParameterName','@ParameterValue'
+                                FROM JOB_DATA WHERE JobID = @JobID";
+                        parameters = new DynamicParameters();
+                        parameters.Add("JobID", JobID, DbType.Int32);
+                        parameters.Add("ParameterName", p.ParameterName, DbType.String);
+                        parameters.Add("ParameterValue", p.ParameterValue, DbType.String);
+                        int rowsAffected = await connection.ExecuteAsync(sql, parameters, commandType: CommandType.Text);
+                        if (rowsAffected <= 0)
+                        {
+                            string s = "Parameter: " + p.ParameterName + " could not be registred!";
+                            throw (new SystemException(s));
+                        }
+                    }
+
+                    sql = "UPDATE JOBS SET StartTimestamp = CURRENT_TIMESTAMP WHERE JobID = @JobID";
+                    parameters = new DynamicParameters();
+                    parameters.Add("JobID", JobID, DbType.Int32);
+                    int Affected = await connection.ExecuteAsync(sql, parameters, commandType: CommandType.Text);
+                    if (Affected <= 0)
+                    {
+                        string s = "Job Timestamp could not be registred!";
+                        throw (new SystemException(s));
+                    }
+
+                }
+                transactionScope.Complete();
+            }
+            Result result = new Result();
+            List<Result> results = new List<Result>();
+            result.ResultID = 0;
+            result.Resultstr = "Print Successfull!";
+            results.Add(result);
+            return results;
+           
+        }
+
+
     }
 }

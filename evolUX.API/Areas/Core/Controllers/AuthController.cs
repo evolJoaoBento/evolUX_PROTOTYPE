@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Converters;
 using System.Security.Claims;
 using System.Text;
+using Shared.Models.Areas.Core;
 
 namespace evolUX.API.Areas.Core.Controllers
 {

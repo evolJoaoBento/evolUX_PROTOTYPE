@@ -1,5 +1,5 @@
-﻿@using evolUX.API.Areas.Finishing.Models
-@using evolUX.API.Areas.Finishing.ViewModels
+﻿@using Shared.Models.Areas.Finishing
+@using Shared.ViewModels.Areas.Finishing
 @using Newtonsoft.Json;
 @model ProductionReportViewModel;
 @*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
@@ -86,7 +86,7 @@
                 {
                     <tr>
                         <td>
-                            <form asp-controller="ProductionReport" asp-action="FilePrint" method="post">
+                            @*<form asp-controller="ProductionReport" asp-action="FilePrint" method="post">
                                 <button class="btn btn-link link-info">@p.FileName</button>
                                 <input type="hidden" name="RunID" value="@p.RunID" />
                                 <input type="hidden" name="FileID" value="@p.FileID" />
@@ -94,10 +94,12 @@
                                 <input type="hidden" name="FileName" value="@p.FileName" />
                                 <input type="hidden" name="ShortFileName" value="@p.ShortFileName" />
                                 <input type="hidden" name="FilePrinterSpecs" value="@p.FilePrinterSpecs" />
-                            </form>
+                            </form>*@
+                            <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print"
+                   asp-action="Printing" asp-route-JsonSerializedProductionInfo="@JsonConvert.SerializeObject(p)" asp-route-FilePrinterSpecs=@p.FilePrinterSpecs>@p.FileName</a>
                             @if (p.RegistDetailFileName!=null)
                             {
-                                <form asp-page-handler="FilePrint" method="post">
+                                @*<form asp-page-handler="FilePrint" method="post">
                                     <button class="btn btn-link btn-sm evolflow-link">@p.RegistDetailFileName</button>
                                     <input type="hidden" name="RunID" value="@p.RunID" />
                                     <input type="hidden" name="FileID" value="@p.FileID" />
@@ -105,7 +107,7 @@
                                     <input type="hidden" name="FileName" value="@p.RegistDetailFileName" />
                                     <input type="hidden" name="ShortFileName" value="@p.RegistDetailShortFileName" />
                                     <input type="hidden" name="FilePrinterSpecs" value="@p.RegistDetailFilePrinterSpecs" />
-                                </form>
+                                </form>*@
                             }
                             </td>
                         <td>@p.ServiceTaskCode</td>

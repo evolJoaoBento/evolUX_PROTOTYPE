@@ -1,4 +1,4 @@
-﻿using evolUX.API.Areas.Finishing.ViewModels;
+﻿using Shared.ViewModels.Areas.Finishing;
 using evolUX.API.Areas.Core.ViewModels;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +9,8 @@ using System.Data;
 using Flurl.Http;
 using evolUX.UI.Exceptions;
 using Newtonsoft.Json;
+using Shared.Models.Areas.Core;
+using Shared.ViewModels.Areas.Core;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
@@ -35,16 +37,16 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                 //TError e = ex.GetResponseJson<TError>();
                 // For error responses that take an unknown shape
                 ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.RequestId = ex.Source;
-                viewModel.errorResult = new ErrorResult();
-                viewModel.errorResult.Code = (int)ex.StatusCode;
-                viewModel.errorResult.Message = ex.Message;
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
                 return View("Error", viewModel);
             }
             catch(HttpNotFoundException ex)
             {
                 ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.errorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
                 return View("Error", viewModel);
             }
             catch(HttpUnauthorizedException ex)
@@ -102,12 +104,12 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                 }
             }
         }
-        [HttpPost]
-        public ActionResult FilePrint(string model, int RunID, int FileID, string FilePath, string FileName, string ShortFileName, string FilePrinterSpecs)
-        {
-            return RedirectToAction("Printing", "Print", new { Area = "Finishing", RunID, FileID, FilePath, FileName, ShortFileName, FilePrinterSpecs });
+        //[HttpPost]
+        //public ActionResult FilePrint(string model, int RunID, int FileID, string FilePath, string FileName, string ShortFileName, string FilePrinterSpecs)
+        //{
+        //    return RedirectToAction("Printing", "Print", new { Area = "Finishing", RunID, FileID, FilePath, FileName, ShortFileName, FilePrinterSpecs });
 
-        }
+        //}
 
 
     }

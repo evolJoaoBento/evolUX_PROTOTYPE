@@ -1,4 +1,4 @@
-﻿using evolUX.API.Areas.Finishing.ViewModels;
+﻿using Shared.ViewModels.Areas.Finishing;
 using Flurl.Http;
 using System.Data;
 

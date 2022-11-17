@@ -1,6 +1,6 @@
-﻿using SharedModels.Models.General;
+﻿using Shared.Models.General;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
-using SharedModels.ViewModels.General;
+using Shared.ViewModels.General;
 using evolUX.API.Data.Interfaces;
 using System.Data;
 

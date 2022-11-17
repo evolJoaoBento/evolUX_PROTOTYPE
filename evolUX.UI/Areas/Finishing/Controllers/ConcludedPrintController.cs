@@ -1,4 +1,4 @@
-﻿using SharedModels.ViewModels.General;
+﻿using Shared.ViewModels.General;
 using evolUX.UI.Areas.Core.Models;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;

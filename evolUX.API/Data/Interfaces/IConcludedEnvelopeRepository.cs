@@ -1,6 +1,6 @@
 ﻿
 
-using SharedModels.Models.General;
+using Shared.Models.General;
 using System.Data;
 
 namespace evolUX.API.Data.Interfaces

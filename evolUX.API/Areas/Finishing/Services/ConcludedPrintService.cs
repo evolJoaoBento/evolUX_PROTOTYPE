@@ -1,4 +1,4 @@
-﻿using SharedModels.Models.General;
+﻿using Shared.Models.General;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 using System.Data;

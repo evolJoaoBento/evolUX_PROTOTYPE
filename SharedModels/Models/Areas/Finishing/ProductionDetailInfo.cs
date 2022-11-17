@@ -1,4 +1,4 @@
-﻿namespace SharedModels.Models.Areas.Finishing
+﻿namespace Shared.Models.Areas.Finishing
 {
     public class ProductionDetailInfo
     {

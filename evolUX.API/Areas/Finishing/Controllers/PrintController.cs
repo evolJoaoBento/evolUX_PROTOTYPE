@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Areas.Core.Services.Interfaces;
-//using evolUX.API.Areas.Finishing.Models;
-using SharedModels.ViewModels.Areas.Finishing;
-using SharedModels.ViewModels.General;
+//using Shared.Models.Areas.Finishing;
+using Shared.ViewModels.Areas.Finishing;
+using Shared.ViewModels.General;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 using System.Data;
 using Newtonsoft.Json;
-using SharedModels.Models.General;
+using Shared.Models.General;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
@@ -38,8 +38,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
             IEnumerable<int> profileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
             try
             {
-                ResoursesViewModel viewmodel = new ResoursesViewModel();
-                viewmodel.Resources = await _printService.GetPrinters(profileList, FileSpecs, ignoreProfiles);
+                ResoursesViewModel viewmodel = await _printService.GetPrinters(profileList, FileSpecs, ignoreProfiles);
                 _logger.LogInfo("Printers Get");
                 return Ok(viewmodel);
             }
@@ -52,17 +51,33 @@ namespace evolUX.API.Areas.Finishing.Controllers
         }
         [HttpGet]
         [ActionName("Print")]
-        public async Task<ActionResult<ResultsViewModel>> Print([FromBody] string ListJSON, [FromQuery] string username, [FromQuery] int RunID, [FromQuery] int FileID, [FromQuery] string PrinterName, [FromQuery] string ServiceCompanyCode)
+        public async Task<ActionResult<ResultsViewModel>> Print([FromBody] string ListJSON)
         {
-            List<string> list = JsonConvert.DeserializeObject<List<string>>(ListJSON);
-            string ProfileListJSON = list[0];
-            string FileSpecs = list[1];
-            IEnumerable<int> profileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
+            Dictionary<string, object> dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(ListJSON);
+            object obj;
+            dictionary.TryGetValue("Username", out obj);
+            string Username = (string)obj;
+            dictionary.TryGetValue("UserID", out obj);
+            int UserID = (int)obj;
+            dictionary.TryGetValue("FilePath", out obj);
+            string FilePath = (string)obj;
+            dictionary.TryGetValue("FileID", out obj);
+            int FileID = (int)obj;
+            dictionary.TryGetValue("RunID", out obj);
+            int RunID = (int)obj;
+            dictionary.TryGetValue("Printer", out obj);
+            string Printer = (string)obj;
+            dictionary.TryGetValue("ServiceCompanyCode", out obj);
+            string ServiceCompanyCode = (string)obj;
+            dictionary.TryGetValue("FileName", out obj);
+            string FileName = (string)obj;
+            dictionary.TryGetValue("ShortFileName", out obj);
+            string ShortFileName = (string)obj;
+
             try
             {
-                ResultsViewModel viewmodel = new ResultsViewModel();
-                viewmodel.Results = new List<Result>();
-                viewmodel.Results.Add(await _printService.Print(RunID, FileID, PrinterName, ServiceCompanyCode, username));
+                ResultsViewModel viewmodel = await _printService.Print(RunID, FileID, Printer, ServiceCompanyCode, 
+                    Username, UserID, FilePath, FileName, ShortFileName);
                 _logger.LogInfo("Print Get");
                 return Ok(viewmodel);
             }

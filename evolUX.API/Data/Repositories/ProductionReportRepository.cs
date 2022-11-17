@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using SharedModels.Models.Areas.Finishing;
+using Shared.Models.Areas.Finishing;
 using evolUX.API.Data.Context;
 using evolUX.API.Data.Interfaces;
 using System.Data;

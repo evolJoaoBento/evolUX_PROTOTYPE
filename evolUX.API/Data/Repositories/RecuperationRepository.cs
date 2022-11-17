@@ -1,6 +1,6 @@
 ﻿using Dapper;
-using SharedModels.Models.General;
-using SharedModels.Models.Areas.Finishing;
+using Shared.Models.General;
+using Shared.Models.Areas.Finishing;
 using evolUX.API.Data.Context;
 using evolUX.API.Data.Interfaces;
 using System.Data;

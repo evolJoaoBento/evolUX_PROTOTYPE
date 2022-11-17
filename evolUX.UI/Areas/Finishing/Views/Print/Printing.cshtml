@@ -1,5 +1,5 @@
-﻿@using evolUX.API.Areas.Finishing.Models
-@using evolUX.API.Areas.Finishing.ViewModels
+﻿@using Shared.Models.Areas.Finishing
+@using Shared.ViewModels.Areas.Finishing
 @using Newtonsoft.Json;
 @model ResoursesViewModel
 @*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
@@ -14,7 +14,7 @@
 <div class="d-flex justify-content-center">
     <h3 class="display-4 text-center"> Print File</h3>
 </div><div class="d-flex justify-content-center">
-    <h4 class="display-6 text-center">@Model.FileName</h4>
+    <h4 class="display-6 text-center">@ViewBag.FileName</h4>
 </div>
 <div class="my-5">
     <div class ="d-flex justify-content-center my-1">

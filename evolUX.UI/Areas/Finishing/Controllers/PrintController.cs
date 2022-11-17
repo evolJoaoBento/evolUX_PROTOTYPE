@@ -1,4 +1,4 @@
-﻿using evolUX.API.Areas.Finishing.ViewModels;
+﻿using Shared.ViewModels.Areas.Finishing;
 using evolUX.API.Areas.Core.ViewModels;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -8,11 +8,14 @@ using System.Net;
 using System.Data;
 using Flurl.Http;
 using evolUX.UI.Exceptions;
-using evolUX.API.Areas.Finishing.Models;
 using Newtonsoft.Json;
 using evolUX.UI.Areas.Core.Models;
-using ErrorResult = evolUX.API.Areas.Core.ViewModels.ErrorResult;
-using ErrorViewModel = evolUX.API.Areas.Core.ViewModels.ErrorViewModel;
+using Shared.ViewModels.Areas.Finishing;
+using Shared.ViewModels.General;
+using System.Reflection;
+using Shared.Models.Areas.Finishing;
+using static Dapper.SqlMapper;
+using System.Security.Claims;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
@@ -25,41 +28,25 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             _printService = printService;
         }
 
-        public async Task<IActionResult> Printing(int RunID, int FileID, string FilePath, string FileName, string ShortFileName, string FilePrinterSpecs)
+        public async Task<IActionResult> Printing(string JsonSerializedProductionInfo, string FilePrinterSpecs, string FileName)
         {
+            TempData["JsonSerializedProductionInfo"] = JsonSerializedProductionInfo;
+            ViewBag.FileName = FileName;
+
             string profileList = HttpContext.Session.GetString("evolDP/Profiles");
             string filesSpecs = FilePrinterSpecs;
             bool ignoreProfiles = false;
             try
             {
+
                 ResoursesViewModel result = await _printService.GetPrinters(profileList, filesSpecs, ignoreProfiles);
-                result.RunID = RunID;
-                result.FileID = FileID;
-                result.FilePath = FilePath;
-                result.FileName = FileName;
-                result.ShortFileName = ShortFileName;
-                result.FilePrinterSpecs = FilePrinterSpecs;
                 return View(result);
             }
-            catch (FlurlHttpException ex)
+            catch (ErrorViewModelException ex)
             {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-                ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.RequestId = ex.Source;
-                viewModel.errorResult = new ErrorResult();
-                viewModel.errorResult.Code = (int)ex.StatusCode;
-                viewModel.errorResult.Message = ex.Message;
-                return View("Error", viewModel);
+                return View("Error", ex.ViewModel);
             }
-            catch(HttpNotFoundException ex)
-            {
-                ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.errorResult = await ex.response.GetJsonAsync<ErrorResult>();
-                return View("Error", viewModel);
-            }
-            catch(HttpUnauthorizedException ex)
+            catch (HttpUnauthorizedException ex)
             {
                 if (ex.response.Headers.Contains("Token-Expired"))
                 {
@@ -74,32 +61,26 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                     return RedirectToAction("Index", "Auth", new { Area = "Core" });
                 }
             }
-            
+
         }
 
-        public async Task<IActionResult> Print()
+        public async Task<IActionResult> Print(string Printer, string ServiceCompanyCode)
         {
+            string JsonSerializedProductionInfo = (string)TempData["JsonSerializedProductionInfo"];
+            ProductionInfo productionInfo = JsonConvert.DeserializeObject<ProductionInfo>(JsonSerializedProductionInfo);
+            string username = User.Identity.Name;
+            int userid = int.Parse(User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
+                                              .Select(c => c.Value)
+                                              .SingleOrDefault());
             try
             {
-                return View();
+                ResultsViewModel result = await _printService.Print(productionInfo.RunID, productionInfo.FileID, Printer, ServiceCompanyCode,
+                            username, userid, productionInfo.FilePath, productionInfo.FileName, productionInfo.ShortFileName);
+                return View("ResponsePartialView", result);
             }
-            catch (FlurlHttpException ex)
+            catch (ErrorViewModelException ex)
             {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-                ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.RequestId = ex.Source;
-                viewModel.errorResult = new ErrorResult();
-                viewModel.errorResult.Code = (int)ex.StatusCode;
-                viewModel.errorResult.Message = ex.Message;
-                return View("Error", viewModel);
-            }
-            catch (HttpNotFoundException ex)
-            {
-                ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.errorResult = await ex.response.GetJsonAsync<ErrorResult>();
-                return View("Error", viewModel);
+                return View("Error", ex.ViewModel);
             }
             catch (HttpUnauthorizedException ex)
             {

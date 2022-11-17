@@ -1,11 +1,12 @@
 ﻿using evolUX.UI.Areas.Core.Models;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
-using SharedModels.ViewModels.General;
-using SharedModels.ViewModels.Areas.Finishing;
+using Shared.ViewModels.General;
+using Shared.ViewModels.Areas.Finishing;
 using evolUX.UI.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Net;
+using Shared.Models.Areas.Core;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {

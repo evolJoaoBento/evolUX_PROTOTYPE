@@ -1,5 +1,5 @@
-﻿using SharedModels.ViewModels.Areas.Finishing;
-using SharedModels.Models.Areas.Finishing;
+﻿using Shared.ViewModels.Areas.Finishing;
+using Shared.Models.Areas.Finishing;
 using System.Data;
 
 namespace evolUX.API.Areas.Core.Services.Interfaces

@@ -1,4 +1,4 @@
-﻿namespace SharedModels
+﻿namespace Shared
 {
     public class Class1
     {

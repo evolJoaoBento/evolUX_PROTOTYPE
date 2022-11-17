@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using SharedModels.Models.General;
+using Shared.Models.General;
 using evolUX.API.Data.Context;
 using evolUX.API.Data.Interfaces;
 using System.Data;

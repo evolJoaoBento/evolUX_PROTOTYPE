@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace SharedModels.BindingModels.Finishing
+namespace Shared.BindingModels.Finishing
 {
     public class RegistElaboratePermissionLevel
     {

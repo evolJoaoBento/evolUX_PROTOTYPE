@@ -1,4 +1,4 @@
-﻿namespace evolUX.UI.Areas.Core.Models
+﻿namespace Shared.Models.Areas.Core
 {
     public class ErrorResult
     {

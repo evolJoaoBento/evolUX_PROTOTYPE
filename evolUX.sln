@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "evolUX.API", "evolUX.API\ev
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "evolUX.UI", "evolUX.UI\evolUX.UI.csproj", "{E3C600FC-CA9A-46B9-B53E-9247ADBC4764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedModels", "SharedModels\SharedModels.csproj", "{CAEA3289-C20E-49D5-95D9-5A3514BA1724}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "SharedModels\Shared.csproj", "{CAEA3289-C20E-49D5-95D9-5A3514BA1724}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

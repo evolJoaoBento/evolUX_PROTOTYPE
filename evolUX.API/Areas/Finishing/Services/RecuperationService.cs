@@ -1,7 +1,7 @@
-﻿using SharedModels.Models.Areas.Finishing;
-using SharedModels.Models.General;
+﻿using Shared.Models.Areas.Finishing;
+using Shared.Models.General;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
-using SharedModels.ViewModels.Areas.Finishing;
+using Shared.ViewModels.Areas.Finishing;
 using evolUX.API.Data.Interfaces;
 using System.Data;
 

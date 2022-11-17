@@ -1,4 +1,4 @@
-﻿namespace SharedModels.Models.General
+﻿namespace Shared.Models.General
 {
     public class Result
     {

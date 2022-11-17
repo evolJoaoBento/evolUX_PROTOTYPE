@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Areas.Core.Services.Interfaces;
-//using evolUX.API.Areas.Finishing.Models;
-using SharedModels.ViewModels.Areas.Finishing;
+//using Shared.Models.Areas.Finishing;
+using Shared.ViewModels.Areas.Finishing;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 using System.Data;

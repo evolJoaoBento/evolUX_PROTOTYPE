@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Areas.Core.Services.Interfaces;
-//using evolUX.API.Areas.Finishing.Models;
-using SharedModels.ViewModels.General;
+//using Shared.Models.Areas.Finishing;
+using Shared.ViewModels.General;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
-using SharedModels.Models.Areas.Finishing;
+using Shared.Models.Areas.Finishing;
 using System.Data;
-using SharedModels.BindingModels.Finishing;
+using Shared.BindingModels.Finishing;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {

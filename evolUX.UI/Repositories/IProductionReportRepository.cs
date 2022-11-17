@@ -1,5 +1,6 @@
-﻿using evolUX.API.Areas.Finishing.ViewModels;
+﻿
 using Flurl.Http;
+using Shared.ViewModels.Areas.Finishing;
 using System.Data;
 
 namespace evolUX.UI.Repositories
