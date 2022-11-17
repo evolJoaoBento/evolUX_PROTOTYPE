@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace evolUX.API.BindingModels.Finishing
+namespace Shared.BindingModels.Finishing
 {
     public class Regist
     {

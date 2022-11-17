@@ -13,11 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="BindingModels\Core\" />
-    <Folder Include="BindingModels\evolDP\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\css\EvolsolutionsV8.ttf" />
   </ItemGroup>
 

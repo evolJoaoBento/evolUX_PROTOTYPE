@@ -7,6 +7,7 @@ using System.Net;
 using System.Data;
 using evolUX.UI.Extensions;
 using Shared.ViewModels.General;
+using Shared.Models.Areas.Core;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {

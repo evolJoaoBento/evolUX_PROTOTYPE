@@ -5,7 +5,7 @@ using evolUX.API.Data.Interfaces;
 using System.Data;
 using System.Data.SqlClient;
 using Shared.Models.General;
-using Shared.;
+using Shared.Extensions;
 using System.Transactions;
 
 namespace evolUX.API.Data.Repositories

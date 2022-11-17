@@ -1,13 +1,12 @@
 ﻿using System.Data;
 
-namespace evolUX.API.BindingModels.Finishing
+namespace Shared.BindingModels.Finishing
 {
-    public class RegistElaboratePermissionLevel
+    public class RegistElaborate
     {
         public string StartBarcode { get; set; }
         public string EndBarcode { get; set; }
         public string User { get; set; }
         public DataTable ServiceCompanyList { get; set; }
-        public bool PermissionLevel { get; set; }
     }
 }

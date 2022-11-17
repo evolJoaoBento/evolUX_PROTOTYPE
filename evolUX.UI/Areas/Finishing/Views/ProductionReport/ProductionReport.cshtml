@@ -95,8 +95,16 @@
                                 <input type="hidden" name="ShortFileName" value="@p.ShortFileName" />
                                 <input type="hidden" name="FilePrinterSpecs" value="@p.FilePrinterSpecs" />
                             </form>*@
-                            <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print"
-                   asp-action="Printing" asp-route-JsonSerializedProductionInfo="@JsonConvert.SerializeObject(p)" asp-route-FilePrinterSpecs=@p.FilePrinterSpecs>@p.FileName</a>
+                            @if (!p.RegistDetailFilePrintedFlag)
+                            {
+                                <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print" 
+                                asp-action="Printing" asp-route-JsonSerializedProductionInfo="@JsonConvert.SerializeObject(p)" asp-route-FilePrinterSpecs=@p.FilePrinterSpecs>@p.FileName</a>
+                            }
+                            else
+                            {
+                                <div class="disabled">@p.FileName</div>
+                            }
+                            
                             @if (p.RegistDetailFileName!=null)
                             {
                                 @*<form asp-page-handler="FilePrint" method="post">
@@ -108,6 +116,18 @@
                                     <input type="hidden" name="ShortFileName" value="@p.RegistDetailShortFileName" />
                                     <input type="hidden" name="FilePrinterSpecs" value="@p.RegistDetailFilePrinterSpecs" />
                                 </form>*@
+                                ProductionInfo pregist = p;
+                                pregist.FileName = p.RegistDetailFileName;
+                                pregist.ShortFileName = p.RegistShortFileName;
+                                pregist.FilePrinterSpecs = p.RegistDetailFilePrinterSpecs;
+                                pregist.ShortFileName = p.RegistShortFileName;                           
+                                @if(!p.RegistDetailFilePrintedFlag){
+                                    <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print"
+                                    asp-action="Printing" asp-route-JsonSerializedProductionInfo="@JsonConvert.SerializeObject(pregist)" asp-route-FilePrinterSpecs=@pregist.FilePrinterSpecs>@pregist.FileName</a>
+                                }else{
+                                    <div class="disabled">@pregist.FileName</div>
+                                }
+                                
                             }
                             </td>
                         <td>@p.ServiceTaskCode</td>
@@ -139,7 +159,6 @@
                         <td>@p.ExpCompanyCode</td>
                         <td>@p.ExpCenterCode</td>
                         <td>@p.ExpeditionZone</td>
-                        <td>@p.RegistDetailFilePrintedFlag</td>
                         
                         @*<td><a asp-area="EvolDP" asp-controller="DocCode" asp-action="DocCodeLevel1" asp-route-doclayout="@p.DocLayout" asp-route-docsubtype="@p.DocType">Mais</a></td>*@
                     </tr>

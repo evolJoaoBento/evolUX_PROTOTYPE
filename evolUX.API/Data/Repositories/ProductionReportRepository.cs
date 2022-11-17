@@ -57,6 +57,7 @@ namespace evolUX.API.Data.Repositories
                     productionInfo.RegistDetailShortFileName = (string)r["RegistDetailShortFileName"];
                     productionInfo.RegistDetailFilePrinterSpecs = (string)r["RegistDetailFilePrinterSpecs"];
                     productionInfo.RegistDetailFilePrintedFlag = (bool)r["RegistDetailFilePrintedFlag"];
+                    productionInfo.FilePrintedFlag = (bool)r["FilePrintedFlag"];
                     productionInfo.ServiceTaskCode = (string)r["ServiceTaskCode"];
                     productionInfo.PrinterOperator = r["PrinterOperator"].ConvertFromDBVal<string>();
                     productionInfo.Printer = r["Printer"].ConvertFromDBVal<string>();

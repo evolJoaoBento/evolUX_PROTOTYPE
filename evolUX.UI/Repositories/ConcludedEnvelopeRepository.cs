@@ -1,6 +1,6 @@
-﻿using evolUX.API.BindingModels.Finishing;
-using Flurl.Http;
+﻿using Flurl.Http;
 using Flurl.Http.Configuration;
+using Shared.BindingModels.Finishing;
 using System.Data;
 using System.Net;
 
