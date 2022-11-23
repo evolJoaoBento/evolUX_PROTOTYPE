@@ -28,9 +28,11 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             _printService = printService;
         }
 
-        public async Task<IActionResult> Printing(string JsonSerializedProductionInfo, string FilePrinterSpecs, string FileName)
+        public async Task<IActionResult> Printing(string JsonSerializedProductionInfo, string FilePrinterSpecs, 
+            string FileName)
         {
             TempData["JsonSerializedProductionInfo"] = JsonSerializedProductionInfo;
+            
             ViewBag.FileName = FileName;
 
             string profileList = HttpContext.Session.GetString("evolDP/Profiles");
@@ -64,9 +66,10 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> Print(string Printer, string ServiceCompanyCode)
+        public async Task<IActionResult> Print(string Printer)
         {
             string JsonSerializedProductionInfo = (string)TempData["JsonSerializedProductionInfo"];
+            string ServiceCompanyCode = (string)TempData["ServiceCompanyCode"];
             ProductionInfo productionInfo = JsonConvert.DeserializeObject<ProductionInfo>(JsonSerializedProductionInfo);
             string username = User.Identity.Name;
             int userid = int.Parse(User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
@@ -74,7 +77,8 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                                               .SingleOrDefault());
             try
             {
-                ResultsViewModel result = await _printService.Print(productionInfo.RunID, productionInfo.FileID, Printer, ServiceCompanyCode,
+                ResultsViewModel result = await _printService.Print(productionInfo.RunID, productionInfo.FileID, Printer, 
+                    ServiceCompanyCode,
                             username, userid, productionInfo.FilePath, productionInfo.FileName, productionInfo.ShortFileName);
                 return View("ResponsePartialView", result);
             }

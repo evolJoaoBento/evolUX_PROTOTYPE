@@ -36,21 +36,21 @@ namespace evolUX.API.Areas.Finishing.Services
             FlowInfo flowinfo = await _repository.Print.GetFlow(serviceCompanyCode);
             IEnumerable<FlowParameter> flowparameters = await _repository.Print.GetFlowParameters(flowinfo.FlowID);
 
-            string query = "<START>EXEC RT_INSERT_INTO_FILE_LOG @RunID = @RUNID, @FileID = @FILEID, @RunStateName = 'SEND2PRINTER'</START>\r\n<END>EXEC RT_UPDATE_FILE_LOG_ENDTIMESTAMP @RunID = @RUNID, @FileID = @FILEID, @RunStateName = 'SEND2PRINTER', @ProcCountNr = @PROCCOUNTNR, @OutputPath = '@PRINTERNAME', @OutputName = '@USERNAME'</END>\r\n";
+            string query = "<START>EXEC RT_INSERT_INTO_FILE_LOG @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER''</START>\r\n<END>EXEC RT_UPDATE_FILE_LOG_ENDTIMESTAMP @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER'', @ProcCountNr = @PROCCOUNTNR, @OutputPath = ''@PRINTERNAME'', @OutputName = ''@USERNAME''</END>\r\n";
             
             foreach (FlowParameter p in flowparameters)
             {
-                p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/FILEPATH", filePath);
-                p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/FILENAME", fileName);
-                p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/RUNID", runID.ToString());
-                p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/FILEID", fileID.ToString());
-                p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/SHORTFILENAME", shortFileName);
-                p.ParameterValue.Replace("@PARAMETERS/ACTION/PRINTER", printer);
-                p.ParameterValue.Replace("@PARAMETERS/SYSTEM/LOGUSER", username);
-                p.ParameterValue.Replace("@PARAMETERS/ACTION/QUERY", query);
-                p.ParameterValue.Replace("select '", "");
-                p.ParameterValue.Replace("SELECT '", "");
-                p.ParameterValue.Replace(" '", "");
+                p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/FILEPATH ", filePath);
+                p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/FILENAME ", fileName);
+                p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/RUNID ", runID.ToString());
+                p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/FILEID ", fileID.ToString());
+                p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/SHORTFILENAME ", shortFileName);
+                p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/PRINTER ", printer);
+                p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/SYSTEM/LOGUSER ", username);
+                p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/QUERY ", query);
+                //p.ParameterValue = p.ParameterValue.Replace("select '", "");
+                //p.ParameterValue = p.ParameterValue.Replace("SELECT '", "");
+                //p.ParameterValue = p.ParameterValue.Replace(" '", "");
             }
             viewmodel.Results = await _repository.Print.TryPrint(flowparameters, flowinfo, userID);
             if (viewmodel.Results == null)

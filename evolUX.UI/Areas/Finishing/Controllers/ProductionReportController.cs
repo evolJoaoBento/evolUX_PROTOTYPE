@@ -71,6 +71,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             try
             {
                 ProductionReportViewModel result = await _productionReportService.GetProductionReport(RunID, ServiceCompanyID);
+                TempData["ServiceCompanyCode"] = result.ServiceCompanyCode;
                 ViewBag.RunName = RunName;
                 return View(result);
             }

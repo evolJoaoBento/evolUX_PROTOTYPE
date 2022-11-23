@@ -26,17 +26,17 @@
               data-ajax-update="response"
               data-ajax-loading="myLoader">
             
-            <select name="Description" asp-items="@(new SelectList(Model.Resources.Where(r => r.MatchFilter == true),nameof(ResourceInfo.ResID),nameof(ResourceInfo.Description),nameof(ResourceInfo.ResValue)))">
+            <select name="Printer" asp-items="@(new SelectList(Model.Resources.Where(r => r.MatchFilter == true),nameof(ResourceInfo.ResValue),nameof(ResourceInfo.Description)))">
             </select>
         </form>
-        <form id="all" style="display:none" asp-area="Finishing" asp-controller="Print" asp-action="Print"
+        <form id="all" style="display:none" asp-area="Finishing" asp-controller="Print" asp-action="Print" 
               data-ajax="true"
               data-ajax-method="POST"
               data-ajax-mode="replace"
               data-ajax-update="response"
               data-ajax-loading="myLoader">
 
-            <select name="Description" asp-items="@(new SelectList(Model.Resources,nameof(ResourceInfo.ResID),nameof(ResourceInfo.Description),nameof(ResourceInfo.ResValue)))">
+            <select name="Printer" asp-items="@(new SelectList(Model.Resources,nameof(ResourceInfo.ResValue),nameof(ResourceInfo.Description)))">
             </select>
         </form>
     </div>

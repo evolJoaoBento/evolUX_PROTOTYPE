@@ -98,7 +98,8 @@
                             @if (!p.RegistDetailFilePrintedFlag)
                             {
                                 <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print" 
-                                asp-action="Printing" asp-route-JsonSerializedProductionInfo="@JsonConvert.SerializeObject(p)" asp-route-FilePrinterSpecs=@p.FilePrinterSpecs>@p.FileName</a>
+                                asp-action="Printing" asp-route-JsonSerializedProductionInfo="@JsonConvert.SerializeObject(p)" 
+                                asp-route-FilePrinterSpecs=@p.FilePrinterSpecs>@p.FileName</a>
                             }
                             else
                             {
@@ -120,10 +121,12 @@
                                 pregist.FileName = p.RegistDetailFileName;
                                 pregist.ShortFileName = p.RegistShortFileName;
                                 pregist.FilePrinterSpecs = p.RegistDetailFilePrinterSpecs;
-                                pregist.ShortFileName = p.RegistShortFileName;                           
+                                pregist.ShortFileName = p.RegistShortFileName;
+                                <p/>                                
                                 @if(!p.RegistDetailFilePrintedFlag){
                                     <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print"
-                                    asp-action="Printing" asp-route-JsonSerializedProductionInfo="@JsonConvert.SerializeObject(pregist)" asp-route-FilePrinterSpecs=@pregist.FilePrinterSpecs>@pregist.FileName</a>
+                   asp-action="Printing" asp-route-jsonserializedproductioninfo=@JsonConvert.SerializeObject(pregist) 
+                   asp-route-fileprinterspecs=@pregist.FilePrinterSpecs>@pregist.FileName</a>
                                 }else{
                                     <div class="disabled">@pregist.FileName</div>
                                 }

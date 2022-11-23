@@ -156,6 +156,22 @@ namespace evolUX.API.Data.Repositories
             }
 
         }
-       
+
+        public async Task<string> GetServiceCompanyCode(int serviceCompanyID)
+        {
+            string sql = @" SELECT CompanyCode
+                            FROM RD_COMPANY
+                            WHERE CompanyID = @ServiceCompanyID";
+            var parameters = new DynamicParameters();
+            parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                //pass all servicecompany runid
+
+                string serviceCompanyCode = await connection.QueryFirstOrDefaultAsync<string>(sql, parameters);
+                return serviceCompanyCode;
+            }
+        }
     }
 }

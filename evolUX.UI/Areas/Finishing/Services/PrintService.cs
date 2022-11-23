@@ -67,6 +67,7 @@ namespace evolUX.UI.Areas.Finishing.Services
                 viewModel.ErrorResult = new ErrorResult();
                 viewModel.ErrorResult.Code = (int)ex.StatusCode;
                 viewModel.ErrorResult.Message = ex.Message;
+                viewModel.ErrorResult.StackTrace = ex.StackTrace;
                 throw new ErrorViewModelException(viewModel);
             }
             catch (HttpNotFoundException ex)

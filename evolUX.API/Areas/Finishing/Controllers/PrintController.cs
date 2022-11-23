@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Areas.Core.Services.Interfaces;
-//using Shared.Models.Areas.Finishing;
 using Shared.ViewModels.Areas.Finishing;
 using Shared.ViewModels.General;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
@@ -32,12 +31,12 @@ namespace evolUX.API.Areas.Finishing.Controllers
         [ActionName("Printers")]
         public async Task<ActionResult<ResoursesViewModel>> GetPrinters([FromBody] string ListJSON, [FromQuery] bool ignoreProfiles)
         {
-            List<string> list = JsonConvert.DeserializeObject<List<string>>(ListJSON);
-            string ProfileListJSON = list[0];
-            string FileSpecs = list[1];
-            IEnumerable<int> profileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
             try
             {
+                List<string> list = JsonConvert.DeserializeObject<List<string>>(ListJSON);
+                string ProfileListJSON = list[0];
+                string FileSpecs = list[1];
+                IEnumerable<int> profileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
                 ResoursesViewModel viewmodel = await _printService.GetPrinters(profileList, FileSpecs, ignoreProfiles);
                 _logger.LogInfo("Printers Get");
                 return Ok(viewmodel);
@@ -51,31 +50,29 @@ namespace evolUX.API.Areas.Finishing.Controllers
         }
         [HttpGet]
         [ActionName("Print")]
-        public async Task<ActionResult<ResultsViewModel>> Print([FromBody] string ListJSON)
+        public async Task<ActionResult<ResultsViewModel>> Print([FromBody] Dictionary<string, object> dictionary)
         {
-            Dictionary<string, object> dictionary = JsonConvert.DeserializeObject<Dictionary<string, object>>(ListJSON);
-            object obj;
-            dictionary.TryGetValue("Username", out obj);
-            string Username = (string)obj;
-            dictionary.TryGetValue("UserID", out obj);
-            int UserID = (int)obj;
-            dictionary.TryGetValue("FilePath", out obj);
-            string FilePath = (string)obj;
-            dictionary.TryGetValue("FileID", out obj);
-            int FileID = (int)obj;
-            dictionary.TryGetValue("RunID", out obj);
-            int RunID = (int)obj;
-            dictionary.TryGetValue("Printer", out obj);
-            string Printer = (string)obj;
-            dictionary.TryGetValue("ServiceCompanyCode", out obj);
-            string ServiceCompanyCode = (string)obj;
-            dictionary.TryGetValue("FileName", out obj);
-            string FileName = (string)obj;
-            dictionary.TryGetValue("ShortFileName", out obj);
-            string ShortFileName = (string)obj;
-
             try
             {
+                object obj;
+                dictionary.TryGetValue("Username", out obj);
+                string Username = Convert.ToString(obj);
+                dictionary.TryGetValue("UserID", out obj);
+                int UserID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("FilePath", out obj);
+                string FilePath = Convert.ToString(obj);
+                dictionary.TryGetValue("FileID", out obj);
+                int FileID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("RunID", out obj);
+                int RunID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("Printer", out obj);
+                string Printer = Convert.ToString(obj);
+                dictionary.TryGetValue("ServiceCompanyCode", out obj);
+                string ServiceCompanyCode = Convert.ToString(obj);
+                dictionary.TryGetValue("FileName", out obj);
+                string FileName = Convert.ToString(obj);
+                dictionary.TryGetValue("ShortFileName", out obj);
+                string ShortFileName = Convert.ToString(obj); 
                 ResultsViewModel viewmodel = await _printService.Print(RunID, FileID, Printer, ServiceCompanyCode, 
                     Username, UserID, FilePath, FileName, ShortFileName);
                 _logger.LogInfo("Print Get");
@@ -85,7 +82,10 @@ namespace evolUX.API.Areas.Finishing.Controllers
             {
                 //log error
                 _logger.LogError($"Something went wrong inside Get Printers action: {ex.Message}");
-                return StatusCode(500, "Internal Server Error");
+                //return StatusCode(500, "Internal Server Error");
+                return Problem(
+                    detail: ex.StackTrace,
+                    title: ex.Message);
             }
         }
 

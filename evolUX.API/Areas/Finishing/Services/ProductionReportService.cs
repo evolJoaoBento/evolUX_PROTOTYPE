@@ -16,22 +16,37 @@ namespace evolUX.API.Areas.Finishing.Services
 
         public async Task<IEnumerable<ProductionInfo>> GetProductionDetailReport(int runID, int serviceCompanyID, int paperMediaID, int stationMediaID, int expeditionType, string expCode, bool hasColorPages)
         {
-            IEnumerable<ProductionInfo> productionRunReport = await _repository.ProductionReport.GetProductionDetailReport(runID,  serviceCompanyID, paperMediaID, stationMediaID,  expeditionType, expCode, hasColorPages);
-            if (productionRunReport == null)
+            
+            IEnumerable<ProductionInfo> productionReport = await _repository.ProductionReport.GetProductionDetailReport(runID,  serviceCompanyID, paperMediaID, stationMediaID,  expeditionType, expCode, hasColorPages);
+            if (productionReport == null)
             {
 
             }
-            return productionRunReport;
+           
+
+            return productionReport;
         }
 
-        public async Task<IEnumerable<ProductionDetailInfo>> GetProductionReport(int runID, int serviceCompanyID)
+        public async Task<ProductionReportViewModel> GetProductionReport(int runID, int serviceCompanyID)
         {
-            IEnumerable<ProductionDetailInfo> productionRunReport = await _repository.ProductionReport.GetProductionReport(runID, serviceCompanyID);
-            if (productionRunReport == null)
+            IEnumerable<ProductionDetailInfo> productionReport = await _repository.ProductionReport.GetProductionReport(runID, serviceCompanyID);
+            if (productionReport == null)
             {
 
             }
-            return productionRunReport;
+            string serviceCompanyCode = await _repository.ProductionReport.GetServiceCompanyCode(serviceCompanyID);
+            if (serviceCompanyCode == null)
+            {
+
+            }
+            ProductionReportViewModel viewmodel = new ProductionReportViewModel();
+            viewmodel.ProductionReport = productionReport;
+            viewmodel.ServiceCompanyCode = serviceCompanyCode;
+            foreach (ProductionDetailInfo pdi in viewmodel.ProductionReport)
+            {
+                pdi.ProductionDetailReport = await _repository.ProductionReport.GetProductionDetailReport(runID, serviceCompanyID, pdi.PaperMediaID, pdi.StationMediaID, pdi.ExpeditionType, pdi.ExpCode, pdi.HasColorPages);
+            }
+            return viewmodel;
         }
 
         public async Task<IEnumerable<ProductionRunInfo>> GetProductionRunReport(DataTable ServiceCompanyList)

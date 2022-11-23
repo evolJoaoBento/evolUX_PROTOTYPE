@@ -12,10 +12,15 @@
     <p>
         <strong>Request ID:</strong> <code>@Model?.RequestID</code>
     </p>
-    <p>
-        <strong>Status Code:</strong> <code>@Model?.ErrorResult?.Code</code>
-        <strong>Message:</strong> @Model?.ErrorResult?.Message
-    </p>
+    <environment names="Development">
+        <p>
+            <strong>Status Code:</strong> <code>@Model?.ErrorResult?.Code</code>
+            <strong>Message:</strong> @Model?.ErrorResult?.Message
+        </p>
+        <p>
+            <strong>Stack Trace:</strong> <code>@Model?.ErrorResult?.Code</code>
+        </p>
+    </environment>
 }
 
 <h3>Development Mode</h3>

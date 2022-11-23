@@ -57,7 +57,7 @@ namespace evolUX.API.Data.Repositories
                             ON fServiceCompany.FlowID = f.FlowID AND fServiceCompany.CriteriaName = 'SERVICECOMPANYCODE'
                             WHERE f.[Enable] = 1 -- Fluxo Ativo
                                AND fType.CriteriaValue = 'PRINT'
-                            AND fServiceCompany.CriteriaValue = '@ServiceCompanyCode'
+                            AND fServiceCompany.CriteriaValue = @ServiceCompanyCode
                             ORDER BY f.FlowID ASC";
             /*
              *                 -- 'RECOVER' - Recuperações
@@ -67,7 +67,7 @@ namespace evolUX.API.Data.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("ServiceCompanyCode", serviceCompanyCode, DbType.String);
 
-            using (var connection = _context.CreateConnectionEvolDP())
+            using (var connection = _context.CreateConnectionEvolFlow())
             {
                 //pass all servicecompany runid
 
@@ -84,7 +84,7 @@ namespace evolUX.API.Data.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("FlowID", flowID, DbType.Int32);
 
-            using (var connection = _context.CreateConnectionEvolDP())
+            using (var connection = _context.CreateConnectionEvolFlow())
             {
                 //pass all servicecompany runid
 
@@ -95,7 +95,7 @@ namespace evolUX.API.Data.Repositories
 
         public async Task<IEnumerable<Result>> TryPrint(IEnumerable<FlowParameter> flowparameters, FlowInfo flowinfo, int userID)
         {
-            using (var transactionScope = new TransactionScope())
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 string sql = @"REGIST_NEW_JOB";
                 var parameters = new DynamicParameters();
@@ -103,22 +103,26 @@ namespace evolUX.API.Data.Repositories
                 parameters.Add("Priority", flowinfo.Priority, DbType.Int32);
                 parameters.Add("Description", "PRINT", DbType.String);
                 parameters.Add("UserID", userID, DbType.Int32);
+                parameters.Add("@JobID", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
 
                 using (var connection = _context.CreateConnectionEvolFlow())
                 {
                     //pass all servicecompany runid
 
-                    int JobID = await connection.QueryFirstOrDefaultAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
+                    await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                    int JobID = parameters.Get<int>("@JobID");
 
                     foreach (FlowParameter p in flowparameters)
                     {
                         sql = @"   INSERT INTO JOB_DATA(JobID, ParameterNr, ParameterName, ParameterValue)
-                                SELECT @JobID, ISNULL(MAX(ParameterNr),0)+1, '@ParameterName','@ParameterValue'
+                                SELECT @JobID, ISNULL(MAX(ParameterNr),0)+1, @ParameterName, (" + p.ParameterValue + @")
                                 FROM JOB_DATA WHERE JobID = @JobID";
                         parameters = new DynamicParameters();
                         parameters.Add("JobID", JobID, DbType.Int32);
                         parameters.Add("ParameterName", p.ParameterName, DbType.String);
-                        parameters.Add("ParameterValue", p.ParameterValue, DbType.String);
+                        //sql = sql.Replace("@ParameterValue", "(" + p.ParameterValue + ")");
+                        //parameters.Add("ParameterValue", p.ParameterValue, DbType.String);
+
                         int rowsAffected = await connection.ExecuteAsync(sql, parameters, commandType: CommandType.Text);
                         if (rowsAffected <= 0)
                         {

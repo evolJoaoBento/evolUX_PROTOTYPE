@@ -55,12 +55,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
         {
             try
             {
-                ProductionReportViewModel viewmodel = new ProductionReportViewModel();
-                viewmodel.ProductionReport = await _productionReportService.GetProductionReport(RunID, ServiceCompanyID);
-                foreach(ProductionDetailInfo pdi in viewmodel.ProductionReport)
-                {
-                    pdi.ProductionDetailReport = await _productionReportService.GetProductionDetailReport(RunID,ServiceCompanyID,pdi.PaperMediaID,pdi.StationMediaID,pdi.ExpeditionType,pdi.ExpCode,pdi.HasColorPages);
-                }
+                ProductionReportViewModel viewmodel = await _productionReportService.GetProductionReport(RunID, ServiceCompanyID);
                 _logger.LogInfo("ProductionReport Get");
                 return Ok(viewmodel);
             }
