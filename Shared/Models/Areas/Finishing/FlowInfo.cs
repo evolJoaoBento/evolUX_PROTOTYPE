@@ -4,5 +4,6 @@
     {
         public int FlowID { get; set; }
         public int Priority { get; set; }
+        public string FlowName { get; set; }
     }
 }

@@ -16,37 +16,44 @@
 </div><div class="d-flex justify-content-center">
     <h4 class="display-6 text-center">@ViewBag.FileName</h4>
 </div>
-<div class="my-5">
-    <div class ="d-flex justify-content-center my-1">
+<div class="my-5 d-flex justify-content-center">
+    <div class=" my-1 d-flex justify-content-center">
         <b class="mx-3">Printer</b>
         <form id="some" asp-area="Finishing" asp-controller="Print" asp-action="Print"
-              data-ajax="true"
-              data-ajax-method="POST"
-              data-ajax-mode="replace"
-              data-ajax-update="response"
-              data-ajax-loading="myLoader">
-            
+                data-ajax="true"
+                data-ajax-method="POST"
+                data-ajax-mode="replace"
+                data-ajax-update="#response"
+                data-ajax-loading="myLoader">
+
             <select name="Printer" asp-items="@(new SelectList(Model.Resources.Where(r => r.MatchFilter == true),nameof(ResourceInfo.ResValue),nameof(ResourceInfo.Description)))">
             </select>
+            <p class="my-3 d-flex justify-content-center"><input type="submit" name="Submit" class="btn btn-block btn-primary" /></p>
+
         </form>
-        <form id="all" style="display:none" asp-area="Finishing" asp-controller="Print" asp-action="Print" 
-              data-ajax="true"
-              data-ajax-method="POST"
-              data-ajax-mode="replace"
-              data-ajax-update="response"
-              data-ajax-loading="myLoader">
+        <form id="all" style="display:none" asp-area="Finishing" asp-controller="Print" asp-action="Print"
+                data-ajax="true"
+                data-ajax-method="POST"
+                data-ajax-mode="replace"
+                data-ajax-update="#response"
+                data-ajax-loading="myLoader">
 
             <select name="Printer" asp-items="@(new SelectList(Model.Resources,nameof(ResourceInfo.ResValue),nameof(ResourceInfo.Description)))">
             </select>
+            <p class="my-3 d-flex justify-content-center"><input type="submit" name="Submit" class="btn btn-block btn-success" /></p>
+
         </form>
     </div>
-    <div class="checkbox d-flex justify-content-center">
-        <label>All Printers @Html.CheckBox("check", false)</label>
+    <div class="checkbox mx-3 my-1">
+        <label> @Html.CheckBox("check", false) All Printers</label>
     </div>
-    <div class ="d-flex justify-content-center">
+    
+    @*<div class ="d-flex justify-content-center">
         <button type="button" class="btn btn-primary" id="submit">Submit Print</button>
+    </div>*@
+    <div id="response" class="d-flex justify-content-center">
+        
     </div>
-    <div id="response"></div>
 </div>
 @section Scripts
 {

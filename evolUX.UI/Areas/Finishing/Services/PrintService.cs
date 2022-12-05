@@ -8,6 +8,7 @@ using Shared.ViewModels.General;
 using System.Data;
 using System.Reflection;
 using Shared.Models.Areas.Core;
+using Shared.Models.General;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
@@ -48,12 +49,12 @@ namespace evolUX.UI.Areas.Finishing.Services
             }
         }
 
-        public async Task<ResultsViewModel> Print(int runID, int fileID, string printer, string serviceCompanyCode,
+        public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode,
             string username, int userID, string filePath, string fileName, string shortFileName)
         {
             try
             {
-                ResultsViewModel response = await _printRepository.Print(runID, fileID, printer, serviceCompanyCode,
+                Result response = await _printRepository.Print(runID, fileID, printer, serviceCompanyCode,
                             username, userID, filePath, fileName, shortFileName);
                 return response;
             }

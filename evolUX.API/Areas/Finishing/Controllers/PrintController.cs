@@ -15,12 +15,10 @@ namespace evolUX.API.Areas.Finishing.Controllers
     [ApiController]
     public class PrintController : ControllerBase
     {
-        private readonly IWrapperRepository _repository;
         private readonly ILoggerService _logger;
         private readonly IPrintService _printService;
         public PrintController(IWrapperRepository repository, ILoggerService logger, IPrintService printService)
         {
-            _repository = repository;
             _logger = logger;
             _printService = printService;
         }
@@ -29,7 +27,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
         //THE SERVICECOMPANYLIST SHOULD USE A SESSION VARIABLE IN THE UI LAYER
         [HttpGet]
         [ActionName("Printers")]
-        public async Task<ActionResult<ResoursesViewModel>> GetPrinters([FromBody] string ListJSON, [FromQuery] bool ignoreProfiles)
+        public async Task<ActionResult<ResoursesViewModel>> GetPrinters([FromBody] string ListJSON,
+                                                                        [FromQuery] bool ignoreProfiles)
         {
             try
             {
@@ -73,7 +72,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 string FileName = Convert.ToString(obj);
                 dictionary.TryGetValue("ShortFileName", out obj);
                 string ShortFileName = Convert.ToString(obj); 
-                ResultsViewModel viewmodel = await _printService.Print(RunID, FileID, Printer, ServiceCompanyCode, 
+                Result viewmodel = await _printService.Print(RunID, FileID, Printer, ServiceCompanyCode, 
                     Username, UserID, FilePath, FileName, ShortFileName);
                 _logger.LogInfo("Print Get");
                 return Ok(viewmodel);

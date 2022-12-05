@@ -16,6 +16,7 @@ using System.Reflection;
 using Shared.Models.Areas.Finishing;
 using static Dapper.SqlMapper;
 using System.Security.Claims;
+using Shared.Models.General;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
@@ -77,14 +78,14 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                                               .SingleOrDefault());
             try
             {
-                ResultsViewModel result = await _printService.Print(productionInfo.RunID, productionInfo.FileID, Printer, 
+                Result result = await _printService.Print(productionInfo.RunID, productionInfo.FileID, Printer, 
                     ServiceCompanyCode,
                             username, userid, productionInfo.FilePath, productionInfo.FileName, productionInfo.ShortFileName);
-                return View("ResponsePartialView", result);
+                return PartialView("ResponsePartialView", result);
             }
             catch (ErrorViewModelException ex)
             {
-                return View("Error", ex.ViewModel);
+                return PartialView("Error", ex.ViewModel);
             }
             catch (HttpUnauthorizedException ex)
             {

@@ -14,12 +14,10 @@ namespace evolUX.API.Areas.Finishing.Controllers{
     [ApiController]
     public class RecuperationController : ControllerBase
     {
-        private readonly IWrapperRepository _repository;
         private readonly ILoggerService _logger;
         private readonly IRecuperationRepository _recuperationService;
         public RecuperationController(IWrapperRepository repository, ILoggerService logger, IRecuperationRepository recuperationService)
         {
-            _repository = repository;
             _logger = logger;
             _recuperationService = recuperationService;
         }

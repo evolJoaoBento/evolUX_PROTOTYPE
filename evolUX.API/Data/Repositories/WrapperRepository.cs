@@ -20,6 +20,7 @@ namespace evolUX.API.Data.Repositories
         private IConcludedPrintRepository _concludedPrint;
         private IConcludedEnvelopeRepository _concludedEnvelope;
         private IRecuperationRepository _recuperation;
+        private IPendingRegistriesRepository  _pendingRegistriesRepository;
 
 
         public WrapperRepository(DapperContext context)
@@ -191,6 +192,17 @@ namespace evolUX.API.Data.Repositories
                     _recuperation = new RecuperationRepository(_context);
                 }
                 return _recuperation;
+            }
+        }
+        public IPendingRegistriesRepository PendingRegistries
+        {
+            get
+            {
+                if(_pendingRegistriesRepository == null)
+                {
+                    _pendingRegistriesRepository = new PendingRegistriesRepository(_context);
+                }
+                return _pendingRegistriesRepository;
             }
         }
 

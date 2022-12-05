@@ -22,7 +22,8 @@ namespace evolUX.API.Data.Repositories
         //SUM TOTAL AND DYNAMICS
         //FOR REFERENCE https://www.faqcode4u.com/faq/530844/dapper-mapping-dynamic-pivot-columns-from-stored-procedure
         //              https://stackoverflow.com/questions/8229927/looping-through-each-element-in-a-datarow
-        public async Task<IEnumerable<ResourceInfo>> GetPrinters(IEnumerable<int> profileList, string filesSpecs, bool ignoreProfiles)
+        public async Task<IEnumerable<ResourceInfo>> GetPrinters(IEnumerable<int> profileList, string filesSpecs,
+                    bool ignoreProfiles)
         {
             string sql = @"evolUX_RESOURCE_BY_FILTER";
             /*
@@ -47,7 +48,7 @@ namespace evolUX.API.Data.Repositories
 
         public async Task<FlowInfo> GetFlow(string serviceCompanyCode)
         {
-            string sql = @" SELECT f.FlowID, f.DefaultPriority Priority
+            string sql = @" SELECT f.FlowID, f.DefaultPriority Priority, f.FlowName
                             FROM FLOWS f WITH(NOLOCK)
                             INNER JOIN
                                 FLOWS_CRITERIA fType WITH(NOLOCK)
@@ -93,7 +94,7 @@ namespace evolUX.API.Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<Result>> TryPrint(IEnumerable<FlowParameter> flowparameters, FlowInfo flowinfo, int userID)
+        public async Task<Result> TryPrint(IEnumerable<FlowParameter> flowparameters, FlowInfo flowinfo, int userID)
         {
             using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -101,7 +102,7 @@ namespace evolUX.API.Data.Repositories
                 var parameters = new DynamicParameters();
                 parameters.Add("FlowID", flowinfo.FlowID, DbType.Int32);
                 parameters.Add("Priority", flowinfo.Priority, DbType.Int32);
-                parameters.Add("Description", "PRINT", DbType.String);
+                parameters.Add("Description", flowinfo.FlowName, DbType.String);
                 parameters.Add("UserID", userID, DbType.Int32);
                 parameters.Add("@JobID", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
 
@@ -145,11 +146,9 @@ namespace evolUX.API.Data.Repositories
                 transactionScope.Complete();
             }
             Result result = new Result();
-            List<Result> results = new List<Result>();
             result.ResultID = 0;
             result.Resultstr = "Print Successfull!";
-            results.Add(result);
-            return results;
+            return result;
            
         }
 

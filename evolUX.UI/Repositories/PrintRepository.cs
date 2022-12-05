@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Data;
 using System.Net;
 using Shared.ViewModels.General;
+using Shared.Models.General;
 
 namespace evolUX.UI.Repositories
 {
@@ -35,7 +36,7 @@ namespace evolUX.UI.Repositories
             return await response.GetJsonAsync<ResoursesViewModel>();
         }
         
-        public async Task<ResultsViewModel> Print(int runID, int fileID, string printer, string serviceCompanyCode, 
+        public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode, 
             string username, int userID, string filePath, string fileName, string shortFileName)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
@@ -59,7 +60,7 @@ namespace evolUX.UI.Repositories
             //     .GetAsync();
             if (response.StatusCode == ((int)HttpStatusCode.NotFound)) throw new HttpNotFoundException(response);
             if (response.StatusCode == ((int)HttpStatusCode.Unauthorized)) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<ResultsViewModel>();
+            return await response.GetJsonAsync<Result>();
         }
 
     }

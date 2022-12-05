@@ -30,6 +30,8 @@
 
         IRecuperationRepository Recuperation { get; }
 
+        IPendingRegistriesRepository PendingRegistries { get; }
+
 
     }
 }
