@@ -55,8 +55,9 @@ namespace evolUX.API.Areas.Finishing.Services
             Result viewmodel = await _repository.Print.TryPrint(flowparameters, flowinfo, userID);
             if (viewmodel == null)
             {
-                
+                throw new NullReferenceException("No result was sent by the Database!");
             }
+            await _repository.Print.LogSentToPrinter(runID, fileID);
             return viewmodel;
         }
     }

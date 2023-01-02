@@ -72,6 +72,7 @@ namespace evolUX.API.Data.Repositories
                     productionInfo.ExpCompanyCode = (string)r["ExpCompanyCode"];
                     productionInfo.ExpCenterCode = (string)r["ExpCenterCode"];//expCenterCode
                     productionInfo.ExpeditionZone = (string)r["ExpZone"];
+                    productionInfo.ExpeditionType = (string)r["ExpType"];
 
                     for (int i = 21; i < dt.Columns.Count; i++)
                     {
@@ -139,19 +140,7 @@ namespace evolUX.API.Data.Repositories
                 //conn.Close();
                 //da.Dispose();
 
-                IEnumerable<ProductionRunInfo> productionRunReport = await connection.QueryAsync<ProductionRunInfo, ProductionRunDetail,
-                            ProductionRunDetail, ProductionRunDetail, ProductionRunDetail, ProductionRunDetail, ProductionRunDetail,
-                            ProductionRunInfo>(sql, (r, d1, d2, d3, d4, d5, d6) =>
-                {
-                    ProductionRunInfo runInfo = r;
-                    runInfo.Processed = d1;
-                    runInfo.ToPrint = d2;
-                    runInfo.S2Printer = d3;
-                    runInfo.Printed = d4;
-                    runInfo.FullFill = d5;
-                    runInfo.Expedition = d6;
-                    return runInfo;
-                }, parameters, commandType: CommandType.StoredProcedure, splitOn: "TotalProcessed, TotalToPrint, TotalS2Printer, TotalPrinted, TotalFullFill, TotalExpedition");
+                IEnumerable<ProductionRunInfo> productionRunReport = await connection.QueryAsync<ProductionRunInfo>(sql, parameters, commandType: CommandType.StoredProcedure);
                 return productionRunReport;
             }
 
@@ -173,5 +162,7 @@ namespace evolUX.API.Data.Repositories
                 return serviceCompanyCode;
             }
         }
+
+        
     }
 }

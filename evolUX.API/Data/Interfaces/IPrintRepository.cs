@@ -12,5 +12,6 @@ namespace evolUX.API.Data.Interfaces
         public Task<FlowInfo> GetFlow(string ServiceCompanyCode);
         public Task<IEnumerable<FlowParameter>> GetFlowParameters(int flowID);
         public Task<Result> TryPrint(IEnumerable<FlowParameter> flowparameters, FlowInfo flowinfo, int userID);
+        public Task LogSentToPrinter(int runID, int fileID);
     }
 }

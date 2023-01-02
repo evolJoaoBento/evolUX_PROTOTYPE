@@ -11,6 +11,7 @@ using evolUX.UI.Exceptions;
 using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
+using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
@@ -29,6 +30,15 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             try
             {
                 ProductionRunReportViewModel result = await _productionReportService.GetProductionRunReport(ServiceCompanyList);
+                DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanies"));
+                if (ServiceCompanyDT.Rows.Count>1)
+                {
+                    ViewBag.hasMultipleServiceCompanies = true;
+                }
+                else
+                {
+                    ViewBag.hasMultipleServiceCompanies = false;
+                }
                 return View(result);
             }
             catch (FlurlHttpException ex)

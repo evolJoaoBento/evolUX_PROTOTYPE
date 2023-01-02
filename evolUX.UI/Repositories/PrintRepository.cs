@@ -63,5 +63,6 @@ namespace evolUX.UI.Repositories
             return await response.GetJsonAsync<Result>();
         }
 
+
     }
 }

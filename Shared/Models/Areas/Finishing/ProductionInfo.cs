@@ -27,6 +27,7 @@
         public string ExpCenterCode { get; set; }
         public string ExpCenterCodeDesc { get; set; }
         public string ExpeditionZone { get; set; }
+        public string ExpeditionType { get; set; }
         public bool FilePrintedFlag { get; set; }
         public bool RegistDetailFilePrintedFlag { get; set; }
         public Dictionary<string, int> PaperTotals { get; set; }

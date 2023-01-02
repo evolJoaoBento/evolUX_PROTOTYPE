@@ -183,3 +183,69 @@ footer {
 footer div{
     margin-right:10px;
 }
+
+:root {
+    --purple: rgb(149,140,255);
+    --darkpurple: rgb(99,98,178);
+    --purpleborder: rgb(99,98,178);
+    --lightblue: rgb(84,195,237);
+    --lighterblue: rgb(131,207,234);
+    --lightergrey: #e6e6e6;
+    --lightestgrey: #f7f7f7;
+    --orange: #F47E48;
+    --lightorange: #F2B69D;
+    --darkerborder: rgba(0,0,0,0.1);
+    --darkestgrey: rgb(82, 82, 82);
+    --offblack: rgb(38, 38, 38);
+}
+
+#bootstrap-overrides th {
+    /*border: 1px rgb(99,98,178) solid;*/
+    border: 1px solid var(--darkerborder);
+    z-index: 1;
+    /*background-color: rgb(127,126,229);*/
+    background-color: var(--lightestgrey);
+    color: var(--darkestgrey);
+    font-family: sans-serif;
+    /*background-image: linear-gradient(90deg, rgba(255,255,255,.07) 50%, transparent 50%), linear-gradient(90deg, rgba(255,255,255,.13) 50%, transparent 50%), linear-gradient(90deg, transparent 50%, rgba(255,255,255,.17) 50%), linear-gradient(90deg, transparent 50%, rgba(255,255,255,.19) 50%);
+        background-size: 13px, 29px, 37px, 53px;*/
+    /*background: rgb(99,98,178);
+        background: linear-gradient(90deg, rgba(99,98,178,1) 0%, rgba(84,195,237,1) 100%);*/
+}
+
+#bootstrap-overrides-light th {
+    /*background-color: rgb(149,140,255);*/
+    background-color: lightgray;
+    
+    /*border: 1px rgb(99,98,178) solid;*/
+    z-index: 1;
+}
+
+#bootstrap-overrides td {
+    border: 1px solid var(--darkerborder);
+}
+
+.table-div {
+    overflow-y: scroll;
+    overflow-x: scroll;
+    height: auto;
+    max-height: 350px;
+    width: auto;
+}
+
+.table-collapse-seperate {
+    border-collapse: separate;
+    border-spacing: 0px;
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+}
+
+.headcol {
+    position: sticky;
+    left: 0px;
+    top: auto;
+}

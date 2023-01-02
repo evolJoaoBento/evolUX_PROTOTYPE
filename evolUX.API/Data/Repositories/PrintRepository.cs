@@ -152,6 +152,20 @@ namespace evolUX.API.Data.Repositories
            
         }
 
+        public async Task LogSentToPrinter(int runID, int fileID)
+        {
+            string sql = @"RT_INSERT_INTO_FILE_LOG";
+            var parameters = new DynamicParameters();
+            parameters.Add("RunID", runID, DbType.Int64);
+            parameters.Add("FileID", runID, DbType.Int64);
+            parameters.Add("RunStateName", "SEND2PRINTER", DbType.String);
 
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                //pass all servicecompany runid
+
+                await connection.QueryAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
     }
 }

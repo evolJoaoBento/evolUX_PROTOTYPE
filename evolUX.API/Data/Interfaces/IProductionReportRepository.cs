@@ -11,5 +11,6 @@ namespace evolUX.API.Data.Interfaces
         public Task<IEnumerable<ProductionInfo>> GetProductionDetailReport(int runID, int serviceCompanyID, int paperMediaID, int stationMediaID, int expeditionType, string expCode, bool hasColorPages);
         public Task<IEnumerable<ProductionDetailInfo>> GetProductionReport(int runID, int serviceCompanyID);
         public Task<string> GetServiceCompanyCode(int serviceCompanyID);
+        
     }
 }
