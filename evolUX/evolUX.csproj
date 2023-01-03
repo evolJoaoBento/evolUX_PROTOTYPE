@@ -41,6 +41,7 @@
     <Folder Include="Controllers\" />
     <Folder Include="Extensions\" />
     <Folder Include="Helpers\" />
+    <Folder Include="evolDP scripts\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -80,7 +80,7 @@ WHERE d.DocLayout = @DOCLAYOUT
         {
             var docCodeList = new List<dynamic>();
             string sql = @"SET NOCOUNT ON
-IF (NOT EXISTS(SELECT TOP 1 * FROM RD_DOCCODE_CONFIG WITH(NOLOCK)
+IF (NOT EXISTS(SELECT TOP 1 1 FROM RD_DOCCODE_CONFIG WITH(NOLOCK)
 	WHERE DocCodeID = @DOCCODEID))
 BEGIN
 	SELECT '<DOCCODEID>' + cast(d.DocCodeID as varchar) + '</DOCCODEID><DATA>0</DATA>'  as l_queryItem,

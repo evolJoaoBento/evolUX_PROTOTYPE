@@ -52,7 +52,7 @@ namespace evolUX.UI.Areas.Core.Controllers
         [Authorize(AuthenticationSchemes = NegotiateDefaults.AuthenticationScheme)]
         public async Task<IActionResult> LoginWindowsAuthentication(string returnUrl)
         {
-            var username = User.Identity?.Name?.Split("\\")[1];
+            var username = User.Identity?.Name;
             //chamada à api para ter o jwt e o user
             var response = await _authService.GetTokenAndUser(username);
             //var header = response.Headers.FirstOrDefault(h => h.Name == "").Value;
