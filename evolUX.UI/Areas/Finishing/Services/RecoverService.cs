@@ -5,39 +5,39 @@ using System.Data;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
-    public class RecuperationService : IRecuperationService
+    public class RecoverService : IRecoverService
     {
-        private readonly IRecuperationRepository _recuperationRepository;
-        public RecuperationService(IRecuperationRepository recuperationRepository)
+        private readonly IRecoverRepository _recoverRepository;
+        public RecoverService(IRecoverRepository recoverRepository)
         {
-            _recuperationRepository = recuperationRepository;
+            _recoverRepository = recoverRepository;
         }
 
         public async Task<IFlurlResponse> RegistDetailRecover(string StartBarcode, string EndBarcode, string user, DataTable ServiceCompanyList, bool PermissionLevel)
         {
-            var response = await _recuperationRepository.RegistDetailRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
+            var response = await _recoverRepository.RegistDetailRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
             return response;
         }
 
         public async Task<IFlurlResponse> RegistPartialRecover(string StartBarcode, string EndBarcode, string user, DataTable ServiceCompanyList, bool PermissionLevel)
         {
-            var response = await _recuperationRepository.RegistPartialRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
+            var response = await _recoverRepository.RegistPartialRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
             return response;
         }
 
         public async Task<IFlurlResponse> RegistTotalRecover(string FileBarcode, string user, DataTable ServiceCompanyList, bool PermissionLevel)
         {
-            var response = await _recuperationRepository.RegistTotalRecover(FileBarcode, user, ServiceCompanyList, PermissionLevel);
+            var response = await _recoverRepository.RegistTotalRecover(FileBarcode, user, ServiceCompanyList, PermissionLevel);
             return response;
         }
         public async Task<IFlurlResponse> GetPendingRecoveries(int ServiceCompanyID)
         {
-            var response = await _recuperationRepository.GetPendingRecoveries(ServiceCompanyID);
+            var response = await _recoverRepository.GetPendingRecoveries(ServiceCompanyID);
             return response;
         }
         public async Task<IFlurlResponse> GetPendingRecoveriesRegistDetail(int ServiceCompanyID)
         {
-            var response = await _recuperationRepository.GetPendingRecoveriesRegistDetail(ServiceCompanyID);
+            var response = await _recoverRepository.GetPendingRecoveriesRegistDetail(ServiceCompanyID);
             return response;
         }
     }

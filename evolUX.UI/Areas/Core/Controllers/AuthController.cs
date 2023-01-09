@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Models.Areas.Core;
@@ -218,8 +219,14 @@ namespace evolUX.UI.Areas.Core.Controllers
             };
             Response.Cookies.Append("X-Access-Token", JWToken, cookieOptions);
         }
-         private async Task GetSessionVariables(AuthenticateResponse user)
+        private async Task GetSessionVariables(AuthenticateResponse user)
         {
+            if (!string.IsNullOrEmpty(user.Language))
+            {
+                Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(user.Language)),
+                    new CookieOptions { Expires = DateTimeOffset.Now.AddDays(30) });
+            }
+
             Dictionary<string, string> dictionary = await _authService.GetSessionVariables(user.Id);
             if (dictionary.IsNullOrEmpty())
             {

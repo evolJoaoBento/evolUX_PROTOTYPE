@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.Extensions.Options;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,7 +64,21 @@ builder.Services.AddControllersWithViews(options =>
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
-
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddMvc()
+    .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
+    .AddDataAnnotationsLocalization();
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+    {
+        var supportedCultures = new List<CultureInfo> {
+            new CultureInfo("pt"),
+            new CultureInfo("en")
+            };
+        options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("pt");
+        options.SupportedCultures = supportedCultures;
+        options.SupportedUICultures= supportedCultures;
+    }
+    );
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -80,7 +96,13 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization(); 
+app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 app.UseSession();
+//var supportedCultures = new[] { "pt", "es" };
+//var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures.First())
+//    .AddSupportedCultures(supportedCultures)
+//    .AddSupportedUICultures(supportedCultures);
+//app.UseRequestLocalization(localizationOptions);
 
 app.MapControllerRoute(
     name: "MyAreas",

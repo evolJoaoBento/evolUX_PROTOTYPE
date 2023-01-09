@@ -1,8 +1,15 @@
 IF NOT EXISTS(SELECT * FROM sys.columns
+WHERE Name = N'Language' AND OBJECT_ID = OBJECT_ID(N'USERS'))
+BEGIN
+	ALTER TABLE dbo.ACTIONS
+	ADD [Language] varchar(50) NULL DEFAULT (0)
+END
+GO
+IF NOT EXISTS(SELECT * FROM sys.columns
 WHERE Name = N'LocalizationKey' AND OBJECT_ID = OBJECT_ID(N'ACTIONS'))
 BEGIN
 	ALTER TABLE dbo.ACTIONS
-	ADD [LocalizationKey] varchar(50) NULL DEFAULT (0)
+	ADD [LocalizationKey] varchar(255) NULL DEFAULT (0)
 END
 GO
 IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[evolUX_GET_MENU]') AND type in (N'P', N'PC'))
@@ -17,7 +24,7 @@ BEGIN
 	SET NOCOUNT ON
 	SELECT DISTINCT x.[ActionIDLevel1], x.[DescriptionLevel1], x.[LocalizationKeyLevel1], x.ActionIDLevel2, x.[DescriptionLevel2], x.[LocalizationKeyLevel2], x.[URLLevel2], z.[ActionID] as [ActionIDLevel3], z.[Description] as [DescriptionLevel3], z.[LocalizationKey] as [LocalizationKeyLevel3], z.[URL] as [URLLevel3], x.ActionOrder [ActionOrderLevel2], ISNULL(z.ActionOrder, x.ActionOrder) [ActionOrderLevel1] 
 	FROM 
-		(SELECT pa.ActionID as [ActionIDLevel1], pa.[Description] as [DescriptionLevel1], pa.[LocalizationKey] as [LocalizationKeyLevel1], a.ActionID as [ActionIDLevel2], a.[Description] as [DescriptionLevel2], a.[LocalizationKey] as [LocalizationKeyLevel2], CASE WHEN ISNULL(a.evolGUI_TypeID, 0) = 1 THEN a.[URL] END as [URLLevel2], MAX(p.ActionOrder) ActionOrder 
+		(SELECT pa.ActionID as [ActionIDLevel1], pa.[Description] as [DescriptionLevel1], ISNULL(pa.[LocalizationKey],pa.[Description]) as [LocalizationKeyLevel1], a.ActionID as [ActionIDLevel2], a.[Description] as [DescriptionLevel2], ISNULL(a.[LocalizationKey],a.[Description]) as [LocalizationKeyLevel2], CASE WHEN ISNULL(a.evolGUI_TypeID, 0) = 1 THEN a.[URL] END as [URLLevel2], MAX(p.ActionOrder) ActionOrder 
 		FROM
 			ACTIONS a WITH(NOLOCK)
 		INNER JOIN
@@ -39,7 +46,7 @@ BEGIN
 			AND pa.ActionTypeID = 0  
 		GROUP BY pa.ActionID, pa.[Description], pa.[LocalizationKey], a.ActionID, a.[Description], a.[LocalizationKey], a.[URL], a.evolGUI_TypeID) x  
 	LEFT OUTER JOIN 
-		(SELECT a.ActionID, a.[Description], a.[LocalizationKey], CASE WHEN ISNULL(a.evolGUI_TypeID, 0) = 1 THEN a.[URL] END [URL], a.ParActionID, a.ActionTypeID, MAX(p.ActionOrder) ActionOrder
+		(SELECT a.ActionID, a.[Description], ISNULL(a.[LocalizationKey], a.[Description]) as [LocalizationKey], CASE WHEN ISNULL(a.evolGUI_TypeID, 0) = 1 THEN a.[URL] END [URL], a.ParActionID, a.ActionTypeID, MAX(p.ActionOrder) ActionOrder
 		FROM 
 			ACTIONS a WITH(NOLOCK)
 		INNER JOIN
@@ -51,5 +58,29 @@ BEGIN
 	ON x.ActionIDLevel2 = z.ParActionID  
 		AND z.ActionTypeID = 1
 	ORDER BY x.ActionIDLevel1, x.ActionOrder, x.ActionIDLevel2, ISNULL(z.ActionOrder,x.ActionOrder) ASC
-
 END
+GO
+UPDATE ACTIONS
+SET LocalizationKey = 'ActionMenu' + CASE [Description] 
+	WHEN 'Configurações evolFlow' THEN 'EvolFlowConfig'
+	WHEN 'Processamento' THEN 'Execution'
+	WHEN 'Opções de Utilizador' THEN 'UserSettings'
+	WHEN 'Suporte' THEN 'Support'
+	WHEN 'Erros' THEN 'Error'
+	WHEN 'Gestão de Tabelas <q style="FONT-VARIANT: normal;TEXT-TRANSFORM: none">evolDP</q>' THEN 'EvolDPConfig'
+	WHEN 'Relatórios' THEN 'Reporting'
+	WHEN 'Finishing' THEN 'Finishing'
+	ELSE NULL END
+FROM ACTIONS
+WHERE ActionTypeID = 0
+GO
+UPDATE ACTIONS
+SET LocalizationKey = 'Action' + CASE [Description] 
+	WHEN 'Recursos' THEN 'Resources'
+	WHEN 'Fluxos Configurados' THEN 'ConfiguredFlows'
+	WHEN 'Modelo de Dados Activo' THEN 'ActiveDataModel'
+	WHEN 'Registo Automático de Jobs' THEN 'FlowsSchedulerRules'
+	ELSE NULL END
+FROM ACTIONS
+WHERE ActionTypeID = 1 AND parActionID = 11
+GO

@@ -1,7 +1,10 @@
-﻿@using Shared.Models.Areas.Core
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Shared.Models.General
+@using Shared.Models.Areas.Core
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor Accessor
+@inject IViewLocalizer localizer
 
 <div class="sidebar close">
     @{
@@ -12,13 +15,14 @@
             <li>
                 <div class="iocn-link">
                     <a>
-                        <i class='li-circle circle  bx bxs-wrench' style="color:rgb(90 205 239);;"></i>
-                        <span class="link_name">@actionLevel1.Description</span>
+                        <!--<i class='li-circle circle  bx bxs-wrench' style="color:rgb(90 205 239);;"></i>---->
+                        @localizer[actionLevel1.LocalizationKey + "_Icon"]
+                        <span class="link_name">@localizer[actionLevel1.LocalizationKey]</span>
                     </a>
                     <i class='bx bxs-chevron-down arrow'></i>
                 </div>
                 <ul class="sub-menu">
-                    <li><a class="link_name">@actionLevel1.Description</a></li>
+                    <li><a class="link_name">@localizer[actionLevel1.LocalizationKey]</a></li>
                     @foreach(var actionLevel2 in actionLevel1.ChildActions)
                     {
                         if (actionLevel2.ChildActions.Count > 0)
@@ -26,22 +30,22 @@
                             <li>
                                 <div class="sub-sub-menu-title">
                                     <a href="#">
-                                        <span class="link_name">@actionLevel2.Description</span>
+                                        <span class="link_name">@actionLevel2.LocalizationKey</span>
                                     </a>
                                     <i class='bx bxs-chevron-down arrow'></i>
                                 </div>
                                 <ul class="sub-sub-menu">
-                                    <li><a class="link_name" href="#">@actionLevel2.Description</a></li>
+                                    <li><a class="link_name" href="#">@actionLevel2.LocalizationKey</a></li>
                                     @foreach(var actionLevel3 in actionLevel2.ChildActions)
                                     {
-                                        <li><a href="#">@actionLevel3.Description</a></li>
+                                        <li><a href="#">@actionLevel3.LocalizationKey</a></li>
                                     }
                                 </ul>
                             </li>
                         }
                         else
                         {
-                            <li><a href="#">@actionLevel2.Description</a></li>
+                            <li><a href="#">@actionLevel2.LocalizationKey</a></li>
                         }
                     }
                 </ul>

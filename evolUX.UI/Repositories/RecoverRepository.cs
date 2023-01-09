@@ -6,9 +6,9 @@ using System.Net;
 
 namespace evolUX.UI.Repositories
 {
-    public class RecuperationRepository : RepositoryBase, IRecuperationRepository
+    public class RecoverRepository : RepositoryBase, IRecoverRepository
     {
-        public RecuperationRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
+        public RecoverRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
 
@@ -21,7 +21,7 @@ namespace evolUX.UI.Repositories
                 bindingModel.User = user;
                 bindingModel.ServiceCompanyList = ServiceCompanyList;
                 bindingModel.PermissionLevel = PermissionLevel;
-                var response = await _flurlClient.Request("/API/finishing/Recuperation/RegistTotalRecover")
+                var response = await _flurlClient.Request("/API/finishing/Recover/RegistTotalRecover")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .PostJsonAsync(bindingModel);
                 //var response = await BaseUrl
@@ -50,7 +50,7 @@ namespace evolUX.UI.Repositories
                 bindingModel.User = user;
                 bindingModel.ServiceCompanyList = ServiceCompanyList;
                 bindingModel.PermissionLevel = PermissionLevel;
-                var response = await _flurlClient.Request("/API/finishing/Recuperation/RegistPartialRecover")
+                var response = await _flurlClient.Request("/API/finishing/Recover/RegistPartialRecover")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .PostJsonAsync(bindingModel);
                 //var response = await BaseUrl
@@ -80,7 +80,7 @@ namespace evolUX.UI.Repositories
                 bindingModel.User = user;
                 bindingModel.ServiceCompanyList = ServiceCompanyList;
                 bindingModel.PermissionLevel = PermissionLevel;
-                var response = await _flurlClient.Request("/API/finishing/Recuperation/RegistDetailRecover")
+                var response = await _flurlClient.Request("/API/finishing/Recover/RegistDetailRecover")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .PostJsonAsync(bindingModel);
                 //var response = await BaseUrl
@@ -104,7 +104,7 @@ namespace evolUX.UI.Repositories
         {
             try
             {
-                var response = await _flurlClient.Request("/API/finishing/Recuperation/PendingRecoveries")
+                var response = await _flurlClient.Request("/API/finishing/Recover/PendingRecoveries")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .SetQueryParam("ServiceCompanyID", ServiceCompanyID)
                     .GetAsync();
@@ -128,7 +128,7 @@ namespace evolUX.UI.Repositories
         {
             try
             {
-                var response = await _flurlClient.Request("/API/finishing/Recuperation/PendingRecoveriesRegistDetail")
+                var response = await _flurlClient.Request("/API/finishing/Recover/PendingRecoveriesRegistDetail")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .SetQueryParam("ServiceCompanyID", ServiceCompanyID)
                     .GetAsync();

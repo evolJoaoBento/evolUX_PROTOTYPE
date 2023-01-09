@@ -36,8 +36,7 @@ namespace evolUX.Areas.EvolDP.Controllers
         {
             try
             {
-                DocCodeViewModel viewmodel = new DocCodeViewModel();
-                viewmodel.DocCodeList = await _docCodeService.GetDocCodeGroup();
+                DocCodeViewModel viewmodel = await _docCodeService.GetDocCodeGroup();
                 _logger.LogInfo("DocCodeGroup Get");
                 return Ok(viewmodel);
             }
@@ -56,8 +55,7 @@ namespace evolUX.Areas.EvolDP.Controllers
         {
             try
             {
-                DocCodeViewModel viewmodel = new DocCodeViewModel();
-                viewmodel.DocCodeList = await _docCodeService.GetDocCode(docLayout, docType);
+                DocCodeViewModel viewmodel = await _docCodeService.GetDocCode(docLayout, docType);
                 _logger.LogInfo("DocCode Get");
                 return Ok(viewmodel);
             }
@@ -77,8 +75,7 @@ namespace evolUX.Areas.EvolDP.Controllers
         {
             try
             {
-                DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
-                viewmodel.DocCodeConfigList = await _docCodeService.GetDocCodeConfig(ID);
+                DocCodeConfigViewModel viewmodel = await _docCodeService.GetDocCodeConfig(ID);
                 _logger.LogInfo("DocCodeConfig Get");
                 return Ok(viewmodel);
             }

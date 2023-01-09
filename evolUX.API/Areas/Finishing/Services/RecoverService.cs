@@ -7,10 +7,10 @@ using System.Data;
 
 namespace evolUX.API.Areas.Finishing.Services
 {
-    public class RecuperationService : IRecuperationService
+    public class RecoverService : IRecoverService
     {
         private readonly IWrapperRepository _repository;
-        public RecuperationService(IWrapperRepository repository)
+        public RecoverService(IWrapperRepository repository)
         {
             _repository = repository;
         }
@@ -19,7 +19,7 @@ namespace evolUX.API.Areas.Finishing.Services
 
         public async Task<IEnumerable<Result>> RegistDetailRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
         {
-            IEnumerable<Result> results = await _repository.Recuperation.RegistDetailRecover(startBarcode, endBarcode, user, serviceCompanyList, permissionLevel);
+            IEnumerable<Result> results = await _repository.Recover.RegistDetailRecover(startBarcode, endBarcode, user, serviceCompanyList, permissionLevel);
             if (results == null)
             {
 
@@ -29,7 +29,7 @@ namespace evolUX.API.Areas.Finishing.Services
 
         public async Task<IEnumerable<Result>> RegistPartialRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
         {
-            IEnumerable<Result> results = await _repository.Recuperation.RegistDetailRecover(startBarcode, endBarcode, user, serviceCompanyList, permissionLevel);
+            IEnumerable<Result> results = await _repository.Recover.RegistDetailRecover(startBarcode, endBarcode, user, serviceCompanyList, permissionLevel);
             if (results == null)
             {
 
@@ -39,7 +39,7 @@ namespace evolUX.API.Areas.Finishing.Services
 
         public async Task<IEnumerable<Result>> RegistTotalRecover(string fileBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
         {
-            IEnumerable<Result> results = await _repository.Recuperation.RegistTotalRecover(fileBarcode, user,  serviceCompanyList, permissionLevel);
+            IEnumerable<Result> results = await _repository.Recover.RegistTotalRecover(fileBarcode, user,  serviceCompanyList, permissionLevel);
             if (results == null)
             {
 
@@ -49,7 +49,7 @@ namespace evolUX.API.Areas.Finishing.Services
 
         public async Task<IEnumerable<PendingRecovery>> GetPendingRecoveries(int ServiceCompanyID)
         {
-            IEnumerable<PendingRecovery> pendingRecoveries = await _repository.Recuperation.GetPendingRecoveries(ServiceCompanyID);
+            IEnumerable<PendingRecovery> pendingRecoveries = await _repository.Recover.GetPendingRecoveries(ServiceCompanyID);
             if (pendingRecoveries == null)
             {
 
@@ -58,7 +58,7 @@ namespace evolUX.API.Areas.Finishing.Services
         }
         public async Task<IEnumerable<PendingRecovery>> GetPendingRecoveriesRegistDetail(int ServiceCompanyID)
         {
-            IEnumerable<PendingRecovery> pendingRecoveries = await _repository.Recuperation.GetPendingRecoveries(ServiceCompanyID);
+            IEnumerable<PendingRecovery> pendingRecoveries = await _repository.Recover.GetPendingRecoveries(ServiceCompanyID);
             if (pendingRecoveries == null)
             {
 

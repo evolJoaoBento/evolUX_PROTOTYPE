@@ -11,12 +11,12 @@ using Shared.Models.Areas.Core;
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
     [Area("Finishing")]
-    public class RecuperationController : Controller
+    public class RecoverController : Controller
     {
-        private readonly IRecuperationService _recuperationService;
-        public RecuperationController(IRecuperationService recuperationService)
+        private readonly IRecoverService _recoverService;
+        public RecoverController(IRecoverService recoverService)
         {
-            _recuperationService = recuperationService;
+            _recoverService = recoverService;
         }
 
         public ActionResult RegistTotalRecover()
@@ -31,7 +31,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             String user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
             bool PermissionLevel = HttpContext.Session.Get<bool>("PermissionLevel");
 
-            var response = await _recuperationService.RegistTotalRecover(FileBarcode, user, ServiceCompanyList, PermissionLevel);
+            var response = await _recoverService.RegistTotalRecover(FileBarcode, user, ServiceCompanyList, PermissionLevel);
             if (response.StatusCode == ((int)HttpStatusCode.NotFound))
             {
                 var resultError = response.GetJsonAsync<ErrorResult>().Result;
@@ -68,7 +68,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             String user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
             bool PermissionLevel = HttpContext.Session.Get<bool>("PermissionLevel");
 
-            var response = await _recuperationService.RegistPartialRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
+            var response = await _recoverService.RegistPartialRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
             if (response.StatusCode == ((int)HttpStatusCode.NotFound))
             {
                 var resultError = response.GetJsonAsync<ErrorResult>().Result;
@@ -105,7 +105,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             String user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
             bool PermissionLevel = HttpContext.Session.Get<bool>("PermissionLevel");
 
-            var response = await _recuperationService.RegistDetailRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
+            var response = await _recoverService.RegistDetailRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
             if (response.StatusCode == ((int)HttpStatusCode.NotFound))
             {
                 var resultError = response.GetJsonAsync<ErrorResult>().Result;
@@ -138,7 +138,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             foreach(DataRow row in ServiceCompanyList.Rows)
             {
                 int i = (int)row["ID"];
-                var response = await _recuperationService.GetPendingRecoveries(i);
+                var response = await _recoverService.GetPendingRecoveries(i);
                 if (response.StatusCode == ((int)HttpStatusCode.NotFound))
                 {
                     var resultError = response.GetJsonAsync<ErrorResult>().Result;
@@ -174,7 +174,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             foreach(DataRow row in ServiceCompanyList.Rows)
             {
                 int i = (int)row["ID"];
-                var response = await _recuperationService.GetPendingRecoveriesRegistDetail(i);
+                var response = await _recoverService.GetPendingRecoveriesRegistDetail(i);
                 if (response.StatusCode == ((int)HttpStatusCode.NotFound))
                 {
                     var resultError = response.GetJsonAsync<ErrorResult>().Result;

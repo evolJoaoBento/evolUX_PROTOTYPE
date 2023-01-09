@@ -19,7 +19,7 @@ namespace evolUX.API.Data.Repositories
         private ISessionRepository _session;
         private IPrintedFilesRepository _printedFiles;
         private IFullfilledFilesRepository _fullfilledFiles;
-        private IRecuperationRepository _recuperation;
+        private IRecoverRepository _recover;
         private IPendingRegistriesRepository  _pendingRegistriesRepository;
 
 
@@ -183,15 +183,15 @@ namespace evolUX.API.Data.Repositories
             }
         }
         
-        public IRecuperationRepository Recuperation
+        public IRecoverRepository Recover
         {
             get
             {
-                if(_recuperation == null)
+                if(_recover == null)
                 {
-                    _recuperation = new RecuperationRepository(_context);
+                    _recover = new RecoverRepository(_context);
                 }
-                return _recuperation;
+                return _recover;
             }
         }
         public IPendingRegistriesRepository PendingRegistries

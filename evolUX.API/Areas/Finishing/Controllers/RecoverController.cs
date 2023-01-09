@@ -12,14 +12,14 @@ using Shared.ViewModels.General;
 namespace evolUX.API.Areas.Finishing.Controllers{
     [Route("api/finishing/[controller]/[action]")]
     [ApiController]
-    public class RecuperationController : ControllerBase
+    public class RecoverController : ControllerBase
     {
         private readonly ILoggerService _logger;
-        private readonly IRecuperationRepository _recuperationService;
-        public RecuperationController(IWrapperRepository repository, ILoggerService logger, IRecuperationRepository recuperationService)
+        private readonly IRecoverRepository _recoverService;
+        public RecoverController(IWrapperRepository repository, ILoggerService logger, IRecoverRepository recoverService)
         {
             _logger = logger;
-            _recuperationService = recuperationService;
+            _recoverService = recoverService;
         }
 
         
@@ -32,7 +32,7 @@ namespace evolUX.API.Areas.Finishing.Controllers{
             try
             {
                 ResultsViewModel viewmodel = new ResultsViewModel();
-                viewmodel.Results = await _recuperationService.RegistTotalRecover(bindingModel.FileBarcode, bindingModel.User, bindingModel.ServiceCompanyList, bindingModel.PermissionLevel);
+                viewmodel.Results = await _recoverService.RegistTotalRecover(bindingModel.FileBarcode, bindingModel.User, bindingModel.ServiceCompanyList, bindingModel.PermissionLevel);
                 _logger.LogInfo("RegistTotalRecover Post");
                 return Ok(viewmodel);
             }
@@ -51,7 +51,7 @@ namespace evolUX.API.Areas.Finishing.Controllers{
             try
             {
                 ResultsViewModel viewmodel = new ResultsViewModel();
-                viewmodel.Results = await _recuperationService.RegistPartialRecover(bindingModel.StartBarcode, bindingModel.EndBarcode, bindingModel.User, bindingModel.ServiceCompanyList, bindingModel.PermissionLevel);
+                viewmodel.Results = await _recoverService.RegistPartialRecover(bindingModel.StartBarcode, bindingModel.EndBarcode, bindingModel.User, bindingModel.ServiceCompanyList, bindingModel.PermissionLevel);
                 _logger.LogInfo("RegistTotalRecover Post");
                 return Ok(viewmodel);
             }
@@ -69,7 +69,7 @@ namespace evolUX.API.Areas.Finishing.Controllers{
             try
             {
                 ResultsViewModel viewmodel = new ResultsViewModel();
-                viewmodel.Results = await _recuperationService.RegistDetailRecover(bindingModel.StartBarcode, bindingModel.EndBarcode, bindingModel.User, bindingModel.ServiceCompanyList, bindingModel.PermissionLevel);
+                viewmodel.Results = await _recoverService.RegistDetailRecover(bindingModel.StartBarcode, bindingModel.EndBarcode, bindingModel.User, bindingModel.ServiceCompanyList, bindingModel.PermissionLevel);
                 _logger.LogInfo("RegistDetailRecover Post");
                 return Ok(viewmodel);
             }
@@ -87,7 +87,7 @@ namespace evolUX.API.Areas.Finishing.Controllers{
             try
             {
                 PendingRecoveriesViewModel viewmodel = new PendingRecoveriesViewModel();
-                viewmodel.PendingRecoveries = await _recuperationService.GetPendingRecoveries(ServiceCompanyID);
+                viewmodel.PendingRecoveries = await _recoverService.GetPendingRecoveries(ServiceCompanyID);
                 _logger.LogInfo("PendingRecoveries Get");
                 return Ok(viewmodel);
             }
@@ -105,7 +105,7 @@ namespace evolUX.API.Areas.Finishing.Controllers{
             try
             {
                 PendingRecoveriesViewModel viewmodel = new PendingRecoveriesViewModel();
-                viewmodel.PendingRecoveries = await _recuperationService.GetPendingRecoveriesRegistDetail(ServiceCompanyID);
+                viewmodel.PendingRecoveries = await _recoverService.GetPendingRecoveriesRegistDetail(ServiceCompanyID);
                 _logger.LogInfo("PendingRecoveriesRegistDetail Get");
                 return Ok(viewmodel);
             }

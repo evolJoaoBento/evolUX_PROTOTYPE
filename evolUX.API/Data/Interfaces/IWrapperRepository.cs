@@ -28,7 +28,7 @@
 
         IFullfilledFilesRepository FullfilledFiles { get; }
 
-        IRecuperationRepository Recuperation { get; }
+        IRecoverRepository Recover { get; }
 
         IPendingRegistriesRepository PendingRegistries { get; }
 

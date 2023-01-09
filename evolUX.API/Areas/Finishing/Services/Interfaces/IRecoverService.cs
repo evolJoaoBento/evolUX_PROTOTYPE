@@ -5,7 +5,7 @@ using System.Data;
 
 namespace evolUX.API.Areas.Finishing.Services.Interfaces
 {
-    public interface IRecuperationService
+    public interface IRecoverService
     {
         public Task<IEnumerable<Result>> RegistTotalRecover(string fileBarcode, string user, DataTable serviceCompanyList, bool permissionLevel);
         public Task<IEnumerable<Result>> RegistPartialRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel);

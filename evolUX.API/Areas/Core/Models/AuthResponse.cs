@@ -10,6 +10,7 @@ namespace evolUX.API.Areas.Core.ViewModels
         public string Username { get; set; }
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
+        public string Language { get; set; }
 
         public List<RolesModel> Roles { get; set; }
 
@@ -23,6 +24,7 @@ namespace evolUX.API.Areas.Core.ViewModels
             Roles = user.Roles;
             AccessToken = accessToken;
             RefreshToken = user.RefreshToken;
+            Language = user.Language.ToLower();
         }
     }
 }

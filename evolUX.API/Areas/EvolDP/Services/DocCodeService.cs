@@ -13,33 +13,24 @@ namespace evolUX.API.Areas.EvolDP.Services
         {
             _repository = repository;
         }
-        public async Task<IEnumerable<DocCode>> GetDocCodeGroup()
+        public async Task<DocCodeViewModel> GetDocCodeGroup()
         {
-            IEnumerable<DocCode> docCodeList = await _repository.DocCode.GetDocCodeGroup();
-            if(docCodeList == null)
-            {
-
-            }
-            return docCodeList;
+            DocCodeViewModel viewmodel = new DocCodeViewModel();
+            viewmodel.DocCodeList = await _repository.DocCode.GetDocCodeGroup();
+            return viewmodel;
         }
 
-        public async Task<IEnumerable<DocCode>> GetDocCode(string docLayout, string docType)
+        public async Task<DocCodeViewModel> GetDocCode(string docLayout, string docType)
         {
-            IEnumerable<DocCode> docCodeList = await _repository.DocCode.GetDocCode(docLayout, docType);
-            if (docCodeList == null)
-            {
-
-            }
-            return docCodeList;
+            DocCodeViewModel viewmodel = new DocCodeViewModel();
+            viewmodel.DocCodeList = await _repository.DocCode.GetDocCode(docLayout, docType);
+            return viewmodel;
         }        
-        public async Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(string ID)
+        public async Task<DocCodeConfigViewModel> GetDocCodeConfig(string ID)
         {
-            IEnumerable<DocCodeConfig> docCodeConfigList = await _repository.DocCode.GetDocCodeConfig(ID);
-            if (docCodeConfigList == null)
-            {
-
-            }
-            return docCodeConfigList;
+            DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
+            viewmodel.DocCodeConfigList = await _repository.DocCode.GetDocCodeConfig(ID);
+            return viewmodel;
         }        
 
         public async Task<DocCodeConfig> GetDocCodeConfig(string ID, int startdate)

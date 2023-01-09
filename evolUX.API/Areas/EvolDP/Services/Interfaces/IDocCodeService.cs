@@ -5,9 +5,9 @@ namespace evolUX.API.Areas.EvolDP.Services.Interfaces
 {
     public interface IDocCodeService
     {
-        public Task<IEnumerable<DocCode>> GetDocCodeGroup();
-        public Task<IEnumerable<DocCode>> GetDocCode(string docLayout, string docType);
-        public Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(string ID);
+        public Task<DocCodeViewModel> GetDocCodeGroup();
+        public Task<DocCodeViewModel> GetDocCode(string docLayout, string docType);
+        public Task<DocCodeConfigViewModel> GetDocCodeConfig(string ID);
         public Task<DocCodeConfig> GetDocCodeConfig(string ID, int startdate);
         public Task<DocCodeConfig> GetDocCodeConfigOptions(string ID);
         public Task<IEnumerable<DocException>> GetDocExceptionsLevel1();

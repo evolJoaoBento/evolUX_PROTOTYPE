@@ -7,10 +7,10 @@ using System.Data;
 
 namespace evolUX.API.Data.Repositories
 {
-    public class RecuperationRepository : IRecuperationRepository
+    public class RecoverRepository : IRecoverRepository
     {
         private readonly DapperContext _context;
-        public RecuperationRepository(DapperContext context)
+        public RecoverRepository(DapperContext context)
         {
             _context = context;
         }

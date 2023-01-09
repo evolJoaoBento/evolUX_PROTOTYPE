@@ -31,7 +31,7 @@ builder.Services.AddSingleton<IPendingRegistriesService, PendingRegistriesServic
 builder.Services.AddSingleton<IPrintService, PrintService>();
 builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
 builder.Services.AddSingleton<IConcludedEnvelopeService, ConcludedEnvelopeService>();
-builder.Services.AddSingleton<IRecuperationService, RecuperationService>();
+builder.Services.AddSingleton<IRecoverService, RecoverService>();
 builder.Services.AddSingleton<IExpeditionCompaniesService, ExpeditionCompaniesService>();
 builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
 builder.Services.AddSingleton<IExpeditionZoneService, ExpeditionZoneService>();
