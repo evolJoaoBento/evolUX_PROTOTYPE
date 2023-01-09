@@ -10,10 +10,10 @@ using System.Transactions;
 
 namespace evolUX.API.Data.Repositories
 {
-    public class PrintRepository : IPrintRepository
+    public class PrintFilesRepository : IPrintFilesRepository
     {
         private readonly DapperContext _context;
-        public PrintRepository(DapperContext context)
+        public PrintFilesRepository(DapperContext context)
         {
             _context = context;
         }

@@ -17,8 +17,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
     {
         private readonly IWrapperRepository _repository;
         private readonly ILoggerService _logger;
-        private readonly IConcludedEnvelopeRepository _concludedEnvelopeService;
-        public ConcludedEnvelopeController(IWrapperRepository repository, ILoggerService logger, IConcludedEnvelopeRepository concludedEnvelopeService)
+        private readonly IFullfilledFilesRepository _concludedEnvelopeService;
+        public ConcludedEnvelopeController(IWrapperRepository repository, ILoggerService logger, IFullfilledFilesRepository concludedEnvelopeService)
         {
             _repository = repository;
             _logger = logger;

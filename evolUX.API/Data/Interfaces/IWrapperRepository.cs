@@ -20,13 +20,13 @@
 
         IProductionReportRepository ProductionReport { get; }
 
-        IPrintRepository  Print {get; } 
-
         ISessionRepository Session { get; }
 
-        IConcludedPrintRepository ConcludedPrint { get; }
+        IPrintFilesRepository PrintFiles { get; }
 
-        IConcludedEnvelopeRepository ConcludedEnvelope { get; }
+        IPrintedFilesRepository PrintedFiles { get; }
+
+        IFullfilledFilesRepository FullfilledFiles { get; }
 
         IRecuperationRepository Recuperation { get; }
 

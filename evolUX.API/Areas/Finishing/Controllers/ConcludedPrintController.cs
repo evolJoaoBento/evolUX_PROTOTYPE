@@ -17,8 +17,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
     {
         private readonly IWrapperRepository _repository;
         private readonly ILoggerService _logger;
-        private readonly IConcludedPrintRepository _concludedPrintService;
-        public ConcludedPrintController(IWrapperRepository repository, ILoggerService logger, IConcludedPrintRepository concludedPrintService)
+        private readonly IPrintedFilesRepository _concludedPrintService;
+        public ConcludedPrintController(IWrapperRepository repository, ILoggerService logger, IPrintedFilesRepository concludedPrintService)
         {
             _repository = repository;
             _logger = logger;

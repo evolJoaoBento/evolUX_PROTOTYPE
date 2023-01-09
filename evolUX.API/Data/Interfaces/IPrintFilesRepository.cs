@@ -6,7 +6,7 @@ using System.Data;
 
 namespace evolUX.API.Data.Interfaces
 {
-    public interface IPrintRepository
+    public interface IPrintFilesRepository
     {
         public Task<IEnumerable<ResourceInfo>> GetPrinters(IEnumerable<int> profileList, string filesSpecs, bool ignoreProfiles);
         public Task<FlowInfo> GetFlow(string ServiceCompanyCode);

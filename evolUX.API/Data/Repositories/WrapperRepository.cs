@@ -15,10 +15,10 @@ namespace evolUX.API.Data.Repositories
         private ISidebarRepository _sidebar;
         private IDocCodeRepository _docCode;
         private IProductionReportRepository _productionReport;
-        private IPrintRepository _print;
+        private IPrintFilesRepository _printFiles;
         private ISessionRepository _session;
-        private IConcludedPrintRepository _concludedPrint;
-        private IConcludedEnvelopeRepository _concludedEnvelope;
+        private IPrintedFilesRepository _printedFiles;
+        private IFullfilledFilesRepository _fullfilledFiles;
         private IRecuperationRepository _recuperation;
         private IPendingRegistriesRepository  _pendingRegistriesRepository;
 
@@ -136,15 +136,15 @@ namespace evolUX.API.Data.Repositories
             }
         }
         
-        public IPrintRepository Print
+        public IPrintFilesRepository PrintFiles
         {
             get
             {
-                if(_print == null)
+                if(_printFiles == null)
                 {
-                    _print = new PrintRepository(_context);
+                    _printFiles = new PrintFilesRepository(_context);
                 }
-                return _print;
+                return _printFiles;
             }
         }
 
@@ -160,26 +160,26 @@ namespace evolUX.API.Data.Repositories
             }
         }
 
-        public IConcludedPrintRepository ConcludedPrint
+        public IPrintedFilesRepository PrintedFiles
         {
             get
             {
-                if(_concludedPrint == null)
+                if(_printedFiles == null)
                 {
-                    _concludedPrint = new ConcludedPrintRepository(_context);
+                    _printedFiles = new PrintedFilesRepository(_context);
                 }
-                return _concludedPrint;
+                return _printedFiles;
             }
         }
-        public IConcludedEnvelopeRepository ConcludedEnvelope
+        public IFullfilledFilesRepository FullfilledFiles
         {
             get
             {
-                if(_concludedEnvelope == null)
+                if(_fullfilledFiles == null)
                 {
-                    _concludedEnvelope = new ConcludedEnvelopeRepository(_context);
+                    _fullfilledFiles = new FullfilledFilesRepository(_context);
                 }
-                return _concludedEnvelope;
+                return _fullfilledFiles;
             }
         }
         

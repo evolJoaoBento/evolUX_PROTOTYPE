@@ -6,18 +6,18 @@ using System.Data;
 
 namespace evolUX.API.Data.Repositories
 {
-    public class ConcludedEnvelopeRepository : IConcludedEnvelopeRepository
+    public class PrintedFilesRepository : IPrintedFilesRepository
     {
         private readonly DapperContext _context;
-        public ConcludedEnvelopeRepository(DapperContext context)
+        public PrintedFilesRepository(DapperContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<Result>> RegistFullFill(string fileBarcode, string user, DataTable serviceCompanyList)
+        public async Task<IEnumerable<Result>> RegistPrint(string fileBarcode, string user, DataTable serviceCompanyList)
         {
             
-            string sql = @"EXEC RT_UX_REGIST_FULLFILL   @FileBarcode
+            string sql = @"EXEC RT_UX_REGIST_PRINT      @FileBarcode
                                                         @Username
                                                         @ServiceCompanyList";
             var parameters = new DynamicParameters();

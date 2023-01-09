@@ -21,7 +21,7 @@ namespace evolUX.API.Areas.Finishing.Services
         public async Task<ResoursesViewModel> GetPrinters(IEnumerable<int> profileList, string filesSpecs, bool ignoreProfiles)
         {
             ResoursesViewModel viewmodel = new ResoursesViewModel();
-            viewmodel.Resources = await _repository.Print.GetPrinters(profileList, filesSpecs, ignoreProfiles);
+            viewmodel.Resources = await _repository.PrintFiles.GetPrinters(profileList, filesSpecs, ignoreProfiles);
             if (viewmodel.Resources == null)
             {
 
@@ -32,9 +32,9 @@ namespace evolUX.API.Areas.Finishing.Services
         public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode, 
             string username, int userID, string filePath, string fileName, string shortFileName)
         {
-            FlowInfo flowinfo = await _repository.Print.GetFlow(serviceCompanyCode);
+            FlowInfo flowinfo = await _repository.PrintFiles.GetFlow(serviceCompanyCode);
             flowinfo.FlowName = fileName + " [" + flowinfo.FlowName + "]";
-            IEnumerable<FlowParameter> flowparameters = await _repository.Print.GetFlowParameters(flowinfo.FlowID);
+            IEnumerable<FlowParameter> flowparameters = await _repository.PrintFiles.GetFlowParameters(flowinfo.FlowID);
 
             string query = "<START>EXEC RT_INSERT_INTO_FILE_LOG @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER''</START>\r\n<END>EXEC RT_UPDATE_FILE_LOG_ENDTIMESTAMP @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER'', @ProcCountNr = @PROCCOUNTNR, @OutputPath = ''@PRINTERNAME'', @OutputName = ''@USERNAME''</END>\r\n";
             
@@ -52,12 +52,12 @@ namespace evolUX.API.Areas.Finishing.Services
                 //p.ParameterValue = p.ParameterValue.Replace("SELECT '", "");
                 //p.ParameterValue = p.ParameterValue.Replace(" '", "");
             }
-            Result viewmodel = await _repository.Print.TryPrint(flowparameters, flowinfo, userID);
+            Result viewmodel = await _repository.PrintFiles.TryPrint(flowparameters, flowinfo, userID);
             if (viewmodel == null)
             {
                 throw new NullReferenceException("No result was sent by the Database!");
             }
-            await _repository.Print.LogSentToPrinter(runID, fileID);
+            await _repository.PrintFiles.LogSentToPrinter(runID, fileID);
             return viewmodel;
         }
     }
