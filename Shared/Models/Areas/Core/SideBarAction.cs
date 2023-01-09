@@ -8,7 +8,7 @@ namespace Shared.Models.Areas.Core
         public string Description { get; set; }
         public string LocalizationKey { get; set; }
         public string URL { get; set; }
-        public IEnumerable<SideBarAction> ChildActions { get; set; }
+        public List<SideBarAction> ChildActions { get; set; }
 
         public SideBarAction(int actionID, string description, string localizationKey, string url)
         {

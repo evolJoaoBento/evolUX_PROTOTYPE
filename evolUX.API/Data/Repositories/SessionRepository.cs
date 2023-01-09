@@ -83,18 +83,46 @@ namespace evolUX.API.Data.Repositories
 
             using (var connection = _context.CreateConnectionEvolFlow())
             {
-                var result = await connection.QueryAsync<SideBarAction>(sql, parameters, commandType: CommandType.StoredProcedure);
-                var obs = await connection.QueryAsync(sql);
+                var result = await connection.QueryAsync(sql, parameters, commandType: CommandType.StoredProcedure);
                 DataTable sideBardt = _context.ToDataTable(result);
 
                 List<SideBarAction> sideBarActions = new List<SideBarAction>();
                 if (sideBardt != null && sideBardt.Rows.Count > 0) 
                 {
-                    int LastActionIDLevel1 = -1;
-                    int LastActionIDLevel2 = -1;
+                    int lastActionIDLevel1 = -1;
+                    int lastActionIDLevel2 = -1;
+                    int actionID;
+                    string description;
+                    string localizationKey;
+                    string url;
                     foreach (DataRow row in sideBardt.Rows) 
                     {
 
+                        if (int.TryParse(row["ActionIDLevel1"].ToString(),out actionID) && lastActionIDLevel1 != actionID)
+                        {
+                            description = row.IsNull("DescriptionLevel1") ? "" : row["DescriptionLevel1"].ToString();
+                            localizationKey = row.IsNull("LocalizationKeyLevel1") ? "" : row["LocalizationKeyLevel1"].ToString();
+                            sideBarActions.Add(new SideBarAction(actionID, description, localizationKey, ""));
+                            lastActionIDLevel1 = actionID;
+                        }
+                        if (!row.IsNull("ActionIDLevel2"))
+                        {
+                            if (int.TryParse(row["ActionIDLevel2"].ToString(), out actionID) && lastActionIDLevel2 != actionID)
+                            {
+                                description = row.IsNull("DescriptionLevel2") ? "" : row["DescriptionLevel2"].ToString();
+                                localizationKey = row.IsNull("LocalizationKeyLevel2") ? "" : row["LocalizationKeyLevel2"].ToString();
+                                url = row.IsNull("URLLevel2") ? "" : row["URLLevel2"].ToString();
+                                sideBarActions[sideBarActions.Count - 1].ChildActions.Add(new SideBarAction(actionID, description, localizationKey, url));
+                                lastActionIDLevel2 = actionID;
+                            }
+                            if (!row.IsNull("ActionIDLevel3") && int.TryParse(row["ActionIDLevel3"].ToString(), out actionID))
+                            {
+                                description = row.IsNull("DescriptionLevel3") ? "" : row["DescriptionLevel3"].ToString();
+                                localizationKey = row.IsNull("LocalizationKeyLevel3") ? "" : row["LocalizationKeyLevel3"].ToString();
+                                url = row.IsNull("URLLevel3") ? "" : row["URLLevel3"].ToString();
+                                sideBarActions[sideBarActions.Count - 1].ChildActions[sideBarActions[sideBarActions.Count - 1].ChildActions.Count - 1].ChildActions.Add(new SideBarAction(actionID, description, localizationKey, url));
+                            }
+                        }
                     }
                 }
 
