@@ -36,7 +36,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             
             ViewBag.FileName = FileName;
 
-            string profileList = HttpContext.Session.GetString("evolDP/Profiles");
+            string profileList = HttpContext.Session.GetString("evolUX/Profiles");
             string filesSpecs = FilePrinterSpecs;
             bool ignoreProfiles = false;
             try

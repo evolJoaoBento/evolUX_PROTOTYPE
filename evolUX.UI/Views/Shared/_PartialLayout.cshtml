@@ -1,7 +1,53 @@
-﻿<div class="sidebar close">
+﻿@using Shared.Models.Areas.Core
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor Accessor
 
+<div class="sidebar close">
+    @{
+        IEnumerable<SideBarAction> sideBarActions = JsonConvert.DeserializeObject<IEnumerable<SideBarAction>>(Accessor.HttpContext.Session.GetString("evolUX/SideBarActions"));
+    }
     <ul id="nav-links-wrapper" class="nav-links">
-        <li>
+        @foreach(var actionLevel1 in sideBarActions){
+            <li>
+                <div class="iocn-link">
+                    <a>
+                        <i class='li-circle circle  bx bxs-wrench' style="color:rgb(90 205 239);;"></i>
+                        <span class="link_name">@actionLevel1.Description</span>
+                    </a>
+                    <i class='bx bxs-chevron-down arrow'></i>
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name">@actionLevel1.Description</a></li>
+                    @foreach(var actionLevel2 in actionLevel1.ChildActions)
+                    {
+                        if (actionLevel2.ChildActions.Count > 0)
+                        {
+                            <li>
+                                <div class="sub-sub-menu-title">
+                                    <a href="#">
+                                        <span class="link_name">@actionLevel2.Description</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow'></i>
+                                </div>
+                                <ul class="sub-sub-menu">
+                                    <li><a class="link_name" href="#">@actionLevel2.Description</a></li>
+                                    @foreach(var actionLevel3 in actionLevel2.ChildActions)
+                                    {
+                                        <li><a href="#">@actionLevel3.Description</a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li><a href="#">@actionLevel2.Description</a></li>
+                        }
+                    }
+                </ul>
+            </li>
+        }
+@*        <li>
             <div class="iocn-link">
                 <a>
                     <i class='li-circle circle  bx bxs-wrench' style="color:rgb(90 205 239);;"></i>
@@ -117,6 +163,6 @@
             <a>
                 <i id="colapse" class='li-circle circle  bx bxs-chevron-left'></i>
             </a>
-        </li>
+        </li>*@
     </ul>
 </div>

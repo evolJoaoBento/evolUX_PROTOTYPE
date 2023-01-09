@@ -2,6 +2,8 @@
 using evolUX.API.Data.Context;
 using evolUX.API.Data.Interfaces;
 using evolUX.API.Extensions;
+using Shared.Models.Areas.Core;
+using Shared.Models.Areas.Finishing;
 using System.Data;
 
 namespace evolUX.API.Data.Repositories
@@ -70,6 +72,35 @@ namespace evolUX.API.Data.Repositories
                 DataTable dt = _context.ToDataTable(obs);
                 return dt;
             }
+        }
+
+        public async Task<IEnumerable<SideBarAction>> GetSideBarActions(IEnumerable<int> profiles)
+        {
+            string sql = @"evolUX_GET_MENU";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("ProfileList", profiles.toDataTable().AsTableValuedParameter("IDlist"));
+
+            using (var connection = _context.CreateConnectionEvolFlow())
+            {
+                var result = await connection.QueryAsync<SideBarAction>(sql, parameters, commandType: CommandType.StoredProcedure);
+                var obs = await connection.QueryAsync(sql);
+                DataTable sideBardt = _context.ToDataTable(result);
+
+                List<SideBarAction> sideBarActions = new List<SideBarAction>();
+                if (sideBardt != null && sideBardt.Rows.Count > 0) 
+                {
+                    int LastActionIDLevel1 = -1;
+                    int LastActionIDLevel2 = -1;
+                    foreach (DataRow row in sideBardt.Rows) 
+                    {
+
+                    }
+                }
+
+                return sideBarActions;
+            }
+
         }
     }
 }

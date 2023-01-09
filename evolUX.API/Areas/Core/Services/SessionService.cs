@@ -3,6 +3,9 @@ using Shared.Models.Areas.Finishing;
 using Shared.ViewModels.Areas.Finishing;
 using evolUX.API.Data.Interfaces;
 using System.Data;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Shared.Models.Areas.Core;
 
 namespace evolUX.API.Areas.Core.Services
 {
@@ -42,6 +45,19 @@ namespace evolUX.API.Areas.Core.Services
 
             }
             return serviceCompanies;
+        }
+
+        public async Task<Dictionary<string, string>> GetSessionVariables([FromQuery] int User)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            IEnumerable<int> profiles = await _repository.Session.GetProfile(User);
+            result.Add("evolUX/Profiles", JsonConvert.SerializeObject(profiles));
+            IEnumerable<string> servers = await _repository.Session.GetServers(profiles);
+            DataTable serviceCompanies = await _repository.Session.GetServiceCompanies(servers);
+            result.Add("evolDP/ServiceCompanies", JsonConvert.SerializeObject(serviceCompanies));
+            IEnumerable<SideBarAction> sideBarActions = await _repository.Session.GetSideBarActions(profiles);
+            result.Add("evolUX/SideBarActions", JsonConvert.SerializeObject(sideBarActions));
+            return result;
         }
     }
 }

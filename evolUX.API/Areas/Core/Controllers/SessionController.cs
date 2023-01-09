@@ -7,6 +7,7 @@ using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 using System.Data;
 using Newtonsoft.Json;
+using Shared.Models.Areas.Core;
 
 namespace evolUX.API.Areas.Core.Controllers
 {
@@ -32,14 +33,9 @@ namespace evolUX.API.Areas.Core.Controllers
         {
             try
             {
-                Dictionary<string,string> result = new Dictionary<string,string>();
-                IEnumerable<int> profiles = await _sessionService.GetProfile(User);
-                result.Add("evolDP/Profiles", JsonConvert.SerializeObject(profiles));
-                IEnumerable<string> servers = await _sessionService.GetServers(profiles);
-                DataTable serviceCompanies = await _sessionService.GetServiceCompanies(servers);
+                Dictionary<string,string> result = await _sessionService.GetSessionVariables(User);
                 //TODO: PermissionLevel
                 _logger.LogInfo("SessionVariables Get");
-                result.Add("evolDP/ServiceCompanies", JsonConvert.SerializeObject(serviceCompanies));
                 return Ok(result);
             }
             catch (Exception ex)
