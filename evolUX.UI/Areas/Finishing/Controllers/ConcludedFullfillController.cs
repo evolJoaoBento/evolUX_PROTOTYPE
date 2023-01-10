@@ -1,4 +1,5 @@
-﻿using evolUX.UI.Areas.Core.Models;
+﻿using Shared.ViewModels.General;
+using evolUX.UI.Areas.Core.Models;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,6 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Data;
 using evolUX.UI.Extensions;
-using Shared.ViewModels.General;
 using Shared.Models.Areas.Core;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers

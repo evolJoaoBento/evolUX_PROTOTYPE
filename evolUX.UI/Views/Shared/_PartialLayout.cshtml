@@ -9,14 +9,29 @@
 <div class="sidebar close">
     @{
         IEnumerable<SideBarAction> sideBarActions = JsonConvert.DeserializeObject<IEnumerable<SideBarAction>>(Accessor.HttpContext.Session.GetString("evolUX/SideBarActions"));
+        int itemCount = 0;
     }
     <ul id="nav-links-wrapper" class="nav-links">
         @foreach(var actionLevel1 in sideBarActions){
             <li>
                 <div class="iocn-link">
                     <a>
-                        <!--<i class='li-circle circle  bx bxs-wrench' style="color:rgb(90 205 239);;"></i>---->
-                        @localizer[actionLevel1.LocalizationKey + "_Icon"]
+                        @if (localizer[actionLevel1.LocalizationKey + "_Icon"].IsResourceNotFound)
+                        {
+                            itemCount++;
+                            if (itemCount > 6)
+                            {
+                                <i class='li-circle circle  bx bx-add-to-queue' style="color:rgb(105 105 105);"></i>
+                            }
+                            else
+                            {
+                                <i class='li-circle circle  bx bx-dice-@itemCount' style="color:rgb(105 105 105);"></i>
+                            }
+                        }
+                        else
+                        {
+                            @localizer[actionLevel1.LocalizationKey + "_Icon"]
+                        }
                         <span class="link_name">@localizer[actionLevel1.LocalizationKey]</span>
                     </a>
                     <i class='bx bxs-chevron-down arrow'></i>
@@ -45,7 +60,23 @@
                         }
                         else
                         {
-                            <li><a href="#">@localizer[actionLevel2.LocalizationKey]</a></li>
+                            <li>
+                                @if (localizer[actionLevel2.LocalizationKey + "_Link"].IsResourceNotFound)
+                                {
+                                    if (!string.IsNullOrEmpty(actionLevel2.URL))
+                                    {
+                                        <a href="@actionLevel2.URL">@localizer[actionLevel2.LocalizationKey]</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#">@localizer[actionLevel2.LocalizationKey]</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <a href="@localizer[actionLevel2.LocalizationKey  + "_Link"]">@localizer[actionLevel2.LocalizationKey]</a>
+                                }
+                            </li >
                         }
                     }
                 </ul>

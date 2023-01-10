@@ -129,14 +129,17 @@
   <data name="ActionBillingReport" xml:space="preserve">
     <value>Controlo de Facturação</value>
   </data>
-  <data name="ActionChangePassword" xml:space="preserve">
-    <value>Mudar Password</value>
-  </data>
   <data name="ActionConcludedFullfill" xml:space="preserve">
     <value>Envelopagem Concluída</value>
   </data>
+  <data name="ActionConcludedFullfill_Link" xml:space="preserve">
+    <value>/Finishing/ConcludedFullfill/Index</value>
+  </data>
   <data name="ActionConcludedPrint" xml:space="preserve">
     <value>Impressão Concluída</value>
+  </data>
+  <data name="ActionConcludedPrint_Link" xml:space="preserve">
+    <value>/Finishing/ConcludedPrint/Index</value>
   </data>
   <data name="ActionConfiguredFlows" xml:space="preserve">
     <value>Fluxos Configurados</value>
@@ -202,13 +205,13 @@
     <value>Páginas Costumizadas</value>
   </data>
   <data name="ActionMenuClientPages_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle bx bx-book-alt' style="color:rgb(220 220 220)"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle bx bx-book-alt' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuClientReporting" xml:space="preserve">
     <value>Relatórios Costumizados</value>
   </data>
   <data name="ActionMenuClientReporting_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle bx bx-pie-chart' style="color:rgb(220 220 220)"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle bx bx-pie-chart' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuError" xml:space="preserve">
     <value>evolDP - Erros</value>
@@ -250,7 +253,7 @@
     <value>Manutenção</value>
   </data>
   <data name="ActionMenuSupport_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle  bx bxs-wrench'&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle  bx bxs-wrench' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuUserSettings" xml:space="preserve">
     <value>Opções de Utilizador</value>
@@ -288,8 +291,14 @@
   <data name="ActionProductionStatus" xml:space="preserve">
     <value>Estado de Produção / Imprimir</value>
   </data>
+  <data name="ActionProductionStatus_Link" xml:space="preserve">
+    <value>/Finishing/ProductionReport/ProductionRunReport</value>
+  </data>
   <data name="ActionProfiles" xml:space="preserve">
     <value>Perfis</value>
+  </data>
+  <data name="ActionProfilesList" xml:space="preserve">
+    <value>Listar</value>
   </data>
   <data name="ActionProjectVersions" xml:space="preserve">
     <value>Versões de Projectos</value>
@@ -330,8 +339,11 @@
   <data name="ActionUserAprovals" xml:space="preserve">
     <value>Aprovações</value>
   </data>
+  <data name="ActionUserChangePassword" xml:space="preserve">
+    <value>Mudar Password</value>
+  </data>
   <data name="ActionUserProfiles" xml:space="preserve">
-    <value>Perfis</value>
+    <value>O Meu Perfil</value>
   </data>
   <data name="ActionUsers" xml:space="preserve">
     <value>Utilizadores</value>
