@@ -120,11 +120,83 @@
   <data name="ActionActiveDataModel" xml:space="preserve">
     <value>Modelo de Dados Activo</value>
   </data>
+  <data name="ActionAddUser" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="ActionBackupFlows" xml:space="preserve">
+    <value>Backups</value>
+  </data>
+  <data name="ActionBillingReport" xml:space="preserve">
+    <value>Controlo de Facturação</value>
+  </data>
+  <data name="ActionChangePassword" xml:space="preserve">
+    <value>Mudar Password</value>
+  </data>
+  <data name="ActionConcludedFullfill" xml:space="preserve">
+    <value>Envelopagem Concluída</value>
+  </data>
+  <data name="ActionConcludedPrint" xml:space="preserve">
+    <value>Impressão Concluída</value>
+  </data>
   <data name="ActionConfiguredFlows" xml:space="preserve">
     <value>Fluxos Configurados</value>
   </data>
+  <data name="ActionDeleteUser" xml:space="preserve">
+    <value>Apagar</value>
+  </data>
+  <data name="ActionDocumentTypification" xml:space="preserve">
+    <value>Tipos de Documento</value>
+  </data>
+  <data name="ActionEnvelopeRange" xml:space="preserve">
+    <value>Gamas de Envelopes</value>
+  </data>
+  <data name="ActionErrorManagement" xml:space="preserve">
+    <value>Gestão de Erros</value>
+  </data>
+  <data name="ActionExpCodes" xml:space="preserve">
+    <value>Códigos Tratamento/Expedição</value>
+  </data>
+  <data name="ActionExpeditionCompanies" xml:space="preserve">
+    <value>Companhias de Expedição</value>
+  </data>
+  <data name="ActionExpeditionReport" xml:space="preserve">
+    <value>Guias de Expedição</value>
+  </data>
+  <data name="ActionExpeditionReport1" xml:space="preserve">
+    <value>Expedição</value>
+  </data>
+  <data name="ActionExpeditionTypes" xml:space="preserve">
+    <value>Tipos de Expedição</value>
+  </data>
+  <data name="ActionExpeditionZones" xml:space="preserve">
+    <value>Zonas de Expedição</value>
+  </data>
   <data name="ActionFlowsSchedulerRules" xml:space="preserve">
     <value>Registo Automático de Jobs</value>
+  </data>
+  <data name="ActionHelpPages" xml:space="preserve">
+    <value>Páginas de Ajuda</value>
+  </data>
+  <data name="ActionIntegrationReport" xml:space="preserve">
+    <value>Integrações</value>
+  </data>
+  <data name="ActionJobControl" xml:space="preserve">
+    <value>Controlo de Jobs</value>
+  </data>
+  <data name="ActionMarkDocumentsinError" xml:space="preserve">
+    <value>Marcar Documentos em Erro</value>
+  </data>
+  <data name="ActionMarkDocumentsRangeinError" xml:space="preserve">
+    <value>Marcar Intervalos de Documentos em Erro</value>
+  </data>
+  <data name="ActionMarkFilesinError" xml:space="preserve">
+    <value>Marcar Ficheiros em Erro</value>
+  </data>
+  <data name="ActionMaterialProductionRepor" xml:space="preserve">
+    <value>Controlo de Produção / Consumíveis</value>
+  </data>
+  <data name="ActionMaterials" xml:space="preserve">
+    <value>Materiais</value>
   </data>
   <data name="ActionMenuClientPages" xml:space="preserve">
     <value>Páginas Costumizadas</value>
@@ -186,10 +258,85 @@
   <data name="ActionMenuUserSettings_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle bx bx-user' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
   </data>
+  <data name="ActionPartialRecover" xml:space="preserve">
+    <value>Recuperações Parciais</value>
+  </data>
+  <data name="ActionPendingProductionReport" xml:space="preserve">
+    <value>Produção Pendente</value>
+  </data>
+  <data name="ActionPendingRecover" xml:space="preserve">
+    <value>Recuperações Pendentes</value>
+  </data>
+  <data name="ActionPendingRegistries" xml:space="preserve">
+    <value>Registos Pendentes</value>
+  </data>
+  <data name="ActionPermissions" xml:space="preserve">
+    <value>Acessos a Páginas</value>
+  </data>
+  <data name="ActionPostalObject" xml:space="preserve">
+    <value>Objecto Postal</value>
+  </data>
   <data name="ActionProcessResources" xml:space="preserve">
     <value>Recursos de Processos</value>
   </data>
+  <data name="ActionProductionFlows" xml:space="preserve">
+    <value>Produção</value>
+  </data>
+  <data name="ActionProductionReport" xml:space="preserve">
+    <value>Produção</value>
+  </data>
+  <data name="ActionProductionStatus" xml:space="preserve">
+    <value>Estado de Produção / Imprimir</value>
+  </data>
+  <data name="ActionProfiles" xml:space="preserve">
+    <value>Perfis</value>
+  </data>
+  <data name="ActionProjectVersions" xml:space="preserve">
+    <value>Versões de Projectos</value>
+  </data>
+  <data name="ActionPurgeFlows" xml:space="preserve">
+    <value>Expurgos</value>
+  </data>
+  <data name="ActionPurgeParameters" xml:space="preserve">
+    <value>Parâmetros Expurgos</value>
+  </data>
+  <data name="ActionRecoverReport" xml:space="preserve">
+    <value>Recuperações</value>
+  </data>
+  <data name="ActionRegistDetailRecover" xml:space="preserve">
+    <value>Recuperações: Detalhe de Registos (AR)</value>
+  </data>
+  <data name="ActionRegistJob" xml:space="preserve">
+    <value>Executar Fluxos</value>
+  </data>
   <data name="ActionResources" xml:space="preserve">
     <value>Recursos</value>
+  </data>
+  <data name="ActionRetentionReport" xml:space="preserve">
+    <value>Retenções</value>
+  </data>
+  <data name="ActionServiceCompanies" xml:space="preserve">
+    <value>Companhias de Serviços</value>
+  </data>
+  <data name="ActionServiceCompanyServices" xml:space="preserve">
+    <value>Serviços por Companhia</value>
+  </data>
+  <data name="ActionSupportInformation" xml:space="preserve">
+    <value>Informação de Suporte</value>
+  </data>
+  <data name="ActionTotalRecover" xml:space="preserve">
+    <value>Recuperações Totais</value>
+  </data>
+  <data name="ActionUserAprovals" xml:space="preserve">
+    <value>Aprovações</value>
+  </data>
+  <data name="ActionUserProfiles" xml:space="preserve">
+    <value>Perfis</value>
+  </data>
+  <data name="ActionUsers" xml:space="preserve">
+    <value>Utilizadores</value>
+  </data>
+  <data name="ActionUserTasks" xml:space="preserve">
+    <value>Tarefas de Utilizador</value>
   </data>
 </root>
