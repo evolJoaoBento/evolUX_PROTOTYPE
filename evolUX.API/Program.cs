@@ -30,7 +30,7 @@ builder.Services.AddSingleton<IProductionReportService, ProductionReportService>
 builder.Services.AddSingleton<IPendingRegistriesService, PendingRegistriesService>();
 builder.Services.AddSingleton<IPrintService, PrintService>();
 builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
-builder.Services.AddSingleton<IConcludedEnvelopeService, ConcludedEnvelopeService>();
+builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillService>();
 builder.Services.AddSingleton<IRecoverService, RecoverService>();
 builder.Services.AddSingleton<IExpeditionCompaniesService, ExpeditionCompaniesService>();
 builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();

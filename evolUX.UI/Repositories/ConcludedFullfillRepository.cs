@@ -6,9 +6,9 @@ using System.Net;
 
 namespace evolUX.UI.Repositories
 {
-    public class ConcludedEnvelopeRepository : RepositoryBase, IConcludedEnvelopeRepository
+    public class ConcludedFullfillRepository : RepositoryBase, IConcludedFullfillRepository
     {
-        public ConcludedEnvelopeRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
+        public ConcludedFullfillRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
 
@@ -20,7 +20,7 @@ namespace evolUX.UI.Repositories
                 bindingModel.FileBarcode = FileBarcode;
                 bindingModel.User = user;
                 bindingModel.ServiceCompanyList = ServiceCompanyList;
-                var response = await _flurlClient.Request("/API/finishing/ConcludedEnvelope/RegistFullFill")
+                var response = await _flurlClient.Request("/API/finishing/ConcludedFullfill/RegistFullFill")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .PostJsonAsync(bindingModel);
                 //var response = await BaseUrl

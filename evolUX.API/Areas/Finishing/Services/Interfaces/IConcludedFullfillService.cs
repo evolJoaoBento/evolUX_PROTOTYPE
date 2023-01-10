@@ -4,7 +4,7 @@ using System.Data;
 
 namespace evolUX.API.Areas.Finishing.Services.Interfaces
 {
-    public interface IConcludedEnvelopeService
+    public interface IConcludedFullfillService
     {
         public Task<IEnumerable<Result>> RegistFullFill(string fileBarcode, string user, DataTable serviceCompanyList);
     }

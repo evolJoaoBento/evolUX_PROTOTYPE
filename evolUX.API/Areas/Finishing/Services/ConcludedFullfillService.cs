@@ -6,10 +6,10 @@ using System.Data;
 
 namespace evolUX.API.Areas.Finishing.Services
 {
-    public class ConcludedEnvelopeService : IConcludedEnvelopeService
+    public class ConcludedFullfillService : IConcludedFullfillService
     {
         private readonly IWrapperRepository _repository;
-        public ConcludedEnvelopeService(IWrapperRepository repository)
+        public ConcludedFullfillService(IWrapperRepository repository)
         {
             _repository = repository;
         }

@@ -12,12 +12,12 @@ using Shared.Models.Areas.Core;
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
     [Area("Finishing")]
-    public class ConcludedEnvelopeController : Controller
+    public class ConcludedFullfillController : Controller
     {
-        private readonly IConcludedEnvelopeService _concludedEnvelopeService;
-        public ConcludedEnvelopeController(IConcludedEnvelopeService concludedEnvelopeService)
+        private readonly IConcludedFullfillService _concludedFullfillService;
+        public ConcludedFullfillController(IConcludedFullfillService concludedFullfillService)
         {
-            _concludedEnvelopeService = concludedEnvelopeService;
+            _concludedFullfillService = concludedFullfillService;
         }
 
         public ActionResult Index()
@@ -32,7 +32,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             DataTable ServiceCompanyList = HttpContext.Session.Get<DataTable>("evolDP/ServiceCompanies");
             String user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
 
-            var response = await _concludedEnvelopeService.RegistFullFill(FileBarcode, user, ServiceCompanyList);
+            var response = await _concludedFullfillService.RegistFullFill(FileBarcode, user, ServiceCompanyList);
             if (response.StatusCode == ((int)HttpStatusCode.NotFound))
             {
                 var resultError = response.GetJsonAsync<ErrorResult>().Result;

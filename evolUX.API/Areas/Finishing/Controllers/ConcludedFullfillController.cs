@@ -13,16 +13,16 @@ namespace evolUX.API.Areas.Finishing.Controllers
 {
     [Route("api/finishing/[controller]/[action]")]
     [ApiController]
-    public class ConcludedEnvelopeController : ControllerBase
+    public class ConcludedFullfillController : ControllerBase
     {
         private readonly IWrapperRepository _repository;
         private readonly ILoggerService _logger;
-        private readonly IFullfilledFilesRepository _concludedEnvelopeService;
-        public ConcludedEnvelopeController(IWrapperRepository repository, ILoggerService logger, IFullfilledFilesRepository concludedEnvelopeService)
+        private readonly IFullfilledFilesRepository _concludedFullfillService;
+        public ConcludedFullfillController(IWrapperRepository repository, ILoggerService logger, IFullfilledFilesRepository concludedFullfillService)
         {
             _repository = repository;
             _logger = logger;
-            _concludedEnvelopeService = concludedEnvelopeService;
+            _concludedFullfillService = concludedFullfillService;
         }
 
 
@@ -34,7 +34,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
             try
             {
                 ResultsViewModel viewmodel = new ResultsViewModel();
-                viewmodel.Results = await _concludedEnvelopeService.RegistFullFill(bindingModel.FileBarcode, bindingModel.User, bindingModel.ServiceCompanyList);
+                viewmodel.Results = await _concludedFullfillService.RegistFullFill(bindingModel.FileBarcode, bindingModel.User, bindingModel.ServiceCompanyList);
                 _logger.LogInfo("RegistFullFill Post");
                 return Ok(viewmodel);
             }

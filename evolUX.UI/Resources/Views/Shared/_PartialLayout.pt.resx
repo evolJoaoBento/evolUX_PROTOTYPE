@@ -117,6 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActionActiveDataModel" xml:space="preserve">
+    <value>Modelo de Dados Activo</value>
+  </data>
+  <data name="ActionConfiguredFlows" xml:space="preserve">
+    <value>Fluxos Configurados</value>
+  </data>
+  <data name="ActionFlowsSchedulerRules" xml:space="preserve">
+    <value>Registo Automático de Jobs</value>
+  </data>
+  <data name="ActionMenuClientPages" xml:space="preserve">
+    <value>Páginas Costumizadas</value>
+  </data>
+  <data name="ActionMenuClientPages_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle bx bx-book-alt' style="color:rgb(220 220 220)"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionMenuClientReporting" xml:space="preserve">
+    <value>Relatórios Costumizados</value>
+  </data>
+  <data name="ActionMenuClientReporting_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle bx bx-pie-chart' style="color:rgb(220 220 220)"&gt;&lt;/i&gt;</value>
+  </data>
   <data name="ActionMenuError" xml:space="preserve">
     <value>evolDP - Erros</value>
   </data>
@@ -164,5 +185,11 @@
   </data>
   <data name="ActionMenuUserSettings_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle bx bx-user' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionProcessResources" xml:space="preserve">
+    <value>Recursos de Processos</value>
+  </data>
+  <data name="ActionResources" xml:space="preserve">
+    <value>Recursos</value>
   </data>
 </root>

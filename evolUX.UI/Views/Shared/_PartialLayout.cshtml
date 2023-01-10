@@ -30,22 +30,22 @@
                             <li>
                                 <div class="sub-sub-menu-title">
                                     <a href="#">
-                                        <span class="link_name">@actionLevel2.LocalizationKey</span>
+                                        <span class="link_name">@localizer[actionLevel2.LocalizationKey]</span>
                                     </a>
                                     <i class='bx bxs-chevron-down arrow'></i>
                                 </div>
                                 <ul class="sub-sub-menu">
-                                    <li><a class="link_name" href="#">@actionLevel2.LocalizationKey</a></li>
+                                    <li><a class="link_name" href="#">@localizer[actionLevel2.LocalizationKey]</a></li>
                                     @foreach(var actionLevel3 in actionLevel2.ChildActions)
                                     {
-                                        <li><a href="#">@actionLevel3.LocalizationKey</a></li>
+                                        <li><a href="#">@localizer[actionLevel3.LocalizationKey]</a></li>
                                     }
                                 </ul>
                             </li>
                         }
                         else
                         {
-                            <li><a href="#">@actionLevel2.LocalizationKey</a></li>
+                            <li><a href="#">@localizer[actionLevel2.LocalizationKey]</a></li>
                         }
                     }
                 </ul>
@@ -156,7 +156,7 @@
                 <li><a href="#">Registos Pendentes</a></li>
                 <li><a href="#">Objecto Postal</a></li>
                 <li><a asp-area="Finishing" asp-controller="ConcludedPrint" asp-action="Index">Impressão Concluida</a></li>
-                <li><a asp-area="Finishing" asp-controller="ConcludedEnvelope" asp-action="Index">Envelopagem Concluida</a></li>
+                <li><a asp-area="Finishing" asp-controller="ConcludedFullfill" asp-action="Index">Envelopagem Concluida</a></li>
                 <li><a href="#">Recuperações Totais</a></li>
                 <li><a href="#">Recuperações Totais</a></li>
                 <li><a href="#">Recuperações: Detalhes</a></li>

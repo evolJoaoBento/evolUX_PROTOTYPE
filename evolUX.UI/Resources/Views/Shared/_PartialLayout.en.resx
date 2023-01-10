@@ -117,6 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ActionActiveDataModel" xml:space="preserve">
+    <value>Active Data Model</value>
+  </data>
+  <data name="ActionConfiguredFlows" xml:space="preserve">
+    <value>Configured Flows</value>
+  </data>
+  <data name="ActionFlowsSchedulerRules" xml:space="preserve">
+    <value>Automatic Job Registration</value>
+  </data>
+  <data name="ActionMenuClientPages" xml:space="preserve">
+    <value>Custom Pages</value>
+  </data>
+  <data name="ActionMenuClientPages_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle bx bx-book-alt' style="color:rgb(220 220 220)"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionMenuClientReporting" xml:space="preserve">
+    <value>Custom Reports</value>
+  </data>
+  <data name="ActionMenuClientReporting_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle bx bx-pie-chart' style="color:rgb(220 220 220)"&gt;&lt;/i&gt;</value>
+  </data>
   <data name="ActionMenuError" xml:space="preserve">
     <value>evolDP - Error Handling</value>
   </data>
@@ -157,12 +178,18 @@
     <value>Maintenance</value>
   </data>
   <data name="ActionMenuSupport_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle  bx bxs-wrench'&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle  bx bxs-wrench' style="color:rgb(220 220 220)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuUserSettings" xml:space="preserve">
     <value>User Options</value>
   </data>
   <data name="ActionMenuUserSettings_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle bx bx-user' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionProcessResources" xml:space="preserve">
+    <value>Process Resources</value>
+  </data>
+  <data name="ActionResources" xml:space="preserve">
+    <value>Resources</value>
   </data>
 </root>
