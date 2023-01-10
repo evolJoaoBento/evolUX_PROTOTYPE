@@ -1,4 +1,7 @@
 ﻿@using Shared.Models.Areas.Core
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
@@ -13,13 +16,13 @@
 <div class="align-items-center">
     @if (User.Identity.IsAuthenticated)
     {
-        <h1 class="display-4 text-center">Bem vindo ao <span class="evol-font">evolUX</span></h1>
-        <p>@User.Identity.Name</p>
+        <h1 class="display-4 text-center">@localizer["Welcome"] <span class="evol-font">evolUX</span></h1>
+@*        <p>@User.Identity.Name</p>
         foreach (var claim in User.Claims)
         {
             <p>@claim.Type: @claim.Value</p>
         }
-    }
+*@    }
     else
     {
         <div class="container-auth">

@@ -18,7 +18,7 @@ namespace evolUX.API.Data.Repositories
         public async Task<List<UserModel>> GetAllUsers()
         {
             var userList = new List<UserModel>();
-            string sql = "SELECT UserId AS [Id], UserName AS [Username], RefreshToken, RefreshTokenExpiryTime, ISNULL(Language,'') Language FROM USERS WITH(NOLOCK)";
+            string sql = "SELECT UserId AS [Id], UserName AS [Username], RefreshToken, RefreshTokenExpiryTime, ISNULL(Language,'pt') Language FROM USERS WITH(NOLOCK) WHERE Active = 1";
             using (var connection = _context.CreateConnectionEvolFlow())
             {
                 userList = (List<UserModel>)await connection.QueryAsync<UserModel>(sql);
@@ -29,7 +29,7 @@ namespace evolUX.API.Data.Repositories
         public async Task<UserModel> GetUserByUsername(string username)
         {
             var user = new UserModel();
-            string sql = "SELECT UserId AS [Id], UserName AS [Username], Password, RefreshToken, RefreshTokenExpiryTime, ISNULL(Language,'') Language FROM USERS WITH(NOLOCK) WHERE UserName = @UserName";
+            string sql = "SELECT UserId AS [Id], UserName AS [Username], Password, RefreshToken, RefreshTokenExpiryTime, ISNULL(Language,'pt') Language FROM USERS WITH(NOLOCK) WHERE UserName = @UserName AND Active = 1";
             var parameters = new DynamicParameters();
             parameters.Add("UserName", username ,DbType.String);
             using (var connection = _context.CreateConnectionEvolFlow())
@@ -51,7 +51,7 @@ namespace evolUX.API.Data.Repositories
                             INNER JOIN
                                 PROFILES p WITH(NOLOCK)
                             ON up.ProfileID = p.ProfileID
-                            WHERE u.UserName = @UserName";
+                            WHERE u.UserName = @UserName AND u.Active = 1";
 
             var parameters = new DynamicParameters();
             parameters.Add("UserName", username, DbType.String);

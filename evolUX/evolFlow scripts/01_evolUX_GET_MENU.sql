@@ -32,9 +32,10 @@ GO
 INSERT INTO [evolUX_ACTIONS](ActionID, ActionTypeID, LocalizationKey, Description, ParentActionID, DefaultOrder, HistoryFlag, evolGUI_ActionID, evolGUI_TypeID)
 SELECT ActionID, ActionTypeID, NULL, [Description], ParActionID, NULL, HistoryFlag, ActionID, evolGUI_TypeID
 FROM ACTIONS
-WHERE ActionTypeID = 0
-	OR (ActionTypeID = 1 AND parActionID in (SELECT ActionID FROM Actions WHERE ActionTypeID = 0))
-	OR (ActionTypeID = 1 AND parActionID in (SELECT ActionID FROM Actions WHERE(ActionTypeID = 1 AND parActionID in (SELECT ActionID FROM Actions WHERE ActionTypeID = 0))))
+WHERE (ActionTypeID = 0
+		OR (ActionTypeID = 1 AND parActionID in (SELECT ActionID FROM Actions WHERE ActionTypeID = 0))
+		OR (ActionTypeID = 1 AND parActionID in (SELECT ActionID FROM Actions WHERE(ActionTypeID = 1 AND parActionID in (SELECT ActionID FROM Actions WHERE ActionTypeID = 0)))))
+	AND [Description] not in ('Estados de Jobs','Estado de Jobs Activos')
 GO
 CREATE TABLE [dbo].[evolUX_PERMISSIONS](
 	[ActionID] [int] NOT NULL,
@@ -77,6 +78,46 @@ WHERE Name = N'Language' AND OBJECT_ID = OBJECT_ID(N'USERS'))
 BEGIN
 	ALTER TABLE dbo.USERS
 	ADD [Language] varchar(10) NULL
+END
+GO
+IF NOT EXISTS(SELECT * FROM sys.columns
+WHERE Name = N'Active' AND OBJECT_ID = OBJECT_ID(N'USERS'))
+BEGIN
+	ALTER TABLE dbo.USERS
+	ADD Active bit NOT NULL CONSTRAINT DF_USERS_Active DEFAULT (1)
+END
+GO
+UPDATE dbo.USERS
+SET Active = 1
+WHERE UserType <> 'OFF'
+GO
+UPDATE dbo.USERS
+SET Active = 0
+WHERE UserType = 'OFF'
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USERS_DEACTIVATE]') AND type in (N'TR'))
+BEGIN
+	DROP TRIGGER dbo.USERS_DEACTIVATE 
+END
+GO
+-- =============================================
+-- Author:		evolSolutions
+-- Create date: 2023/01/10
+-- Description:	Deactivate Users
+-- =============================================
+CREATE TRIGGER dbo.USERS_DEACTIVATE 
+   ON  dbo.USERS 
+   AFTER INSERT, UPDATE
+AS 
+BEGIN
+	SET NOCOUNT ON;
+	IF UPDATE(UserType)
+	BEGIN
+		UPDATE USERS
+		SET Active = CASE UPPER(i.UserType) WHEN 'OFF' THEN 0 ELSE 1 END 
+		FROM inserted i
+		WHERE i.Active <> (CASE UPPER(i.UserType) WHEN 'OFF' THEN 0 ELSE 1 END)
+	END
 END
 GO
 IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[evolUX_GET_MENU]') AND type in (N'P', N'PC'))
@@ -145,7 +186,7 @@ SET LocalizationKey = 'ActionMenu' + CASE [Description]
 	WHEN 'Finishing' THEN 'Finishing'
 	WHEN 'Produção evolDP' THEN 'Finishing'
 	WHEN 'Produção' THEN CASE WHEN ActionID = 30 THEN 'ClientPages' ELSE NULL END
-	ELSE NULL END
+	ELSE LocalizationKey END
 FROM [evolUX_ACTIONS]
 WHERE ActionTypeID = 0
 GO
@@ -161,12 +202,12 @@ SET [DefaultOrder] = CASE [LocalizationKey]
 	WHEN 'ActionMenuEvolDPConfig' THEN 1100
 	WHEN 'ActionMenuReporting' THEN 1300
 	WHEN 'ActionMenuFinishing' THEN 1400
-	ELSE NULL END
+	ELSE LocalizationKey END
 FROM [evolUX_ACTIONS]
 WHERE ActionTypeID = 0
 GO
 UPDATE [evolUX_ACTIONS]
-SET LocalizationKey = 'Action' + CASE [Description] 
+SET LocalizationKey = 'Action' + CASE RTRIM(LTRIM([Description]))
 	WHEN 'Recursos' THEN 'Resources'
 	WHEN 'Fluxos Configurados' THEN 'ConfiguredFlows'
 	WHEN 'Modelo de Dados Activo' THEN 'ActiveDataModel'
@@ -217,7 +258,7 @@ SET LocalizationKey = 'Action' + CASE [Description]
 	WHEN 'Recuperações Pendentes' THEN 'PendingRecover'
 	WHEN 'Recuperações: Detalhe de Registos (AR)' THEN 'RegistDetailRecover'
 	WHEN 'Guias de Expedição' THEN 'ExpeditionReport'
-	ELSE NULL END
+	ELSE LocalizationKey END
 FROM [evolUX_ACTIONS]
 WHERE ActionTypeID = 1 AND ParentActionID in (SELECT ActionID FROM [evolUX_ACTIONS] WHERE  ActionTypeID = 0)
 GO
@@ -233,14 +274,14 @@ SET LocalizationKey = 'Action' + CASE [Description]
 	WHEN 'Produção' THEN 'ProductionFlows'
 	WHEN 'Backups' THEN 'BackupFlows'
 	WHEN 'Expurgos' THEN 'PurgeFlows'
-	ELSE NULL END
+	ELSE LocalizationKey END
 FROM [evolUX_ACTIONS]
 WHERE ActionTypeID = 1 AND ParentActionID = (SELECT ActionID FROM [evolUX_ACTIONS] WHERE LocalizationKey = 'ActionRegistJob')
 GO
 UPDATE [evolUX_ACTIONS]
 SET LocalizationKey = 'Action' + CASE [Description] 
 	WHEN 'Aprovações' THEN 'UserAprovals'
-	ELSE NULL END
+	ELSE LocalizationKey END
 FROM [evolUX_ACTIONS]
 WHERE ActionTypeID = 1 AND ParentActionID = (SELECT ActionID FROM [evolUX_ACTIONS] WHERE LocalizationKey = 'ActionUserTasks')
 GO
@@ -251,7 +292,7 @@ SET LocalizationKey = 'Action' + CASE [Description]
 	WHEN 'Apagar' THEN 'DeleteUser'
 	WHEN 'Apagar um Utilizador' THEN 'DeleteUser'
 	WHEN 'Perfis' THEN 'UserProfiles'
-	ELSE NULL END
+	ELSE LocalizationKey END
 FROM [evolUX_ACTIONS]
 WHERE ActionTypeID = 1 AND ParentActionID = (SELECT ActionID FROM [evolUX_ACTIONS] WHERE LocalizationKey = 'ActionUsers')
 GO
@@ -260,7 +301,8 @@ SET LocalizationKey = 'Action' + CASE [Description]
 	WHEN 'Adicionar um Utilizador' THEN 'AddUser'
 	WHEN 'Apagar um Utilizador' THEN 'DeleteUser'
 	WHEN 'O Meu Perfil' THEN 'UserProfiles'
-	ELSE NULL END
+	WHEN 'Meu Perfil' THEN 'UserProfiles'
+	ELSE LocalizationKey END
 FROM [evolUX_ACTIONS]
 WHERE ActionTypeID = 1 AND ParentActionID = (SELECT ActionID FROM [evolUX_ACTIONS] WHERE LocalizationKey = 'ActionMenuEvolFlowConfig')
 GO
@@ -268,7 +310,7 @@ UPDATE [evolUX_ACTIONS]
 SET LocalizationKey = 'Action' + CASE [Description] 
 	WHEN 'Consulta' THEN 'ProfilesList'
 	WHEN 'Acessos a Páginas' THEN 'Permissions'
-	ELSE NULL END
+	ELSE LocalizationKey END
 FROM [evolUX_ACTIONS]
 WHERE ActionTypeID = 1 AND ParentActionID = (SELECT ActionID FROM [evolUX_ACTIONS] WHERE LocalizationKey = 'ActionProfiles')
 GO

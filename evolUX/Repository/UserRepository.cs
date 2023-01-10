@@ -18,7 +18,7 @@ namespace evolUX.Repository
         public async Task<List<UserModel>> GetAllUsers()
         {
             var userList = new List<UserModel>();
-            string sql = "SELECT UserId AS [Id], UserName AS [Username], RefreshToken, RefreshTokenExpiryTime FROM USERS";
+            string sql = "SELECT UserId AS [Id], UserName AS [Username], RefreshToken, RefreshTokenExpiryTime, ISNULL(Language,'pt') Language FROM USERS WITH(NOLOCK) WHERE Active = 1";
             using (var connection = _context.CreateConnectionEvolFlow())
             {
                 userList = (List<UserModel>)await connection.QueryAsync<UserModel>(sql);

@@ -172,6 +172,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             AuthenticateResponse user = new AuthenticateResponse();
             user.Id = (int)((dynamic)result).userModel.id;
             user.Username = ((dynamic)result).userModel.username;
+            user.Language = ((dynamic)result).userModel.language;
             await GetSessionVariables(user) ;
             return Redirect(returnUrl);
         }
@@ -189,6 +190,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             AuthenticateResponse user = new AuthenticateResponse();
             user.Id = (int)((dynamic)result).userModel.id;
             user.Username = ((dynamic)result).userModel.username;
+            user.Language = ((dynamic)result).userModel.language;
             await GetSessionVariables(user);
             return response.StatusCode;
         }
