@@ -1,6 +1,9 @@
 ﻿@using Shared.Models.Areas.Finishing
 @using Shared.ViewModels.Areas.Finishing
 @using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
 @model ProductionReportViewModel;
 @*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
 
@@ -44,40 +47,41 @@
             <colgroup span="5"></colgroup>
             <thead id="bootstrap-overrides" class="table-info sticky-header">
                 <tr class="text-center">
-                    <th class="headcol" rowspan="3" scope="col">File</th>@*FileName RegistShortFileName*@
-                    <th rowspan="3" scope="col">Treatment</th>@*ServiceTaskCode*@
-                    <th colspan="@printingSpan" scope="colgroup">Printing</th>
-                    <th colspan="@envelopingSpan" scope="colgroup">Enveloping</th>
-                    <th colspan="5" scope="colgroup">Expedition</th>
+                    <th class="headcol" rowspan="3" scope="col">@localizer["Files"]</th>@*FileName RegistShortFileName*@
+                    <th rowspan="3" scope="col">@localizer["ServiceTaskCode"]</th>@*ServiceTaskCode*@
+                    <th colspan="@printingSpan" scope="colgroup">@localizer["Printing"]</th>
+                    <th colspan="@envelopingSpan" scope="colgroup">@localizer["Fullfilling"]</th>
+                    <th colspan="5" scope="colgroup">@localizer["Expedition"]</th>
                 </tr>
                 <tr class="text-center">
-                    <th rowspan="2" scope="col">Operator [Printer]</th>@*PrinterOperator + Printer*@
-                    <th rowspan="2" scope="col">Type</th>@*PlexCode*@
-                    <th rowspan="2" scope="col">Amount</th>@*TotalPrint*@
-                    <th colspan="2" scope="colgroup" class="hideextra">Sequence Number</th>
+                    <th rowspan="2" scope="col">@localizer["PrinterOperator"]</th>@*PrinterOperator + Printer*@
+                    <th rowspan="2" scope="col">@localizer["PlexCode"]</th>@*PlexCode*@
+                    <th rowspan="2" scope="col">@localizer["TotalPrint"]</th>@*TotalPrint*@
+                    <th colspan="2" scope="colgroup" class="hideextra">@localizer["SequenceNumber"]</th>
                     <th colspan="@pinfo.ProductionDetailReport.First().PaperTotals.Keys.Count" scope="colgroup">Materials</th>
-                    <th colspan="2" scope="colgroup">Envelope</th>
-                    <th rowspan="2" scope="col">Amount</th> @*TotalPostObjs*@
-                    <th rowspan="2" scope="col">Level</th>@*ExpLevel*@
+                    <th colspan="2" scope="colgroup">@localizer["Envelope"]</th>
+                    <th rowspan="2" scope="col">@localizer["TotalPostObjs"]</th> @*TotalPostObjs*@
+                    <th rowspan="2" scope="col">@localizer["ExpLevel"]</th>@*ExpLevel*@
                     @if (pinfo.ProductionDetailReport.First().StationTotals != null)
                     {
                         <th colspan="@pinfo.ProductionDetailReport.First().StationTotals.Keys.Count" scope="colgroup">Stations</th>
                     }
-                    <th rowspan="2" scope="col">Company</th>@*ExpCompanyCode*@
-                    <th rowspan="2" scope="col">Expedition Center</th>@*ExpCenterCodeDesc*@
-                    <th rowspan="2" scope="col">Zone</th>@*ExpeditionZone*@
-                    <th rowspan="2" scope="rowgroup">Type</th>@*RegistDetailFilePrintedFlag*@
+                    <th rowspan="2" scope="col">@localizer["ExpCompanyCode"]</th>@*ExpCompanyCode*@
+                    <th rowspan="2" scope="col">@localizer["ExpCenterCode"]</th>@*ExpCenterCode*@
+                    <th rowspan="2" scope="col">@localizer["ExpeditionZone"]</th>@*ExpeditionZone*@
+                    <th rowspan="2" scope="rowgroup">@localizer["ExpeditionType"]</th>@*ExpeditionType*@
+                    <th rowspan="2" scope="rowgroup">@localizer["ExpeditionLevel"]</th>@*ExpeditionLevel*@
                 </tr>
                 <tr class="text-center">
-                    <th scope="col">Start</th>@*StartSeqNum*@
-                    <th scope="col">End</th>@*EndSeqNum*@
+                    <th scope="col">@localizer["StartSeqNum"]</th>@*StartSeqNum*@
+                    <th scope="col">@localizer["EndSeqNum"]</th>@*EndSeqNum*@
                     @foreach(string paper in pinfo.ProductionDetailReport.First().PaperTotals.Keys)
                     {
                         <th scope="row">@paper</th>
                         PaperTotal.Add(paper, 0);
                     }
-                    <th scope="col">Format</th>@*FullFillMaterialCode*@
-                    <th scope="col">Material</th>@*FullFillMaterialRef*@
+                    <th scope="col">@localizer["FullFillMaterialCode"]</th>@*FullFillMaterialCode*@
+                    <th scope="col">@localizer["FullFillMaterialRef"]</th>@*FullFillMaterialRef*@
                     @if (pinfo.ProductionDetailReport.First().StationTotals != null)
                     {
                         @foreach (string station in pinfo.ProductionDetailReport.First().StationTotals.Keys)
@@ -185,12 +189,13 @@
                             <td class="hideextra">@p.ExpCenterCode</td>
                             <td class="hideextra">@p.ExpeditionZone</td>
                             <td class="hideextra">@p.ExpeditionType</td>
+                            <td class="hideextra">@p.ExpeditionLevel</td>
                             @*<td><a asp-area="EvolDP" asp-controller="DocCode" asp-action="DocCodeLevel1" asp-route-doclayout="@p.DocLayout" asp-route-docsubtype="@p.DocType">Mais</a></td>*@
                         </tr>
                     }
                     <tr style="background:var(--lightestgrey)">
                         <b>
-                        <td class="headcol" style="background:var(--lightergrey);">Total</td></b>
+                        <td class="headcol" style="background:var(--lightergrey);">@localizer["Totals"]</td></b>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -211,6 +216,7 @@
                                 <td scope="row" style="background:var(--lightergrey);">@StationTotal[station]</td>
                             }
                         }
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>

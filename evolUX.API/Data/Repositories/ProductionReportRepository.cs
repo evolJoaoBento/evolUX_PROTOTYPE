@@ -70,7 +70,8 @@ namespace evolUX.API.Data.Repositories
                     productionInfo.TotalPostObjs = (int)r["TotalPostObjs"];
                     productionInfo.ExpLevel = (int)r["ExpLevel"];
                     productionInfo.ExpCompanyCode = (string)r["ExpCompanyCode"];
-                    productionInfo.ExpCenterCode = (string)r["ExpCenterCode"];//expCenterCode
+                    productionInfo.ExpCenterCode = (string)r["ExpCenterCode"];
+                    productionInfo.ExpeditionLevel = (string)r["ExpeditionLevel"];
                     productionInfo.ExpeditionZone = (string)r["ExpZone"];
                     productionInfo.ExpeditionType = (string)r["ExpType"];
 

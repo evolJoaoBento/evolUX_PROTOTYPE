@@ -25,7 +25,7 @@
         public int ExpLevel { get; set; }
         public string ExpCompanyCode { get; set; }
         public string ExpCenterCode { get; set; }
-        public string ExpCenterCodeDesc { get; set; }
+        public string ExpeditionLevel { get; set; }
         public string ExpeditionZone { get; set; }
         public string ExpeditionType { get; set; }
         public bool FilePrintedFlag { get; set; }

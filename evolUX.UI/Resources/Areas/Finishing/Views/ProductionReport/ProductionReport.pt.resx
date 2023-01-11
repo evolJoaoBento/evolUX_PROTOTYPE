@@ -117,76 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EndExpedition" xml:space="preserve">
-    <value>Last File</value>
+  <data name="EndSeqNum" xml:space="preserve">
+    <value>Final</value>
   </data>
-  <data name="EndFullFill" xml:space="preserve">
-    <value>Last File</value>
+  <data name="Envelope" xml:space="preserve">
+    <value>Envelope</value>
   </data>
-  <data name="EndPrinted" xml:space="preserve">
-    <value>Last File</value>
+  <data name="ExpCenterCode" xml:space="preserve">
+    <value>Centro de Expedição</value>
   </data>
-  <data name="EndProcessed" xml:space="preserve">
-    <value>Last File</value>
-  </data>
-  <data name="EndS2Printer" xml:space="preserve">
-    <value>Last File</value>
-  </data>
-  <data name="EndToPrint" xml:space="preserve">
-    <value>Last File</value>
+  <data name="ExpCompanyCode" xml:space="preserve">
+    <value>Companhia </value>
   </data>
   <data name="Expedition" xml:space="preserve">
-    <value>Expedition</value>
+    <value>Expedição</value>
+  </data>
+  <data name="ExpeditionLevel" xml:space="preserve">
+    <value>Escalão</value>
+  </data>
+  <data name="ExpeditionType" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="ExpeditionZone" xml:space="preserve">
+    <value>Zona</value>
+  </data>
+  <data name="ExpLevel" xml:space="preserve">
+    <value>Escalão</value>
   </data>
   <data name="Files" xml:space="preserve">
-    <value>Files</value>
+    <value>Ficheiros</value>
   </data>
-  <data name="FullFill" xml:space="preserve">
-    <value>Envelopment Closing</value>
+  <data name="Fullfilling" xml:space="preserve">
+    <value>Envelopagem</value>
   </data>
-  <data name="Originals" xml:space="preserve">
-    <value>Originals</value>
+  <data name="FullFillMaterialCode" xml:space="preserve">
+    <value>Formato</value>
   </data>
-  <data name="Printed" xml:space="preserve">
-    <value>Printed</value>
+  <data name="FullFillMaterialRef" xml:space="preserve">
+    <value>Material</value>
   </data>
-  <data name="Processed" xml:space="preserve">
-    <value>Processed</value>
+  <data name="Materials" xml:space="preserve">
+    <value>Materiais</value>
   </data>
-  <data name="Recup" xml:space="preserve">
-    <value>Recovered</value>
+  <data name="PlexCode" xml:space="preserve">
+    <value>Tipo</value>
   </data>
-  <data name="RunDescription" xml:space="preserve">
-    <value>Run Description</value>
+  <data name="PrinterOperator" xml:space="preserve">
+    <value>Operador [Impressora]</value>
   </data>
-  <data name="S2Printer" xml:space="preserve">
-    <value>Sent to Printer</value>
+  <data name="Printing" xml:space="preserve">
+    <value>Impressão</value>
   </data>
-  <data name="StartExpedition" xml:space="preserve">
-    <value>First File</value>
+  <data name="SequenceNumber" xml:space="preserve">
+    <value>Nº Sequência</value>
   </data>
-  <data name="StartFullFill" xml:space="preserve">
-    <value>First File</value>
+  <data name="ServiceTaskCode" xml:space="preserve">
+    <value>Tratamento</value>
   </data>
-  <data name="StartPrinted" xml:space="preserve">
-    <value>First File</value>
+  <data name="StartSeqNum" xml:space="preserve">
+    <value>Inicial</value>
   </data>
-  <data name="StartProcessed" xml:space="preserve">
-    <value>First File</value>
+  <data name="Stations" xml:space="preserve">
+    <value>Estações</value>
   </data>
-  <data name="StartS2Printer" xml:space="preserve">
-    <value>First File</value>
+  <data name="TotalPostObjs" xml:space="preserve">
+    <value>Quantidade</value>
   </data>
-  <data name="StartToPrint" xml:space="preserve">
-    <value>First File</value>
+  <data name="TotalPrint" xml:space="preserve">
+    <value>Quantidade</value>
   </data>
-  <data name="ToPrint" xml:space="preserve">
-    <value>Available for Printing</value>
-  </data>
-  <data name="Total" xml:space="preserve">
-    <value>Total</value>
-  </data>
-  <data name="TotalToPrint" xml:space="preserve">
-    <value>Unprinted</value>
+  <data name="Totals" xml:space="preserve">
+    <value>Totais</value>
   </data>
 </root>
