@@ -9,5 +9,5 @@ AS
 BEGIN
 	SELECT ParameterID,	ParameterRef, ParameterValue, ParameterDescription
 	FROM RD_CONSTANT_PARAMETERS
-RETURN
+END
 GO
