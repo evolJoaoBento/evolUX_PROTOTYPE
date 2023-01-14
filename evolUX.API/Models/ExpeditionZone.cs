@@ -7,7 +7,7 @@ namespace evolUX.API.Models
 {
     public class ExpeditionZone
     {
-        public int ExpeditionZoneNumber { get; set; }
-        public string Description { get; set; }
+        public int ExpeditionZoneID { get; set; }
+        public string ExpeditionZoneDesc { get; set; }
     }
 }

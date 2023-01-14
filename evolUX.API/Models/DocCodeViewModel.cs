@@ -9,13 +9,13 @@ namespace evolUX.API.Models
 {
     public class DocCodeViewModel
     {
-        public int DocCodeId { get; set; }
+        public int DocCodeID { get; set; }
         public string DocLayout { get; set; }
         public string DocSubtype { get; set; }
         public string DocDescription { get; set; }
-        public DocException DocExceptionLevel1 { get; set; }
-        public ExceptionLevel2 DocExceptionLevel2 { get; set; }
-        public ExceptionLevel3 DocExceptionLevel3 { get; set; }
+        public ExceptionLevel DocExceptionLevel1 { get; set; }
+        public ExceptionLevel DocExceptionLevel2 { get; set; }
+        public ExceptionLevel DocExceptionLevel3 { get; set; }
         public EnvMediaGroupViewModel DocEnvMediaGroup { get; set; }
 
         [Required]

@@ -7,7 +7,7 @@ namespace evolUX.API.Models
 {
     public class Company
     {
-        public int CompanyId { get; set; }
+        public int CompanyID { get; set; }
         public string CompanyName { get; set; }
         public string CompanyAddress { get; set; }
         public string CompanyPostalCode { get; set; }

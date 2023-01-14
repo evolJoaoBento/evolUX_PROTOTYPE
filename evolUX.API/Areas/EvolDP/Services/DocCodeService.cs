@@ -53,9 +53,9 @@ namespace evolUX.API.Areas.EvolDP.Services
             return docCodeConfig;
         }
 
-        public async Task<IEnumerable<DocException>> GetDocExceptionsLevel1()
+        public async Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel1()
         {
-            IEnumerable<DocException> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel1();
+            IEnumerable<ExceptionLevel> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel1();
             if (docExceptionList == null)
             {
 
@@ -63,9 +63,9 @@ namespace evolUX.API.Areas.EvolDP.Services
             return docExceptionList;
         }
 
-        public async Task<IEnumerable<DocException>> GetDocExceptionsLevel2()
+        public async Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel2()
         {
-            IEnumerable<DocException> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel2();
+            IEnumerable<ExceptionLevel> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel2();
             if (docExceptionList == null)
             {
 
@@ -73,9 +73,9 @@ namespace evolUX.API.Areas.EvolDP.Services
             return docExceptionList;
         }
 
-        public async Task<IEnumerable<DocException>> GetDocExceptionsLevel3()
+        public async Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel3()
         {
-            IEnumerable<DocException> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel3();
+            IEnumerable<ExceptionLevel> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel3();
             if (docExceptionList == null)
             {
 

@@ -5,9 +5,9 @@ namespace evolUX.API.Areas.EvolDP.ViewModels
     public class DocCodeExceptionViewModel
     {
         public DocCodeConfig DocCodeConfig { get; set; }
-        public IEnumerable<DocException> DocExceptionslevel1 { get; set; }
-        public IEnumerable<DocException> DocExceptionslevel2 { get; set; }
-        public IEnumerable<DocException> DocExceptionslevel3 { get; set; }
+        public IEnumerable<ExceptionLevel> DocExceptionslevel1 { get; set; }
+        public IEnumerable<ExceptionLevel> DocExceptionslevel2 { get; set; }
+        public IEnumerable<ExceptionLevel> DocExceptionslevel3 { get; set; }
         public IEnumerable<EnvelopeMedia> EnvelopeMediaGroups { get; set; }
         public IEnumerable<int> AggregationList { get; set; }
         public IEnumerable<Company> ExpeditionCompanies { get; set; }

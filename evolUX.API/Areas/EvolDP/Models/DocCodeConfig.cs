@@ -10,9 +10,9 @@ namespace evolUX.API.Areas.EvolDP.Models
         public string DocCodeID { get; set; }
         public string DocLayout { get; set; }
         public string DocType { get; set; }
-        public DocException DocExceptionLevel1 { get; set; }
-        public DocException DocExceptionLevel2 { get; set; }
-        public DocException DocExceptionLevel3 { get; set; }
+        public ExceptionLevel DocExceptionLevel1 { get; set; }
+        public ExceptionLevel DocExceptionLevel2 { get; set; }
+        public ExceptionLevel DocExceptionLevel3 { get; set; }
         public string DocDescription { get; set; }
         public string PrintMatchCode { get; set; }
         public string StartDate { get; set; }

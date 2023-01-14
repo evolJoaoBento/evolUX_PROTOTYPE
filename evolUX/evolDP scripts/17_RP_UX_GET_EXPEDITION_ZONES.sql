@@ -7,7 +7,7 @@ GO
 ALTER  PROCEDURE [dbo].[RP_UX_GET_EXPEDITION_ZONES]
 AS
 BEGIN
-	SELECT ExpeditionZone,
+	SELECT ExpeditionZone ExpeditionZoneID,
 	[Description] ExpeditionZoneDesc
 	FROM RD_EXPEDITION_ZONE
 END

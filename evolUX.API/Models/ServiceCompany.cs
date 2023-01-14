@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace evolUX.API.Models
 {
-    public class ServiceCampaign
+    public class ServiceCompany
     {
-        public int CampaignID { get; set; }
-        public string CampaignName { get; set; }
+        public int ServiceCompanyID { get; set; }
+        public string ServiceCompanyName { get; set; }
         public string MaterialSupplier { get; set; }
         public string EffectiveDate { get; set; }
         public string MaterialCost { get; set; }

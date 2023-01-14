@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace evolUX.API.Areas.EvolDP.Models
 {
-    public class DocException
+    public class ExceptionLevel
     {
         public int ExceptionLevelID { get; set; }
         public string ExceptionCode { get; set; }

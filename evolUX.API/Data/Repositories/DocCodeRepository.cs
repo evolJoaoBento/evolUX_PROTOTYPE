@@ -72,13 +72,13 @@ namespace evolUX.API.Data.Repositories
             parameters.Add("DOCTYPE", docType, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<DocCode> docCodeList = await connection.QueryAsync<DocCode, DocException, DocException, DocException, DocCode>(sql,
+                IEnumerable<DocCode> docCodeList = await connection.QueryAsync<DocCode, ExceptionLevel, ExceptionLevel, ExceptionLevel, DocCode>(sql,
                                         (d,e1,e2,e3) =>
 										{
 											DocCode docCode = d;
-											docCode.DocExceptionLevel1 = e1;
-											docCode.DocExceptionLevel2 = e2;
-											docCode.DocExceptionLevel3 = e3;
+											docCode.ExceptionLevel1 = e1;
+											docCode.ExceptionLevel2 = e2;
+											docCode.ExceptionLevel3 = e3;
 											return docCode;
 										},parameters , splitOn: "ExceptionLevelID");
 				return docCodeList;
@@ -145,7 +145,7 @@ namespace evolUX.API.Data.Repositories
             parameters.Add("DOCCODEID", ID, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
-				IEnumerable<DocCodeConfig> docCodeConfigList = await connection.QueryAsync<DocCodeConfig, DocException, DocException, DocException, DocCodeConfig>(sql,
+				IEnumerable<DocCodeConfig> docCodeConfigList = await connection.QueryAsync<DocCodeConfig, ExceptionLevel, ExceptionLevel, ExceptionLevel, DocCodeConfig>(sql,
 					(d, e1, e2, e3) =>
 					{
 						DocCodeConfig docCodeConfig = d;
@@ -248,7 +248,7 @@ namespace evolUX.API.Data.Repositories
 			parameters.Add("DocStartDate", startdate, DbType.String);
 			using (var connection = _context.CreateConnectionEvolDP())
 			{
-				IEnumerable<DocCodeConfig> docCodeConfigList = await connection.QueryAsync<DocCodeConfig, DocException, DocException, DocException, DocCodeConfig>(sql,
+				IEnumerable<DocCodeConfig> docCodeConfigList = await connection.QueryAsync<DocCodeConfig, ExceptionLevel, ExceptionLevel, ExceptionLevel, DocCodeConfig>(sql,
 					(d, e1, e2, e3) =>
 					{
 						DocCodeConfig docCodeConfig = d;
@@ -281,7 +281,7 @@ namespace evolUX.API.Data.Repositories
 		}
 
 		//HANDLE TEXT RESPONSES IN UPPER LEVELS
-        public async Task<IEnumerable<DocException>> GetDocExceptionsLevel1()
+        public async Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel1()
         {
 			string sql = $@"SELECT	ExceptionLevelID,
 									ExceptionCode,
@@ -291,12 +291,12 @@ namespace evolUX.API.Data.Repositories
 
 			using (var connection = _context.CreateConnectionEvolDP())
 			{
-				IEnumerable<DocException> docCodeException = await connection.QueryAsync<DocException>(sql);
+				IEnumerable<ExceptionLevel> docCodeException = await connection.QueryAsync<ExceptionLevel>(sql);
 				return docCodeException;
 			}
 		}
 
-        public async Task<IEnumerable<DocException>> GetDocExceptionsLevel2()
+        public async Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel2()
         {
 			string sql = $@"SELECT	ExceptionLevelID,
 									ExceptionCode,
@@ -306,12 +306,12 @@ namespace evolUX.API.Data.Repositories
 
 			using (var connection = _context.CreateConnectionEvolDP())
 			{
-				IEnumerable<DocException> docCodeException = await connection.QueryAsync<DocException>(sql);
+				IEnumerable<ExceptionLevel> docCodeException = await connection.QueryAsync<ExceptionLevel>(sql);
 				return docCodeException;
 			}
 		}
 
-        public async Task<IEnumerable<DocException>> GetDocExceptionsLevel3()
+        public async Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel3()
         {
 			string sql = $@"SELECT	ExceptionLevelID,
 									ExceptionCode,
@@ -321,7 +321,7 @@ namespace evolUX.API.Data.Repositories
 
 			using (var connection = _context.CreateConnectionEvolDP())
 			{
-				IEnumerable<DocException> docCodeException = await connection.QueryAsync<DocException>(sql);
+				IEnumerable<ExceptionLevel> docCodeException = await connection.QueryAsync<ExceptionLevel>(sql);
 				return docCodeException;
 			}
 		}
@@ -745,7 +745,7 @@ namespace evolUX.API.Data.Repositories
 			
 			using (var connection = _context.CreateConnectionEvolDP())
 			{
-				IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, DocException, DocException, DocException, AggregateDocCode>(sql,
+				IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, ExceptionLevel, ExceptionLevel, ExceptionLevel, AggregateDocCode>(sql,
 										(d, e1, e2, e3) =>
 										{
 											AggregateDocCode docCode = d;
@@ -798,7 +798,7 @@ namespace evolUX.API.Data.Repositories
 
 			using (var connection = _context.CreateConnectionEvolDP())
 			{
-				IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, DocException, DocException, DocException, AggregateDocCode>(sql,
+				IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, ExceptionLevel, ExceptionLevel, ExceptionLevel, AggregateDocCode>(sql,
 										(d, e1, e2, e3) =>
 										{
 											AggregateDocCode docCode = d;
@@ -841,7 +841,7 @@ namespace evolUX.API.Data.Repositories
 
 			using (var connection = _context.CreateConnectionEvolDP())
 			{
-				IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, DocException, DocException, DocException, AggregateDocCode>(sql,
+				IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, ExceptionLevel, ExceptionLevel, ExceptionLevel, AggregateDocCode>(sql,
 										(d, e1, e2, e3) =>
 										{
 											AggregateDocCode docCode = d;

@@ -7,7 +7,7 @@ GO
 ALTER  PROCEDURE [dbo].[RP_UX_GET_EXPEDITION_TYPES]
 AS
 BEGIN
-	SELECT ExpeditionType,
+	SELECT ExpeditionType ExpeditionTypeID,
 		[Priority],
 		[Description] ExpeditionTypeDesc
 	FROM RD_EXPEDITION_TYPE

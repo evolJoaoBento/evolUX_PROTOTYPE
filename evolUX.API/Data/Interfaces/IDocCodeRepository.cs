@@ -10,9 +10,9 @@ namespace evolUX.API.Data.Interfaces
         public  Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(string ID);
         public  Task<DocCodeConfig> GetDocCodeConfig(string ID, int startdate);
         public Task<DocCodeConfig> GetDocCodeConfigOptions(string ID);
-        public Task<IEnumerable<DocException>> GetDocExceptionsLevel1();
-        public Task<IEnumerable<DocException>> GetDocExceptionsLevel2();
-        public Task<IEnumerable<DocException>> GetDocExceptionsLevel3();
+        public Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel1();
+        public Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel2();
+        public Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel3();
         public Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMediaGroups(string envMediaGroupID);
         public Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMediaGroups();
         public Task<IEnumerable<int>> GetAggregationList(string aggrCompatibility);
