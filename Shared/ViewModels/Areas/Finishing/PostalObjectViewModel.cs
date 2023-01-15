@@ -2,8 +2,8 @@
 
 namespace Shared.ViewModels.Areas.Finishing
 {
-    public class PostObjViewModel
+    public class PostalObjectViewModel
     {
-        public PostObjInfo PostalObject { get; set; }
+        public PostalObjectInfo PostalObject { get; set; }
     }
 }

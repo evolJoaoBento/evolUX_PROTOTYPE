@@ -1,4 +1,5 @@
 ﻿using evolUX.UI.Areas.Core.Models;
+using evolUX.UI.Repositories.Interfaces;
 using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;

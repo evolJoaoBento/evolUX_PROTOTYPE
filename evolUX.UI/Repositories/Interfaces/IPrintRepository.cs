@@ -4,7 +4,7 @@ using System.Data;
 using Shared.ViewModels.General;
 using Shared.Models.General;
 
-namespace evolUX.UI.Repositories
+namespace evolUX.UI.Repositories.Interfaces
 {
     public interface IPrintRepository
     {

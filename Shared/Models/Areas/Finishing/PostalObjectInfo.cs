@@ -1,6 +1,6 @@
 ﻿namespace Shared.Models.Areas.Finishing
 {
-    public class PostObjInfo
+    public class PostalObjectInfo
     {
         public int PostObjRunID { get; set; }
         public int PostObjFileID { get; set; }

@@ -1,7 +1,7 @@
 ﻿using evolUX.UI.Areas.Core.Models;
 using Flurl.Http;
 
-namespace evolUX.UI.Repositories
+namespace evolUX.UI.Repositories.Interfaces
 {
     public interface IAuthRepository
     {

@@ -1,5 +1,5 @@
 ﻿using evolUX.UI.Areas.Finishing.Services.Interfaces;
-using evolUX.UI.Repositories;
+using evolUX.UI.Repositories.Interfaces;
 using Flurl.Http;
 using System.Data;
 

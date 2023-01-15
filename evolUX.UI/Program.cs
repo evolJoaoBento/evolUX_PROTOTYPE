@@ -6,6 +6,7 @@ using evolUX.UI.Areas.Finishing.Services;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
 using evolUX.UI.Filters;
 using evolUX.UI.Repositories;
+using evolUX.UI.Repositories.Interfaces;
 using Flurl.Http.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Negotiate;

@@ -1,7 +1,7 @@
 ﻿using Flurl.Http;
 using System.Data;
 
-namespace evolUX.UI.Repositories
+namespace evolUX.UI.Repositories.Interfaces
 {
     public interface IConcludedFullfillRepository
     {

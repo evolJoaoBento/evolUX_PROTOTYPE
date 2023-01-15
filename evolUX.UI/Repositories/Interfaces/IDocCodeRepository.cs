@@ -1,6 +1,6 @@
 ﻿using Flurl.Http;
 
-namespace evolUX.UI.Repositories
+namespace evolUX.UI.Repositories.Interfaces
 {
     public interface IDocCodeRepository
     {

@@ -5,6 +5,7 @@ using Flurl.Http.Configuration;
 using Newtonsoft.Json;
 using System.Data;
 using System.Net;
+using evolUX.UI.Repositories.Interfaces;
 
 namespace evolUX.UI.Repositories
 {

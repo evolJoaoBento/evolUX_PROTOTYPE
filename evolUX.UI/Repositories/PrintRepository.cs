@@ -9,6 +9,7 @@ using System.Data;
 using System.Net;
 using Shared.ViewModels.General;
 using Shared.Models.General;
+using evolUX.UI.Repositories.Interfaces;
 
 namespace evolUX.UI.Repositories
 {
