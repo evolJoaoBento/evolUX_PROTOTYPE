@@ -103,7 +103,7 @@ AS
 	END
 	ELSE
 	BEGIN
-		SELECT '' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID,
+		SELECT 'Success' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID,
 			@FileName [FileName], --Nome do Ficheiro de Produção
 			@SeqNum [SequenceNumber], --Nº de Sequência dentro do ficheiro
 			@SheetSeqNum [FirstSheetSequenceNumber] --Nº Sequencial da 1ª Folha do Objecto Postal

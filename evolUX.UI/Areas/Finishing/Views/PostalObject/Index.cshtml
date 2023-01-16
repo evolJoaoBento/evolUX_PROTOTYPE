@@ -1,0 +1,26 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+<form class="d-flex justify-content-center m-5" asp-controller="PostalObject" asp-action="GetPostalObjectInfo"
+      data-ajax="true" 
+      data-ajax-method="POST"
+      data-ajax-mode="replace" 
+      data-ajax-update="response"
+      data-ajax-loading  ="myLoader">
+    <div class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
+        <div>  <h4 class="text-center" style="color: var(--darkestgrey)">@Html.Label(localizer["PostObjBarcode"].ToString())</h4> </div>
+            <div>  @Html.TextBox("PostObjBarcode","",htmlAttributes:new { @class="form-control",id="PostObjBarcode"})</div>
+            <div class="d-flex justify-content-center m-4"><input type="submit" name="Submit" class="btn btn-block btn-outline-info" /></div>
+    </div>
+    <br/>
+        
+</form>
+<div id="response"></div>
+
+

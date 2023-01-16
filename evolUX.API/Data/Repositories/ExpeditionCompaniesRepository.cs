@@ -16,20 +16,10 @@ namespace evolUX.API.Data.Repositories
         public async Task<List<dynamic>> GetExpeditionCompanies()//TODO: UNTESTED
         {
             var expeditionCompaniesList = new List<dynamic>();
-            string sql = @"SELECT 	c.CompanyCode as CompanyCode,
-	                                c.CompanyName as CompanyName,
-	                                c.CompanyAddress as CompanyAddress,
-	                                c.CompanyPostalCode + ' ' + CompanyPostalCodeDescription as PostalCode,
-	                                c.CompanyCountry as CompanyCountry,
-	                                c.CompanyID as CompanyID
-                            FROM 	(SELECT DISTINCT ExpCompanyID 
-		                    FROM    RD_EXPCOMPANY_TYPE WITH(NOLOCK)) et,
-	                                RD_COMPANY c WITH(NOLOCK) 
-                            WHERE 	et.ExpCompanyID = c.CompanyID
-                            order by et.ExpCompanyID";
+            string sql = @"RD_UX_GET_EXPEDITION_COMPANIES";
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                expeditionCompaniesList = (List<dynamic>) await connection.QueryAsync(sql);
+                expeditionCompaniesList = (List<dynamic>) await connection.QueryAsync(sql, commandType: CommandType.StoredProcedure);
                 return expeditionCompaniesList;
             }
         }

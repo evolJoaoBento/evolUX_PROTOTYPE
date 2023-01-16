@@ -1,7 +1,7 @@
 ﻿using Shared.ViewModels.Areas.Core;
 using System.Runtime.Serialization;
 
-namespace SharedModels.Exceptions
+namespace Shared.Exceptions
 {
     [Serializable]
     internal class ErrorViewModelException : Exception

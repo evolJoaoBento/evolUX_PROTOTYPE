@@ -31,7 +31,5 @@
         IRecoverRepository Recover { get; }
 
         IPendingRegistriesRepository PendingRegistries { get; }
-
-
     }
 }
