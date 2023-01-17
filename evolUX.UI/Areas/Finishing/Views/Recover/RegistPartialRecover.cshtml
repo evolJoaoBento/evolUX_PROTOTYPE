@@ -1,0 +1,60 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <h3 class="display-4 text-center">@localizer["RegistPartialRecover"]</h3>
+</div>
+
+<form id="RegistPartialRecoverFrm" asp-controller=" Recover" asp-action="RegistPartialRecover" class="d-flex justify-content-center m-5"
+      data-ajax="true" 
+      data-ajax-method="POST"
+      data-ajax-mode="replace" 
+      data-ajax-complete="clearTextBox"
+      data-ajax-update="#response"
+      data-ajax-loading  ="myLoader">
+    <div class="form-group">
+      <table class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
+        <tr>
+                <td><h4 class="text-center" style="color: var(--darkestgrey)">@localizer["StartBarcode"]</h4> </td>
+        </tr>
+        <tr>
+                <td>@Html.TextBox("StartBarcode","",htmlAttributes:new { @class="form-control", id="StartBarcode", type="password"})</td>
+        </tr>
+         <tr>
+                <td><h4 class="text-center" style="color: var(--darkestgrey)">@localizer["EndBarcode"]</h4> </td>
+        </tr>
+        <tr>
+                <td>@Html.TextBox("EndBarcode","",htmlAttributes:new { @class="form-control", id="EndBarcode", type="password"})</td>
+        </tr>
+        <tr>
+           <td class="d-flex justify-content-center m-4">
+                <input type="submit" name="Submit" class="btn btn-block btn-outline-info" />
+            </td>
+        </tr>
+      </table>
+    </div>
+    <br/>
+    
+</form>
+<div id="response"></div>
+
+@section Scripts
+    {
+        <script type="text/javascript">
+            function clearTextBox() {
+                document.getElementById("RegistPartialRecoverFrm").reset();
+                document.getElementById("StartBarcode").focus();
+            };
+
+            window.onload = (event) => {
+                document.getElementById("StartBarcode").focus();
+            };
+        </script>
+
+}
+

@@ -264,6 +264,9 @@
   <data name="ActionPartialRecover" xml:space="preserve">
     <value>Partial Recovers</value>
   </data>
+  <data name="ActionPartialRecover_Link" xml:space="preserve">
+    <value>/Finishing/Recover/RegistPartialRecover</value>
+  </data>
   <data name="ActionPendingProductionReport" xml:space="preserve">
     <value>Pending Production</value>
   </data>
@@ -315,6 +318,9 @@
   <data name="ActionRegistDetailRecover" xml:space="preserve">
     <value>Regist Detail Recover (AR)</value>
   </data>
+  <data name="ActionRegistDetailRecover_Link" xml:space="preserve">
+    <value>/Finishing/Recover/RegistDetailRecover</value>
+  </data>
   <data name="ActionRegistJob" xml:space="preserve">
     <value>Regist Jobs</value>
   </data>
@@ -335,6 +341,9 @@
   </data>
   <data name="ActionTotalRecover" xml:space="preserve">
     <value>Total Recovers</value>
+  </data>
+  <data name="ActionTotalRecover_Link" xml:space="preserve">
+    <value>/Finishing/Recover/RegistTotalRecover</value>
   </data>
   <data name="ActionUserAprovals" xml:space="preserve">
     <value>Aprovals</value>

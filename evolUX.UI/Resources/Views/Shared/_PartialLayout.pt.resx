@@ -264,11 +264,17 @@
   <data name="ActionPartialRecover" xml:space="preserve">
     <value>Recuperações Parciais</value>
   </data>
+  <data name="ActionPartialRecover_Link" xml:space="preserve">
+    <value>/Finishing/Recover/RegistPartialRecover</value>
+  </data>
   <data name="ActionPendingProductionReport" xml:space="preserve">
     <value>Produção Pendente</value>
   </data>
   <data name="ActionPendingRecover" xml:space="preserve">
     <value>Recuperações Pendentes</value>
+  </data>
+  <data name="ActionPendingRecover_Link" xml:space="preserve">
+    <value>/Finishing/Recover/PendingRecover</value>
   </data>
   <data name="ActionPendingRegistries" xml:space="preserve">
     <value>Registos Pendentes</value>
@@ -318,6 +324,9 @@
   <data name="ActionRegistDetailRecover" xml:space="preserve">
     <value>Recuperações: Detalhe de Registos (AR)</value>
   </data>
+  <data name="ActionRegistDetailRecover_Link" xml:space="preserve">
+    <value>/Finishing/Recover/RegistDetailRecover</value>
+  </data>
   <data name="ActionRegistJob" xml:space="preserve">
     <value>Executar Fluxos</value>
   </data>
@@ -338,6 +347,9 @@
   </data>
   <data name="ActionTotalRecover" xml:space="preserve">
     <value>Recuperações Totais</value>
+  </data>
+  <data name="ActionTotalRecover_Link" xml:space="preserve">
+    <value>/Finishing/Recover/RegistTotalRecover</value>
   </data>
   <data name="ActionUserAprovals" xml:space="preserve">
     <value>Aprovações</value>

@@ -112,7 +112,7 @@
                                     <input type="hidden" name="ShortFileName" value="@p.ShortFileName" />
                                     <input type="hidden" name="FilePrinterSpecs" value="@p.FilePrinterSpecs" />
                                 </form>*@
-                                @if (!p.RegistDetailFilePrintedFlag)
+                                @if (!p.FilePrintedFlag)
                                 {
                                     <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print" 
                                     asp-action="Printing" asp-route-JsonSerializedProductionInfo="@JsonConvert.SerializeObject(p)" 

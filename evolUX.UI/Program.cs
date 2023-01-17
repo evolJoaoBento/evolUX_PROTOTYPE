@@ -56,6 +56,10 @@ builder.Services.AddSingleton<IConcludedPrintRepository, ConcludedPrintRepositor
 builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillService>();
 builder.Services.AddSingleton<IConcludedFullfillRepository, ConcludedFullfillRepository>();
 
+builder.Services.AddSingleton<IRecoverService, RecoverService>();
+builder.Services.AddSingleton<IRecoverRepository, RecoverRepository>();
+
+
 builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();
 builder.Services.AddSingleton<IPostalObjectRepository, PostalObjectRepository>();
 
