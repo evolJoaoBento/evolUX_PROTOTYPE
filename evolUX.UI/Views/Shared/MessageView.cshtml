@@ -1,8 +1,10 @@
-﻿@using Shared.ViewModels.Areas.Core
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Shared.ViewModels.Areas.Core
 @model MessageViewModel
+@inject IViewLocalizer localizer
 
 <div>
-    <h4>@Model.MessageDetail</h4>
+    <h4>@localizer[Model.MessageDetail]</h4>
 </div>
 
 

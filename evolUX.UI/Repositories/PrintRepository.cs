@@ -25,7 +25,7 @@ namespace evolUX.UI.Repositories
             list.Add(profileList);
             list.Add(filesSpecs);
             string ListJSON = JsonConvert.SerializeObject(list);
-            var response = await _flurlClient.Request("/API/finishing/Print/Printers")
+            var response = await _flurlClient.Request("/API/Finishing/Print/Printers")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SetQueryParam("ignoreProfiles",ignoreProfiles)
                 .SendJsonAsync(HttpMethod.Get, ListJSON);
@@ -53,7 +53,7 @@ namespace evolUX.UI.Repositories
 
             string ListJSON = JsonConvert.SerializeObject(dictionary);
 
-            var response = await _flurlClient.Request("/API/finishing/Print/Print")
+            var response = await _flurlClient.Request("/API/Finishing/Print/Print")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             //var response = await BaseUrl

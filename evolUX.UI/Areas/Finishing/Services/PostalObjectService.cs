@@ -23,7 +23,7 @@ namespace evolUX.UI.Areas.Finishing.Services
             try
             {
                 PostalObjectViewModel viewModel = await _postalObjectRepository.GetPostalObjectInfo(ServiceCompanyList, PostObjBarCode);
-                if (viewModel != null && viewModel.PostalObject != null && (viewModel.PostalObject.Error.ToUpper() != "SUCCESS" || viewModel.PostalObject.Error.ToUpper() != "NOTSUCCESS"))
+                if (viewModel != null && viewModel.PostalObject != null && viewModel.PostalObject.Error.ToUpper() != "SUCCESS" && viewModel.PostalObject.Error.ToUpper() != "NOTSUCCESS")
                 {
                     throw new ControledErrorException(viewModel.PostalObject.Error.ToString());
                 }
