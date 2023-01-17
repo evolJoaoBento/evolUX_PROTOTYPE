@@ -5,6 +5,6 @@ namespace evolUX.UI.Repositories.Interfaces
 {
     public interface IPostalObjectRepository
     {
-        public Task<PostalObjectViewModel> GetPostalObjectInfo(DataTable ServiceCompanyList, string PostObjBarCode);
+        public Task<PostalObjectViewModel> GetPostalObjectInfo(string ServiceCompanyList, string PostObjBarCode);
     }
 }

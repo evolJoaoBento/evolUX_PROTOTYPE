@@ -24,14 +24,14 @@ AS
 
 	IF Len(@PostObjBarcode) <> 20 and  Len(@PostObjBarcode) <> 1
 	BEGIN
-		SELECT 'InvalidPostObjBarcodeSize' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID, '' [FileName], 0 [SequenceNumber], 0 [FirstSheetSequenceNumber]
+		SELECT 'PostObjInvalidBarcodeSize' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID, '' [FileName], 0 [SequenceNumber], 0 [FirstSheetSequenceNumber]
 		RETURN
 	END
 
 	SET @Code = cast(SUBSTRING(@PostObjBarcode, 1, 2) as int)
 	IF @Code <> 2
 	BEGIN
-		SELECT 'InvalidLastPostObjBarcode' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID, '' [FileName], 0 [SequenceNumber], 0 [FirstSheetSequenceNumber]
+		SELECT 'PostObjInvalidBarcode' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID, '' [FileName], 0 [SequenceNumber], 0 [FirstSheetSequenceNumber]
 		RETURN
 	END
 
@@ -54,13 +54,13 @@ AS
 				AND pd.ServiceCompanyID in (SELECT ID
 											FROM @ServiceCompanyList))
 		BEGIN
-			SELECT 'NotFoundPostObjInServiceCompany' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID, '' [FileName], 0 [SequenceNumber], 0 [FirstSheetSequenceNumber]
+			SELECT 'PostObjNotFoundInServiceCompany' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID, '' [FileName], 0 [SequenceNumber], 0 [FirstSheetSequenceNumber]
 			RETURN
 		END
 	END
 	ELSE
 	BEGIN
-		SELECT 'NotFoundPostObj' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID, '' [FileName], 0 [SequenceNumber], 0 [FirstSheetSequenceNumber]
+		SELECT 'PostObjNotFound' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID, '' [FileName], 0 [SequenceNumber], 0 [FirstSheetSequenceNumber]
 		RETURN
 	END
 
@@ -99,7 +99,7 @@ AS
 
 	IF (@FileName is NULL)
 	BEGIN
-		SELECT 'NotFoundPostObj' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID, '' [FileName], 0 [SequenceNumber], 0 [FirstSheetSequenceNumber]
+		SELECT 'PostObjNotFound' Error, @PostObjRunID PostObjRunID, @PostObjFileID PostObjFileID, @PostObjID PostObjID, '' [FileName], 0 [SequenceNumber], 0 [FirstSheetSequenceNumber]
 	END
 	ELSE
 	BEGIN

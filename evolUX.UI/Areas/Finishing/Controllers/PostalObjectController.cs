@@ -36,7 +36,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
         [HttpPost]
         public async Task<IActionResult> GetPostalObjectInfo(string PostObjBarcode)
         {
-            DataTable ServiceCompanyList = HttpContext.Session.Get<DataTable>("evolDP/ServiceCompanies");
+            string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             try
             {
                 PostalObjectViewModel result = await _postalObjectService.GetPostalObjectInfo(ServiceCompanyList, PostObjBarcode);
@@ -44,7 +44,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
             catch (ControledErrorException ex)
             {
-                return View("MessageView", ex.Message);
+                return View("MessageView", ex.ControledMessage);
             }
             catch (ErrorViewModelException ex)
             {

@@ -23,8 +23,8 @@ namespace evolUX.UI.Areas.Finishing.Services
         {
             try
             {
-                var response = await _printRepository.GetPrinters(profileList, filesSpecs, ignoreProfiles);
-                return response;
+                ResoursesViewModel viewModel = await _printRepository.GetPrinters(profileList, filesSpecs, ignoreProfiles);
+                return viewModel;
             }
             catch (FlurlHttpException ex)
             {

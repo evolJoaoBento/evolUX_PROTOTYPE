@@ -20,7 +20,7 @@ AS
 	IF LEN(@FileBarcode) <> 20
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -1 ResultID, 'Código de Barras de Ficheiro Inválido!' ResultStr
+		SELECT -1 ErrorID, 'FileInvalidBarcodeSize' Error
 		RETURN -1
 	END
 
@@ -30,19 +30,19 @@ AS
 	IF @RunID = 0
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -2 ResultID, 'Erro na leitura do Código de Barras: RunID Inválido!' ResultStr
+		SELECT -2 ErrorID, 'FileInvalidBarcode' Error
 		RETURN -2
 	END
 	IF @FileID = 0
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -3 ResultID, 'Erro na leitura do Código de Barras: FileID Inválido!' ResultStr
+		SELECT -3 ErrorID, 'FileInvalidBarcode' Error
 		RETURN -3
 	END
 	IF @Code <> 1
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -4 ResultID, 'Código de Barras Inválido: Não é um o Código de Barras de Ficheiro!' ResultStr
+		SELECT -4 ErrorID, 'FileInvalidBarcode' Error
 		RETURN -4
 	END
 	IF (NOT EXISTS(SELECT TOP 1 1 FROM RT_FILE_REGIST 
@@ -50,7 +50,7 @@ AS
 				AND RunID = @RunID))
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -5 ResultID, 'O Ficheiro não se encontra registado na evolDP!' ResultStr
+		SELECT -5 ErrorID, 'FileNotFound' Error
 		RETURN -5
 	END
 	ELSE
@@ -63,7 +63,7 @@ AS
 							FROM RD_RUN_STATE WITH(NOLOCK)
 							WHERE RunStateName = 'EXPEDITION')))
 		BEGIN
-			SELECT -12 ResultID, 'O Ficheiro já foi expedido! Apenas um elemento com mais permissões poderá efectuar a recuperação deste Ficheiro!' ResultStr
+			SELECT -12 ErrorID, 'InvalidTotalRecoverAlreadyDispached' Error
 			RETURN -12
 		END
 	END
@@ -84,7 +84,7 @@ AS
 		)
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -13 ResultID, 'Não é possivel efetuar recuperações de ficheiros expurgados!' ResultStr
+		SELECT -13 ErrorID, 'InvalidRecoverAlreadyPurged' Error
 		return -13
 	END
 
@@ -97,7 +97,7 @@ AS
 			AND pd.ServiceCompanyID in (SELECT ID
 					FROM @ServiceCompanyList))
 	BEGIN
-		SELECT -8 ResultID, 'O Ficheiro não se encontra registado na evolDP para o respectivo Service Provider!' ResultStr
+		SELECT -8 ErrorID, 'FileNotFoundInServiceCompany' Error
 		return -8
 	END
 	SELECT @RunStateID = RunStateID
@@ -106,7 +106,7 @@ AS
 		AND FileID = @FileID
 	IF (@RunStateID <> (SELECT RunStateID FROM RD_RUN_STATE WHERE RunStateName = 'FORK'))
 	BEGIN
-		SELECT -14 ResultID, 'Não é possível efectuar recuperações Totais de Ficheiros de Recuperações!' ResultStr
+		SELECT -14 ErrorID, 'InvalidTotalRecover4RecoveredFiles' Error
 		return -14
 	END
 	BEGIN TRANSACTION
@@ -119,7 +119,7 @@ AS
 	SET ToRecover = 1
 	WHERE PostObjRunID = @RunID AND PostObjFileID = @FileID
 
-	SELECT 0 ResultID, 'Registo Efectuado!' ResultStr
+	SELECT 0 ErrorID, 'Success' Error
 
 	COMMIT TRANSACTION
 RETURN 0

@@ -20,7 +20,7 @@ AS
 	IF LEN(@FileBarcode) <> 20
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -1 ResultID, 'Código de Barras de Ficheiro Inválido!' ResultStr
+		SELECT -1 ErrorID, 'FileInvalidBarcodeSize' Error
 		RETURN -1
 	END
 	SET @Code = CAST(SUBSTRING(@FileBarcode, 1, 2) as int)
@@ -29,19 +29,19 @@ AS
 	IF @RunID = 0
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -2 ResultID, 'Erro na leitura do Código de Barras: RunID Inválido!' ResultStr
+		SELECT -2 ErrorID, 'FileInvalidBarcode' Error
 		RETURN -2
 	END
 	IF @FileID = 0
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -3 ResultID, 'Erro na leitura do Código de Barras: FileID Inválido!' ResultStr
+		SELECT -3 ErrorID, 'FileInvalidBarcode' Error
 		RETURN -3
 	END
 	IF @Code <> 1
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -4 ResultID, 'Código de Barras Inválido: Não é um o Código de Barras de Ficheiro!' ResultStr
+		SELECT -4 ErrorID, 'FileInvalidBarcode' Error
 		RETURN -4
 	END
 	IF (NOT EXISTS(SELECT TOP 1 1 FROM RT_FILE_REGIST 
@@ -49,14 +49,14 @@ AS
 				AND RunID = @RunID))
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -5 ResultID, 'O Ficheiro não se encontra registado na evolDP!' ResultStr
+		SELECT -5 ErrorID, 'FileNotFound' Error
 		RETURN -5
 	END
 	IF NOT EXISTS(SELECT TOP 1 1 FROM RT_FILE_REGIST 
 			WHERE FileID = @FileID AND RunID = @RunID AND ErrorID = 0)
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -9 ResultID, 'O Ficheiro está marcado com erro na evolDP, não pode ser dado por impresso!' ResultStr
+		SELECT -9 ErrorID, 'FileMarkedWithError' Error
 		RETURN -9
 	END
 	IF (NOT EXISTS(SELECT TOP 1 1
@@ -70,7 +70,7 @@ AS
 					FROM @ServiceCompanyList)))
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -8 ResultID, 'O Ficheiro não se encontra registado na evolDP para o respetivo Service Provider!' ResultStr
+		SELECT -8 ErrorID, 'FileNotFoundInServiceCompany' Error
 		RETURN -8
 	END
 	SELECT @RunStateID = RunStateID FROM RD_RUN_STATE WITH(NOLOCK) WHERE RunStateName = 'SEND2PRINTER'
@@ -81,7 +81,7 @@ AS
 				AND ErrorID = 0))
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -6 ResultID, 'O Ficheiro ainda não foi enviado para uma Impressora!' ResultStr
+		SELECT -6 ErrorID, 'FileNotSentToPrinter' Error
 		RETURN -6
 	END
 	IF (NOT EXISTS(SELECT TOP 1 1 FROM RT_FILE_LOG 
@@ -113,10 +113,10 @@ AS
 	ELSE
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -7 ResultID, 'O Ficheiro já foi dado por impresso!' ResultStr
+		SELECT -7 ErrorID, 'O Ficheiro já foi dado como Impresso' Error
 		RETURN -7
 	END
 	COMMIT TRANSACTION
-	SELECT 0 ResultID,  'Registo Efectuado!' ResultStr
+	SELECT 0 ErrorID,  'Success' Error
 RETURN 0
 GO

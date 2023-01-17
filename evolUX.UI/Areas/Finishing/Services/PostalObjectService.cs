@@ -1,4 +1,4 @@
-﻿using evolUX.API.Areas.Finishing.Services.Interfaces;
+﻿using evolUX.UI.Areas.Finishing.Services.Interfaces;
 using evolUX.UI.Exceptions;
 using evolUX.UI.Repositories.Interfaces;
 using Flurl.Http;
@@ -7,6 +7,7 @@ using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.Finishing;
 using System.Data;
 using System.Reflection.Metadata;
+using Shared.Exceptions;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
@@ -17,12 +18,16 @@ namespace evolUX.UI.Areas.Finishing.Services
         {
             _postalObjectRepository = postalObjectRepository;
         }
-        public async Task<PostalObjectViewModel> GetPostalObjectInfo(DataTable ServiceCompanyList, string PostObjBarCode)
+        public async Task<PostalObjectViewModel> GetPostalObjectInfo(string ServiceCompanyList, string PostObjBarCode)
         {
             try
             {
-                var response = await _postalObjectRepository.GetPostalObjectInfo(ServiceCompanyList, PostObjBarCode);
-                return response;
+                PostalObjectViewModel viewModel = await _postalObjectRepository.GetPostalObjectInfo(ServiceCompanyList, PostObjBarCode);
+                if (viewModel != null && viewModel.PostalObject != null && (viewModel.PostalObject.Error.ToUpper() != "SUCCESS" || viewModel.PostalObject.Error.ToUpper() != "NOTSUCCESS"))
+                {
+                    throw new ControledErrorException(viewModel.PostalObject.Error.ToString());
+                }
+                return viewModel;
             }
             catch (FlurlHttpException ex)
             {

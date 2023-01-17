@@ -55,6 +55,10 @@ builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
 builder.Services.AddSingleton<IConcludedPrintRepository, ConcludedPrintRepository>();
 builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillService>();
 builder.Services.AddSingleton<IConcludedFullfillRepository, ConcludedFullfillRepository>();
+
+builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();
+builder.Services.AddSingleton<IPostalObjectRepository, PostalObjectRepository>();
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IFlurlClientFactory, PerBaseUrlFlurlClientFactory>();
 builder.Services.AddControllersWithViews(options =>

@@ -31,5 +31,7 @@
         IRecoverRepository Recover { get; }
 
         IPendingRegistriesRepository PendingRegistries { get; }
+
+        IPostalObjectRepository PostalObject { get; }
     }
 }

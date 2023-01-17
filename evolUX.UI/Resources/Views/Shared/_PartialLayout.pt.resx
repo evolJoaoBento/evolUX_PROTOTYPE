@@ -279,6 +279,9 @@
   <data name="ActionPostalObject" xml:space="preserve">
     <value>Objecto Postal</value>
   </data>
+  <data name="ActionPostalObject_Link" xml:space="preserve">
+    <value>/Finishing/PostalObject/Index</value>
+  </data>
   <data name="ActionProcessResources" xml:space="preserve">
     <value>Recursos de Processos</value>
   </data>

@@ -21,6 +21,7 @@ namespace evolUX.API.Data.Repositories
         private IFullfilledFilesRepository _fullfilledFiles;
         private IRecoverRepository _recover;
         private IPendingRegistriesRepository  _pendingRegistriesRepository;
+        private IPostalObjectRepository _postalObjectRepository;
 
 
         public WrapperRepository(DapperContext context)
@@ -205,7 +206,17 @@ namespace evolUX.API.Data.Repositories
                 return _pendingRegistriesRepository;
             }
         }
-
+        public IPostalObjectRepository PostalObject
+        {
+            get
+            {
+                if (_postalObjectRepository == null)
+                {
+                    _postalObjectRepository = new PostalObjectRepository(_context);
+                }
+                return _postalObjectRepository;
+            }
+        }
 
 
     }

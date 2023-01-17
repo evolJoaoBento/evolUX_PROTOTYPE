@@ -32,6 +32,7 @@ builder.Services.AddSingleton<IPrintService, PrintService>();
 builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
 builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillService>();
 builder.Services.AddSingleton<IRecoverService, RecoverService>();
+builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();
 builder.Services.AddSingleton<IExpeditionCompaniesService, ExpeditionCompaniesService>();
 builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
 builder.Services.AddSingleton<IExpeditionZoneService, ExpeditionZoneService>();

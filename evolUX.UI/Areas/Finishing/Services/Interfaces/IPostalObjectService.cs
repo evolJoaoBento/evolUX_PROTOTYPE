@@ -6,6 +6,6 @@ namespace evolUX.UI.Areas.Finishing.Services.Interfaces
 {
     public interface IPostalObjectService
     {
-        public Task<PostalObjectViewModel> GetPostalObjectInfo(DataTable ServiceCompanyList, string PostObjBarCode);
+        public Task<PostalObjectViewModel> GetPostalObjectInfo(string ServiceCompanyList, string PostObjBarCode);
     }
 }

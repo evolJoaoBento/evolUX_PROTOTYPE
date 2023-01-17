@@ -9,5 +9,10 @@
         public int SequenceNumber { get; set; }
         public int FirstSheetSequenceNumber { get; set;}
         public string Error { get; set; }
+        public PostalObjectInfo()
+        {
+            FileName = string.Empty;
+            Error = string.Empty;
+        }
     }
 }
