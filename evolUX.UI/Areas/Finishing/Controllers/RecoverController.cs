@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Data;
 using System.Net;
 using Shared.Models.Areas.Core;
+using Shared.ViewModels.Areas.Core;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
@@ -53,7 +54,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
 
             ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("ResponsePartialView", result);
+            return View("MessageView", new MessageViewModel(result.Results.First().ResultID.ToString(), "", result.Results.First().Resultstr));
         }
 
         public ActionResult RegistPartialRecover()
@@ -90,7 +91,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
 
             ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("ResponsePartialView", result);
+            return View("MessageView", new MessageViewModel(result.Results.First().ResultID.ToString(), "", result.Results.First().Resultstr));
         }
 
         public ActionResult RegistDetailRecover()
@@ -127,7 +128,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
 
             ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("ResponsePartialView", result);
+            return View("MessageView", new MessageViewModel(result.Results.First().ResultID.ToString(), "", result.Results.First().Resultstr));
         }
 
         //THIS METHOD COULD BE BETTER IF IT WAS CALLED ASYNCRONOUSLY EACH TIME IN AN AJAX REQUEST

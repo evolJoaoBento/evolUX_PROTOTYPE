@@ -17,6 +17,7 @@ using Shared.Models.Areas.Finishing;
 using static Dapper.SqlMapper;
 using System.Security.Claims;
 using Shared.Models.General;
+using Shared.ViewModels.Areas.Core;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
@@ -81,7 +82,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                 Result result = await _printService.Print(productionInfo.RunID, productionInfo.FileID, Printer, 
                     ServiceCompanyCode,
                             username, userid, productionInfo.FilePath, productionInfo.FileName, productionInfo.ShortFileName);
-                return PartialView("ResponsePartialView", result);
+                return PartialView("MessageView", new MessageViewModel(result.ResultID.ToString(), "", result.Resultstr));
             }
             catch (ErrorViewModelException ex)
             {

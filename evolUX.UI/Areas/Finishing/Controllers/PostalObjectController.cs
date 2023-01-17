@@ -40,15 +40,15 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             try
             {
                 PostalObjectViewModel result = await _postalObjectService.GetPostalObjectInfo(ServiceCompanyList, PostObjBarcode);
-                return View(result);
+                return PartialView(result);
             }
             catch (ControledErrorException ex)
             {
-                return View("MessageView", ex.ControledMessage);
+                return PartialView("MessageView", ex.ControledMessage);
             }
             catch (ErrorViewModelException ex)
             {
-                return View("Error", ex.ViewModel);
+                return PartialView("Error", ex.ViewModel);
             }
             catch (HttpUnauthorizedException ex)
             {

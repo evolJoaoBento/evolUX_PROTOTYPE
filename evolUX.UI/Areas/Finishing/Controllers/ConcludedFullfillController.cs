@@ -8,6 +8,7 @@ using System.Net;
 using System.Data;
 using evolUX.UI.Extensions;
 using Shared.Models.Areas.Core;
+using Shared.ViewModels.Areas.Core;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
@@ -54,7 +55,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
             
             ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("ResponsePartialView", result);
+            return View("MessageView", new MessageViewModel(result.Results.First().ResultID.ToString(), "", result.Results.First().Resultstr));
         }  
 
     }
