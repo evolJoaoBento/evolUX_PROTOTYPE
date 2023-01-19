@@ -18,7 +18,7 @@ namespace evolUX.API.Data.Repositories
         public async Task<IEnumerable<PendingRegistInfo>> GetPendingRegist(DataTable serviceCompanyList)
         {
             
-            string sql = @"RT_UX_SERVICECOMPANY_PENDING_REGIST";
+            string sql = @"RP_UX_SERVICECOMPANY_PENDING_REGIST";
             var parameters = new DynamicParameters();
             parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
 
@@ -33,28 +33,30 @@ namespace evolUX.API.Data.Repositories
         {
             PendingRegistDetailInfo result = new PendingRegistDetailInfo();
 
-            string sql = @"RP_UX_SERVICECOMPANY_PENDING_REGIST_PRINT";
             var parameters = new DynamicParameters();
             parameters.Add("RunID", RunID, DbType.Int64);
             parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
 
+            string sql = @"RP_UX_SERVICECOMPANY_PENDING_REGIST_PRINT";
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<PendingRegistElement> results = await connection.QueryAsync<PendingRegistElement>(sql, parameters,
                     commandType: CommandType.StoredProcedure);
-                result.ToRegistPrintFiles = (List<PendingRegistElement>)results;
+                if (results != null)
+                    result.ToRegistPrintFiles = (List<PendingRegistElement>)results;
+                else
+                    result.ToRegistPrintFiles = new List<PendingRegistElement>();
             }
 
             sql = @"RP_UX_SERVICECOMPANY_PENDING_REGIST_FULLFILL";
-            parameters = new DynamicParameters();
-            parameters.Add("RunID", RunID, DbType.Int64);
-            parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
-
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<PendingRegistElement> results = await connection.QueryAsync<PendingRegistElement>(sql, parameters,
                     commandType: CommandType.StoredProcedure);
-                result.ToRegistPrintFiles = (List<PendingRegistElement>)results;
+                if (results != null)
+                    result.ToRegistPrintFiles = (List<PendingRegistElement>)results;
+                else
+                    result.ToRegistPrintFiles = new List<PendingRegistElement>();
             }
             return result;
         }

@@ -249,7 +249,7 @@ SET LocalizationKey = 'Action' + CASE RTRIM(LTRIM([Description]))
 	WHEN 'Controlo de Facturação' THEN 'BillingReport'
 	WHEN 'Expedição' THEN 'ExpeditionReport'
 	WHEN 'Estado de Produção / Imprimir' THEN 'ProductionStatus'
-	WHEN 'Registos Pendentes' THEN 'PendingRegistries'
+	WHEN 'Registos Pendentes' THEN 'PendingRegist'
 	WHEN 'Objecto Postal' THEN 'PostalObject'
 	WHEN 'Impressão Concluída' THEN 'ConcludedPrint'
 	WHEN 'Envelopagem Concluída' THEN 'ConcludedFullfill'

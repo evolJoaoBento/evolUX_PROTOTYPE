@@ -273,11 +273,11 @@
   <data name="ActionPendingRecover" xml:space="preserve">
     <value>Pending Recovers</value>
   </data>
-  <data name="ActionPendingRegistries" xml:space="preserve">
-    <value>Pending Registries</value>
+  <data name="ActionPendingRegist" xml:space="preserve">
+    <value>Pending Registration</value>
   </data>
-  <data name="ActionPendingRegistries_Link" xml:space="preserve">
-    <value>/Finishing/PendingRegist/GetPendingRegist</value>
+  <data name="ActionPendingRegist_Link" xml:space="preserve">
+    <value>/Finishing/PendingRegist/PendingRegist</value>
   </data>
   <data name="ActionPermissions" xml:space="preserve">
     <value>Page Access Permissions</value>

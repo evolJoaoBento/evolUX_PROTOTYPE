@@ -22,9 +22,9 @@
         <h2 class="display-4 text-center">@ViewBag.RunName</h2>
     </div>
 </div>
+<div class="my-3 table-div">
 @if (Model.PendingRegistDetail.ToRegistPrintFiles.Count > 0)
 {
-    <div class="my-3 table-div">
         <table class="table table-sm table-hover table-collapse-seperate">
             @if (ViewBag.hasMultipleServiceCompanies)
             {
@@ -75,11 +75,12 @@
                 }
             </tbody>
         </table>
-    </div>
-}
-@if (Model.PendingRegistDetail.ToRegistFullFillFiles.Count > 0)
+} else
 {
-    <div class="my-3 table-div">
+    <div class="d-flex justify-content-center m-5">@localizer["NoToRegistPrintFiles"]</div>
+}
+if (Model.PendingRegistDetail.ToRegistFullfillFiles.Count > 0)
+{
         <table class="table table-sm table-hover table-collapse-seperate">
             <col>
             <col>
@@ -115,9 +116,11 @@
                 }
             </tbody>
         </table>
-    </div>
 }
-    
-
+else
+{
+    <div class="d-flex justify-content-center m-5">@localizer["NoToRegistFullfillFiles"]</div>
+}    
+</div>
 
 

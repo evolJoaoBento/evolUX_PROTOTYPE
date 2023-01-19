@@ -24,7 +24,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             _pendingRegistService = pendingRegistService;
         }
 
-        public async Task<IActionResult> PendingRegistries()
+        public async Task<IActionResult> PendingRegist()
         {
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             try

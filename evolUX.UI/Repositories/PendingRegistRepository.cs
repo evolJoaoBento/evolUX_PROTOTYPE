@@ -17,7 +17,7 @@ namespace evolUX.UI.Repositories
 
         public async Task<PendingRegistViewModel> GetPendingRegist(string ServiceCompanyList)
         {
-            var response = await _flurlClient.Request("/API/finishing/PendingRegist/PendingRegist")
+            var response = await _flurlClient.Request("/API/finishing/PendingRegist/GetPendingRegist")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, ServiceCompanyList);
             //var response = await BaseUrl
@@ -30,7 +30,7 @@ namespace evolUX.UI.Repositories
         }
         public async Task<PendingRegistDetailViewModel> GetPendingRegistDetail(int runID, string ServiceCompanyList)
         {
-            var response = await _flurlClient.Request("/API/finishing/PendingRegist/PendingRegistDetail")
+            var response = await _flurlClient.Request("/API/finishing/PendingRegist/GetPendingRegistDetail")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                  .SetQueryParam("RunID", runID)
                 .SendJsonAsync(HttpMethod.Get, ServiceCompanyList);
