@@ -126,6 +126,15 @@
   <data name="FirstSheetSequenceNumber" xml:space="preserve">
     <value>Nº Sequencial da 1ª Folha do Objecto Postal</value>
   </data>
+  <data name="PostObjFileID" xml:space="preserve">
+    <value>FileID</value>
+  </data>
+  <data name="PostObjID" xml:space="preserve">
+    <value>Postal Object ID</value>
+  </data>
+  <data name="PostObjRunID" xml:space="preserve">
+    <value>RunID</value>
+  </data>
   <data name="SequenceNumber" xml:space="preserve">
     <value>Nº de Sequência dentro do Ficheiro</value>
   </data>

@@ -120,4 +120,7 @@
   <data name="PostObjBarcode" xml:space="preserve">
     <value>Postal Object Barcode</value>
   </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
+  </data>
 </root>

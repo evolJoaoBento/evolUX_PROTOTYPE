@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
 
 <div class="d-flex justify-content-center" >
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
@@ -6,20 +7,40 @@
     </div>
 </div>
 
-<form class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="ConcludedPrint" asp-action="RegistPrint"
+<form id="ConcludedPrintFrm" class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="ConcludedPrint" asp-action="RegistPrint"
       data-ajax="true" 
       data-ajax-method="POST"
       data-ajax-mode="replace" 
-      data-ajax-update="response"
+      data-ajax-update="#response"
       data-ajax-loading  ="myLoader">
-    <div class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
-        <div >  <h4 class="text-center" style="color: var(--darkestgrey)">@Html.Label("File Barcode")</h4> </di>
-            <div>  @Html.TextBox("FileBarcode","",htmlAttributes:new { @class="form-control",id="FileBarcode"})</div>
-            <div class="d-flex justify-content-center m-4"><input type="submit" name="Submit" class="btn btn-block btn-outline-info" /></div>
-    </div>
-    <br/>
-        
+     <table class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
+          <tr>
+            <td><h4 class="text-center" style="color: var(--darkestgrey)">@localizer["FileBarcode"]</h4> </td>
+          </tr>
+        <tr>
+            <td>@Html.TextBox("FileBarcode","",htmlAttributes:new { @class="form-control", id="FileBarcode", type="password"})</td>
+        </tr>
+        <tr>
+            <td class="d-flex justify-content-center m-4">
+                <input type="submit" value="@localizer["Submit"]" name="Submit" class="btn btn-block btn-outline-info" />
+            </td>
+        </tr>
+      </table>
+    <br/>  
 </form>
-<div id="response"></div>
+<div id="response" class="d-flex justify-content-center m-5"></div>
 
+@section Scripts
+    {
+        <script type="text/javascript">
+            function clearTextBox() {
+                document.getElementById("ConcludedPrintFrm").reset();
+                document.getElementById("FileBarcode").focus();
+            };
 
+            window.onload = (event) => {
+                document.getElementById("FileBarcode").focus();
+            };
+        </script>
+
+}

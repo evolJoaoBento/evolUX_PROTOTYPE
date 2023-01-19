@@ -117,10 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PostObjBarcode" xml:space="preserve">
-    <value>Código de Barras do Objecto Postal</value>
+  <data name="Files" xml:space="preserve">
+    <value>Ficheiros</value>
   </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Registar</value>
+  <data name="FilesLeftToPrint" xml:space="preserve">
+    <value>Por Imprimir</value>
+  </data>
+  <data name="FilesLeftToRegistFullFill" xml:space="preserve">
+    <value>Com envelopagens por Registar</value>
+  </data>
+  <data name="FilesLeftToRegistPrint" xml:space="preserve">
+    <value>Com impressões por Registar</value>
+  </data>
+  <data name="RunDescription" xml:space="preserve">
+    <value>Descrição do Run</value>
+  </data>
+  <data name="TotalProcessed" xml:space="preserve">
+    <value>Processados</value>
+  </data>
+  <data name="Totals" xml:space="preserve">
+    <value>Totais</value>
   </data>
 </root>

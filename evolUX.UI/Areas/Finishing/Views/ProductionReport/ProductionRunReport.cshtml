@@ -78,7 +78,7 @@
                 {
                     <tr>
                         @{
-                            string RunName = p.BusinessDesc + "(" + p.RunDate + "{" + p.RunSequence + "})";
+                            string RunName = p.BusinessDesc + "(" + p.RunDate + "[" + p.RunSequence + "])";
                             if (ViewBag.hasMultipleServiceCompanies)
                             {
                                 RunName += " - " + p.ServiceCompany;

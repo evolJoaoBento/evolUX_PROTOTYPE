@@ -21,7 +21,10 @@
         <col>
         <thead id="bootstrap-overrides" class="sticky-header">
             <tr>
-                <th>@localizer["RunDescription"]</th>
+                <th rowspan="2">@localizer["RunDescription"]</th>
+                <th colspan="4">@localizer["Files"]</th>
+            </tr>
+            <tr>
                 <th>@localizer["TotalProcessed"]</th>
                 <th>@localizer["FilesLeftToPrint"]</th>
                 <th>@localizer["FilesLeftToRegistPrint"]</th>
@@ -43,7 +46,7 @@
                 {
                     <tr>
                         @{
-                            string RunName = p.BusinessDesc + "(" + p.RunDate + "{" + p.RunSequence + "})";
+                            string RunName = p.BusinessDesc + "(" + p.RunDate + "[" + p.RunSequence + "])";
                         }
                         <td class="headcol" style="background:var(--lightestgrey);"><a class="btn btn-link link-info" asp-area="Finishing" asp-controller="PendingRegist" asp-action="PendingRegistDetail" asp-route-runid="@p.RunID" asp-route-runname=@RunName>@RunName</a></td>
                         <td>@p.TotalProcessed</td>
@@ -65,7 +68,7 @@
                     </tr>
                 }
                 <tr style="background:var(--lightestgrey); border: var(--orange)">
-                    <td class="headcol" style="background:var(--lightergrey);"><b>Total</b></td>
+                    <td class="headcol" style="background:var(--lightergrey);"><b>@localizer["Totals"]</b></td>
                     <td>@ProcessedTotal</td>
                     <td>@ToPrintTotal</td>
                     <td>@ToRegistPrintTotal</td>

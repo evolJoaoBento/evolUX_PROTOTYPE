@@ -117,10 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="PostObjBarcode" xml:space="preserve">
-    <value>Código de Barras do Objecto Postal</value>
+  <data name="FileID" xml:space="preserve">
+    <value>FileID</value>
   </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Registar</value>
+  <data name="FileName" xml:space="preserve">
+    <value>Ficheiro</value>
+  </data>
+  <data name="FilesLeftToRegistFullFill" xml:space="preserve">
+    <value>Ficheiros com envelopagens por Registar</value>
+  </data>
+  <data name="FilesLeftToRegistPrint" xml:space="preserve">
+    <value>Ficheiros com impressões por Registar</value>
+  </data>
+  <data name="NoneToRegistFullfillFiles" xml:space="preserve">
+    <value>Sem ficheiros com envelopagens por Registar</value>
+  </data>
+  <data name="NoneToRegistPrintFiles" xml:space="preserve">
+    <value>Sem ficheiros com impressões por Registar</value>
+  </data>
+  <data name="Operator" xml:space="preserve">
+    <value>Operador</value>
+  </data>
+  <data name="Printer" xml:space="preserve">
+    <value>Impressora</value>
+  </data>
+  <data name="RunDescription" xml:space="preserve">
+    <value>Descrição do Run</value>
+  </data>
+  <data name="RunID" xml:space="preserve">
+    <value>RunID</value>
+  </data>
+  <data name="SentToPrinterTimeStamp" xml:space="preserve">
+    <value>Enviado para a Impressora</value>
+  </data>
+  <data name="ServiceCompanyCode" xml:space="preserve">
+    <value>Código Finishing Provider</value>
   </data>
 </root>
