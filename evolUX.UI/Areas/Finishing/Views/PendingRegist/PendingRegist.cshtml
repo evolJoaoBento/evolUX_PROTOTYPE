@@ -1,0 +1,81 @@
+﻿@using Shared.Models.Areas.Finishing
+@using Shared.ViewModels.Areas.Finishing
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+@model PendingRegistViewModel
+
+@*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
+
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div class="my-3">
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <col>
+        <col>
+        <col>
+        <col>
+        <col>
+        <thead id="bootstrap-overrides" class="sticky-header">
+            <tr>
+                <th>@localizer["RunDescription"]</th>
+                <th>@localizer["TotalProcessed"]</th>
+                <th>@localizer["FilesLeftToPrint"]</th>
+                <th>@localizer["FilesLeftToRegistPrint"]</th>
+                <th>@localizer["FilesLeftToRegistFullFill"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @if (Model == null)
+            {
+                <tr><td colspan="5" class="text-center">@localizer["No Model Data"]</td></tr>
+            }
+            else
+            {
+                int ProcessedTotal = 0;
+                int ToPrintTotal = 0;
+                int ToRegistPrintTotal = 0;
+                int ToRegistFullFillTotal = 0;
+                @foreach (PendingRegistInfo p in Model.PendingRegist)
+                {
+                    <tr>
+                        @{
+                            string RunName = p.BusinessDesc + "(" + p.RunDate + "{" + p.RunSequence + "})";
+                        }
+                        <td class="headcol" style="background:var(--lightestgrey);"><a class="btn btn-link link-info" asp-area="Finishing" asp-controller="PendingRegist" asp-action="PendingRegistDetail" asp-route-runid="@p.RunID" asp-route-runname=@RunName>@RunName</a></td>
+                        <td>@p.TotalProcessed</td>
+                        @{
+                            ProcessedTotal += p.TotalProcessed;
+                        }
+                        <td>@p.FilesLeftToPrint</td> 
+                        @{
+                            ToPrintTotal += p.FilesLeftToPrint;
+                        }
+                        <td>@p.FilesLeftToRegistPrint</td>
+                        @{
+                            ToRegistPrintTotal += p.FilesLeftToRegistPrint;
+                        }
+                        <td>@p.FilesLeftToRegistFullFill</td>
+                        @{
+                            ToRegistFullFillTotal += p.FilesLeftToRegistFullFill;
+                        }
+                    </tr>
+                }
+                <tr style="background:var(--lightestgrey); border: var(--orange)">
+                    <td class="headcol" style="background:var(--lightergrey);"><b>Total</b></td>
+                    <td>@ProcessedTotal</td>
+                    <td>@ToPrintTotal</td>
+                    <td>@ToRegistPrintTotal</td>
+                    <td>@ToRegistFullFillTotal</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>
+
+
+

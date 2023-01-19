@@ -20,7 +20,7 @@ namespace evolUX.API.Data.Repositories
         private IPrintedFilesRepository _printedFiles;
         private IFullfilledFilesRepository _fullfilledFiles;
         private IRecoverRepository _recover;
-        private IPendingRegistriesRepository  _pendingRegistriesRepository;
+        private IPendingRegistRepository  _pendingRegistRepository;
         private IPostalObjectRepository _postalObjectRepository;
 
 
@@ -195,15 +195,15 @@ namespace evolUX.API.Data.Repositories
                 return _recover;
             }
         }
-        public IPendingRegistriesRepository PendingRegistries
+        public IPendingRegistRepository PendingRegist
         {
             get
             {
-                if(_pendingRegistriesRepository == null)
+                if(_pendingRegistRepository == null)
                 {
-                    _pendingRegistriesRepository = new PendingRegistriesRepository(_context);
+                    _pendingRegistRepository = new PendingRegistRepository(_context);
                 }
-                return _pendingRegistriesRepository;
+                return _pendingRegistRepository;
             }
         }
         public IPostalObjectRepository PostalObject

@@ -35,7 +35,7 @@ BEGIN
 		f.RunID as [RunID],
 		f.FileID as [FileID],
 		c.CompanyCode as [ServiceCompanyCode],
-		fl2.EndTimeStamp as [PrintedTimeStamp],
+		fl2.EndTimeStamp as [TimeStamp],
 		fl2.OutputName [Operator]
 	FROM
 		RT_RUN r WITH(NOLOCK)

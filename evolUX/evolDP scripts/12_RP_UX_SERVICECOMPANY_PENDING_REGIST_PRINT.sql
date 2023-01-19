@@ -34,7 +34,7 @@ BEGIN
 		f.RunID as [RunID],
 		f.FileID as [FileID],
 		c.CompanyCode as [ServiceCompanyCode],
-		fl2.EndTimeStamp as [SentToPrinterTimeStamp],
+		fl2.EndTimeStamp as [TimeStamp],
 		fl2.OutputName [Operator],
 		fl2.OutputPath [Printer]
 	FROM 	

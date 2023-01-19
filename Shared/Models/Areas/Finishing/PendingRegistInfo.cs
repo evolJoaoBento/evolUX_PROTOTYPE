@@ -1,6 +1,6 @@
 ﻿namespace Shared.Models.Areas.Finishing
 {
-    public class PendingRegistry
+    public class PendingRegistInfo
     {
         public int RunID { get; set; }
         public int BusinessID { get; set; }

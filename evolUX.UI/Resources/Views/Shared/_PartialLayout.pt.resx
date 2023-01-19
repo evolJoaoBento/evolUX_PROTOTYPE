@@ -279,6 +279,9 @@
   <data name="ActionPendingRegistries" xml:space="preserve">
     <value>Registos Pendentes</value>
   </data>
+  <data name="ActionPendingRegistries_Link" xml:space="preserve">
+    <value>/Finishing/PendingRegist/GetPendingRegist</value>
+  </data>
   <data name="ActionPermissions" xml:space="preserve">
     <value>Acessos a Páginas</value>
   </data>

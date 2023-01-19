@@ -27,7 +27,7 @@ builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IProductionReportService, ProductionReportService>();
-builder.Services.AddSingleton<IPendingRegistriesService, PendingRegistriesService>();
+builder.Services.AddSingleton<IPendingRegistService, PendingRegistService>();
 builder.Services.AddSingleton<IPrintService, PrintService>();
 builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
 builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillService>();

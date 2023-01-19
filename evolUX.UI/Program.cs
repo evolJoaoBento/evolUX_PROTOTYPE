@@ -63,6 +63,9 @@ builder.Services.AddSingleton<IRecoverRepository, RecoverRepository>();
 builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();
 builder.Services.AddSingleton<IPostalObjectRepository, PostalObjectRepository>();
 
+builder.Services.AddSingleton<IPendingRegistService, PendingRegistService>();
+builder.Services.AddSingleton<IPendingRegistRepository, PendingRegistRepository>();
+
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IFlurlClientFactory, PerBaseUrlFlurlClientFactory>();
 builder.Services.AddControllersWithViews(options =>
