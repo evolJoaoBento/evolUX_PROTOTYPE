@@ -22,9 +22,10 @@
         <h2 class="display-4 text-center">@ViewBag.RunName</h2>
     </div>
 </div>
-<div class="my-3 table-div">
+
 @if (Model.PendingRegistDetail.ToRegistPrintFiles.Count > 0)
 {
+    <div class="my-3 table-div">
         <table class="table table-sm table-hover table-collapse-seperate">
             @if (ViewBag.hasMultipleServiceCompanies)
             {
@@ -75,52 +76,56 @@
                 }
             </tbody>
         </table>
-} else
+    </div>
+}
+else
 {
     <div class="d-flex justify-content-center m-5">@localizer["NoToRegistPrintFiles"]</div>
 }
-if (Model.PendingRegistDetail.ToRegistFullfillFiles.Count > 0)
+@if (Model.PendingRegistDetail.ToRegistFullfillFiles.Count > 0)
 {
-        <table class="table table-sm table-hover table-collapse-seperate">
-            <col>
-            <col>
-            <col>
-            <col>
-            <col>
-            <thead id="bootstrap-overrides" class="table-info sticky-header">
-                <tr class="text-center">
-                    <th>@localizer["FileName"]</th>
-                    <th>@localizer["RunID"]</th>
-                    <th>@localizer["FileID"]</th>
-                    <th>@localizer["PrintedTimeStamp"]</th>
-                    <th>@localizer["Operator"]</th>
-                </tr>
-            </thead>
-            <tbody id="bootstrap-overrides">
-                @if (Model == null)
-                {
-                    <tr><td colspan="5" class="text-center">No Model Data</td></tr>
-                }
-                else
-                {
-                    @foreach (PendingRegistElement p in Model.PendingRegistDetail.ToRegistPrintFiles)
+    <div class="my-3 table-div">
+         <table class="table table-sm table-hover table-collapse-seperate">
+                <col>
+                <col>
+                <col>
+                <col>
+                <col>
+                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                    <tr class="text-center">
+                        <th>@localizer["FileName"]</th>
+                        <th>@localizer["RunID"]</th>
+                        <th>@localizer["FileID"]</th>
+                        <th>@localizer["PrintedTimeStamp"]</th>
+                        <th>@localizer["Operator"]</th>
+                    </tr>
+                </thead>
+                <tbody id="bootstrap-overrides">
+                    @if (Model == null)
                     {
-                        <tr>
-                            <td class="headcol" style="background: var(--lightestgrey)">@p.FileName</td>
-                            <td>@p.RunID</td>
-                            <td>@p.FileID</td>
-                            <td>@p.TimeStamp</td>
-                            <td>@p.Operator</td>
-                        </tr>
+                        <tr><td colspan="5" class="text-center">No Model Data</td></tr>
                     }
-                }
-            </tbody>
-        </table>
+                    else
+                    {
+                        @foreach (PendingRegistElement p in Model.PendingRegistDetail.ToRegistPrintFiles)
+                        {
+                            <tr>
+                                <td class="headcol" style="background: var(--lightestgrey)">@p.FileName</td>
+                                <td>@p.RunID</td>
+                                <td>@p.FileID</td>
+                                <td>@p.TimeStamp</td>
+                                <td>@p.Operator</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+          </table>
+    </div>
 }
 else
 {
     <div class="d-flex justify-content-center m-5">@localizer["NoToRegistFullfillFiles"]</div>
 }    
-</div>
+
 
 
