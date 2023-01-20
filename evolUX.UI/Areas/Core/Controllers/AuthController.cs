@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -70,7 +71,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             //    SameSite = SameSiteMode.Strict
             //});
 
-            GetSessionVariables(result);
+            SetSessionVariables(result);
 
 
             SetJWTCookie(result.AccessToken);
@@ -118,7 +119,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             }
             var result = response.GetJsonAsync<AuthenticateResponse>().Result;
 
-            GetSessionVariables(result);
+            SetSessionVariables(result);
             
 
             SetJWTCookie(result.AccessToken);
@@ -173,7 +174,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             user.Id = (int)((dynamic)result).userModel.id;
             user.Username = ((dynamic)result).userModel.username;
             user.Language = ((dynamic)result).userModel.language;
-            await GetSessionVariables(user) ;
+            await SetSessionVariables(user) ;
             return Redirect(returnUrl);
         }
         public async Task<int> HiddenRefresh()
@@ -191,7 +192,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             user.Id = (int)((dynamic)result).userModel.id;
             user.Username = ((dynamic)result).userModel.username;
             user.Language = ((dynamic)result).userModel.language;
-            await GetSessionVariables(user);
+            await SetSessionVariables(user);
             return response.StatusCode;
         }
         public IActionResult AccessDenied(string returnUrl)
@@ -221,7 +222,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             };
             Response.Cookies.Append("X-Access-Token", JWToken, cookieOptions);
         }
-        private async Task GetSessionVariables(AuthenticateResponse user)
+        private async Task SetSessionVariables(AuthenticateResponse user)
         {
             if (!string.IsNullOrEmpty(user.Language))
             {
@@ -241,6 +242,7 @@ namespace evolUX.UI.Areas.Core.Controllers
                     HttpContext.Session.SetString(key, dictionary[key]);
                 }
             }
+            HttpContext.Session.Set<AuthenticateResponse>("UserInfo", user);
         }
     }
 }
