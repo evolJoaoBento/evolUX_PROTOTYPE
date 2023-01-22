@@ -14,22 +14,20 @@ namespace evolUX.API.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Result>> RegistPrint(string fileBarcode, string user, DataTable serviceCompanyList)
+        public async Task<Result> RegistPrint(string fileBarcode, string user, DataTable serviceCompanyList)
         {
             
-            string sql = @"EXEC RT_UX_REGIST_PRINT      @FileBarcode
-                                                        @Username
-                                                        @ServiceCompanyList";
+            string sql = @"RT_UX_REGIST_PRINT";
             var parameters = new DynamicParameters();
             parameters.Add("FileBarcode", fileBarcode, DbType.String);
-            parameters.Add("Username", user, DbType.String);
+            parameters.Add("UserName", user, DbType.String);
             parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<Result> results = await connection.QueryAsync<Result>(sql, parameters, 
                     commandType: CommandType.StoredProcedure);
-                return results;
+                return results.First();
             }
         }
     }
