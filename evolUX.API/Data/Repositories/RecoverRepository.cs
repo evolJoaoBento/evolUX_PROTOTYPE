@@ -15,16 +15,12 @@ namespace evolUX.API.Data.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Result>> RegistTotalRecover(string fileBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
+        public async Task<Result> RegistTotalRecover(string fileBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
         {
-            
-            string sql = @"EXEC RT_UX_REGIST_TOTAL_RECOVER  @FileBarcode
-                                                            @Username
-                                                            @ServiceCompanyList
-                                                            @PermissionLevel";
+            string sql = @"RT_UX_REGIST_TOTAL_RECOVER";
             var parameters = new DynamicParameters();
             parameters.Add("FileBarcode", fileBarcode, DbType.String);
-            parameters.Add("Username", user, DbType.String);
+            parameters.Add("UserName", user, DbType.String);
             parameters.Add("PermissionLevel", permissionLevel, DbType.Binary);
             parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
 
@@ -32,21 +28,16 @@ namespace evolUX.API.Data.Repositories
             {
                 IEnumerable<Result> results = await connection.QueryAsync<Result>(sql, parameters, 
                     commandType: CommandType.StoredProcedure);
-                return results;
+                return results.First();
             }
         }
-        public async Task<IEnumerable<Result>> RegistPartialRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
+        public async Task<Result> RegistPartialRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
         {
-            
-            string sql = @"EXEC RT_UX_REGIST_PARTIAL_RECOVER    @StartBarcode
-                                                                @EndBarcode
-                                                                @Username
-                                                                @ServiceCompanyList
-                                                                @PermissionLevel";
+            string sql = @"RT_UX_REGIST_PARTIAL_RECOVER";
             var parameters = new DynamicParameters();
             parameters.Add("StartBarcode", startBarcode, DbType.String);
             parameters.Add("EndBarcode", endBarcode, DbType.String);
-            parameters.Add("Username", user, DbType.String);
+            parameters.Add("UserName", user, DbType.String);
             parameters.Add("PermissionLevel", permissionLevel, DbType.Binary);
             parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
 
@@ -54,21 +45,16 @@ namespace evolUX.API.Data.Repositories
             {
                 IEnumerable<Result> results = await connection.QueryAsync<Result>(sql, parameters, 
                     commandType: CommandType.StoredProcedure);
-                return results;
+                return results.First();
             }
         }
-        public async Task<IEnumerable<Result>> RegistDetailRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
+        public async Task<Result> RegistDetailRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
         {
-
-            string sql = @"EXEC RT_UX_REGIST_EXPCOMPANY_REGIST_DETAIL_RECOVER   @StartBarcode
-                                                                                @EndBarcode
-                                                                                @Username
-                                                                                @ServiceCompanyList
-                                                                                @PermissionLevel";
+            string sql = @"RT_UX_REGIST_EXPCOMPANY_REGIST_DETAIL_RECOVER";
             var parameters = new DynamicParameters();
             parameters.Add("StartBarcode", startBarcode, DbType.String);
             parameters.Add("EndBarcode", endBarcode, DbType.String);
-            parameters.Add("Username", user, DbType.String);
+            parameters.Add("UserName", user, DbType.String);
             parameters.Add("PermissionLevel", permissionLevel, DbType.Binary);
             parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
 
@@ -76,13 +62,13 @@ namespace evolUX.API.Data.Repositories
             {
                 IEnumerable<Result> results = await connection.QueryAsync<Result>(sql, parameters,
                     commandType: CommandType.StoredProcedure);
-                return results;
+                return results.First();
             }
         }
 
         public async Task<IEnumerable<PendingRecovery>> GetPendingRecoveries(int ServiceCompanyID)
         {
-            string sql = @"EXEC RP_UX_SERVICECOMPANY_PENDING_RECOVER    @ServiceComapanyID";
+            string sql = @"RP_UX_SERVICECOMPANY_PENDING_RECOVER";
             var parameters = new DynamicParameters();
             parameters.Add("ServiceComapanyID", ServiceCompanyID, DbType.Int64);
 
@@ -95,7 +81,7 @@ namespace evolUX.API.Data.Repositories
         }
         public async Task<IEnumerable<PendingRecovery>> GetPendingRecoveriesRegistDetail(int ServiceCompanyID)
         {
-            string sql = @"EXEC RP_UX_SERVICECOMPANY_REGIST_PENDING_RECOVER    @ServiceComapanyID";
+            string sql = @"RP_UX_SERVICECOMPANY_REGIST_PENDING_RECOVER";
             var parameters = new DynamicParameters();
             parameters.Add("ServiceComapanyID", ServiceCompanyID, DbType.Int64);
 

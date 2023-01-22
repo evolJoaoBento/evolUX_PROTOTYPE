@@ -17,9 +17,9 @@ namespace evolUX.API.Areas.Finishing.Services
 
        
 
-        public async Task<IEnumerable<Result>> RegistDetailRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
+        public async Task<Result> RegistDetailRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
         {
-            IEnumerable<Result> results = await _repository.Recover.RegistDetailRecover(startBarcode, endBarcode, user, serviceCompanyList, permissionLevel);
+            Result results = await _repository.Recover.RegistDetailRecover(startBarcode, endBarcode, user, serviceCompanyList, permissionLevel);
             if (results == null)
             {
 
@@ -27,9 +27,9 @@ namespace evolUX.API.Areas.Finishing.Services
             return results;
         }
 
-        public async Task<IEnumerable<Result>> RegistPartialRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
+        public async Task<Result> RegistPartialRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
         {
-            IEnumerable<Result> results = await _repository.Recover.RegistDetailRecover(startBarcode, endBarcode, user, serviceCompanyList, permissionLevel);
+            Result results = await _repository.Recover.RegistDetailRecover(startBarcode, endBarcode, user, serviceCompanyList, permissionLevel);
             if (results == null)
             {
 
@@ -37,9 +37,9 @@ namespace evolUX.API.Areas.Finishing.Services
             return results;
         }
 
-        public async Task<IEnumerable<Result>> RegistTotalRecover(string fileBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
+        public async Task<Result> RegistTotalRecover(string fileBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
         {
-            IEnumerable<Result> results = await _repository.Recover.RegistTotalRecover(fileBarcode, user,  serviceCompanyList, permissionLevel);
+            Result results = await _repository.Recover.RegistTotalRecover(fileBarcode, user,  serviceCompanyList, permissionLevel);
             if (results == null)
             {
 

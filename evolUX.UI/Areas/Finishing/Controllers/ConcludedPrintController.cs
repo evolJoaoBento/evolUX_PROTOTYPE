@@ -54,7 +54,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
             
             ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("MessageView", new MessageViewModel(result.Results.First().ResultID.ToString(), "", result.Results.First().Resultstr));
+            return View("MessageView", new MessageViewModel(result.Results.ErrorID.ToString(), "", result.Results.Error));
         }  
 
     }

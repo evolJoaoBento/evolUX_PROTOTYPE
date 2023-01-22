@@ -146,8 +146,8 @@ namespace evolUX.API.Data.Repositories
                 transactionScope.Complete();
             }
             Result result = new Result();
-            result.ResultID = 0;
-            result.Resultstr = "Print Successfull!";
+            result.ErrorID = 0;
+            result.Error = "Success";
             return result;
            
         }

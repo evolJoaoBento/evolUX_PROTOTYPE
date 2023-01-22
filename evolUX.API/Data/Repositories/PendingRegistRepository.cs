@@ -54,9 +54,9 @@ namespace evolUX.API.Data.Repositories
                 IEnumerable<PendingRegistElement> results = await connection.QueryAsync<PendingRegistElement>(sql, parameters,
                     commandType: CommandType.StoredProcedure);
                 if (results != null)
-                    result.ToRegistPrintFiles = (List<PendingRegistElement>)results;
+                    result.ToRegistFullfillFiles = (List<PendingRegistElement>)results;
                 else
-                    result.ToRegistPrintFiles = new List<PendingRegistElement>();
+                    result.ToRegistFullfillFiles = new List<PendingRegistElement>();
             }
             return result;
         }

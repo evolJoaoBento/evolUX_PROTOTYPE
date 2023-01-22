@@ -14,9 +14,9 @@ namespace evolUX.API.Areas.Finishing.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<Result>> RegistFullFill(string fileBarcode, string user, DataTable serviceCompanyList)
+        public async Task<Result> RegistFullFill(string fileBarcode, string user, DataTable serviceCompanyList)
         {
-            IEnumerable<Result> results = await _repository.FullfilledFiles.RegistFullFill(fileBarcode, user,  serviceCompanyList);
+            Result results = await _repository.FullfilledFiles.RegistFullFill(fileBarcode, user,  serviceCompanyList);
             if (results == null)
             {
 

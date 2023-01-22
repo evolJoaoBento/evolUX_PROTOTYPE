@@ -82,7 +82,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                 Result result = await _printService.Print(productionInfo.RunID, productionInfo.FileID, Printer, 
                     ServiceCompanyCode,
                             username, userid, productionInfo.FilePath, productionInfo.FileName, productionInfo.ShortFileName);
-                return PartialView("MessageView", new MessageViewModel(result.ResultID.ToString(), "", result.Resultstr));
+                return PartialView("MessageView", new MessageViewModel(result.ErrorID.ToString(), "", result.Error));
             }
             catch (ErrorViewModelException ex)
             {

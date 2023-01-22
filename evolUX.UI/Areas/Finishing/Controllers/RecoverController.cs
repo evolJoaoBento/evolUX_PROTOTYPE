@@ -54,7 +54,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
 
             ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("MessageView", new MessageViewModel(result.Results.First().ResultID.ToString(), "", result.Results.First().Resultstr));
+            return View("MessageView", new MessageViewModel(result.Results.ErrorID.ToString(), "", result.Results.Error));
         }
 
         public ActionResult RegistPartialRecover()
@@ -91,7 +91,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
 
             ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("MessageView", new MessageViewModel(result.Results.First().ResultID.ToString(), "", result.Results.First().Resultstr));
+            return View("MessageView", new MessageViewModel(result.Results.ErrorID.ToString(), "", result.Results.Error));
         }
 
         public ActionResult RegistDetailRecover()
@@ -128,7 +128,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
 
             ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("MessageView", new MessageViewModel(result.Results.First().ResultID.ToString(), "", result.Results.First().Resultstr));
+            return View("MessageView", new MessageViewModel(result.Results.ErrorID.ToString(), "", result.Results.Error));
         }
 
         //THIS METHOD COULD BE BETTER IF IT WAS CALLED ASYNCRONOUSLY EACH TIME IN AN AJAX REQUEST
