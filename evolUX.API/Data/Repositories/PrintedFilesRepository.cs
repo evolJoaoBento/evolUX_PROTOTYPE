@@ -15,8 +15,7 @@ namespace evolUX.API.Data.Repositories
         }
 
         public async Task<Result> RegistPrint(string fileBarcode, string user, DataTable serviceCompanyList)
-        {
-            
+        {           
             string sql = @"RT_UX_REGIST_PRINT";
             var parameters = new DynamicParameters();
             parameters.Add("FileBarcode", fileBarcode, DbType.String);

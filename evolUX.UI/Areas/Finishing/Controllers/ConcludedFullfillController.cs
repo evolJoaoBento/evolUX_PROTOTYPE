@@ -30,30 +30,30 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
         [HttpPost]
         public async Task<IActionResult> RegistFullFill(string FileBarcode)
         {
-            DataTable ServiceCompanyList = HttpContext.Session.Get<DataTable>("evolDP/ServiceCompanies");
-            String user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
+            string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+            string user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
 
             var response = await _concludedFullfillService.RegistFullFill(FileBarcode, user, ServiceCompanyList);
             if (response.StatusCode == ((int)HttpStatusCode.NotFound))
             {
                 var resultError = response.GetJsonAsync<ErrorResult>().Result;
             }
-            if(response.StatusCode == ((int)HttpStatusCode.Unauthorized))
+            if (response.StatusCode == ((int)HttpStatusCode.Unauthorized))
             {
                 if (response.Headers.Contains("Token-Expired"))
                 {
                     var header = response.Headers.FirstOrDefault("Token-Expired");
                     var returnUrl = Request.Path.Value;
                     //var url = Url.RouteUrl("MyAreas", )
-                    
-                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl=returnUrl });
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
                 }
                 else
                 {
                     return RedirectToAction("Index", "Auth", new { Area = "Core" });
                 }
             }
-            
+
             ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
             return View("MessageView", new MessageViewModel(result.Results.ErrorID.ToString(), "", result.Results.Error));
         }  

@@ -12,7 +12,7 @@ namespace evolUX.UI.Areas.Finishing.Services
         {
             _concludedPrintRepository = concludedPrintRepository;
         }
-        public async Task<IFlurlResponse> RegistPrint(string FileBarcode, string user, DataTable ServiceCompanyList)
+        public async Task<IFlurlResponse> RegistPrint(string FileBarcode, string user, string ServiceCompanyList)
         {
             var response = await _concludedPrintRepository.RegistPrint(FileBarcode, user, ServiceCompanyList);
             return response;

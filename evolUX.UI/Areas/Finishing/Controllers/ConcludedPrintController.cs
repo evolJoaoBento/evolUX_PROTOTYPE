@@ -29,8 +29,8 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
         [HttpPost]
         public async Task<IActionResult> RegistPrint(string FileBarcode)
         {
-            DataTable ServiceCompanyList = HttpContext.Session.Get<DataTable>("evolDP/ServiceCompanies");
-            String user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
+            string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+            string user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
 
             var response = await _concludedPrintService.RegistPrint(FileBarcode, user, ServiceCompanyList);
             if (response.StatusCode == ((int)HttpStatusCode.NotFound))

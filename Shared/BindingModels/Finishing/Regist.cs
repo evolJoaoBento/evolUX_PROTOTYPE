@@ -6,6 +6,6 @@ namespace Shared.BindingModels.Finishing
     {
         public string FileBarcode { get; set; }
         public string User { get; set; }
-        public DataTable ServiceCompanyList { get; set; }
+        public string ServiceCompanyList { get; set; }
     }
 }

@@ -13,7 +13,7 @@ namespace evolUX.UI.Repositories
         {
         }
 
-        public async Task<IFlurlResponse> RegistFullFill(string FileBarcode, string user, DataTable ServiceCompanyList)
+        public async Task<IFlurlResponse> RegistFullFill(string FileBarcode, string user, string ServiceCompanyList)
         {
             try
             {
@@ -21,9 +21,9 @@ namespace evolUX.UI.Repositories
                 bindingModel.FileBarcode = FileBarcode;
                 bindingModel.User = user;
                 bindingModel.ServiceCompanyList = ServiceCompanyList;
-                var response = await _flurlClient.Request("/API/finishing/ConcludedFullfill/RegistFullFill")
+                var response = await _flurlClient.Request("/API/finishing/PendingRegist/RegistFullFill")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                    .PostJsonAsync(bindingModel);
+                    .SendJsonAsync(HttpMethod.Get, bindingModel);
                 //var response = await BaseUrl
                 //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
                 //     .GetAsync();

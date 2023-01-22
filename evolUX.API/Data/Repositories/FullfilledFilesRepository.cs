@@ -16,7 +16,6 @@ namespace evolUX.API.Data.Repositories
 
         public async Task<Result> RegistFullFill(string fileBarcode, string user, DataTable serviceCompanyList)
         {
-            
             string sql = @"RT_UX_REGIST_FULLFILL";
             var parameters = new DynamicParameters();
             parameters.Add("FileBarcode", fileBarcode, DbType.String);

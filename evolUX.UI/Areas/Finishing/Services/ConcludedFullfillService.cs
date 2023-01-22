@@ -12,7 +12,7 @@ namespace evolUX.UI.Areas.Finishing.Services
         {
             _concludedFullfillRepository = concludedFullfillRepository;
         }
-        public async Task<IFlurlResponse> RegistFullFill(string FileBarcode, string user, DataTable ServiceCompanyList)
+        public async Task<IFlurlResponse> RegistFullFill(string FileBarcode, string user, string ServiceCompanyList)
         {
             var response = await _concludedFullfillRepository.RegistFullFill(FileBarcode, user, ServiceCompanyList);
             return response;

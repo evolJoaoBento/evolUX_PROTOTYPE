@@ -7,6 +7,8 @@ using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 using System.Data;
 using Newtonsoft.Json;
+using evolUX.API.Areas.Finishing.Services;
+using Shared.BindingModels.Finishing;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
@@ -24,7 +26,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
 
         [HttpGet]
         [ActionName("GetPostalObjectInfo")]
-        public async Task<ActionResult<ResultsViewModel>> GetPostalObjectInfo([FromBody] string ServiceCompanyListJSON, [FromQuery] string PostObjBarCode)
+        public async Task<ActionResult<PostalObjectViewModel>> GetPostalObjectInfo([FromBody] string ServiceCompanyListJSON, [FromQuery] string PostObjBarCode)
         {
             try
             {
@@ -44,31 +46,5 @@ namespace evolUX.API.Areas.Finishing.Controllers
                     title: ex.Message);
             }
         }
-        
-        //public async Task<ActionResult<ResultsViewModel>> GetPostalObjectInfo([FromBody] Dictionary<string, object> dictionary)
-        //{
-        //    try
-        //    {
-        //        object obj;
-        //        dictionary.TryGetValue("ServiceCompanyList", out obj);
-        //        DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(Convert.ToString(obj));
-        //        dictionary.TryGetValue("PostObjBarCode", out obj);
-        //        string PostObjBarCode = Convert.ToString(obj);
-
-        //        PostalObjectViewModel viewmodel = await _postalObjectService.GetPostalObjectInfo(ServiceCompanyList, PostObjBarCode);
-        //        _logger.LogInfo("PostalObjectInfo Get");
-        //        return Ok(viewmodel);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //log error
-        //        _logger.LogError($"Something went wrong inside Get Printers action: {ex.Message}");
-        //        //return StatusCode(500, "Internal Server Error");
-        //        return Problem(
-        //            detail: ex.StackTrace,
-        //            title: ex.Message);
-        //    }
-        //}
-
     }
 }

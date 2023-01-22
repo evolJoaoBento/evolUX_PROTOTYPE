@@ -18,10 +18,14 @@ namespace evolUX.API.Areas.Finishing.Controllers{
     {
         private readonly ILoggerService _logger;
         private readonly IPendingRegistService _pendingRegistService;
-        public PendingRegistController(IWrapperRepository repository, ILoggerService logger, IPendingRegistService pendingRegistService)
+        private readonly IConcludedPrintService _concludedPrintService;
+        private readonly IConcludedFullfillService _concludedFullfillService;
+        public PendingRegistController(IWrapperRepository repository, ILoggerService logger, IPendingRegistService pendingRegistService, IConcludedPrintService concludedPrintService, IConcludedFullfillService concludedFullfillService)
         {
             _logger = logger;
             _pendingRegistService = pendingRegistService;
+            _concludedPrintService = concludedPrintService;
+            _concludedFullfillService = concludedFullfillService;
         }
 
 
@@ -64,5 +68,44 @@ namespace evolUX.API.Areas.Finishing.Controllers{
             }
         }
 
+        [HttpGet]
+        [ActionName("RegistPrint")]
+        public async Task<ActionResult<ResultsViewModel>> RegistPrint([FromBody] Regist bindingModel)
+        {
+            try
+            {
+                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                ResultsViewModel viewmodel = new ResultsViewModel();
+                viewmodel.Results = await _concludedPrintService.RegistPrint(bindingModel.FileBarcode, bindingModel.User, ServiceCompanyList);
+                _logger.LogInfo("RegistPrint Post");
+                return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside RegistPrint Post action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("RegistFullFill")]
+        public async Task<ActionResult<ResultsViewModel>> RegistFullFill([FromBody] Regist bindingModel)
+        {
+            try
+            {
+                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                ResultsViewModel viewmodel = new ResultsViewModel();
+                viewmodel.Results = await _concludedFullfillService.RegistFullFill(bindingModel.FileBarcode, bindingModel.User, ServiceCompanyList);
+                _logger.LogInfo("RegistFullFill Post");
+                return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside RegistFullFill Post action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
     }
 }

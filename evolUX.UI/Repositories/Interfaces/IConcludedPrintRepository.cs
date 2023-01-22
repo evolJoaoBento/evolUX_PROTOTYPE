@@ -5,6 +5,6 @@ namespace evolUX.UI.Repositories.Interfaces
 {
     public interface IConcludedPrintRepository
     {
-        public Task<IFlurlResponse> RegistPrint(string FileBarcode, string user, DataTable ServiceCompanyList);
+        public Task<IFlurlResponse> RegistPrint(string FileBarcode, string user, string ServiceCompanyList);
     }
 }

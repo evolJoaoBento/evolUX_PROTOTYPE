@@ -5,6 +5,6 @@ namespace evolUX.UI.Areas.Finishing.Services.Interfaces
 {
     public interface IConcludedFullfillService
     {
-        public Task<IFlurlResponse> RegistFullFill(string FileBarcode, string user, DataTable ServiceCompanyList);
+        public Task<IFlurlResponse> RegistFullFill(string FileBarcode, string user, string ServiceCompanyList);
     }
 }
