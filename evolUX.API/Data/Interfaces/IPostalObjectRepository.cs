@@ -1,6 +1,4 @@
-﻿
-
-using Shared.Models.Areas.Finishing;
+﻿using Shared.Models.Areas.Finishing;
 using Shared.Models.General;
 using System.Data;
 

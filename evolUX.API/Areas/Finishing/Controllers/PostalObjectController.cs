@@ -7,7 +7,6 @@ using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 using System.Data;
 using Newtonsoft.Json;
-using Shared.Models.General;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
