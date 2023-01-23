@@ -21,10 +21,12 @@ namespace evolUX.UI.Repositories
 
         public async Task<PostalObjectViewModel> GetPostalObjectInfo(string ServiceCompanyList, string PostObjBarCode)
         {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ServiceCompanyList", ServiceCompanyList);
+            dictionary.Add("PostObjBarCode", PostObjBarCode);
             var response = await _flurlClient.Request("/API/finishing/PostalObject/GetPostalObjectInfo")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                .SetQueryParam("PostObjBarCode", PostObjBarCode)
-                .SendJsonAsync(HttpMethod.Get, ServiceCompanyList);
+                .SendJsonAsync(HttpMethod.Get, dictionary);
             //var response = await BaseUrl
             //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
             //     .GetAsync();
@@ -32,24 +34,5 @@ namespace evolUX.UI.Repositories
             if (response.StatusCode == ((int)HttpStatusCode.Unauthorized)) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<PostalObjectViewModel>();
         }
-        
-        //public async Task<PostalObjectViewModel> GetPostalObjectInfo(string ServiceCompanyList, string PostObjBarCode)
-        //{
-        //    Dictionary<string, object> dictionary = new Dictionary<string, object>();
-        //    dictionary.Add("ServiceCompanyList", ServiceCompanyList);
-        //    dictionary.Add("PostObjBarCode", PostObjBarCode);
-
-        //    string ListJSON = JsonConvert.SerializeObject(dictionary);
-
-        //    var response = await _flurlClient.Request("/API/finishing/PostalObject/GetPostalObjectInfo")
-        //        .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-        //        .SendJsonAsync(HttpMethod.Get, ListJSON);
-        //    //var response = await BaseUrl
-        //    //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
-        //    //     .GetAsync();
-        //    if (response.StatusCode == ((int)HttpStatusCode.NotFound)) throw new HttpNotFoundException(response);
-        //    if (response.StatusCode == ((int)HttpStatusCode.Unauthorized)) throw new HttpUnauthorizedException(response);
-        //    return await response.GetJsonAsync<PostalObjectViewModel>();
-        //}
     }
 }

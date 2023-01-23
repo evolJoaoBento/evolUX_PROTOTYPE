@@ -26,10 +26,16 @@ namespace evolUX.API.Areas.Finishing.Controllers
 
         [HttpGet]
         [ActionName("GetPostalObjectInfo")]
-        public async Task<ActionResult<PostalObjectViewModel>> GetPostalObjectInfo([FromBody] string ServiceCompanyListJSON, [FromQuery] string PostObjBarCode)
+        public async Task<ActionResult<PostalObjectViewModel>> GetPostalObjectInfo([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
+                object obj;
+                dictionary.TryGetValue("PostObjBarCode", out obj);
+                string PostObjBarCode = Convert.ToString(obj);
+                dictionary.TryGetValue("ServiceCompanyList", out obj);
+                string ServiceCompanyListJSON = Convert.ToString(obj);
+                
                 DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
 
                 PostalObjectViewModel viewmodel = await _postalObjectService.GetPostalObjectInfo(ServiceCompanyList, PostObjBarCode);
