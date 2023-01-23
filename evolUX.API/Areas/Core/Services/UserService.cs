@@ -68,5 +68,9 @@ namespace evolUX.API.Areas.Core.Services
             await _repository.User.DeleteRefreshToken(username);
         }
 
+        public async Task ChangeCulture(string culture)
+        {
+            await _repository.User.ChangeCulture(culture);
+        }
     }
 }

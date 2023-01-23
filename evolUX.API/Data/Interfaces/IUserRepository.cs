@@ -14,5 +14,7 @@ namespace evolUX.API.Data.Interfaces
         public Task UpdateUserRefreshTokenAndTime(UserModel user);
 
         public Task DeleteRefreshToken(string username);
+
+        public Task ChangeCulture(string culture);
     }
 }

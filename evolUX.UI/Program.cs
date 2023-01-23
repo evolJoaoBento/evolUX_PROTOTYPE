@@ -55,6 +55,8 @@ builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
 builder.Services.AddSingleton<IConcludedPrintRepository, ConcludedPrintRepository>();
 builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillService>();
 builder.Services.AddSingleton<IConcludedFullfillRepository, ConcludedFullfillRepository>();
+builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IUserRepository, UserRepository>();
 
 builder.Services.AddSingleton<IRecoverService, RecoverService>();
 builder.Services.AddSingleton<IRecoverRepository, RecoverRepository>();

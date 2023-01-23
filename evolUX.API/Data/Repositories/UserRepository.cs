@@ -106,6 +106,16 @@ namespace evolUX.API.Data.Repositories
             }
         }
 
+        public async Task ChangeCulture(string culture)
+        {
+            var query = "evolUX_UPDATE_USER_INFO";
+            var parameters = new DynamicParameters();
+            parameters.Add("Language", culture, DbType.String);
 
+            using (var connection = _context.CreateConnectionEvolFlow())
+            {
+                await connection.ExecuteAsync(query, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
     }
 }

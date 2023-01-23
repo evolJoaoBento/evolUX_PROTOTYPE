@@ -10,5 +10,6 @@ namespace evolUX.API.Areas.Core.Services.Interfaces
         Task UpdateUserRefreshToken(string username, string refreshToken);
         Task<UserModel> GetUserByUsername(string username);
         Task DeleteRefreshToken(string username);
+        Task ChnageCulture(string culture);
     }
 }
