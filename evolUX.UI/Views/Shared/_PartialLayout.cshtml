@@ -13,7 +13,7 @@
     }
     <ul id="nav-links-wrapper" class="nav-links">
         @foreach(var actionLevel1 in sideBarActions){
-            <li>
+            <li style="">
                 <div class="iocn-link">
                     <a>
                         @if (localizer[actionLevel1.LocalizationKey + "_Icon"].IsResourceNotFound)
@@ -85,7 +85,7 @@
         }
         <li>
             <a>
-                <i id="colapse" class='li-circle circle  bx bxs-chevron-left'></i>
+                <i id="colapse" class='li-circle circle  bx bxs-chevron-left' style="color:var(--evol-grey)"></i>
             </a>
         </li>
 @*        <li>

@@ -27,10 +27,23 @@
             <div class="col settings-col">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <div><img class="circle" style="width:40px;height:40px;" src="~/images/@localizer["Language_Icon"]" alt="@localizer["Language"]" title="@localizer["Language"]"/></div>
-                    <div style="margin: 10px 15px; font-size:24px;"><img style="width:50px;height:50px;" src="~/images/user.png" alt="@User.Identity.Name" title="@User.Identity.Name" /></div>
+                    <div class="lang-menu">
+                        <img class="circle" style="width:40px;height:40px;" src="~/images/@localizer["Language_Icon"]" alt="@localizer["Language"]" title="@localizer["Language"]"/>
+                        @*<ul>
+                            <li>
+                                <img class="circle" style="width:40px;height:40px;" src="~/images/@localizer["Language_Icon"]" alt="@localizer["Language"]" title="@localizer["Language"]" />
+                                <a class ="settings-circle circle" asp-area="Core" asp-controller="Auth" asp-action="Logout" style="color:black;"></a>
+                            </li>
+                        </ul>*@
+                    </div>
+                    @*<div style="margin: 10px 15px; font-size:24px;"><img style="width:50px;height:50px;" src="~/images/user.png" alt="@User.Identity.Name" title="@User.Identity.Name" /></div>*@
+                    <div class="settings-circle circle" style="margin: 10px 15px; font-size:24px;">
+                        <a class="settings-circle circle" asp-area="Core" asp-controller="Auth" asp-action="Logout" style="color:var(--evol-lightestgrey);">
+                            <img style="width:40px;height:40px;" src="~/images/user.png" alt="@User.Identity.Name" title="@User.Identity.Name" />
+                        </a>
+                    </div>
                     <div class="settings-circle circle" style="margin-right:25px;">
-                        <a class="settings-circle circle" asp-area="Core" asp-controller="Auth" asp-action="Logout" style="color:black;">
+                        <a class="settings-circle circle" asp-area="Core" asp-controller="Auth" asp-action="Logout" style="color:var(--evol-lightestgrey);">
                             <i class='bx bx-log-out' style="margin: 9px 6px; font-size:24px;"></i>
                         </a>
                     </div>

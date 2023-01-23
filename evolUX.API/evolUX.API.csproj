@@ -7,6 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Properties\.config\**" />
+    <Compile Remove="Wiki\obj\**" />
+    <Content Remove="Properties\.config\**" />
+    <Content Remove="Wiki\obj\**" />
+    <EmbeddedResource Remove="Properties\.config\**" />
+    <EmbeddedResource Remove="Wiki\obj\**" />
+    <None Remove="Properties\.config\**" />
+    <None Remove="Wiki\obj\**" />
+    <_WebToolingArtifacts Remove="Properties\.config\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
