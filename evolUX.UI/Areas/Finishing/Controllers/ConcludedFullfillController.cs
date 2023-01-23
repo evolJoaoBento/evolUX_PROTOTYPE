@@ -9,16 +9,19 @@ using System.Data;
 using evolUX.UI.Extensions;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
+using Microsoft.Extensions.Localization;
 
-namespace evolUX.UI.Areas.EvolDP.Controllers
+namespace evolUX.UI.Areas.Finishing.Controllers
 {
     [Area("Finishing")]
     public class ConcludedFullfillController : Controller
     {
         private readonly IConcludedFullfillService _concludedFullfillService;
-        public ConcludedFullfillController(IConcludedFullfillService concludedFullfillService)
+        private readonly IStringLocalizer<ConcludedFullfillController> _localizer;
+        public ConcludedFullfillController(IConcludedFullfillService concludedFullfillService, IStringLocalizer<ConcludedFullfillController> localizer)
         {
             _concludedFullfillService = concludedFullfillService;
+            _localizer = localizer;
         }
 
         public ActionResult Index()
@@ -55,7 +58,10 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
 
             ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("MessageView", new MessageViewModel(result.Results.ErrorID.ToString(), "", result.Results.Error));
+            if (result.Results.Error.ToUpper() == "SUCCESS")
+                return PartialView("MessageView", new MessageViewModel("0", "", _localizer[result.Results.Error]));
+            else
+                return PartialView("MessageView", new MessageViewModel(result.Results.ErrorID.ToString(), "", result.Results.Error));
         }  
 
     }

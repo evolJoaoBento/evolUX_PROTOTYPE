@@ -19,7 +19,7 @@ using System.Security.Claims;
 using Shared.Models.General;
 using Shared.ViewModels.Areas.Core;
 
-namespace evolUX.UI.Areas.EvolDP.Controllers
+namespace evolUX.UI.Areas.Finishing.Controllers
 {
     [Area("Finishing")]
     public class PrintController : Controller

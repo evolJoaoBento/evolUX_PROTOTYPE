@@ -29,7 +29,7 @@ namespace evolUX.API.Areas.Finishing.Services
 
         public async Task<Result> RegistPartialRecover(string startBarcode, string endBarcode, string user, DataTable serviceCompanyList, bool permissionLevel)
         {
-            Result results = await _repository.Recover.RegistDetailRecover(startBarcode, endBarcode, user, serviceCompanyList, permissionLevel);
+            Result results = await _repository.Recover.RegistPartialRecover(startBarcode, endBarcode, user, serviceCompanyList, permissionLevel);
             if (results == null)
             {
 

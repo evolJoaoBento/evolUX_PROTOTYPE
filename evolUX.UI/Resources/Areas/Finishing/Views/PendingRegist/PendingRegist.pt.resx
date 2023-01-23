@@ -130,7 +130,7 @@
     <value>Com impressões por Registar</value>
   </data>
   <data name="PendingRegist" xml:space="preserve">
-    <value>Envelopagem/Impressão Pendente</value>
+    <value>Envelopagem/Impressão Pendentes</value>
   </data>
   <data name="RunDescription" xml:space="preserve">
     <value>Descrição do Run</value>

@@ -113,7 +113,7 @@ AS
 	ELSE
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -7 ErrorID, 'O Ficheiro já foi dado como Impresso' Error
+		SELECT -7 ErrorID, 'FileAlreadyPrinted' Error
 		RETURN -7
 	END
 	COMMIT TRANSACTION

@@ -168,6 +168,9 @@
   <data name="Printing" xml:space="preserve">
     <value>Printing</value>
   </data>
+  <data name="ProductionStatus" xml:space="preserve">
+    <value>Production Detail / Print</value>
+  </data>
   <data name="SequenceNumber" xml:space="preserve">
     <value>Sequence Number</value>
   </data>

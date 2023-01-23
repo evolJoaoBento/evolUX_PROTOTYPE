@@ -53,7 +53,7 @@
                                     <li><a class="link_name" href="#">@localizer[actionLevel2.LocalizationKey]</a></li>
                                     @foreach(var actionLevel3 in actionLevel2.ChildActions)
                                     {
-                                        <li><a href="#">@localizer[actionLevel3.LocalizationKey]</a></li>
+                                        <li><a href="@localizer[actionLevel3.LocalizationKey  + "_Link"]">@localizer[actionLevel3.LocalizationKey]</a></li>
                                     }
                                 </ul>
                             </li>

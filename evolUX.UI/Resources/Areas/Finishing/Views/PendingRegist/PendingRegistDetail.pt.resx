@@ -138,6 +138,9 @@
   <data name="Operator" xml:space="preserve">
     <value>Operador</value>
   </data>
+  <data name="PendingRegistDetail" xml:space="preserve">
+    <value>Envelopagem/Impressão Pendentes</value>
+  </data>
   <data name="Printer" xml:space="preserve">
     <value>Impressora</value>
   </data>

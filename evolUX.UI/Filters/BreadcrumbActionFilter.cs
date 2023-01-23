@@ -77,29 +77,30 @@ namespace evolUX.UI.Filters
                         }
                     }
 
-                    // If not a Controller, check if this is a method on the previous path element.
-                    if (i - 1 > 0)
-                    {
-                        var controllerName = pathSplit[i - 1] + "Controller";
-                        var prevController = this.GetControllerType(area+".Controllers."+controllerName);
+                    //TODO - Ver porque está a dar erro - TODOLOP
+                    //// If not a Controller, check if this is a method on the previous path element.
+                    //if (i - 1 > 0)
+                    //{
+                    //    var controllerName = pathSplit[i - 1] + "Controller";
+                    //    var prevController = this.GetControllerType(area+".Controllers."+controllerName);
 
-                        if (prevController != null)
-                        {
-                            var method = prevController.GetMethod(pathSplit[i]);
+                    //    if (prevController != null)
+                    //    {
+                    //        var method = prevController.GetMethod(pathSplit[i]);
 
-                            if (method != null)
-                            {
-                                // We've found an endpoint on the previous controller.
-                                breadcrumbList.Add(new Breadcrumb
-                                {
-                                    Text = this.CamelCaseSpacing(pathSplit[i]),
-                                    Action = pathSplit[i],
-                                    Controller = pathSplit[i - 1],
-                                    Area = area
-                                });
-                            }
-                        }
-                    }
+                    //        if (method != null)
+                    //        {
+                    //            // We've found an endpoint on the previous controller.
+                    //            breadcrumbList.Add(new Breadcrumb
+                    //            {
+                    //                Text = this.CamelCaseSpacing(pathSplit[i]),
+                    //                Action = pathSplit[i],
+                    //                Controller = pathSplit[i - 1],
+                    //                Area = area
+                    //            });
+                    //        }
+                    //    }
+                    //}
                 }
             }
 

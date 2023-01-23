@@ -24,7 +24,7 @@ namespace evolUX.API.Areas.Core.Services
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Name, user.UserName),
                 };
                 claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
                 var accessToken = new TokenResponse();
@@ -47,7 +47,7 @@ namespace evolUX.API.Areas.Core.Services
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Name, user.UserName),
                 };
                 claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
                 var accessToken = new TokenResponse();

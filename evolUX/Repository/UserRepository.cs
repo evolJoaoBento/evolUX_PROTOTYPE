@@ -50,7 +50,7 @@ namespace evolUX.Repository
             var parameters = new DynamicParameters();
             parameters.Add("RefreshToken", user.RefreshToken, DbType.String);
             parameters.Add("RefreshTokenExpiryTime", user.RefreshTokenExpiryTime, DbType.DateTime2);
-            parameters.Add("UserName", user.Username, DbType.String);
+            parameters.Add("UserName", user.UserName, DbType.String);
 
             using (var connection = _context.CreateConnectionEvolFlow())
             {

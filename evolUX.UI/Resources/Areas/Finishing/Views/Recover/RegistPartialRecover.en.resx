@@ -118,12 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="EndBarcode" xml:space="preserve">
-    <value>Último Objecto Postal a recuperar - Código de Barras</value>
+    <value>Last Postal Object to recover Barcode</value>
   </data>
   <data name="RegistPartialRecover" xml:space="preserve">
-    <value>Registo de recuperações Parciais</value>
+    <value>Partial Recover</value>
   </data>
   <data name="StartBarcode" xml:space="preserve">
-    <value>Primeiro Objecto Postal a recuperar - Código de Barras</value>
+    <value>First Postal Object to recover Barcode</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
   </data>
 </root>

@@ -63,7 +63,7 @@ AS
 							FROM RD_RUN_STATE WITH(NOLOCK)
 							WHERE RunStateName = 'EXPEDITION')))
 		BEGIN
-			SELECT -12 ErrorID, 'InvalidTotalRecoverAlreadyDispached' Error
+			SELECT -12 ErrorID, 'InvalidRecoverAlreadyDispached' Error
 			RETURN -12
 		END
 	END

@@ -13,7 +13,7 @@ using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
 using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 
-namespace evolUX.UI.Areas.EvolDP.Controllers
+namespace evolUX.UI.Areas.Finishing.Controllers
 {
     [Area("Finishing")]
     public class ProductionReportController : Controller

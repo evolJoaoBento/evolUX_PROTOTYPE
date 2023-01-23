@@ -117,79 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EndSeqNum" xml:space="preserve">
-    <value>Final</value>
+  <data name="EndBarcode" xml:space="preserve">
+    <value>Código de Barras do último Objecto Postal a recuperar</value>
   </data>
-  <data name="Envelope" xml:space="preserve">
-    <value>Envelope</value>
+  <data name="RegistDetailRecover" xml:space="preserve">
+    <value>Recuperações Avisos de Receção</value>
   </data>
-  <data name="ExpCenterCode" xml:space="preserve">
-    <value>Centro de Expedição</value>
+  <data name="StartBarcode" xml:space="preserve">
+    <value>Código de Barras do primeiro Objecto Postal a recuperar</value>
   </data>
-  <data name="ExpCompanyCode" xml:space="preserve">
-    <value>Companhia </value>
-  </data>
-  <data name="Expedition" xml:space="preserve">
-    <value>Expedição</value>
-  </data>
-  <data name="ExpeditionLevel" xml:space="preserve">
-    <value>Escalão</value>
-  </data>
-  <data name="ExpeditionType" xml:space="preserve">
-    <value>Tipo</value>
-  </data>
-  <data name="ExpeditionZone" xml:space="preserve">
-    <value>Zona</value>
-  </data>
-  <data name="ExpLevel" xml:space="preserve">
-    <value>Escalão</value>
-  </data>
-  <data name="Files" xml:space="preserve">
-    <value>Ficheiros</value>
-  </data>
-  <data name="Fullfilling" xml:space="preserve">
-    <value>Envelopagem</value>
-  </data>
-  <data name="FullFillMaterialCode" xml:space="preserve">
-    <value>Formato</value>
-  </data>
-  <data name="FullFillMaterialRef" xml:space="preserve">
-    <value>Material</value>
-  </data>
-  <data name="Materials" xml:space="preserve">
-    <value>Materiais</value>
-  </data>
-  <data name="PlexCode" xml:space="preserve">
-    <value>Tipo</value>
-  </data>
-  <data name="PrinterOperator" xml:space="preserve">
-    <value>Operador [Impressora]</value>
-  </data>
-  <data name="Printing" xml:space="preserve">
-    <value>Impressão</value>
-  </data>
-  <data name="ProductionStatus" xml:space="preserve">
-    <value>Detalhe de Produção / Imprimir</value>
-  </data>
-  <data name="SequenceNumber" xml:space="preserve">
-    <value>Nº Sequência</value>
-  </data>
-  <data name="ServiceTaskCode" xml:space="preserve">
-    <value>Tratamento</value>
-  </data>
-  <data name="StartSeqNum" xml:space="preserve">
-    <value>Inicial</value>
-  </data>
-  <data name="Stations" xml:space="preserve">
-    <value>Estações</value>
-  </data>
-  <data name="TotalPostObjs" xml:space="preserve">
-    <value>Quantidade</value>
-  </data>
-  <data name="TotalPrint" xml:space="preserve">
-    <value>Quantidade</value>
-  </data>
-  <data name="Totals" xml:space="preserve">
-    <value>Totais</value>
+  <data name="Submit" xml:space="preserve">
+    <value>Registar</value>
   </data>
 </root>

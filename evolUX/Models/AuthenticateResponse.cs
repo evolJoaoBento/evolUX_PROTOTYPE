@@ -14,10 +14,10 @@
 
         public AuthenticateResponse(UserModel user, string accessToken)
         {
-            Id = user.Id;
+            Id = user.UserID;
             FirstName = user.FirstName;
             LastName = user.LastName;
-            Username = user.Username;
+            Username = user.UserName;
             Roles = user.Roles;
             AccessToken = accessToken;
             RefreshToken = user.RefreshToken;

@@ -20,12 +20,14 @@ namespace evolUX.API.Areas.Finishing.Controllers{
         private readonly IPendingRegistService _pendingRegistService;
         private readonly IConcludedPrintService _concludedPrintService;
         private readonly IConcludedFullfillService _concludedFullfillService;
-        public PendingRegistController(IWrapperRepository repository, ILoggerService logger, IPendingRegistService pendingRegistService, IConcludedPrintService concludedPrintService, IConcludedFullfillService concludedFullfillService)
+        private readonly IRecoverService _recoverService;
+        public PendingRegistController(IWrapperRepository repository, ILoggerService logger, IPendingRegistService pendingRegistService, IConcludedPrintService concludedPrintService, IConcludedFullfillService concludedFullfillService, IRecoverService recoverService)
         {
             _logger = logger;
             _pendingRegistService = pendingRegistService;
             _concludedPrintService = concludedPrintService;
             _concludedFullfillService = concludedFullfillService;
+            _recoverService = recoverService;
         }
 
 
@@ -104,6 +106,104 @@ namespace evolUX.API.Areas.Finishing.Controllers{
             {
                 //log error
                 _logger.LogError($"Something went wrong inside RegistFullFill Post action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("RegistPartialRecover")]
+        public async Task<ActionResult<ResultsViewModel>> RegistPartialRecover([FromBody] RegistElaborate bindingModel)
+        {
+            try
+            {
+                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                ResultsViewModel viewmodel = new ResultsViewModel();
+                viewmodel.Results = await _recoverService.RegistPartialRecover(bindingModel.StartBarcode, bindingModel.EndBarcode, bindingModel.User, ServiceCompanyList, bindingModel.PermissionLevel);
+                _logger.LogInfo("RegistTotalRecover Post");
+                return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside RegistTotalRecover Post action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("RegistTotalRecover")]
+        public async Task<ActionResult<ResultsViewModel>> RegistTotalRecover([FromBody] Regist bindingModel)
+        {
+            try
+            {
+                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                ResultsViewModel viewmodel = new ResultsViewModel();
+                viewmodel.Results = await _recoverService.RegistTotalRecover(bindingModel.FileBarcode, bindingModel.User, ServiceCompanyList, bindingModel.PermissionLevel);
+                _logger.LogInfo("RegistTotalRecover Post");
+                return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside RegistTotalRecover Post action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("RegistDetailRecover")]
+        public async Task<ActionResult<ResultsViewModel>> RegistDetailRecover([FromBody] RegistElaborate bindingModel)
+        {
+            try
+            {
+                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                ResultsViewModel viewmodel = new ResultsViewModel();
+                viewmodel.Results = await _recoverService.RegistDetailRecover(bindingModel.StartBarcode, bindingModel.EndBarcode, bindingModel.User, ServiceCompanyList, bindingModel.PermissionLevel);
+                _logger.LogInfo("RegistDetailRecover Post");
+                return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside RegistDetailRecover Post action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("PendingRecoveries")]
+        public async Task<ActionResult<ResultsViewModel>> GetPendingRecoveries([FromQuery] int ServiceCompanyID)
+        {
+            try
+            {
+                PendingRecoveriesViewModel viewmodel = new PendingRecoveriesViewModel();
+                viewmodel.PendingRecoveries = await _recoverService.GetPendingRecoveries(ServiceCompanyID);
+                _logger.LogInfo("PendingRecoveries Get");
+                return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside PendingRecoveries Get action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("PendingRecoveriesRegistDetail")]
+        public async Task<ActionResult<ResultsViewModel>> GetPendingRecoveriesRegistDetail([FromQuery] int ServiceCompanyID)
+        {
+            try
+            {
+                PendingRecoveriesViewModel viewmodel = new PendingRecoveriesViewModel();
+                viewmodel.PendingRecoveries = await _recoverService.GetPendingRecoveriesRegistDetail(ServiceCompanyID);
+                _logger.LogInfo("PendingRecoveriesRegistDetail Get");
+                return Ok(viewmodel);
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside PendingRecoveriesRegistDetail Get action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }

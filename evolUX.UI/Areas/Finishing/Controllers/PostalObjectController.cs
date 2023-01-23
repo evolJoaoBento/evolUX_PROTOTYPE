@@ -17,7 +17,7 @@ using Shared.ViewModels.Areas.Finishing;
 using Shared.Exceptions;
 using Shared.Models.General;
 
-namespace evolUX.UI.Areas.EvolDP.Controllers
+namespace evolUX.UI.Areas.Finishing.Controllers
 {
     [Area("Finishing")]
     public class PostalObjectController : Controller

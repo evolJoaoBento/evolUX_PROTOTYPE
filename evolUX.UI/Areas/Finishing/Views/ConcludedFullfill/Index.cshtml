@@ -5,16 +5,16 @@
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
       <span class="sr-only">Loading...</span>
     </div>
-    <div class="d-flex justify-content-center">
-        <h1 class="display-4 text-center">@localizer["ConcludedFullfill"]</h1>
-    </div>
 </div>
-
+<div id="TitlePage">
+    <h1 class="display-4 text-center">@localizer["ConcludedFullfill"]</h1>
+</div>
 <form id="ConcludedFullfillFrm" class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="ConcludedFullfill" asp-action="RegistFullfill"
       data-ajax="true"
       data-ajax-method="POST"
       data-ajax-mode="replace"
       data-ajax-update="#response"
+      data-ajax-complete="clearTextBox"
       data-ajax-loading="myLoader">
     <table class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
         <tr>

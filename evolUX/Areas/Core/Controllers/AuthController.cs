@@ -36,7 +36,7 @@ namespace evolUX.Areas.Core.Controllers
             try
             {
                 var username = User.Identity?.Name?.Split("\\")[1];
-                var user = _repository.User.GetAllUsers().Result.SingleOrDefault(x => x.Username == username);
+                var user = _repository.User.GetAllUsers().Result.SingleOrDefault(x => x.UserName == username);
                 if (user == null)
                 {
                     return BadRequest(new { message = "Username or password is incorrect" });
@@ -46,7 +46,7 @@ namespace evolUX.Areas.Core.Controllers
 
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Name, user.UserName),
                     new Claim(ClaimTypes.Role, user.Roles)
                 };
                 var accessToken = _jwtService.GenerateJwtToken(claims);
@@ -80,7 +80,7 @@ namespace evolUX.Areas.Core.Controllers
             string refreshToken = tokenApiModel.RefreshToken;
             var principal = _jwtService.GetPrincipalFromExpiredToken(accessToken);
             var username = principal.Identity?.Name; //this is mapped to the Name claim by default
-            var user = _repository.User.GetAllUsers().Result.SingleOrDefault(u => u.Username == username);
+            var user = _repository.User.GetAllUsers().Result.SingleOrDefault(u => u.UserName == username);
             if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
             {
                 return BadRequest("Invalid client request");

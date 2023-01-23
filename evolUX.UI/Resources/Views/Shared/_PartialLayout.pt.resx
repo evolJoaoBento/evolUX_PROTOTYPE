@@ -265,7 +265,7 @@
     <value>&lt;i class='li-circle circle bx bx-user' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionPartialRecover" xml:space="preserve">
-    <value>Recuperações Parciais</value>
+    <value>Parciais</value>
   </data>
   <data name="ActionPartialRecover_Link" xml:space="preserve">
     <value>/Finishing/Recover/RegistPartialRecover</value>
@@ -274,7 +274,7 @@
     <value>Produção Pendente</value>
   </data>
   <data name="ActionPendingRecover" xml:space="preserve">
-    <value>Recuperações Pendentes</value>
+    <value>Pendentes</value>
   </data>
   <data name="ActionPendingRecover_Link" xml:space="preserve">
     <value>/Finishing/Recover/PendingRecover</value>
@@ -331,7 +331,7 @@
     <value>Recuperações</value>
   </data>
   <data name="ActionRegistDetailRecover" xml:space="preserve">
-    <value>Recuperações: Detalhe de Registos (AR)</value>
+    <value>Avisos de Receção</value>
   </data>
   <data name="ActionRegistDetailRecover_Link" xml:space="preserve">
     <value>/Finishing/Recover/RegistDetailRecover</value>
@@ -355,7 +355,7 @@
     <value>Informação de Suporte</value>
   </data>
   <data name="ActionTotalRecover" xml:space="preserve">
-    <value>Recuperações Totais</value>
+    <value>Totais</value>
   </data>
   <data name="ActionTotalRecover_Link" xml:space="preserve">
     <value>/Finishing/Recover/RegistTotalRecover</value>

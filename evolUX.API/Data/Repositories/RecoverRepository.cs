@@ -21,7 +21,7 @@ namespace evolUX.API.Data.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("FileBarcode", fileBarcode, DbType.String);
             parameters.Add("UserName", user, DbType.String);
-            parameters.Add("PermissionLevel", permissionLevel, DbType.Binary);
+            parameters.Add("PermissionLevel", permissionLevel, DbType.Boolean);
             parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
 
             using (var connection = _context.CreateConnectionEvolDP())
@@ -38,7 +38,7 @@ namespace evolUX.API.Data.Repositories
             parameters.Add("StartBarcode", startBarcode, DbType.String);
             parameters.Add("EndBarcode", endBarcode, DbType.String);
             parameters.Add("UserName", user, DbType.String);
-            parameters.Add("PermissionLevel", permissionLevel, DbType.Binary);
+            parameters.Add("PermissionLevel", permissionLevel, DbType.Boolean);
             parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
 
             using (var connection = _context.CreateConnectionEvolDP())
@@ -55,7 +55,7 @@ namespace evolUX.API.Data.Repositories
             parameters.Add("StartBarcode", startBarcode, DbType.String);
             parameters.Add("EndBarcode", endBarcode, DbType.String);
             parameters.Add("UserName", user, DbType.String);
-            parameters.Add("PermissionLevel", permissionLevel, DbType.Binary);
+            parameters.Add("PermissionLevel", permissionLevel, DbType.Boolean);
             parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
 
             using (var connection = _context.CreateConnectionEvolDP())
@@ -70,7 +70,7 @@ namespace evolUX.API.Data.Repositories
         {
             string sql = @"RP_UX_SERVICECOMPANY_PENDING_RECOVER";
             var parameters = new DynamicParameters();
-            parameters.Add("ServiceComapanyID", ServiceCompanyID, DbType.Int64);
+            parameters.Add("ServiceCompanyID", ServiceCompanyID, DbType.Int64);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -83,7 +83,7 @@ namespace evolUX.API.Data.Repositories
         {
             string sql = @"RP_UX_SERVICECOMPANY_REGIST_PENDING_RECOVER";
             var parameters = new DynamicParameters();
-            parameters.Add("ServiceComapanyID", ServiceCompanyID, DbType.Int64);
+            parameters.Add("ServiceCompanyID", ServiceCompanyID, DbType.Int64);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {

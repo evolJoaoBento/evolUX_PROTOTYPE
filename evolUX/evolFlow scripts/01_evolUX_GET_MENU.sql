@@ -87,6 +87,14 @@ BEGIN
 	ADD Active bit NOT NULL CONSTRAINT DF_USERS_Active DEFAULT (1)
 END
 GO
+DROP INDEX IF EXISTS [UX_RT_USERS_UserName] ON [dbo].[USERS]
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [UX_RT_USERS_UserName] ON [dbo].[USERS]
+(
+	[UserName] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
 UPDATE dbo.USERS
 SET Active = 1
 WHERE UserType <> 'OFF'
@@ -117,6 +125,82 @@ BEGIN
 		SET Active = CASE UPPER(i.UserType) WHEN 'OFF' THEN 0 ELSE 1 END 
 		FROM inserted i
 		WHERE i.Active <> (CASE UPPER(i.UserType) WHEN 'OFF' THEN 0 ELSE 1 END)
+	END
+END
+GO
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[evolUX_GET_USER]') AND type in (N'P', N'PC'))
+BEGIN
+	EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[evolUX_GET_USER] AS'
+END
+GO
+ALTER  PROCEDURE [dbo].[evolUX_GET_USER]
+	@UserName varchar(50) = NULL
+AS
+BEGIN
+	SELECT UserID, UserName, RefreshToken, RefreshTokenExpiryTime, ISNULL([Language],'pt') [Language] 
+	FROM [dbo].[USERS] WITH(NOLOCK)
+	WHERE UserName = ISNULL(@UserName,UserName) AND Active = 1
+END
+GO
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[evolUX_UPDATE_USER]') AND type in (N'P', N'PC'))
+BEGIN
+	EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[evolUX_UPDATE_USER] AS'
+END
+GO
+ALTER  PROCEDURE [dbo].[evolUX_UPDATE_USER]
+	@UserID int = NULL,
+	@UserName varchar(50) = NULL,
+	@Password varchar(500) = NULL,
+	@UserType char(3) = NULL,
+	@Language varchar(10) = NULL
+AS
+BEGIN
+	SET NOCOUNT ON
+	IF (@UserID is NULL AND @UserName is NULL)
+	BEGIN
+		SELECT -1 ErrorID, 'MissingUserIdentification' Error
+		RETURN
+	END
+
+	IF (@UserID is NULL)
+	BEGIN
+		SELECT @UserID = UserID
+		FROM [dbo].[USERS] WITH(NOLOCK)
+		WHERE UserName = @UserName
+	END
+
+	IF (@UserID is NULL)
+	BEGIN
+		SELECT -2 ErrorID, 'UserNotFound' Error
+		RETURN
+	END
+
+	IF (@UserType is NOT NULL)
+	BEGIN
+		UPDATE [dbo].[USERS]
+		SET [UserType] = @UserType
+		WHERE UserID = @UserID
+	END
+
+	UPDATE [dbo].[USERS]
+	SET [Password] = ISNULL(@Password, [Password]),
+		[Language] = ISNULL(@Language, [Language])
+	WHERE UserID = @UserID AND Active = 1
+
+	IF (@@ROWCOUNT > 0)
+	BEGIN
+		SELECT 0 ErrorID, 'Success' Error
+	END
+	ELSE
+	BEGIN
+		IF (EXISTS (SELECT TOP 1 1 FROM [dbo].[USERS] WHERE UserID = @UserID AND Active = 0))
+		BEGIN
+			SELECT -3 ErrorID, 'UserInactive' Error
+		END
+		ELSE
+		BEGIN
+			SELECT -4 ErrorID, 'NotSuccess' Error
+		END
 	END
 END
 GO

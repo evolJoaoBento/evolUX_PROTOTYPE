@@ -126,7 +126,4 @@
   <data name="Submit" xml:space="preserve">
     <value>Submit</value>
   </data>
-  <data name="Success" xml:space="preserve">
-    <value>File with completed enveloping</value>
-  </data>
 </root>

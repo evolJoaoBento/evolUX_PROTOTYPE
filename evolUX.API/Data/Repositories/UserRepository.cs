@@ -3,6 +3,7 @@ using evolUX.API.Data.Interfaces;
 using Dapper;
 using System.Data;
 using evolUX.API.Areas.Core.ViewModels;
+using Shared.Models.General;
 
 namespace evolUX.API.Data.Repositories
 {
@@ -17,24 +18,26 @@ namespace evolUX.API.Data.Repositories
 
         public async Task<List<UserModel>> GetAllUsers()
         {
-            var userList = new List<UserModel>();
-            string sql = "SELECT UserId AS [Id], UserName AS [Username], RefreshToken, RefreshTokenExpiryTime, ISNULL(Language,'pt') Language FROM USERS WITH(NOLOCK) WHERE Active = 1";
+            List<UserModel> userList = new List<UserModel>();
+            string sql = "evolUX_GET_USER";
             using (var connection = _context.CreateConnectionEvolFlow())
             {
-                userList = (List<UserModel>)await connection.QueryAsync<UserModel>(sql);
+                userList = (List<UserModel>)await connection.QueryAsync<UserModel>(sql,
+                    commandType: CommandType.StoredProcedure);
                 return userList;
             }
         }
 
         public async Task<UserModel> GetUserByUsername(string username)
         {
-            var user = new UserModel();
-            string sql = "SELECT UserId AS [Id], UserName AS [Username], Password, RefreshToken, RefreshTokenExpiryTime, ISNULL(Language,'pt') Language FROM USERS WITH(NOLOCK) WHERE UserName = @UserName AND Active = 1";
+            UserModel user = new UserModel();
+            string sql = "evolUX_GET_USER";
             var parameters = new DynamicParameters();
             parameters.Add("UserName", username ,DbType.String);
             using (var connection = _context.CreateConnectionEvolFlow())
             {
-                user = await connection.QuerySingleOrDefaultAsync<UserModel>(sql, parameters);
+                user = await connection.QuerySingleOrDefaultAsync<UserModel>(sql, parameters,
+                    commandType: CommandType.StoredProcedure);
                 return user;
             }
         }
@@ -86,7 +89,7 @@ namespace evolUX.API.Data.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("RefreshToken", user.RefreshToken, DbType.String);
             parameters.Add("RefreshTokenExpiryTime", user.RefreshTokenExpiryTime, DbType.DateTime2);
-            parameters.Add("UserName", user.Username, DbType.String);
+            parameters.Add("UserName", user.UserName, DbType.String);
 
             using (var connection = _context.CreateConnectionEvolFlow())
             {

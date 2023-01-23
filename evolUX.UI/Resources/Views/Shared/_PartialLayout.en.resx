@@ -265,7 +265,7 @@
     <value>&lt;i class='li-circle circle bx bx-user' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionPartialRecover" xml:space="preserve">
-    <value>Partial Recovers</value>
+    <value>Partial</value>
   </data>
   <data name="ActionPartialRecover_Link" xml:space="preserve">
     <value>/Finishing/Recover/RegistPartialRecover</value>
@@ -274,7 +274,7 @@
     <value>Pending Production</value>
   </data>
   <data name="ActionPendingRecover" xml:space="preserve">
-    <value>Pending Recovers</value>
+    <value>Pending</value>
   </data>
   <data name="ActionPendingRegist" xml:space="preserve">
     <value>Pending</value>
@@ -325,7 +325,7 @@
     <value>Recovers</value>
   </data>
   <data name="ActionRegistDetailRecover" xml:space="preserve">
-    <value>Regist Detail Recover (AR)</value>
+    <value>Receipt Notices</value>
   </data>
   <data name="ActionRegistDetailRecover_Link" xml:space="preserve">
     <value>/Finishing/Recover/RegistDetailRecover</value>
@@ -349,7 +349,7 @@
     <value>Suport Information</value>
   </data>
   <data name="ActionTotalRecover" xml:space="preserve">
-    <value>Total Recovers</value>
+    <value>Total</value>
   </data>
   <data name="ActionTotalRecover_Link" xml:space="preserve">
     <value>/Finishing/Recover/RegistTotalRecover</value>

@@ -31,7 +31,7 @@ namespace evolUX.API.Areas.Core.Services
             {
                 throw new AuthenticationException();
             }
-            var roles = _repository.User.GetRolesByUsername(user.Username);
+            var roles = _repository.User.GetRolesByUsername(user.UserName);
             user.Roles = roles.Result;
             return user;
         }
@@ -43,7 +43,7 @@ namespace evolUX.API.Areas.Core.Services
             {
                 return null;
             }
-            var roles = _repository.User.GetRolesByUsername(user.Username);
+            var roles = _repository.User.GetRolesByUsername(user.UserName);
             user.Roles = roles.Result;
             return user;
         }

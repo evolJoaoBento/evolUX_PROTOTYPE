@@ -156,29 +156,29 @@
   <data name="FirstPostObjNotFoundInServiceCompany" xml:space="preserve">
     <value>(Primeiro) Objecto Postal não encontrado para a respetiva Companhia de Serviços</value>
   </data>
-  <data name="InvalidParcialRecoverAlreadyDispached" xml:space="preserve">
-    <value>O Objecto Postal já foi expedido. Apenas um elemento com mais permissões poderá efetuar a recuperação deste Objecto Postal</value>
+  <data name="FirstPostObjRegistDetailNotFound" xml:space="preserve">
+    <value>(Primeiro) Objecto Postal não tem associado nenhum Aviso de Receção</value>
   </data>
-  <data name="InvalidParcialRecoverBarCode" xml:space="preserve">
-    <value>Numa recuperação Parcial apenas um dos Códigos de Barra pode ser 0 (zero)</value>
-  </data>
-  <data name="InvalidParcialRecoverDifferentProductionFile" xml:space="preserve">
-    <value>Os Objectos Postais não são do mesmo FICHEIRO de produção</value>
-  </data>
-  <data name="InvalidParcialRecoverDifferentProductionRun" xml:space="preserve">
-    <value>Os Objectos Postais não são do mesmo RUN de produção</value>
-  </data>
-  <data name="InvalidParcialRecoverReversedOrder" xml:space="preserve">
-    <value>O Primeiro Objecto Postal não pode ser posterior ao Último Objecto Postal</value>
+  <data name="InvalidRecoverAlreadyDispached" xml:space="preserve">
+    <value>O Ficheiro já foi expedido. Apenas um elemento com mais permissões poderá efetuar a recuperação deste Ficheiro</value>
   </data>
   <data name="InvalidRecoverAlreadyPurged" xml:space="preserve">
     <value>Não é possivel efetuar recuperações de Ficheiros expurgados</value>
   </data>
+  <data name="InvalidRecoverBarCode" xml:space="preserve">
+    <value>Numa recuperação apenas um dos Códigos de Barra pode ser 0 (zero)</value>
+  </data>
+  <data name="InvalidRecoverDifferentProductionFile" xml:space="preserve">
+    <value>Os Objectos Postais não são do mesmo FICHEIRO de produção</value>
+  </data>
+  <data name="InvalidRecoverDifferentProductionRun" xml:space="preserve">
+    <value>Os Objectos Postais não são do mesmo RUN de produção</value>
+  </data>
+  <data name="InvalidRecoverReversedOrder" xml:space="preserve">
+    <value>O Primeiro Objecto Postal não pode ser posterior ao Último Objecto Postal</value>
+  </data>
   <data name="InvalidTotalRecover4RecoveredFiles" xml:space="preserve">
     <value>Não é possível efectuar recuperações Totais de Ficheiros de Recuperações</value>
-  </data>
-  <data name="InvalidTotalRecoverAlreadyDispached" xml:space="preserve">
-    <value>O Ficheiro já foi expedido. Apenas um elemento com mais permissões poderá efetuar a recuperação deste Ficheiro</value>
   </data>
   <data name="LastPostObjInvalidBarcode" xml:space="preserve">
     <value>Código de Barras (Último Objecto Postal) Inválido. Não se trata de um Código de Barras de um Objecto Postal</value>
@@ -188,6 +188,12 @@
   </data>
   <data name="LastPostObjNotFoundInServiceCompany" xml:space="preserve">
     <value>(Último) Objecto Postal não encontrado para a respetiva Companhia de Serviços</value>
+  </data>
+  <data name="LastPostObjRegistDetailNotFound" xml:space="preserve">
+    <value>(Último) Objecto Postal não tem associado nenhum Aviso de Receção</value>
+  </data>
+  <data name="MissingUserIdentification" xml:space="preserve">
+    <value>Falta a Identificação do Utilizador (UserID ou UserName)</value>
   </data>
   <data name="PostObjInvalidBarcode" xml:space="preserve">
     <value>Código de Barras do Objecto Postal Inválido. Não se trata de um Código de Barras de um Objecto Postal</value>
@@ -200,5 +206,11 @@
   </data>
   <data name="PostObjNotFoundInServiceCompany" xml:space="preserve">
     <value>Objecto Postal não encontrado para a respetiva Companhia de Serviços</value>
+  </data>
+  <data name="UserInactive" xml:space="preserve">
+    <value>Utilizador Desativo</value>
+  </data>
+  <data name="UserNotFound" xml:space="preserve">
+    <value>Utilizador não registado</value>
   </data>
 </root>

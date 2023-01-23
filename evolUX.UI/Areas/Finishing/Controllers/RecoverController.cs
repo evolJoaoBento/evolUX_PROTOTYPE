@@ -8,16 +8,21 @@ using System.Data;
 using System.Net;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
+using Microsoft.Extensions.Localization;
+using evolUX.UI.Exceptions;
+using Shared.Exceptions;
 
-namespace evolUX.UI.Areas.EvolDP.Controllers
+namespace evolUX.UI.Areas.Finishing.Controllers
 {
     [Area("Finishing")]
     public class RecoverController : Controller
     {
         private readonly IRecoverService _recoverService;
-        public RecoverController(IRecoverService recoverService)
+        private readonly IStringLocalizer<RecoverController> _localizer;
+        public RecoverController(IRecoverService recoverService, IStringLocalizer<RecoverController> localizer)
         {
             _recoverService = recoverService;
+            _localizer = localizer;
         }
 
         public ActionResult RegistTotalRecover()
@@ -28,20 +33,28 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
         [HttpPost]
         public async Task<IActionResult> RegistTotalRecover(string FileBarcode)
         {
-            DataTable ServiceCompanyList = HttpContext.Session.Get<DataTable>("evolDP/ServiceCompanies");
-            String user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
+            string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+            string user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
             bool PermissionLevel = HttpContext.Session.Get<bool>("PermissionLevel");
 
-            var response = await _recoverService.RegistTotalRecover(FileBarcode, user, ServiceCompanyList, PermissionLevel);
-            if (response.StatusCode == ((int)HttpStatusCode.NotFound))
+            try
             {
-                var resultError = response.GetJsonAsync<ErrorResult>().Result;
+                ResultsViewModel result = await _recoverService.RegistTotalRecover(FileBarcode, user, ServiceCompanyList, PermissionLevel);
+                return PartialView("MessageView", new MessageViewModel("0", "", _localizer["RegistTotalRecover" + result.Results.Error]));
             }
-            if (response.StatusCode == ((int)HttpStatusCode.Unauthorized))
+            catch (ControledErrorException ex)
             {
-                if (response.Headers.Contains("Token-Expired"))
+                return PartialView("MessageView", ex.ControledMessage);
+            }
+            catch (ErrorViewModelException ex)
+            {
+                return PartialView("Error", ex.ViewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
                 {
-                    var header = response.Headers.FirstOrDefault("Token-Expired");
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
                     var returnUrl = Request.Path.Value;
                     //var url = Url.RouteUrl("MyAreas", )
 
@@ -52,9 +65,6 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                     return RedirectToAction("Index", "Auth", new { Area = "Core" });
                 }
             }
-
-            ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("MessageView", new MessageViewModel(result.Results.ErrorID.ToString(), "", result.Results.Error));
         }
 
         public ActionResult RegistPartialRecover()
@@ -65,20 +75,28 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
         [HttpPost]
         public async Task<IActionResult> RegistPartialRecover(string StartBarcode, string EndBarcode)
         {
-            DataTable ServiceCompanyList = HttpContext.Session.Get<DataTable>("evolDP/ServiceCompanies");
-            String user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
+            string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+            string user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
             bool PermissionLevel = HttpContext.Session.Get<bool>("PermissionLevel");
 
-            var response = await _recoverService.RegistPartialRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
-            if (response.StatusCode == ((int)HttpStatusCode.NotFound))
+            try
             {
-                var resultError = response.GetJsonAsync<ErrorResult>().Result;
+                ResultsViewModel result = await _recoverService.RegistPartialRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
+                return PartialView("MessageView", new MessageViewModel("0", "", _localizer["RegistPartialRecover" + result.Results.Error]));
             }
-            if (response.StatusCode == ((int)HttpStatusCode.Unauthorized))
+            catch (ControledErrorException ex)
             {
-                if (response.Headers.Contains("Token-Expired"))
+                return PartialView("MessageView", ex.ControledMessage);
+            }
+            catch (ErrorViewModelException ex)
+            {
+                return PartialView("Error", ex.ViewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
                 {
-                    var header = response.Headers.FirstOrDefault("Token-Expired");
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
                     var returnUrl = Request.Path.Value;
                     //var url = Url.RouteUrl("MyAreas", )
 
@@ -89,9 +107,6 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                     return RedirectToAction("Index", "Auth", new { Area = "Core" });
                 }
             }
-
-            ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("MessageView", new MessageViewModel(result.Results.ErrorID.ToString(), "", result.Results.Error));
         }
 
         public ActionResult RegistDetailRecover()
@@ -102,20 +117,28 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
         [HttpPost]
         public async Task<IActionResult> RegistDetailRecover(string StartBarcode, string EndBarcode)
         {
-            DataTable ServiceCompanyList = HttpContext.Session.Get<DataTable>("evolDP/ServiceCompanies");
-            String user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
+            string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+            string user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
             bool PermissionLevel = HttpContext.Session.Get<bool>("PermissionLevel");
 
-            var response = await _recoverService.RegistDetailRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
-            if (response.StatusCode == ((int)HttpStatusCode.NotFound))
+            try
             {
-                var resultError = response.GetJsonAsync<ErrorResult>().Result;
+                ResultsViewModel result = await _recoverService.RegistDetailRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
+                return PartialView("MessageView", new MessageViewModel("0", "", _localizer["RegistDetailRecover" + result.Results.Error]));
             }
-            if (response.StatusCode == ((int)HttpStatusCode.Unauthorized))
+            catch (ControledErrorException ex)
             {
-                if (response.Headers.Contains("Token-Expired"))
+                return PartialView("MessageView", ex.ControledMessage);
+            }
+            catch (ErrorViewModelException ex)
+            {
+                return PartialView("Error", ex.ViewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
                 {
-                    var header = response.Headers.FirstOrDefault("Token-Expired");
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
                     var returnUrl = Request.Path.Value;
                     //var url = Url.RouteUrl("MyAreas", )
 
@@ -126,9 +149,6 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                     return RedirectToAction("Index", "Auth", new { Area = "Core" });
                 }
             }
-
-            ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            return View("MessageView", new MessageViewModel(result.Results.ErrorID.ToString(), "", result.Results.Error));
         }
 
         //THIS METHOD COULD BE BETTER IF IT WAS CALLED ASYNCRONOUSLY EACH TIME IN AN AJAX REQUEST

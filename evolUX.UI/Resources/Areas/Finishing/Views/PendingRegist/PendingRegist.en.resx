@@ -118,25 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Files" xml:space="preserve">
-    <value>Ficheiros</value>
+    <value>Files</value>
   </data>
   <data name="FilesLeftToPrint" xml:space="preserve">
-    <value>Por Imprimir</value>
+    <value>To Print</value>
   </data>
   <data name="FilesLeftToRegistFullFill" xml:space="preserve">
-    <value>Com envelopagens por Registar</value>
+    <value>Enveloping to Completed</value>
   </data>
   <data name="FilesLeftToRegistPrint" xml:space="preserve">
-    <value>Com impressões por Registar</value>
+    <value>Printing to Completed</value>
   </data>
   <data name="PendingRegist" xml:space="preserve">
     <value>Pending Enveloping/Printing</value>
   </data>
   <data name="RunDescription" xml:space="preserve">
-    <value>Descrição do Run</value>
+    <value>Run Description</value>
   </data>
   <data name="TotalProcessed" xml:space="preserve">
-    <value>Processados</value>
+    <value>Processed</value>
   </data>
   <data name="Totals" xml:space="preserve">
     <value>Totals</value>

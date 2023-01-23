@@ -153,6 +153,9 @@
   <data name="Processed" xml:space="preserve">
     <value>Processados</value>
   </data>
+  <data name="ProductionRunStatus" xml:space="preserve">
+    <value>Resumo de Produção</value>
+  </data>
   <data name="Recup" xml:space="preserve">
     <value>Recuperados</value>
   </data>

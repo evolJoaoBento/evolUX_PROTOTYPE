@@ -1,9 +1,9 @@
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RT_UX_REGIST_PARCIAL_RECOVER]') AND type in (N'P', N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RT_UX_REGIST_PARTIAL_RECOVER]') AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RT_UX_REGIST_PARCIAL_RECOVER] AS' 
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RT_UX_REGIST_PARTIAL_RECOVER] AS' 
 END
 GO
-ALTER  PROCEDURE [dbo].[RT_UX_REGIST_PARCIAL_RECOVER]
+ALTER  PROCEDURE [dbo].[RT_UX_REGIST_PARTIAL_RECOVER]
 	@StartBarcode varchar(20),
 	@EndBarcode varchar(20),
 	@UserName varchar(50),
@@ -42,7 +42,7 @@ AS
 	IF @StartBarcode = '0' and @EndBarcode = '0'
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -4 ErrorID, 'InvalidParcialRecoverBarCode' Error
+		SELECT -4 ErrorID, 'InvalidRecoverBarCode' Error
 		RETURN -4
 	END
 
@@ -169,7 +169,7 @@ AS
 		IF @StartRunID <> @EndRunID 
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -5 ErrorID, 'InvalidParcialRecoverDifferentProductionRun' Error
+			SELECT -5 ErrorID, 'InvalidRecoverDifferentProductionRun' Error
 			RETURN -5
 		END
 		ELSE SET @RunID = @StartRunID
@@ -187,14 +187,14 @@ AS
 		IF @FileID <> @SecondFileID 
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -6 ErrorID, 'InvalidParcialRecoverDifferentProductionFile' Error
+			SELECT -6 ErrorID, 'InvalidRecoverDifferentProductionFile' Error
 			RETURN -6
 		END
 	END
 	IF (@StartSeqNum>@EndSeqNum)
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -7 ErrorID, 'InvalidParcialRecoverReversedOrder' Error
+		SELECT -7 ErrorID, 'InvalidRecoverReversedOrder' Error
 		RETURN -7
 	END
 	IF (@PermissionLevel = 0 

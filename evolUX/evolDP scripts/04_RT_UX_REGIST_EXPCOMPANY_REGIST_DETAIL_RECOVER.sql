@@ -23,22 +23,22 @@ AS
 		@Code int,
 		@StartSeqNum int,
 		@EndSeqNum int
-	IF LEN(@StartBarcode) <> 20 and  LEN(@StartBarcode)<> 1
+	IF LEN(@StartBarcode) <> 20 and  LEN(@StartBarcode) <> 1
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -11 ResultID, 'Código de Barras do Primeiro Objecto Postal: Inválido!' ResultStr
+		SELECT -11 ErrorID, 'FirstPostObjInvalidBarcodeSize' Error
 		RETURN -11
 	END
-	IF LEN(@EndBarcode) <> 20 and  LEN(@EndBarcode)<> 1
+	IF LEN(@EndBarcode) <> 20 and  LEN(@EndBarcode) <> 1
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -1 ResultID, 'Código de Barras do Último Objecto Postal: Inválido!' ResultStr
+		SELECT -1 ErrorID, 'LastPostObjInvalidBarcodeSize' Error
 		RETURN -1
 	END
 	IF @StartBarcode = '0' and @EndBarcode = '0'
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -4 ResultID, 'Apenas um dos Códigos de Barra pode ser 0 (zero)!' ResultStr
+		SELECT -4 ErrorID, 'InvalidRecoverBarCode' Error
 		RETURN -4
 	END
 	IF @StartBarcode = '0'
@@ -47,7 +47,7 @@ AS
 		IF @Code <> 2
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -2 ResultID, 'Código de Barras (Último Objecto Postal) Inválido: Não se trata de um Código de Barras de um Objecto Postal!' ResultStr
+			SELECT -2 ErrorID, 'LastPostObjInvalidBarcode' Error
 			RETURN -2
 		END
 		SET @EndRunID = CAST(SUBSTRING(@EndBarcode, 3, 10) as int)
@@ -65,7 +65,7 @@ AS
 					FROM @ServiceCompanyList))
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -3 ResultID, '(Último) Objecto Postal não foi encontrado na evolDP para o respetivo Service Provider!' ResultStr
+			SELECT -3 ErrorID, 'LastPostObjNotFoundInServiceCompany' Error
 			RETURN -3
 		END
 		IF NOT EXISTS(SELECT TOP 1 1
@@ -77,7 +77,7 @@ AS
 				AND po.PostObjFileID = erf.FileID)
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -14 ResultID,  '(Último) Objecto Postal não tem associado nenhum documento de Detalhe de Registos (AR)!' ResultStr
+			SELECT -14 ErrorID,  'LastPostObjRegistDetailNotFound' Error
 			RETURN -14
 		END
 
@@ -96,7 +96,7 @@ AS
 		IF @Code <> 2
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -12, 'Código de Barras (Primeiro Objecto Postal) Inválido: Não se trata de um Código de Barras de um Objecto Postal!' ResultStr
+			SELECT -12, 'FirstPostObjInvalidBarcode' Error
 			RETURN -12
 		END
 		SET @StartRunID = cast(SUBSTRING(@StartBarcode, 3, 10) as int)
@@ -113,7 +113,7 @@ AS
 					FROM @ServiceCompanyList))
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -13 ResultID, '(Primeiro) Objecto Postal não foi encontrado na evolDP para o respetivo Service Provider!' ResultStr
+			SELECT -13 ErrorID, 'FirstPostObjNotFoundInServiceCompany' Error
 			RETURN -13
 		END
 		IF NOT EXISTS(SELECT * 
@@ -125,7 +125,7 @@ AS
 				AND po.PostObjFileID = erf.FileID)
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -12 ResultID, '(Primeiro) Objecto Postal não tem associado nenhum documento de Detalhe de Registos (AR)!' ResultStr
+			SELECT -12 ErrorID, 'FirstPostObjRegistDetailNotFound' Error
 			RETURN -12
 		END
 
@@ -144,7 +144,7 @@ AS
 		IF @Code <> 2
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT 'Código de Barras (Primeiro Objecto Postal) Inválido: Não se trata de um Código de Barras de um Objecto Postal!' ResultStr
+			SELECT 'FirstPostObjInvalidBarcode' Error
 			RETURN -6
 		END
 		SET @StartRunID = cast(SUBSTRING(@StartBarcode, 3, 10) as int)
@@ -159,7 +159,7 @@ AS
 					FROM @ServiceCompanyList))
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -13 ResultID, '(Primeiro) Objecto Postal não foi encontrado na evolDP para o respetivo Service Provider!' ResultStr
+			SELECT -13 ErrorID, 'FirstPostObjNotFoundInServiceCompany' Error
 			RETURN -13
 		END
 		IF NOT EXISTS(SELECT * 
@@ -171,14 +171,14 @@ AS
 				AND po.PostObjFileID = erf.FileID)
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -15 ResultID, '(Primeiro) Objecto Postal não tem associado nenhum documento de Detalhe de Registos (AR)!' ResultStr
+			SELECT -15 ErrorID, 'FirstPostObjRegistDetailNotFound' Error
 			RETURN -15
 		END
 		SET @Code = cast(SUBSTRING(@EndBarcode, 1, 2) as int)
 		IF @Code <> 2
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -2 ResultID, 'Código de Barras (Último Objecto Postal) Inválido: Não se trata de um Código de Barras de um Objecto Postal!' ResultStr
+			SELECT -2 ErrorID, 'LastPostObjInvalidBarcode' Error
 			RETURN -2
 		END
 		SET @EndRunID = cast(SUBSTRING(@EndBarcode, 3, 10) as int)
@@ -194,7 +194,7 @@ AS
 					FROM @ServiceCompanyList))
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -3 ResultID, '(Último) Objecto Postal não foi encontrado na evolDP para o respetivo Service Provider!' ResultStr
+			SELECT -3 ErrorID, 'LastPostObjNotFoundInServiceCompany' Error
 			RETURN -3
 		END
 		IF NOT EXISTS(SELECT * 
@@ -206,13 +206,13 @@ AS
 				AND po.PostObjFileID = erf.FileID)
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -14 ResultID, '(Último) Objecto Postal não tem associado nenhum documento de Detalhe de Registos (AR)!' ResultStr
+			SELECT -14 ErrorID, 'LastPostObjRegistDetailNotFound' Error
 			RETURN -14
 		END
 		IF @StartRunID <> @EndRunID 
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -5 ResultID, 'Os Objectos Postais não são do mesmo RUN de produção!' ResultStr
+			SELECT -5 ErrorID, 'InvalidRecoverDifferentProductionRun' Error
 			RETURN -5
 		END
 		ELSE SET @RunID = @StartRunID
@@ -229,14 +229,14 @@ AS
 		IF @FileID <> @SecondFileID 
 		BEGIN
 			ROLLBACK TRANSACTION
-			SELECT -6 ResultID, 'Os Objectos Postais não são do mesmo Ficheiro!' ResultStr
+			SELECT -6 ErrorID, 'InvalidRecoverDifferentProductionFile' Error
 			RETURN -6
 		END
 	END
 	IF (@StartSeqNum > @EndSeqNum)
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT  -7 ResultID, 'O Primeiro Objecto Postal não pode ser Posterior ao Último Objecto Postal!' ResultStr
+		SELECT  -7 ErrorID, 'InvalidRecoverReversedOrder' Error
 		RETURN -7
 	END
 	IF (@PermissionLevel = 0 
@@ -248,7 +248,7 @@ AS
 						WHERE RunStateName = 'EXPEDITION')))
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -8 ResultID, 'O Objecto Postal já foi expedido! Apenas um elemento com mais permissões poderá efectuar a recuperação deste Objecto Postal!' ResultStr
+		SELECT -8 ErrorID, 'InvalidRecoverAlreadyDispached' Error
 		RETURN -8
 	END
 
@@ -259,10 +259,10 @@ AS
 	IF (@@Error<>0)
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -10 ResultID, 'Não foi possível registar recuperação!' ResultStr
+		SELECT -10 ErrorID, 'NotSuccess' Error
 		RETURN -10
 	END		
-	SELECT 0 ResultID, 'Registo Efectuado!' ResultStr
+	SELECT 0 ErrorID, 'Success' Error
 	COMMIT TRANSACTION
 RETURN 0
 

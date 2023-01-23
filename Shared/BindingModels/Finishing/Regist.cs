@@ -7,5 +7,6 @@ namespace Shared.BindingModels.Finishing
         public string FileBarcode { get; set; }
         public string User { get; set; }
         public string ServiceCompanyList { get; set; }
+        public bool PermissionLevel { get; set; }
     }
 }
