@@ -142,13 +142,13 @@
     <value>Files</value>
   </data>
   <data name="FullFill" xml:space="preserve">
-    <value>Envelopment Closing</value>
+    <value>Enveloping Completed</value>
   </data>
   <data name="Originals" xml:space="preserve">
     <value>Originals</value>
   </data>
   <data name="Printed" xml:space="preserve">
-    <value>Printed</value>
+    <value>Printing Completed</value>
   </data>
   <data name="Processed" xml:space="preserve">
     <value>Processed</value>
