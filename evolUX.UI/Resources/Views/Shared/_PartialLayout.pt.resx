@@ -253,7 +253,7 @@
     <value>Manutenção</value>
   </data>
   <data name="ActionMenuSupport_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle  bx bxs-wrench' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle  bx bxs-wrench' style="color:var(--evol-grey)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuUserSettings" xml:space="preserve">
     <value>Opções de Utilizador</value>

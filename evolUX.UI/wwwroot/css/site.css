@@ -2,8 +2,12 @@
     --es-gradient: linear-gradient(66deg, rgba(233,60,82,1) 3%, rgba(245,126,72,1) 15%, rgba(87,82,150,1) 44%, rgba(90, 205, 239, 1) 62%);
     --evoldp-gradient: linear-gradient(66deg, rgba(233,60,82,1) 10%, rgba(245,126,72,1) 80%);
     --evoldp-color: rgba(233,60,82,1);
-    --evolflow-gradient: linear-gradient(66deg, rgba(87,82,150,1) 10%, rgba(233,60,82,1) 80%);
-    --evolflow-color: rgba(87,82,150,1);
+    --evolUX-gradient: linear-gradient(66deg, rgba(87,82,150,1) 10%, rgba(233,60,82,1) 80%);
+    --evolUX-color: rgba(87,82,150,1);
+    --evolflow-gradient: linear-gradient(66deg, rgba(90,205,239,1) 10%, rgba(233,60,82,1) 80%);
+    --evolflow-color: rgba(90,205,239,1);
+    --evol-grey: rgba(128,128,128,1);
+    --evol-lightestgrey: rgba(191,191,191,1);
 }
 
 .es-theme {

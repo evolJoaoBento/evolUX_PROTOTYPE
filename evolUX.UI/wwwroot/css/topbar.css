@@ -66,8 +66,9 @@
 .es-title {
     padding: 0;
     margin: 0;
-    font-size: 40px;
-    color: #d5d5d5;
+    font-size: 35px;
+    color: lightgrey;
+    position:center;
 }
 .circle {
     background-color: white;
