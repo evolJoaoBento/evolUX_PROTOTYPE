@@ -141,6 +141,9 @@
   <data name="ActionConcludedPrint_Link" xml:space="preserve">
     <value>/Finishing/ConcludedPrint/Index</value>
   </data>
+  <data name="ActionConcludedRegist" xml:space="preserve">
+    <value>Impressão/Envelopagem</value>
+  </data>
   <data name="ActionConfiguredFlows" xml:space="preserve">
     <value>Fluxos Configurados</value>
   </data>
@@ -277,7 +280,7 @@
     <value>/Finishing/Recover/PendingRecover</value>
   </data>
   <data name="ActionPendingRegist" xml:space="preserve">
-    <value>Registos Pendentes</value>
+    <value>Pendentes</value>
   </data>
   <data name="ActionPendingRegist_Link" xml:space="preserve">
     <value>/Finishing/PendingRegist/PendingRegist</value>
@@ -322,6 +325,9 @@
     <value>Parâmetros Expurgos</value>
   </data>
   <data name="ActionRecoverReport" xml:space="preserve">
+    <value>Recuperações</value>
+  </data>
+  <data name="ActionRecovers" xml:space="preserve">
     <value>Recuperações</value>
   </data>
   <data name="ActionRegistDetailRecover" xml:space="preserve">

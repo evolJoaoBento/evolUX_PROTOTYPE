@@ -130,16 +130,19 @@
     <value>Billing Control</value>
   </data>
   <data name="ActionConcludedFullfill" xml:space="preserve">
-    <value>Concluded Fullfill</value>
+    <value>Enveloping Completed</value>
   </data>
   <data name="ActionConcludedFullfill_Link" xml:space="preserve">
     <value>/Finishing/ConcludedFullfill/Index</value>
   </data>
   <data name="ActionConcludedPrint" xml:space="preserve">
-    <value>Concluded Print</value>
+    <value>Printing Completed</value>
   </data>
   <data name="ActionConcludedPrint_Link" xml:space="preserve">
     <value>/Finishing/ConcludedPrint/Index</value>
+  </data>
+  <data name="ActionConcludedRegist" xml:space="preserve">
+    <value>Printing/Enveloping</value>
   </data>
   <data name="ActionConfiguredFlows" xml:space="preserve">
     <value>Configured Flows</value>
@@ -274,7 +277,7 @@
     <value>Pending Recovers</value>
   </data>
   <data name="ActionPendingRegist" xml:space="preserve">
-    <value>Pending Registration</value>
+    <value>Pending</value>
   </data>
   <data name="ActionPendingRegist_Link" xml:space="preserve">
     <value>/Finishing/PendingRegist/PendingRegist</value>
@@ -316,6 +319,9 @@
     <value>Purge Parameters</value>
   </data>
   <data name="ActionRecoverReport" xml:space="preserve">
+    <value>Recovers</value>
+  </data>
+  <data name="ActionRecovers" xml:space="preserve">
     <value>Recovers</value>
   </data>
   <data name="ActionRegistDetailRecover" xml:space="preserve">
