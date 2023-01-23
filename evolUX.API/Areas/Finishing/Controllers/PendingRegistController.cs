@@ -79,7 +79,7 @@ namespace evolUX.API.Areas.Finishing.Controllers{
                 DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
                 ResultsViewModel viewmodel = new ResultsViewModel();
                 viewmodel.Results = await _concludedPrintService.RegistPrint(bindingModel.FileBarcode, bindingModel.User, ServiceCompanyList);
-                _logger.LogInfo("RegistPrint Post");
+                _logger.LogInfo("RegistPrint Get");
                 return Ok(viewmodel);
             }
             catch (Exception ex)
@@ -99,7 +99,7 @@ namespace evolUX.API.Areas.Finishing.Controllers{
                 DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
                 ResultsViewModel viewmodel = new ResultsViewModel();
                 viewmodel.Results = await _concludedFullfillService.RegistFullFill(bindingModel.FileBarcode, bindingModel.User, ServiceCompanyList);
-                _logger.LogInfo("RegistFullFill Post");
+                _logger.LogInfo("RegistFullFill Get");
                 return Ok(viewmodel);
             }
             catch (Exception ex)
@@ -119,7 +119,7 @@ namespace evolUX.API.Areas.Finishing.Controllers{
                 DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
                 ResultsViewModel viewmodel = new ResultsViewModel();
                 viewmodel.Results = await _recoverService.RegistPartialRecover(bindingModel.StartBarcode, bindingModel.EndBarcode, bindingModel.User, ServiceCompanyList, bindingModel.PermissionLevel);
-                _logger.LogInfo("RegistTotalRecover Post");
+                _logger.LogInfo("RegistTotalRecover Get");
                 return Ok(viewmodel);
             }
             catch (Exception ex)
@@ -139,7 +139,7 @@ namespace evolUX.API.Areas.Finishing.Controllers{
                 DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
                 ResultsViewModel viewmodel = new ResultsViewModel();
                 viewmodel.Results = await _recoverService.RegistTotalRecover(bindingModel.FileBarcode, bindingModel.User, ServiceCompanyList, bindingModel.PermissionLevel);
-                _logger.LogInfo("RegistTotalRecover Post");
+                _logger.LogInfo("RegistTotalRecover Get");
                 return Ok(viewmodel);
             }
             catch (Exception ex)
@@ -159,7 +159,7 @@ namespace evolUX.API.Areas.Finishing.Controllers{
                 DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
                 ResultsViewModel viewmodel = new ResultsViewModel();
                 viewmodel.Results = await _recoverService.RegistDetailRecover(bindingModel.StartBarcode, bindingModel.EndBarcode, bindingModel.User, ServiceCompanyList, bindingModel.PermissionLevel);
-                _logger.LogInfo("RegistDetailRecover Post");
+                _logger.LogInfo("RegistDetailRecover Get");
                 return Ok(viewmodel);
             }
             catch (Exception ex)

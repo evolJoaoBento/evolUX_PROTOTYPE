@@ -1,4 +1,5 @@
 ﻿using evolUX.API.Areas.Core.ViewModels;
+using Shared.Models.General;
 
 namespace evolUX.API.Data.Interfaces
 {
@@ -15,6 +16,6 @@ namespace evolUX.API.Data.Interfaces
 
         public Task DeleteRefreshToken(string username);
 
-        public Task ChangeCulture(string culture);
+        public Task<Result> ChangeCulture(int userID, string culture);
     }
 }

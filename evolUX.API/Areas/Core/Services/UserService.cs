@@ -3,6 +3,7 @@ using evolUX.API.Areas.Core.Services.Interfaces;
 using evolUX.API.Data.Interfaces;
 using System.Security.Authentication;
 using System.Security.Cryptography;
+using Shared.Models.General;
 
 namespace evolUX.API.Areas.Core.Services
 {
@@ -68,9 +69,9 @@ namespace evolUX.API.Areas.Core.Services
             await _repository.User.DeleteRefreshToken(username);
         }
 
-        public async Task ChangeCulture(string culture)
+        public async Task<Result> ChangeCulture(int userID, string culture)
         {
-            await _repository.User.ChangeCulture(culture);
+            return await _repository.User.ChangeCulture(userID, culture);
         }
     }
 }

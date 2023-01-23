@@ -2,6 +2,7 @@
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Shared.BindingModels.Finishing;
+using Shared.ViewModels.General;
 using System.Data;
 using System.Net;
 
@@ -13,7 +14,7 @@ namespace evolUX.UI.Repositories
         {
         }
 
-        public async Task<IFlurlResponse> RegistFullFill(string FileBarcode, string user, string ServiceCompanyList)
+        public async Task<ResultsViewModel> RegistFullFill(string FileBarcode, string user, string ServiceCompanyList)
         {
             try
             {
@@ -24,11 +25,8 @@ namespace evolUX.UI.Repositories
                 var response = await _flurlClient.Request("/API/finishing/PendingRegist/RegistFullFill")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .SendJsonAsync(HttpMethod.Get, bindingModel);
-                //var response = await BaseUrl
-                //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
-                //     .GetAsync();
 
-                return response;
+                return await response.GetJsonAsync<ResultsViewModel>();
             }
 
             catch (FlurlHttpException ex)

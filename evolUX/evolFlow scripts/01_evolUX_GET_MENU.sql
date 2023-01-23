@@ -204,6 +204,27 @@ BEGIN
 	END
 END
 GO
+IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[evolUX_GET_USER_PROFILES]') AND type in (N'P', N'PC'))
+BEGIN
+	EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[evolUX_GET_USER_PROFILES] AS'
+END
+GO
+ALTER  PROCEDURE [dbo].[evolUX_GET_USER_PROFILES]
+	@UserName varchar(50) = NULL
+AS
+BEGIN
+	SELECT p.ProfileID, p.ParentProfileID, p.NrChildren, p.CompanyServer, p.[Description]
+	FROM
+		[dbo].[USERS] u WITH(NOLOCK)
+	INNER JOIN
+		[dbo].[USER_PROFILES] up WITH(NOLOCK)
+	ON u.UserID = up.UserID
+	INNER JOIN
+		[dbo].[PROFILES] p WITH(NOLOCK)
+	ON up.ProfileID = p.ProfileID
+	WHERE u.UserName = @UserName AND u.Active = 1
+END
+GO
 IF  NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[evolUX_GET_MENU]') AND type in (N'P', N'PC'))
 BEGIN
 	EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[evolUX_GET_MENU] AS'

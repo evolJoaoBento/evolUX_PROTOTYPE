@@ -8,6 +8,10 @@ using evolUX.API.Data.Interfaces;
 using System.Data;
 using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
+using Shared.ViewModels.General;
+using evolUX.API.Areas.Finishing.Services;
+using evolUX.API.Models;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace evolUX.API.Areas.Core.Controllers
 {
@@ -29,12 +33,19 @@ namespace evolUX.API.Areas.Core.Controllers
         //MISSING SYSTEM VARIABLES & FLOW VARIABLES & ACTION PARAMETERS(XML READ)
         [HttpGet]
         [ActionName("ChangeCulture")]
-        public async Task<IActionResult> ChangeCulture([FromQuery] string culture)
+        public async Task<ActionResult<ResultsViewModel>> ChangeCulture([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                await _userService.ChangeCulture(culture);
-                return Ok();
+                object obj;
+                dictionary.TryGetValue("UserID", out obj);
+                int userID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("Culture", out obj);
+                string culture = Convert.ToString(obj);
+                ResultsViewModel viewmodel = new ResultsViewModel();
+                viewmodel.Results = await _userService.ChangeCulture(userID, culture);
+                _logger.LogInfo("ChangeCulture Get");
+                return Ok(viewmodel);
             }
             catch (Exception ex)
             {

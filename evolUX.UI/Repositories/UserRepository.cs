@@ -6,6 +6,7 @@ using Flurl.Http;
 using Flurl.Http.Configuration;
 using Shared.ViewModels.Areas.Finishing;
 using System.Net;
+using System.Reflection;
 
 namespace evolUX.UI.Repositories
 {
@@ -15,12 +16,15 @@ namespace evolUX.UI.Repositories
         {
         }
 
-        public async Task ChangeCulture(string culture)
+        public async Task ChangeCulture(int userID, string culture)
         {
-            var response = await _flurlClient.Request("/API/Finishing/Print/Printers")
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("UserID", userID);
+            dictionary.Add("Culture", culture);
+            
+            var response = await _flurlClient.Request("/API/Core/User/ChangeCulture")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                .SetQueryParam("culture", culture)
-                .PostAsync();
+                 .SendJsonAsync(HttpMethod.Get, dictionary);
             //var response = await BaseUrl
             //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
             //     .GetAsync();

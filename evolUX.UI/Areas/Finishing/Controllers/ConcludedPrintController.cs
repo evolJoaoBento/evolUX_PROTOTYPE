@@ -10,6 +10,8 @@ using evolUX.UI.Extensions;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
 using Microsoft.Extensions.Localization;
+using evolUX.UI.Exceptions;
+using Shared.Exceptions;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -35,32 +37,34 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             string user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
 
-            var response = await _concludedPrintService.RegistPrint(FileBarcode, user, ServiceCompanyList);
-            if (response.StatusCode == ((int)HttpStatusCode.NotFound))
+            try
             {
-                var resultError = response.GetJsonAsync<ErrorResult>().Result;
+                ResultsViewModel result = await _concludedPrintService.RegistPrint(FileBarcode, user, ServiceCompanyList);
+                return PartialView("MessageView", new MessageViewModel("0", "", _localizer[result.Results.Error]));
             }
-            if(response.StatusCode == ((int)HttpStatusCode.Unauthorized))
+            catch (ControledErrorException ex)
             {
-                if (response.Headers.Contains("Token-Expired"))
+                return PartialView("MessageView", ex.ControledMessage);
+            }
+            catch (ErrorViewModelException ex)
+            {
+                return PartialView("Error", ex.ViewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
                 {
-                    var header = response.Headers.FirstOrDefault("Token-Expired");
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
                     var returnUrl = Request.Path.Value;
                     //var url = Url.RouteUrl("MyAreas", )
-                    
-                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl=returnUrl });
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
                 }
                 else
                 {
                     return RedirectToAction("Index", "Auth", new { Area = "Core" });
                 }
             }
-            
-            ResultsViewModel result = await response.GetJsonAsync<ResultsViewModel>();
-            if (result.Results.Error.ToUpper() == "SUCCESS")
-                return PartialView("MessageView", new MessageViewModel("0", "", _localizer[result.Results.Error]));
-            else
-                return PartialView("MessageView", new MessageViewModel(result.Results.ErrorID.ToString(), "", result.Results.Error));
         }
 
     }

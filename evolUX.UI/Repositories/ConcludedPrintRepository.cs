@@ -2,6 +2,7 @@
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Shared.BindingModels.Finishing;
+using Shared.ViewModels.General;
 using System.Data;
 using System.Net;
 
@@ -33,7 +34,7 @@ namespace evolUX.UI.Repositories
         //        return d;
         //    }
         //}
-        public async Task<IFlurlResponse> RegistPrint(string FileBarcode, string user, string ServiceCompanyList)
+        public async Task<ResultsViewModel> RegistPrint(string FileBarcode, string user, string ServiceCompanyList)
         {
             try
             {
@@ -44,7 +45,7 @@ namespace evolUX.UI.Repositories
                 var response = await _flurlClient.Request("/api/finishing/PendingRegist/RegistPrint")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .SendJsonAsync(HttpMethod.Get, bindingModel);
-                return response;
+                return await response.GetJsonAsync<ResultsViewModel>();
             }
             catch (FlurlHttpException ex)
             {

@@ -5,6 +5,6 @@ namespace evolUX.UI.Repositories.Interfaces
 {
     public interface IUserRepository
     {
-        public Task ChangeCulture(string culture);
+        public Task ChangeCulture(int userID, string culture);
     }
 }

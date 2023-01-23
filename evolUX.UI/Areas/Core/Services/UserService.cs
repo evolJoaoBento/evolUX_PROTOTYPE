@@ -23,10 +23,11 @@ namespace evolUX.UI.Areas.Core.Services
         }
         
 
-        public async Task ChangeCulture(string culture){
+        public async Task ChangeCulture(int userID, string culture)
+        {
             try
             {
-                await _userRepository.ChangeCulture(culture);
+                await _userRepository.ChangeCulture(userID, culture);
             }
             catch (HttpNotFoundException ex)
             {

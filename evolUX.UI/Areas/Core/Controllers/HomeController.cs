@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
 using System.Diagnostics;
@@ -50,7 +51,10 @@ namespace evolUX.UI.Areas.Core.Controllers
                     new CookieOptions { Expires = DateTimeOffset.Now.AddDays(30) });
             try
             {
-                
+                AuthenticateResponse userInfo = JsonConvert.DeserializeObject<AuthenticateResponse>(HttpContext.Session.GetString("UserInfo"));
+                _userService.ChangeCulture(userInfo.Id, culture);
+                userInfo.Language = culture;
+                HttpContext.Session.SetString("UserInfo", JsonConvert.SerializeObject(userInfo));
                 return LocalRedirect(returnurl);
             }
             catch (ErrorViewModelException ex)

@@ -5,6 +5,6 @@ namespace evolUX.UI.Areas.Core.Services.Interfaces
 {
     public interface IUserService
     {
-        public Task ChangeCulture(string culture);
+        public Task ChangeCulture(int userID, string culture);
     }
 }
