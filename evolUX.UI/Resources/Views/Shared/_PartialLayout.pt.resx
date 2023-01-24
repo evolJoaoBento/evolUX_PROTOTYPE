@@ -208,43 +208,43 @@
     <value>Páginas Costumizadas</value>
   </data>
   <data name="ActionMenuClientPages_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle bx bx-book-alt' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle bx bx-book-alt collapse-icon' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuClientReporting" xml:space="preserve">
     <value>Relatórios Costumizados</value>
   </data>
   <data name="ActionMenuClientReporting_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle bx bx-pie-chart' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle bx bx-pie-chart collapse-icon' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuError" xml:space="preserve">
     <value>evolDP  Tratamento Erros</value>
   </data>
   <data name="ActionMenuError_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle  bx bx-error' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle  bx bx-error collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuEvolDPConfig" xml:space="preserve">
     <value>evolDP  Configurações</value>
   </data>
   <data name="ActionMenuEvolDPConfig_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle bx bx-cog' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle bx bx-cog collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuEvolFlowConfig" xml:space="preserve">
     <value>evolFlow Configurações</value>
   </data>
   <data name="ActionMenuEvolFlowConfig_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle  bx bx-cog' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle  bx bx-cog collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuExecution" xml:space="preserve">
     <value>Processamento</value>
   </data>
   <data name="ActionMenuExecution_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle  bx bx-revision' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle  bx bx-revision collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuFinishing" xml:space="preserve">
     <value>Finishing</value>
   </data>
   <data name="ActionMenuFinishing_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle  bx bx-printer' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle  bx bx-printer collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuReporting" xml:space="preserve">
     <value>Relatórios</value>
@@ -256,13 +256,13 @@
     <value>Manutenção</value>
   </data>
   <data name="ActionMenuSupport_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle  bx bxs-wrench' style="color:var(--evol-grey)"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle  bx bxs-wrench collapse-icon' style="color:var(--evol-grey)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuUserSettings" xml:space="preserve">
     <value>Opções de Utilizador</value>
   </data>
   <data name="ActionMenuUserSettings_Icon" xml:space="preserve">
-    <value>&lt;i class='li-circle circle bx bx-user' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
+    <value>&lt;i class='li-circle circle bx bx-user collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionPartialRecover" xml:space="preserve">
     <value>Parciais</value>
