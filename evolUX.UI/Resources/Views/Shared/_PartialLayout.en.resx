@@ -276,6 +276,9 @@
   <data name="ActionPendingRecover" xml:space="preserve">
     <value>Pending</value>
   </data>
+  <data name="ActionPendingRecover_Link" xml:space="preserve">
+    <value>/Finishing/PendingRecover/Index</value>
+  </data>
   <data name="ActionPendingRegist" xml:space="preserve">
     <value>Pending</value>
   </data>
@@ -322,10 +325,10 @@
     <value>Purge Parameters</value>
   </data>
   <data name="ActionRecoverReport" xml:space="preserve">
-    <value>Recovers</value>
+    <value>Recoveries Report</value>
   </data>
   <data name="ActionRecovers" xml:space="preserve">
-    <value>Recovers</value>
+    <value>Recoveries</value>
   </data>
   <data name="ActionRegistDetailRecover" xml:space="preserve">
     <value>Receipt Notices</value>

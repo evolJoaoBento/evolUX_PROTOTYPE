@@ -29,15 +29,20 @@ namespace evolUX.API.Areas.Finishing.Services
             return viewmodel;
         }
 
-        public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode, 
+        public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode,
             string username, int userID, string filePath, string fileName, string shortFileName)
         {
-            FlowInfo flowinfo = await _repository.PrintFiles.GetFlow(serviceCompanyCode);
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("SERVICECOMPANYCODE", serviceCompanyCode);
+            dictionary.Add("TYPE", "PRINT");
+
+            FlowInfo flowinfo = await _repository.RegistJob.GetFlowByCriteria(dictionary);
             flowinfo.FlowName = fileName + " [" + flowinfo.FlowName + "]";
-            IEnumerable<FlowParameter> flowparameters = await _repository.PrintFiles.GetFlowParameters(flowinfo.FlowID);
+
+            IEnumerable<FlowParameter> flowparameters = await _repository.RegistJob.GetFlowData(flowinfo.FlowID);
 
             string query = "<START>EXEC RT_INSERT_INTO_FILE_LOG @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER''</START>\r\n<END>EXEC RT_UPDATE_FILE_LOG_ENDTIMESTAMP @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER'', @ProcCountNr = @PROCCOUNTNR, @OutputPath = ''@PRINTERNAME'', @OutputName = ''@USERNAME''</END>\r\n";
-            
+
             foreach (FlowParameter p in flowparameters)
             {
                 p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/FILEPATH ", filePath);
@@ -52,7 +57,7 @@ namespace evolUX.API.Areas.Finishing.Services
                 //p.ParameterValue = p.ParameterValue.Replace("SELECT '", "");
                 //p.ParameterValue = p.ParameterValue.Replace(" '", "");
             }
-            Result viewmodel = await _repository.PrintFiles.TryPrint(flowparameters, flowinfo, userID);
+            Result viewmodel = await _repository.RegistJob.TryRegistJob(flowparameters, flowinfo, userID);
             if (viewmodel == null)
             {
                 throw new NullReferenceException("No result was sent by the Database!");
@@ -60,5 +65,37 @@ namespace evolUX.API.Areas.Finishing.Services
             await _repository.PrintFiles.LogSentToPrinter(runID, fileID);
             return viewmodel;
         }
+        
+        //public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode, 
+                 //    string username, int userID, string filePath, string fileName, string shortFileName)
+                 //{
+                 //    FlowInfo flowinfo = await _repository.PrintFiles.GetFlow(serviceCompanyCode);
+                 //    flowinfo.FlowName = fileName + " [" + flowinfo.FlowName + "]";
+                 //    IEnumerable<FlowParameter> flowparameters = await _repository.PrintFiles.GetFlowParameters(flowinfo.FlowID);
+
+        //    string query = "<START>EXEC RT_INSERT_INTO_FILE_LOG @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER''</START>\r\n<END>EXEC RT_UPDATE_FILE_LOG_ENDTIMESTAMP @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER'', @ProcCountNr = @PROCCOUNTNR, @OutputPath = ''@PRINTERNAME'', @OutputName = ''@USERNAME''</END>\r\n";
+
+        //    foreach (FlowParameter p in flowparameters)
+        //    {
+        //        p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/FILEPATH ", filePath);
+        //        p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/FILENAME ", fileName);
+        //        p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/RUNID ", runID.ToString());
+        //        p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/FILEID ", fileID.ToString());
+        //        p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/FILE/SHORTFILENAME ", shortFileName);
+        //        p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/PRINTER ", printer);
+        //        p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/SYSTEM/LOGUSER ", username);
+        //        p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/QUERY ", query);
+        //        //p.ParameterValue = p.ParameterValue.Replace("select '", "");
+        //        //p.ParameterValue = p.ParameterValue.Replace("SELECT '", "");
+        //        //p.ParameterValue = p.ParameterValue.Replace(" '", "");
+        //    }
+        //    Result viewmodel = await _repository.PrintFiles.TryPrint(flowparameters, flowinfo, userID);
+        //    if (viewmodel == null)
+        //    {
+        //        throw new NullReferenceException("No result was sent by the Database!");
+        //    }
+        //    await _repository.PrintFiles.LogSentToPrinter(runID, fileID);
+        //    return viewmodel;
+        //}
     }
 }

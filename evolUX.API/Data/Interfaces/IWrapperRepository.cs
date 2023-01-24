@@ -22,6 +22,8 @@
 
         ISessionRepository Session { get; }
 
+        IRegistJobRepository RegistJob { get; }
+
         IPrintFilesRepository PrintFiles { get; }
 
         IPrintedFilesRepository PrintedFiles { get; }

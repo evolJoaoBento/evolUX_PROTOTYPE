@@ -9,7 +9,7 @@ namespace evolUX.API.Data.Interfaces
     public interface IPendingRecoverRepository
     {
         public Task<IEnumerable<Company>> GetServiceCompanies(DataTable ServiceCompanyList);
-        public Task<IEnumerable<PendingRecoverDetailInfo>> GetPendingRecoverFiles(int serviceCompanyID);
-        public Task<IEnumerable<PendingRecoverDetailInfo>> GetPendingRecoverRegistDetailFiles(int serviceCompanyID);
+        public Task<IEnumerable<PendingRecoverElement>> GetPendingRecoverFiles(int serviceCompanyID);
+        public Task<IEnumerable<PendingRecoverElement>> GetPendingRecoverRegistDetailFiles(int serviceCompanyID);
     }
 }

@@ -15,6 +15,7 @@ namespace evolUX.API.Data.Repositories
         private ISidebarRepository _sidebar;
         private IDocCodeRepository _docCode;
         private IProductionReportRepository _productionReport;
+        private IRegistJobRepository _registJob;
         private IPrintFilesRepository _printFiles;
         private ISessionRepository _session;
         private IPrintedFilesRepository _printedFiles;
@@ -137,7 +138,19 @@ namespace evolUX.API.Data.Repositories
                 return _productionReport;
             }
         }
-        
+
+        public IRegistJobRepository RegistJob
+        {
+            get
+            {
+                if (_registJob == null)
+                {
+                    _registJob = new RegistJobRepository(_context);
+                }
+                return _registJob;
+            }
+        }
+
         public IPrintFilesRepository PrintFiles
         {
             get
@@ -161,7 +174,7 @@ namespace evolUX.API.Data.Repositories
                 return _session;
             }
         }
-
+     
         public IPrintedFilesRepository PrintedFiles
         {
             get
