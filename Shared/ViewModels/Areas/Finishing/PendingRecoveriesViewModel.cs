@@ -4,6 +4,6 @@ namespace Shared.ViewModels.Areas.Finishing
 {
     public class PendingRecoveriesViewModel
     {
-        public IEnumerable<PendingRecovery> PendingRecoveries { get; set; }
+        public IEnumerable<PendingRecoverElement> PendingRecoveries { get; set; }
     }
 }

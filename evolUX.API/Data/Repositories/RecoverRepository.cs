@@ -66,31 +66,31 @@ namespace evolUX.API.Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<PendingRecovery>> GetPendingRecoveries(int ServiceCompanyID)
-        {
-            string sql = @"RP_UX_SERVICECOMPANY_PENDING_RECOVER";
-            var parameters = new DynamicParameters();
-            parameters.Add("ServiceCompanyID", ServiceCompanyID, DbType.Int64);
+        //public async Task<IEnumerable<PendingRecoverElement>> GetPendingRecoveries(int ServiceCompanyID)
+        //{
+        //    string sql = @"RP_UX_SERVICECOMPANY_PENDING_RECOVER";
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("ServiceCompanyID", ServiceCompanyID, DbType.Int64);
 
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                IEnumerable<PendingRecovery> pendingRecoveries = await connection.QueryAsync<PendingRecovery>(sql, parameters,
-                    commandType: CommandType.StoredProcedure);
-                return pendingRecoveries;
-            }
-        }
-        public async Task<IEnumerable<PendingRecovery>> GetPendingRecoveriesRegistDetail(int ServiceCompanyID)
-        {
-            string sql = @"RP_UX_SERVICECOMPANY_REGIST_PENDING_RECOVER";
-            var parameters = new DynamicParameters();
-            parameters.Add("ServiceCompanyID", ServiceCompanyID, DbType.Int64);
+        //    using (var connection = _context.CreateConnectionEvolDP())
+        //    {
+        //        IEnumerable<PendingRecoverElement> pendingRecoveries = await connection.QueryAsync<PendingRecoverElement>(sql, parameters,
+        //            commandType: CommandType.StoredProcedure);
+        //        return pendingRecoveries;
+        //    }
+        //}
+        //public async Task<IEnumerable<PendingRecoverElement>> GetPendingRecoveriesRegistDetail(int ServiceCompanyID)
+        //{
+        //    string sql = @"RP_UX_SERVICECOMPANY_REGIST_PENDING_RECOVER";
+        //    var parameters = new DynamicParameters();
+        //    parameters.Add("ServiceCompanyID", ServiceCompanyID, DbType.Int64);
 
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                IEnumerable<PendingRecovery> pendingRecoveries = await connection.QueryAsync<PendingRecovery>(sql, parameters,
-                    commandType: CommandType.StoredProcedure);
-                return pendingRecoveries;
-            }
-        }
+        //    using (var connection = _context.CreateConnectionEvolDP())
+        //    {
+        //        IEnumerable<PendingRecoverElement> pendingRecoveries = await connection.QueryAsync<PendingRecoverElement>(sql, parameters,
+        //            commandType: CommandType.StoredProcedure);
+        //        return pendingRecoveries;
+        //    }
+        //}
     }
 }

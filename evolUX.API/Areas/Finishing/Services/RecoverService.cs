@@ -47,23 +47,23 @@ namespace evolUX.API.Areas.Finishing.Services
             return results;
         }
 
-        public async Task<IEnumerable<PendingRecovery>> GetPendingRecoveries(int ServiceCompanyID)
-        {
-            IEnumerable<PendingRecovery> pendingRecoveries = await _repository.Recover.GetPendingRecoveries(ServiceCompanyID);
-            if (pendingRecoveries == null)
-            {
+        //public async Task<IEnumerable<PendingRecoverElement>> GetPendingRecoveries(int ServiceCompanyID)
+        //{
+        //    IEnumerable<PendingRecoverElement> pendingRecoveries = await _repository.Recover.GetPendingRecoveries(ServiceCompanyID);
+        //    if (pendingRecoveries == null)
+        //    {
 
-            }
-            return pendingRecoveries;
-        }
-        public async Task<IEnumerable<PendingRecovery>> GetPendingRecoveriesRegistDetail(int ServiceCompanyID)
-        {
-            IEnumerable<PendingRecovery> pendingRecoveries = await _repository.Recover.GetPendingRecoveries(ServiceCompanyID);
-            if (pendingRecoveries == null)
-            {
+        //    }
+        //    return pendingRecoveries;
+        //}
+        //public async Task<IEnumerable<PendingRecoverElement>> GetPendingRecoveriesRegistDetail(int ServiceCompanyID)
+        //{
+        //    IEnumerable<PendingRecoverElement> pendingRecoveries = await _repository.Recover.GetPendingRecoveries(ServiceCompanyID);
+        //    if (pendingRecoveries == null)
+        //    {
 
-            }
-            return pendingRecoveries;
-        }
+        //    }
+        //    return pendingRecoveries;
+        //}
     }
 }

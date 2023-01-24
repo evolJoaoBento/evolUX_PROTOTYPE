@@ -94,54 +94,54 @@ namespace evolUX.UI.Repositories
             }
         }
 
-        public async Task<IFlurlResponse> GetPendingRecoveries(int ServiceCompanyID)
-        {
-            try
-            {
-                var response = await _flurlClient.Request("/API/finishing/PendingRegist/PendingRecoveries")
-                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                    .SetQueryParam("ServiceCompanyID", ServiceCompanyID)
-                    .GetAsync();
-                //var response = await BaseUrl
-                //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
-                //     .GetAsync();
+        //public async Task<IFlurlResponse> GetPendingRecoveries(int ServiceCompanyID)
+        //{
+        //    try
+        //    {
+        //        var response = await _flurlClient.Request("/API/finishing/PendingRegist/PendingRecoveries")
+        //            .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+        //            .SetQueryParam("ServiceCompanyID", ServiceCompanyID)
+        //            .GetAsync();
+        //        //var response = await BaseUrl
+        //        //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
+        //        //     .GetAsync();
 
-                return response;
-            }
+        //        return response;
+        //    }
 
-            catch (FlurlHttpException ex)
-            {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-                dynamic d = ex.GetResponseJsonAsync();
-                return d;
-            }
-        }
-        public async Task<IFlurlResponse> GetPendingRecoveriesRegistDetail(int ServiceCompanyID)
-        {
-            try
-            {
-                var response = await _flurlClient.Request("/API/finishing/PendingRegist/PendingRecoveriesRegistDetail")
-                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                    .SetQueryParam("ServiceCompanyID", ServiceCompanyID)
-                    .GetAsync();
-                //var response = await BaseUrl
-                //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
-                //     .GetAsync();
+        //    catch (FlurlHttpException ex)
+        //    {
+        //        // For error responses that take a known shape
+        //        //TError e = ex.GetResponseJson<TError>();
+        //        // For error responses that take an unknown shape
+        //        dynamic d = ex.GetResponseJsonAsync();
+        //        return d;
+        //    }
+        //}
+        //public async Task<IFlurlResponse> GetPendingRecoveriesRegistDetail(int ServiceCompanyID)
+        //{
+        //    try
+        //    {
+        //        var response = await _flurlClient.Request("/API/finishing/PendingRegist/PendingRecoveriesRegistDetail")
+        //            .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+        //            .SetQueryParam("ServiceCompanyID", ServiceCompanyID)
+        //            .GetAsync();
+        //        //var response = await BaseUrl
+        //        //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
+        //        //     .GetAsync();
 
-                return response;
-            }
+        //        return response;
+        //    }
 
-            catch (FlurlHttpException ex)
-            {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-                dynamic d = ex.GetResponseJsonAsync();
-                return d;
-            }
-        }
+        //    catch (FlurlHttpException ex)
+        //    {
+        //        // For error responses that take a known shape
+        //        //TError e = ex.GetResponseJson<TError>();
+        //        // For error responses that take an unknown shape
+        //        dynamic d = ex.GetResponseJsonAsync();
+        //        return d;
+        //    }
+        //}
 
     }
 }

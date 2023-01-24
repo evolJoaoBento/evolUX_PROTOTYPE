@@ -33,5 +33,7 @@
         IPendingRegistRepository PendingRegist { get; }
 
         IPostalObjectRepository PostalObject { get; }
+
+        IPendingRecoverRepository PendingRecover { get; }
     }
 }

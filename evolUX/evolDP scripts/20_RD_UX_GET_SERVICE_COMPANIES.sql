@@ -6,7 +6,7 @@ GO
 ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANIES]
 AS
 BEGIN
-	SELECT scr.ServiceCompanyID,
+	SELECT c.CompanyID,
 		c.CompanyCode,
 		c.CompanyName,
 		c.CompanyAddress,
@@ -19,7 +19,7 @@ BEGIN
 	INNER JOIN
 		RD_COMPANY c WITH(NOLOCK) 
 	ON	scr.ServiceCompanyID = c.CompanyID
-	ORDER BY scr.ServiceCompanyID
+	ORDER BY c.CompanyID
 END
 GO
 

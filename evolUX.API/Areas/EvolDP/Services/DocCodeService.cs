@@ -2,6 +2,7 @@
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
 using evolUX.API.Areas.EvolDP.ViewModels;
 using evolUX.API.Data.Interfaces;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Areas.EvolDP.Services
 {

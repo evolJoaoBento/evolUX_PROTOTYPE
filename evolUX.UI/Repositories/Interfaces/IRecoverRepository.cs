@@ -9,7 +9,7 @@ namespace evolUX.UI.Repositories.Interfaces
         public Task<ResultsViewModel> RegistTotalRecover(string FileBarcode, string user, string ServiceCompanyList, bool PermissionLevel);
         public Task<ResultsViewModel> RegistPartialRecover(string StartBarcode, string EndBarcode, string user, string ServiceCompanyList, bool PermissionLevel);
         public Task<ResultsViewModel> RegistDetailRecover(string StartBarcode, string EndBarcode, string user, string ServiceCompanyList, bool PermissionLevel);
-        public Task<IFlurlResponse> GetPendingRecoveries(int ServiceCompanyID);
-        public Task<IFlurlResponse> GetPendingRecoveriesRegistDetail(int ServiceCompanyID);
+        //public Task<IFlurlResponse> GetPendingRecoveries(int ServiceCompanyID);
+        //public Task<IFlurlResponse> GetPendingRecoveriesRegistDetail(int ServiceCompanyID);
     }
 }

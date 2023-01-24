@@ -112,15 +112,16 @@ namespace evolUX.UI.Areas.Finishing.Services
                 throw new ErrorViewModelException(viewModel);
             }
         }
-        public async Task<IFlurlResponse> GetPendingRecoveries(int ServiceCompanyID)
-        {
-            var response = await _recoverRepository.GetPendingRecoveries(ServiceCompanyID);
-            return response;
-        }
-        public async Task<IFlurlResponse> GetPendingRecoveriesRegistDetail(int ServiceCompanyID)
-        {
-            var response = await _recoverRepository.GetPendingRecoveriesRegistDetail(ServiceCompanyID);
-            return response;
-        }
+
+        //public async Task<IFlurlResponse> GetPendingRecoveries(int ServiceCompanyID)
+        //{
+        //    var response = await _recoverRepository.GetPendingRecoveries(ServiceCompanyID);
+        //    return response;
+        //}
+        //public async Task<IFlurlResponse> GetPendingRecoveriesRegistDetail(int ServiceCompanyID)
+        //{
+        //    var response = await _recoverRepository.GetPendingRecoveriesRegistDetail(ServiceCompanyID);
+        //    return response;
+        //}
     }
 }

@@ -4,6 +4,7 @@ using evolUX.API.Areas.EvolDP.ViewModels;
 using evolUX.API.Data.Context;
 using evolUX.API.Data.Interfaces;
 using System.Data;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Data.Repositories
 {

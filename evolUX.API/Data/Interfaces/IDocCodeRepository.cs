@@ -1,5 +1,6 @@
 ﻿using evolUX.API.Areas.EvolDP.Models;
 using evolUX.API.Areas.EvolDP.ViewModels;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Data.Interfaces
 {

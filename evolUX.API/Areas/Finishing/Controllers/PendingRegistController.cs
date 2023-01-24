@@ -170,42 +170,42 @@ namespace evolUX.API.Areas.Finishing.Controllers{
             }
         }
 
-        [HttpGet]
-        [ActionName("PendingRecoveries")]
-        public async Task<ActionResult<ResultsViewModel>> GetPendingRecoveries([FromQuery] int ServiceCompanyID)
-        {
-            try
-            {
-                PendingRecoveriesViewModel viewmodel = new PendingRecoveriesViewModel();
-                viewmodel.PendingRecoveries = await _recoverService.GetPendingRecoveries(ServiceCompanyID);
-                _logger.LogInfo("PendingRecoveries Get");
-                return Ok(viewmodel);
-            }
-            catch (Exception ex)
-            {
-                //log error
-                _logger.LogError($"Something went wrong inside PendingRecoveries Get action: {ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
+        //[HttpGet]
+        //[ActionName("PendingRecoveries")]
+        //public async Task<ActionResult<ResultsViewModel>> GetPendingRecoveries([FromQuery] int ServiceCompanyID)
+        //{
+        //    try
+        //    {
+        //        PendingRecoveriesViewModel viewmodel = new PendingRecoveriesViewModel();
+        //        viewmodel.PendingRecoveries = await _recoverService.GetPendingRecoveries(ServiceCompanyID);
+        //        _logger.LogInfo("PendingRecoveries Get");
+        //        return Ok(viewmodel);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //log error
+        //        _logger.LogError($"Something went wrong inside PendingRecoveries Get action: {ex.Message}");
+        //        return StatusCode(500, "Internal Server Error");
+        //    }
+        //}
 
-        [HttpGet]
-        [ActionName("PendingRecoveriesRegistDetail")]
-        public async Task<ActionResult<ResultsViewModel>> GetPendingRecoveriesRegistDetail([FromQuery] int ServiceCompanyID)
-        {
-            try
-            {
-                PendingRecoveriesViewModel viewmodel = new PendingRecoveriesViewModel();
-                viewmodel.PendingRecoveries = await _recoverService.GetPendingRecoveriesRegistDetail(ServiceCompanyID);
-                _logger.LogInfo("PendingRecoveriesRegistDetail Get");
-                return Ok(viewmodel);
-            }
-            catch (Exception ex)
-            {
-                //log error
-                _logger.LogError($"Something went wrong inside PendingRecoveriesRegistDetail Get action: {ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
+        //[HttpGet]
+        //[ActionName("PendingRecoveriesRegistDetail")]
+        //public async Task<ActionResult<ResultsViewModel>> GetPendingRecoveriesRegistDetail([FromQuery] int ServiceCompanyID)
+        //{
+        //    try
+        //    {
+        //        PendingRecoveriesViewModel viewmodel = new PendingRecoveriesViewModel();
+        //        viewmodel.PendingRecoveries = await _recoverService.GetPendingRecoveriesRegistDetail(ServiceCompanyID);
+        //        _logger.LogInfo("PendingRecoveriesRegistDetail Get");
+        //        return Ok(viewmodel);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //log error
+        //        _logger.LogError($"Something went wrong inside PendingRecoveriesRegistDetail Get action: {ex.Message}");
+        //        return StatusCode(500, "Internal Server Error");
+        //    }
+        //}
     }
 }
