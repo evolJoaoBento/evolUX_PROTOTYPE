@@ -1,4 +1,4 @@
-﻿namespace Shared.Models.Areas.Finishing
+﻿namespace Shared.Models.Areas.Core
 {
     public class FlowInfo
     {

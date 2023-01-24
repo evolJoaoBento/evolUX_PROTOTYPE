@@ -8,7 +8,7 @@ namespace evolUX.UI.Repositories.Interfaces
     public interface IPendingRecoverRepository
     {
         public Task<ServiceCompanyViewModel> GetServiceCompanies(string ServiceCompanyList);
-        public Task<PendingRecoverDetailViewModel> GetPendingRecoveries(int ServiceCompanyID);
+        public Task<PendingRecoverDetailViewModel> GetPendingRecoveries(int ServiceCompanyID, string serviceCompanyCode);
         public Task<Result> RegistPendingRecover(int serviceCompanyID, string serviceCompanyCode, string recoverType, int userid);
     }
 }

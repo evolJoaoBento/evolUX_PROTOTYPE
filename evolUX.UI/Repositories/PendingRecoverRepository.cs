@@ -26,12 +26,13 @@ namespace evolUX.UI.Repositories
             return await response.GetJsonAsync<ServiceCompanyViewModel>();
             
         }
-        public async Task<PendingRecoverDetailViewModel> GetPendingRecoveries(int serviceCompanyID)
+        public async Task<PendingRecoverDetailViewModel> GetPendingRecoveries(int serviceCompanyID, string serviceCompanyCode)
         {
             var response = await _flurlClient.Request("/API/finishing/PendingRecover/GetPendingRecoveries")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SetQueryParams(new{
-                    ServiceCompanyID = serviceCompanyID
+                    ServiceCompanyID = serviceCompanyID,
+                    ServiceCompanyCode = serviceCompanyCode
                 })
                 .GetAsync();
             //var response = await BaseUrl

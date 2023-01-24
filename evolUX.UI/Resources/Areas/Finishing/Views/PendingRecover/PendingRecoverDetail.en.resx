@@ -120,6 +120,12 @@
   <data name="EndPostObjID" xml:space="preserve">
     <value>Last Postal Object</value>
   </data>
+  <data name="ExistsPendingRecoverFilesJobs" xml:space="preserve">
+    <value>There are Postal Objects/Files Recovery Jobs running</value>
+  </data>
+  <data name="ExistsPendingRecoverRegistDetailFilesJobs" xml:space="preserve">
+    <value>There are Receipt Notices Recovery Jobs running</value>
+  </data>
   <data name="FileName" xml:space="preserve">
     <value>File Name</value>
   </data>

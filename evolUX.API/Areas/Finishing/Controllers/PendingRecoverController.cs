@@ -50,11 +50,11 @@ namespace evolUX.API.Areas.Finishing.Controllers
 
         [HttpGet]
         [ActionName("GetPendingRecoveries")]
-        public async Task<ActionResult<PendingRecoverDetailViewModel>> GetPendingRecoveries([FromQuery] int ServiceCompanyID)
+        public async Task<ActionResult<PendingRecoverDetailViewModel>> GetPendingRecoveries([FromQuery] int ServiceCompanyID, [FromQuery] string serviceCompanyCode)
         {
             try
             {
-                PendingRecoverDetailViewModel viewmodel = await _pendingRecoverService.GetPendingRecoveries(ServiceCompanyID);
+                PendingRecoverDetailViewModel viewmodel = await _pendingRecoverService.GetPendingRecoveries(ServiceCompanyID, serviceCompanyCode);
                 _logger.LogInfo("GetPendingRecoveries Get");
                 return Ok(viewmodel);
             }

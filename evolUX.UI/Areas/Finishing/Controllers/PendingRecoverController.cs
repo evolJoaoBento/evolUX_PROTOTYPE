@@ -78,6 +78,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             }
             
         }
+
         public async Task<IActionResult> PendingRecoverDetail(string ServiceCompanyValues)
         {
             try
@@ -91,7 +92,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 TempData["ServiceCompanyCode"] = ServiceCompanyCode;
                 TempData["ServiceCompanyName"] = ServiceCompanyName;
 
-                PendingRecoverDetailViewModel result = await _pendingRecoverService.GetPendingRecoveries(ServiceCompanyID);
+                PendingRecoverDetailViewModel result = await _pendingRecoverService.GetPendingRecoveries(ServiceCompanyID, ServiceCompanyCode);
                 ViewBag.ServiceCompanyID = ServiceCompanyID;
                 ViewBag.ServiceCompanyCode = ServiceCompanyCode;
 
@@ -141,8 +142,10 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 }
             }
         }
+
         public async Task<IActionResult> RegistPendingRecover(string RecoverType)
         {
+            string ServiceCompanyName = (string)TempData["ServiceCompanyName"];
             string ServiceCompanyCode = (string)TempData["ServiceCompanyCode"];
             int ServiceCompanyID = Convert.ToInt32((string)TempData["ServiceCompanyID"]);
 
@@ -152,11 +155,16 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             try
             {
                 Result result = await _pendingRecoverService.RegistPendingRecover(ServiceCompanyID, ServiceCompanyCode, RecoverType, userid);
-                return PartialView("MessageView", new MessageViewModel(result.ErrorID.ToString(), "", result.Error));
+                if (result != null && result.Error.ToUpper() == "SUCCESS")
+                {
+                    string scValues = ServiceCompanyID.ToString() + "|" + ServiceCompanyCode + "|" + ServiceCompanyName;
+                    return RedirectToAction("PendingRecoverDetail", "PendingRecover", new { ServiceCompanyValues = scValues });
+                }
+                return View("MessageView", new MessageViewModel(result.ErrorID.ToString(), "", result.Error));
             }
             catch (ErrorViewModelException ex)
             {
-                return PartialView("Error", ex.ViewModel);
+                return View("Error", ex.ViewModel);
             }
             catch (HttpUnauthorizedException ex)
             {

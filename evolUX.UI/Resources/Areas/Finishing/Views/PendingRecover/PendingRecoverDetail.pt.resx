@@ -120,6 +120,12 @@
   <data name="EndPostObjID" xml:space="preserve">
     <value>Último Objeto Postal</value>
   </data>
+  <data name="ExistsPendingRecoverFilesJobs" xml:space="preserve">
+    <value>Existem Jobs de Recuperações de Objetos Postais/Ficheiros em execução</value>
+  </data>
+  <data name="ExistsPendingRecoverRegistDetailFilesJobs" xml:space="preserve">
+    <value>Existem Jobs de Recuperações de Avisos de Receção em execução</value>
+  </data>
   <data name="FileName" xml:space="preserve">
     <value>Ficheiro</value>
   </data>

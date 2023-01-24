@@ -23,10 +23,9 @@ else
         <form id="PendingRecoverFilesFrm" asp-area="Finishing" asp-controller="PendingRecover" asp-action="RegistPendingRecover"
                 data-ajax="true"
                 data-ajax-method="POST"
-                data-ajax-mode="replace"
-                data-ajax-update="#response"
+                data-ajax-complete="refreshPage"
                 data-ajax-loading="myLoader">
-            <table class="table table-bordered table-sm table-striped">
+             <table class="table table-bordered table-sm table-striped">
                 <thead>
                     <tr><th colspan="6">@localizer["PendingRecoverFiles"]</th></tr>
                     <tr>
@@ -39,21 +38,27 @@ else
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var p in Model.PendingRecoverDetail.PendingRecoverFiles)
-                    {
-                        <tr>
-                            <td>@p.RunID</td>
-                            <td>@p.FileName</td>
-                            <td>@p.RecoverType</td>
-                            <td>@p.StartPostObjID</td>
-                            <td>@p.EndPostObjID</td>
-                            <td>@p.UserName</td>
-                        </tr>
-                    }
+                @foreach (var p in Model.PendingRecoverDetail.PendingRecoverFiles)
+                {
+                    <tr>
+                        <td>@p.RunID</td>
+                        <td>@p.FileName</td>
+                        <td>@p.RecoverType</td>
+                        <td>@p.StartPostObjID</td>
+                        <td>@p.EndPostObjID</td>
+                        <td>@p.UserName</td>
+                    </tr>
+                }
                 </tbody>
+                @if (Model.PendingRecoverDetail.PendingRecoverFilesJobs.Count > 0)
+                {
+                    <tfoot>
+                        <tr><th colspan="6">@localizer["ExistsPendingRecoverFilesJobs"]</th></tr>
+                    </tfoot>
+                }
             </table>
-            <input type="hidden" id="RecoverType" name="RecoverType" value="RECOVER">
             <p class="my-3 d-flex justify-content-center"><input value="@localizer["Submit"]" type="submit" name="Submit" class="btn btn-block btn-primary" /></p>
+            <input type="hidden" id="RecoverType" name="RecoverType" value="RECOVER">
         </form>
     }
     @if (Model.PendingRecoverDetail.PendingRecoverRegistDetailFiles.Count > 1)
@@ -61,8 +66,7 @@ else
         <form id="PendingRecoverRegistDetailFilesFrm" asp-area="Finishing" asp-controller="PendingRecover" asp-action="RegistPendingRecover"
                 data-ajax="true"
                 data-ajax-method="POST"
-                data-ajax-mode="replace"
-                data-ajax-update="#response"
+                data-ajax-complete="refreshPage"
                 data-ajax-loading="myLoader">
             <table class="table table-bordered table-sm table-striped">
                 <thead>
@@ -78,7 +82,7 @@ else
                 </thead>
                 <tbody>
                 @foreach (var p in Model.PendingRecoverDetail.PendingRecoverRegistDetailFiles)
-            {
+                {
                     <tr>
                         <td>@p.RunID</td>
                         <td>@p.FileName</td>
@@ -87,14 +91,28 @@ else
                         <td>@p.EndPostObjID</td>
                         <td>@p.UserName</td>
                     </tr>
-            }
+                }
                 </tbody>
+                @if (Model.PendingRecoverDetail.PendingRecoverRegistDetailFilesJobs.Count > 0)
+                {
+                    <tfoot>
+                        <tr><th colspan="6">@localizer["ExistsPendingRecoverRegistDetailFilesJobs"]</th></tr>
+                    </tfoot>
+                }            
             </table>
-            <input type="hidden" id="RecoverType" name="RecoverType" value="RDRECOVER">
             <p class="my-3 d-flex justify-content-center"><input value="@localizer["Submit"]" type="submit" name="Submit" class="btn btn-block btn-primary" /></p>
+            <input type="hidden" id="RecoverType" name="RecoverType" value="RDRECOVER">
         </form>
     }
 }
     
+@section Scripts
+    {
+    <script type="text/javascript">
+        function refreshPage() {
+            window.location.reload();
+        };
+    </script>
 
+}
 

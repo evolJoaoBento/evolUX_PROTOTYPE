@@ -5,6 +5,7 @@ using System.Data;
 using Shared.Models.Areas.evolDP;
 using Shared.Models.Areas.Finishing;
 using Shared.Models.General;
+using Shared.Models.Areas.Core;
 
 namespace evolUX.API.Areas.Finishing.Services
 {
@@ -27,13 +28,31 @@ namespace evolUX.API.Areas.Finishing.Services
             return serviceCompanies;
         }
         
-        public async Task<PendingRecoverDetailViewModel> GetPendingRecoveries(int serviceCompanyID)
+        public async Task<PendingRecoverDetailViewModel> GetPendingRecoveries(int serviceCompanyID, string serviceCompanyCode)
         {
             PendingRecoverDetailViewModel viewmodel = new PendingRecoverDetailViewModel();
 
             viewmodel.PendingRecoverDetail.PendingRecoverFiles = (List<PendingRecoverElement>)await _repository.PendingRecover.GetPendingRecoverFiles(serviceCompanyID);
             viewmodel.PendingRecoverDetail.PendingRecoverRegistDetailFiles = (List<PendingRecoverElement>)await _repository.PendingRecover.GetPendingRecoverRegistDetailFiles(serviceCompanyID);
 
+            if (viewmodel.PendingRecoverDetail.PendingRecoverFiles != null && viewmodel.PendingRecoverDetail.PendingRecoverFiles.Count() > 0)
+            {
+                Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                dictionary.Add("SERVICECOMPANYCODE", serviceCompanyCode);
+                dictionary.Add("TYPE", "RECOVER");
+
+                FlowInfo flowInfo = await _repository.RegistJob.GetFlowByCriteria(dictionary);
+                viewmodel.PendingRecoverDetail.PendingRecoverFilesJobs = (List<Job>)await _repository.RegistJob.GetJobs(flowInfo.FlowID);
+            }
+            if (viewmodel.PendingRecoverDetail.PendingRecoverRegistDetailFiles != null && viewmodel.PendingRecoverDetail.PendingRecoverRegistDetailFiles.Count() > 0)
+            {
+                Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                dictionary.Add("SERVICECOMPANYCODE", serviceCompanyCode);
+                dictionary.Add("TYPE", "RDRECOVER");
+
+                FlowInfo flowInfo = await _repository.RegistJob.GetFlowByCriteria(dictionary);
+                viewmodel.PendingRecoverDetail.PendingRecoverRegistDetailFilesJobs = (List<Job>)await _repository.RegistJob.GetJobs(flowInfo.FlowID);
+            }
             return viewmodel;
         }
 
