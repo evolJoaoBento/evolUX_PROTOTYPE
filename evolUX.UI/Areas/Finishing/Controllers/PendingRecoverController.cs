@@ -12,6 +12,9 @@ using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
 using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
+using Shared.Models.Areas.Finishing;
+using Shared.Models.General;
+using System.Security.Claims;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -24,13 +27,21 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             _pendingRecoverService = pendingRecoverService;
         }
 
-        public async Task<IActionResult> PendingRecover()
+        public async Task<IActionResult> Index()
         {
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             try
             {
                 ServiceCompanyViewModel result = await _pendingRecoverService.GetServiceCompanies(ServiceCompanyList);
-                return View(result);
+                if (result != null && result.ServiceCompanies.Count() > 1)
+                {
+                    return View(result);
+                }
+                else
+                {
+                    string scValues = result.ServiceCompanies.First().CompanyID + "|" + result.ServiceCompanies.First().CompanyCode + "|" + result.ServiceCompanies.First().CompanyName;
+                    return RedirectToAction("PendingRecoverDetail", new { ServiceCompanyValues = scValues });
+                }
             }
             catch (FlurlHttpException ex)
             {
@@ -67,11 +78,37 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             }
             
         }
-        public async Task<IActionResult> PendingRecoverDetail(int ServiceCompanyID)
+        public async Task<IActionResult> PendingRecoverDetail(string ServiceCompanyValues)
         {
             try
             {
+                string[] serviceCompanyValue = ServiceCompanyValues.Split('|');
+                int ServiceCompanyID = Convert.ToInt32(serviceCompanyValue[0]);
+                string ServiceCompanyCode = serviceCompanyValue.Length > 1 ? serviceCompanyValue[1] : "";
+                string ServiceCompanyName = serviceCompanyValue.Length > 2 ? serviceCompanyValue[2] : "";
+
+                TempData["ServiceCompanyID"] = serviceCompanyValue[0];
+                TempData["ServiceCompanyCode"] = ServiceCompanyCode;
+                TempData["ServiceCompanyName"] = ServiceCompanyName;
+
                 PendingRecoverDetailViewModel result = await _pendingRecoverService.GetPendingRecoveries(ServiceCompanyID);
+                ViewBag.ServiceCompanyID = ServiceCompanyID;
+                ViewBag.ServiceCompanyCode = ServiceCompanyCode;
+
+                DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanies"));
+                if (ServiceCompanyDT.Rows.Count>1)
+                {
+                    ViewBag.hasMultipleServiceCompanies = true;
+                    ViewBag.ServiceCompanyName = " [" + ServiceCompanyName + "]";
+
+                }
+                else
+                {
+                    ViewBag.hasMultipleServiceCompanies = false;
+                    ViewBag.ServiceCompanyName = "";
+
+                }
+
                 return View(result);
             }
             catch (FlurlHttpException ex)
@@ -103,6 +140,40 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                     return RedirectToAction("Index", "Auth", new { Area = "Core" });
                 }
             }
+        }
+        public async Task<IActionResult> RegistPendingRecover(string RecoverType)
+        {
+            string ServiceCompanyCode = (string)TempData["ServiceCompanyCode"];
+            int ServiceCompanyID = Convert.ToInt32((string)TempData["ServiceCompanyID"]);
+
+            int userid = int.Parse(User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
+                                              .Select(c => c.Value)
+                                              .SingleOrDefault());
+            try
+            {
+                Result result = await _pendingRecoverService.RegistPendingRecover(ServiceCompanyID, ServiceCompanyCode, RecoverType, userid);
+                return PartialView("MessageView", new MessageViewModel(result.ErrorID.ToString(), "", result.Error));
+            }
+            catch (ErrorViewModelException ex)
+            {
+                return PartialView("Error", ex.ViewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
         }
     }
 }

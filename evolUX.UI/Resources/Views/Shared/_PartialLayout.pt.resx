@@ -277,7 +277,7 @@
     <value>Pendentes</value>
   </data>
   <data name="ActionPendingRecover_Link" xml:space="preserve">
-    <value>/Finishing/PendingRecover/PendingRecover</value>
+    <value>/Finishing/PendingRecover/Index</value>
   </data>
   <data name="ActionPendingRegist" xml:space="preserve">
     <value>Pendentes</value>

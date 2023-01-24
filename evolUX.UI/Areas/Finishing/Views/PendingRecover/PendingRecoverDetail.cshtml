@@ -1,0 +1,100 @@
+﻿@using Shared.ViewModels.Areas.Finishing
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@model PendingRecoverDetailViewModel
+
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+<div id="TitlePage">
+    <h1 class="display-4 text-center">@localizer["PendingRecover"] @ViewBag.ServiceCompanyName</h1>
+</div>    
+@if (Model == null)
+{
+   
+}
+else
+{
+    @if (Model.PendingRecoverDetail.PendingRecoverFiles.Count > 1)
+    {
+        <form id="PendingRecoverFilesFrm" asp-area="Finishing" asp-controller="PendingRecover" asp-action="RegistPendingRecover"
+                data-ajax="true"
+                data-ajax-method="POST"
+                data-ajax-mode="replace"
+                data-ajax-update="#response"
+                data-ajax-loading="myLoader">
+            <table class="table table-bordered table-sm table-striped">
+                <thead>
+                    <tr><th colspan="6">@localizer["PendingRecoverFiles"]</th></tr>
+                    <tr>
+                        <th>@localizer["RunID"]</th>
+                        <th>@localizer["FileName"]</th>
+                        <th>@localizer["RecoverType"]</th>
+                        <th>@localizer["StartPostObjID"]</th>
+                        <th>@localizer["EndPostObjID"]</th>
+                        <th>@localizer["Username"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in Model.PendingRecoverDetail.PendingRecoverFiles)
+                    {
+                        <tr>
+                            <td>@p.RunID</td>
+                            <td>@p.FileName</td>
+                            <td>@p.RecoverType</td>
+                            <td>@p.StartPostObjID</td>
+                            <td>@p.EndPostObjID</td>
+                            <td>@p.UserName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <input type="hidden" id="RecoverType" name="RecoverType" value="RECOVER">
+            <p class="my-3 d-flex justify-content-center"><input value="@localizer["Submit"]" type="submit" name="Submit" class="btn btn-block btn-primary" /></p>
+        </form>
+    }
+    @if (Model.PendingRecoverDetail.PendingRecoverRegistDetailFiles.Count > 1)
+    {
+        <form id="PendingRecoverRegistDetailFilesFrm" asp-area="Finishing" asp-controller="PendingRecover" asp-action="RegistPendingRecover"
+                data-ajax="true"
+                data-ajax-method="POST"
+                data-ajax-mode="replace"
+                data-ajax-update="#response"
+                data-ajax-loading="myLoader">
+            <table class="table table-bordered table-sm table-striped">
+                <thead>
+                    <tr><th colspan="6">@localizer["PendingRecoverRegistDetailFiles"]</th></tr>
+                    <tr>
+                    <th>@localizer["RunID"]</th>
+                    <th>@localizer["FileName"]</th>
+                    <th>@localizer["RecoverType"]</th>
+                    <th>@localizer["StartPostObjID"]</th>
+                    <th>@localizer["EndPostObjID"]</th>
+                    <th>@localizer["Username"]</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var p in Model.PendingRecoverDetail.PendingRecoverRegistDetailFiles)
+            {
+                    <tr>
+                        <td>@p.RunID</td>
+                        <td>@p.FileName</td>
+                        <td>@p.RecoverType</td>
+                        <td>@p.StartPostObjID</td>
+                        <td>@p.EndPostObjID</td>
+                        <td>@p.UserName</td>
+                    </tr>
+            }
+                </tbody>
+            </table>
+            <input type="hidden" id="RecoverType" name="RecoverType" value="RDRECOVER">
+            <p class="my-3 d-flex justify-content-center"><input value="@localizer["Submit"]" type="submit" name="Submit" class="btn btn-block btn-primary" /></p>
+        </form>
+    }
+}
+    
+
+

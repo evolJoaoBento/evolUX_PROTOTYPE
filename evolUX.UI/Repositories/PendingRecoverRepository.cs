@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Data;
 using System.Net;
 using evolUX.UI.Repositories.Interfaces;
+using Shared.Models.General;
 
 namespace evolUX.UI.Repositories
 {
@@ -40,6 +41,21 @@ namespace evolUX.UI.Repositories
             if (response.StatusCode == ((int)HttpStatusCode.Unauthorized)) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<PendingRecoverDetailViewModel>();
             
+        }
+        public async Task<Result> RegistPendingRecover(int serviceCompanyID, string serviceCompanyCode, string recoverType, int userid)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ServiceCompanyID", serviceCompanyID);
+            dictionary.Add("ServiceCompanyCode", serviceCompanyCode);
+            dictionary.Add("RecoverType", recoverType);
+            dictionary.Add("UserID", userid);
+            var response = await _flurlClient.Request("/API/finishing/PendingRecover/RegistPendingRecover")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == ((int)HttpStatusCode.NotFound)) throw new HttpNotFoundException(response);
+            if (response.StatusCode == ((int)HttpStatusCode.Unauthorized)) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<Result>();
+
         }
     }
 }
