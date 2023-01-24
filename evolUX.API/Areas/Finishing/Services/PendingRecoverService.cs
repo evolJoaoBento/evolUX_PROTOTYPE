@@ -50,7 +50,7 @@ namespace evolUX.API.Areas.Finishing.Services
 
             foreach (FlowParameter p in flowParameters)
             {
-                p.ParameterValue = p.ParameterValue.Replace("SELECT @PARAMETERS/ACTION/SERVICECOMPANYID ", serviceCompanyID.ToString());
+                p.ParameterValue = p.ParameterValue.Replace("@PARAMETERS/ACTION/SERVICECOMPANYID ", serviceCompanyID.ToString());
             }
             Result viewmodel = await _repository.RegistJob.TryRegistJob(flowParameters, flowInfo, userID);
             if (viewmodel == null)
