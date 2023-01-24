@@ -6,7 +6,7 @@
 @inject IHttpContextAccessor Accessor
 @inject IViewLocalizer localizer
 
-<div class="sidebar close">
+<div id="sidebar" class="sidebar close">
     @{
         IEnumerable<SideBarAction> sideBarActions = JsonConvert.DeserializeObject<IEnumerable<SideBarAction>>(Accessor.HttpContext.Session.GetString("evolUX/SideBarActions"));
         int itemCount = 0;
