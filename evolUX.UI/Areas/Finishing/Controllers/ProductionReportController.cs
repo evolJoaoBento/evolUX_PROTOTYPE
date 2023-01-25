@@ -115,13 +115,45 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 }
             }
         }
-        //[HttpPost]
-        //public ActionResult FilePrint(string model, int RunID, int FileID, string FilePath, string FileName, string ShortFileName, string FilePrinterSpecs)
-        //{
-        //    return RedirectToAction("Printing", "Print", new { Area = "Finishing", RunID, FileID, FilePath, FileName, ShortFileName, FilePrinterSpecs });
 
-        //}
+        public async Task<IActionResult> ProductionReportPrinter(int RunID, int ServiceCompanyID, string RunName)
+        {
+            try
+            {
+                ProductionReportViewModel result = await _productionReportService.GetProductionReport(RunID, ServiceCompanyID);
+                TempData["ServiceCompanyCode"] = result.ServiceCompanyCode;
+                ViewBag.RunName = RunName;
+                return View(result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
 
+                var resultError = await ex.GetResponseJsonAsync<ErrorResult>();
+                return View("Error", resultError);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                var resultError = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", resultError);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
 
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+        }
     }
 }

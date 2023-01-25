@@ -36,6 +36,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Areas\Finishing\Views\ProductionReport\ProductionReportPrinter.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Areas\Finishing\Views\ProductionReport\ProductionReportPrinter.pt.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Areas\Finishing\Views\ProductionReport\ProductionReport.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

@@ -27,7 +27,10 @@
         <colgroup span="3"></colgroup>
         <thead id="bootstrap-overrides" class="sticky-header">
             <tr>
-                <th class="headcol" wspan="2" scope="rowgroup">@localizer["RunDescription"]</th> @*BusinessDesc + [BusinessID] + RunDate + (RunSequence + [RunID])*@
+                <th class="headcol" rowspan="3" scope="rowgroup">@localizer["RunDescription"]</th> @*BusinessDesc + [BusinessID] + RunDate + (RunSequence + [RunID])*@
+                <th colspan="20" scope="rowgroup">@localizer["Files"]</th>
+            </tr>
+            <tr>
                 <th colspan="2" scope="colgroup">@localizer["TotalToPrint"]</th>
                 <th colspan="3" scope="colgroup">@localizer["Processed"]</th>
                 <th colspan="3" scope="colgroup">@localizer["ToPrint"]</th>
@@ -37,7 +40,6 @@
                 <th colspan="3" scope="colgroup">@localizer["Expedition"]</th>
             </tr>
             <tr>
-                <th class="headcol" scope="row">@localizer["Files"]</th>
                 <th scope="row">@localizer["Originals"]</th>
                 <th scope="row">@localizer["Recup"]</th>
                 <th scope="row">@localizer["Total"]</th>
@@ -59,8 +61,6 @@
                 <th scope="row">@localizer["StartExpedition"]</th>
                 <th scope="row">@localizer["EndExpedition"]</th>
             </tr>
-            
-
         </thead>
         <tbody id="bootstrap-overrides">
             @if (Model == null)
@@ -87,7 +87,21 @@
                                 RunName += " - " + p.ServiceCompany;
                             }
                         }
-                        <td class="headcol" style="background:var(--lightestgrey);"><a class="btn btn-link link-info" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runid="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName>@RunName</a></td>
+                        <td class="headcol" style="background:var(--lightestgrey);">@RunName
+                            @if (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0)
+                            {
+                                <a class='bx bx-file' style="color:rgb(90 205 239)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runid="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
+                            }
+                            else
+                            {
+                                @*<a class='bx bx-file' style="color:var(--evol-grey)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runid="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>*@
+                                <a class='bx bx-file' style="color:rgb(245 126 72)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runid="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
+                            }
+                            @if (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0)
+                            {
+                                <a class='bx bx-printer' style="color:rgb(90 205 239)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runid="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
+                            }
+                        </td>
                         <td>@p.FilesLeftToPrint</td> @*Originals*@
                         @{
                             OriginalsTotal += p.FilesLeftToPrint;
@@ -175,7 +189,9 @@
                 }
                 <tr style="background:var(--lightestgrey); border: var(--orange)">
                     <td class="headcol" style="background:var(--lightergrey);"><b>Total</b></td>
-                    <td >@OriginalsTotal</td> @*Originals*@
+                    <td></td>
+                    <td></td>
+                    <td>@OriginalsTotal</td> @*Originals*@
                     <td>@RecupTotal</td> @*Recup*@
                     <td>@ProcessedTotal</td>
                     <td>
