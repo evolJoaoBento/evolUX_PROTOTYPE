@@ -24,8 +24,6 @@
 
         IRegistJobRepository RegistJob { get; }
 
-        IPrintFilesRepository PrintFiles { get; }
-
         IPrintedFilesRepository PrintedFiles { get; }
 
         IFullfilledFilesRepository FullfilledFiles { get; }

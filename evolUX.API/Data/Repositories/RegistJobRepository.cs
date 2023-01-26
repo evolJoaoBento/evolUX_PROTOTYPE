@@ -7,6 +7,7 @@ using Shared.Models.General;
 using Shared.Extensions;
 using System.Transactions;
 using Shared.Models.Areas.Core;
+using Shared.Models.Areas.Finishing;
 
 namespace evolUX.API.Data.Repositories
 {
@@ -136,6 +137,24 @@ namespace evolUX.API.Data.Repositories
 
                 IEnumerable<Job> jobs = await connection.QueryAsync<Job>(sql, parameters, commandType: CommandType.StoredProcedure);
                 return jobs;
+            }
+        }
+        public async Task<IEnumerable<ResourceInfo>> GetResources(string resourceType, IEnumerable<int> profileList, string valueFilter,
+                    bool ignoreProfiles)
+        {
+            string sql = @"evolUX_RESOURCE_BY_FILTER";
+            var parameters = new DynamicParameters();
+            parameters.Add("ProfileList", profileList.toDataTable().AsTableValuedParameter("IDlist"));
+            parameters.Add("ResName", resourceType, DbType.String);
+            parameters.Add("ResValueFilter", valueFilter, DbType.String);
+            parameters.Add("IgnoreProfiles", ignoreProfiles, DbType.Boolean);
+
+            using (var connection = _context.CreateConnectionEvolFlow())
+            {
+                //pass all servicecompany runid
+
+                IEnumerable<ResourceInfo> printers = await connection.QueryAsync<ResourceInfo>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return printers.Where(printers => printers.MatchFilter == true);
             }
         }
     }

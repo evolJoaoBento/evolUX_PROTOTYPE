@@ -119,6 +119,8 @@
                                     <div class='bx bx-printer' style="color:var(--evol-grey)">
                                         <input type="checkbox" name="FilenameList" id="@p.RunID|@p.FileID" value="@p.RunID|@p.FileID">
                                     </div>
+                                    <select name="Printer" asp-items="@(new SelectList(p.FilePrinters,nameof(ResourceInfo.ResValue),nameof(ResourceInfo.Description)))">
+                                    </select>
                                     <label>@p.FileName</label>
                                 }
                                 else

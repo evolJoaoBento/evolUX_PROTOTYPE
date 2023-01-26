@@ -28,22 +28,39 @@ namespace evolUX.UI.Repositories
             return await response.GetJsonAsync<ProductionRunReportViewModel>();
             
         }
-        public async Task<ProductionReportViewModel> GetProductionReport(int runID, int serviceCompanyID)
+        public async Task<ProductionReportViewModel> GetProductionReport(string profileList, int runID, int serviceCompanyID)
         {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ProfileList", profileList);
+            dictionary.Add("RunID", runID);
+            dictionary.Add("ServiceCompanyID", serviceCompanyID);
             var response = await _flurlClient.Request("/API/finishing/ProductionReport/ProductionReport")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                .SetQueryParams(new{
-                    RunID = runID,
-                    ServiceCompanyID = serviceCompanyID
-                })
-                .GetAsync();
+                .SendJsonAsync(HttpMethod.Get, dictionary);
             //var response = await BaseUrl
             //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
             //     .GetAsync();
             if (response.StatusCode == ((int)HttpStatusCode.NotFound)) throw new HttpNotFoundException(response);
             if (response.StatusCode == ((int)HttpStatusCode.Unauthorized)) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ProductionReportViewModel>();
-            
+
         }
+        //public async Task<ProductionReportViewModel> GetProductionReport(string profilesList, int runID, int serviceCompanyID)
+        //{
+        //    var response = await _flurlClient.Request("/API/finishing/ProductionReport/ProductionReport")
+        //        .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+        //        .SetQueryParams(new{
+        //            RunID = runID,
+        //            ServiceCompanyID = serviceCompanyID
+        //        })
+        //        .GetAsync();
+        //    //var response = await BaseUrl
+        //    //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
+        //    //     .GetAsync();
+        //    if (response.StatusCode == ((int)HttpStatusCode.NotFound)) throw new HttpNotFoundException(response);
+        //    if (response.StatusCode == ((int)HttpStatusCode.Unauthorized)) throw new HttpUnauthorizedException(response);
+        //    return await response.GetJsonAsync<ProductionReportViewModel>();
+
+        //}
     }
 }

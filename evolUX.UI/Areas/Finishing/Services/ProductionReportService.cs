@@ -18,9 +18,9 @@ namespace evolUX.UI.Areas.Finishing.Services
             var response = await _productionReportRepository.GetProductionRunReport(ServiceCompanyList);
             return response;
         }
-        public async Task<ProductionReportViewModel> GetProductionReport(int runID, int serviceCompanyID)
+        public async Task<ProductionReportViewModel> GetProductionReport(string profileList, int runID, int serviceCompanyID)
         {
-            var response = await _productionReportRepository.GetProductionReport(runID, serviceCompanyID);
+            var response = await _productionReportRepository.GetProductionReport(profileList, runID, serviceCompanyID);
             return response;
         }
     }

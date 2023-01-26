@@ -21,14 +21,13 @@ namespace evolUX.UI.Repositories
 
         public async Task<ResoursesViewModel> GetPrinters(string profileList, string filesSpecs, bool ignoreProfiles)
         {
-            List<string> list = new List<string>();
-            list.Add(profileList);
-            list.Add(filesSpecs);
-            string ListJSON = JsonConvert.SerializeObject(list);
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ProfileList", profileList);
+            dictionary.Add("FileSpecs", filesSpecs);
+            dictionary.Add("IgnoreProfiles", ignoreProfiles);
             var response = await _flurlClient.Request("/API/Finishing/Print/Printers")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                .SetQueryParam("ignoreProfiles",ignoreProfiles)
-                .SendJsonAsync(HttpMethod.Get, ListJSON);
+                .SendJsonAsync(HttpMethod.Get, dictionary);
             //var response = await BaseUrl
             //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
             //     .GetAsync();
@@ -36,7 +35,25 @@ namespace evolUX.UI.Repositories
             if (response.StatusCode == ((int)HttpStatusCode.Unauthorized)) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ResoursesViewModel>();
         }
-        
+
+        //public async Task<ResoursesViewModel> GetPrinters(string profileList, string filesSpecs, bool ignoreProfiles)
+        //{
+        //    List<string> list = new List<string>();
+        //    list.Add(profileList);
+        //    list.Add(filesSpecs);
+        //    string ListJSON = JsonConvert.SerializeObject(list);
+        //    var response = await _flurlClient.Request("/API/Finishing/Print/Printers")
+        //        .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+        //        .SetQueryParam("ignoreProfiles",ignoreProfiles)
+        //        .SendJsonAsync(HttpMethod.Get, ListJSON);
+        //    //var response = await BaseUrl
+        //    //     .AppendPathSegment($"/Core/Auth/login").SetQueryParam("username", username).AllowHttpStatus(HttpStatusCode.NotFound)
+        //    //     .GetAsync();
+        //    if (response.StatusCode == ((int)HttpStatusCode.NotFound)) throw new HttpNotFoundException(response);
+        //    if (response.StatusCode == ((int)HttpStatusCode.Unauthorized)) throw new HttpUnauthorizedException(response);
+        //    return await response.GetJsonAsync<ResoursesViewModel>();
+        //}
+
         public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode, 
             string username, int userID, string filePath, string fileName, string shortFileName)
         {

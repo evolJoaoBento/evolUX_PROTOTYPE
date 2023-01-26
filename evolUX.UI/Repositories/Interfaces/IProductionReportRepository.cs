@@ -7,6 +7,6 @@ namespace evolUX.UI.Repositories.Interfaces
     public interface IProductionReportRepository
     {
         public Task<ProductionRunReportViewModel> GetProductionRunReport(string ServiceCompanyList);
-        public Task<ProductionReportViewModel> GetProductionReport(int runID, int serviceCompanyID);
+        public Task<ProductionReportViewModel> GetProductionReport(string profileList, int runID, int serviceCompanyID);
     }
 }

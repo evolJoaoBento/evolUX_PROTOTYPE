@@ -80,7 +80,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
         {
             try
             {
-                ProductionReportViewModel result = await _productionReportService.GetProductionReport(RunID, ServiceCompanyID);
+                string profileList = HttpContext.Session.GetString("evolUX/Profiles");
+                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID);
                 TempData["ServiceCompanyCode"] = result.ServiceCompanyCode;
                 ViewBag.RunName = RunName;
                 return View(result);
@@ -120,7 +121,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
         {
             try
             {
-                ProductionReportViewModel result = await _productionReportService.GetProductionReport(RunID, ServiceCompanyID);
+                string profileList = HttpContext.Session.GetString("evolUX/Profiles");
+                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID);
                 TempData["ServiceCompanyCode"] = result.ServiceCompanyCode;
                 ViewBag.RunName = RunName;
                 return View(result);
