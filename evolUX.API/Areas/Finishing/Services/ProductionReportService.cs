@@ -52,13 +52,15 @@ namespace evolUX.API.Areas.Finishing.Services
             viewmodel.ProductionReport = productionReport;
             viewmodel.ServiceCompanyCode = serviceCompanyCode;
             List<PrintersSpecs> printersList = new List<PrintersSpecs>();
-
+            bool existsToPrintFiles = false;
             foreach (ProductionDetailInfo pdi in viewmodel.ProductionReport)
             {
                 pdi.ProductionDetailReport = await _repository.ProductionReport.GetProductionDetailReport(runID, serviceCompanyID, pdi.PaperMediaID, pdi.StationMediaID, pdi.ExpeditionType, pdi.ExpCode, pdi.HasColorPages);
                 foreach (ProductionInfo f in pdi.ProductionDetailReport)
                 {
-                    if (!string.IsNullOrEmpty(f.FilePrinterSpecs))
+                    if (!f.FilePrintedFlag || !f.RegistDetailFilePrintedFlag)
+                        existsToPrintFiles = true;
+                    if (!string.IsNullOrEmpty(f.FilePrinterSpecs) && !f.FilePrintedFlag)
                     {
                         PrintersSpecs pList = printersList.Find(x => x.Specs.Contains(f.FilePrinterSpecs));
                         if (pList != null)
@@ -69,7 +71,7 @@ namespace evolUX.API.Areas.Finishing.Services
                             printersList.Add(new PrintersSpecs { Specs = f.FilePrinterSpecs, List = f.FilePrinters});
                         }
                     }
-                    if (!string.IsNullOrEmpty(f.RegistDetailFilePrinterSpecs))
+                    if (!string.IsNullOrEmpty(f.RegistDetailFilePrinterSpecs) && !f.RegistDetailFilePrintedFlag)
                     {
                         PrintersSpecs pList = printersList.Find(x => x.Specs.Contains(f.RegistDetailFilePrinterSpecs));
                         if (pList != null)
@@ -83,6 +85,9 @@ namespace evolUX.API.Areas.Finishing.Services
                 }
 
             }
+            if (existsToPrintFiles)
+                viewmodel.Resources = await _repository.RegistJob.GetResources("PRINTER", profileList, "", false);
+
             return viewmodel;
         }
 

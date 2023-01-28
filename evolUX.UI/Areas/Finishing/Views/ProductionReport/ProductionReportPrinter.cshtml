@@ -23,6 +23,20 @@
     <h1 class="display-4 text-center">@localizer["ProductionStatus"]</h1>
     <h2 class="display-5 text-center">@ViewBag.RunName</h2>
 </div>
+<form id="all" style="display:none" asp-area="Finishing" asp-controller="Print" asp-action="Print"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#response"
+      data-ajax-loading="myLoader">
+<div class="my-5 d-flex justify-content-center">
+    <div class=" my-1 d-flex justify-content-center">
+        <b class="mx-3">Printer</b>
+            <select name="Printer" asp-items="@(new SelectList(Model.Resources,nameof(ResourceInfo.ResValue),nameof(ResourceInfo.Description)))">
+            </select>
+            <p class="my-3 d-flex justify-content-center"><input type="submit" name="Submit" class="btn btn-block btn-success" /></p>
+    </div>
+</div>
 @foreach (ProductionDetailInfo pinfo in Model.ProductionReport)
 {
     int PrintTotal = 0;
@@ -117,10 +131,8 @@
                                 @if (!p.FilePrintedFlag)
                                 {
                                     <div class='bx bx-printer' style="color:var(--evol-grey)">
-                                        <input type="checkbox" name="FilenameList" id="@p.RunID|@p.FileID" value="@p.RunID|@p.FileID">
+                                        <input type="checkbox" name="FilenameList" id="@p.RunID|@p.FileID" class="" value="@p.RunID|@p.FileID">
                                     </div>
-                                    <select name="Printer" asp-items="@(new SelectList(p.FilePrinters,nameof(ResourceInfo.ResValue),nameof(ResourceInfo.Description)))">
-                                    </select>
                                     <label>@p.FileName</label>
                                 }
                                 else
@@ -237,7 +249,34 @@
         </table>
     </div>
 }
-    
-
+</form>
+  
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(function () {
+            $("#check").click(function () {
+                if ($(this).is(':checked')) {
+                    $("#all").show();
+                    $("#some").hide();
+                } else {
+                    $("#all").hide();
+                    $("#some").show();
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $("#submit").click(function () {
+                if ($('#check').is(':checked')) {
+                    document.getElementById("all").submit();
+                } else {
+                    document.getElementById("some").submit();
+                }
+            });
+        });
+    </script>
+}
 
 

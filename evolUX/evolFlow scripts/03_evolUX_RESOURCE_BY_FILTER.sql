@@ -29,8 +29,6 @@ BEGIN
 			ELSE
 				CASE WHEN ResValue like ('%' + @ResValueFilter + '%') THEN 1 ELSE 0 END 
 			END DESC
-
-
 	END
 	ELSE
 	BEGIN

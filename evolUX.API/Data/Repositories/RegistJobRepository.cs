@@ -146,7 +146,8 @@ namespace evolUX.API.Data.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("ProfileList", profileList.toDataTable().AsTableValuedParameter("IDlist"));
             parameters.Add("ResName", resourceType, DbType.String);
-            parameters.Add("ResValueFilter", valueFilter, DbType.String);
+            if (!string.IsNullOrEmpty(valueFilter))
+                parameters.Add("ResValueFilter", valueFilter, DbType.String);
             parameters.Add("IgnoreProfiles", ignoreProfiles, DbType.Boolean);
 
             using (var connection = _context.CreateConnectionEvolFlow())
