@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Shared.Models.Areas.Finishing;
 using evolUX.API.Data.Context;
 using evolUX.API.Data.Interfaces;
 using System.Data;
@@ -7,6 +6,8 @@ using System.Data.SqlClient;
 using Shared.Models.General;
 using Shared.Extensions;
 using System.Transactions;
+using Shared.Models.Areas.Core;
+using Shared.Models.Areas.Finishing;
 
 namespace evolUX.API.Data.Repositories
 {
@@ -123,7 +124,39 @@ namespace evolUX.API.Data.Repositories
             result.ErrorID = 0;
             result.Error = "Success";
             return result;
-           
+        }
+        public async Task<IEnumerable<Job>> GetJobs(int flowID)
+        {
+            string sql = @"evolUX_GET_JOB_BY_FlowID";
+            var parameters = new DynamicParameters();
+            parameters.Add("FlowID", flowID, DbType.Int32);
+
+            using (var connection = _context.CreateConnectionEvolFlow())
+            {
+                //pass all servicecompany runid
+
+                IEnumerable<Job> jobs = await connection.QueryAsync<Job>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return jobs;
+            }
+        }
+        public async Task<IEnumerable<ResourceInfo>> GetResources(string resourceType, IEnumerable<int> profileList, string valueFilter,
+                    bool ignoreProfiles)
+        {
+            string sql = @"evolUX_RESOURCE_BY_FILTER";
+            var parameters = new DynamicParameters();
+            parameters.Add("ProfileList", profileList.toDataTable().AsTableValuedParameter("IDlist"));
+            parameters.Add("ResName", resourceType, DbType.String);
+            if (!string.IsNullOrEmpty(valueFilter))
+                parameters.Add("ResValueFilter", valueFilter, DbType.String);
+            parameters.Add("IgnoreProfiles", ignoreProfiles, DbType.Boolean);
+
+            using (var connection = _context.CreateConnectionEvolFlow())
+            {
+                //pass all servicecompany runid
+
+                IEnumerable<ResourceInfo> printers = await connection.QueryAsync<ResourceInfo>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return printers.Where(printers => printers.MatchFilter == true);
+            }
         }
     }
 }

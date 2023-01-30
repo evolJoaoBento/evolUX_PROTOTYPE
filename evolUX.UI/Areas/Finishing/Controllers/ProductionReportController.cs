@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
 using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
+using Shared.Models.General;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -29,9 +30,12 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             try
             {
+                if (string.IsNullOrEmpty(ServiceCompanyList))
+                    return View(null);
+
                 ProductionRunReportViewModel result = await _productionReportService.GetProductionRunReport(ServiceCompanyList);
                 DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanies"));
-                if (ServiceCompanyDT.Rows.Count>1)
+                if (ServiceCompanyDT.Rows.Count > 1)
                 {
                     ViewBag.hasMultipleServiceCompanies = true;
                 }
@@ -80,7 +84,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
         {
             try
             {
-                ProductionReportViewModel result = await _productionReportService.GetProductionReport(RunID, ServiceCompanyID);
+                string profileList = HttpContext.Session.GetString("evolUX/Profiles");
+                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID);
                 TempData["ServiceCompanyCode"] = result.ServiceCompanyCode;
                 ViewBag.RunName = RunName;
                 return View(result);
@@ -115,13 +120,46 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 }
             }
         }
-        //[HttpPost]
-        //public ActionResult FilePrint(string model, int RunID, int FileID, string FilePath, string FileName, string ShortFileName, string FilePrinterSpecs)
-        //{
-        //    return RedirectToAction("Printing", "Print", new { Area = "Finishing", RunID, FileID, FilePath, FileName, ShortFileName, FilePrinterSpecs });
 
-        //}
+        public async Task<IActionResult> ProductionReportPrinter(int RunID, int ServiceCompanyID, string RunName)
+        {
+            try
+            {
+                string profileList = HttpContext.Session.GetString("evolUX/Profiles");
+                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID);
+                TempData["ServiceCompanyCode"] = result.ServiceCompanyCode;
+                ViewBag.RunName = RunName;
+                return View(result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
 
+                var resultError = await ex.GetResponseJsonAsync<ErrorResult>();
+                return View("Error", resultError);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                var resultError = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", resultError);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
 
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+        }
     }
 }

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EmptyResult" xml:space="preserve">
+    <value>Sem registos pendentes</value>
+  </data>
   <data name="Files" xml:space="preserve">
     <value>Ficheiros</value>
   </data>
@@ -128,6 +131,9 @@
   </data>
   <data name="FilesLeftToRegistPrint" xml:space="preserve">
     <value>Com impressões por Registar</value>
+  </data>
+  <data name="NoModelData" xml:space="preserve">
+    <value>Sem Dados</value>
   </data>
   <data name="PendingRegist" xml:space="preserve">
     <value>Envelopagem/Impressão Pendentes</value>

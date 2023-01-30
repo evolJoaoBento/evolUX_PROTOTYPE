@@ -2,8 +2,8 @@
 using Shared.ViewModels.Areas.Finishing;
 using Flurl.Http;
 using System.Data;
-using evolUX.UI.Repositories.Interfaces;
 using Shared.Models.General;
+using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
@@ -19,9 +19,9 @@ namespace evolUX.UI.Areas.Finishing.Services
             var response = await _pendingRecoverRepository.GetServiceCompanies(ServiceCompanyList);
             return response;
         }
-        public async Task<PendingRecoverDetailViewModel> GetPendingRecoveries(int serviceCompanyID)
+        public async Task<PendingRecoverDetailViewModel> GetPendingRecoveries(int serviceCompanyID, string serviceCompanyCode)
         {
-            var response = await _pendingRecoverRepository.GetPendingRecoveries(serviceCompanyID);
+            var response = await _pendingRecoverRepository.GetPendingRecoveries(serviceCompanyID, serviceCompanyCode);
             return response;
         }
         public async Task<Result> RegistPendingRecover(int serviceCompanyID, string serviceCompanyCode, string recoverType, int userid)

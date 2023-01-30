@@ -71,7 +71,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             //    SameSite = SameSiteMode.Strict
             //});
 
-            SetSessionVariables(result);
+            await SetSessionVariables(result);
 
 
             SetJWTCookie(result.AccessToken);

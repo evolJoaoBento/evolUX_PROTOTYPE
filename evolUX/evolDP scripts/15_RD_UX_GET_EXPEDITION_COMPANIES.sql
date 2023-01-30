@@ -1,27 +1,3 @@
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPEDITION_COMPANIES]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_EXPEDITION_COMPANIES] AS' 
-END
-GO
-ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPEDITION_COMPANIES]
-AS
-BEGIN
-	SELECT 	et.ExpCompanyID,
-		c.CompanyCode,
-		c.CompanyName,
-		c.CompanyAddress,
-		c.CompanyPostalCode,
-		c.CompanyPostalCodeDescription,
-		c.CompanyCountry
-	FROM
-		(SELECT DISTINCT ExpCompanyID 
-		FROM RD_EXPCOMPANY_TYPE WITH(NOLOCK)) et
-	INNER JOIN
-		RD_COMPANY c WITH(NOLOCK) 
-	ON	et.ExpCompanyID = c.CompanyID
-	ORDER BY et.ExpCompanyID
-END
-GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCOMPANY_ZONE_TYPE]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_ZONE_TYPE] AS' 

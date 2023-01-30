@@ -16,13 +16,27 @@ namespace evolUX.API.Data.Repositories
             _context = context;
         }
 
-        
         //SUM TOTAL AND DYNAMICS
         //FOR REFERENCE https://www.faqcode4u.com/faq/530844/dapper-mapping-dynamic-pivot-columns-from-stored-procedure
         //              https://stackoverflow.com/questions/8229927/looping-through-each-element-in-a-datarow
+        public async Task LogSentToPrinter(int runID, int fileID)
+        {
+            string sql = @"RT_INSERT_INTO_FILE_LOG";
+            var parameters = new DynamicParameters();
+            parameters.Add("RunID", runID, DbType.Int64);
+            parameters.Add("FileID", fileID, DbType.Int64);
+            parameters.Add("RunStateName", "SEND2PRINTER", DbType.String);
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                //pass all servicecompany runid
+
+                await connection.QueryAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
         public async Task<IEnumerable<ProductionInfo>> GetProductionDetailReport(int runID, int serviceCompanyID, int paperMediaID,
                     int stationMediaID, int expeditionType, string expCode, bool hasColorPages)
-        {
+        {            
             var lookup = new Dictionary<int, ProductionInfo>();
 
             string sql = @"RP_UX_PRODUCTION_REPORT";
@@ -108,9 +122,9 @@ namespace evolUX.API.Data.Repositories
             {
                 //pass all servicecompany runid
 
-                IEnumerable<ProductionDetailInfo> envelopeMediaList = await connection.QueryAsync<ProductionDetailInfo>(sql, parameters,
+                IEnumerable<ProductionDetailInfo> productionSubsetReport = await connection.QueryAsync<ProductionDetailInfo>(sql, parameters,
                             commandType: CommandType.StoredProcedure);
-                return envelopeMediaList;
+                return productionSubsetReport;
             }
         }
 

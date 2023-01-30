@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="EmptyResult" xml:space="preserve">
+    <value>Sem recuperações pendentes</value>
+  </data>
   <data name="EndPostObjID" xml:space="preserve">
     <value>Last Postal Object</value>
   </data>
+  <data name="ExistsPendingRecoverFilesJobs" xml:space="preserve">
+    <value>There are Postal Objects/Files Recovery Jobs running</value>
+  </data>
+  <data name="ExistsPendingRecoverRegistDetailFilesJobs" xml:space="preserve">
+    <value>There are Receipt Notices Recovery Jobs running</value>
+  </data>
   <data name="FileName" xml:space="preserve">
     <value>File Name</value>
+  </data>
+  <data name="NoModelData" xml:space="preserve">
+    <value>Sem Dados</value>
   </data>
   <data name="PendingRecover" xml:space="preserve">
     <value>Pending Recoveries</value>

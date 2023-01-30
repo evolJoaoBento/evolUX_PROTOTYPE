@@ -1,5 +1,5 @@
-﻿using evolUX.UI.Areas.EvolDP.Services.Interfaces;
-using evolUX.UI.Repositories.Interfaces;
+﻿using evolUX.UI.Areas.EvolDP.Repositories.Interfaces;
+using evolUX.UI.Areas.EvolDP.Services.Interfaces;
 using Flurl.Http;
 
 namespace evolUX.UI.Areas.EvolDP.Services

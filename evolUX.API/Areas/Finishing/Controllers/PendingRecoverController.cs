@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using evolUX.API.Areas.Finishing.Services;
 using Shared.Models.General;
 using Shared.ViewModels.General;
+using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
@@ -50,11 +51,17 @@ namespace evolUX.API.Areas.Finishing.Controllers
 
         [HttpGet]
         [ActionName("GetPendingRecoveries")]
-        public async Task<ActionResult<PendingRecoverDetailViewModel>> GetPendingRecoveries([FromQuery] int ServiceCompanyID)
+        public async Task<ActionResult<PendingRecoverDetailViewModel>> GetPendingRecoveries([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                PendingRecoverDetailViewModel viewmodel = await _pendingRecoverService.GetPendingRecoveries(ServiceCompanyID);
+                object obj;
+                dictionary.TryGetValue("ServiceCompanyCode", out obj);
+                string ServiceCompanyCode = Convert.ToString(obj);
+                dictionary.TryGetValue("ServiceCompanyID", out obj);
+                int ServiceCompanyID = Convert.ToInt32(obj.ToString());
+
+                PendingRecoverDetailViewModel viewmodel = await _pendingRecoverService.GetPendingRecoveries(ServiceCompanyID, ServiceCompanyCode);
                 _logger.LogInfo("GetPendingRecoveries Get");
                 return Ok(viewmodel);
             }

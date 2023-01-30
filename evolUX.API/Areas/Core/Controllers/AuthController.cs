@@ -63,7 +63,7 @@ namespace evolUX.API.Areas.Core.Controllers
                 {
                     return BadRequest("Invalid client request");
                 }
-                var userAndToken = await _authenticationService.CredentialsAuth(new AuthRequest { Username = model.Username, Password = model.Password });
+                AuthResponse userAndToken = await _authenticationService.CredentialsAuth(new AuthRequest { Username = model.Username, Password = model.Password });
                 if (userAndToken == null)
                 {
                     return NotFound(new ErrorResult { Message = $"User {model.Username} Not Found", Code = 404 });

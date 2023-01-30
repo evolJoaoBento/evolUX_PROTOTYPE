@@ -1,28 +1,3 @@
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_SERVICE_COMPANIES]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANIES] AS' 
-END
-GO
-ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANIES]
-AS
-BEGIN
-	SELECT c.CompanyID,
-		c.CompanyCode,
-		c.CompanyName,
-		c.CompanyAddress,
-		c.CompanyPostalCode,
-		c.CompanyPostalCodeDescription,
-		c.CompanyCountry
-	FROM
-		(SELECT DISTINCT ServiceCompanyID 
-		FROM RD_SERVICE_COMPANY_RESTRICTION WITH(NOLOCK)) scr
-	INNER JOIN
-		RD_COMPANY c WITH(NOLOCK) 
-	ON	scr.ServiceCompanyID = c.CompanyID
-	ORDER BY c.CompanyID
-END
-GO
-
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_SERVICE_COMPANY_RESTRICTIONS]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANY_RESTRICTIONS] AS' 

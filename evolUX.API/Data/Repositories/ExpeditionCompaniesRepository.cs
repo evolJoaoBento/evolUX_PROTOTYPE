@@ -36,15 +36,15 @@ namespace evolUX.API.Data.Repositories
 	                                RD_COMPANY C,
 	                                RD_EXPEDITION_Zone EZ,
 	                                RD_EXPEDITION_TYPE ET
-                           WHERE 	EC.ExpCompanyID=C.CompanyID
+                           WHERE 	EC.ExpCompanyID = C.CompanyID
 	                                and
-	                                EC.ExpeditionZone=EZ.ExpeditionZone
+	                                EC.ExpeditionZone = EZ.ExpeditionZone
 	                                and
-	                                EC.ExpeditionType=ET.ExpeditionType
+	                                EC.ExpeditionType = ET.ExpeditionType
 	                                and
-                                    EC.ExpCompanyID = @COMPID";
+                                    EC.ExpCompanyID = @ExpCompanyID";
             var parameters = new DynamicParameters();
-            parameters.Add("COMPID", data.compId, DbType.String);
+            parameters.Add("ExpCompanyID", data.compId, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 expeditionCompanyConfigsList = (List<dynamic>)await connection.QueryAsync<dynamic>(sql, parameters);

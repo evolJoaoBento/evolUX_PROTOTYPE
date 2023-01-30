@@ -27,16 +27,20 @@ namespace evolUX.API.Areas.Finishing.Controllers
         //THE SERVICECOMPANYLIST SHOULD USE A SESSION VARIABLE IN THE UI LAYER
         [HttpGet]
         [ActionName("Printers")]
-        public async Task<ActionResult<ResoursesViewModel>> GetPrinters([FromBody] string ListJSON,
-                                                                        [FromQuery] bool ignoreProfiles)
+        public async Task<ActionResult<ResoursesViewModel>> GetPrinters([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                List<string> list = JsonConvert.DeserializeObject<List<string>>(ListJSON);
-                string ProfileListJSON = list[0];
-                string FileSpecs = list[1];
+                object obj;
+                dictionary.TryGetValue("ProfileList", out obj);
+                string ProfileListJSON = Convert.ToString(obj);
+                dictionary.TryGetValue("FilesSpecs", out obj);
+                string FileSpecs = Convert.ToString(obj);
+                dictionary.TryGetValue("IgnoreProfiles", out obj);
+                bool IgnoreProfiles = Convert.ToBoolean(obj);
+
                 IEnumerable<int> profileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
-                ResoursesViewModel viewmodel = await _printService.GetPrinters(profileList, FileSpecs, ignoreProfiles);
+                ResoursesViewModel viewmodel = await _printService.GetPrinters(profileList, FileSpecs, IgnoreProfiles);
                 _logger.LogInfo("Printers Get");
                 return Ok(viewmodel);
             }
@@ -47,6 +51,29 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        //[HttpGet]
+        //[ActionName("Printers")]
+        //public async Task<ActionResult<ResoursesViewModel>> GetPrinters([FromBody] string ListJSON,
+        //                                                                [FromQuery] bool ignoreProfiles)
+        //{
+        //    try
+        //    {
+        //        List<string> list = JsonConvert.DeserializeObject<List<string>>(ListJSON);
+        //        string ProfileListJSON = list[0];
+        //        string FileSpecs = list[1];
+        //        IEnumerable<int> profileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
+        //        ResoursesViewModel viewmodel = await _printService.GetPrinters(profileList, FileSpecs, ignoreProfiles);
+        //        _logger.LogInfo("Printers Get");
+        //        return Ok(viewmodel);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //log error
+        //        _logger.LogError($"Something went wrong inside Get Printers action: {ex.Message}");
+        //        return StatusCode(500, "Internal Server Error");
+        //    }
+        //}
         [HttpGet]
         [ActionName("Print")]
         public async Task<ActionResult<ResultsViewModel>> Print([FromBody] Dictionary<string, object> dictionary)

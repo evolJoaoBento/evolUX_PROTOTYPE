@@ -9,11 +9,15 @@ namespace evolUX.API.Data.Context
         private readonly IConfiguration _configuration;
         private readonly string _connectionStringEvolDP;
         private readonly string _connectionStringEvolFlow;
+        public bool HasEvolDP 
+        { 
+            get { return _connectionStringEvolDP != null; }
+        }
         public DapperContext(IConfiguration configuration)
         {
             _configuration = configuration;
-            _connectionStringEvolDP = _configuration.GetConnectionString("EvolDPConnection");
-            _connectionStringEvolFlow = _configuration.GetConnectionString("EvolFlowConnection");
+            _connectionStringEvolDP = _configuration.GetConnectionString("evolDPConnection");
+            _connectionStringEvolFlow = _configuration.GetConnectionString("evolFlowConnection");
         }
         public IDbConnection CreateConnectionEvolDP()
             => new SqlConnection(_connectionStringEvolDP);

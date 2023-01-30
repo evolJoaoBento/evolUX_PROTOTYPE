@@ -123,6 +123,9 @@
   <data name="FileBarcode" xml:space="preserve">
     <value>File Barcode</value>
   </data>
+  <data name="NoModelData" xml:space="preserve">
+    <value>Sem Dados</value>
+  </data>
   <data name="Submit" xml:space="preserve">
     <value>Submit</value>
   </data>
