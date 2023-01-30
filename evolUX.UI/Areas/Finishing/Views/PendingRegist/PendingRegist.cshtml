@@ -12,39 +12,47 @@
       <span class="sr-only">Loading...</span>
     </div>
 </div>
-<div id="TitlePage">
-    <h1 class="display-4 text-center">@localizer["PendingRegist"]</h1>
-</div>
-<div class="my-3">
-    <table class="table table-sm table-hover table-collapse-seperate">
-        <col>
-        <col>
-        <col>
-        <col>
-        <col>
-        <thead id="bootstrap-overrides" class="sticky-header">
-            <tr>
-                <th rowspan="2">@localizer["RunDescription"]</th>
-                <th colspan="4">@localizer["Files"]</th>
-            </tr>
-            <tr>
-                <th>@localizer["TotalProcessed"]</th>
-                <th>@localizer["FilesLeftToPrint"]</th>
-                <th>@localizer["FilesLeftToRegistPrint"]</th>
-                <th>@localizer["FilesLeftToRegistFullFill"]</th>
-            </tr>
-        </thead>
-        <tbody id="bootstrap-overrides">
-            @if (Model == null)
-            {
-                <tr><td colspan="5" class="text-center">@localizer["No Model Data"]</td></tr>
-            }
-            else
-            {
-                int ProcessedTotal = 0;
-                int ToPrintTotal = 0;
-                int ToRegistPrintTotal = 0;
-                int ToRegistFullFillTotal = 0;
+@if (Model == null)
+{
+    <div id="ResultPage">
+        <h3 class="display-4 text-center">@localizer["NoModelData"]</h3>
+    </div>
+}
+else
+{
+    int ProcessedTotal = 0;
+    int ToPrintTotal = 0;
+    int ToRegistPrintTotal = 0;
+    int ToRegistFullFillTotal = 0;
+    <div id="TitlePage">
+        <h1 class="display-4 text-center">@localizer["PendingRegist"]</h1>
+    </div>
+    @if (Model.PendingRegist.Count() == 0)
+    {
+        <h4 class="display-4 text-center">@localizer["EmptyResult"]</h4>
+    }
+    else
+    {
+        <div class="my-3">
+        <table class="table table-sm table-hover table-collapse-seperate">
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <thead id="bootstrap-overrides" class="sticky-header">
+                <tr>
+                    <th rowspan="2">@localizer["RunDescription"]</th>
+                    <th colspan="4">@localizer["Files"]</th>
+                </tr>
+                <tr>
+                    <th>@localizer["TotalProcessed"]</th>
+                    <th>@localizer["FilesLeftToPrint"]</th>
+                    <th>@localizer["FilesLeftToRegistPrint"]</th>
+                    <th>@localizer["FilesLeftToRegistFullFill"]</th>
+                </tr>
+            </thead>
+            <tbody id="bootstrap-overrides">
                 @foreach (PendingRegistInfo p in Model.PendingRegist)
                 {
                     <tr>
@@ -77,11 +85,9 @@
                     <td>@ToRegistPrintTotal</td>
                     <td>@ToRegistFullFillTotal</td>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-</div>
-
-
-
+    </div>
+    }
+}

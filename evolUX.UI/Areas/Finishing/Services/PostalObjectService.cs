@@ -1,6 +1,5 @@
 ﻿using evolUX.UI.Areas.Finishing.Services.Interfaces;
 using evolUX.UI.Exceptions;
-using evolUX.UI.Repositories.Interfaces;
 using Flurl.Http;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
@@ -8,6 +7,7 @@ using Shared.ViewModels.Areas.Finishing;
 using System.Data;
 using System.Reflection.Metadata;
 using Shared.Exceptions;
+using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {

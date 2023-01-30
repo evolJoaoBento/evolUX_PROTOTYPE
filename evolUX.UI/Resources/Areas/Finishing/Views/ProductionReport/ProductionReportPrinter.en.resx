@@ -159,6 +159,9 @@
   <data name="Materials" xml:space="preserve">
     <value>Materials</value>
   </data>
+  <data name="NoModelData" xml:space="preserve">
+    <value>Sem Dados</value>
+  </data>
   <data name="PlexCode" xml:space="preserve">
     <value>Type</value>
   </data>

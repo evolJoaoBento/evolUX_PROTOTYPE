@@ -1,8 +1,8 @@
 ﻿using evolUX.UI.Areas.Core.Models;
+using evolUX.UI.Areas.Core.Repositories.Interfaces;
 using evolUX.UI.Areas.Core.Services.Interfaces;
 using evolUX.UI.Exceptions;
 using evolUX.UI.Repositories;
-using evolUX.UI.Repositories.Interfaces;
 using Flurl.Http;
 using Shared.Models.Areas.Core;
 using Shared.Models.General;

@@ -1,6 +1,6 @@
 ﻿using evolUX.UI.Areas.Core.Models;
+using evolUX.UI.Areas.Core.Repositories.Interfaces;
 using evolUX.UI.Areas.Core.Services.Interfaces;
-using evolUX.UI.Repositories.Interfaces;
 using Flurl.Http;
 using System.Net;
 using System.Xml.Linq;

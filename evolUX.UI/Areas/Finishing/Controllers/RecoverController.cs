@@ -27,6 +27,15 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         public ActionResult RegistTotalRecover()
         {
+            string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+            if (string.IsNullOrEmpty(ServiceCompanyList))
+            {
+                ViewBag.hasServiceCompanies = false;
+            }
+            else
+            {
+                ViewBag.hasServiceCompanies = true;
+            }
             return View();
         }
 
@@ -69,6 +78,15 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         public ActionResult RegistPartialRecover()
         {
+            string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+            if (string.IsNullOrEmpty(ServiceCompanyList))
+            {
+                ViewBag.hasServiceCompanies = false;
+            }
+            else
+            {
+                ViewBag.hasServiceCompanies = true;
+            }
             return View();
         }
 
@@ -111,6 +129,15 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         public ActionResult RegistDetailRecover()
         {
+            string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+            if (string.IsNullOrEmpty(ServiceCompanyList))
+            {
+                ViewBag.hasServiceCompanies = false;
+            }
+            else
+            {
+                ViewBag.hasServiceCompanies = true;
+            }
             return View();
         }
 
@@ -150,79 +177,5 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 }
             }
         }
-
-        ////THIS METHOD COULD BE BETTER IF IT WAS CALLED ASYNCRONOUSLY EACH TIME IN AN AJAX REQUEST
-        //public async Task<IActionResult> PendingRecover()
-        //{
-        //    DataTable ServiceCompanyList = HttpContext.Session.Get<DataTable>("evolDP/ServiceCompanies");
-        //    List<PendingRecoveriesViewModel> PendingRecoveries = null;
-        //    foreach(DataRow row in ServiceCompanyList.Rows)
-        //    {
-        //        int i = (int)row["ID"];
-        //        var response = await _recoverService.GetPendingRecoveries(i);
-        //        if (response.StatusCode == ((int)HttpStatusCode.NotFound))
-        //        {
-        //            var resultError = response.GetJsonAsync<ErrorResult>().Result;
-        //        }
-        //        if (response.StatusCode == ((int)HttpStatusCode.Unauthorized))
-        //        {
-        //            if (response.Headers.Contains("Token-Expired"))
-        //            {
-        //                var header = response.Headers.FirstOrDefault("Token-Expired");
-        //                var returnUrl = Request.Path.Value;
-        //                //var url = Url.RouteUrl("MyAreas", )
-
-        //                return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
-        //            }
-        //            else
-        //            {
-        //                return RedirectToAction("Index", "Auth", new { Area = "Core" });
-        //            }
-        //        }
-
-        //        PendingRecoveriesViewModel result = await response.GetJsonAsync<PendingRecoveriesViewModel>();
-        //        PendingRecoveries = PendingRecoveries ?? new List<PendingRecoveriesViewModel>();
-        //        PendingRecoveries.Add(result);
-        //    }
-           
-        //    return View("PendingRecover", PendingRecoveries);
-        //}
-        
-        //public async Task<IActionResult> PendingRecoveriesRegistDetail()
-        //{
-        //    DataTable ServiceCompanyList = HttpContext.Session.Get<DataTable>("evolDP/ServiceCompanies");
-        //    List<PendingRecoveriesViewModel> PendingRecoveries = null;
-        //    foreach(DataRow row in ServiceCompanyList.Rows)
-        //    {
-        //        int i = (int)row["ID"];
-        //        var response = await _recoverService.GetPendingRecoveriesRegistDetail(i);
-        //        if (response.StatusCode == ((int)HttpStatusCode.NotFound))
-        //        {
-        //            var resultError = response.GetJsonAsync<ErrorResult>().Result;
-        //        }
-        //        if (response.StatusCode == ((int)HttpStatusCode.Unauthorized))
-        //        {
-        //            if (response.Headers.Contains("Token-Expired"))
-        //            {
-        //                var header = response.Headers.FirstOrDefault("Token-Expired");
-        //                var returnUrl = Request.Path.Value;
-        //                //var url = Url.RouteUrl("MyAreas", )
-
-        //                return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
-        //            }
-        //            else
-        //            {
-        //                return RedirectToAction("Index", "Auth", new { Area = "Core" });
-        //            }
-        //        }
-
-        //        PendingRecoveriesViewModel result = await response.GetJsonAsync<PendingRecoveriesViewModel>();
-        //        PendingRecoveries = PendingRecoveries ?? new List<PendingRecoveriesViewModel>();
-        //        PendingRecoveries.Add(result);
-        //    }
-
-        //    return View("PendingRecoveriesRegistDetail", PendingRecoveries);
-        //}
-
     }
 }

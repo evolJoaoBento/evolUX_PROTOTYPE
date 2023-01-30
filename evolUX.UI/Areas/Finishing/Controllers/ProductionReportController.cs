@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
 using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
+using Shared.Models.General;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -29,9 +30,12 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             try
             {
+                if (string.IsNullOrEmpty(ServiceCompanyList))
+                    return View(null);
+
                 ProductionRunReportViewModel result = await _productionReportService.GetProductionRunReport(ServiceCompanyList);
                 DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanies"));
-                if (ServiceCompanyDT.Rows.Count>1)
+                if (ServiceCompanyDT.Rows.Count > 1)
                 {
                     ViewBag.hasMultipleServiceCompanies = true;
                 }

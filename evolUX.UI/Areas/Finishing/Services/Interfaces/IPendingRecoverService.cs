@@ -2,6 +2,7 @@
 using Flurl.Http;
 using System.Data;
 using Shared.Models.General;
+using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.UI.Areas.Finishing.Services.Interfaces
 {

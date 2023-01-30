@@ -120,6 +120,9 @@
   <data name="EndBarcode" xml:space="preserve">
     <value>Código de Barras do último Objecto Postal a recuperar</value>
   </data>
+  <data name="NoModelData" xml:space="preserve">
+    <value>Sem Dados</value>
+  </data>
   <data name="RegistPartialRecover" xml:space="preserve">
     <value>Recuperação Parcial</value>
   </data>

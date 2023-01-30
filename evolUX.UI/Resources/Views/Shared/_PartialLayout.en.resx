@@ -168,8 +168,8 @@
   <data name="ActionExpeditionReport" xml:space="preserve">
     <value>Guias de Expedição</value>
   </data>
-  <data name="ActionExpeditionReport1" xml:space="preserve">
-    <value>Expedition</value>
+  <data name="ActionExpeditionReport_Link" xml:space="preserve">
+    <value>/Finishing/Expedition/Index</value>
   </data>
   <data name="ActionExpeditionTypes" xml:space="preserve">
     <value>Expedition Types</value>

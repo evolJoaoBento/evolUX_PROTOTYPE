@@ -120,6 +120,9 @@
   <data name="FileBarcode" xml:space="preserve">
     <value>Código de Barras do Ficheiro</value>
   </data>
+  <data name="NoModelData" xml:space="preserve">
+    <value>Sem Dados</value>
+  </data>
   <data name="RegistTotalRecover" xml:space="preserve">
     <value>Recuperação Total</value>
   </data>

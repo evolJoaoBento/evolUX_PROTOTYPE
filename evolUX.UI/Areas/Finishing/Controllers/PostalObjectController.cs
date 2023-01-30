@@ -30,6 +30,15 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         public ActionResult Index()
         {
+            string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+            if (string.IsNullOrEmpty(ServiceCompanyList))
+            {
+                ViewBag.hasServiceCompanies = false;
+            }
+            else
+            {
+                ViewBag.hasServiceCompanies = true;
+            }
             return View();
         }
 

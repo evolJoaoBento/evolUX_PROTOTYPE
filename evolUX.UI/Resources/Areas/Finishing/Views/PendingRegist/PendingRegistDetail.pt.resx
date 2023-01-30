@@ -129,6 +129,9 @@
   <data name="FilesLeftToRegistPrint" xml:space="preserve">
     <value>Ficheiros com impressões por Registar</value>
   </data>
+  <data name="NoModelData" xml:space="preserve">
+    <value>Sem Dados</value>
+  </data>
   <data name="NoneToRegistFullfillFiles" xml:space="preserve">
     <value>Sem ficheiros com envelopagens por Registar</value>
   </data>

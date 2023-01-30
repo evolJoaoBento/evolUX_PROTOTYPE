@@ -119,6 +119,10 @@ else
                     @foreach (PendingRegistElement p in Model.PendingRegistDetail.ToRegistFullfillFiles)
                     {
                         <tr>
+                            @if (ViewBag.hasMultipleServiceCompanies)
+                            {
+                                <td>@p.ServiceCompanyCode</td>
+                            }
                             <td class="headcol" style="background: var(--lightestgrey)">@p.FileName</td>
                             <td>@p.RunID</td>
                             <td>@p.FileID</td>

@@ -29,6 +29,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             try
             {
+                if (string.IsNullOrEmpty(ServiceCompanyList))
+                    return View(null);
                 PendingRegistViewModel result = await _pendingRegistService.GetPendingRegist(ServiceCompanyList);
                 DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanies"));
                 if (ServiceCompanyDT.Rows.Count>1)
@@ -81,6 +83,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             try
             {
+                if (string.IsNullOrEmpty(ServiceCompanyList))
+                    return View(null);
                 PendingRegistDetailViewModel result = await _pendingRegistService.GetPendingRegistDetail(RunID, ServiceCompanyList);
                 DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanies"));
                 if (ServiceCompanyDT.Rows.Count > 1)

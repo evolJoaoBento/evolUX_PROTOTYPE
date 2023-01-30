@@ -32,6 +32,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             try
             {
+                if (string.IsNullOrEmpty(ServiceCompanyList))
+                    return View(null);
                 ServiceCompanyViewModel result = await _pendingRecoverService.GetServiceCompanies(ServiceCompanyList);
                 if (result != null && result.ServiceCompanies.Count() > 1)
                 {

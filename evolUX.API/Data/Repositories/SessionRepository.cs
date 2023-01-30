@@ -16,12 +16,16 @@ namespace evolUX.API.Data.Repositories
             _context = context;
         }
 
+        public bool HasEvolDP ()
+        { 
+            return _context.HasEvolDP;
+        }
 
         public async Task<IEnumerable<int>> GetProfile(int user)
         {
-            string sql = @" SELECT  ProfileID
-                            FROM    [USER_PROFILES] up WITH(NOLOCK)
-                            WHERE   up.UserID = @UserID";
+            string sql = @"SELECT ProfileID
+                            FROM [USER_PROFILES] up WITH(NOLOCK)
+                            WHERE up.UserID = @UserID";
             var parameters = new DynamicParameters();
             parameters.Add("UserID", user, DbType.Int64);
 
@@ -37,11 +41,10 @@ namespace evolUX.API.Data.Repositories
 
             string profilesstr = profiles.toCommaSeperatedString();
             
-            string sql = string.Format(@" SELECT  DISTINCT CompanyServer
-                            FROM    [PROFILES]
-                            WHERE   ProfileID in ({0})
-                                        AND 
-                                    CompanyServer is NOT NULL", profilesstr);
+            string sql = string.Format(@"SELECT DISTINCT CompanyServer
+                            FROM [PROFILES]
+                            WHERE ProfileID in ({0})
+                                AND CompanyServer is NOT NULL", profilesstr);
  
             using (var connection = _context.CreateConnectionEvolFlow())
             {
@@ -50,20 +53,22 @@ namespace evolUX.API.Data.Repositories
             }
         }
 
-        public async Task<DataTable> GetServiceCompanies(IEnumerable<string> servers)
+        public async Task<DataTable> GetCompanies(IEnumerable<string> servers, string CompanyType)
         {
             string serversStr = servers.toCommaSeperatedFormatedString();
 
-            string sql = string.Format(@"SELECT   DISTINCT CompanyID [ID]
-                            FROM    RD_COMPANY c WITH(NOLOCK)
-                            INNER JOIN
-                                    RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
-                            ON      scr.ServiceCompanyID = c.CompanyID
-                            WHERE   (c.CompanyServer in ({0})
-                                OR EXISTS(  SELECT  *
-                                            FROM    RD_COMPANY WITH(NOLOCK)
-                                            WHERE   CompanyServer in ({0})
-                                                AND CompanyID = 1))", serversStr);
+            string sql = string.Format(@"SELECT DISTINCT c.CompanyID [ID]
+                        FROM
+                            RD_COMPANY c WITH(NOLOCK)
+                        INNER JOIN
+                            RD_COMPANY_CONFIG cc WITH(NOLOCK)
+                        ON  cc.RelationCompanyID = c.CompanyID
+                        WHERE cc.RelationType = '{1}'
+                            AND (c.CompanyServer in ({0})
+                                OR EXISTS(SELECT TOP 1 1
+                                    FROM RD_COMPANY WITH(NOLOCK)
+                                    WHERE CompanyServer in ({0})
+                                        AND CompanyID = cc.CompanyID))", serversStr, CompanyType);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -74,6 +79,34 @@ namespace evolUX.API.Data.Repositories
             }
         }
 
+        public async Task<DataTable> GetCompanyBusinness(IEnumerable<string> servers, string CompanyType)
+        {
+            string serversStr = servers.toCommaSeperatedFormatedString();
+
+            string sql = string.Format(@"SELECT DISTINCT b.BusinessID [ID]
+                        FROM
+                            RD_BUSINESS b WITH(NOLOCK)
+                        INNER JOIN
+	                        RD_COMPANY c WITH(NOLOCK)
+                        ON b.CompanyID = c.CompanyID
+                        LEFT OUTER JOIN
+                            RD_COMPANY_CONFIG cc WITH(NOLOCK)
+                        ON  cc.CompanyID = c.CompanyID
+	                        AND cc.RelationType = '{1}'
+                        WHERE c.CompanyServer in ({0})
+                                OR EXISTS(SELECT TOP 1 1
+                                    FROM RD_COMPANY WITH(NOLOCK)
+                                    WHERE CompanyServer in ({0})
+                                        AND CompanyID = cc.RelationCompanyID)", serversStr, CompanyType);
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                connection.Open();
+                var obs = await connection.QueryAsync(sql);
+                DataTable dt = _context.ToDataTable(obs);
+                return dt;
+            }
+        }
         public async Task<IEnumerable<SideBarAction>> GetSideBarActions(IEnumerable<int> profiles)
         {
             string sql = @"evolUX_GET_MENU";

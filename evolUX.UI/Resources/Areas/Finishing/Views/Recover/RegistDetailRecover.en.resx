@@ -120,6 +120,9 @@
   <data name="EndBarcode" xml:space="preserve">
     <value>Last Postal Object to recover Barcode</value>
   </data>
+  <data name="NoModelData" xml:space="preserve">
+    <value>Sem Dados</value>
+  </data>
   <data name="RegistDetailRecover" xml:space="preserve">
     <value>Receipt Notices Recover</value>
   </data>

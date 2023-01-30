@@ -8,7 +8,7 @@ using System.Data;
 using System.Reflection;
 using Shared.Models.Areas.Core;
 using Shared.Models.General;
-using evolUX.UI.Repositories.Interfaces;
+using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
