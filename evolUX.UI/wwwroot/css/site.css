@@ -6,9 +6,11 @@
     --evolUX-color: rgba(87,82,150,1);
     --evolflow-gradient: linear-gradient(66deg, rgba(90,205,239,1) 10%, rgba(233,60,82,1) 80%);
     --evolflow-color: rgba(90,205,239,1);
-    --evol-grey: rgba(128,128,128,1);
+    --evol-grey: rgb(100, 100, 100);
+    --evol-black: rgb(55, 55, 55);
     --evol-lightergrey: rgba(191,191,191,1);
     --evol-lightestgrey: #f7f7f7;
+
 }
 
 a {
@@ -63,6 +65,7 @@ html {
 
 .evol-font {
     font-family: evolFont;
+    color
 }
 
 html {
@@ -322,7 +325,8 @@ footer div{
     color: var(--evol-lightergrey);
 }
 
-.collapse-icon{
-
+.collapse-icon {
+    color: var(--evol-grey);
 }
+
 

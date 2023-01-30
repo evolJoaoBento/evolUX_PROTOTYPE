@@ -43,32 +43,19 @@ $(function () {
     }
 
     let sidebar = document.querySelector(".sidebar");
-    let colapseBtn = document.querySelector("#colapse");
-    colapseBtn.addEventListener("click", () => {
-        //if (sidebar.classList.contains("close")) {
-        //    //let width = document.getElementById("sidebar").offsetWidth;
-        //    //document.getElementById("sidebar").style.minWidth = width;
-        //} else {
-        //    //let width = document.getElementById("sidebar").offsetWidth;
-        //    //document.getElementById("sidebar").style.minWidth = width;
-            
-        //}
-        sidebar.classList.toggle("close");
-        
-
-    });
+    
     let colapseIcons = document.querySelectorAll(".collapse-icon");
     colapseIcons.forEach(collapseIcon => {
         collapseIcon.addEventListener("click", () =>
         {
-            //if (sidebar.classList.contains("close")) {
-            //    //let width = document.getElementById("sidebar").offsetWidth;
-            //    //document.getElementById("sidebar").style.minWidth = width;
-            //} else {
-            //    //let width = document.getElementById("sidebar").offsetWidth;
-            //    //document.getElementById("sidebar").style.minWidth = width;
+            if (sidebar.classList.contains("close")) {
+                //let width = document.getElementById("sidebar").offsetWidth;
+                //document.getElementById("sidebar").style.minWidth = width;
+            } else {
+                let width = document.getElementById("sidebar").offsetWidth;
+                document.getElementById("sidebar").style.minWidth = width;
 
-            //}
+            }
             sidebar.classList.toggle("close");
 
 
