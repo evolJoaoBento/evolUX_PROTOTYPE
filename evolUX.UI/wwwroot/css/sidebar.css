@@ -56,10 +56,23 @@
     }
 
         .sidebar .nav-links li.collapse-arrow{
-            position:absolute;
+            position:fixed;
             bottom:30px;
         }
 
+.sidebar .circle:hover {
+    box-shadow: 0px 0px 6px 1px #9a9a9a;
+    transform: translate(3px);
+}
+
+.sidebar .nav-links li.collapse-arrow .circle:hover {
+    box-shadow: 0px 0px 6px 1px #9a9a9a;
+    transform: translate(-3px);
+}  
+.sidebar.close .nav-links li.collapse-arrow:hover {
+    transform: translate(3px);
+}    
+        
         .sidebar .nav-links li:hover a .circle {
             box-shadow: 0px 0px 6px 1px #9a9a9a;
         }
@@ -300,8 +313,8 @@
     position: relative;
     background: white;
     height: calc(100% - 90px);
-    left: 260px;
-    width: calc(100% - 260px);
+    left: 320px;
+    width: calc(100% - 320px);
     transition: all 0.5s ease;
     top: 90px;
     padding: 0 10px 10px 10px;

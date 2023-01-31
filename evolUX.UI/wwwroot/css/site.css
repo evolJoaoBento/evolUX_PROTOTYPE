@@ -66,7 +66,6 @@ html {
 
 .evol-font {
     font-family: evolFont;
-    color
 }
 
 html {
@@ -367,4 +366,29 @@ tr.table-end .headcol b {
     background-image: var(--evoltext-gradient);
     background-color: var(--evol-lightestgrey);
 }*/
+.circle {
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0px 0px 4px 1px #ccc;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
 
+    .circle:hover {
+        box-shadow: 0px 0px 6px 1px #9a9a9a;
+        transform: scale(1.03);
+    }
+.es-circle {
+    background-color: white;
+    border-radius: 50%;
+    box-shadow: 0px 0px 4px 1px #ccc;
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+
+    .es-circle:hover {
+        box-shadow: 0px 0px 6px 1px #9a9a9a;
+        transform: scale(1.03);
+        transform: rotate(-2deg);
+    }
+    
