@@ -9,6 +9,7 @@
     height: 80px;
     flex: 0 1 50px;
     display: flex;
+    background-color: white;
 }
 
 .topbar-gradient {

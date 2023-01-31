@@ -2,7 +2,7 @@
     position: fixed;
     top: 82px;
     left: 0;
-    height: calc(100vh - 90px);
+    height: calc(100vh - 80px);
     background: #f7f7f7;
     max-width: 700px;
     min-width: 78px;
@@ -11,6 +11,17 @@
     color: var(--evol-black);
     word-wrap: break-word;
 }
+    .sidebar::before {
+        content: "";
+        display: block;
+        height: calc(100vh); /* adjust as needed */
+        width: 100%;
+        background-color: #f7f7f7;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
 
     .sidebar.close {
         min-width: 78px;
@@ -302,8 +313,9 @@
 }
 
 .sidebar.close ~ footer {
-    left: 78px;
-    width: calc(100% - 78px);
+    left: 0;
+    width: 100%;
+    transition: none;
 }
 
 .home-section .home-content {
