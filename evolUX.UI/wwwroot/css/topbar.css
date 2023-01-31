@@ -9,6 +9,7 @@
     height: 80px;
     flex: 0 1 50px;
     display: flex;
+    background-color: white;
 }
 
 .topbar-gradient {
@@ -47,6 +48,7 @@
 .es-col {
     background-image: url('../images/left-top-es.png');
     background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .settings-col {
@@ -55,12 +57,15 @@
     background-repeat: no-repeat;
     background-position-y: bottom;
     background-position-x: right;
+    background-size: cover;
 }
+    
 
 .title-col {
     flex: 0;
     text-align: center;
-    background:white;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .es-title {
@@ -70,15 +75,7 @@
     color: lightgrey;
     position:center;
 }
-.circle {
-    background-color: white;
-    border-radius: 50%;
-    box-shadow: 0px 0px 4px 1px #ccc;
-    display: inline-block;
-}
-    .circle:hover {
-        box-shadow: 0px 0px 6px 1px #9a9a9a;
-    }
+
     
 
 .logo-topbar{

@@ -101,7 +101,7 @@ else
                                     RunName += " - " + p.ServiceCompany;
                                 }
                             }
-                            <td class="headcol" style="background:var(--lightestgrey);">@RunName
+                            <td class="headcol" >@RunName
                                 @if (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0)
                                 {
                                     <a class='bx bx-file' style="color:rgb(90 205 239)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runid="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
@@ -201,42 +201,38 @@ else
                                 @*<td><a asp-area="EvolDP" asp-controller="DocCode" asp-action="DocCodeLevel1" asp-route-doclayout="@p.DocLayout" asp-route-docsubtype="@p.DocType">Mais</a></td>*@
                         </tr>
                     }
-                    <tr style="background:var(--lightestgrey); border: var(--orange)">
-                        <td class="headcol" style="background:var(--lightergrey);"><b>Total</b></td>
+                    <tr class="table-end">
+                            <td class="table-end-data headcol">Total</td>
                         <td></td>
                         <td></td>
-                        <td>@OriginalsTotal</td> @*Originals*@
-                        <td>@RecupTotal</td> @*Recup*@
-                        <td>@ProcessedTotal</td>
+                            <td class="table-end-data">@OriginalsTotal</td> @*Originals*@
+                            <td class="table-end-data">@RecupTotal</td> @*Recup*@
+                            <td class="table-end-data">@ProcessedTotal</td>
                         <td>
                         </td>
                         <td>
                         </td>
-                        <td>@ToPrintTotal</td>
+                            <td class="table-end-data">@ToPrintTotal</td>
                         <td>
                         </td>
                         <td>
                         </td>
-                        <td>@S2PrinterTotal</td>
+                            <td class="table-end-data">@S2PrinterTotal</td>
                         <td>
                         </td>
                         <td>
                         </td>
-                        <td>@PrintedTotal</td>
+                            <td class="table-end-data">@PrintedTotal</td>
                         <td>
                         </td>
                         <td>
                         </td>
-                        <td>@FullFillTotal</td>
+                            <td class="table-end-data">@FullFillTotal</td>
                         <td>
                         </td>
                         <td>
                         </td>
-                        <td>@ExpeditionTotal</td>
-                        <td>
-                        </td>
-                        <td>
-                        </td>
+                            <td class="table-end-data">@ExpeditionTotal</td>
                     </tr>
                 }
             </tbody>

@@ -2,16 +2,26 @@
     position: fixed;
     top: 82px;
     left: 0;
-    height: calc(100vh - 90px);
+    height: calc(100vh - 80px);
     background: #f7f7f7;
     max-width: 700px;
     min-width: 78px;
     z-index: 100;
     transition: all 0.8s ease;
-    color: black;
+    color: var(--evol-black);
     word-wrap: break-word;
-
 }
+    .sidebar::before {
+        content: "";
+        display: block;
+        height: calc(100vh); /* adjust as needed */
+        width: 100%;
+        background-color: #f7f7f7;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
 
     .sidebar.close {
         min-width: 78px;
@@ -45,10 +55,24 @@
         margin: 8px 0;
     }
 
-        .sidebar .nav-links li:last-child {
-            margin-top: 170px;
+        .sidebar .nav-links li.collapse-arrow{
+            position:fixed;
+            bottom:30px;
         }
 
+.sidebar .circle:hover {
+    box-shadow: 0px 0px 6px 1px #9a9a9a;
+    transform: translate(3px);
+}
+
+.sidebar .nav-links li.collapse-arrow .circle:hover {
+    box-shadow: 0px 0px 6px 1px #9a9a9a;
+    transform: translate(-3px);
+}  
+.sidebar.close .nav-links li.collapse-arrow:hover {
+    transform: translate(3px);
+}    
+        
         .sidebar .nav-links li:hover a .circle {
             box-shadow: 0px 0px 6px 1px #9a9a9a;
         }
@@ -78,9 +102,10 @@
         transform: rotate(-180deg);
     }
 
-    .sidebar.close .nav-links i.arrow {
-        display: none;
-    }
+.sidebar.close .nav-links i.arrow {
+    display: none;
+    color: var(--evol-grey);
+}
 
     .sidebar .nav-links li a {
         display: flex;
@@ -91,7 +116,7 @@
         .sidebar .nav-links li a .link_name {
             font-size: 18px;
             font-weight: 400;
-            color: black;
+            color: var(--evol-black);
             transition: all 0.4s ease;
             margin-left: 10px;
             white-space: nowrap;
@@ -125,7 +150,7 @@
 
 
     .sidebar .nav-links li .sub-menu a {
-        color: black;
+        color: var(--evol-black);
         font-size: 15px;
         padding: 5px 0;
         white-space: nowrap;
@@ -247,7 +272,7 @@
         .sidebar .nav-links li .sub-menu li .sub-sub-menu-title a .link_name {
             font-size: 15px;
             font-weight: 400;
-            color: black;
+            color: var(--evol-black);
             transition: all 0.4s ease;
             display: block;
             margin-left: 0px;
@@ -257,9 +282,9 @@
         display: block;
     }
 
-    .sidebar .nav-links li .sub-menu li .sub-sub-menu-title i.arrow {
-        transform: rotate(0deg);
-    }
+.sidebar .nav-links li .sub-menu li .sub-sub-menu-title i.arrow {
+    transform: rotate(0deg);
+}
 
     .sidebar .nav-links li .sub-menu li.showSubMenu .sub-sub-menu-title i.arrow {
         transform: rotate(-180deg);
@@ -288,8 +313,8 @@
     position: relative;
     background: white;
     height: calc(100% - 90px);
-    left: 260px;
-    width: calc(100% - 260px);
+    left: 320px;
+    width: calc(100% - 320px);
     transition: all 0.5s ease;
     top: 90px;
     padding: 0 10px 10px 10px;
@@ -301,8 +326,9 @@
 }
 
 .sidebar.close ~ footer {
-    left: 78px;
-    width: calc(100% - 78px);
+    left: 0;
+    width: 100%;
+    transition: none;
 }
 
 .home-section .home-content {
@@ -313,7 +339,7 @@
 
     .home-section .home-content .bx-menu,
     .home-section .home-content .text {
-        color: #11101d;
+        color: var(--evol-black);
         font-size: 35px;
     }
 

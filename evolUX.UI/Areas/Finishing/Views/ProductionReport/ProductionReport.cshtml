@@ -103,7 +103,7 @@
                     @foreach (ProductionInfo p in pinfo.ProductionDetailReport)
                     {
                         <tr>
-                            <td class="headcol" style="background: var(--lightestgrey)">
+                            <td class="headcol">
                                 @*<form asp-controller="ProductionReport" asp-action="FilePrint" method="post">
                                     <button class="btn btn-link link-info">@p.FileName</button>
                                     <input type="hidden" name="RunID" value="@p.RunID" />
@@ -194,27 +194,27 @@
                             @*<td><a asp-area="EvolDP" asp-controller="DocCode" asp-action="DocCodeLevel1" asp-route-doclayout="@p.DocLayout" asp-route-docsubtype="@p.DocType">Mais</a></td>*@
                         </tr>
                     }
-                    <tr style="background:var(--lightestgrey)">
-                        <b>
-                        <td class="headcol" style="background:var(--lightergrey);">@localizer["Totals"]</td></b>
+                    <tr class="table-end">
+
+                        <td class="headcol"><b>@localizer["Totals"]</b></td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td style="background:var(--lightergrey);">@PrintTotal</td>
+                        <td class="table-end-data">@PrintTotal</td>
                         <td></td>
                         <td></td>
                         @foreach (string paper in PaperTotal.Keys)
                         {
-                            <td scope="row" style="background:var(--lightergrey);">@PaperTotal[paper]</td>
+                            <td class="table-end-data" scope="row">@PaperTotal[paper]</td>
                         }
                         <td></td>
                         <td></td>
-                        <td style="background:var(--lightergrey);">@PostObjsTotal</td>
+                        <td class="table-end-data">@PostObjsTotal</td>
                         @if (StationTotal.Count!=0)
                         {
                             @foreach (string station in StationTotal.Keys)
                             {
-                                <td scope="row" style="background:var(--lightergrey);">@StationTotal[station]</td>
+                                <td class="table-end-data" scope="row">@StationTotal[station]</td>
                             }
                         }
                         <td></td>

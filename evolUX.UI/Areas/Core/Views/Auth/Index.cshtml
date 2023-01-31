@@ -17,7 +17,7 @@
 <div class="align-items-center">
     @if (User.Identity.IsAuthenticated)
     {
-        <h1 class="display-4 text-center">@localizer["Welcome"] <span class="evol-font">evolUX</span></h1>
+        <h1 class="display-4 text-center" style="color: var(--evol-black)" >@localizer["Welcome"] <span class="evol-font">evolUX</span></h1>
 @*        <p>@User.Identity.Name</p>
         foreach (var claim in User.Claims)
         {

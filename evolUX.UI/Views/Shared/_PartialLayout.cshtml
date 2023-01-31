@@ -21,11 +21,11 @@
                             itemCount++;
                             if (itemCount > 6)
                             {
-                                <i class='li-circle circle  bx bx-add-to-queue' style="color:rgb(105 105 105);"></i>
+                                <i class='li-circle circle  bx bx-add-to-queue collapse-icon' style="color:var(--evol-grey)"></i>
                             }
                             else
                             {
-                                <i class='li-circle circle  bx bx-dice-@itemCount' style="color:rgb(105 105 105);"></i>
+                                <i class='li-circle circle  bx bx-dice-@itemCount collapse-icon' style="color:var(--evol-grey)"></i>
                             }
                         }
                         else
@@ -34,7 +34,7 @@
                         }
                         <span class="link_name">@localizer[actionLevel1.LocalizationKey]</span>
                     </a>
-                    <i class='bx bxs-chevron-down arrow'></i>
+                    <i class='bx bxs-chevron-down arrow' style="color:var(--evol-grey)"></i>
                 </div>
                 <ul class="sub-menu">
                     <li><a class="link_name">@localizer[actionLevel1.LocalizationKey]</a></li>
@@ -47,7 +47,7 @@
                                     <a href="#">
                                         <span class="link_name">@localizer[actionLevel2.LocalizationKey]</span>
                                     </a>
-                                    <i class='bx bxs-chevron-down arrow'></i>
+                                    <i class='bx bxs-chevron-down arrow' style="color:var(--evol-grey)"></i>
                                 </div>
                                 <ul class="sub-sub-menu">
                                     <li><a class="link_name" href="#">@localizer[actionLevel2.LocalizationKey]</a></li>
@@ -83,9 +83,9 @@
 
             </li>
         }
-        <li>
+        <li class="collapse-arrow">
             <a>
-                <i id="colapse" class='li-circle circle  bx bxs-chevron-left' style="color:var(--evol-grey)"></i>
+                <i id="colapse" class='li-circle circle  bx bxs-chevron-left collapse-icon' style="color:var(--evol-grey)"></i>
             </a>
         </li>
 @*        <li>
