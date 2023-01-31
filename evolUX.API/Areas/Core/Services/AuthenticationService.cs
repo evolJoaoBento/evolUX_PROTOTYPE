@@ -22,10 +22,7 @@ namespace evolUX.API.Areas.Core.Services
             var user = await _userService.LoginUserWindows(new LoginRequest { Password = request.Password, Username = request.Username });
             if (user != null)
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                };
+                var claims = new List<Claim>{ new Claim(ClaimTypes.Name, user.UserName)};
                 claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
                 var accessToken = new TokenResponse();
                 accessToken.Token = _jwtService.GenerateJwtToken(claims);
@@ -45,10 +42,7 @@ namespace evolUX.API.Areas.Core.Services
             var user = await _userService.LoginUserCredentials(new LoginRequest { Password = request.Password, Username = request.Username });
             if (user != null)
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                };
+                var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.UserName) };
                 claims.AddRange(user.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
                 var accessToken = new TokenResponse();
                 accessToken.Token = _jwtService.GenerateJwtToken(claims);

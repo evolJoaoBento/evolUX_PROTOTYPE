@@ -1,5 +1,6 @@
 ﻿using evolUX.UI.Areas.Core.Models;
 using evolUX.UI.Areas.Core.Services.Interfaces;
+using evolUX.UI.Exceptions;
 using evolUX.UI.Extensions;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -54,51 +55,51 @@ namespace evolUX.UI.Areas.Core.Controllers
         [Authorize(AuthenticationSchemes = NegotiateDefaults.AuthenticationScheme)]
         public async Task<IActionResult> LoginWindowsAuthentication(string returnUrl)
         {
-            var username = User.Identity?.Name;
-            //chamada à api para ter o jwt e o user
-            var response = await _authService.GetTokenAndUser(username);
-            //var header = response.Headers.FirstOrDefault(h => h.Name == "").Value;
-            if (response.StatusCode == ((int)HttpStatusCode.NotFound))
+            try 
+            { 
+                var username = User.Identity?.Name;
+                //chamada à api para ter o jwt e o user
+                var response = await _authService.GetTokenAndUser(username);
+                //var header = response.Headers.FirstOrDefault(h => h.Name == "").Value;
+                if (response.StatusCode == ((int)HttpStatusCode.NotFound))
+                {
+                    var resultError = response.GetJsonAsync<ErrorResult>().Result;
+                    TempData["resultError"] = JsonSerializer.Serialize(resultError);
+                    return RedirectToAction("Index", "Auth");
+                }
+                var result = response.GetJsonAsync<AuthenticateResponse>().Result;
+                await SetSessionVariables(result);
+
+                SetJWTCookie(result.AccessToken);
+                SetRTCookie(result.RefreshToken);
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, result.Username),
+                    new Claim(ClaimTypes.NameIdentifier, result.Id.ToString()),
+                };
+                claims.AddRange(result.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                                                new ClaimsPrincipal(claimsIdentity),
+                                                new AuthenticationProperties
+                                                {
+                                                    IsPersistent = false
+                                                });
+
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth");
+                }
+            }
+            catch (ErrorViewModelException ex)
             {
-                var resultError = response.GetJsonAsync<ErrorResult>().Result;
-                TempData["resultError"] = JsonSerializer.Serialize(resultError);
+                TempData["errorMessage"] = ex.ViewModel?.ErrorResult?.Message;
                 return RedirectToAction("Index", "Auth");
             }
-            var result = response.GetJsonAsync<AuthenticateResponse>().Result;
-            //Response.Cookies.Append("X-Access-Token", result.AccessToken, new CookieOptions
-            //{
-            //    HttpOnly = true,
-            //    SameSite = SameSiteMode.Strict
-            //});
-
-            await SetSessionVariables(result);
-
-
-            SetJWTCookie(result.AccessToken);
-            SetRTCookie(result.RefreshToken);
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, result.Username),
-                new Claim(ClaimTypes.NameIdentifier, result.Id.ToString()),
-            };
-            claims.AddRange(result.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                                            new ClaimsPrincipal(claimsIdentity),
-                                            new AuthenticationProperties
-                                            {
-                                                IsPersistent = false
-                                            });
-
-            if (!string.IsNullOrEmpty(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
-                return RedirectToAction("Index", "Auth");
-            }
-
         }
 
         //[AllowAnonymous]
@@ -110,42 +111,45 @@ namespace evolUX.UI.Areas.Core.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LoginCredentials(UserLogin model, string returnUrl = null)
         {
-            var response = await _authService.LoginCredentials(model.Username, model.Password);
-            if (response.StatusCode == ((int)HttpStatusCode.NotFound))
+            try
             {
-                var resultError = response.GetJsonAsync<ErrorResult>().Result;
-                TempData["resultError"] = JsonSerializer.Serialize(resultError);
-                return RedirectToAction("Index", "Auth");
+                var response = await _authService.LoginCredentials(model.Username, model.Password);
+                if (response.StatusCode == ((int)HttpStatusCode.NotFound))
+                {
+                    var resultError = response.GetJsonAsync<ErrorResult>().Result;
+                    TempData["resultError"] = JsonSerializer.Serialize(resultError);
+                    return RedirectToAction("Index", "Auth");
+                }
+                var result = response.GetJsonAsync<AuthenticateResponse>().Result;
+
+                await SetSessionVariables(result);
+
+                SetJWTCookie(result.AccessToken);
+                SetRTCookie(result.RefreshToken);
+
+                var claims = new List<Claim>{new Claim(ClaimTypes.Name, result.Username), new Claim(ClaimTypes.NameIdentifier, result.Id.ToString())};
+                claims.AddRange(result.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                                                new ClaimsPrincipal(claimsIdentity),
+                                                new AuthenticationProperties
+                                                {
+                                                    IsPersistent = false
+                                                });
+
+
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth");
+                }
             }
-            var result = response.GetJsonAsync<AuthenticateResponse>().Result;
-
-            SetSessionVariables(result);
-            
-
-            SetJWTCookie(result.AccessToken);
-            SetRTCookie(result.RefreshToken);
-
-            var claims = new List<Claim>
+            catch (ErrorViewModelException ex)
             {
-                new Claim(ClaimTypes.Name, result.Username),
-                new Claim(ClaimTypes.NameIdentifier, result.Id.ToString()),
-            };
-            claims.AddRange(result.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-                                            new ClaimsPrincipal(claimsIdentity),
-                                            new AuthenticationProperties
-                                            {
-                                                IsPersistent = false
-                                            });
-
-
-            if (!string.IsNullOrEmpty(returnUrl))
-            {
-                return Redirect(returnUrl);
-            }
-            else
-            {
+                TempData["errorMessage"] = ex.ViewModel?.ErrorResult?.Message;
                 return RedirectToAction("Index", "Auth");
             }
         }
@@ -161,39 +165,55 @@ namespace evolUX.UI.Areas.Core.Controllers
 
         public async Task<IActionResult> Refresh(string returnUrl)
         {
-            //also use claims to refresh session variables
-            var token = Request.Cookies["X-Access-Token"];
-            var refresh = Request.Cookies["X-Refresh-Token"];
-            var response = await _authService.GetRefreshToken(token, refresh);
-            if (response.StatusCode != Ok().StatusCode)
-                return null;
-            var result = await response.GetJsonAsync();
-            SetJWTCookie(((dynamic)result).accessToken);
-            SetRTCookie(((dynamic)result).refreshToken);
-            AuthenticateResponse user = new AuthenticateResponse();
-            user.Id = (int)((dynamic)result).userModel.userID;
-            user.Username = ((dynamic)result).userModel.userName;
-            user.Language = ((dynamic)result).userModel.language;
-            await SetSessionVariables(user) ;
-            return Redirect(returnUrl);
+            try
+            {
+                //also use claims to refresh session variables
+                var token = Request.Cookies["X-Access-Token"];
+                var refresh = Request.Cookies["X-Refresh-Token"];
+                var response = await _authService.GetRefreshToken(token, refresh);
+                if (response.StatusCode != Ok().StatusCode)
+                    return null;
+                var result = await response.GetJsonAsync();
+                SetJWTCookie(((dynamic)result).accessToken);
+                SetRTCookie(((dynamic)result).refreshToken);
+                AuthenticateResponse user = new AuthenticateResponse();
+                user.Id = (int)((dynamic)result).userModel.userID;
+                user.Username = ((dynamic)result).userModel.userName;
+                user.Language = ((dynamic)result).userModel.language;
+                await SetSessionVariables(user);
+                return Redirect(returnUrl);
+            }
+            catch (ErrorViewModelException ex)
+            {
+                TempData["errorMessage"] = ex.ViewModel?.ErrorResult?.Message;
+                return RedirectToAction("Index", "Auth");
+            }
+
         }
         public async Task<int> HiddenRefresh()
         {
-            //also use claims to refresh session variables
-            var token = Request.Cookies["X-Access-Token"];
-            var refresh = Request.Cookies["X-Refresh-Token"];
-            var response = await _authService.GetRefreshToken(token, refresh);
-            if (response.StatusCode != Ok().StatusCode)
+            try
+            {
+                //also use claims to refresh session variables
+                var token = Request.Cookies["X-Access-Token"];
+                var refresh = Request.Cookies["X-Refresh-Token"];
+                var response = await _authService.GetRefreshToken(token, refresh);
+                if (response.StatusCode != Ok().StatusCode)
+                    return response.StatusCode;
+                var result = await response.GetJsonAsync();
+                SetJWTCookie(((dynamic)result).accessToken);
+                SetRTCookie(((dynamic)result).refreshToken);
+                AuthenticateResponse user = new AuthenticateResponse();
+                user.Id = (int)((dynamic)result).userModel.userID;
+                user.Username = ((dynamic)result).userModel.userName;
+                user.Language = ((dynamic)result).userModel.language;
+                await SetSessionVariables(user);
                 return response.StatusCode;
-            var result = await response.GetJsonAsync();
-            SetJWTCookie(((dynamic)result).accessToken);
-            SetRTCookie(((dynamic)result).refreshToken);
-            AuthenticateResponse user = new AuthenticateResponse();
-            user.Id = (int)((dynamic)result).userModel.userID;
-            user.Username = ((dynamic)result).userModel.userName;
-            user.Language = ((dynamic)result).userModel.language;
-            await SetSessionVariables(user);
-            return response.StatusCode;
+            }
+            catch (ErrorViewModelException ex)
+            {
+                return ex.ViewModel.ErrorResult.Code;
+            }
         }
         public IActionResult AccessDenied(string returnUrl)
         {

@@ -4,7 +4,6 @@ using evolUX.API.Areas.Core.Services.Interfaces;
 //using Shared.Models.Areas.Finishing;
 using Shared.ViewModels.Areas.Finishing;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
-using evolUX.API.Data.Interfaces;
 using System.Data;
 using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
@@ -12,6 +11,8 @@ using Shared.ViewModels.General;
 using evolUX.API.Areas.Finishing.Services;
 using evolUX.API.Models;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.Core.Controllers
 {
@@ -46,6 +47,10 @@ namespace evolUX.API.Areas.Core.Controllers
                 viewmodel.Results = await _userService.ChangeCulture(userID, culture);
                 _logger.LogInfo("ChangeCulture Get");
                 return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {

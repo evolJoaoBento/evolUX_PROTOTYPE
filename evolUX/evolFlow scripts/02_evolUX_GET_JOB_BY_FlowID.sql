@@ -21,5 +21,6 @@ BEGIN
 		AND ((j.EndTimeStamp is NULL
 		AND j.JobStatus is NULL)
 		OR EXISTS (SELECT TOP 1 1 FROM ACTIVE_TASKS a WITH(NOLOCK) WHERE a.JobID = j.JobID))
+	ORDER BY j.RegistrationTimeStamp DESC
 END
 GO

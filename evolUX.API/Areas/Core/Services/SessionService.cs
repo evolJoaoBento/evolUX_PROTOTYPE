@@ -1,11 +1,11 @@
 ﻿using evolUX.API.Areas.Core.Services.Interfaces;
 using Shared.Models.Areas.Finishing;
 using Shared.ViewModels.Areas.Finishing;
-using evolUX.API.Data.Interfaces;
 using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
 
 namespace evolUX.API.Areas.Core.Services
 {
@@ -53,7 +53,7 @@ namespace evolUX.API.Areas.Core.Services
                 result.Add("evolDP/ServiceCompanies", JsonConvert.SerializeObject(serviceCompanies));
                 DataTable expeditionCompanies = await _repository.Session.GetCompanies(servers, "EXPEDITION");
                 result.Add("evolDP/ExpeditionCompanies", JsonConvert.SerializeObject(expeditionCompanies));
-                DataTable companyBusiness = await _repository.Session.GetCompanies(servers, "SERVICE");
+                DataTable companyBusiness = await _repository.Session.GetCompanyBusinness(servers, "SERVICE");
                 result.Add("evolDP/CompanyBusiness", JsonConvert.SerializeObject(companyBusiness));
             }
             return result;

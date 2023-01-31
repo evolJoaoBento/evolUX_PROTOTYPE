@@ -2,6 +2,14 @@
 using Shared.ViewModels.Areas.Finishing;
 using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using Shared.ViewModels.Areas.evolDP;
+using evolUX.API.Models;
+using evolUX.UI.Exceptions;
+using Flurl.Http;
+using Shared.Models.Areas.Core;
+using Shared.ViewModels.Areas.Core;
+using evolUX.UI.Areas.Finishing.Repositories;
+using Shared.Models.General;
+using Shared.Models.Areas.Finishing;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
@@ -14,13 +22,93 @@ namespace evolUX.UI.Areas.Finishing.Services
         }
         public async Task<BusinessViewModel> GetCompanyBusiness(string CompanyBusinessList)
         {
-            var response = await _expeditionRepository.GetCompanyBusiness(CompanyBusinessList);
-            return response;
+            try
+            {
+                var response = await _expeditionRepository.GetCompanyBusiness(CompanyBusinessList);
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.HResult;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
         }
-        public async Task<ExpeditionFilesViewModel> GetPendingExpeditionFiles(int businessID, string ServiceCompanyList)
+        public async Task<ExpeditionFilesViewModel> GetPendingExpeditionFiles(int BusinessID, string ServiceCompanyList)
         {
-            var response = await _expeditionRepository.GetPendingExpeditionFiles(businessID, ServiceCompanyList);
-            return response;
+            try
+            {
+                var response = await _expeditionRepository.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.HResult;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+        }
+        public async Task<Result> RegistExpeditionReport(List<RegistExpReportElement> expFiles, string username, int userID)
+        {
+            try
+            {
+                Result response = await _expeditionRepository.RegistExpeditionReport(expFiles, username, userID);
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                viewModel.ErrorResult.StackTrace = ex.StackTrace;
+                throw new ErrorViewModelException(viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.HResult;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+
         }
     }
 }
+

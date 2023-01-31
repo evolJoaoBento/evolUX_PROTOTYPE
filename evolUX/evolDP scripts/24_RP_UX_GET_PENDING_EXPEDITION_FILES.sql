@@ -1,4 +1,25 @@
-﻿IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RP_UX_GET_PENDING_EXPEDITION_FILES]') AND type in (N'P', N'PC'))
+﻿IF NOT EXISTS(SELECT * FROM sys.columns
+WHERE Name = N'RegistTimeStamp' AND OBJECT_ID = OBJECT_ID(N'RTT_FILE_EXPEDITION_REPORT_LIST'))
+BEGIN
+	ALTER TABLE [dbo].[RTT_FILE_EXPEDITION_REPORT_LIST]
+	ADD RegistTimeStamp datetime NULL
+END
+GO
+UPDATE [dbo].[RTT_FILE_EXPEDITION_REPORT_LIST]
+SET RegistTimeStamp = CURRENT_TIMESTAMP
+WHERE RegistTimeStamp is NULL
+GO
+IF NOT EXISTS (SELECT 1 FROM sys.objects 
+WHERE object_id = OBJECT_ID(N'[schema_name].[constraint_name]') AND type = N'C')
+BEGIN
+	ALTER TABLE [dbo].[RTT_FILE_EXPEDITION_REPORT_LIST]
+	ADD CONSTRAINT DF_RTT_FILE_EXPEDITION_REPORT_LIST_RegistTimeStamp DEFAULT GETDATE() FOR RegistTimeStamp
+END
+GO
+ALTER TABLE [dbo].[RTT_FILE_EXPEDITION_REPORT_LIST]
+ALTER COLUMN RegistTimeStamp datetime NOT NULL
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RP_UX_GET_PENDING_EXPEDITION_FILES]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RP_UX_GET_PENDING_EXPEDITION_FILES] AS' 
 END
@@ -25,7 +46,10 @@ BEGIN
 			ec.ClientName,
 			ec.ContractNr,
 			ec.ClientNr,
-			ec.ContractID
+			ec.ContractID,
+			pd.ServiceCompanyID,
+			sc.CompanyCode [ServiceCompanyCode],
+			sc.CompanyName [ServiceCompanyName]
 	FROM
 		VW_FULLFILLED_FILE ff
 	INNER JOIN
@@ -36,8 +60,11 @@ BEGIN
 		RT_PRODUCTION_DETAIL pd WITH(NOLOCK)
 	ON	pd.ProdDetailID = f.ProdDetailID
 	INNER JOIN
-		@CompanyList cl
-	ON cl.ID = pd.ServiceCompanyID
+		@ServiceCompanyList s
+	ON s.ID = pd.ServiceCompanyID
+	INNER JOIN
+		RD_COMPANY sc WITH(NOLOCK)
+	ON	sc.CompanyID = pd.ServiceCompanyID
 	INNER JOIN
 		RD_EXPCOMPANY_SERVICE_TASK est WITH(NOLOCK)
 	ON	est.ExpCode = pd.ExpCode
@@ -61,65 +88,16 @@ BEGIN
 	INNER JOIN
 		RD_BUSINESS b WITH(NOLOCK)
 	ON	b.BusinessID = r.BusinessID
+	LEFT OUTER JOIN
+		RTT_FILE_EXPEDITION_REPORT_LIST tt
+	ON tt.RunID = f.RunID AND tt.FileID = f.FileID
+		AND DATEADD(hour, -2, CURRENT_TIMESTAMP) < tt.RegistTimeStamp
 	WHERE f.ErrorID = 0
 		AND (@BusinessID is NULL OR b.BusinessID = @BusinessID)
 		AND stst.ServiceTypeID = (SELECT ServiceTypeID
 								FROM RD_SERVICE_TYPE
 								WHERE ServiceTypeCode = 'EXPEDITION')
-	ORDER BY est.ExpCompanyID, b.CompanyID, b.BusinessID, eec.ContractID, f.RunID, f.FileID
+		AND tt.RunID is NULL
+	ORDER BY pd.ServiceCompanyID, est.ExpCompanyID, b.CompanyID, b.BusinessID, f.RunID, eec.ContractID, f.FileID
 END
-GO
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_COMPANY_CONFIG]') AND type in (N'U'))
-BEGIN
-	DROP TABLE [dbo].[RD_COMPANY_CONFIG]
-END
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_COMPANY_CONFIG]') AND type in (N'U'))
-BEGIN
-CREATE TABLE [dbo].[RD_COMPANY_CONFIG](
-	[CompanyID] [int] NOT NULL,
-	[RelationCompanyID] [int] NOT NULL,
-	[RelationType] [varchar](10) NOT NULL,
- CONSTRAINT [PK_RD_COMPANY_CONFIG] PRIMARY KEY CLUSTERED 
-(
-	[CompanyID] ASC,
-	[RelationCompanyID] ASC,
-	[RelationType] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-END
-GO
-SET NOCOUNT ON
-INSERT INTO [dbo].[RD_COMPANY_CONFIG]([CompanyID], [RelationCompanyID], [RelationType])
-SELECT DISTINCT 1, c.[ServiceCompanyID], 'SERVICE'
-FROM [dbo].[RD_SERVICE_COMPANY_RESTRICTION] c
-WHERE NOT EXISTS (SELECT TOP 1 1
-				FROM [dbo].[RD_COMPANY_CONFIG]
-				WHERE [CompanyID] = 1
-					AND [RelationCompanyID] = c.[ServiceCompanyID]
-					AND [RelationType] = 'SERVICE')
-
-INSERT INTO [dbo].[RD_COMPANY_CONFIG]([CompanyID], [RelationCompanyID], [RelationType])
-SELECT DISTINCT 1, c.[ExpCompanyID], 'EXPEDITION'
-FROM [dbo].[RD_EXPCOMPANY_TYPE] c
-WHERE NOT EXISTS (SELECT TOP 1 1
-				FROM [dbo].[RD_COMPANY_CONFIG]
-				WHERE [CompanyID] = 1
-					AND [RelationCompanyID] = c.[ExpCompanyID]
-					AND [RelationType] = 'EXPEDITION')
-
-INSERT INTO [dbo].[RD_COMPANY_CONFIG]([CompanyID], [RelationCompanyID], [RelationType])
-SELECT DISTINCT c1.[RelationCompanyID], c2.[RelationCompanyID], c2.[RelationType]
-FROM [dbo].[RD_COMPANY_CONFIG] c1
-INNER JOIN
-	[dbo].[RD_COMPANY_CONFIG] c2
-ON c1.[CompanyID] = c2.[CompanyID]
-	AND c1.[RelationType] = 'SERVICE'
-	AND c2.[RelationType] = 'EXPEDITION'
-WHERE c1.[CompanyID] = 1
-	AND NOT EXISTS (SELECT TOP 1 1
-				FROM [dbo].[RD_COMPANY_CONFIG]
-				WHERE [CompanyID] = c1.[RelationCompanyID]
-					AND [RelationCompanyID] = c2.[RelationCompanyID]
-					AND [RelationType] = c2.[RelationType])
 GO

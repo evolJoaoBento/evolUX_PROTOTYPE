@@ -2,8 +2,8 @@
 using Shared.Models.General;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
 using Shared.ViewModels.Areas.Finishing;
-using evolUX.API.Data.Interfaces;
 using System.Data;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
 
 namespace evolUX.API.Areas.Finishing.Services
 {

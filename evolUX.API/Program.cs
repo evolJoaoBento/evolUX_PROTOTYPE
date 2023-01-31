@@ -5,8 +5,6 @@ using evolUX.API.Areas.EvolDP.Services.Interfaces;
 using evolUX.API.Areas.Finishing.Services;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Context;
-using evolUX.API.Data.Interfaces;
-using evolUX.API.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Builder;
@@ -17,15 +15,30 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Session;
 using System.Text;
 using System.Text.Json.Serialization;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
+using evolUX.API.Areas.Core.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+//Corw
 builder.Services.AddMvc();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IUserService, UserService>();
+builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
+builder.Services.AddSingleton<ISessionService, SessionService>();
+builder.Services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
+builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddSingleton<IWrapperRepository, WrapperRepository>();
+
+//evolDP
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
+builder.Services.AddSingleton<IExpeditionCompaniesService, ExpeditionCompaniesService>();
+builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
+builder.Services.AddSingleton<IExpeditionZoneService, ExpeditionZoneService>();
+
+//Finishing
 builder.Services.AddSingleton<IProductionReportService, ProductionReportService>();
 builder.Services.AddSingleton<IPendingRegistService, PendingRegistService>();
 builder.Services.AddSingleton<IPrintService, PrintService>();
@@ -34,14 +47,8 @@ builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillServic
 builder.Services.AddSingleton<IRecoverService, RecoverService>();
 builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();
 builder.Services.AddSingleton<IPendingRecoverService, PendingRecoverService>();
-builder.Services.AddSingleton<IExpeditionCompaniesService, ExpeditionCompaniesService>();
-builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
-builder.Services.AddSingleton<IExpeditionZoneService, ExpeditionZoneService>();
-builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
-builder.Services.AddSingleton<ISessionService, SessionService>();
-builder.Services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
-builder.Services.AddSingleton<DapperContext>();
-builder.Services.AddSingleton<IWrapperRepository, WrapperRepository>();
+builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;

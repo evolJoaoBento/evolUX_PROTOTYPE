@@ -7,7 +7,8 @@
 *@
 @{
     ViewData["Title"] = "Home Page";
-    var errorMessage = TempData["resultError"] as ErrorResult;
+    var error = TempData["resultError"] as ErrorResult;
+    var errorMessage = TempData["errorMessage"];
     var returnUrl = ViewData["returnUrl"];
 
 }
@@ -46,7 +47,7 @@
                 <div class="auth-error">
                     @if (@errorMessage != null)
                     {
-                        <p style="margin:0;">Erro @errorMessage.Code: @errorMessage.Message</p>
+                        <p style="margin:0;">@errorMessage</p>
                     }
                 </div>
 

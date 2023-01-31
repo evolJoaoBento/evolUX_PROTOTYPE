@@ -16,6 +16,9 @@ using System.Security.Claims;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.Models.Areas.evolDP;
 using Microsoft.Extensions.Localization;
+using Microsoft.IdentityModel.Tokens;
+using Shared.Models.Areas.Finishing;
+using Shared.Models.General;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -23,8 +26,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
     public class ExpeditionController : Controller
     {
         private readonly IExpeditionService _expeditionService;
-        private readonly IStringLocalizer<RecoverController> _localizer;
-        public ExpeditionController(IExpeditionService expeditionService, IStringLocalizer<RecoverController> localizer)
+        private readonly IStringLocalizer<ExpeditionController> _localizer;
+        public ExpeditionController(IExpeditionService expeditionService, IStringLocalizer<ExpeditionController> localizer)
         {
             _expeditionService = expeditionService;
             _localizer = localizer;
@@ -38,17 +41,21 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 if (string.IsNullOrEmpty(CompanyBusinessList))
                     return View(null);
                 BusinessViewModel result = await _expeditionService.GetCompanyBusiness(CompanyBusinessList);
-                if (result != null && result.CompanyBusiness.Count() > 1)
+                if (result != null && result.CompanyBusiness.Count() > 0)
                 {
-                    string AllDesc = _localizer["All"];
-                    result.CompanyBusiness.Append(new Business { BusinessID = 0, BusinessCode = "", Description = AllDesc });
-                    result.CompanyBusiness.OrderBy(x => x.BusinessID);
-                    return View(result);
-                }
-                else if (result != null)
-                {
-                    string scValues = result.CompanyBusiness.First().BusinessID + "|" + result.CompanyBusiness.First().BusinessCode + "|" + result.CompanyBusiness.First().Description;
-                    return RedirectToAction("ExpeditionFileList", new { CompanyBusinessValues = scValues });
+                    if (result.CompanyBusiness.Count() > 1)
+                    { 
+                        List<Business> cList = result.CompanyBusiness.ToList();
+                        string AllDesc = _localizer["All"];
+                        cList.Add(new Business { BusinessID = 0, BusinessCode = "", Description = AllDesc });
+                        result.CompanyBusiness = cList.OrderBy(x => x.BusinessID);
+                        return View(result);
+                    }
+                    else
+                    {
+                        string scValues = result.CompanyBusiness.First().BusinessID + "|" + result.CompanyBusiness.First().BusinessCode + "|" + result.CompanyBusiness.First().Description;
+                        return RedirectToAction("ExpeditionFileList", new { CompanyBusinessValues = scValues });
+                    }
                 }
                 else
                     return View(null);
@@ -65,13 +72,13 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 viewModel.ErrorResult.Message = ex.Message;
                 return View("Error", viewModel);
             }
-            catch(HttpNotFoundException ex)
+            catch (HttpNotFoundException ex)
             {
                 ErrorViewModel viewModel = new ErrorViewModel();
                 viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
                 return View("Error", viewModel);
             }
-            catch(HttpUnauthorizedException ex)
+            catch (HttpUnauthorizedException ex)
             {
                 if (ex.response.Headers.Contains("Token-Expired"))
                 {
@@ -86,10 +93,9 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                     return RedirectToAction("Index", "Auth", new { Area = "Core" });
                 }
             }
-            
         }
 
-        public async Task<IActionResult> ExpeditionFileList(string CompanyBusinessValues)
+        public async Task<IActionResult> PendingExpeditionFiles(string CompanyBusinessValues)
         {
             try
             {
@@ -115,15 +121,86 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 {
                     ViewBag.hasMultipleCompanyBusiness = true;
                     ViewBag.BusinessDescription = "";
-
+                    ViewBag.ExpeditionReportsJobs = 0;
                 }
                 else
                 {
                     ViewBag.hasMultipleCompanyBusiness = false;
                     ViewBag.BusinessDescription = " [" + BusinessDescription + "]";
+                    ViewBag.ExpeditionReportsJobs = 0;
                 }
-
+                DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
+                if (ServiceCompanyDT.Rows.Count > 1)
+                {
+                    ViewBag.hasMultipleServiceCompanies = true;
+                }
+                else
+                {
+                    ViewBag.hasMultipleServiceCompanies = false;
+                }
                 return View(result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+
+                var resultError = await ex.GetResponseJsonAsync<ErrorResult>();
+                return View("Error", resultError);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                var resultError = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", resultError);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+        }
+
+        public async Task<IActionResult> RegistExpeditionReport(List<string> CheckedFileList)
+        {
+            try
+            {
+                if (CheckedFileList == null || CheckedFileList.Count < 1)
+                    return View(null);
+                string username = User.Identity.Name;
+                int userID = int.Parse(User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
+                                                  .Select(c => c.Value)
+                                                  .SingleOrDefault());
+
+                List<RegistExpReportElement> expFiles = new List<RegistExpReportElement>();
+                foreach (string cFile in CheckedFileList)
+                {
+                    string[] checkedFile = cFile.Split('|');
+                    string expServiceCompanyCode = Convert.ToString(checkedFile[0]);
+                    RegistExpReportElement? rElement = expFiles.FirstOrDefault(x => x.ServiceCompanyCode == expServiceCompanyCode);
+                    if (rElement == null)
+                    {
+                        rElement = new RegistExpReportElement(expServiceCompanyCode);
+                        expFiles.Add(rElement);
+                    }
+                    int expCompanyID = Convert.ToInt32(checkedFile[1]);
+                    int runID = Convert.ToInt32(checkedFile[2]);
+                    int fileID = Convert.ToInt32(checkedFile[3]);
+
+                    rElement.ExpFileList.Add(new ExpFileElement(runID, fileID));
+                }
+                Result result = await _expeditionService.RegistExpeditionReport(expFiles, username, userID);
+                return PartialView("MessageView", new MessageViewModel(result.ErrorID.ToString(), "", result.Error));
             }
             catch (FlurlHttpException ex)
             {

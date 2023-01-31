@@ -2,7 +2,6 @@
 using evolUX.API.Areas.EvolDP.Models;
 using evolUX.API.Areas.EvolDP.ViewModels;
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
-using evolUX.API.Data.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -10,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Dynamic;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
+using System.Data.SqlClient;
 
 namespace evolUX.Areas.EvolDP.Controllers
 {
@@ -40,6 +41,10 @@ namespace evolUX.Areas.EvolDP.Controllers
                 _logger.LogInfo("DocCodeGroup Get");
                 return Ok(viewmodel);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -58,6 +63,10 @@ namespace evolUX.Areas.EvolDP.Controllers
                 DocCodeViewModel viewmodel = await _docCodeService.GetDocCode(docLayout, docType);
                 _logger.LogInfo("DocCode Get");
                 return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {
@@ -78,6 +87,10 @@ namespace evolUX.Areas.EvolDP.Controllers
                 DocCodeConfigViewModel viewmodel = await _docCodeService.GetDocCodeConfig(ID);
                 _logger.LogInfo("DocCodeConfig Get");
                 return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {
@@ -101,6 +114,10 @@ namespace evolUX.Areas.EvolDP.Controllers
                 viewmodel.DocCodeConfigList = list;
                 _logger.LogInfo("DocCodeConfig Get");
                 return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {
@@ -137,6 +154,10 @@ namespace evolUX.Areas.EvolDP.Controllers
                 _logger.LogInfo("DocCodeException Get");
                 return Ok(viewmodel);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -162,6 +183,10 @@ namespace evolUX.Areas.EvolDP.Controllers
                 _logger.LogInfo("DocCodeException Get");
                 return Ok(viewmodel);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -184,6 +209,10 @@ namespace evolUX.Areas.EvolDP.Controllers
                 _logger.LogInfo("DocCodeException Get");
                 return Ok(viewmodel);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -205,6 +234,10 @@ namespace evolUX.Areas.EvolDP.Controllers
                 _logger.LogInfo("DocCodeException Get");
                 return Ok(viewmodel);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -224,6 +257,10 @@ namespace evolUX.Areas.EvolDP.Controllers
                 _logger.LogInfo("DocCodeException Get");
                 return Ok();
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -232,8 +269,5 @@ namespace evolUX.Areas.EvolDP.Controllers
             }
 
         }
-
-
-
     }
 }

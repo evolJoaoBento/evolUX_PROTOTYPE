@@ -1,7 +1,7 @@
-﻿using evolUX.API.Areas.EvolDP.Models;
+﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
+using evolUX.API.Areas.EvolDP.Models;
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
 using evolUX.API.Areas.EvolDP.ViewModels;
-using evolUX.API.Data.Interfaces;
 using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Areas.EvolDP.Services

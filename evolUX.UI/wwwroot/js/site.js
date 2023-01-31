@@ -76,3 +76,125 @@ $(function () {
     });
 
 });
+
+/***************************************
+Change/Replace class in document
+    elementName: Element Name
+    oldClassValue:	old class value
+    newClassValue:	new class value
+***************************************/
+function changeClass(elementName, oldClassValue, newClassValue) {
+    document.getElementById(elementName).classList.remove(oldClassValue);
+    document.getElementById(elementName).classList.add(newClassValue);
+}
+
+/*************************************************************
+Hide field with specific id
+    elementName: name id of field to hide
+**************************************************************/
+function eShide(elementName) {
+    try { document.getElementById(elementName).style.display = "none"; } catch (e) { }
+}
+
+/*************************************************************
+Show field with specific id
+    elementName: name id of field to show
+**************************************************************/
+function eSshow(elementName) {
+    try { document.getElementById(elementName).style.display = ""; } catch (e) { }
+}
+
+/*************************************************************
+Hide or Show div element with specific id
+    opcional
+        args[0+i]: objecto
+        args[1+i]: 'show', 'hide'
+**************************************************************/
+function hideDivs() {
+    var i, v, obj, args = hideDivs.arguments;
+    for (i = 0; i < args.length - 1; i += 2) {
+        if ((obj = document.getElementById(args[i])) != null) {
+            v = args[i + 1];
+            if (obj.style) {
+                obj = obj.style;
+                v = (v == 'show') ? 'visible' : (v = 'hide') ? 'hidden' : v;
+            }
+            obj.visibility = v;
+        }
+    }
+}
+
+/*************************************************************
+Search an objecto in the page
+    n: object to search
+    d: where to search
+**************************************************************/
+function findObj(n, d) {
+    var p, i, x;
+    if (!d) d = document;
+    if ((p = n.indexOf("?")) > 0 && parent.frames.length) {
+        d = parent.frames[n.substring(p + 1)].document;
+        n = n.substring(0, p);
+    }
+    if (!(d[n]) && d.all)
+        x = d.all[n];
+    for (i = 0; !x && i < d.forms.length; i++)
+        x = d.forms[i][n];
+    for (i = 0; !x && d.layers && i < d.layers.length; i++)
+        x = findObj(n, d.layers[i].document);
+    return x;
+}
+
+/*******************************************************************************
+Function that shows the detail by selecting the respective button
+    startName: Element Start Name
+********************************************************************************/
+function showDetail(startName) {
+    eSshow(startName);
+    changeClass('arrow' + startName, 'bx-plus', 'bx-minus');
+    document.getElementById('arrow' + startName).href = "javascript:hideDetail('" + startName + "');";
+}
+
+/*******************************************************************************
+Function that hides the detail by selecting the respective button
+    startName: Element Start Name
+********************************************************************************/
+function hideDetail(startName) {
+    eShide(startName);
+    changeClass('arrow' + startName, 'bx-minus', 'bx-plus');
+    document.getElementById('arrow' + startName).href = "javascript:showDetail('" + startName + "');";
+}
+/*******************************************************************************
+Function that check all checkbox with specific elemnent name 
+(optional: with specific elementId)
+    elementName: name id of field to show
+    elementId: start od value in checkbox
+********************************************************************************/
+function checkBoxAll(elementName, elementId) {
+    myobj = document.getElementsByName(elementName);
+    for (i = 0; (i < myobj.length); i++) {
+        if (myobj[i].type == "checkbox"
+            && (elementId == "" || myobj[i].value.substring(0, elementId.length) == elementId)) {
+            if (!myobj[i].checked) {
+                myobj[i].checked = true;
+            }
+        }
+    }
+}
+/*******************************************************************************
+Function that uncheck all checkbox with specific elemnent name 
+(optional: with specific elementId)
+    elementName: name id of field to show
+    elementId: start od value in checkbox
+********************************************************************************/
+function uncheckBoxAll(elementName, elementId) {
+    myobj = document.getElementsByName(elementName);
+    for (i = 0; (i < myobj.length); i++) {
+        if (myobj[i].type == "checkbox"
+            && (elementId == "" || myobj[i].value.substring(0, elementId.length) == elementId)) {
+            if (myobj[i].checked) {
+                myobj[i].checked = false;
+            }
+        }
+    }
+}

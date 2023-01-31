@@ -4,10 +4,11 @@ using evolUX.API.Areas.Core.Services.Interfaces;
 //using Shared.Models.Areas.Finishing;
 using Shared.ViewModels.Areas.Finishing;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
-using evolUX.API.Data.Interfaces;
 using System.Data;
 using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.Core.Controllers
 {
@@ -37,6 +38,10 @@ namespace evolUX.API.Areas.Core.Controllers
                 //TODO: PermissionLevel
                 _logger.LogInfo("SessionVariables Get");
                 return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {

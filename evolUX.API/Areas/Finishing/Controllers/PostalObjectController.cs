@@ -4,11 +4,12 @@ using evolUX.API.Areas.Core.Services.Interfaces;
 using Shared.ViewModels.Areas.Finishing;
 using Shared.ViewModels.General;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
-using evolUX.API.Data.Interfaces;
 using System.Data;
 using Newtonsoft.Json;
 using evolUX.API.Areas.Finishing.Services;
 using Shared.BindingModels.Finishing;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
@@ -41,6 +42,10 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 PostalObjectViewModel viewmodel = await _postalObjectService.GetPostalObjectInfo(ServiceCompanyList, PostObjBarCode);
                 _logger.LogInfo("PostalObjectInfo Get");
                 return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {

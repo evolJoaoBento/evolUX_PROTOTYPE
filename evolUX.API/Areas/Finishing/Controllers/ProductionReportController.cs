@@ -5,11 +5,12 @@ using evolUX.API.Areas.Core.Services.Interfaces;
 using Shared.ViewModels.Areas.Finishing;
 using Shared.Models.Areas.Finishing;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
-using evolUX.API.Data.Interfaces;
 using Shared.Models.Areas.Finishing;
 using System.Data;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
@@ -41,6 +42,10 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 _logger.LogInfo("ProductionRunReport Get");
                 return Ok(viewmodel);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -69,6 +74,10 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 _logger.LogInfo("ProductionReport Get");
                 return Ok(viewmodel);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -76,20 +85,5 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        //public async Task<ActionResult<ProductionReportViewModel>> GetProductionReport([FromQuery] int RunID, [FromQuery] int ServiceCompanyID)
-        //{
-        //    try
-        //    {
-        //        ProductionReportViewModel viewmodel = await _productionReportService.GetProductionReport(RunID, ServiceCompanyID);
-        //        _logger.LogInfo("ProductionReport Get");
-        //        return Ok(viewmodel);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //log error
-        //        _logger.LogError($"Something went wrong inside Get DocCode action: {ex.Message}");
-        //        return StatusCode(500, "Internal Server Error");
-        //    }
-        //}
     }
 }

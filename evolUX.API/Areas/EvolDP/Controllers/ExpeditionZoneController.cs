@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using evolUX.API.Areas.Core.Services.Interfaces;
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.EvolDP.Controllers
 {
@@ -31,6 +32,10 @@ namespace evolUX.API.Areas.EvolDP.Controllers
                 var expeditionZoneList = await _expeditionZoneService.GetExpeditionZones();
                 _logger.LogInfo("Expedition Zone Get");
                 return Ok(expeditionZoneList);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {

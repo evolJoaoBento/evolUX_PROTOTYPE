@@ -1,6 +1,5 @@
 ﻿using evolUX.API.Areas.Core.ViewModels;
 using evolUX.API.Areas.Core.Services.Interfaces;
-using evolUX.API.Data.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +9,7 @@ using Newtonsoft.Json.Converters;
 using System.Security.Claims;
 using System.Text;
 using Shared.Models.Areas.Core;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.Core.Controllers
 {
@@ -44,6 +44,10 @@ namespace evolUX.API.Areas.Core.Controllers
                 }
                 return Ok(userAndToken);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -70,7 +74,11 @@ namespace evolUX.API.Areas.Core.Controllers
                 }
                 return Ok(userAndToken);
             }
-            catch(Exception ex)
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
             {
                 //log error
                 //_logger.LogError($"Something went wrong inside Logincredentials action: {ex.Message}");
@@ -96,7 +104,11 @@ namespace evolUX.API.Areas.Core.Controllers
                 }
                 return Ok(result);
             }
-            catch(Exception ex)
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
             {
                 //log error
                 //_logger.LogError($"Something went wrong inside refresh action: {ex.Message}");
@@ -116,7 +128,11 @@ namespace evolUX.API.Areas.Core.Controllers
                 _authenticationService.DeleteRefreshToken(username);
                 return NoContent();
             }
-            catch(Exception ex)
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
             {
                 //log error
                 //_logger.LogError($"Something went wrong inside revoke action: {ex.Message}");

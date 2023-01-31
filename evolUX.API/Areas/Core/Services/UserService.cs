@@ -1,9 +1,9 @@
 ﻿using evolUX.API.Areas.Core.ViewModels;
 using evolUX.API.Areas.Core.Services.Interfaces;
-using evolUX.API.Data.Interfaces;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using Shared.Models.General;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
 
 namespace evolUX.API.Areas.Core.Services
 {

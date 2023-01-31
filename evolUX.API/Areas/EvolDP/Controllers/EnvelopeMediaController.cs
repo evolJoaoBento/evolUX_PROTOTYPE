@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-using evolUX.API.Data.Interfaces;
 using evolUX.API.Areas.Core.Services.Interfaces;
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.EvolDP.Controllers
 {
@@ -32,6 +32,10 @@ namespace evolUX.API.Areas.EvolDP.Controllers
                 _logger.LogInfo("Envelope Media Get");
                 return Ok(envelopeMediaList);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -51,6 +55,10 @@ namespace evolUX.API.Areas.EvolDP.Controllers
                 var envelopeMediaGroupList = await _envelopeMediaService.GetEnvelopeMediaGroups();
                 _logger.LogInfo("Return envelope media group list from database");
                 return Ok(envelopeMediaGroupList);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {

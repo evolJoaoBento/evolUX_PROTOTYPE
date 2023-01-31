@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Areas.Core.Services.Interfaces;
 using Shared.ViewModels.Areas.Finishing;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
-using evolUX.API.Data.Interfaces;
 using System.Data;
 using Newtonsoft.Json;
 using evolUX.API.Areas.Finishing.Services;
 using Shared.Models.General;
 using Shared.ViewModels.General;
 using Shared.ViewModels.Areas.evolDP;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
@@ -41,6 +42,10 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 _logger.LogInfo("GetServiceCompanies Get");
                 return Ok(viewmodel);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -64,6 +69,10 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 PendingRecoverDetailViewModel viewmodel = await _pendingRecoverService.GetPendingRecoveries(ServiceCompanyID, ServiceCompanyCode);
                 _logger.LogInfo("GetPendingRecoveries Get");
                 return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {
@@ -92,6 +101,10 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 Result viewmodel = await _pendingRecoverService.RegistPendingRecover(ServiceCompanyID, ServiceCompanyCode, RecoverType, UserID);
                 _logger.LogInfo("RegistPendingRecover Get");
                 return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {

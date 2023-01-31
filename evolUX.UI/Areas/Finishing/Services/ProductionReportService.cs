@@ -3,6 +3,9 @@ using Shared.ViewModels.Areas.Finishing;
 using Flurl.Http;
 using System.Data;
 using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
+using evolUX.UI.Exceptions;
+using Shared.Models.Areas.Core;
+using Shared.ViewModels.Areas.Core;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
@@ -15,13 +18,61 @@ namespace evolUX.UI.Areas.Finishing.Services
         }
         public async Task<ProductionRunReportViewModel> GetProductionRunReport(string ServiceCompanyList)
         {
-            var response = await _productionReportRepository.GetProductionRunReport(ServiceCompanyList);
-            return response;
+            try
+            {
+                var response = await _productionReportRepository.GetProductionRunReport(ServiceCompanyList);
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.HResult;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
         }
         public async Task<ProductionReportViewModel> GetProductionReport(string profileList, int runID, int serviceCompanyID)
         {
-            var response = await _productionReportRepository.GetProductionReport(profileList, runID, serviceCompanyID);
-            return response;
+            try
+            {
+                var response = await _productionReportRepository.GetProductionReport(profileList, runID, serviceCompanyID);
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.HResult;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
         }
     }
 }

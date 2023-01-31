@@ -24,7 +24,6 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ProductionRunReportViewModel>();
-
         }
         public async Task<ProductionReportViewModel> GetProductionReport(string profileList, int runID, int serviceCompanyID)
         {
@@ -38,7 +37,6 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ProductionReportViewModel>();
-
         }
     }
 }

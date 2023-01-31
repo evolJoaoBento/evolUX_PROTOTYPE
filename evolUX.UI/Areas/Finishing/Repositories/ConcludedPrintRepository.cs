@@ -1,4 +1,5 @@
 ﻿using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
+using evolUX.UI.Exceptions;
 using evolUX.UI.Repositories;
 using Flurl.Http;
 using Flurl.Http.Configuration;
@@ -17,25 +18,16 @@ namespace evolUX.UI.Areas.Finishing.Repositories
 
         public async Task<ResultsViewModel> RegistPrint(string FileBarcode, string user, string ServiceCompanyList)
         {
-            try
-            {
-                Regist bindingModel = new Regist();
-                bindingModel.FileBarcode = FileBarcode;
-                bindingModel.User = user;
-                bindingModel.ServiceCompanyList = ServiceCompanyList;
-                var response = await _flurlClient.Request("/api/finishing/PendingRegist/RegistPrint")
-                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                    .SendJsonAsync(HttpMethod.Get, bindingModel);
-                return await response.GetJsonAsync<ResultsViewModel>();
-            }
-            catch (FlurlHttpException ex)
-            {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-                dynamic d = ex.GetResponseJsonAsync();
-                return d;
-            }
+            Regist bindingModel = new Regist();
+            bindingModel.FileBarcode = FileBarcode;
+            bindingModel.User = user;
+            bindingModel.ServiceCompanyList = ServiceCompanyList;
+            var response = await _flurlClient.Request("/api/finishing/PendingRegist/RegistPrint")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, bindingModel);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<ResultsViewModel>();
         }
     }
 }

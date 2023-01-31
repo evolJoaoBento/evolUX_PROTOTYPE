@@ -52,7 +52,7 @@ namespace evolUX.UI.Areas.Core.Controllers
             try
             {
                 AuthenticateResponse userInfo = JsonConvert.DeserializeObject<AuthenticateResponse>(HttpContext.Session.GetString("UserInfo"));
-                _userService.ChangeCulture(userInfo.Id, culture);
+                await _userService.ChangeCulture(userInfo.Id, culture);
                 userInfo.Language = culture;
                 HttpContext.Session.SetString("UserInfo", JsonConvert.SerializeObject(userInfo));
                 return LocalRedirect(returnurl);

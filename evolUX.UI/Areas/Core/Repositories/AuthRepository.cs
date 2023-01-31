@@ -18,91 +18,46 @@ namespace evolUX.UI.Areas.Core.Repositories
         {
             //https://localhost:7107/ dev
             //http://localhost:5100/ prod
-            try
-            {
-                var response = await _flurlClient.Request("/API/Core/Auth/login").SetQueryParam("username", username)
-                    .AllowHttpStatus(HttpStatusCode.NotFound)
-                    .GetAsync();
-                return response;
-            }
-            catch (FlurlHttpException ex)
-            {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-                dynamic d = ex.GetResponseJsonAsync();
-                return d;
-            }
+            var response = await _flurlClient.Request("/API/Core/Auth/login").SetQueryParam("username", username)
+                .AllowHttpStatus(HttpStatusCode.NotFound)
+                .GetAsync();
+            return response;
         }
 
         public async Task<IFlurlResponse> LoginCredentials(string username, string password)
         {
-            try
+            var userLogin = new UserLogin
             {
-                var userLogin = new UserLogin
-                {
-                    Username = username,
-                    Password = password
-                };
-                var response = await _flurlClient.Request("/API/Core/Auth/logincredentials")
-                    .AllowHttpStatus(HttpStatusCode.NotFound)
-                    .SendJsonAsync(HttpMethod.Get, userLogin);
-                return response;
-            }
-            catch (FlurlHttpException ex)
-            {
-                dynamic d = ex.GetResponseJsonAsync();
-                return d;
-            }
+                Username = username,
+                Password = password
+            };
+            var response = await _flurlClient.Request("/API/Core/Auth/logincredentials")
+                .AllowHttpStatus(HttpStatusCode.NotFound)
+                .SendJsonAsync(HttpMethod.Get, userLogin);
+            return response;
         }
 
         public async Task<IFlurlResponse> GetRefreshToken(string accessToken, string refreshToken)
         {
-            try
+            var data = new
             {
-                var data = new
-                {
-                    accessToken,
-                    refreshToken
-                };
-                var response = await _flurlClient.Request("/API/Core/Auth/refresh")
-                    .AllowHttpStatus(HttpStatusCode.BadRequest)
-                    .PostJsonAsync(data);
+                accessToken,
+                refreshToken
+            };
+            var response = await _flurlClient.Request("/API/Core/Auth/refresh")
+                .AllowHttpStatus(HttpStatusCode.BadRequest)
+                .PostJsonAsync(data);
 
-                return response;
-            }
-
-            catch (FlurlHttpException ex)
-            {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-                dynamic d = ex.GetResponseJsonAsync();
-                return d;
-            }
+            return response;
         }
 
         public async Task<Dictionary<string, string>> GetSessionVariables(int ID)
         {
-            try
-            {
-                var response = await _flurlClient.Request("/API/Core/Session/SessionVariables")
-                    .SetQueryParam("User", ID)
-                    .GetAsync();
+            var response = await _flurlClient.Request("/API/Core/Session/SessionVariables")
+                .SetQueryParam("User", ID)
+                .GetAsync();
 
-                return await response.GetJsonAsync<Dictionary<string, string>>();
-            }
-
-            catch (FlurlHttpException ex)
-            {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-
-                dynamic d = ex.GetResponseJsonAsync();
-                //log error
-                return null;
-            }
+            return await response.GetJsonAsync<Dictionary<string, string>>();
         }
     }
 }

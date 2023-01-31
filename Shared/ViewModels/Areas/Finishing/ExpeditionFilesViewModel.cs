@@ -4,6 +4,6 @@ namespace Shared.ViewModels.Areas.Finishing
 {
     public class ExpeditionFilesViewModel
     {
-        public IEnumerable<ExpeditionFileElement> ExpeditionFiles { get; set; }
+        public IEnumerable<ExpServiceCompanyFileElement> ExpeditionFiles { get; set; }
     }
 }

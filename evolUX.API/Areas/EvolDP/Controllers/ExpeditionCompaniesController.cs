@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-using evolUX.API.Data.Interfaces;
 using evolUX.API.Areas.Core.Services.Interfaces;
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using System.Dynamic;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.EvolDP.Controllers
 {
@@ -34,6 +34,10 @@ namespace evolUX.API.Areas.EvolDP.Controllers
                 _logger.LogInfo("Expedition Companies Get");
                 return Ok(expeditionCompaniesList);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -55,6 +59,10 @@ namespace evolUX.API.Areas.EvolDP.Controllers
                 _logger.LogInfo("Expedition Company Configs Get");
                 return Ok(expeditionCompanyConfigsList);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -75,6 +83,10 @@ namespace evolUX.API.Areas.EvolDP.Controllers
                 var expeditionCompanyConfigsList = await _expeditionCompaniesService.GetExpeditionCompanyConfigCharacteristics(exObjExpandoObject);
                 _logger.LogInfo("Expedition Company Config Characteristics Get");
                 return Ok(expeditionCompanyConfigsList);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {

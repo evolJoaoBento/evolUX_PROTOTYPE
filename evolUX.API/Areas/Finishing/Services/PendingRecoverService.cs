@@ -1,11 +1,11 @@
 ﻿using evolUX.API.Areas.Finishing.Services.Interfaces;
 using Shared.ViewModels.Areas.Finishing;
-using evolUX.API.Data.Interfaces;
 using System.Data;
 using Shared.Models.Areas.evolDP;
 using Shared.Models.Areas.Finishing;
 using Shared.Models.General;
 using Shared.Models.Areas.Core;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
 
 namespace evolUX.API.Areas.Finishing.Services
 {

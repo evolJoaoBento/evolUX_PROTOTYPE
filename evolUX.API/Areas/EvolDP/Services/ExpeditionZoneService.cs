@@ -1,5 +1,5 @@
-﻿using evolUX.API.Areas.EvolDP.Services.Interfaces;
-using evolUX.API.Data.Interfaces;
+﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
+using evolUX.API.Areas.EvolDP.Services.Interfaces;
 
 namespace evolUX.API.Areas.EvolDP.Services
 {

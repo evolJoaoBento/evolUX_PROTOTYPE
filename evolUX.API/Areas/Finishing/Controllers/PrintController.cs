@@ -4,10 +4,11 @@ using evolUX.API.Areas.Core.Services.Interfaces;
 using Shared.ViewModels.Areas.Finishing;
 using Shared.ViewModels.General;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
-using evolUX.API.Data.Interfaces;
 using System.Data;
 using Newtonsoft.Json;
 using Shared.Models.General;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
@@ -44,6 +45,10 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 _logger.LogInfo("Printers Get");
                 return Ok(viewmodel);
             }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
             catch (Exception ex)
             {
                 //log error
@@ -52,28 +57,6 @@ namespace evolUX.API.Areas.Finishing.Controllers
             }
         }
 
-        //[HttpGet]
-        //[ActionName("Printers")]
-        //public async Task<ActionResult<ResoursesViewModel>> GetPrinters([FromBody] string ListJSON,
-        //                                                                [FromQuery] bool ignoreProfiles)
-        //{
-        //    try
-        //    {
-        //        List<string> list = JsonConvert.DeserializeObject<List<string>>(ListJSON);
-        //        string ProfileListJSON = list[0];
-        //        string FileSpecs = list[1];
-        //        IEnumerable<int> profileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
-        //        ResoursesViewModel viewmodel = await _printService.GetPrinters(profileList, FileSpecs, ignoreProfiles);
-        //        _logger.LogInfo("Printers Get");
-        //        return Ok(viewmodel);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //log error
-        //        _logger.LogError($"Something went wrong inside Get Printers action: {ex.Message}");
-        //        return StatusCode(500, "Internal Server Error");
-        //    }
-        //}
         [HttpGet]
         [ActionName("Print")]
         public async Task<ActionResult<ResultsViewModel>> Print([FromBody] Dictionary<string, object> dictionary)
@@ -103,6 +86,10 @@ namespace evolUX.API.Areas.Finishing.Controllers
                     Username, UserID, FilePath, FileName, ShortFileName);
                 _logger.LogInfo("Print Get");
                 return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {

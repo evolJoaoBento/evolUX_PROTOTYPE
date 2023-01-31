@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using evolUX.API.Areas.Core.Services.Interfaces;
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.EvolDP.Controllers
 {
@@ -30,6 +31,10 @@ namespace evolUX.API.Areas.EvolDP.Controllers
                 var expeditionTypeList = await _expeditionTypeService.GetExpeditionTypes();
                 _logger.LogInfo("Expedition Type Get");
                 return Ok(expeditionTypeList);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
             }
             catch (Exception ex)
             {
