@@ -32,14 +32,14 @@ namespace evolUX.API.Areas.Finishing.Services
             return companyBusiness;
         }
         
-        public async Task<ExpeditionFilesViewModel> GetPendingExpeditionFiles(int BusinessID, DataTable ServiceCompanyList)
+        public async Task<ExpeditionListViewModel> GetPendingExpeditionFiles(int BusinessID, DataTable ServiceCompanyList)
         {
-            ExpeditionFilesViewModel viewmodel = new ExpeditionFilesViewModel();
+            ExpeditionListViewModel viewmodel = new ExpeditionListViewModel();
 
-            viewmodel.ExpeditionFiles = (List<ExpServiceCompanyFileElement>)await _repository.Expedition.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
-            if (viewmodel.ExpeditionFiles != null)
+            viewmodel.ExpeditionList = (List<ExpServiceCompanyFileElement>)await _repository.Expedition.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
+            if (viewmodel.ExpeditionList != null)
             {
-                foreach(ExpServiceCompanyFileElement s in viewmodel.ExpeditionFiles)
+                foreach(ExpServiceCompanyFileElement s in viewmodel.ExpeditionList)
                 {
                     Dictionary<string, object> dictionary = new Dictionary<string, object>();
                     dictionary.Add("SERVICECOMPANYCODE", s.ServiceCompanyCode);
@@ -113,6 +113,27 @@ namespace evolUX.API.Areas.Finishing.Services
             }
             if (viewmodel == null)
                 throw new NullReferenceException("No result was sent by the Database!");
+            return viewmodel;
+        }
+
+        public async Task<ExpeditionListViewModel> GetExpeditionReportList(int BusinessID, DataTable ServiceCompanyList)
+        {
+            ExpeditionListViewModel viewmodel = new ExpeditionListViewModel();
+
+            viewmodel.ExpeditionList = (List<ExpServiceCompanyFileElement>)await _repository.Expedition.GetExpeditionReportList(BusinessID, ServiceCompanyList);
+            if (viewmodel.ExpeditionList != null)
+            {
+                foreach (ExpServiceCompanyFileElement s in viewmodel.ExpeditionList)
+                {
+                    Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                    dictionary.Add("SERVICECOMPANYCODE", s.ServiceCompanyCode);
+                    dictionary.Add("TYPE", "EXPEDITION");
+
+                    FlowInfo flowInfo = await _repository.RegistJob.GetFlowByCriteria(dictionary);
+                    s.ExpeditionReportsJobs = (List<Job>)await _repository.RegistJob.GetJobs(flowInfo.FlowID);
+                }
+            }
+
             return viewmodel;
         }
     }

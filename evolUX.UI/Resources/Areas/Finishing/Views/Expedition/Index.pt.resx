@@ -129,9 +129,6 @@
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
-  <data name="PendingExpeditionFiles" xml:space="preserve">
-    <value>Ficheiros por Expedir</value>
-  </data>
   <data name="Submit" xml:space="preserve">
     <value>Listar</value>
   </data>

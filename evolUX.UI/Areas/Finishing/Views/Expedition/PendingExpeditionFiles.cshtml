@@ -2,7 +2,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Shared.Models.Areas.Finishing
 @inject IViewLocalizer localizer
-@model ExpeditionFilesViewModel
+@model ExpeditionListViewModel
 
 @section Scripts
 {
@@ -31,9 +31,9 @@
 else
 {
     <div id="TitlePage">
-        <h1 class="display-4 text-center">@localizer["ExpeditionReport"] @ViewBag.BusinessDescription</h1>
+        <h1 class="display-4 text-center">@localizer["PendingExpedition"] @ViewBag.BusinessDescription</h1>
     </div>
-    @if (Model.ExpeditionFiles.Count() == 0)
+    @if (Model.ExpeditionList.Count() == 0)
     {
         <h4 class="display-4 text-center">@localizer["EmptyResult"]</h4>
     }
@@ -54,7 +54,7 @@ else
                 data-ajax-update="#response"
                 data-ajax-complete="refreshPage"
                 data-ajax-loading="myLoader">
-            @foreach (ExpServiceCompanyFileElement s in Model.ExpeditionFiles)
+            @foreach (ExpServiceCompanyFileElement s in Model.ExpeditionList)
             {
                 level++;
                 nameValue = Level0Name + level.ToString();
@@ -69,11 +69,11 @@ else
                     {
                         <tr>
                             <th>@localizer["PendingExpeditionFiles"] [@s.ServiceCompanyName]
-                                @if (Model.ExpeditionFiles.Count() > 0)
+                                @if (Model.ExpeditionList.Count() > 0)
                                 {
                                     <a class="bx bx-minus" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
                                 }
-                                </th>
+                            </th>
                         </tr>
                     }
                 </thead>
@@ -170,7 +170,6 @@ else
                             }
                         }
                         <tr><th colspan="5">@cValue</th></tr>
-                }
                 </tfoot>
                 </table>
             }

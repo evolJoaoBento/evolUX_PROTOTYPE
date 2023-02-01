@@ -49,7 +49,7 @@ namespace evolUX.UI.Areas.Finishing.Services
                 throw new ErrorViewModelException(viewModel);
             }
         }
-        public async Task<ExpeditionFilesViewModel> GetPendingExpeditionFiles(int BusinessID, string ServiceCompanyList)
+        public async Task<ExpeditionListViewModel> GetPendingExpeditionFiles(int BusinessID, string ServiceCompanyList)
         {
             try
             {
@@ -78,6 +78,7 @@ namespace evolUX.UI.Areas.Finishing.Services
                 throw new ErrorViewModelException(viewModel);
             }
         }
+
         public async Task<Result> RegistExpeditionReport(List<RegistExpReportElement> expFiles, string username, int userID)
         {
             try
@@ -108,6 +109,36 @@ namespace evolUX.UI.Areas.Finishing.Services
                 throw new ErrorViewModelException(viewModel);
             }
 
+        }
+
+        public async Task<ExpeditionListViewModel> GetExpeditionReportList(int BusinessID, string ServiceCompanyList)
+        {
+            try
+            {
+                var response = await _expeditionRepository.GetExpeditionReportList(BusinessID, ServiceCompanyList);
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.HResult;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
         }
     }
 }

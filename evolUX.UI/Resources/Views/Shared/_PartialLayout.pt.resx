@@ -162,13 +162,19 @@
   <data name="ActionExpCodes" xml:space="preserve">
     <value>Códigos Tratamento/Expedição</value>
   </data>
+  <data name="ActionExpedition" xml:space="preserve">
+    <value>Guias de Expedição</value>
+  </data>
   <data name="ActionExpeditionCompanies" xml:space="preserve">
     <value>Companhias de Expedição</value>
   </data>
   <data name="ActionExpeditionReport" xml:space="preserve">
-    <value>Guias de Expedição</value>
+    <value>Relatórios de Expedição</value>
   </data>
-  <data name="ActionExpeditionReport_Link" xml:space="preserve">
+  <data name="ActionExpeditionReportList" xml:space="preserve">
+    <value>Guias Geradas</value>
+  </data>
+  <data name="ActionExpeditionReportList_Link" xml:space="preserve">
     <value>/Finishing/Expedition/Index</value>
   </data>
   <data name="ActionExpeditionTypes" xml:space="preserve">
@@ -269,6 +275,12 @@
   </data>
   <data name="ActionPartialRecover_Link" xml:space="preserve">
     <value>/Finishing/Recover/RegistPartialRecover</value>
+  </data>
+  <data name="ActionPendingExpeditionFiles" xml:space="preserve">
+    <value>Expedição Pendente</value>
+  </data>
+  <data name="ActionPendingExpeditionFiles_Link" xml:space="preserve">
+    <value>/Finishing/Expedition/PendingExpedition</value>
   </data>
   <data name="ActionPendingProductionReport" xml:space="preserve">
     <value>Produção Pendente</value>

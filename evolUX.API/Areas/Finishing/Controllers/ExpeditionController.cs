@@ -58,7 +58,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
 
         [HttpGet]
         [ActionName("GetPendingExpeditionFiles")]
-        public async Task<ActionResult<ExpeditionFilesViewModel>> GetPendingExpeditionFiles([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<ExpeditionListViewModel>> GetPendingExpeditionFiles([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
 
                 DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
 
-                ExpeditionFilesViewModel viewmodel = await _expeditionService.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
+                ExpeditionListViewModel viewmodel = await _expeditionService.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
                 _logger.LogInfo("GetPendingExpeditionFiles Get");
                 return Ok(viewmodel);
             }
@@ -103,6 +103,36 @@ namespace evolUX.API.Areas.Finishing.Controllers
 
                 Result viewmodel = await _expeditionService.RegistExpeditionReport(expFiles, userName, userID);
                 _logger.LogInfo("RegistExpeditionReport Get");
+                return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get DocCode action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("GetExpeditionReportList")]
+        public async Task<ActionResult<ExpeditionListViewModel>> GetExpeditionReportList([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("BusinessID", out obj);
+                int BusinessID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("ServiceCompanyList", out obj);
+                string ServiceCompanyListJSON = Convert.ToString(obj);
+
+                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+
+                ExpeditionListViewModel viewmodel = await _expeditionService.GetExpeditionReportList(BusinessID, ServiceCompanyList);
+                _logger.LogInfo("GetPendingExpeditionFiles Get");
                 return Ok(viewmodel);
             }
             catch (SqlException ex)

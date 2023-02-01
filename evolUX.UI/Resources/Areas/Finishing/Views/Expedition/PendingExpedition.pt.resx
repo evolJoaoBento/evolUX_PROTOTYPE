@@ -123,43 +123,13 @@
   <data name="Business" xml:space="preserve">
     <value>Área de Negócio</value>
   </data>
-  <data name="ClientName" xml:space="preserve">
-    <value>Nome do Cliente de Expedição</value>
-  </data>
-  <data name="ClientNr" xml:space="preserve">
-    <value>N.º Cliente</value>
-  </data>
-  <data name="ContractNr" xml:space="preserve">
-    <value>N.º Contrato de Expedição</value>
-  </data>
-  <data name="Despach" xml:space="preserve">
-    <value>Expedir</value>
-  </data>
-  <data name="ExistsExpeditionReportsJobs" xml:space="preserve">
-    <value>Existem @#Jobs#@ Jobs de Guias de Expedição registados para @#ServiceCompany#@</value>
-  </data>
-  <data name="FileName" xml:space="preserve">
-    <value>Ficheiro</value>
-  </data>
-  <data name="LastRegistedExpeditionReportsJob" xml:space="preserve">
-    <value>Último Job registado a: @#RegistTimeStamp#@</value>
-  </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
   <data name="PendingExpedition" xml:space="preserve">
     <value>Expedição Pendente</value>
   </data>
-  <data name="PendingExpeditionFiles" xml:space="preserve">
-    <value>Ficheiros por Expedir</value>
-  </data>
-  <data name="SelectAll" xml:space="preserve">
-    <value>Selecionar Todos</value>
-  </data>
   <data name="Submit" xml:space="preserve">
-    <value>Registar Job de Guia de Expedição para os ficheiros selecionados</value>
-  </data>
-  <data name="UnSelectAll" xml:space="preserve">
-    <value>Desselecionar Todos</value>
+    <value>Listar</value>
   </data>
 </root>

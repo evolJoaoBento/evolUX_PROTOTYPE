@@ -30,7 +30,7 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             return await response.GetJsonAsync<BusinessViewModel>();
 
         }
-        public async Task<ExpeditionFilesViewModel> GetPendingExpeditionFiles(int BusinessID, string ServiceCompanyList)
+        public async Task<ExpeditionListViewModel> GetPendingExpeditionFiles(int BusinessID, string ServiceCompanyList)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ServiceCompanyList", ServiceCompanyList);
@@ -41,7 +41,7 @@ namespace evolUX.UI.Areas.Finishing.Repositories
 
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<ExpeditionFilesViewModel>();
+            return await response.GetJsonAsync<ExpeditionListViewModel>();
 
         }
         public async Task<Result> RegistExpeditionReport(List<RegistExpReportElement> expFiles, string username, int userID)
@@ -58,6 +58,20 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<Result>();
+        }
+        public async Task<ExpeditionListViewModel> GetExpeditionReportList(int BusinessID, string ServiceCompanyList)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ServiceCompanyList", ServiceCompanyList);
+            dictionary.Add("BusinessID", BusinessID);
+            var response = await _flurlClient.Request("/API/finishing/Expedition/GetExpeditionReportList")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                 .SendJsonAsync(HttpMethod.Get, dictionary);
+
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<ExpeditionListViewModel>();
+
         }
     }
 }

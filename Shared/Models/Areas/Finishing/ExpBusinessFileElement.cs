@@ -7,11 +7,13 @@
         public string BusinessCode { get; set; }
         public string BusinessDescription { get; set; }
         public List<ExpRunFileElement> RunList { get; set; }
+        public List<ExpReportElement> ReportList { get; set; }
         public ExpBusinessFileElement()
         {
             BusinessCode = string.Empty;
             BusinessDescription = string.Empty;
             RunList = new List<ExpRunFileElement>();
+            ReportList = new List<ExpReportElement>();
         }
     }
 }

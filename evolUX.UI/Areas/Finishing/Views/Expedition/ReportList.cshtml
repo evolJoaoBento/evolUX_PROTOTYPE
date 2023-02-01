@@ -1,0 +1,172 @@
+﻿@using Shared.ViewModels.Areas.Finishing
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Shared.Models.Areas.Finishing
+@inject IViewLocalizer localizer
+@model ExpeditionListViewModel
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function refreshPage() {
+            window.location.reload();
+        };
+        function MessageBox(msg) {
+            alert(msg);
+        }
+    </script>
+}
+
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+@if (Model == null)
+{
+    <div id="ResultPage">
+        <h3 class="display-4 text-center">@localizer["NoModelData"]</h3>
+    </div>
+}
+else
+{
+    <div id="TitlePage">
+        <h1 class="display-4 text-center">@localizer["ExpeditionReport"] @ViewBag.BusinessDescription</h1>
+    </div>
+    @if (Model.ExpeditionList.Count() == 0)
+    {
+        <h4 class="display-4 text-center">@localizer["EmptyResult"]</h4>
+    }
+    else
+    {
+        string Level0Name = "level";
+        string Level1Name = "detail";
+
+        int count = 0;
+        int level = 0;
+        string idValue = "arrow" + count.ToString();
+        string nameValue = "";
+        string fName = "";
+        string fileName = "";
+        string rFilename = "";
+        @foreach (ExpServiceCompanyFileElement s in Model.ExpeditionList)
+        {
+            level++;
+            nameValue = Level0Name + level.ToString();
+            idValue = "arrow" + nameValue;
+            <table class="table table-bordered table-sm">
+            <thead>
+                @if (!ViewBag.hasMultipleServiceCompanies)
+                {
+                    <tr><th>@localizer["ExpeditionReportList"]</th></tr>
+                }
+                else
+                {
+                    <tr>
+                        <th>@localizer["ExpeditionReportList"] [@s.ServiceCompanyName]
+                            @if (Model.ExpeditionList.Count() > 0)
+                            {
+                                <a class="bx bx-minus" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
+                            }
+                        </th>
+                    </tr>
+                }
+            </thead>
+            <tbody id="@nameValue">
+            @foreach (ExpCompanyFileElement c in s.ExpCompanyList)
+            {
+            @foreach (ExpBusinessFileElement b in c.BusinessList)
+            {
+                <tr><td>
+                <table class="table table-bordered table-sm table-striped">
+                @{
+                    count++;
+                    nameValue = Level1Name + count.ToString();
+                    idValue = "arrow" + nameValue;
+                }
+                <thead>
+                    @if (ViewBag.hasMultipleCompanyBusiness)
+                    {
+                        <tr>
+                            <th colspan="7">
+                                @c.ExpCompanyCode / @b.BusinessDescription
+                                <a class="bx bx-minus" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
+                            </th>
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <th colspan="7">
+                                @c.ExpCompanyCode
+                                <a class="bx bx-minus" href="javascript:hideDetail('@nameValue')" id="@idValue">
+                                </a>
+                            </th>
+                            </tr>
+                    }
+                </thead>
+                <tbody id="@nameValue">
+                    <tr>
+                        <th>@localizer["FileName"]</th>
+                        <th>@localizer["Registred"]</th>
+                        <th>@localizer["ReportTimeStamp"]</th>
+                        <th>@localizer["ClientName"]</th>
+                        <th>@localizer["ContractNr"]</th>
+                        <th>@localizer["ClientNr"]</th>
+                        <th>@localizer["ReportNr"]</th>
+                    </tr>
+                @foreach(ExpReportElement rp in b.ReportList)
+                {
+                    fileName = "";
+                    fName = "XEXPREP_" + rp.ExpTime + "_" + rp.ExpReportID.ToString();
+                    if (File.Exists(ViewBag.ExpFolder + "\\" + fName + ".pdf")) 
+						fileName = fName + ".pdf";
+					else if (File.Exists(ViewBag.ExpFolder + "\\" + fName + ".xls")) 
+						fileName = fName + ".xls";
+					else if (File.Exists(ViewBag.ExpFolder + "\\" + fName + ".doc")) 
+    					fileName = fName + ".doc";
+					else if (File.Exists(ViewBag.ExpFolder + "\\" + fName + ".htm")) 
+			        	fileName = fName + ".htm";
+					else if (File.Exists(ViewBag.ExpFolder + "\\" + fName + ".csv")) 
+			        	fileName = fName + ".csv";
+
+                    rFilename = "";
+                    if (!string.IsNullOrEmpty(rp.ExpRegistReportID))
+                    {
+                        fName = "XREGREP_" + rp.ExpTime + "_" + rp.ExpRegistReportID;
+                        if (File.Exists(ViewBag.ExpFolder + "\\" + fName + ".xls")) 
+						    rFilename = fName + ".xls";
+					    else if (File.Exists(ViewBag.ExpFolder + "\\" + fName + ".doc")) 
+    					    fileName = fName + ".doc";
+					    else if (File.Exists(ViewBag.ExpFolder + "\\" + fName + ".htm")) 
+			        	    rFilename = fName + ".htm";
+					    else if (File.Exists(ViewBag.ExpFolder + "\\" + fName + ".csv")) 
+			        	    rFilename = fName + ".csv";					    
+					    else if (File.Exists(ViewBag.ExpFolder + "\\" + fName + ".txt")) 
+			        	    rFilename = fName + ".txt";	
+                    }
+                    if (!string.IsNullOrEmpty(fileName))
+                    {
+                    <tr>
+                        <td>@fileName</td>
+                        <td>@rp.ExpRegistReportID</td>
+                        <td>@rp.ExpTimeStamp.ToString()</td>
+                        <td>@rp.ExpContract.ClientName</td>
+                        <td>@rp.ExpContract.ContractNr</td>
+                        <td>@rp.ExpContract.ClientNr</td>
+                        <td>@rp.ExpReportNr</td>
+                    </tr>
+                    }
+                }
+                </tbody>
+                </table>
+                </td>
+                </tr>
+            }
+            }
+            </table>
+        }
+    }
+}
+
+

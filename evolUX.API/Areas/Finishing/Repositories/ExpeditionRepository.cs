@@ -42,7 +42,7 @@ namespace evolUX.API.Areas.Finishing.Repositories
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                List<ExpServiceCompanyFileElement> expeditionFilesList = new List<ExpServiceCompanyFileElement>();
+                List<ExpServiceCompanyFileElement> expeditionList = new List<ExpServiceCompanyFileElement>();
 
                 connection.Open();
                 var obs = await connection.QueryAsync(sql, parameters,
@@ -67,7 +67,7 @@ namespace evolUX.API.Areas.Finishing.Repositories
                         if (lastServiceCompanyID != expServiceCompanyID)
                         {
                             expServiceCompanyFile = new ExpServiceCompanyFileElement();
-                            expeditionFilesList.Add(expServiceCompanyFile);
+                            expeditionList.Add(expServiceCompanyFile);
 
                             expServiceCompanyFile.ServiceCompanyID = expServiceCompanyID;
                             expServiceCompanyFile.ServiceCompanyCode = (string)r["ServiceCompanyCode"];
@@ -126,7 +126,7 @@ namespace evolUX.API.Areas.Finishing.Repositories
                         expFile.FileName = (string)r["FileName"];
                     }
                 }
-                return expeditionFilesList;
+                return expeditionList;
             }
         }
 
@@ -145,5 +145,85 @@ namespace evolUX.API.Areas.Finishing.Repositories
             }
 
         }
+
+        public async Task<IEnumerable<ExpServiceCompanyFileElement>> GetExpeditionReportList(int BusinessID, DataTable ServiceCompanyList)
+        {
+            string sql = @"RP_UX_GET_EXPEDITION_REPORTS";
+            var parameters = new DynamicParameters();
+            parameters.Add("BusinessID", BusinessID, DbType.Int64);
+            parameters.Add("ServiceCompanyList", ServiceCompanyList.AsTableValuedParameter("IDlist"));
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                List<ExpServiceCompanyFileElement> expeditionList = new List<ExpServiceCompanyFileElement>();
+
+                connection.Open();
+                var obs = await connection.QueryAsync(sql, parameters,
+                                    commandType: CommandType.StoredProcedure);
+                var dt = _context.ToDataTable(obs);
+                if (dt != null)
+                {
+                    int lastServiceCompanyID = -1;
+                    int lastExpCompanyID = -1;
+                    int lastBusinessID = -1;
+                    ExpServiceCompanyFileElement expServiceCompanyFile = new ExpServiceCompanyFileElement();
+                    ExpCompanyFileElement expCompanyFile = new ExpCompanyFileElement();
+                    ExpBusinessFileElement expBusinessFile = new ExpBusinessFileElement();
+
+                    foreach (DataRow r in dt.Rows)
+                    {
+                        int expServiceCompanyID = (int)r["ServiceCompanyID"];
+                        if (lastServiceCompanyID != expServiceCompanyID)
+                        {
+                            expServiceCompanyFile = new ExpServiceCompanyFileElement();
+                            expeditionList.Add(expServiceCompanyFile);
+
+                            expServiceCompanyFile.ServiceCompanyID = expServiceCompanyID;
+                            expServiceCompanyFile.ServiceCompanyCode = (string)r["ServiceCompanyCode"];
+                            expServiceCompanyFile.ServiceCompanyName = (string)r["ServiceCompanyName"];
+                            lastServiceCompanyID = expServiceCompanyID;
+                        }
+                        int expCompanyID = (int)r["ExpCompanyID"];
+                        if (lastExpCompanyID != expCompanyID)
+                        {
+                            expCompanyFile = new ExpCompanyFileElement();
+                            expServiceCompanyFile.ExpCompanyList.Add(expCompanyFile);
+
+                            expCompanyFile.ExpCompanyID = expCompanyID;
+                            expCompanyFile.ExpCompanyCode = (string)r["ExpCompanyCode"];
+                            lastExpCompanyID = expCompanyID;
+                        }
+                        int businessID = (int)r["BusinessID"];
+                        if (lastBusinessID != businessID)
+                        {
+                            expBusinessFile = new ExpBusinessFileElement();
+                            expCompanyFile.BusinessList.Add(expBusinessFile);
+
+                            expBusinessFile.BusinessID = businessID;
+                            expBusinessFile.BusinessCode = (string)r["BusinessCode"];
+                            expBusinessFile.BusinessDescription = (string)r["BusinessDescription"];
+                            expBusinessFile.CompanyID = (int)r["CompanyID"];
+                            lastBusinessID = businessID;
+                        }
+
+                        ExpReportElement expReport = new ExpReportElement();
+                        expBusinessFile.ReportList.Add(expReport);
+                        expReport.ExpReportID = (int)r["ExpReportID"];
+                        expReport.ExpRegistReportID = !r.IsNull("ExpRegistReportID") ? Convert.ToString(r["ExpRegistReportID"]) : string.Empty;
+                        expReport.ExpReportNr = Int32.Parse(r["ExpReportNr"].ToString());
+                        expReport.ExpTimeDate = (string)r["ExpTimeDate"];
+                        expReport.ExpTime = (string)r["ExpTime"];
+                        expReport.ExpTimeStamp = (DateTime)r["ExpTimeStamp"];
+
+                        expReport.ExpContract.ContractID = (int)r["ContractID"];
+                        expReport.ExpContract.ContractNr = (int)r["ContractNr"];
+                        expReport.ExpContract.ClientNr = (int)r["ClientNr"];
+                        expReport.ExpContract.ClientName = (string)r["ClientName"];
+                    }
+                }
+                return expeditionList;
+            }
+        }
+        
     }
 }
