@@ -304,6 +304,9 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 string expFolder = _configuration.GetValue<string>("ExpeditionFolder");
                 ViewBag.ExpFolder = expFolder;
 
+                string expeditionURL = _configuration.GetValue<string>("ExpeditionURL");
+                ViewBag.ExpeditionURL = expeditionURL;
+
                 string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
                 if (string.IsNullOrEmpty(ServiceCompanyList))
                     return View(null);

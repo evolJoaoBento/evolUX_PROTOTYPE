@@ -48,7 +48,9 @@ else
         string nameValue = "";
         string fName = "";
         string fileName = "";
+        string fLink = "";
         string rFilename = "";
+        string rLink = "";
         @foreach (ExpServiceCompanyFileElement s in Model.ExpeditionList)
         {
             level++;
@@ -147,9 +149,18 @@ else
                     }
                     if (!string.IsNullOrEmpty(fileName))
                     {
+                        fLink = ViewBag.ExpeditionURL + fileName;
+                        rLink = ViewBag.ExpeditionURL + rFilename;
                     <tr>
-                        <td>@fileName</td>
+                        <td><a target="_blank" href='@fLink'>@fileName</td>
+                        @if (!string.IsNullOrEmpty(rp.ExpRegistReportID) && File.Exists(ViewBag.ExpFolder + "\\" + rFilename))
+                        {
+                        <td><a target="_blank" href='@rLink'>@rp.ExpRegistReportID</td>
+                        }
+                        else
+                        {
                         <td>@rp.ExpRegistReportID</td>
+                        }
                         <td>@rp.ExpTimeStamp.ToString()</td>
                         <td>@rp.ExpContract.ClientName</td>
                         <td>@rp.ExpContract.ContractNr</td>
