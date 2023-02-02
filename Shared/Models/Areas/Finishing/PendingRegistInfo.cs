@@ -11,5 +11,7 @@
         public int FilesLeftToPrint { get; set; }
         public int FilesLeftToRegistPrint { get; set; }
         public int FilesLeftToRegistFullFill { get; set; }
+        public int TotalPrint { get; set; }
+        public int TotalPostObjs { get; set; }
     }
 }

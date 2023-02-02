@@ -20,7 +20,7 @@
 </div>
 @if (Model.PendingRegistDetail.ToRegistPrintFiles.Count > 0)
 {
-    int cols = 6;
+    int cols = 9;
     <div class="my-3 table-div">
         <table class="table table-sm table-hover table-collapse-seperate">
             @if (ViewBag.hasMultipleServiceCompanies)
@@ -47,6 +47,9 @@
                     <th>@localizer["SentToPrinterTimeStamp"]</th>
                     <th>@localizer["Operator"]</th>
                     <th>@localizer["Printer"]</th>
+                    <th>@localizer["TotalPrint"]</th>
+                    <th>@localizer["TotalPostObjs"]</th>
+                    <th>@localizer["FullFillMaterialCode"]</th>
                 </tr>
             </thead>
             <tbody id="bootstrap-overrides">
@@ -68,7 +71,10 @@
                             <td>@p.FileID</td>
                             <td>@p.TimeStamp</td>
                             <td>@p.Operator</td>
-                            <td>@p.Printer</td>
+                            <td>@p.Machine</td>
+                            <td>@p.TotalPrint</td>
+                            <td>@p.TotalPostObjs</td>
+                            <td>@p.FullFillMaterialCode</td>
                         </tr>
                     }
                 }
@@ -82,7 +88,7 @@ else
 }
 @if (Model.PendingRegistDetail.ToRegistFullfillFiles.Count > 0)
 {
-    int cols = 5;
+    int cols = 8;
     <div class="my-3 table-div">
          <table class="table table-sm table-hover table-collapse-seperate">
             @if (ViewBag.hasMultipleServiceCompanies)
@@ -107,12 +113,15 @@ else
                     <th>@localizer["FileID"]</th>
                     <th>@localizer["PrintedTimeStamp"]</th>
                     <th>@localizer["Operator"]</th>
+                    <th>@localizer["TotalPrint"]</th>
+                    <th>@localizer["TotalPostObjs"]</th>
+                    <th>@localizer["FullFillMaterialCode"]</th>
                 </tr>
             </thead>
             <tbody id="bootstrap-overrides">
                 @if (Model == null)
                 {
-                    <tr><td colspan="5" class="text-center">No Model Data</td></tr>
+                    <tr><td colspan="@cols" class="text-center">No Model Data</td></tr>
                 }
                 else
                 {
@@ -128,7 +137,10 @@ else
                             <td>@p.FileID</td>
                             <td>@p.TimeStamp</td>
                             <td>@p.Operator</td>
-                        </tr>
+                            <td>@p.TotalPrint</td>
+                            <td>@p.TotalPostObjs</td>
+                            <td>@p.FullFillMaterialCode</td>
+                       </tr>
                     }
                 }
             </tbody>

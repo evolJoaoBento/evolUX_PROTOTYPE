@@ -35,7 +35,9 @@ BEGIN
 		fx.[TotalProcessed], 
 		fx.[FilesLeftToPrint],
 		fx.[FilesLeftToRegistPrint],
-		fx.[FilesLeftToRegistFullFill]
+		fx.[FilesLeftToRegistFullFill],
+		SUM(fp.TotalPrint) TotalPrint,
+		SUM(fp.TotalPostObjs) TotalPostObjs
 	FROM 
 		(SELECT fl1.RunID, b.BusinessID, b.[Description] [BusinessDesc], r.RunDate, r.RunSequence, 
 			COUNT(DISTINCT fl1.FileID) as [TotalProcessed], 
@@ -47,16 +49,16 @@ BEGIN
 			RT_RUN r WITH(NOLOCK)
 		INNER JOIN 
 			RD_BUSINESS b WITH(NOLOCK)
-		ON 	ISNULL(r.Closed,0) = 0 
-			AND r.BusinessID = b.BusinessID
+		ON 	r.BusinessID = b.BusinessID
 		INNER JOIN 
 			RT_FILE_REGIST f WITH(NOLOCK)
 		ON	f.RunID = r.RunID
 		INNER JOIN
 			RT_PRODUCTION_DETAIL pd WITH(NOLOCK)
-		ON	f.ErrorID = 0
-			AND f.ProdDetailID = pd.ProdDetailID
-			AND pd.ServiceCompanyID in (SELECT ID FROM @ServiceCompanyList)
+		ON	f.ProdDetailID = pd.ProdDetailID
+		INNER JOIN
+			@ServiceCompanyList s
+		ON	pd.ServiceCompanyID = s.ID
 		INNER JOIN
 			RD_EXPCOMPANY_SERVICE_TASK est WITH(NOLOCK)
 		ON	pd.ExpCode = est.ExpCode
@@ -78,7 +80,9 @@ BEGIN
 					FROM RT_FILE_LOG WITH(NOLOCK)
 					WHERE RunID = fl1.RunID
 						AND FileID = fl1.FileID
-						AND RunStateID = fl1.RunStateID)
+						AND RunStateID = fl1.RunStateID
+						AND ErrorID = 0
+						AND EndTimeStamp is NOT NULL)
 		LEFT OUTER JOIN 
 			RT_FILE_LOG fl2 WITH(NOLOCK)
 		ON 	fl1.RunID = fl2.RunID
@@ -90,7 +94,9 @@ BEGIN
 					FROM RT_FILE_LOG WITH(NOLOCK)
 					WHERE RunID = fl2.RunID
 						AND FileID = fl2.FileID
-						AND RunStateID = fl2.RunStateID)
+						AND RunStateID = fl2.RunStateID
+						AND ErrorID = 0
+						AND EndTimeStamp is NOT NULL)
 		LEFT OUTER JOIN 
 			RT_FILE_LOG fl3 WITH(NOLOCK)
 		ON 	fl1.RunID = fl3.RunID
@@ -102,7 +108,9 @@ BEGIN
 					FROM RT_FILE_LOG WITH(NOLOCK)
 					WHERE RunID = fl3.RunID
 						AND FileID = fl3.FileID
-						AND RunStateID = fl3.RunStateID)
+						AND RunStateID = fl3.RunStateID
+						AND ErrorID = 0
+						AND EndTimeStamp is NOT NULL)
 		LEFT OUTER JOIN 
 			RT_FILE_LOG fl4 WITH(NOLOCK)
 		ON 	fl1.RunID = fl4.RunID
@@ -113,7 +121,9 @@ BEGIN
 					FROM RT_FILE_LOG WITH(NOLOCK)
 					WHERE RunID = fl4.RunID
 						AND FileID = fl4.FileID
-						AND RunStateID = fl4.RunStateID)
+						AND RunStateID = fl4.RunStateID
+						AND ErrorID = 0
+						AND EndTimeStamp is NOT NULL)
 			AND (
 					(NOT EXISTS (SELECT TOP 1 1
 							FROM RD_SERVICE_TASK_SERVICE_TYPE stst WITH(NOLOCK)
@@ -125,10 +135,20 @@ BEGIN
 						AND fl3.RunStateID = fl4.RunStateID)
 				OR fl4.RunStateID = @FullFillStateID
 				)
+	WHERE f.ErrorID = 0
+		AND ISNULL(r.Closed,0) = 0 
 	GROUP BY fl1.RunID, b.BusinessID, b.[Description], r.RunDate, r.RunSequence) fx
+	INNER JOIN
+		RT_FILE_PRODUCTION fp WITH(NOLOCK)
+	ON fp.RunID = fx.RunID
 	WHERE 	fx.[FilesLeftToFullFill] > 0
 		AND (fx.[FilesLeftToPrint] > 0
 			OR fx.[FilesLeftToRegistPrint] > 0 
 			OR fx.[FilesLeftToRegistFullFill] > 0)
+	GROUP BY fx.RunID, fx.BusinessID, fx.[BusinessDesc], fx.RunDate, fx.RunSequence, 
+		fx.[TotalProcessed], 
+		fx.[FilesLeftToPrint],
+		fx.[FilesLeftToRegistPrint],
+		fx.[FilesLeftToRegistFullFill]
 
 END

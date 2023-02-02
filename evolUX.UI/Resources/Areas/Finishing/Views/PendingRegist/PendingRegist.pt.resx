@@ -138,8 +138,17 @@
   <data name="PendingRegist" xml:space="preserve">
     <value>Envelopagem/Impressão Pendentes</value>
   </data>
+  <data name="Run" xml:space="preserve">
+    <value>Run de Produção</value>
+  </data>
   <data name="RunDescription" xml:space="preserve">
-    <value>Descrição do Run</value>
+    <value>Descrição</value>
+  </data>
+  <data name="TotalPostObjs" xml:space="preserve">
+    <value>Envelopagens</value>
+  </data>
+  <data name="TotalPrint" xml:space="preserve">
+    <value>Impressões</value>
   </data>
   <data name="TotalProcessed" xml:space="preserve">
     <value>Processados</value>

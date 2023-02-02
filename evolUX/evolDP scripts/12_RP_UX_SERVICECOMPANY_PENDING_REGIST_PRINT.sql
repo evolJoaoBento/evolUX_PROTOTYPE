@@ -36,21 +36,15 @@ BEGIN
 		c.CompanyCode as [ServiceCompanyCode],
 		fl2.EndTimeStamp as [TimeStamp],
 		fl2.OutputName [Operator],
-		fl2.OutputPath [Printer]
+		fl2.OutputPath [Machine],
+		fp.TotalPrint,
+		fp.TotalPostObjs,
+		m.FullFillMaterialCode
 	FROM 	
 		RT_RUN r WITH(NOLOCK)
 	INNER JOIN 
 		RT_FILE_REGIST f WITH(NOLOCK)
-	ON ISNULL(r.Closed,0) = 0 AND r.RunID = @RunID 
-		AND f.RunID = r.RunID
-		AND f.ErrorID = 0
-		AND NOT EXISTS (SELECT TOP 1 1 
-				FROM RT_FILE_LOG WITH(NOLOCK) 
-				WHERE RunID = f.RunID 
-					AND FileID = f.FileID
-					AND ErrorID = 0
-					AND RunStateID = @PrintedStateID
-					AND EndTimeStamp is NOT NULL)
+	ON f.RunID = r.RunID
 	INNER JOIN
 		RT_PRODUCTION_DETAIL pd WITH(NOLOCK)
 	ON	f.ProdDetailID = pd.ProdDetailID
@@ -92,7 +86,23 @@ BEGIN
 					WHERE RunID = fl2.RunID
 						AND FileID = fl2.FileID
 						AND RunStateID = fl2.RunStateID)
-
+	INNER JOIN
+		RT_FILE_PRODUCTION fp WITH(NOLOCK)
+	ON fp.RunID = f.RunID
+		AND fp.FileID = f.FileID
+	INNER JOIN
+		RD_MATERIAL m WITH(NOLOCK)
+	ON	m.MaterialID = pd.EnvMaterialID
+	WHERE r.RunID = @RunID 
+		AND ISNULL(r.Closed,0) = 0
+		AND f.ErrorID = 0
+		AND NOT EXISTS (SELECT TOP 1 1 
+				FROM RT_FILE_LOG WITH(NOLOCK) 
+				WHERE RunID = f.RunID 
+					AND FileID = f.FileID
+					AND ErrorID = 0
+					AND RunStateID = @PrintedStateID
+					AND EndTimeStamp is NOT NULL)
 END
 
 GO

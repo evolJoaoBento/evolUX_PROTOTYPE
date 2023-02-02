@@ -3,7 +3,7 @@
 @using Shared.Models.Areas.Finishing
 @inject IViewLocalizer localizer
 @model ExpeditionListViewModel
-
+@inject IConfiguration configuration
 @section Scripts
 {
     <script type="text/javascript">
@@ -30,6 +30,8 @@
 }
 else
 {
+    string siteURL = configuration.GetValue<string>("SiteURL");
+
     <div id="TitlePage">
         <h1 class="display-4 text-center">@localizer["PendingExpedition"] @ViewBag.BusinessDescription</h1>
     </div>
@@ -114,7 +116,7 @@ else
                     </thead>
                     <tbody id="@nameValue">
                         <tr>
-                            <th>@localizer["Despach"]</th>
+                            <th style="background:none;width:50px;height:50px;"></th>
                             <th>@localizer["FileName"]</th>
                             <th>@localizer["ClientName"]</th>
                             <th>@localizer["ContractNr"]</th>
@@ -126,7 +128,7 @@ else
                     {
                         cValue = "Checked" + s.ServiceCompanyCode.ToString()+ "|" + c.ExpCompanyID.ToString() + "|" + r.RunID.ToString();
                         <tr>
-                            <td>
+                            <td align="center">
                                 <input value="@s.ServiceCompanyCode|@c.ExpCompanyID|@f.RunID|@f.FileID" name="CheckedFileList" type="checkbox" id="@cValue">
                             </td>
                             <td>@f.FileName</td>
@@ -138,9 +140,13 @@ else
                     }
                         @{cValue = s.ServiceCompanyCode.ToString()+ "|" + c.ExpCompanyID.ToString() + "|" + r.RunID.ToString();}
                         <tr>
-                            <td colspan="5" style="background: white">
-                                <input type="button" name="cmdselect" value='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
-                                <input type="button" name="cmdunselect" value="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '@cValue')">
+                            <td colspan="5">
+                                <button style="background:none;width:20px;height:20px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
+                                    <img style="background:none; width:20px;height:20px;" src="@siteURL/images/select-multiple.png" />
+                                </button>
+                                <button style="background:none;width:20px;height:20px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '@cValue')">
+                                    <img style="background:none; width:20px;height:20px;" src="@siteURL/images/unselect-multiple.png" />
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -153,8 +159,12 @@ else
                 <tr>
                     @{cValue = s.ServiceCompanyCode.ToString();}
                     <td>
-                        <input type="button" name="cmdselect" value='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', @cValue)">
-                        <input type="button" name="cmdunselect" value="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', @cValue)">
+                        <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
+                            <img style="background:none; width:30px;height:30px;" src="@siteURL/images/select-multiple.png" />
+                        </button>
+                        <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '@cValue')">
+                            <img style="background:none; width:30px;height:30px;" src="@siteURL/images/unselect-multiple.png" />
+                        </button>
                     </td>
                 </tr>
                 </tbody>

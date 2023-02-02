@@ -24,6 +24,8 @@ else
     int ToPrintTotal = 0;
     int ToRegistPrintTotal = 0;
     int ToRegistFullFillTotal = 0;
+    int TotalPrint = 0;
+    int TotalPostObjs = 0;
     <div id="TitlePage">
         <h1 class="display-4 text-center">@localizer["PendingRegist"]</h1>
     </div>
@@ -42,10 +44,13 @@ else
             <col>
             <thead id="bootstrap-overrides" class="sticky-header">
                 <tr>
-                    <th rowspan="2">@localizer["RunDescription"]</th>
+                    <th colspan="3">@localizer["Run"]</th>
                     <th colspan="4">@localizer["Files"]</th>
                 </tr>
                 <tr>
+                    <th>@localizer["RunDescription"]</th>
+                    <th>@localizer["TotalPrint"]</th>
+                    <th>@localizer["TotalPostObjs"]</th>
                     <th>@localizer["TotalProcessed"]</th>
                     <th>@localizer["FilesLeftToPrint"]</th>
                     <th>@localizer["FilesLeftToRegistPrint"]</th>
@@ -60,6 +65,14 @@ else
                             string RunName = p.BusinessDesc + "(" + p.RunDate + "[" + p.RunSequence + "])";
                         }
                         <td class="headcol" style="background:var(--lightestgrey);"><a class="btn btn-link link-info" asp-area="Finishing" asp-controller="PendingRegist" asp-action="PendingRegistDetail" asp-route-runid="@p.RunID" asp-route-runname=@RunName>@RunName</a></td>
+                        <td>@p.TotalPrint</td>
+                        @{
+                            TotalPrint += p.TotalPrint;
+                        }
+                        <td>@p.TotalPostObjs</td>
+                        @{
+                            TotalPostObjs += p.TotalPostObjs;
+                        }
                         <td>@p.TotalProcessed</td>
                         @{
                             ProcessedTotal += p.TotalProcessed;
@@ -80,11 +93,13 @@ else
                 }
                 <tr style="background:var(--lightestgrey); border: var(--orange)">
                     <td class="headcol" style="background:var(--lightergrey);"><b>@localizer["Totals"]</b></td>
-                    <td>@ProcessedTotal</td>
-                    <td>@ToPrintTotal</td>
-                    <td>@ToRegistPrintTotal</td>
-                    <td>@ToRegistFullFillTotal</td>
-                </tr>
+                    <td class="headcol" style="background:var(--lightergrey);"><b>@TotalPrint</b></td>
+                    <td class="headcol" style="background:var(--lightergrey);"><b>@TotalPostObjs</b></td>
+                    <td class="headcol" style="background:var(--lightergrey);"><b>@ProcessedTotal</b></td>
+                    <td class="headcol" style="background:var(--lightergrey);"><b>@ToPrintTotal</b></td>
+                    <td class="headcol" style="background:var(--lightergrey);"><b>@ToRegistPrintTotal</b></td>
+                    <td class="headcol" style="background:var(--lightergrey);"><b>@ToRegistFullFillTotal</b></td>
+               </tr>
             </tbody>
         </table>
 

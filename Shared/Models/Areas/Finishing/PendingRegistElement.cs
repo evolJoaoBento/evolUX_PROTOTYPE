@@ -8,13 +8,16 @@
         public string ServiceCompanyCode { get; set; }
         public DateTime TimeStamp { get; set; }
         public string Operator { get; set; }
-        public string Printer { get; set; }
+        public string Machine { get; set; }
+        public int TotalPrint { get; set; }
+        public int TotalPostObjs { get; set; }
+        public string FullFillMaterialCode { get; set; }
         public PendingRegistElement()
         {
             FileName = string.Empty;
             ServiceCompanyCode = string.Empty;
             Operator = string.Empty;
-            Printer = string.Empty;
+            Machine = string.Empty;
         }
     }
 }
