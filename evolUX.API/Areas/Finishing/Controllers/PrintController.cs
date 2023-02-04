@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Areas.Core.Services.Interfaces;
-using Shared.ViewModels.Areas.Finishing;
 using Shared.ViewModels.General;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
 using System.Data;
@@ -9,6 +8,8 @@ using Newtonsoft.Json;
 using Shared.Models.General;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
 using System.Data.SqlClient;
+using Shared.ViewModels.Areas.Core;
+using Shared.ViewModels.Areas.Finishing;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
@@ -28,7 +29,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
         //THE SERVICECOMPANYLIST SHOULD USE A SESSION VARIABLE IN THE UI LAYER
         [HttpGet]
         [ActionName("Printers")]
-        public async Task<ActionResult<ResoursesViewModel>> GetPrinters([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<PrinterViewModel>> GetPrinters([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -41,7 +42,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 bool IgnoreProfiles = Convert.ToBoolean(obj);
 
                 IEnumerable<int> profileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
-                ResoursesViewModel viewmodel = await _printService.GetPrinters(profileList, FileSpecs, IgnoreProfiles);
+                PrinterViewModel viewmodel = await _printService.GetPrinters(profileList, FileSpecs, IgnoreProfiles);
                 _logger.LogInfo("Printers Get");
                 return Ok(viewmodel);
             }

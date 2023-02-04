@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using evolUX.API.Extensions;
 using evolUX.API.Areas.Finishing.Repositories.Interfaces;
+using evolUX.API.Models;
 
 namespace evolUX.API.Areas.Finishing.Repositories
 {
@@ -35,7 +36,7 @@ namespace evolUX.API.Areas.Finishing.Repositories
             }
         }
         public async Task<IEnumerable<ProductionInfo>> GetProductionDetailReport(int runID, int serviceCompanyID, int paperMediaID,
-                    int stationMediaID, int expeditionType, string expCode, bool hasColorPages)
+                    int stationMediaID, int expeditionType, string expCode, bool hasColorPages, int envMaterialID, int plexType)
         {
             var lookup = new Dictionary<int, ProductionInfo>();
 
@@ -48,6 +49,8 @@ namespace evolUX.API.Areas.Finishing.Repositories
             parameters.Add("ExpeditionType", expeditionType, DbType.Int64);
             parameters.Add("ExpCode", expCode, DbType.String);
             parameters.Add("HasColorPages", hasColorPages, DbType.Boolean);
+            parameters.Add("EnvMaterialID", envMaterialID, DbType.Int64);
+            parameters.Add("PlexType", plexType, DbType.Int64);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -115,8 +118,18 @@ namespace evolUX.API.Areas.Finishing.Repositories
         {
             string sql = @"RP_UX_PRODUCTION_SUBSET_REPORT";
             var parameters = new DynamicParameters();
-            parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
-            parameters.Add("RunID", runID, DbType.Int64);
+            //Temporario
+            DataTable ServiceCompanyList = new DataTable();
+            ServiceCompanyList.Columns.Add("ID", typeof(int));
+            ServiceCompanyList.Rows.Add(serviceCompanyID);
+            parameters.Add("ServiceCompanyList", ServiceCompanyList.AsTableValuedParameter("IDlist"));
+            //parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
+
+            DataTable RunIDList = new DataTable();
+            RunIDList.Columns.Add("ID", typeof(int));
+            RunIDList.Rows.Add(runID);
+            parameters.Add("RunIDList", RunIDList.AsTableValuedParameter("IDlist"));
+            //parameters.Add("RunID", runID, DbType.Int64);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {

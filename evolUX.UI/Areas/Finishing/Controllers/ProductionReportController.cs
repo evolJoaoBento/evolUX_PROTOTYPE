@@ -86,7 +86,11 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             {
                 string profileList = HttpContext.Session.GetString("evolUX/Profiles");
                 ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID);
-                TempData["ServiceCompanyCode"] = result.ServiceCompanyCode;
+
+                if (result != null && result.ProductionReport != null && result.ProductionReport.Count() > 0)
+                {
+                    TempData["ServiceCompanyCode"] = result.ProductionReport.First().ServiceCompanyCode;
+                }
                 ViewBag.RunName = RunName;
                 return View(result);
             }
@@ -127,7 +131,10 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             {
                 string profileList = HttpContext.Session.GetString("evolUX/Profiles");
                 ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID);
-                TempData["ServiceCompanyCode"] = result.ServiceCompanyCode;
+                if (result != null && result.ProductionReport != null && result.ProductionReport.Count() > 0)
+                {
+                    TempData["ServiceCompanyCode"] = result.ProductionReport.First().ServiceCompanyCode;
+                }
                 ViewBag.RunName = RunName;
                 return View(result);
             }

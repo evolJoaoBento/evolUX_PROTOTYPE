@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Shared.ViewModels.Areas.Finishing;
 using evolUX.API.Extensions;
 using evolUX.UI.Exceptions;
 using Flurl.Http;
@@ -11,6 +10,8 @@ using Shared.ViewModels.General;
 using Shared.Models.General;
 using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using evolUX.UI.Repositories;
+using Shared.ViewModels.Areas.Core;
+using Shared.ViewModels.Areas.Finishing;
 
 namespace evolUX.UI.Areas.Finishing.Repositories
 {
@@ -20,7 +21,7 @@ namespace evolUX.UI.Areas.Finishing.Repositories
         {
         }
 
-        public async Task<ResoursesViewModel> GetPrinters(string profileList, string filesSpecs, bool ignoreProfiles)
+        public async Task<PrinterViewModel> GetPrinters(string profileList, string filesSpecs, bool ignoreProfiles)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ProfileList", profileList);
@@ -31,7 +32,7 @@ namespace evolUX.UI.Areas.Finishing.Repositories
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<ResoursesViewModel>();
+            return await response.GetJsonAsync<PrinterViewModel>();
         }
 
         public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode,

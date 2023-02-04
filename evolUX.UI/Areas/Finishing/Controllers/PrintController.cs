@@ -1,5 +1,4 @@
-﻿using Shared.ViewModels.Areas.Finishing;
-using evolUX.API.Areas.Core.ViewModels;
+﻿using evolUX.API.Areas.Core.ViewModels;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,6 @@ using Flurl.Http;
 using evolUX.UI.Exceptions;
 using Newtonsoft.Json;
 using evolUX.UI.Areas.Core.Models;
-using Shared.ViewModels.Areas.Finishing;
 using Shared.ViewModels.General;
 using System.Reflection;
 using Shared.Models.Areas.Finishing;
@@ -18,6 +16,7 @@ using static Dapper.SqlMapper;
 using System.Security.Claims;
 using Shared.Models.General;
 using Shared.ViewModels.Areas.Core;
+using Shared.ViewModels.Areas.Finishing;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -43,7 +42,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             try
             {
 
-                ResoursesViewModel result = await _printService.GetPrinters(profileList, filesSpecs, ignoreProfiles);
+                PrinterViewModel result = await _printService.GetPrinters(profileList, filesSpecs, ignoreProfiles);
                 return View(result);
             }
             catch (ErrorViewModelException ex)

@@ -6,7 +6,6 @@ using Shared.Models.General;
 using Shared.Extensions;
 using System.Transactions;
 using Shared.Models.Areas.Core;
-using Shared.Models.Areas.Finishing;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
 
 namespace evolUX.API.Areas.Core.Repositories
@@ -51,6 +50,7 @@ namespace evolUX.API.Areas.Core.Repositories
                 return flowInfo;
             }
         }
+
         public async Task<IEnumerable<FlowParameter>> GetFlowData(int flowID)
         {
             string sql = @" SELECT  FlowID, ParameterName, ParameterValue
@@ -125,6 +125,7 @@ namespace evolUX.API.Areas.Core.Repositories
             result.Error = "Success";
             return result;
         }
+
         public async Task<IEnumerable<Job>> GetJobs(int flowID)
         {
             string sql = @"evolUX_GET_JOB_BY_FlowID";
@@ -139,6 +140,7 @@ namespace evolUX.API.Areas.Core.Repositories
                 return jobs;
             }
         }
+
         public async Task<IEnumerable<ResourceInfo>> GetResources(string resourceType, IEnumerable<int> profileList, string valueFilter,
                     bool ignoreProfiles)
         {
@@ -154,8 +156,8 @@ namespace evolUX.API.Areas.Core.Repositories
             {
                 //pass all servicecompany runid
 
-                IEnumerable<ResourceInfo> printers = await connection.QueryAsync<ResourceInfo>(sql, parameters, commandType: CommandType.StoredProcedure);
-                return printers.Where(printers => printers.MatchFilter == true);
+                IEnumerable<ResourceInfo> resources = await connection.QueryAsync<ResourceInfo>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return resources.Where(x => x.MatchFilter == true);
             }
         }
     }

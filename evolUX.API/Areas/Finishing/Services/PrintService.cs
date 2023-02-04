@@ -1,5 +1,4 @@
 ﻿using evolUX.API.Areas.Finishing.Services.Interfaces;
-using Shared.ViewModels.Areas.Finishing;
 using System.Data;
 using Shared.Models.General;
 using Shared.ViewModels.General;
@@ -7,6 +6,10 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using evolUX.API.Extensions;
 using Shared.Models.Areas.Core;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
+using Shared.ViewModels.Areas.Core;
+using Shared.ViewModels.Areas.Finishing;
+using Shared.Models.Areas.Finishing;
+using System.Xml;
 
 namespace evolUX.API.Areas.Finishing.Services
 {
@@ -18,15 +21,63 @@ namespace evolUX.API.Areas.Finishing.Services
             _repository = repository;
         }
 
-        public async Task<ResoursesViewModel> GetPrinters(IEnumerable<int> profileList, string filesSpecs, bool ignoreProfiles)
+        public void GetPrinterFeatures(string specs, ref bool printColor, ref bool printBlack, ref int plexFeature)
         {
-            ResoursesViewModel viewmodel = new ResoursesViewModel();
-            viewmodel.Resources = await _repository.RegistJob.GetResources("PRINTER", profileList, filesSpecs, ignoreProfiles);
-            if (viewmodel.Resources == null)
-            {
+            //Check Print Service Types
+            string xmlString = "<?xml version='1.0'?><root>" + specs + "</root>";
+            XmlDocument doc = new XmlDocument();
+            doc.LoadXml(xmlString);
 
+            XmlNodeList? nodes = doc.SelectNodes("/root/PRINTSERVICETYPE");
+            if (nodes != null && nodes.Count > 0)
+            {
+                foreach (XmlNode node in nodes)
+                {
+                    if (!string.IsNullOrEmpty(node.InnerText))
+                    {
+                        if (node.InnerText.StartsWith("PRINTCOLOR"))
+                            printColor = true;
+                        if (node.InnerText.StartsWith("PRINTBLACK"))
+                            printBlack = true;
+                        if (node.InnerText.EndsWith("SPLEX"))
+                            plexFeature = plexFeature | 1;
+                        else if (node.InnerText.EndsWith("DPLEX"))
+                            plexFeature = plexFeature | 2;
+                    }
+                }
             }
-            return viewmodel;
+            if (plexFeature == 0) //O serviço num impressora simplex ou duplex é igual por isso é indiferente onde se imprime
+                plexFeature = 3;
+        }
+
+        public async Task<PrinterViewModel> GetPrinters(IEnumerable<int> profileList, string filesSpecs, bool ignoreProfiles)
+        {
+            PrinterViewModel viewModel = new PrinterViewModel();
+            IEnumerable<ResourceInfo> result = await _repository.RegistJob.GetResources("PRINTER", profileList, filesSpecs, ignoreProfiles);
+            if (result != null)
+            {
+                List<PrinterInfo> Printers = new List<PrinterInfo>();
+                foreach (ResourceInfo r in result)
+                {
+                    PrinterInfo p = new PrinterInfo();
+                    p.ResValue = r.ResValue;
+                    p.MatchFilter = r.MatchFilter;
+                    p.ResID = r.ResID;
+                    p.Description = r.Description;
+                    bool printColor = false;
+                    bool printBlack = false;
+                    int plexFeature = 0;
+
+                    GetPrinterFeatures(p.ResValue, ref printColor, ref printBlack, ref plexFeature);
+                    p.PrintColor = printColor;
+                    p.PrintBlack = printBlack;
+                    p.PlexFeature = plexFeature;
+
+                    Printers.Add(p);
+                }
+                viewModel.Printers = Printers;
+            }
+            return viewModel;
         }
 
         public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode,

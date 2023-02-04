@@ -2,8 +2,8 @@
 
 namespace Shared.ViewModels.Areas.Finishing
 {
-    public class ResoursesViewModel
+    public class PrinterViewModel
     {
-        public IEnumerable<ResourceInfo> Resources { get; set; }
+        public IEnumerable<PrinterInfo> Printers { get; set; }
     }
 }

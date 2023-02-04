@@ -1,4 +1,7 @@
-﻿namespace Shared.Models.Areas.Finishing { 
+﻿using Shared.Models.Areas.Core;
+
+namespace Shared.Models.Areas.Finishing
+{
     public class ProductionInfo
     {
         public int RunID { get; set; }
@@ -7,12 +10,18 @@
         public string FileName { get; set; }
         public string ShortFileName { get; set; }
         public string FilePrinterSpecs { get; set; }
-        public IEnumerable<ResourceInfo> FilePrinters { get; set; }
+        public bool FilePrintColor { get; set; }
+        public bool FilePrintBlack { get; set; }
+        public int FilePlexType { get; set; }
+
         public string RegistDetailFileName { get; set; }
         public string RegistDetailShortFileName { get; set; }
         public string RegistDetailFilePrinterSpecs { get; set; }
         public string RegistShortFileName { get; set; }
-        public IEnumerable<ResourceInfo> RegistDetailFilePrinters { get; set; }
+        public bool RegistDetailFilePrintColor { get; set; }
+        public bool RegistDetailFilePrintBlack { get; set; }
+        public int RegistDetailFilePlexType { get; set; }
+
         public string ServiceTaskCode { get; set; }
         public string PrinterOperator { get; set; }
         public string Printer { get; set; }
@@ -35,8 +44,8 @@
         public Dictionary<string, int> StationTotals { get; set; }
         public ProductionInfo()
         {
-            FilePrinters = new List<ResourceInfo>();
-            RegistDetailFilePrinters = new List<ResourceInfo>();
+            //FilePrinters = new List<ResourceInfo>();
+            //RegistDetailFilePrinters = new List<ResourceInfo>();
             //FilePath = "";
             //FileName = "";
             //ShortFileName = "";

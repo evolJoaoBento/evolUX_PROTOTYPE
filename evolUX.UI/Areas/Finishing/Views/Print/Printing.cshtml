@@ -1,7 +1,9 @@
 ﻿@using Shared.Models.Areas.Finishing
 @using Shared.ViewModels.Areas.Finishing
 @using Newtonsoft.Json;
-@model ResoursesViewModel
+@using Shared.ViewModels.Areas.Core;
+
+@model PrinterViewModel
 @*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
 
 <div class="d-flex justify-content-center" >
@@ -26,7 +28,7 @@
                 data-ajax-update="#response"
                 data-ajax-loading="myLoader">
 
-            <select name="Printer" asp-items="@(new SelectList(Model.Resources.Where(r => r.MatchFilter == true),nameof(ResourceInfo.ResValue),nameof(ResourceInfo.Description)))">
+            <select name="Printer" asp-items="@(new SelectList(Model.Printers.Where(r => r.MatchFilter == true),nameof(PrinterInfo.ResValue),nameof(PrinterInfo.Description)))">
             </select>
             <p class="my-3 d-flex justify-content-center"><input type="submit" name="Submit" class="btn btn-block btn-primary" /></p>
 
@@ -38,7 +40,7 @@
                 data-ajax-update="#response"
                 data-ajax-loading="myLoader">
 
-            <select name="Printer" asp-items="@(new SelectList(Model.Resources,nameof(ResourceInfo.ResValue),nameof(ResourceInfo.Description)))">
+            <select name="Printer" asp-items="@(new SelectList(Model.Printers,nameof(PrinterInfo.ResValue),nameof(PrinterInfo.Description)))">
             </select>
             <p class="my-3 d-flex justify-content-center"><input type="submit" name="Submit" class="btn btn-block btn-success" /></p>
 

@@ -1,5 +1,4 @@
 ﻿using Shared.Models.Areas.Core;
-using Shared.Models.Areas.Finishing;
 using Shared.Models.General;
 using System.Data;
 

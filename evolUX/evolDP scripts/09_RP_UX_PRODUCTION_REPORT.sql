@@ -10,7 +10,9 @@ ALTER  PROCEDURE [dbo].[RP_UX_PRODUCTION_REPORT]
 	@StationMediaID int,
 	@ExpeditionType int,
 	@ExpCode varchar(10),
-	@HasColorPages bit
+	@HasColorPages bit,
+	@EnvMaterialID int,
+	@PlexType int
 --WITH ENCRYPTION
 AS
 	SET NOCOUNT ON
@@ -284,6 +286,9 @@ AS
 		AND pd.ExpeditionType = @ExpeditionType
 		AND pd.ExpCode = @ExpCode
 		AND ISNULL(pd.HasColorPages, 0) = ISNULL(@HasColorPages, 0)
+		AND pd.[EnvMaterialID] = @EnvMaterialID
+		AND pd.PlexType = @PlexType
+
 
 	--Remover ficheiros de recuperações já impressos
 	DELETE ##RP_UX_PROD_REPORT

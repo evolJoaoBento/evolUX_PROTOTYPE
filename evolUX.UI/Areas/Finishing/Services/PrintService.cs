@@ -2,13 +2,15 @@
 using evolUX.UI.Exceptions;
 using Flurl.Http;
 using Shared.ViewModels.Areas.Core;
-using Shared.ViewModels.Areas.Finishing;
 using Shared.ViewModels.General;
 using System.Data;
 using System.Reflection;
 using Shared.Models.Areas.Core;
 using Shared.Models.General;
 using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
+using Shared.ViewModels.Areas.Finishing;
+using Shared.Models.Areas.Finishing;
+using System.Xml;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
@@ -19,11 +21,11 @@ namespace evolUX.UI.Areas.Finishing.Services
         {
             _printRepository = printRepository;
         }
-        public async Task<ResoursesViewModel> GetPrinters(string profileList, string filesSpecs, bool ignoreProfiles)
+        public async Task<PrinterViewModel> GetPrinters(string profileList, string filesSpecs, bool ignoreProfiles)
         {
             try
             {
-                ResoursesViewModel viewModel = await _printRepository.GetPrinters(profileList, filesSpecs, ignoreProfiles);
+                PrinterViewModel viewModel = await _printRepository.GetPrinters(profileList, filesSpecs, ignoreProfiles);
                 return viewModel;
             }
             catch (FlurlHttpException ex)
