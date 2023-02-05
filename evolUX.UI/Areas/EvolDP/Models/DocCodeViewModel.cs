@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared.Models.Areas.evolDP;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;

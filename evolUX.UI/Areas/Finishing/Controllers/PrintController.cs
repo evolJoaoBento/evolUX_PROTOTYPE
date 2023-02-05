@@ -17,6 +17,7 @@ using System.Security.Claims;
 using Shared.Models.General;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.Finishing;
+using Microsoft.Extensions.Localization;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -24,9 +25,11 @@ namespace evolUX.UI.Areas.Finishing.Controllers
     public class PrintController : Controller
     {
         private readonly IPrintService _printService;
-        public PrintController(IPrintService printService)
+        private readonly IStringLocalizer<PrintController> _localizer;
+        public PrintController(IPrintService printService, IStringLocalizer<PrintController> localizer)
         {
             _printService = printService;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Printing(string JsonSerializedProductionInfo, string FilePrinterSpecs, 
@@ -69,6 +72,9 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         public async Task<IActionResult> Print(string Printer)
         {
+            if (string.IsNullOrEmpty(Printer))
+                return PartialView("MessageView", new MessageViewModel(_localizer["SelectValidPrinter"]));
+
             string JsonSerializedProductionInfo = (string)TempData["JsonSerializedProductionInfo"];
             string ServiceCompanyCode = (string)TempData["ServiceCompanyCode"];
             ProductionInfo productionInfo = JsonConvert.DeserializeObject<ProductionInfo>(JsonSerializedProductionInfo);

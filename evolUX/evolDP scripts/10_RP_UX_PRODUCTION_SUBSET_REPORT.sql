@@ -4,7 +4,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RP_UX_PRODUCTION_S
 END
 GO
 ALTER  PROCEDURE [dbo].[RP_UX_PRODUCTION_SUBSET_REPORT] 
-	@ServiceCompanyList IDList READONLY,
+	@ServiceCompanyID int,
 	@RunIDList IDList READONLY
 --WITH ENCRYPTION
 AS
@@ -16,11 +16,12 @@ AS
 		cs.CompanyName [ServiceCompanyName],
 		est.ExpCompanyID,
 		ce.CompanyCode [ExpCompanyCode],
+		ce.CompanyName [ExpCompanyName],
 		et.ExpeditionType, 
 		et.[Description] [ExpeditionTypeDesc],
 		e.ExpCode,
 		st.ServiceTaskCode,
-		st.[Description] ServiceTaskDec,
+		st.[Description] ServiceTaskDesc,
 		m.MaterialID [EnvMaterialID],
 		m.MaterialRef [EnvMaterialRef],
 		m.FullFillMaterialCode,
@@ -41,9 +42,6 @@ AS
 	INNER JOIN
 		@RunIDList r
 	ON r.ID = pd.RunID
-	INNER JOIN
-		@ServiceCompanyList s
-	ON s.ID = pd.ServiceCompanyID
 	INNER JOIN
 		RD_COMPANY cs WITH(NOLOCK)
 	ON cs.CompanyID = pd.ServiceCompanyID
@@ -74,10 +72,11 @@ AS
 	LEFT OUTER JOIN
 		RT_MEDIA_CONFIG sMedia WITH(NOLOCK)
 	ON sMedia.MediaID = pd.StationMediaID
+	WHERE pd.ServiceCompanyID = @ServiceCompanyID
 	GROUP BY pd.RunID, pd.ServiceCompanyID, cs.CompanyCode, cs.CompanyName, est.ExpCompanyID, ce.CompanyCode, ce.CompanyName, et.[Priority], e.[Priority], 
 		et.ExpeditionType, et.[Description], e.ExpCode, pd.PaperMediaID, pd.StationMediaID, pd.HasColorPages, m.FullFillMaterialCode, mc.FullFillCapacity,
 		m.MaterialRef, st.ServiceTaskCode, st.[Description], pt.PlexCode, pt.PlexType, m.MaterialID
-	ORDER BY et.[Priority] DESC, e.[Priority] DESC, mc.FullFillCapacity ASC, pt.PlexType ASC, pd.RunID, pd.ServiceCompanyID, PaperCount ASC, StationCount ASC
+	ORDER BY et.[Priority] DESC, e.[Priority] DESC, mc.FullFillCapacity ASC, pd.RunID, pd.ServiceCompanyID, PaperCount ASC, StationCount ASC
 	
 	SET NOCOUNT OFF
 GO

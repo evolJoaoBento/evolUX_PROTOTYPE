@@ -11,6 +11,7 @@ namespace evolUX.API.Areas.Finishing.Services.Interfaces
     {
         public Task<PrinterViewModel> GetPrinters(IEnumerable<int> profileList, string filesSpecs, bool ignoreProfiles);
         public Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode, string username, int userID, string filePath, string fileName, string shortFileName);
-        public void GetPrinterFeatures(string specs, ref bool printColor, ref bool printBlack, ref int plexFeature);
+        public void GetPrinterFeatures(string specs, ref int colorFeature, ref int plexFeature);
+        public void GetPrinterFeatures(string specs, string plexCode, ref int colorFeature, ref int plexFeature);
     }
 }

@@ -4,7 +4,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RP_UX_PRODUCTION_R
 END
 GO
 ALTER  PROCEDURE [dbo].[RP_UX_PRODUCTION_RUN_REPORT] 
-	@ServiceCompanyList IDList READONLY,
+	@ServiceCompanyID int,
 	@Filter bit = 1,
 	@StartDateStr varchar(8) = '00000000',
 	@EndDateStr varchar(8) = '99999999',
@@ -116,9 +116,6 @@ AS
 		RT_PRODUCTION_DETAIL p WITH(NOLOCK)
 	ON	f.ProdDetailID = p.ProdDetailID
 	INNER JOIN
-		@ServiceCompanyList sc
-	ON sc.ID = p.ServiceCompanyID
-	INNER JOIN
 		RD_COMPANY c WITH(NOLOCK)
 	ON	c.CompanyID = p.ServiceCompanyID
 	INNER JOIN
@@ -191,6 +188,7 @@ AS
 		AND f.ErrorID = 0
 		AND (@Filter = 0 OR ISNULL(r.Closed,0) = 0)
 		AND r.RunDate between @StartDate AND @EndDate
+		AND p.ServiceCompanyID = @ServiceCompanyID
 	GROUP BY r.RunID, p.ServiceCompanyID, r.BusinessID, b.[Description], r.Rundate, r.RunSequence, c.CompanyCode
 
 	UPDATE #RP_UX_RUN_REPORT
@@ -207,9 +205,6 @@ AS
 		INNER JOIN
 			RT_PRODUCTION_DETAIL pd WITH(NOLOCK)
 		ON	pd.RunID = r.RunID
-		INNER JOIN
-			@ServiceCompanyList sc
-		ON sc.ID = pd.ServiceCompanyID
 		INNER JOIN
 			RT_FILE_REGIST f WITH(NOLOCK)
 		ON	f.RunID = r.RunID
@@ -230,6 +225,7 @@ AS
 					AND fl.ErrorID = 0
 					AND fl.RunStateID = 80 --(SELECT RunStateID FROM RD_RUN_STATE WHERE RunStateName = 'SEND2PRINTER')
 					)
+			AND pd.ServiceCompanyID = @ServiceCompanyID
 		GROUP BY r.RunID, pd.ServiceCompanyID) x
 	ON x.RunID = u.RunID
 		AND x.ServiceCompanyID = u.ServiceCompanyID

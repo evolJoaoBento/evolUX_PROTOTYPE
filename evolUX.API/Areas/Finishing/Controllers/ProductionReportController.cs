@@ -32,13 +32,12 @@ namespace evolUX.API.Areas.Finishing.Controllers
         //THE SERVICECOMPANYLIST SHOULD USE A SESSION VARIABLE IN THE UI LAYER
         [HttpGet]
         [ActionName("ProductionRunReport")]
-        public async Task<ActionResult<ProductionRunReportViewModel>> GetProductionRunReport([FromBody] string ServiceCompanyListJSON)
+        public async Task<ActionResult<ProductionRunReportViewModel>> GetProductionRunReport([FromBody] int ServiceCompanyID)
         {
-            DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
             try
             {
                 ProductionRunReportViewModel viewmodel = new ProductionRunReportViewModel();
-                viewmodel.ProductionRunReport = await _productionReportService.GetProductionRunReport(ServiceCompanyList);
+                viewmodel.ProductionRunReport = await _productionReportService.GetProductionRunReport(ServiceCompanyID);
                 _logger.LogInfo("ProductionRunReport Get");
                 return Ok(viewmodel);
             }
@@ -56,7 +55,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
 
         //THE SERVICECOMPANYLIST SHOULD USE A SESSION VARIABLE IN THE UI LAYER
         [HttpGet]
-        [ActionName("ProductionReport")]
+        [ActionName("GetProductionReport")]
         public async Task<ActionResult<ProductionReportViewModel>> GetProductionReport([FromBody] Dictionary<string, object> dictionary)
         {
             try
@@ -71,6 +70,38 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 IEnumerable<int> ProfileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
 
                 ProductionReportViewModel viewmodel = await _productionReportService.GetProductionReport(ProfileList, RunID, ServiceCompanyID);
+                _logger.LogInfo("ProductionReport Get");
+                return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get DocCode action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        //THE SERVICECOMPANYLIST SHOULD USE A SESSION VARIABLE IN THE UI LAYER
+        [HttpGet]
+        [ActionName("GetProductionPrinterReport")]
+        public async Task<ActionResult<ProductionReportPrinterViewModel>> GetProductionPrinterReport([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("ProfileList", out obj);
+                string ProfileListJSON = Convert.ToString(obj);
+                dictionary.TryGetValue("RunID", out obj);
+                int RunID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("ServiceCompanyID", out obj);
+                int ServiceCompanyID = Convert.ToInt32(obj.ToString());
+                IEnumerable<int> ProfileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
+
+                ProductionReportPrinterViewModel viewmodel = await _productionReportService.GetProductionPrinterReport(ProfileList, RunID, ServiceCompanyID);
                 _logger.LogInfo("ProductionReport Get");
                 return Ok(viewmodel);
             }

@@ -30,6 +30,11 @@ else
     }
     else
     {
+        string ServiceCompanyName = "";
+        if (ViewBag.hasMultipleServiceCompanies)
+        {
+                ServiceCompanyName += TempData["ServiceCompanyName"];
+        }
         <table class="table table-sm table-hover table-collapse-seperate">
             <col>
             <colgroup span="2"></colgroup>
@@ -41,7 +46,7 @@ else
             <colgroup span="3"></colgroup>
             <thead id="bootstrap-overrides" class="sticky-header">
                 <tr>
-                    <th class="headcol" rowspan="3" scope="rowgroup">@localizer["RunDescription"]</th> @*BusinessDesc + [BusinessID] + RunDate + (RunSequence + [RunID])*@
+                        <th class="headcol" rowspan="3" scope="rowgroup"><div class="highlight-data">@ServiceCompanyName</div>@localizer["RunDescription"]</th> @*BusinessDesc + [BusinessID] + RunDate + (RunSequence + [RunID])*@
                     <th colspan="20" scope="rowgroup">@localizer["Files"]</th>
                 </tr>
                 <tr>
@@ -96,10 +101,6 @@ else
                         <tr>
                             @{
                                 string RunName = p.BusinessDesc + "(" + p.RunDate + "[" + p.RunSequence + "])";
-                                if (ViewBag.hasMultipleServiceCompanies)
-                                {
-                                    RunName += " - " + p.ServiceCompany;
-                                }
                             }
                             <td class="headcol" >@RunName
                                 @if (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0)

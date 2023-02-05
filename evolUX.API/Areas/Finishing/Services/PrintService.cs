@@ -20,8 +20,12 @@ namespace evolUX.API.Areas.Finishing.Services
         {
             _repository = repository;
         }
+        public void GetPrinterFeatures(string specs, ref int colorFeature, ref int plexFeature)
+        {
+            GetPrinterFeatures(specs, "", ref colorFeature, ref plexFeature);
+        }
 
-        public void GetPrinterFeatures(string specs, ref bool printColor, ref bool printBlack, ref int plexFeature)
+        public void GetPrinterFeatures(string specs, string plexCode, ref int colorFeature, ref int plexFeature)
         {
             //Check Print Service Types
             string xmlString = "<?xml version='1.0'?><root>" + specs + "</root>";
@@ -36,12 +40,12 @@ namespace evolUX.API.Areas.Finishing.Services
                     if (!string.IsNullOrEmpty(node.InnerText))
                     {
                         if (node.InnerText.StartsWith("PRINTCOLOR"))
-                            printColor = true;
+                            colorFeature = colorFeature | 2;
                         if (node.InnerText.StartsWith("PRINTBLACK"))
-                            printBlack = true;
-                        if (node.InnerText.EndsWith("SPLEX"))
+                            colorFeature = colorFeature | 1;
+                        if (node.InnerText.EndsWith("SPLEX") || (!string.IsNullOrEmpty(plexCode) && plexCode == "SPLEX"))
                             plexFeature = plexFeature | 1;
-                        else if (node.InnerText.EndsWith("DPLEX"))
+                        else if (node.InnerText.EndsWith("DPLEX") || (!string.IsNullOrEmpty(plexCode) && plexCode == "DPLEX"))
                             plexFeature = plexFeature | 2;
                     }
                 }
@@ -64,13 +68,11 @@ namespace evolUX.API.Areas.Finishing.Services
                     p.MatchFilter = r.MatchFilter;
                     p.ResID = r.ResID;
                     p.Description = r.Description;
-                    bool printColor = false;
-                    bool printBlack = false;
+                    int colorFeature = 0;
                     int plexFeature = 0;
 
-                    GetPrinterFeatures(p.ResValue, ref printColor, ref printBlack, ref plexFeature);
-                    p.PrintColor = printColor;
-                    p.PrintBlack = printBlack;
+                    GetPrinterFeatures(p.ResValue, ref colorFeature, ref plexFeature);
+                    p.ColorFeature = colorFeature;
                     p.PlexFeature = plexFeature;
 
                     Printers.Add(p);

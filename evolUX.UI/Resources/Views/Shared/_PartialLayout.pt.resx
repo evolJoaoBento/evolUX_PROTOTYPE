@@ -319,7 +319,7 @@
     <value>Estado de Produção / Imprimir</value>
   </data>
   <data name="ActionProductionStatus_Link" xml:space="preserve">
-    <value>/Finishing/ProductionReport/ProductionRunReport</value>
+    <value>/Finishing/ProductionReport/Index</value>
   </data>
   <data name="ActionProfiles" xml:space="preserve">
     <value>Perfis</value>

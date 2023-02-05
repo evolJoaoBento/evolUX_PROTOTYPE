@@ -9,5 +9,15 @@
         public string CompanyPostalCode { get; set; }
         public string CompanyPostalCodeDescription { get; set; }
         public string CompanyCountry { get; set; }
+        public Company()
+        {
+            CompanyID = 0;
+            CompanyName = string.Empty;
+            CompanyCode = string.Empty;
+            CompanyAddress = string.Empty;
+            CompanyPostalCode = string.Empty;
+            CompanyPostalCodeDescription = string.Empty;
+            CompanyCountry = string.Empty;
+        }
     }
 }

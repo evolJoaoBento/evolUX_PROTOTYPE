@@ -137,9 +137,8 @@
                                     </form>*@
                                     ProductionInfo pregist = p;
                                     pregist.FileName = p.RegistDetailFileName;
-                                    pregist.ShortFileName = p.RegistShortFileName;
+                                    pregist.ShortFileName = p.RegistDetailShortFileName;
                                     pregist.FilePrinterSpecs = p.RegistDetailFilePrinterSpecs;
-                                    pregist.ShortFileName = p.RegistShortFileName;
                                                                    
                                     @if(!p.RegistDetailFilePrintedFlag){
                                         <p/>
@@ -171,7 +170,7 @@
                                 PaperTotal[paper] += p.PaperTotals[paper];
                             }
                             <td>@p.FullFillMaterialCode</td>
-                            <td>@p.FullFillMaterialRef</td>
+                            <td>@p.EnvMaterialRef</td>
                             <td>@p.TotalPostObjs</td>
                             @{
                                 PostObjsTotal += p.TotalPostObjs;

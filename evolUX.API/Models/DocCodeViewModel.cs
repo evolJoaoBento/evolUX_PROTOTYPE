@@ -1,4 +1,5 @@
 ﻿using evolUX.API.Areas.EvolDP.Models;
+using Shared.Models.Areas.evolDP;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

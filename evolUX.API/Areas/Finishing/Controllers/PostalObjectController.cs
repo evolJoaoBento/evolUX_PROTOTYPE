@@ -36,8 +36,9 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 string PostObjBarCode = Convert.ToString(obj);
                 dictionary.TryGetValue("ServiceCompanyList", out obj);
                 string ServiceCompanyListJSON = Convert.ToString(obj);
-                
-                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+
+                DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+                DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
 
                 PostalObjectViewModel viewmodel = await _postalObjectService.GetPostalObjectInfo(ServiceCompanyList, PostObjBarCode);
                 _logger.LogInfo("PostalObjectInfo Get");

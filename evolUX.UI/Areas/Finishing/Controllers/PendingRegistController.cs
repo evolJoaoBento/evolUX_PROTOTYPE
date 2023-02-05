@@ -32,7 +32,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 if (string.IsNullOrEmpty(ServiceCompanyList))
                     return View(null);
                 PendingRegistViewModel result = await _pendingRegistService.GetPendingRegist(ServiceCompanyList);
-                DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanies"));
+                DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
                 if (ServiceCompanyDT.Rows.Count>1)
                 {
                     ViewBag.hasMultipleServiceCompanies = true;

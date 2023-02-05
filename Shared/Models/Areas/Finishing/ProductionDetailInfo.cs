@@ -8,6 +8,7 @@
         public string ServiceCompanyName { get; set; }
         public int ExpCompanyID { get; set; }
         public string ExpCompanyCode { get; set; }
+        public string ExpCompanyName { get; set; }
         public int ExpeditionType { get; set; }
         public string ExpeditionTypeDesc { get; set; }
         public string ExpCode { get; set; }
@@ -24,5 +25,6 @@
         public int StationMediaID { get; set; }
         public bool HasColorPages { get; set; }
         public IEnumerable<ProductionInfo> ProductionDetailReport { get; set; }
+        public IEnumerable<ProdServiceCompanyElement> ProductionDetailPrinterReport { get; set; }
     }
 }

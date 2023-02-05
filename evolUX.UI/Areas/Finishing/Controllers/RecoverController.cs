@@ -11,6 +11,7 @@ using Shared.ViewModels.Areas.Core;
 using Microsoft.Extensions.Localization;
 using evolUX.UI.Exceptions;
 using Shared.Exceptions;
+using Newtonsoft.Json;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -29,6 +30,10 @@ namespace evolUX.UI.Areas.Finishing.Controllers
         {
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             if (string.IsNullOrEmpty(ServiceCompanyList))
+                return View(null);
+
+            DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
+            if (ServiceCompanyDT.Rows.Count > 1)
             {
                 ViewBag.hasServiceCompanies = false;
             }
@@ -36,6 +41,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             {
                 ViewBag.hasServiceCompanies = true;
             }
+
             return View();
         }
 

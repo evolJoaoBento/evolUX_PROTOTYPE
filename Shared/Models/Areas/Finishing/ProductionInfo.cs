@@ -10,16 +10,13 @@ namespace Shared.Models.Areas.Finishing
         public string FileName { get; set; }
         public string ShortFileName { get; set; }
         public string FilePrinterSpecs { get; set; }
-        public bool FilePrintColor { get; set; }
-        public bool FilePrintBlack { get; set; }
+        public int FileColor { get; set; }
         public int FilePlexType { get; set; }
 
         public string RegistDetailFileName { get; set; }
         public string RegistDetailShortFileName { get; set; }
         public string RegistDetailFilePrinterSpecs { get; set; }
-        public string RegistShortFileName { get; set; }
-        public bool RegistDetailFilePrintColor { get; set; }
-        public bool RegistDetailFilePrintBlack { get; set; }
+        public int RegistDetailFileColor { get; set; }
         public int RegistDetailFilePlexType { get; set; }
 
         public string ServiceTaskCode { get; set; }
@@ -29,7 +26,7 @@ namespace Shared.Models.Areas.Finishing
         public int TotalPrint { get; set; }
         public int StartSeqNum { get; set; }
         public int EndSeqNum { get; set; }
-        public string FullFillMaterialRef { get; set; }
+        public string EnvMaterialRef { get; set; }
         public string FullFillMaterialCode { get; set; }
         public int TotalPostObjs { get; set; }
         public int ExpLevel { get; set; }

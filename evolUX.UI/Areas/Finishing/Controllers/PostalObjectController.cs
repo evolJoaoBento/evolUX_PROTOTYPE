@@ -32,6 +32,10 @@ namespace evolUX.UI.Areas.Finishing.Controllers
         {
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             if (string.IsNullOrEmpty(ServiceCompanyList))
+                return View(null);
+
+            DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
+            if (ServiceCompanyDT.Rows.Count > 1)
             {
                 ViewBag.hasServiceCompanies = false;
             }

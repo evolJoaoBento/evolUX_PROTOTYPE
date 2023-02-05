@@ -38,7 +38,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
         [ActionName("GetPendingRegist")]
         public async Task<ActionResult<PendingRegistViewModel>> GetPendingRegist([FromBody] string ServiceCompanyListJSON)
         {
-            DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+            DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+            DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
             try
             {
                 PendingRegistViewModel viewmodel = await _pendingRegistService.GetPendingRegist(ServiceCompanyList);
@@ -61,7 +62,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
         [ActionName("GetPendingRegistDetail")]
         public async Task<ActionResult<PendingRegistViewModel>> GetPendingRegistDetail([FromQuery] int RunID, [FromBody] string ServiceCompanyListJSON)
         {
-            DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+            DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+            DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
             try
             {
                 PendingRegistDetailViewModel viewmodel = await _pendingRegistService.GetPendingRegistDetail(RunID, ServiceCompanyList);
@@ -86,7 +88,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
         {
             try
             {
-                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
                 ResultsViewModel viewmodel = new ResultsViewModel();
                 viewmodel.Results = await _concludedPrintService.RegistPrint(bindingModel.FileBarcode, bindingModel.User, ServiceCompanyList);
                 _logger.LogInfo("RegistPrint Get");
@@ -110,7 +113,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
         {
             try
             {
-                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
                 ResultsViewModel viewmodel = new ResultsViewModel();
                 viewmodel.Results = await _concludedFullfillService.RegistFullFill(bindingModel.FileBarcode, bindingModel.User, ServiceCompanyList);
                 _logger.LogInfo("RegistFullFill Get");
@@ -134,7 +138,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
         {
             try
             {
-                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
                 ResultsViewModel viewmodel = new ResultsViewModel();
                 viewmodel.Results = await _recoverService.RegistPartialRecover(bindingModel.StartBarcode, bindingModel.EndBarcode, bindingModel.User, ServiceCompanyList, bindingModel.PermissionLevel);
                 _logger.LogInfo("RegistTotalRecover Get");
@@ -158,7 +163,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
         {
             try
             {
-                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
                 ResultsViewModel viewmodel = new ResultsViewModel();
                 viewmodel.Results = await _recoverService.RegistTotalRecover(bindingModel.FileBarcode, bindingModel.User, ServiceCompanyList, bindingModel.PermissionLevel);
                 _logger.LogInfo("RegistTotalRecover Get");
@@ -182,7 +188,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
         {
             try
             {
-                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
+                DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
                 ResultsViewModel viewmodel = new ResultsViewModel();
                 viewmodel.Results = await _recoverService.RegistDetailRecover(bindingModel.StartBarcode, bindingModel.EndBarcode, bindingModel.User, ServiceCompanyList, bindingModel.PermissionLevel);
                 _logger.LogInfo("RegistDetailRecover Get");

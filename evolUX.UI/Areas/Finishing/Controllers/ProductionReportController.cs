@@ -13,6 +13,11 @@ using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
 using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 using Shared.Models.General;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using evolUX.API.Models;
+using Shared.Models.Areas.evolDP;
+using Shared.Models.Areas.Finishing;
+using Microsoft.Extensions.Localization;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -20,20 +25,93 @@ namespace evolUX.UI.Areas.Finishing.Controllers
     public class ProductionReportController : Controller
     {
         private readonly IProductionReportService _productionReportService;
-        public ProductionReportController(IProductionReportService productionReportService)
+        private readonly IStringLocalizer<ProductionReportController> _localizer;
+        public ProductionReportController(IProductionReportService productionReportService, IStringLocalizer<ProductionReportController> localizer)
         {
             _productionReportService = productionReportService;
+            _localizer = localizer;
         }
 
-        public async Task<IActionResult> ProductionRunReport()
+        public async Task<IActionResult> Index()
         {
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             try
             {
                 if (string.IsNullOrEmpty(ServiceCompanyList))
                     return View(null);
+                DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
+                if (ServiceCompanies.Rows.Count > 1)
+                {
+                    ServiceCompanyViewModel result = new ServiceCompanyViewModel();
+                    List<Company> sList = new List<Company>();
+                    foreach(DataRow row in ServiceCompanies.Rows)
+                    {
+                        sList.Add(new Company
+                        {
+                            CompanyID = Int32.Parse(row["ID"].ToString()),
+                            CompanyCode = (string)row["CompanyCode"],
+                            CompanyName = (string)row["CompanyName"]
+                        });
+                    }
+                    result.ServiceCompanies = sList;
+                    return View(result);
+                }
+                else
+                {
+                    string scValues = ServiceCompanies.Rows[0]["ID"].ToString() + "|" + ServiceCompanies.Rows[0]["CompanyCode"].ToString() + " | " + ServiceCompanies.Rows[0]["CompanyName"].ToString();
+                    return RedirectToAction("ProductionRunReport", new { ServiceCompanyValues = scValues });
+                }
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
 
-                ProductionRunReportViewModel result = await _productionReportService.GetProductionRunReport(ServiceCompanyList);
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+
+        public async Task<IActionResult> ProductionRunReport(string ServiceCompanyValues)
+        {
+            string[] serviceCompanyValue = ServiceCompanyValues.Split('|');
+            int ServiceCompanyID = Convert.ToInt32(serviceCompanyValue[0]);
+            string ServiceCompanyCode = serviceCompanyValue.Length > 1 ? serviceCompanyValue[1] : "";
+            string ServiceCompanyName = serviceCompanyValue.Length > 2 ? serviceCompanyValue[2] : "";
+
+            TempData["ServiceCompanyID"] = serviceCompanyValue[0];
+            TempData["ServiceCompanyCode"] = ServiceCompanyCode;
+            TempData["ServiceCompanyName"] = ServiceCompanyName;
+            try
+            {
+
+                ProductionRunReportViewModel result = await _productionReportService.GetProductionRunReport(ServiceCompanyID);
                 DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanies"));
                 if (ServiceCompanyDT.Rows.Count > 1)
                 {
@@ -80,6 +158,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             }
             
         }
+
         public async Task<IActionResult> ProductionReport(int RunID, int ServiceCompanyID, string RunName)
         {
             try
@@ -130,10 +209,22 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             try
             {
                 string profileList = HttpContext.Session.GetString("evolUX/Profiles");
-                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID);
-                if (result != null && result.ProductionReport != null && result.ProductionReport.Count() > 0)
+                ProductionReportPrinterViewModel result = await _productionReportService.GetProductionPrinterReport(profileList, RunID, ServiceCompanyID);
+                if (result != null)
                 {
-                    TempData["ServiceCompanyCode"] = result.ProductionReport.First().ServiceCompanyCode;
+                    if (result.ProductionReport != null && result.ProductionReport.Count() > 0)
+                        TempData["ServiceCompanyCode"] = result.ProductionReport.First().ServiceCompanyCode;
+                    if (result.Printers != null && result.Printers.Count() > 0)
+                    {
+                        List<PrinterInfo> printerInfos = result.Printers.ToList();
+                        PrinterInfo p = new PrinterInfo();
+                        p.PlexFeature = 3;
+                        p.ColorFeature = 3;
+                        p.ResValue = string.Empty;
+                        p.Description = _localizer["SelectPrinter"];
+                        printerInfos.Insert(0,p);
+                        result.Printers = printerInfos;
+                    }
                 }
                 ViewBag.RunName = RunName;
                 return View(result);

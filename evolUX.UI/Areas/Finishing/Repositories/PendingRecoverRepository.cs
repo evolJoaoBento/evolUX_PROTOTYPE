@@ -27,6 +27,7 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             return await response.GetJsonAsync<ServiceCompanyViewModel>();
 
         }
+
         public async Task<PendingRecoverDetailViewModel> GetPendingRecoveries(int serviceCompanyID, string serviceCompanyCode)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
@@ -40,6 +41,7 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             return await response.GetJsonAsync<PendingRecoverDetailViewModel>();
 
         }
+
         public async Task<Result> RegistPendingRecover(int serviceCompanyID, string serviceCompanyCode, string recoverType, int userid)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();

@@ -34,7 +34,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
         [ActionName("GetServiceCompanies")]
         public async Task<ActionResult<ServiceCompanyViewModel>> GetServiceCompanies([FromBody] string ServiceCompanyListJSON)
         {
-            DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+            DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+            DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
             try
             {
                 ServiceCompanyViewModel viewmodel = new ServiceCompanyViewModel();

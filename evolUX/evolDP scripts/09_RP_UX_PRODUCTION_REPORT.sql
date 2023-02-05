@@ -4,8 +4,8 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RP_UX_PRODUCTION_R
 END
 GO
 ALTER  PROCEDURE [dbo].[RP_UX_PRODUCTION_REPORT] 
+	@RunIDList IDList READONLY,
 	@ServiceCompanyID int,
-	@RunID int,
 	@PaperMediaID int,
 	@StationMediaID int,
 	@ExpeditionType int,
@@ -145,7 +145,7 @@ AS
 		[PlexCode] varchar(5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 		[StartSeqNum] int NULL,
 		[EndSeqNum] int NULL,
-		[FullFillMaterialRef] varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+		[EnvMaterialRef] varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 		[FullFillMaterialCode] varchar(10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 		[ExpLevel] int NULL,
 		[ExpCompanyCode] varchar(10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -213,7 +213,7 @@ AS
 		[RegistDetailFilePrintedFlag],
 		[RegistDetailFileRecNumber],
 		[PrinterOperator], [Printer], 
-		[FullFillMaterialRef], [FullFillMaterialCode], [ExpLevel])
+		[EnvMaterialRef], [FullFillMaterialCode], [ExpLevel])
 	SELECT
 		f.RunID,
 		f.FileID,
@@ -239,6 +239,9 @@ AS
 		m.MaterialRef, m.FullFillMaterialCode, pd.ExpLevel
 	FROM 
 		RT_FILE_REGIST f WITH(NOLOCK)
+	INNER JOIN
+		@RunIDList r
+	ON	r.ID = f.RunID
 	INNER JOIN
 		RT_PRODUCTION_DETAIL pd WITH(NOLOCK)
 	ON pd.ProdDetailID = f.ProdDetailID
@@ -279,7 +282,7 @@ AS
 	INNER JOIN
 		RD_MATERIAL m WITH(NOLOCK)
 	ON m.MaterialID = pd.EnvMaterialID
-	WHERE f.RunID = @RunID AND f.ErrorID = 0
+	WHERE f.ErrorID = 0
 		AND pd.ServiceCompanyID = @ServiceCompanyID
 		AND pd.PaperMediaID = @PaperMediaID
 		AND ISNULL(pd.StationMediaID, 0) = ISNULL(@StationMediaID, 0)
@@ -346,12 +349,13 @@ AS
 	ON	fp.RunID = u.RunID AND fp.FileID = u.FileID
 
 	--Contagens de materiais
-	DECLARE @FileID int,
+	DECLARE @RunID int,
+			@FileID int,
 			@MaterialCount int
 
 	--Update de contagens de papeis
 	DECLARE tCursor CURSOR LOCAL
-	FOR SELECT f.FileID, mc.MaterialPosition, m.MaterialRef, SUM(fm.Quantity)
+	FOR SELECT f.RunID, f.FileID, mc.MaterialPosition, m.MaterialRef, SUM(fm.Quantity)
 	FROM ##RP_UX_PROD_REPORT u
 	INNER JOIN
 		RT_FILE_REGIST f WITH(NOLOCK)
@@ -369,17 +373,17 @@ AS
 	INNER JOIN
 		RD_MATERIAL m WITH(NOLOCK)
 	ON m.MaterialID = mc.MaterialID
-	GROUP BY f.FileID, mc.MaterialPosition, m.MaterialRef
+	GROUP BY f.RunID, f.FileID, mc.MaterialPosition, m.MaterialRef
 
 	OPEN tCursor
-	FETCH NEXT FROM tCursor INTO @FileID, @MaterialPosition, @MaterialRef, @MaterialCount
+	FETCH NEXT FROM tCursor INTO @RunID, @FileID, @MaterialPosition, @MaterialRef, @MaterialCount
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
 		SELECT @SQLString = 'UPDATE ##RP_UX_PROD_REPORT SET ' + REPLACE(@PaperMaterialColumnName,'#@MaterialRef@#',@MaterialRef) + 
 			' = ' + CAST(@MaterialCount as varchar) + '
 			WHERE RunID = ' + CAST(@RunID as varchar) + ' AND FileID = ' + CAST(@FileID as varchar)
 		EXEC sp_executesql @SQLString
-		FETCH NEXT FROM tCursor INTO @FileID, @MaterialPosition, @MaterialRef, @MaterialCount
+		FETCH NEXT FROM tCursor INTO @RunID, @FileID, @MaterialPosition, @MaterialRef, @MaterialCount
 	END
 
 	CLOSE tCursor
@@ -387,7 +391,7 @@ AS
 
 	--Update de contagens de Adicionais
 	DECLARE tCursor CURSOR LOCAL
-	FOR SELECT f.FileID, mc.MaterialPosition, m.MaterialRef, SUM(fm.Quantity)
+	FOR SELECT f.RunID, f.FileID, mc.MaterialPosition, m.MaterialRef, SUM(fm.Quantity)
 	FROM ##RP_UX_PROD_REPORT u
 	INNER JOIN
 		RT_FILE_REGIST f WITH(NOLOCK)
@@ -405,17 +409,17 @@ AS
 	INNER JOIN
 		RD_MATERIAL m WITH(NOLOCK)
 	ON m.MaterialID = mc.MaterialID
-	GROUP BY f.FileID, mc.MaterialPosition, m.MaterialRef
+	GROUP BY f.RunID, f.FileID, mc.MaterialPosition, m.MaterialRef
 
 	OPEN tCursor
-	FETCH NEXT FROM tCursor INTO @FileID, @MaterialPosition, @MaterialRef, @MaterialCount
+	FETCH NEXT FROM tCursor INTO @RunID, @FileID, @MaterialPosition, @MaterialRef, @MaterialCount
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
 		SELECT @SQLString = 'UPDATE ##RP_UX_PROD_REPORT SET ' + REPLACE(REPLACE(@StationMaterialColumnName,'#@MaterialPosition@#', CAST(@MaterialPosition as varchar)), '#@MaterialRef@#', @MaterialRef) + 
 			' = ' + CAST(@MaterialCount as varchar) + '
 			WHERE RunID = ' + CAST(@RunID as varchar) + ' AND FileID = ' + CAST(@FileID as varchar)
 		EXEC sp_executesql @SQLString
-		FETCH NEXT FROM tCursor INTO @FileID, @MaterialPosition, @MaterialRef, @MaterialCount
+		FETCH NEXT FROM tCursor INTO @RunID, @FileID, @MaterialPosition, @MaterialRef, @MaterialCount
 	END
 
 	CLOSE tCursor

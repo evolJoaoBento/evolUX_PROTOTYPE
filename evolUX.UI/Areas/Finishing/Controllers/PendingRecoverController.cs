@@ -15,6 +15,7 @@ using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
 using Shared.Models.Areas.Finishing;
 using Shared.Models.General;
 using System.Security.Claims;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -34,14 +35,26 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             {
                 if (string.IsNullOrEmpty(ServiceCompanyList))
                     return View(null);
-                ServiceCompanyViewModel result = await _pendingRecoverService.GetServiceCompanies(ServiceCompanyList);
-                if (result != null && result.ServiceCompanies.Count() > 1)
+                DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
+                if (ServiceCompanies.Rows.Count > 1)
                 {
+                    ServiceCompanyViewModel result = new ServiceCompanyViewModel();
+                    List<Company> sList = new List<Company>();
+                    foreach (DataRow row in ServiceCompanies.Rows)
+                    {
+                        sList.Add(new Company
+                        {
+                            CompanyID = (int)row["ID"],
+                            CompanyCode = (string)row["CompanyCode"],
+                            CompanyName = (string)row["CompanyName"]
+                        });
+                    }
+                    result.ServiceCompanies = sList;
                     return View(result);
                 }
                 else
                 {
-                    string scValues = result.ServiceCompanies.First().CompanyID + "|" + result.ServiceCompanies.First().CompanyCode + "|" + result.ServiceCompanies.First().CompanyName;
+                    string scValues = ServiceCompanies.Rows[0]["ID"].ToString() + "|" + ServiceCompanies.Rows[0]["CompanyCode"].ToString() + " | " + ServiceCompanies.Rows[0]["CompanyName"].ToString();
                     return RedirectToAction("PendingRecoverDetail", new { ServiceCompanyValues = scValues });
                 }
             }

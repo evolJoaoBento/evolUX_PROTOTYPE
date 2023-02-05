@@ -57,7 +57,7 @@ namespace evolUX.API.Areas.Core.Repositories
         {
             string serversStr = servers.toCommaSeperatedFormatedString();
 
-            string sql = string.Format(@"SELECT DISTINCT c.CompanyID [ID]
+            string sql = string.Format(@"SELECT DISTINCT c.CompanyID [ID], c.CompanyCode, c.CompanyName
                         FROM
                             RD_COMPANY c WITH(NOLOCK)
                         INNER JOIN

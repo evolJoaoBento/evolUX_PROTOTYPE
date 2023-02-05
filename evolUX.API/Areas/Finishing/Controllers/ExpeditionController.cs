@@ -68,7 +68,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 dictionary.TryGetValue("ServiceCompanyList", out obj);
                 string ServiceCompanyListJSON = Convert.ToString(obj);
 
-                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+                DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+                DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
 
                 ExpeditionListViewModel viewmodel = await _expeditionService.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
                 _logger.LogInfo("GetPendingExpeditionFiles Get");
@@ -129,7 +130,8 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 dictionary.TryGetValue("ServiceCompanyList", out obj);
                 string ServiceCompanyListJSON = Convert.ToString(obj);
 
-                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+                DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+                DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
 
                 ExpeditionListViewModel viewmodel = await _expeditionService.GetExpeditionReportList(BusinessID, ServiceCompanyList);
                 _logger.LogInfo("GetPendingExpeditionFiles Get");

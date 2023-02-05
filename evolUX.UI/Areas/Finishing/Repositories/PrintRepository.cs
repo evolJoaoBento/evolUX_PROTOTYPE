@@ -27,7 +27,7 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             dictionary.Add("ProfileList", profileList);
             dictionary.Add("FileSpecs", filesSpecs);
             dictionary.Add("IgnoreProfiles", ignoreProfiles);
-            var response = await _flurlClient.Request("/API/Finishing/Print/Printers")
+            var response = await _flurlClient.Request("/API/Finishing/Print/GetPrinters")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);

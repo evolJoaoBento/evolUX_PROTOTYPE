@@ -333,7 +333,10 @@ td.headcol {
 .collapse-icon {
     color: var(--evol-grey);
 }
-
+.highlight-data {
+    color: var(--orange);
+    font-weight: bold;
+}
 td.table-end-data {
     color: var(--orange);
     font-weight: bold;
