@@ -5,6 +5,9 @@ namespace Shared.Models.Areas.Finishing
     public class ProdFileInfo
     {
         public string PlexCode { get; set; }
+        public string FullFillMaterialCode { get; set; }
+        public int FullFillCapacity { get; set; }
+        public string EnvMaterialRef { get; set; }
 
         public int RunID { get; set; }
         public int FileID { get; set; }
@@ -23,9 +26,6 @@ namespace Shared.Models.Areas.Finishing
         public bool RegistDetailFilePrintedFlag { get; set; }
         public int RegistDetailFileColor { get; set; }
         public int RegistDetailFilePlexType { get; set; }
-
-        public int EnvMaterialID { get; set; }
-        public string EnvMaterialRef { get; set; }
 
         public string PrinterOperator { get; set; }
         public string Printer { get; set; }
@@ -53,7 +53,6 @@ namespace Shared.Models.Areas.Finishing
             PrinterOperator = "";
             Printer = "";
             PlexCode = "";
-            EnvMaterialRef = "";
             ExpCenterCode = "";
             ExpeditionLevel = "";
             ExpeditionZone = "";

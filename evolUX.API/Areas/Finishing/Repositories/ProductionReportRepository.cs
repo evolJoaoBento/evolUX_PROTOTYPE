@@ -38,7 +38,7 @@ namespace evolUX.API.Areas.Finishing.Repositories
             }
         }
         public async Task<IEnumerable<ProductionInfo>> GetProductionDetailReport(int runID, int serviceCompanyID, int paperMediaID,
-                    int stationMediaID, int expeditionType, string expCode, bool hasColorPages, int envMaterialID, int plexType)
+                    int stationMediaID, int expeditionType, string expCode, bool hasColorPages, int plexType)
         {
             var lookup = new Dictionary<int, ProductionInfo>();
 
@@ -55,7 +55,6 @@ namespace evolUX.API.Areas.Finishing.Repositories
             parameters.Add("ExpeditionType", expeditionType, DbType.Int64);
             parameters.Add("ExpCode", expCode, DbType.String);
             parameters.Add("HasColorPages", hasColorPages, DbType.Boolean);
-            parameters.Add("EnvMaterialID", envMaterialID, DbType.Int64);
             parameters.Add("PlexType", plexType, DbType.Int64);
 
             using (var connection = _context.CreateConnectionEvolDP())
@@ -121,9 +120,9 @@ namespace evolUX.API.Areas.Finishing.Repositories
         }
 
         public async Task<IEnumerable<ProdFileInfo>> GetProductionDetailPrinterReport(IPrintService print, int runID, int serviceCompanyID, int paperMediaID,
-                    int stationMediaID, int expeditionType, string expCode, bool hasColorPages, int envMaterialID, int plexType)
+                    int stationMediaID, int expeditionType, int expCompanyID, int serviceTaskID, bool hasColorPages, int plexType)
         {
-            string sql = @"RP_UX_PRODUCTION_REPORT";
+            string sql = @"RP_UX_PRINT_REPORT_FILTER";
             var parameters = new DynamicParameters();
             DataTable RunIDList = new DataTable();
             RunIDList.Columns.Add("ID", typeof(int));
@@ -134,10 +133,11 @@ namespace evolUX.API.Areas.Finishing.Repositories
             parameters.Add("PaperMediaID", paperMediaID, DbType.Int64);
             parameters.Add("StationMediaID", stationMediaID, DbType.Int64);
             parameters.Add("ExpeditionType", expeditionType, DbType.Int64);
-            parameters.Add("ExpCode", expCode, DbType.String);
+            parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
+            parameters.Add("ServiceTaskID", serviceTaskID, DbType.Int64);
             parameters.Add("HasColorPages", hasColorPages, DbType.Boolean);
-            parameters.Add("EnvMaterialID", envMaterialID, DbType.Int64);
             parameters.Add("PlexType", plexType, DbType.Int64);
+            parameters.Add("FilterOnlyPrint", true, DbType.Boolean);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -147,64 +147,77 @@ namespace evolUX.API.Areas.Finishing.Repositories
                 var obs = await connection.QueryAsync(sql, parameters,
                                     commandType: CommandType.StoredProcedure);
                 var dt = _context.ToDataTable(obs);
-
-                foreach (DataRow r in dt.Rows)
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    ProdFileInfo ProdFile = new ProdFileInfo();
-                    FileList.Add(ProdFile);
-                    ProdFile.PlexCode = (string)r["PlexCode"];
-                    ProdFile.RunID = (int)r["RunID"];
-                    ProdFile.FileID = (int)r["FileID"];
-                    ProdFile.FilePath = (string)r["FilePath"];
-                    ProdFile.FileName = (string)r["FileName"];
-                    ProdFile.ShortFileName = (string)r["ShortFileName"];
-                    ProdFile.FilePrinterSpecs = (string)r["FilePrinterSpecs"];
-                    ProdFile.FilePrintedFlag = (bool)r["FilePrintedFlag"];
-                    int colorFeature = 0;
-                    int plexFeature = 0;
-                    print.GetPrinterFeatures(ProdFile.FilePrinterSpecs, ProdFile.PlexCode, ref colorFeature, ref plexFeature);
-                    ProdFile.FileColor = colorFeature;
-                    ProdFile.FilePlexType = plexFeature;
-
-                    ProdFile.RegistDetailFileName = (string)r["RegistDetailFileName"];
-                    ProdFile.RegistDetailShortFileName = (string)r["RegistDetailShortFileName"];
-                    ProdFile.RegistDetailFilePrinterSpecs = (string)r["RegistDetailFilePrinterSpecs"];
-                    ProdFile.RegistDetailFilePrintedFlag = (bool)r["RegistDetailFilePrintedFlag"];
-                    colorFeature = 0;
-                    plexFeature = 0;
-                    print.GetPrinterFeatures(ProdFile.RegistDetailFilePrinterSpecs, ref colorFeature, ref plexFeature);
-                    ProdFile.RegistDetailFileColor = colorFeature;
-                    ProdFile.RegistDetailFilePlexType = plexFeature;
-
-                    ProdFile.EnvMaterialID = envMaterialID;
-                    ProdFile.EnvMaterialRef = (string)r["EnvMaterialRef"];
-
-                    ProdFile.PrinterOperator = r["PrinterOperator"].ConvertFromDBVal<string>();
-                    ProdFile.Printer = r["Printer"].ConvertFromDBVal<string>();
-                    ProdFile.TotalPrint = (int)r["TotalPrint"];
-                    ProdFile.StartSeqNum = (int)r["StartSeqNum"];
-                    ProdFile.EndSeqNum = (int)r["EndSeqNum"];
-                    ProdFile.TotalPostObjs = (int)r["TotalPostObjs"];
- 
-                    ProdFile.ExpLevel = (int)r["ExpLevel"];
-                    ProdFile.ExpCenterCode = (string)r["ExpCenterCode"];
-                    ProdFile.ExpeditionLevel = (string)r["ExpeditionLevel"];
-                    ProdFile.ExpeditionZone = (string)r["ExpZone"];
-
-                    for (int i = 21; i < dt.Columns.Count; i++)
+                    foreach (DataRow r in dt.Rows)
                     {
-                        string[] strings = dt.Columns[i].ColumnName.Split("|");
-                        if (strings[0] == "Paper")
+                        ProdFileInfo ProdFile = new ProdFileInfo();
+                        FileList.Add(ProdFile);
+                        ProdFile.PlexCode = (string)r["PlexCode"];
+                        ProdFile.FullFillMaterialCode = (string)r["FullFillMaterialCode"];
+                        ProdFile.FullFillCapacity = Int32.Parse(r["FullFillCapacity"].ToString());
+                        ProdFile.EnvMaterialRef = (string)r["EnvMaterialRef"];
+
+                        ProdFile.RunID = (int)r["RunID"];
+                        ProdFile.FileID = (int)r["FileID"];
+                        ProdFile.FilePath = (string)r["FilePath"];
+                        ProdFile.FileName = (string)r["FileName"];
+                        ProdFile.ShortFileName = (string)r["ShortFileName"];
+                        ProdFile.FilePrinterSpecs = (string)r["FilePrinterSpecs"];
+                        ProdFile.FilePrintedFlag = (bool)r["FilePrintedFlag"];
+                        ProdFile.FileColor = 3;
+                        ProdFile.FilePlexType = 3;
+                        if (!string.IsNullOrEmpty(ProdFile.FilePrinterSpecs) && !ProdFile.FilePrintedFlag)
                         {
-                            ProdFile.PaperTotals = ProdFile.PaperTotals ?? new Dictionary<string, int>();
-                            ProdFile.PaperTotals.Add(strings[1], value: (int)r.ItemArray[i]);
-                        }
-                        else if (strings[0] == "Station")
-                        {
-                            ProdFile.StationTotals = ProdFile.StationTotals ?? new Dictionary<string, int>();
-                            ProdFile.StationTotals.Add(strings[1], value: (int)r.ItemArray[i]);
+                            int colorFeature = 0;
+                            int plexFeature = 0;
+                            print.GetPrinterFeatures(ProdFile.FilePrinterSpecs, ProdFile.PlexCode, ref colorFeature, ref plexFeature);
+                            ProdFile.FileColor = colorFeature;
+                            ProdFile.FilePlexType = plexFeature;
                         }
 
+                        ProdFile.RegistDetailFileName = (string)r["RegistDetailFileName"];
+                        ProdFile.RegistDetailShortFileName = (string)r["RegistDetailShortFileName"];
+                        ProdFile.RegistDetailFilePrinterSpecs = (string)r["RegistDetailFilePrinterSpecs"];
+                        ProdFile.RegistDetailFilePrintedFlag = (bool)r["RegistDetailFilePrintedFlag"];
+                        ProdFile.RegistDetailFileColor = 3;
+                        ProdFile.RegistDetailFilePlexType = 3;
+                        if (!string.IsNullOrEmpty(ProdFile.FilePrinterSpecs) && !ProdFile.FilePrintedFlag)
+                        {
+                            int colorFeature = 0;
+                            int plexFeature = 0;
+                            print.GetPrinterFeatures(ProdFile.RegistDetailFilePrinterSpecs, ProdFile.PlexCode, ref colorFeature, ref plexFeature);
+                            ProdFile.RegistDetailFileColor = colorFeature;
+                            ProdFile.RegistDetailFilePlexType = plexFeature;
+                        }
+
+                        ProdFile.PrinterOperator = r["PrinterOperator"].ConvertFromDBVal<string>();
+                        ProdFile.Printer = r["Printer"].ConvertFromDBVal<string>();
+                        ProdFile.TotalPrint = (int)r["TotalPrint"];
+                        ProdFile.StartSeqNum = (int)r["StartSeqNum"];
+                        ProdFile.EndSeqNum = (int)r["EndSeqNum"];
+                        ProdFile.TotalPostObjs = (int)r["TotalPostObjs"];
+
+                        ProdFile.ExpLevel = (int)r["ExpLevel"];
+                        ProdFile.ExpCenterCode = (string)r["ExpCenterCode"];
+                        ProdFile.ExpeditionLevel = (string)r["ExpeditionLevel"];
+                        ProdFile.ExpeditionZone = (string)r["ExpZone"];
+
+                        for (int i = 21; i < dt.Columns.Count; i++)
+                        {
+                            string[] strings = dt.Columns[i].ColumnName.Split("|");
+                            if (strings[0] == "Paper")
+                            {
+                                ProdFile.PaperTotals = ProdFile.PaperTotals ?? new Dictionary<string, int>();
+                                ProdFile.PaperTotals.Add(strings[1], value: (int)r.ItemArray[i]);
+                            }
+                            else if (strings[0] == "Station")
+                            {
+                                ProdFile.StationTotals = ProdFile.StationTotals ?? new Dictionary<string, int>();
+                                ProdFile.StationTotals.Add(strings[1], value: (int)r.ItemArray[i]);
+                            }
+
+                        }
                     }
                 }
                 return FileList;
@@ -213,7 +226,7 @@ namespace evolUX.API.Areas.Finishing.Repositories
 
         public async Task<IEnumerable<ProductionDetailInfo>> GetProductionReport(int runID, int serviceCompanyID)
         {
-            string sql = @"RP_UX_PRODUCTION_SUBSET_REPORT";
+            string sql = @"RP_UX_PRINT_SUBSET_REPORT"; // @"RP_UX_PRODUCTION_SUBSET_REPORT";
             var parameters = new DynamicParameters();
             parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
 

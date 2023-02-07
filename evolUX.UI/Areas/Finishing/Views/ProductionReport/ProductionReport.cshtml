@@ -126,27 +126,19 @@
                             
                                 @if (p.RegistDetailFileName!="")
                                 {
-                                    @*<form asp-page-handler="FilePrint" method="post">
-                                        <button class="btn btn-link btn-sm evolflow-link">@p.RegistDetailFileName</button>
-                                        <input type="hidden" name="RunID" value="@p.RunID" />
-                                        <input type="hidden" name="FileID" value="@p.FileID" />
-                                        <input type="hidden" name="FilePath" value="@p.FilePath" />
-                                        <input type="hidden" name="FileName" value="@p.RegistDetailFileName" />
-                                        <input type="hidden" name="ShortFileName" value="@p.RegistDetailShortFileName" />
-                                        <input type="hidden" name="FilePrinterSpecs" value="@p.RegistDetailFilePrinterSpecs" />
-                                    </form>*@
-                                    ProductionInfo pregist = p;
-                                    pregist.FileName = p.RegistDetailFileName;
-                                    pregist.ShortFileName = p.RegistDetailShortFileName;
-                                    pregist.FilePrinterSpecs = p.RegistDetailFilePrinterSpecs;
-                                                                   
-                                    @if(!p.RegistDetailFilePrintedFlag){
-                                        <p/>
+                                     @if(!p.RegistDetailFilePrintedFlag){
+                                        ProductionInfo pregist = p;
+                                        pregist.FileName = p.RegistDetailFileName;
+                                        pregist.ShortFileName = p.RegistDetailShortFileName;
+                                        pregist.FilePrinterSpecs = p.RegistDetailFilePrinterSpecs;
+                                        <p />
                                         <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print"
                        asp-action="Printing" asp-route-jsonserializedproductioninfo=@JsonConvert.SerializeObject(pregist) 
                        asp-route-fileprinterspecs=@pregist.FilePrinterSpecs>@pregist.FileName</a>
-                                    }else{
-                                        <div class="disabled">@pregist.FileName</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="disabled">@p.RegistDetailFileName</div>
                                     }
                                 
                                 }

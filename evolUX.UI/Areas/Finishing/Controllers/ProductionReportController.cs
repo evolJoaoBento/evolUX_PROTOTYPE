@@ -18,6 +18,7 @@ using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
 using Shared.Models.Areas.Finishing;
 using Microsoft.Extensions.Localization;
+using evolUX_dev.Areas.EvolDP.Models;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -55,7 +56,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                     }
                     result.ServiceCompanies = sList;
                     return View(result);
-                }
+               }
                 else
                 {
                     string scValues = ServiceCompanies.Rows[0]["ID"].ToString() + "|" + ServiceCompanies.Rows[0]["CompanyCode"].ToString() + " | " + ServiceCompanies.Rows[0]["CompanyName"].ToString();
@@ -168,7 +169,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
                 if (result != null && result.ProductionReport != null && result.ProductionReport.Count() > 0)
                 {
-                    TempData["ServiceCompanyCode"] = result.ProductionReport.First().ServiceCompanyCode;
+                    //TempData["ServiceCompanyCode"] = result.ProductionReport.First().ServiceCompanyCode;
                 }
                 ViewBag.RunName = RunName;
                 return View(result);
@@ -213,7 +214,11 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 if (result != null)
                 {
                     if (result.ProductionReport != null && result.ProductionReport.Count() > 0)
-                        TempData["ServiceCompanyCode"] = result.ProductionReport.First().ServiceCompanyCode;
+                    {
+                        //string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+                        //DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
+                        //TempData["ServiceCompany"] = ServiceCompanies.Rows.Find(;
+                    }
                     if (result.Printers != null && result.Printers.Count() > 0)
                     {
                         List<PrinterInfo> printerInfos = result.Printers.ToList();

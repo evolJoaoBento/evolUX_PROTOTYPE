@@ -20,10 +20,10 @@ namespace evolUX.API.Areas.Finishing.Services
             _print = print;
         }
 
-        public async Task<IEnumerable<ProductionInfo>> GetProductionDetailReport(int runID, int serviceCompanyID, int paperMediaID, int stationMediaID, int expeditionType, string expCode, bool hasColorPages, int envMaterialID, int plexType)
+        public async Task<IEnumerable<ProductionInfo>> GetProductionDetailReport(int runID, int serviceCompanyID, int paperMediaID, int stationMediaID, int expeditionType, string expCode, bool hasColorPages, int plexType)
         {
             
-            IEnumerable<ProductionInfo> productionReport = await _repository.ProductionReport.GetProductionDetailReport(runID,  serviceCompanyID, paperMediaID, stationMediaID,  expeditionType, expCode, hasColorPages, envMaterialID, plexType);
+            IEnumerable<ProductionInfo> productionReport = await _repository.ProductionReport.GetProductionDetailReport(runID,  serviceCompanyID, paperMediaID, stationMediaID,  expeditionType, expCode, hasColorPages, plexType);
             if (productionReport == null)
             {
 
@@ -46,11 +46,13 @@ namespace evolUX.API.Areas.Finishing.Services
             int plexFeature = 0;
             foreach (ProductionDetailInfo pdi in viewmodel.ProductionReport)
             {
-                pdi.ProductionDetailReport = await _repository.ProductionReport.GetProductionDetailReport(runID, serviceCompanyID, pdi.PaperMediaID, pdi.StationMediaID, pdi.ExpeditionType, pdi.ExpCode, pdi.HasColorPages, pdi.EnvMaterialID, pdi.PlexType);
+                pdi.ProductionDetailReport = await _repository.ProductionReport.GetProductionDetailReport(runID, serviceCompanyID, pdi.PaperMediaID, pdi.StationMediaID, pdi.ExpeditionType, pdi.ExpCode, pdi.HasColorPages, pdi.PlexType);
                 foreach (ProductionInfo f in pdi.ProductionDetailReport)
                 {
                     if (!f.FilePrintedFlag || !f.RegistDetailFilePrintedFlag)
                         existsToPrintFiles = true;
+                    f.FileColor = 3;
+                    f.FilePlexType = 3;
                     if (!string.IsNullOrEmpty(f.FilePrinterSpecs) && !f.FilePrintedFlag)
                     {
                         colorFeature = 0;
@@ -59,6 +61,8 @@ namespace evolUX.API.Areas.Finishing.Services
                         f.FileColor = colorFeature;
                         f.FilePlexType = plexFeature;
                     }
+                    f.RegistDetailFileColor = 3;
+                    f.RegistDetailFilePlexType = 3;
                     if (!string.IsNullOrEmpty(f.RegistDetailFilePrinterSpecs) && !f.RegistDetailFilePrintedFlag)
                     {
                         colorFeature = 0;
@@ -107,69 +111,63 @@ namespace evolUX.API.Areas.Finishing.Services
             }
             ProductionReportPrinterViewModel viewmodel = new ProductionReportPrinterViewModel();
 
-            int lastServiceCompanyID = 0;
             int lastExpCompanyID = 0;
             int lastExpeditionType = 0;
             string lastServiceTaskCode = string.Empty;
-            string lastFullFillMaterialCode = string.Empty;
+            int lastPaperMediaID = 0;
+            int lastStationMediaID = -1;
 
-            List<ProdServiceCompanyElement> ProdDetailReport = new List<ProdServiceCompanyElement>();
-            ProdServiceCompanyElement ServiceCompany = new ProdServiceCompanyElement();
+            List<ProdExpeditionElement> ProdDetailReport = new List<ProdExpeditionElement>();
             ProdExpeditionElement ExpeditionList = new ProdExpeditionElement();
             ProdServiceElement ServiceList = new ProdServiceElement();
-            ProdFullFillElement FullFillList = new ProdFullFillElement();
+            ProdMaterialElement MaterialMediaList = new ProdMaterialElement();
 
             foreach (ProductionDetailInfo pdi in productionReport)
             {
-                if (pdi.ServiceCompanyID != lastServiceCompanyID)
+                IEnumerable<ProdFileInfo> FileList = await _repository.ProductionReport.GetProductionDetailPrinterReport(_print, runID, serviceCompanyID, pdi.PaperMediaID, pdi.StationMediaID, pdi.ExpeditionType, pdi.ExpCompanyID, pdi.ServiceTaskID, pdi.HasColorPages, pdi.PlexType);
+
+                if (FileList != null && FileList.Count() > 0)
                 {
-                    ServiceCompany = new ProdServiceCompanyElement();
-                    ProdDetailReport.Add(ServiceCompany);
-                    ServiceCompany.ServiceCompanyID = pdi.ServiceCompanyID;
-                    ServiceCompany.ServiceCompanyCode = pdi.ServiceCompanyCode;
-                    ServiceCompany.ServiceCompanyName = pdi.ServiceCompanyName;
-                    ServiceCompany.ExpeditionList = new List<ProdExpeditionElement>();
-                    lastServiceCompanyID = pdi.ServiceCompanyID;
-                    lastExpCompanyID = 0;
-                    lastExpeditionType = 0;
-                    lastServiceTaskCode = string.Empty;
-                    lastFullFillMaterialCode = string.Empty;
+                    if (pdi.ExpCompanyID != lastExpCompanyID || pdi.ExpeditionType != lastExpeditionType)
+                    {
+                        ExpeditionList = new ProdExpeditionElement();
+                        ProdDetailReport.Add(ExpeditionList);
+                        ExpeditionList.ExpCompanyID = pdi.ExpCompanyID;
+                        ExpeditionList.ExpCompanyCode = pdi.ExpCompanyCode;
+                        ExpeditionList.ExpCompanyName = pdi.ExpCompanyName;
+                        ExpeditionList.ExpeditionType = pdi.ExpeditionType;
+                        ExpeditionList.ExpeditionTypeDesc = pdi.ExpeditionTypeDesc;
+                        ExpeditionList.ServiceList = new List<ProdServiceElement>();
+                        lastExpCompanyID = pdi.ExpCompanyID;
+                        lastExpeditionType = pdi.ExpeditionType;
+                        lastServiceTaskCode = string.Empty;
+                        lastPaperMediaID = 0;
+                        lastStationMediaID = -1;
+                    }
+                    if (pdi.ServiceTaskCode != lastServiceTaskCode)
+                    {
+                        ServiceList = new ProdServiceElement();
+                        ExpeditionList.ServiceList.Add(ServiceList);
+                        ServiceList.ServiceTaskCode = pdi.ServiceTaskCode;
+                        ServiceList.ServiceTaskDec = pdi.ServiceTaskDesc;
+                        ServiceList.MediaMaterialList = new List<ProdMaterialElement>();
+                        lastServiceTaskCode = pdi.ServiceTaskCode;
+                        lastPaperMediaID = 0;
+                        lastStationMediaID = -1;
+                    }
+                    if (pdi.PaperMediaID != lastPaperMediaID || pdi.StationMediaID != lastStationMediaID)
+                    {
+                        MaterialMediaList = new ProdMaterialElement();
+                        ServiceList.MediaMaterialList.Add(MaterialMediaList);
+                        MaterialMediaList.PaperMediaID = pdi.PaperMediaID;
+                        MaterialMediaList.PaperMaterialList = pdi.PaperMaterialList;
+                        MaterialMediaList.StationMediaID = pdi.StationMediaID;
+                        MaterialMediaList.StationMaterialList = pdi.StationMaterialList;
+                        lastPaperMediaID = pdi.PaperMediaID;
+                        lastStationMediaID = pdi.StationMediaID;
+                    }
+                    MaterialMediaList.FileList = FileList.ToList();
                 }
-                if (pdi.ExpCompanyID != lastExpCompanyID || pdi.ExpeditionType != lastExpeditionType)
-                {
-                    ExpeditionList = new ProdExpeditionElement();
-                    ServiceCompany.ExpeditionList.Add(ExpeditionList);
-                    ExpeditionList.ExpCompanyID = pdi.ExpCompanyID;
-                    ExpeditionList.ExpCompanyCode = pdi.ExpCompanyCode;
-                    ExpeditionList.ExpCompanyName = pdi.ExpCompanyName;
-                    ExpeditionList.ExpeditionType = pdi.ExpeditionType;
-                    ExpeditionList.ExpeditionTypeDesc = pdi.ExpeditionTypeDesc;
-                    ExpeditionList.ServiceList = new List<ProdServiceElement>();
-                    lastExpCompanyID = pdi.ExpCompanyID;
-                    lastExpeditionType = pdi.ExpeditionType;
-                    lastServiceTaskCode = string.Empty;
-                    lastFullFillMaterialCode = string.Empty;
-                }
-                if (pdi.ServiceTaskCode != lastServiceTaskCode)
-                {
-                    ServiceList = new ProdServiceElement();
-                    ExpeditionList.ServiceList.Add(ServiceList);
-                    ServiceList.ServiceTaskCode = pdi.ServiceTaskCode;
-                    ServiceList.ServiceTaskDec = pdi.ServiceTaskDesc;
-                    ServiceList.FullFillList = new List<ProdFullFillElement>();
-                    lastServiceTaskCode = pdi.ServiceTaskCode;
-                    lastFullFillMaterialCode = string.Empty;
-                }
-                if (pdi.FullFillMaterialCode != lastFullFillMaterialCode)
-                {
-                    FullFillList = new ProdFullFillElement();
-                    ServiceList.FullFillList.Add(FullFillList);
-                    FullFillList.FullFillMaterialCode = pdi.FullFillMaterialCode;
-                    FullFillList.FullFillCapacity = pdi.FullFillCapacity;
-                    lastFullFillMaterialCode = pdi.FullFillMaterialCode;
-                }
-                IEnumerable<ProdFileInfo> FileList = await _repository.ProductionReport.GetProductionDetailPrinterReport(_print, runID, serviceCompanyID, pdi.PaperMediaID, pdi.StationMediaID, pdi.ExpeditionType, pdi.ExpCode, pdi.HasColorPages, pdi.EnvMaterialID, pdi.PlexType);
-                FullFillList.FileList = FileList.ToList();
             }
             viewmodel.ProductionReport = ProdDetailReport;
  

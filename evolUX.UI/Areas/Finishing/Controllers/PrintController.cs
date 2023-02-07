@@ -18,6 +18,7 @@ using Shared.Models.General;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.Finishing;
 using Microsoft.Extensions.Localization;
+using Microsoft.IdentityModel.Tokens;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -72,7 +73,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         public async Task<IActionResult> Print(string Printer)
         {
-            if (string.IsNullOrEmpty(Printer))
+            string[] printerValues = Printer.Split('|');
+            if (printerValues.Length < 3 && string.IsNullOrEmpty(printerValues[3]))
                 return PartialView("MessageView", new MessageViewModel(_localizer["SelectValidPrinter"]));
 
             string JsonSerializedProductionInfo = (string)TempData["JsonSerializedProductionInfo"];
@@ -84,7 +86,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                                               .SingleOrDefault());
             try
             {
-                Result result = await _printService.Print(productionInfo.RunID, productionInfo.FileID, Printer, 
+                Result result = await _printService.Print(productionInfo.RunID, productionInfo.FileID, printerValues[3], 
                     ServiceCompanyCode,
                             username, userid, productionInfo.FilePath, productionInfo.FileName, productionInfo.ShortFileName);
                 return PartialView("MessageView", new MessageViewModel(result.ErrorID.ToString(), "", result.Error));

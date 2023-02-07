@@ -28,7 +28,12 @@
                 data-ajax-update="#response"
                 data-ajax-loading="myLoader">
 
-            <select name="Printer" asp-items="@(new SelectList(Model.Printers.Where(r => r.MatchFilter == true),nameof(PrinterInfo.ResValue),nameof(PrinterInfo.Description)))">
+            <select id="Printer" name="Printer">
+                @foreach (PrinterInfo printer in Model.Printers.Where(r => r.MatchFilter == true))
+                {
+                    string resValue = printer.PlexFeature.ToString() + "|" + printer.ColorFeature.ToString() + "|" + printer.ResValue;
+                    <option value="@resValue">@printer.Description</option>
+                }
             </select>
             <p class="my-3 d-flex justify-content-center"><input type="submit" name="Submit" class="btn btn-block btn-primary" /></p>
 
@@ -40,8 +45,13 @@
                 data-ajax-update="#response"
                 data-ajax-loading="myLoader">
 
-            <select name="Printer" asp-items="@(new SelectList(Model.Printers,nameof(PrinterInfo.ResValue),nameof(PrinterInfo.Description)))">
-            </select>
+                <select id="Printer" name="Printer">
+                @foreach(PrinterInfo printer in Model.Printers)
+                {
+                    string resValue = printer.PlexFeature.ToString() + "|" + printer.ColorFeature.ToString() + "|" + printer.ResValue;
+                    <option value="@resValue">@printer.Description</option>
+                }
+                </select>
             <p class="my-3 d-flex justify-content-center"><input type="submit" name="Submit" class="btn btn-block btn-success" /></p>
 
         </form>

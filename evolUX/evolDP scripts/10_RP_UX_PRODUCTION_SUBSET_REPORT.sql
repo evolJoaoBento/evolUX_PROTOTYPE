@@ -22,12 +22,6 @@ AS
 		e.ExpCode,
 		st.ServiceTaskCode,
 		st.[Description] ServiceTaskDesc,
-		m.MaterialID [EnvMaterialID],
-		m.MaterialRef [EnvMaterialRef],
-		m.FullFillMaterialCode,
-		mc.FullFillCapacity,
-		pt.PlexType,
-		pt.PlexCode,
 		pd.PaperMediaID,
 		pd.StationMediaID,
 		CAST(pd.HasColorPages as int) HasColorPages,
@@ -76,7 +70,8 @@ AS
 	GROUP BY pd.RunID, pd.ServiceCompanyID, cs.CompanyCode, cs.CompanyName, est.ExpCompanyID, ce.CompanyCode, ce.CompanyName, et.[Priority], e.[Priority], 
 		et.ExpeditionType, et.[Description], e.ExpCode, pd.PaperMediaID, pd.StationMediaID, pd.HasColorPages, m.FullFillMaterialCode, mc.FullFillCapacity,
 		m.MaterialRef, st.ServiceTaskCode, st.[Description], pt.PlexCode, pt.PlexType, m.MaterialID
-	ORDER BY et.[Priority] DESC, e.[Priority] DESC, mc.FullFillCapacity ASC, pd.RunID, pd.ServiceCompanyID, PaperCount ASC, StationCount ASC
+	ORDER BY et.[Priority] DESC, e.[Priority] DESC, 
+		pd.RunID, pd.ServiceCompanyID, PaperCount ASC, StationCount ASC
 	
 	SET NOCOUNT OFF
 GO

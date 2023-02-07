@@ -1,17 +1,19 @@
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RP_UX_PRODUCTION_REPORT]') AND type in (N'P', N'PC'))
+ï»¿IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RP_UX_PRINT_REPORT_FILTER]') AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RP_UX_PRODUCTION_REPORT] AS' 
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RP_UX_PRINT_REPORT_FILTER] AS' 
 END
 GO
-ALTER  PROCEDURE [dbo].[RP_UX_PRODUCTION_REPORT] 
+ALTER  PROCEDURE [dbo].[RP_UX_PRINT_REPORT_FILTER] 
 	@RunIDList IDList READONLY,
 	@ServiceCompanyID int,
 	@PaperMediaID int,
 	@StationMediaID int,
-	@ExpeditionType int,
-	@ExpCode varchar(10),
-	@HasColorPages bit,
-	@PlexType int
+	@ExpeditionType int = NULL,
+	@ExpCompanyID int = NULL,
+	@ServiceTaskID int NULL,
+	@HasColorPages bit = NULL,
+	@PlexType int = NULL,
+	@FilterOnlyPrint bit = 0
 --WITH ENCRYPTION
 AS
 	SET NOCOUNT ON
@@ -126,6 +128,8 @@ AS
 			@StationMaterialColumnName = '[Station|[#@MaterialPosition@#]] #@MaterialRef@#]'
 
 	SELECT @SQLString = 'CREATE TABLE ##RP_UX_PROD_REPORT(
+		[ExpeditionPriority] int NULL,
+		[ExpCodePriority] int NULL,
 		[RunID] int NULL,
 		[FileID] int NULL,
 		[FilePath] varchar(256) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -142,11 +146,13 @@ AS
 		[PrinterOperator] varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 		[Printer] varchar(100) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 		[PlexCode] varchar(5) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+		[PlexType] tinyint NULL,
 		[StartSeqNum] int NULL,
 		[EndSeqNum] int NULL,
+		[EnvMaterialID] int NULL,
 		[EnvMaterialRef] varchar(20) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
-		[FullFillCapacity] int NULL,
 		[FullFillMaterialCode] varchar(10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
+		[FullFillCapacity] smallint NULL,
 		[ExpLevel] int NULL,
 		[ExpCompanyCode] varchar(10) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
 		[ExpCenterCode] varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS NULL,
@@ -212,8 +218,15 @@ AS
 		[RegistDetailFilePrinterSpecs],
 		[RegistDetailFilePrintedFlag],
 		[RegistDetailFileRecNumber],
-		[PrinterOperator], [Printer], 
-		[EnvMaterialRef], [FullFillMaterialCode], [FullFillCapacity], [ExpLevel])
+		[PrinterOperator], [Printer],
+		[PlexType],
+		[EnvMaterialID],
+		[EnvMaterialRef], 
+		[FullFillMaterialCode], 
+		[FullFillCapacity], 
+		[ExpLevel], 
+		[ExpeditionPriority], 
+		[ExpCodePriority])
 	SELECT
 		f.RunID,
 		f.FileID,
@@ -235,8 +248,12 @@ AS
 		'', 
 		CASE WHEN er.PrintedTimeStamp is NOT NULL THEN 1 ELSE 0 END,
 		er.RecNumber,
-		fl2.OutputName, fl2.OutputPath, 
-		m.MaterialRef, m.FullFillMaterialCode, fm.FullFillCapacity, pd.ExpLevel
+		fl2.OutputName, fl2.OutputPath,
+		pd.PlexType,
+		m.MaterialID,
+		m.MaterialRef, m.FullFillMaterialCode, fm.FullFillCapacity,
+		pd.ExpLevel,
+		et.[Priority], e.[Priority]
 	FROM 
 		RT_FILE_REGIST f WITH(NOLOCK)
 	INNER JOIN
@@ -245,6 +262,15 @@ AS
 	INNER JOIN
 		RT_PRODUCTION_DETAIL pd WITH(NOLOCK)
 	ON pd.ProdDetailID = f.ProdDetailID
+	INNER JOIN
+		RD_EXPCOMPANY_SERVICE_TASK est WITH(NOLOCK)
+	ON est.ExpCode = pd.ExpCode
+	INNER JOIN
+		RD_EXPCODE e WITH(NOLOCK)
+	ON e.ExpCode = est.ExpCode
+	INNER JOIN
+		RD_EXPEDITION_TYPE et WITH(NOLOCK)
+	ON et.[ExpeditionType] = pd.[ExpeditionType]
 	LEFT OUTER JOIN
 		RT_FILE_LOG fl1 WITH(NOLOCK)
 	ON	f.RunID = fl1.RunID AND f.FileID = fl1.FileID
@@ -282,20 +308,21 @@ AS
 	INNER JOIN
 		RD_MATERIAL m WITH(NOLOCK)
 	ON m.MaterialID = pd.EnvMaterialID
-	INNER JOIN
+	LEFT OUTER JOIN
 		RD_FULLFILL_MATERIALCODE fm WITH(NOLOCK)
-	ON fm.[FullFillMaterialCode] = m.[FullFillMaterialCode]
+	ON fm.FullFillMaterialCode COLLATE SQL_Latin1_General_CP1_CI_AS = m.FullFillMaterialCode COLLATE SQL_Latin1_General_CP1_CI_AS
 	WHERE f.ErrorID = 0
 		AND pd.ServiceCompanyID = @ServiceCompanyID
 		AND pd.PaperMediaID = @PaperMediaID
 		AND ISNULL(pd.StationMediaID, 0) = ISNULL(@StationMediaID, 0)
-		AND pd.ExpeditionType = @ExpeditionType
-		AND pd.ExpCode = @ExpCode
-		AND ISNULL(pd.HasColorPages, 0) = ISNULL(@HasColorPages, 0)
-		AND pd.PlexType = @PlexType
+		AND (@ExpeditionType is NULL OR pd.ExpeditionType = @ExpeditionType)
+		AND (@ExpCompanyID is NULL OR est.ExpCompanyID = @ExpCompanyID)
+		AND (@ServiceTaskID is NULL OR est.ServiceTaskID = @ServiceTaskID)
+		AND (@HasColorPages is NULL OR ISNULL(pd.HasColorPages, 0) = @HasColorPages)
+		AND (@PlexType is NULL OR pd.PlexType = @PlexType)
 
 
-	--Remover ficheiros de recuperações já impressos
+	--Remover ficheiros de recuperaÃ§Ãµes jÃ¡ impressos
 	DELETE ##RP_UX_PROD_REPORT
 	FROM ##RP_UX_PROD_REPORT u
 	INNER JOIN
@@ -310,7 +337,7 @@ AS
 							AND RunStateID = @Send2PrintStateID
 							AND ErrorID = 0)
 
-	-- Update de Dados de ficheiros de recuperações
+	-- Update de Dados de ficheiros de recuperaÃ§Ãµes
 	UPDATE ##RP_UX_PROD_REPORT
 	SET
 		[ServiceTaskCode] = fp.ServiceTaskCode, 
@@ -331,7 +358,7 @@ AS
 		AND fp.RecFileID = u.FileID
 	WHERE fp.ProdFileID <> fp.RecFileID
 
-	-- Update de Dados de ficheiros produção originais
+	-- Update de Dados de ficheiros produÃ§Ã£o originais
 	UPDATE ##RP_UX_PROD_REPORT
 	SET
 		[ServiceTaskCode] = fp.ServiceTaskCode, 
@@ -429,14 +456,9 @@ AS
 
 	SELECT u.*
 	FROM ##RP_UX_PROD_REPORT u
-	INNER JOIN
-		RD_PLEX_TYPE pt WITH(NOLOCK)
-	ON pt.PlexCode = u.PlexCode
-	LEFT OUTER JOIN
-		RD_FULLFILL_MATERIALCODE fm WITH(NOLOCK)
-	ON fm.FullFillMaterialCode COLLATE SQL_Latin1_General_CP1_CI_AS = u.FullFillMaterialCode COLLATE SQL_Latin1_General_CP1_CI_AS
-	ORDER BY (CAST(u.[FilePrintedFlag] as int) + CAST(u.[RegistDetailFilePrintedFlag] as int)) ASC, 
-		fm.FullFillCapacity DESC, u.ExpLevel DESC, pt.PlexType ASC
+	WHERE (@FilterOnlyPrint = 0 OR CAST(u.[FilePrintedFlag] as int) = 0 OR ISNULL(CAST(u.[RegistDetailFilePrintedFlag] as int),1) = 0)
+	ORDER BY u.[ExpeditionPriority] DESC, u.[ExpCodePriority] DESC, (CAST(u.[FilePrintedFlag] as int) + ISNULL(CAST(u.[RegistDetailFilePrintedFlag] as int),1)) ASC, 
+		u.PlexType ASC, u.FullFillCapacity DESC, u.EnvMaterialID ASC, u.ExpLevel DESC
 
 	DROP TABLE ##RP_UX_PROD_REPORT
 	SET NOCOUNT OFF
