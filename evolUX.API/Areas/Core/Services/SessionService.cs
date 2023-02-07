@@ -45,10 +45,14 @@ namespace evolUX.API.Areas.Core.Services
             IEnumerable<string> servers = await _repository.Session.GetServers(profiles);
             IEnumerable<SideBarAction> sideBarActions = await _repository.Session.GetSideBarActions(profiles);
             result.Add("evolUX/SideBarActions", JsonConvert.SerializeObject(sideBarActions));
-
+            IEnumerable<string> permissions = await _repository.Session.GetPermissions(profiles);
+            result.Add("evolUX/Permissions", JsonConvert.SerializeObject(permissions));
             //evolDP
             if (_repository.Session.HasEvolDP())
             {
+                //IgnoreFilePrinterSpecsPermition;
+                //PrintFilePermition;
+
                 DataTable serviceCompanies = await _repository.Session.GetCompanies(servers, "SERVICE");
                 result.Add("evolDP/ServiceCompanies", JsonConvert.SerializeObject(serviceCompanies));
                 DataTable expeditionCompanies = await _repository.Session.GetCompanies(servers, "EXPEDITION");

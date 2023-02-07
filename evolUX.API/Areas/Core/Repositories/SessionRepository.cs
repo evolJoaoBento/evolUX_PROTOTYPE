@@ -35,7 +35,25 @@ namespace evolUX.API.Areas.Core.Repositories
                 return profiles;
             }
         }
-
+        public async Task<IEnumerable<string>> GetPermissions(IEnumerable<int> profiles, string localizationKey)
+        {
+            string sql = @"evolUX_GET_PERMISSIONS";
+            var parameters = new DynamicParameters();
+            parameters.Add("ProfileList", profiles.toDataTable().AsTableValuedParameter("IDlist"));
+            if (!string.IsNullOrEmpty(localizationKey))
+            {
+                parameters.Add("LocalizationKey", localizationKey, DbType.String);
+            }
+            using (var connection = _context.CreateConnectionEvolFlow())
+            {
+                IEnumerable<string> permissions = await connection.QueryAsync<string>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return permissions;
+            }
+        }
+        public async Task<IEnumerable<string>> GetPermissions(IEnumerable<int> profiles)
+        {
+            return await GetPermissions(profiles, "");
+        }
         public async Task<IEnumerable<string>> GetServers(IEnumerable<int> profiles)
         {
 

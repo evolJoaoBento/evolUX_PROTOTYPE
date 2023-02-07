@@ -45,7 +45,10 @@ else
                     <option value="@resValue">@printer.Description</option>
                 }
                 </select>
-            <label class="checkbox mx-3 my-1"> @Html.CheckBox("checkAll", false) @localizer["AllFiles"]</label>
+            @if (ViewBag.PermissionIgnoreFilePrinterSpecs)
+            {
+                <label class="checkbox mx-3 my-1"> @Html.CheckBox("checkAll", false) @localizer["AllFiles"]</label>
+            }
                 <p class="my-3 d-flex justify-content-center"><input type="submit" name="Submit" class="btn btn-block btn-success" /></p>
             @{
                 string Level1Name = "detail";
@@ -58,15 +61,26 @@ else
             {
                 @foreach (ProdExpeditionElement eInfo in scInfo.ExpeditionList)
                 {
+                    <table>
+                        <thead><tr><td>@eInfo.ExpCompanyName - @eInfo.ExpeditionTypeDesc</td></tr></thead>
+                        <tbody>
+                            <tr><td>
                     @foreach (ProdServiceElement sInfo in eInfo.ServiceList)
                     {
+                        <table>
+                            <thead><tr><td>@sInfo.ServiceTaskDec</td></tr></thead>
+                            <tbody>
+                            <tr><td>
                         @foreach (ProdFullFillElement fInfo in sInfo.FullFillList)
                         {
                             int PrintTotal = 0;
                             int PostObjsTotal = 0;
                             Dictionary<string, int> PaperTotal = new Dictionary<string, int>();
                             Dictionary<string, int> StationTotal = new Dictionary<string, int>();
-                            <div class="my-3 table-div">
+                            <table>
+                            <thead><tr><td>@fInfo.FullFillMaterialCode</td></tr></thead>
+                            <tbody>
+                            <tr><td>
                                 <table class="table table-sm table-hover table-collapse-seperate">
                                     <col>
                                     <col>
@@ -139,7 +153,7 @@ else
                                                     @if (!p.FilePrintedFlag)
                                                     {
                                                         <div class='bx bx-printer' style="color:var(--evol-grey)">
-                                                            <input type="checkbox" name="FileCheck" id="@p.FilePlexType|@p.FileColor" class="" value="@p.RunID|@p.FileID">
+                                                            <input type="checkbox" name="FileCheck" id="@p.FilePlexType|@p.FileColor" value="@p.RunID|@p.FileID">
                                                         </div>
                                                         <label>@p.FileName</label>
                                                     }
@@ -245,9 +259,17 @@ else
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                        }
-                    }
+                             </td></tr>
+                            </tbody>
+                        </table>
+                       }
+                            </td></tr>
+                            </tbody>
+                        </table>
+                }
+                            </td></tr>
+                        </tbody>
+                    </table>
                 }
             }
 
@@ -279,12 +301,14 @@ else
                 const element = elements[i];
                 const values = element.id.split("|").map(value => parseInt(value, 10));
                 if ((values[0] & prt[0]) > 0 && (values[1] & prt[1]) > 0) {
-                    element.style.display = "";
+                    element.disabled = false;
+                    //element.style.display = "";
                 }
                 else
                 {
-                    element.style.display = "none";
-                    element.checked = false;
+                    element.disabled = true;
+                    //element.style.display = "none";
+                    //element.checked = false;
                 }
             }
         });

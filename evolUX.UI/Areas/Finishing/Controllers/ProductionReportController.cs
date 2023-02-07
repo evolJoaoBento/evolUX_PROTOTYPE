@@ -224,6 +224,19 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                         p.Description = _localizer["SelectPrinter"];
                         printerInfos.Insert(0,p);
                         result.Printers = printerInfos;
+                        
+                        string permissionsJSON = HttpContext.Session.GetString("evolUX/Permissions");
+                        ViewBag.PermissionPrintFile = false;
+                        ViewBag.PermissionIgnoreFilePrinterSpecs = false;
+
+                        if (!string.IsNullOrEmpty(permissionsJSON)) 
+                        {
+                            List<string> permissions = JsonConvert.DeserializeObject<List<string>>(permissionsJSON);
+                            if (!string.IsNullOrEmpty(permissions.Find(x => x == "PrintFile")))
+                                ViewBag.PermissionPrintFile = true;
+                            if (!string.IsNullOrEmpty(permissions.Find(x => x == "IgnoreFilePrinterSpecs")))
+                                ViewBag.PermissionIgnoreFilePrinterSpecs = true;
+                        }
                     }
                 }
                 ViewBag.RunName = RunName;
