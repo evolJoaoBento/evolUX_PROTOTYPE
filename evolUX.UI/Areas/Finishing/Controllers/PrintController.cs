@@ -71,10 +71,10 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         }
 
-        public async Task<IActionResult> Print(string Printer)
+        public async Task<IActionResult> Print(string Printer, List<string> FileCheck)
         {
             string[] printerValues = Printer.Split('|');
-            if (printerValues.Length < 3 && string.IsNullOrEmpty(printerValues[3]))
+            if (printerValues.Length < 3 || string.IsNullOrEmpty(printerValues[2]))
                 return PartialView("MessageView", new MessageViewModel(_localizer["SelectValidPrinter"]));
 
             string JsonSerializedProductionInfo = (string)TempData["JsonSerializedProductionInfo"];

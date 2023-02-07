@@ -13,6 +13,7 @@ namespace Shared.Models.Areas.Finishing
         public int FileColor { get; set; }
         public int FilePlexType { get; set; }
 
+        public int RegistDetailFileRecNumber { get; set; }
         public string RegistDetailFileName { get; set; }
         public string RegistDetailShortFileName { get; set; }
         public string RegistDetailFilePrinterSpecs { get; set; }

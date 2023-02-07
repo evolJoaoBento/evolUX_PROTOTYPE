@@ -82,7 +82,7 @@ namespace evolUX.API.Areas.Finishing.Services
             return viewModel;
         }
 
-        public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode,
+        public async Task<Result> Print(int runID, int fileID, int recNumber, string printer, string serviceCompanyCode,
             string username, int userID, string filePath, string fileName, string shortFileName)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
@@ -93,8 +93,11 @@ namespace evolUX.API.Areas.Finishing.Services
             flowinfo.FlowName = fileName + " [" + flowinfo.FlowName + "]";
 
             IEnumerable<FlowParameter> flowparameters = await _repository.RegistJob.GetFlowData(flowinfo.FlowID);
-
-            string query = "<START>EXEC RT_INSERT_INTO_FILE_LOG @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER''</START>\r\n<END>EXEC RT_UPDATE_FILE_LOG_ENDTIMESTAMP @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER'', @ProcCountNr = @PROCCOUNTNR, @OutputPath = ''@PRINTERNAME'', @OutputName = ''@USERNAME''</END>\r\n";
+            string query;
+            if (recNumber < 0)
+                query = "<START>EXEC RT_INSERT_INTO_FILE_LOG @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER''</START><END>EXEC RT_UPDATE_FILE_LOG_ENDTIMESTAMP @RunID = @RUNID, @FileID = @FILEID, @RunStateName = ''SEND2PRINTER'', @ProcCountNr = @PROCCOUNTNR, @OutputPath = ''@PRINTERNAME'', @OutputName = ''@USERNAME''</END>";
+            else
+                query = string.Format("<END>SET NOCOUNT ON UPDATE RT_EXPCOMPANY_REGIST_DETAIL_FILE SET PrintedTimeStamp = CURRENT_TIMESTAMP WHERE RunID = @RUNID AND FileID = @FILEID AND RecNumber = {0} SELECT * FROM RT_EXPCOMPANY_REGIST_DETAIL_FILE WHERE RunID = @RUNID AND FileID = @FILEID AND RecNumber = {0}</END>", recNumber);
 
             foreach (FlowParameter p in flowparameters)
             {

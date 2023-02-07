@@ -29,15 +29,16 @@
 }
 else
 {
-    <div class=" my-1 d-flex justify-content-lg-start">
-        <b class="mx-3">@localizer["Printer"]</b>
+    <div id="response" class="d-flex justify-content-center">
+    </div>
+    <div class=" my-1 d-flex justify-content-lg-start">       
         <form id="all" asp-area="Finishing" asp-controller="Print" asp-action="Print"
           data-ajax="true"
           data-ajax-method="POST"
           data-ajax-mode="replace"
           data-ajax-update="#response"
           data-ajax-loading="myLoader">
-
+            <b class="mx-3">@localizer["Printer"]</b>
             <select id="Printer" name="Printer">
                 @foreach (PrinterInfo printer in Model.Printers)
                 {
@@ -49,7 +50,7 @@ else
             {
                 <label class="checkbox mx-3 my-1"> @Html.CheckBox("checkAll", false) @localizer["AllFiles"]</label>
             }
-            <p class="my-3 d-flex justify-content-center"><input type="submit" name="Submit" class="btn btn-block btn-success" /></p>
+            <p class="my-3 d-flex justify-content-lg-start"><input type="submit" name="Submit" class="btn btn-block btn-success" /></p>
             @{
                 string Level1Name = "detail";
                 int count = 0;
@@ -286,9 +287,6 @@ else
             }
 
         </form>
-    </div>
-
-    <div id="response" class="d-flex justify-content-center">
     </div>
 }
 

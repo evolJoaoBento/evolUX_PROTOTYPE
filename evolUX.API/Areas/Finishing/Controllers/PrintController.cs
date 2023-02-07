@@ -65,16 +65,18 @@ namespace evolUX.API.Areas.Finishing.Controllers
             try
             {
                 object obj;
+                dictionary.TryGetValue("RunID", out obj);
+                int RunID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("FileID", out obj);
+                int FileID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("RecNumber", out obj);
+                int RecNumber = Convert.ToInt32(obj.ToString());
                 dictionary.TryGetValue("Username", out obj);
                 string Username = Convert.ToString(obj);
                 dictionary.TryGetValue("UserID", out obj);
                 int UserID = Convert.ToInt32(obj.ToString());
                 dictionary.TryGetValue("FilePath", out obj);
                 string FilePath = Convert.ToString(obj);
-                dictionary.TryGetValue("FileID", out obj);
-                int FileID = Convert.ToInt32(obj.ToString());
-                dictionary.TryGetValue("RunID", out obj);
-                int RunID = Convert.ToInt32(obj.ToString());
                 dictionary.TryGetValue("Printer", out obj);
                 string Printer = Convert.ToString(obj);
                 dictionary.TryGetValue("ServiceCompanyCode", out obj);
@@ -83,7 +85,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 string FileName = Convert.ToString(obj);
                 dictionary.TryGetValue("ShortFileName", out obj);
                 string ShortFileName = Convert.ToString(obj); 
-                Result viewmodel = await _printService.Print(RunID, FileID, Printer, ServiceCompanyCode, 
+                Result viewmodel = await _printService.Print(RunID, FileID, RecNumber, Printer, ServiceCompanyCode, 
                     Username, UserID, FilePath, FileName, ShortFileName);
                 _logger.LogInfo("Print Get");
                 return Ok(viewmodel);

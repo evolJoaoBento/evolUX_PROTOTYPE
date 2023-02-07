@@ -75,6 +75,7 @@ namespace evolUX.API.Areas.Finishing.Repositories
                     productionInfo.FileName = (string)r["FileName"];
                     productionInfo.ShortFileName = (string)r["ShortFileName"];
                     productionInfo.FilePrinterSpecs = (string)r["FilePrinterSpecs"];
+                    productionInfo.RegistDetailFileRecNumber = (int)r["RegistDetailFileRecNumber"];
                     productionInfo.RegistDetailFileName = (string)r["RegistDetailFileName"];
                     productionInfo.RegistDetailShortFileName = (string)r["RegistDetailShortFileName"];
                     productionInfo.RegistDetailFilePrinterSpecs = (string)r["RegistDetailFilePrinterSpecs"];
@@ -175,7 +176,9 @@ namespace evolUX.API.Areas.Finishing.Repositories
                             ProdFile.FileColor = colorFeature;
                             ProdFile.FilePlexType = plexFeature;
                         }
-
+                        if (!r.IsNull("RegistDetailFileRecNumber"))
+                            ProdFile.RegistDetailFileRecNumber = (int)r["RegistDetailFileRecNumber"];
+                        ProdFile.RegistDetailFileRecNumber = -1;
                         ProdFile.RegistDetailFileName = (string)r["RegistDetailFileName"];
                         ProdFile.RegistDetailShortFileName = (string)r["RegistDetailShortFileName"];
                         ProdFile.RegistDetailFilePrinterSpecs = (string)r["RegistDetailFilePrinterSpecs"];
