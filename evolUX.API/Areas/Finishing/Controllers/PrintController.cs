@@ -10,6 +10,7 @@ using evolUX.API.Areas.Core.Repositories.Interfaces;
 using System.Data.SqlClient;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.Finishing;
+using Shared.Models.Areas.Finishing;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
@@ -28,7 +29,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
 
         //THE SERVICECOMPANYLIST SHOULD USE A SESSION VARIABLE IN THE UI LAYER
         [HttpGet]
-        [ActionName("Printers")]
+        [ActionName("GetPrinters")]
         public async Task<ActionResult<PrinterViewModel>> GetPrinters([FromBody] Dictionary<string, object> dictionary)
         {
             try
@@ -39,7 +40,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 dictionary.TryGetValue("FilesSpecs", out obj);
                 string FileSpecs = Convert.ToString(obj);
                 dictionary.TryGetValue("IgnoreProfiles", out obj);
-                bool IgnoreProfiles = Convert.ToBoolean(obj);
+                bool IgnoreProfiles = Convert.ToBoolean(obj.ToString());
 
                 IEnumerable<int> profileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
                 PrinterViewModel viewmodel = await _printService.GetPrinters(profileList, FileSpecs, IgnoreProfiles);
@@ -65,28 +66,19 @@ namespace evolUX.API.Areas.Finishing.Controllers
             try
             {
                 object obj;
-                dictionary.TryGetValue("RunID", out obj);
-                int RunID = Convert.ToInt32(obj.ToString());
-                dictionary.TryGetValue("FileID", out obj);
-                int FileID = Convert.ToInt32(obj.ToString());
-                dictionary.TryGetValue("RecNumber", out obj);
-                int RecNumber = Convert.ToInt32(obj.ToString());
                 dictionary.TryGetValue("Username", out obj);
                 string Username = Convert.ToString(obj);
                 dictionary.TryGetValue("UserID", out obj);
                 int UserID = Convert.ToInt32(obj.ToString());
-                dictionary.TryGetValue("FilePath", out obj);
-                string FilePath = Convert.ToString(obj);
                 dictionary.TryGetValue("Printer", out obj);
                 string Printer = Convert.ToString(obj);
                 dictionary.TryGetValue("ServiceCompanyCode", out obj);
                 string ServiceCompanyCode = Convert.ToString(obj);
-                dictionary.TryGetValue("FileName", out obj);
-                string FileName = Convert.ToString(obj);
-                dictionary.TryGetValue("ShortFileName", out obj);
-                string ShortFileName = Convert.ToString(obj); 
-                Result viewmodel = await _printService.Print(RunID, FileID, RecNumber, Printer, ServiceCompanyCode, 
-                    Username, UserID, FilePath, FileName, ShortFileName);
+                dictionary.TryGetValue("ProdFiles", out obj);
+                string ProdFilesJSON = Convert.ToString(obj);
+                List<PrintFileInfo> ProdFiles = JsonConvert.DeserializeObject<List<PrintFileInfo>>(ProdFilesJSON);
+
+                Result viewmodel = await _printService.Print(Printer, ServiceCompanyCode, Username, UserID, ProdFiles);
                 _logger.LogInfo("Print Get");
                 return Ok(viewmodel);
             }

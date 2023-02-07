@@ -9,9 +9,10 @@ ALTER  PROCEDURE [dbo].[RP_UX_PRODUCTION_SUBSET_REPORT]
 --WITH ENCRYPTION
 AS
 	SET NOCOUNT ON
+	DECLARE @SQLString nvarchar(2000)
 
-	SELECT pd.RunID,
-		pd.ServiceCompanyID,
+	SELECT DISTINCT 
+		cs.CompanyID [ServiceCompanyID],
 		cs.CompanyCode [ServiceCompanyCode],
 		cs.CompanyName [ServiceCompanyName],
 		est.ExpCompanyID,
@@ -20,25 +21,29 @@ AS
 		et.ExpeditionType, 
 		et.[Description] [ExpeditionTypeDesc],
 		e.ExpCode,
+		st.ServiceTaskID,
 		st.ServiceTaskCode,
 		st.[Description] ServiceTaskDesc,
+		pt.PlexType,
+		pt.PlexCode,
 		pd.PaperMediaID,
+		CAST('' as varchar(1000)) PaperMaterialList,
 		pd.StationMediaID,
-		CAST(pd.HasColorPages as int) HasColorPages,
+		CAST('' as varchar(1000)) StationMaterialList,
+		pd.HasColorPages,
 		et.[Priority] [ExpeditionPriority],
-		e.[Priority] [ExpCodePriority],
-		SUM(CASE WHEN pMedia.MaterialID is NULL THEN 0 ELSE 1 END) PaperCount,
-		SUM(CASE WHEN sMedia.MaterialID is NULL THEN 0 ELSE 1 END) StationCount
+		e.[Priority] [ExpCodePriority]
+	INTO #PRINT_SUBSET_REPORT
 	FROM RT_PRODUCTION_DETAIL pd WITH(NOLOCK)
+	INNER JOIN
+		RD_COMPANY cs WITH(NOLOCK)
+	ON cs.CompanyID = pd.ServiceCompanyID
 	INNER JOIN
 		RD_PLEX_TYPE pt WITH(NOLOCK)
 	ON pt.PlexType = pd.PlexType
 	INNER JOIN
 		@RunIDList r
 	ON r.ID = pd.RunID
-	INNER JOIN
-		RD_COMPANY cs WITH(NOLOCK)
-	ON cs.CompanyID = pd.ServiceCompanyID
 	INNER JOIN
 		RD_EXPCODE e WITH(NOLOCK)
 	ON pd.ExpCode = e.ExpCode
@@ -54,12 +59,6 @@ AS
 	INNER JOIN
 		RD_EXPEDITION_TYPE et WITH(NOLOCK)
 	ON pd.ExpeditionType = et.ExpeditionType
-	INNER JOIN
-		RD_MATERIAL m WITH(NOLOCK)
-	ON m.MaterialID = pd.EnvMaterialID
-	INNER JOIN
-		RD_FULLFILL_MATERIALCODE mc WITH(NOLOCK)
-	ON mc.FullFillMaterialCode = m.FullFillMaterialCode
 	LEFT OUTER JOIN
 		RT_MEDIA_CONFIG pMedia WITH(NOLOCK)
 	ON pMedia.MediaID = pd.PaperMediaID
@@ -67,11 +66,127 @@ AS
 		RT_MEDIA_CONFIG sMedia WITH(NOLOCK)
 	ON sMedia.MediaID = pd.StationMediaID
 	WHERE pd.ServiceCompanyID = @ServiceCompanyID
-	GROUP BY pd.RunID, pd.ServiceCompanyID, cs.CompanyCode, cs.CompanyName, est.ExpCompanyID, ce.CompanyCode, ce.CompanyName, et.[Priority], e.[Priority], 
-		et.ExpeditionType, et.[Description], e.ExpCode, pd.PaperMediaID, pd.StationMediaID, pd.HasColorPages, m.FullFillMaterialCode, mc.FullFillCapacity,
-		m.MaterialRef, st.ServiceTaskCode, st.[Description], pt.PlexCode, pt.PlexType, m.MaterialID
-	ORDER BY et.[Priority] DESC, e.[Priority] DESC, 
-		pd.RunID, pd.ServiceCompanyID, PaperCount ASC, StationCount ASC
+
+	DECLARE @MediaID int,
+			@MaterialPosition int,
+			@MaterialRef varchar(20),
+			@MaterialList varchar(1000),
+			@OldMediaID int
+
+	-- PaperMedia
+	SELECT @MaterialList = '', @OldMediaID = 0
+	DECLARE tCursor CURSOR LOCAL
+	FOR SELECT DISTINCT mc.MediaID, m.MaterialRef, mc.MaterialPosition
+	FROM
+		RD_MATERIAL m WITH(NOLOCK)
+	INNER JOIN
+		RT_MEDIA_CONFIG mc WITH(NOLOCK)
+	ON	mc.MaterialID = m.MaterialID
+	INNER JOIN
+		#PRINT_SUBSET_REPORT p WITH(NOLOCK)
+	ON p.PaperMediaID = mc.MediaID
+	ORDER BY mc.MediaID, mc.MaterialPosition ASC
+
+	OPEN tCursor
+	FETCH NEXT FROM tCursor INTO @MediaID, @MaterialRef, @MaterialPosition
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		IF(@OldMediaID > 0)
+		BEGIN
+			IF (@OldMediaID <> @MediaID)
+			BEGIN
+				UPDATE #PRINT_SUBSET_REPORT
+				SET PaperMaterialList = @MaterialList
+				WHERE PaperMediaID = @OldMediaID
+
+				SET @MaterialList = ''
+			END
+			ELSE
+			BEGIN
+				SELECT @MaterialList = @MaterialList + '|' 
+			END
+		END
+		
+		SELECT @OldMediaID = @MediaID, @MaterialList = @MaterialList + @MaterialRef
+		FETCH NEXT FROM tCursor INTO @MediaID, @MaterialRef, @MaterialPosition
+	END
+	CLOSE tCursor
+	DEALLOCATE tCursor
+	IF(@OldMediaID > 0)
+	BEGIN
+		UPDATE #PRINT_SUBSET_REPORT
+		SET PaperMaterialList = @MaterialList
+		WHERE PaperMediaID = @MediaID
+	END
+
+	-- StationMedia
+	SELECT @MaterialList = '', @OldMediaID = 0
+	DECLARE tCursor CURSOR LOCAL
+	FOR SELECT DISTINCT mc.MediaID, m.MaterialRef, mc.MaterialPosition
+	FROM
+		RD_MATERIAL m WITH(NOLOCK)
+	INNER JOIN
+		RT_MEDIA_CONFIG mc WITH(NOLOCK)
+	ON	mc.MaterialID = m.MaterialID
+	INNER JOIN
+		#PRINT_SUBSET_REPORT p WITH(NOLOCK)
+	ON p.StationMediaID = mc.MediaID
+	ORDER BY mc.MediaID, mc.MaterialPosition ASC
+
+	OPEN tCursor
+	FETCH NEXT FROM tCursor INTO @MediaID, @MaterialRef, @MaterialPosition
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		IF(@OldMediaID > 0)
+		BEGIN
+			IF (@OldMediaID <> @MediaID)
+			BEGIN
+				UPDATE #PRINT_SUBSET_REPORT
+				SET StationMaterialList = @MaterialList
+				WHERE StationMediaID = @OldMediaID
+
+				SET @MaterialList = ''
+			END
+			ELSE
+			BEGIN
+				SELECT @MaterialList = @MaterialList + ' | ' 
+			END
+		END
+		
+		SELECT @OldMediaID = @MediaID, @MaterialList = @MaterialList + @MaterialRef
+		FETCH NEXT FROM tCursor INTO @MediaID, @MaterialRef, @MaterialPosition
+	END
+	CLOSE tCursor
+	DEALLOCATE tCursor
+	IF(@OldMediaID > 0)
+	BEGIN
+		UPDATE #PRINT_SUBSET_REPORT
+		SET StationMaterialList = @MaterialList
+		WHERE StationMediaID = @MediaID
+	END
 	
+	SELECT ServiceCOmpanyID,
+		ServiceCompanyCode,
+		ServiceCompanyName,
+		ExpCompanyID,
+		[ExpCompanyCode],
+		[ExpCompanyName],
+		ExpeditionType, 
+		[ExpeditionTypeDesc],
+		ExpCode,
+		ServiceTaskID,
+		ServiceTaskCode,
+		ServiceTaskDesc,
+		PlexType,
+		PlexCode,
+		PaperMediaID,
+		PaperMaterialList,
+		StationMediaID,
+		StationMaterialList,
+		HasColorPages,
+		[ExpeditionPriority],
+		[ExpCodePriority]
+	FROM #PRINT_SUBSET_REPORT
+	ORDER BY [ExpeditionPriority] DESC, [ExpCodePriority] DESC
 	SET NOCOUNT OFF
 GO

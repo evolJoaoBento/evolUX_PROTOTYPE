@@ -2,6 +2,9 @@
 {
     public class ProductionDetailInfo
     {
+        public int ServiceCompanyID { get; set; }
+        public string ServiceCompanyCode { get; set; }
+        public string ServiceCompanyName { get; set; }
         public int ExpCompanyID { get; set; }
         public string ExpCompanyCode { get; set; }
         public string ExpCompanyName { get; set; }
@@ -21,7 +24,5 @@
         public bool HasColorPages { get; set; }
         public int ExpeditionPriority { get; set; }
         public int ExpCodePriority { get; set; }
-        public IEnumerable<ProductionInfo> ProductionDetailReport { get; set; }
-        public IEnumerable<ProdServiceCompanyElement> ProductionDetailPrinterReport { get; set; }
     }
 }

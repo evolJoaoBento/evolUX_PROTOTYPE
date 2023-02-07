@@ -37,93 +37,10 @@ namespace evolUX.API.Areas.Finishing.Repositories
                 await connection.QueryAsync(sql, parameters, commandType: CommandType.StoredProcedure);
             }
         }
-        public async Task<IEnumerable<ProductionInfo>> GetProductionDetailReport(int runID, int serviceCompanyID, int paperMediaID,
-                    int stationMediaID, int expeditionType, string expCode, bool hasColorPages, int plexType)
+        public async Task<IEnumerable<ProdFileInfo>> GetProductionDetailReport(IPrintService print, int runID, int serviceCompanyID, int paperMediaID,
+                    int stationMediaID, int expeditionType, int expCompanyID, int serviceTaskID, bool hasColorPages, int plexType, bool filterOnlyPrint)
         {
-            var lookup = new Dictionary<int, ProductionInfo>();
-
-            string sql = @"RP_UX_PRODUCTION_REPORT";
-            var parameters = new DynamicParameters();
-            DataTable RunIDList = new DataTable();
-            RunIDList.Columns.Add("ID", typeof(int));
-            RunIDList.Rows.Add(runID);
-            parameters.Add("RunIDList", RunIDList.AsTableValuedParameter("IDlist"));
-
-            parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
-            parameters.Add("PaperMediaID", paperMediaID, DbType.Int64);
-            parameters.Add("StationMediaID", stationMediaID, DbType.Int64);
-            parameters.Add("ExpeditionType", expeditionType, DbType.Int64);
-            parameters.Add("ExpCode", expCode, DbType.String);
-            parameters.Add("HasColorPages", hasColorPages, DbType.Boolean);
-            parameters.Add("PlexType", plexType, DbType.Int64);
-
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                List<ProductionInfo> productReport = new List<ProductionInfo>();
-
-                connection.Open();
-                var obs = await connection.QueryAsync(sql, parameters,
-                                    commandType: CommandType.StoredProcedure);
-                var dt = _context.ToDataTable(obs);
-
-                foreach (DataRow r in dt.Rows)
-                {
-                    ProductionInfo productionInfo = new ProductionInfo();
-                    productionInfo.RunID = (int)r["RunID"];
-                    productionInfo.FileID = (int)r["FileID"];
-                    productionInfo.FilePath = (string)r["FilePath"];
-                    productionInfo.FileName = (string)r["FileName"];
-                    productionInfo.ShortFileName = (string)r["ShortFileName"];
-                    productionInfo.FilePrinterSpecs = (string)r["FilePrinterSpecs"];
-                    productionInfo.RegistDetailFileRecNumber = (int)r["RegistDetailFileRecNumber"];
-                    productionInfo.RegistDetailFileName = (string)r["RegistDetailFileName"];
-                    productionInfo.RegistDetailShortFileName = (string)r["RegistDetailShortFileName"];
-                    productionInfo.RegistDetailFilePrinterSpecs = (string)r["RegistDetailFilePrinterSpecs"];
-                    productionInfo.RegistDetailFilePrintedFlag = (bool)r["RegistDetailFilePrintedFlag"];
-                    productionInfo.FilePrintedFlag = (bool)r["FilePrintedFlag"];
-                    productionInfo.ServiceTaskCode = (string)r["ServiceTaskCode"];
-                    productionInfo.PrinterOperator = r["PrinterOperator"].ConvertFromDBVal<string>();
-                    productionInfo.Printer = r["Printer"].ConvertFromDBVal<string>();
-                    productionInfo.PlexCode = (string)r["PlexCode"];
-                    productionInfo.TotalPrint = (int)r["TotalPrint"];
-                    productionInfo.StartSeqNum = (int)r["StartSeqNum"];
-                    productionInfo.EndSeqNum = (int)r["EndSeqNum"];
-                    productionInfo.EnvMaterialRef = (string)r["EnvMaterialRef"];
-                    productionInfo.FullFillMaterialCode = (string)r["FullFillMaterialCode"];
-                    productionInfo.TotalPostObjs = (int)r["TotalPostObjs"];
-                    productionInfo.ExpLevel = (int)r["ExpLevel"];
-                    productionInfo.ExpCompanyCode = (string)r["ExpCompanyCode"];
-                    productionInfo.ExpCenterCode = (string)r["ExpCenterCode"];
-                    productionInfo.ExpeditionLevel = (string)r["ExpeditionLevel"];
-                    productionInfo.ExpeditionZone = (string)r["ExpZone"];
-                    productionInfo.ExpeditionType = (string)r["ExpType"];
-
-                    for (int i = 21; i < dt.Columns.Count; i++)
-                    {
-                        string[] strings = dt.Columns[i].ColumnName.Split("|");
-                        if (strings[0] == "Paper")
-                        {
-                            productionInfo.PaperTotals = productionInfo.PaperTotals ?? new Dictionary<string, int>();
-                            productionInfo.PaperTotals.Add(strings[1], value: (int)r.ItemArray[i]);
-                        }
-                        else if (strings[0] == "Station")
-                        {
-                            productionInfo.StationTotals = productionInfo.StationTotals ?? new Dictionary<string, int>();
-                            productionInfo.StationTotals.Add(strings[1], value: (int)r.ItemArray[i]);
-                        }
-
-                    }
-
-                    productReport.Add(productionInfo);
-                }
-                return productReport;
-            }
-        }
-
-        public async Task<IEnumerable<ProdFileInfo>> GetProductionDetailPrinterReport(IPrintService print, int runID, int serviceCompanyID, int paperMediaID,
-                    int stationMediaID, int expeditionType, int expCompanyID, int serviceTaskID, bool hasColorPages, int plexType)
-        {
-            string sql = @"RP_UX_PRINT_REPORT_FILTER";
+            string sql = @"RP_UX_PRODUCTION_REPORT_FILTER";
             var parameters = new DynamicParameters();
             DataTable RunIDList = new DataTable();
             RunIDList.Columns.Add("ID", typeof(int));
@@ -138,7 +55,7 @@ namespace evolUX.API.Areas.Finishing.Repositories
             parameters.Add("ServiceTaskID", serviceTaskID, DbType.Int64);
             parameters.Add("HasColorPages", hasColorPages, DbType.Boolean);
             parameters.Add("PlexType", plexType, DbType.Int64);
-            parameters.Add("FilterOnlyPrint", true, DbType.Boolean);
+            parameters.Add("FilterOnlyPrint", filterOnlyPrint, DbType.Boolean);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -230,7 +147,7 @@ namespace evolUX.API.Areas.Finishing.Repositories
 
         public async Task<IEnumerable<ProductionDetailInfo>> GetProductionReport(int runID, int serviceCompanyID)
         {
-            string sql = @"RP_UX_PRINT_SUBSET_REPORT"; // @"RP_UX_PRODUCTION_SUBSET_REPORT";
+            string sql = @"RP_UX_PRODUCTION_SUBSET_REPORT"; // @"RP_UX_PRODUCTION_SUBSET_REPORT";
             var parameters = new DynamicParameters();
             parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
 

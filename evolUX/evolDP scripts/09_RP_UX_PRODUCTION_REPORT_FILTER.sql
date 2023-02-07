@@ -1,9 +1,9 @@
-ï»¿IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RP_UX_PRINT_REPORT_FILTER]') AND type in (N'P', N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RP_UX_PRODUCTION_REPORT_FILTER]') AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RP_UX_PRINT_REPORT_FILTER] AS' 
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RP_UX_PRODUCTION_REPORT_FILTER] AS' 
 END
 GO
-ALTER  PROCEDURE [dbo].[RP_UX_PRINT_REPORT_FILTER] 
+ALTER  PROCEDURE [dbo].[RP_UX_PRODUCTION_REPORT_FILTER] 
 	@RunIDList IDList READONLY,
 	@ServiceCompanyID int,
 	@PaperMediaID int,
@@ -322,7 +322,7 @@ AS
 		AND (@PlexType is NULL OR pd.PlexType = @PlexType)
 
 
-	--Remover ficheiros de recuperaÃ§Ãµes jÃ¡ impressos
+	--Remover ficheiros de recuperações já impressos
 	DELETE ##RP_UX_PROD_REPORT
 	FROM ##RP_UX_PROD_REPORT u
 	INNER JOIN
@@ -337,7 +337,7 @@ AS
 							AND RunStateID = @Send2PrintStateID
 							AND ErrorID = 0)
 
-	-- Update de Dados de ficheiros de recuperaÃ§Ãµes
+	-- Update de Dados de ficheiros de recuperações
 	UPDATE ##RP_UX_PROD_REPORT
 	SET
 		[ServiceTaskCode] = fp.ServiceTaskCode, 
@@ -358,7 +358,7 @@ AS
 		AND fp.RecFileID = u.FileID
 	WHERE fp.ProdFileID <> fp.RecFileID
 
-	-- Update de Dados de ficheiros produÃ§Ã£o originais
+	-- Update de Dados de ficheiros produção originais
 	UPDATE ##RP_UX_PROD_REPORT
 	SET
 		[ServiceTaskCode] = fp.ServiceTaskCode, 

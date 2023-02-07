@@ -5,7 +5,10 @@ namespace Shared.ViewModels.Areas.Finishing
 {
     public class ProductionReportViewModel
     {
-        public IEnumerable<ProductionDetailInfo> ProductionReport { get; set; }
+        public int ServiceCompanyID { get; set; }
+        public string ServiceCompanyCode { get; set; }
+        public string ServiceCompanyName { get; set; }
+        public IEnumerable<ProdExpeditionElement> ProductionReport { get; set; }
         public IEnumerable<PrinterInfo> Printers { get; set; }
     }
 }

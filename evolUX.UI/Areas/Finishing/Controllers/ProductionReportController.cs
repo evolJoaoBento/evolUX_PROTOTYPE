@@ -165,7 +165,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             try
             {
                 string profileList = HttpContext.Session.GetString("evolUX/Profiles");
-                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID);
+                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID, false);
 
                 if (result != null && result.ProductionReport != null && result.ProductionReport.Count() > 0)
                 {
@@ -210,14 +210,12 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             try
             {
                 string profileList = HttpContext.Session.GetString("evolUX/Profiles");
-                ProductionReportPrinterViewModel result = await _productionReportService.GetProductionPrinterReport(profileList, RunID, ServiceCompanyID);
+                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID, true);
                 if (result != null)
                 {
                     if (result.ProductionReport != null && result.ProductionReport.Count() > 0)
                     {
-                        //string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
-                        //DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
-                        //TempData["ServiceCompany"] = ServiceCompanies.Rows.Find(;
+                        
                     }
                     if (result.Printers != null && result.Printers.Count() > 0)
                     {

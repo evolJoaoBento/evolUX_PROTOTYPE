@@ -12,6 +12,7 @@ using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using evolUX.UI.Repositories;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.Finishing;
+using Shared.Models.Areas.Finishing;
 
 namespace evolUX.UI.Areas.Finishing.Repositories
 {
@@ -35,21 +36,16 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             return await response.GetJsonAsync<PrinterViewModel>();
         }
 
-        public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode,
-            string username, int userID, string filePath, string fileName, string shortFileName)
+        public async Task<Result> Print(string printer, string serviceCompanyCode, string username, int userID, List<PrintFileInfo> prodFiles)
         {
+            string prodFilesJSON = JsonConvert.SerializeObject(prodFiles);
+
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("Username", username);
             dictionary.Add("UserID", userID);
-            dictionary.Add("FilePath", filePath);
-            dictionary.Add("FileID", fileID);
-            dictionary.Add("RunID", runID);
-            dictionary.Add("Printer", printer);
+             dictionary.Add("Printer", printer);
             dictionary.Add("ServiceCompanyCode", serviceCompanyCode);
-            dictionary.Add("FileName", fileName);
-            dictionary.Add("ShortFileName", shortFileName);
-
-            string ListJSON = JsonConvert.SerializeObject(dictionary);
+            dictionary.Add("ProdFiles", prodFilesJSON);
 
             var response = await _flurlClient.Request("/API/Finishing/Print/Print")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)

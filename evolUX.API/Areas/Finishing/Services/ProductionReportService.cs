@@ -20,96 +20,17 @@ namespace evolUX.API.Areas.Finishing.Services
             _print = print;
         }
 
-        public async Task<IEnumerable<ProductionInfo>> GetProductionDetailReport(int runID, int serviceCompanyID, int paperMediaID, int stationMediaID, int expeditionType, string expCode, bool hasColorPages, int plexType)
-        {
-            
-            IEnumerable<ProductionInfo> productionReport = await _repository.ProductionReport.GetProductionDetailReport(runID,  serviceCompanyID, paperMediaID, stationMediaID,  expeditionType, expCode, hasColorPages, plexType);
-            if (productionReport == null)
-            {
 
-            }
-           
-            return productionReport;
-        }
-
-        public async Task<ProductionReportViewModel> GetProductionReport(IEnumerable<int> profileList, int runID, int serviceCompanyID)
+        public async Task<ProductionReportViewModel> GetProductionReport(IEnumerable<int> profileList, int runID, int serviceCompanyID, bool filterOnlyPrint)
         {
             IEnumerable<ProductionDetailInfo> productionReport = await _repository.ProductionReport.GetProductionReport(runID, serviceCompanyID);
-            if (productionReport == null)
-            {
-
-            }
             ProductionReportViewModel viewmodel = new ProductionReportViewModel();
-            viewmodel.ProductionReport = productionReport;
-            bool existsToPrintFiles = false;
-            int colorFeature = 0;
-            int plexFeature = 0;
-            foreach (ProductionDetailInfo pdi in viewmodel.ProductionReport)
-            {
-                pdi.ProductionDetailReport = await _repository.ProductionReport.GetProductionDetailReport(runID, serviceCompanyID, pdi.PaperMediaID, pdi.StationMediaID, pdi.ExpeditionType, pdi.ExpCode, pdi.HasColorPages, pdi.PlexType);
-                foreach (ProductionInfo f in pdi.ProductionDetailReport)
-                {
-                    if (!f.FilePrintedFlag || !f.RegistDetailFilePrintedFlag)
-                        existsToPrintFiles = true;
-                    f.FileColor = 3;
-                    f.FilePlexType = 3;
-                    if (!string.IsNullOrEmpty(f.FilePrinterSpecs) && !f.FilePrintedFlag)
-                    {
-                        colorFeature = 0;
-                        plexFeature = 0;
-                        _print.GetPrinterFeatures(f.FilePrinterSpecs, ref colorFeature, ref plexFeature);
-                        f.FileColor = colorFeature;
-                        f.FilePlexType = plexFeature;
-                    }
-                    f.RegistDetailFileColor = 3;
-                    f.RegistDetailFilePlexType = 3;
-                    if (!string.IsNullOrEmpty(f.RegistDetailFilePrinterSpecs) && !f.RegistDetailFilePrintedFlag)
-                    {
-                        colorFeature = 0;
-                        plexFeature = 0;
-                        _print.GetPrinterFeatures(f.RegistDetailFilePrinterSpecs, ref colorFeature, ref plexFeature);
-                        f.RegistDetailFileColor = colorFeature;
-                        f.RegistDetailFilePlexType = plexFeature;
-                    }
-                }
-            }
-            if (existsToPrintFiles)
-            {
-                IEnumerable<ResourceInfo> result = await _repository.RegistJob.GetResources("PRINTER", profileList, "", false);
-                if (result != null)
-                {
-                    List<PrinterInfo> Printers = new List<PrinterInfo>();
-                    foreach (ResourceInfo r in result)
-                    {
-                        PrinterInfo p = new PrinterInfo();
-                        p.ResValue = r.ResValue;
-                        p.MatchFilter = r.MatchFilter;
-                        p.ResID = r.ResID;
-                        p.Description = r.Description;
+            if (productionReport == null || productionReport.Count() == 0)
+                return viewmodel;
 
-                        colorFeature = 0;
-                        plexFeature = 0;
-                        _print.GetPrinterFeatures(p.ResValue, ref colorFeature, ref plexFeature);
-                        p.ColorFeature = colorFeature;
-                        p.PlexFeature = plexFeature;
-
-                        Printers.Add(p);
-                    }
-                    viewmodel.Printers = Printers;
-                }
-            }
-
-            return viewmodel;
-        }
-
-        public async Task<ProductionReportPrinterViewModel> GetProductionPrinterReport(IEnumerable<int> profileList, int runID, int serviceCompanyID)
-        {
-            IEnumerable<ProductionDetailInfo> productionReport = await _repository.ProductionReport.GetProductionReport(runID, serviceCompanyID);
-            if (productionReport == null)
-            {
-
-            }
-            ProductionReportPrinterViewModel viewmodel = new ProductionReportPrinterViewModel();
+            viewmodel.ServiceCompanyID = serviceCompanyID;
+            viewmodel.ServiceCompanyName = productionReport.First().ServiceCompanyName;
+            viewmodel.ServiceCompanyCode = productionReport.First().ServiceCompanyCode;
 
             int lastExpCompanyID = 0;
             int lastExpeditionType = 0;
@@ -124,7 +45,7 @@ namespace evolUX.API.Areas.Finishing.Services
 
             foreach (ProductionDetailInfo pdi in productionReport)
             {
-                IEnumerable<ProdFileInfo> FileList = await _repository.ProductionReport.GetProductionDetailPrinterReport(_print, runID, serviceCompanyID, pdi.PaperMediaID, pdi.StationMediaID, pdi.ExpeditionType, pdi.ExpCompanyID, pdi.ServiceTaskID, pdi.HasColorPages, pdi.PlexType);
+                IEnumerable<ProdFileInfo> FileList = await _repository.ProductionReport.GetProductionDetailReport(_print, runID, serviceCompanyID, pdi.PaperMediaID, pdi.StationMediaID, pdi.ExpeditionType, pdi.ExpCompanyID, pdi.ServiceTaskID, pdi.HasColorPages, pdi.PlexType, filterOnlyPrint);
 
                 if (FileList != null && FileList.Count() > 0)
                 {
@@ -170,30 +91,32 @@ namespace evolUX.API.Areas.Finishing.Services
                 }
             }
             viewmodel.ProductionReport = ProdDetailReport;
- 
-            IEnumerable<ResourceInfo> result = await _repository.RegistJob.GetResources("PRINTER", profileList, "", false);
-            if (result != null)
+
+            if (filterOnlyPrint)
             {
-                List<PrinterInfo> Printers = new List<PrinterInfo>();
-                foreach (ResourceInfo r in result)
+                IEnumerable<ResourceInfo> result = await _repository.RegistJob.GetResources("PRINTER", profileList, "", false);
+                if (result != null)
                 {
-                    PrinterInfo p = new PrinterInfo();
-                    p.ResValue = r.ResValue;
-                    p.MatchFilter = r.MatchFilter;
-                    p.ResID = r.ResID;
-                    p.Description = r.Description;
+                    List<PrinterInfo> Printers = new List<PrinterInfo>();
+                    foreach (ResourceInfo r in result)
+                    {
+                        PrinterInfo p = new PrinterInfo();
+                        p.ResValue = r.ResValue;
+                        p.MatchFilter = r.MatchFilter;
+                        p.ResID = r.ResID;
+                        p.Description = r.Description;
 
-                    int colorFeature = 0;
-                    int plexFeature = 0;
-                    _print.GetPrinterFeatures(p.ResValue, ref colorFeature, ref plexFeature);
-                    p.ColorFeature = colorFeature;
-                    p.PlexFeature = plexFeature;
+                        int colorFeature = 0;
+                        int plexFeature = 0;
+                        _print.GetPrinterFeatures(p.ResValue, ref colorFeature, ref plexFeature);
+                        p.ColorFeature = colorFeature;
+                        p.PlexFeature = plexFeature;
 
-                    Printers.Add(p);
+                        Printers.Add(p);
+                    }
+                    viewmodel.Printers = Printers;
                 }
-                viewmodel.Printers = Printers;
             }
-
             return viewmodel;
         }
 
