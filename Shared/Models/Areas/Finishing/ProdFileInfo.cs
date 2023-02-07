@@ -42,6 +42,7 @@ namespace Shared.Models.Areas.Finishing
 
         public Dictionary<string, int> PaperTotals { get; set; }
         public Dictionary<string, int> StationTotals { get; set; }
+        public int PrintRecNumber { get; set; }
         public ProdFileInfo()
         {
             FilePath = "";
@@ -59,6 +60,7 @@ namespace Shared.Models.Areas.Finishing
             ExpeditionZone = "";
             PaperTotals = new Dictionary<string, int>();
             StationTotals = new Dictionary<string, int>();
+            PrintRecNumber = -1;
         }
 
     }

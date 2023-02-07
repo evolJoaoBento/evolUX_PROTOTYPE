@@ -178,7 +178,8 @@ namespace evolUX.API.Areas.Finishing.Repositories
                         }
                         if (!r.IsNull("RegistDetailFileRecNumber"))
                             ProdFile.RegistDetailFileRecNumber = (int)r["RegistDetailFileRecNumber"];
-                        ProdFile.RegistDetailFileRecNumber = -1;
+                        else
+                            ProdFile.RegistDetailFileRecNumber = -1;
                         ProdFile.RegistDetailFileName = (string)r["RegistDetailFileName"];
                         ProdFile.RegistDetailShortFileName = (string)r["RegistDetailShortFileName"];
                         ProdFile.RegistDetailFilePrinterSpecs = (string)r["RegistDetailFilePrinterSpecs"];

@@ -166,7 +166,7 @@ else
                                                                                             @if (!p.FilePrintedFlag)
                                                                                             {
                                                                                                 <div class='bx bx-printer' style="color:var(--evol-grey)">
-                                                                                                    <input type="checkbox" name="FileCheck" id="@p.FilePlexType|@p.FileColor" value="@p.RunID|@p.FileID">
+                                                                                                    <input type="checkbox" name="FileCheck" id="@p.FilePlexType|@p.FileColor" value="@p.RunID|@p.FileID|@p.PrintRecNumber">
                                                                                                 </div>
                                                                                                 <label>@p.FileName</label>
                                                                                             }
@@ -183,9 +183,10 @@ else
                                                                                                     pregist.FileName = p.RegistDetailFileName;
                                                                                                     pregist.ShortFileName = p.RegistDetailShortFileName;
                                                                                                     pregist.FilePrinterSpecs = p.RegistDetailFilePrinterSpecs;
+                                                                                                    pregist.PrintRecNumber = p.RegistDetailFileRecNumber;
                                                                                                     <p />
                                                                                                     <div class='bx bx-printer' style="color:var(--evol-grey)">
-                                                                                                        <input type="checkbox" name="FileCheck" id="@p.RegistDetailFilePlexType|@p.RegistDetailFileColor" value="@p.RunID|@p.FileID">
+                                                                                                        <input type="checkbox" name="FileCheck" id="@p.RegistDetailFilePlexType|@p.RegistDetailFileColor" value="@pregist.RunID|@pregist.FileID|@pregist.PrintRecNumber">
                                                                                                     </div>
                                                                                                     <label>@pregist.FileName</label>
                                                                                                 }
