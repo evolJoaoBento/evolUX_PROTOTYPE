@@ -187,6 +187,6 @@ AS
 		[ExpeditionPriority],
 		[ExpCodePriority]
 	FROM #PRINT_SUBSET_REPORT
-	ORDER BY [ExpeditionPriority] DESC, [ExpCodePriority] DESC
+	ORDER BY [ExpeditionPriority] DESC, [ExpCodePriority] DESC, PlexType, HasColorPages
 	SET NOCOUNT OFF
 GO

@@ -37,6 +37,7 @@ namespace evolUX.API.Areas.Finishing.Services
             string lastServiceTaskCode = string.Empty;
             int lastPaperMediaID = 0;
             int lastStationMediaID = -1;
+            int lastPlexType = 0;
 
             List<ProdExpeditionElement> ProdDetailReport = new List<ProdExpeditionElement>();
             ProdExpeditionElement ExpeditionList = new ProdExpeditionElement();
@@ -64,6 +65,7 @@ namespace evolUX.API.Areas.Finishing.Services
                         lastServiceTaskCode = string.Empty;
                         lastPaperMediaID = 0;
                         lastStationMediaID = -1;
+                        lastPlexType = 0;
                     }
                     if (pdi.ServiceTaskCode != lastServiceTaskCode)
                     {
@@ -75,8 +77,9 @@ namespace evolUX.API.Areas.Finishing.Services
                         lastServiceTaskCode = pdi.ServiceTaskCode;
                         lastPaperMediaID = 0;
                         lastStationMediaID = -1;
+                        lastPlexType = 0;
                     }
-                    if (pdi.PaperMediaID != lastPaperMediaID || pdi.StationMediaID != lastStationMediaID)
+                    if (pdi.PaperMediaID != lastPaperMediaID || pdi.StationMediaID != lastStationMediaID || pdi.PlexType != lastPlexType)
                     {
                         MaterialMediaList = new ProdMaterialElement();
                         ServiceList.MediaMaterialList.Add(MaterialMediaList);
@@ -84,8 +87,11 @@ namespace evolUX.API.Areas.Finishing.Services
                         MaterialMediaList.PaperMaterialList = pdi.PaperMaterialList;
                         MaterialMediaList.StationMediaID = pdi.StationMediaID;
                         MaterialMediaList.StationMaterialList = pdi.StationMaterialList;
+                        MaterialMediaList.PlexType = pdi.PlexType;
+                        MaterialMediaList.PlexCode = pdi.PlexCode;
                         lastPaperMediaID = pdi.PaperMediaID;
                         lastStationMediaID = pdi.StationMediaID;
+                        lastPlexType = pdi.PlexType;
                     }
                     MaterialMediaList.FileList = FileList.ToList();
                 }

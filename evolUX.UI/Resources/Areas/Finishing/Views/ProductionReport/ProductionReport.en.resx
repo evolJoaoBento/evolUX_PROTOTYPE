@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AdditionalInserts" xml:space="preserve">
+    <value>Additional Inserts</value>
+  </data>
+  <data name="DPLEX" xml:space="preserve">
+    <value>Duplex</value>
+  </data>
   <data name="EndSeqNum" xml:space="preserve">
     <value>Last</value>
   </data>
@@ -159,8 +165,14 @@
   <data name="Materials" xml:space="preserve">
     <value>Materials</value>
   </data>
+  <data name="MPLEX" xml:space="preserve">
+    <value>Mixplex</value>
+  </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
+  </data>
+  <data name="Papers" xml:space="preserve">
+    <value>Papers</value>
   </data>
   <data name="PlexCode" xml:space="preserve">
     <value>Type</value>
@@ -179,6 +191,9 @@
   </data>
   <data name="ServiceTaskCode" xml:space="preserve">
     <value>Handling</value>
+  </data>
+  <data name="SPLEX" xml:space="preserve">
+    <value>Simplex</value>
   </data>
   <data name="StartSeqNum" xml:space="preserve">
     <value>First</value>

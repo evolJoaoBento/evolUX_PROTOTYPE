@@ -2,6 +2,9 @@
 {
     public class ProdMaterialElement
     {
+        public string PlexCode { get; set; }
+        public int PlexType { get; set; }
+
         public int PaperMediaID { get; set; }
         public string PaperMaterialList { get; set; }
 
@@ -40,7 +43,8 @@
             PaperMaterialList = string.Empty;
             StationMaterialList = string.Empty;
             _paperList = null;
-            _stationList = null; 
+            _stationList = null;
+            PlexCode = string.Empty;
         }
     }
 }
