@@ -51,13 +51,12 @@ namespace evolUX.UI.Areas.Finishing.Services
             }
         }
 
-        public async Task<Result> Print(int runID, int fileID, string printer, string serviceCompanyCode,
-            string username, int userID, string filePath, string fileName, string shortFileName)
+        public async Task<Result> Print(string printer, string serviceCompanyCode,
+            string username, int userID, List<PrintFileInfo> prodFiles)
         {
             try
             {
-                Result response = await _printRepository.Print(runID, fileID, printer, serviceCompanyCode,
-                            username, userID, filePath, fileName, shortFileName);
+                Result response = await _printRepository.Print(printer, serviceCompanyCode, username, userID, prodFiles);
                 return response;
             }
             catch (FlurlHttpException ex)

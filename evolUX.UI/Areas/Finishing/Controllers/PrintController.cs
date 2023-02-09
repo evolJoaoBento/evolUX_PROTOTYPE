@@ -18,6 +18,7 @@ using Shared.Models.General;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.Finishing;
 using Microsoft.Extensions.Localization;
+using Microsoft.IdentityModel.Tokens;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -70,23 +71,40 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         }
 
-        public async Task<IActionResult> Print(string Printer)
+        public async Task<IActionResult> Print(string Printer, List<string> FileCheck)
         {
-            if (string.IsNullOrEmpty(Printer))
+            string[] printerValues = Printer.Split('|');
+            if (printerValues.Length < 3 || string.IsNullOrEmpty(printerValues[2]))
                 return PartialView("MessageView", new MessageViewModel(_localizer["SelectValidPrinter"]));
 
-            string JsonSerializedProductionInfo = (string)TempData["JsonSerializedProductionInfo"];
+            if (FileCheck.Count == 0)
+            {
+                string JsonSerializedProductionInfo = (string)TempData["JsonSerializedProductionInfo"];
+                if (JsonSerializedProductionInfo != null)
+                {
+                    FileCheck.Add(JsonSerializedProductionInfo);
+                }
+            }
+
+            if (FileCheck.Count == 0)
+            {
+                return PartialView("MessageView", new MessageViewModel(_localizer["MissingFile"]));
+            }
+
+            List<PrintFileInfo> prodFiles = new List<PrintFileInfo>();
+            foreach (var prodFile in FileCheck)
+            {
+                prodFiles.Add(JsonConvert.DeserializeObject<PrintFileInfo>(prodFile));
+            }
+            
             string ServiceCompanyCode = (string)TempData["ServiceCompanyCode"];
-            ProductionInfo productionInfo = JsonConvert.DeserializeObject<ProductionInfo>(JsonSerializedProductionInfo);
             string username = User.Identity.Name;
             int userid = int.Parse(User.Claims.Where(c => c.Type == ClaimTypes.NameIdentifier)
                                               .Select(c => c.Value)
                                               .SingleOrDefault());
             try
             {
-                Result result = await _printService.Print(productionInfo.RunID, productionInfo.FileID, Printer, 
-                    ServiceCompanyCode,
-                            username, userid, productionInfo.FilePath, productionInfo.FileName, productionInfo.ShortFileName);
+                Result result = await _printService.Print(printerValues[2], ServiceCompanyCode, username, userid, prodFiles);
                 return PartialView("MessageView", new MessageViewModel(result.ErrorID.ToString(), "", result.Error));
             }
             catch (ErrorViewModelException ex)

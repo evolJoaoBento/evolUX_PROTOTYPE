@@ -25,32 +25,21 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ProductionRunReportViewModel>();
         }
-        public async Task<ProductionReportViewModel> GetProductionReport(string profileList, int runID, int serviceCompanyID)
+
+        public async Task<ProductionReportViewModel> GetProductionReport(string profileList, int runID, int serviceCompanyID, bool filterOnlyPrint)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ProfileList", profileList);
             dictionary.Add("RunID", runID);
             dictionary.Add("ServiceCompanyID", serviceCompanyID);
+            dictionary.Add("FilterOnlyPrint", filterOnlyPrint);
+
             var response = await _flurlClient.Request("/API/finishing/ProductionReport/GetProductionReport")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ProductionReportViewModel>();
-        }
-
-        public async Task<ProductionReportPrinterViewModel> GetProductionPrinterReport(string profileList, int runID, int serviceCompanyID)
-        {
-            Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            dictionary.Add("ProfileList", profileList);
-            dictionary.Add("RunID", runID);
-            dictionary.Add("ServiceCompanyID", serviceCompanyID);
-            var response = await _flurlClient.Request("/API/finishing/ProductionReport/GetProductionPrinterReport")
-                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                .SendJsonAsync(HttpMethod.Get, dictionary);
-            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
-            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<ProductionReportPrinterViewModel>();
         }
     }
 }
