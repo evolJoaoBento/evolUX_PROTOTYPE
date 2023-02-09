@@ -132,6 +132,9 @@
   <data name="ContractNr" xml:space="preserve">
     <value>Nº Contrato</value>
   </data>
+  <data name="EmptyResult" xml:space="preserve">
+    <value>Não existem Guias de Expedição com menos de um ano</value>
+  </data>
   <data name="ExpCompanyLevel" xml:space="preserve">
     <value>Escalão</value>
   </data>
