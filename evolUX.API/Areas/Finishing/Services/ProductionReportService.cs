@@ -21,9 +21,9 @@ namespace evolUX.API.Areas.Finishing.Services
         }
 
 
-        public async Task<ProductionReportViewModel> GetProductionReport(IEnumerable<int> profileList, int runID, int serviceCompanyID, bool filterOnlyPrint)
+        public async Task<ProductionReportViewModel> GetProductionReport(IEnumerable<int> profileList, DataTable runIDList, int serviceCompanyID, bool filterOnlyPrint)
         {
-            IEnumerable<ProductionDetailInfo> productionReport = await _repository.ProductionReport.GetProductionReport(runID, serviceCompanyID);
+            IEnumerable<ProductionDetailInfo> productionReport = await _repository.ProductionReport.GetProductionReport(runIDList, serviceCompanyID);
             ProductionReportViewModel viewmodel = new ProductionReportViewModel();
             if (productionReport == null || productionReport.Count() == 0)
                 return viewmodel;
@@ -46,7 +46,7 @@ namespace evolUX.API.Areas.Finishing.Services
 
             foreach (ProductionDetailInfo pdi in productionReport)
             {
-                IEnumerable<ProdFileInfo> FileList = await _repository.ProductionReport.GetProductionDetailReport(_print, runID, serviceCompanyID, pdi.PaperMediaID, pdi.StationMediaID, pdi.ExpeditionType, pdi.ExpCompanyID, pdi.ServiceTaskID, pdi.HasColorPages, pdi.PlexType, filterOnlyPrint);
+                IEnumerable<ProdFileInfo> FileList = await _repository.ProductionReport.GetProductionDetailReport(_print, runIDList, serviceCompanyID, pdi.PaperMediaID, pdi.StationMediaID, pdi.ExpeditionType, pdi.ExpCompanyID, pdi.ServiceTaskID, pdi.HasColorPages, pdi.PlexType, filterOnlyPrint);
 
                 if (FileList != null && FileList.Count() > 0)
                 {

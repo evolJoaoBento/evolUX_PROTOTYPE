@@ -183,8 +183,8 @@
   <data name="Printing" xml:space="preserve">
     <value>Impressão</value>
   </data>
-  <data name="ProductionStatus" xml:space="preserve">
-    <value>Detalhe de Produção / Imprimir</value>
+  <data name="PrintStatus" xml:space="preserve">
+    <value>Ficheiros para Impressão</value>
   </data>
   <data name="SequenceNumber" xml:space="preserve">
     <value>Nº Sequência</value>

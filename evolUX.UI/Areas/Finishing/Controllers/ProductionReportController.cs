@@ -160,12 +160,21 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             
         }
 
-        public async Task<IActionResult> ProductionReport(int RunID, int ServiceCompanyID, string RunName)
+        public async Task<IActionResult> ProductionReport(string RunIDList, int ServiceCompanyID, string RunName)
         {
             try
             {
+                List<int> runIDList = new List<int>();
+                string[] runIDListStr = RunIDList.Split('|');
+                if (string.IsNullOrEmpty(RunIDList) || runIDListStr.Length == 0)
+                {
+                    return PartialView("MessageView", new MessageViewModel(_localizer["Missing Runs"]));
+                }
+                foreach (string r in runIDListStr)
+                    runIDList.Add(int.Parse(r));
+
                 string profileList = HttpContext.Session.GetString("evolUX/Profiles");
-                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID, false);
+                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, runIDList, ServiceCompanyID, false);
 
                 if (result != null && result.ProductionReport != null && result.ProductionReport.Count() > 0)
                 {
@@ -205,12 +214,21 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             }
         }
 
-        public async Task<IActionResult> ProductionReportPrinter(int RunID, int ServiceCompanyID, string RunName)
+        public async Task<IActionResult> ProductionReportPrinter(string RunIDList, int ServiceCompanyID, string RunName)
         {
             try
             {
+                List<int> runIDList = new List<int>();
+                string[] runIDListStr = RunIDList.Split('|');
+                if (string.IsNullOrEmpty(RunIDList) || runIDListStr.Length == 0)
+                {
+                    return PartialView("MessageView", new MessageViewModel(_localizer["Missing Runs"]));
+                }
+                foreach(string r in runIDListStr)
+                    runIDList.Add(int.Parse(r));
+
                 string profileList = HttpContext.Session.GetString("evolUX/Profiles");
-                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, RunID, ServiceCompanyID, true);
+                ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, runIDList, ServiceCompanyID, true);
                 if (result != null)
                 {
                     if (result.ProductionReport != null && result.ProductionReport.Count() > 0)

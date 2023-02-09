@@ -63,15 +63,17 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 object obj;
                 dictionary.TryGetValue("ProfileList", out obj);
                 string ProfileListJSON = Convert.ToString(obj);
-                dictionary.TryGetValue("RunID", out obj);
-                int RunID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("RunIDList", out obj);
+                string RunIDListJSON = Convert.ToString(obj);
+                DataTable RunIDList = JsonConvert.DeserializeObject<DataTable>(RunIDListJSON);
+
                 dictionary.TryGetValue("ServiceCompanyID", out obj);
                 int ServiceCompanyID = Convert.ToInt32(obj.ToString());
                 IEnumerable<int> ProfileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
                 dictionary.TryGetValue("FilterOnlyPrint", out obj);
                 bool FilterOnlyPrint = Convert.ToBoolean(obj.ToString());
 
-                ProductionReportViewModel viewmodel = await _productionReportService.GetProductionReport(ProfileList, RunID, ServiceCompanyID, FilterOnlyPrint);
+                ProductionReportViewModel viewmodel = await _productionReportService.GetProductionReport(ProfileList, RunIDList, ServiceCompanyID, FilterOnlyPrint);
                 _logger.LogInfo("ProductionReport Get");
                 return Ok(viewmodel);
             }
