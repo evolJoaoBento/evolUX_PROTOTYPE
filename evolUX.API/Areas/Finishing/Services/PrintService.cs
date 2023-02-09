@@ -96,12 +96,12 @@ namespace evolUX.API.Areas.Finishing.Services
             }
 
             FlowInfo flowinfo = await _repository.RegistJob.GetFlowByCriteria(dictionary);
-
+            string OriginalFlowName = flowinfo.FlowName;
             if (flowinfo != null)
             {
                 foreach (PrintFileInfo f in prodFiles)
                 {
-                    flowinfo.FlowName = f.FileName + " [" + flowinfo.FlowName + "]";
+                    flowinfo.FlowName = f.FileName + " [" + OriginalFlowName + "]";
 
                     IEnumerable<FlowParameter> flowparameters = await _repository.RegistJob.GetFlowData(flowinfo.FlowID);
                     string query;
