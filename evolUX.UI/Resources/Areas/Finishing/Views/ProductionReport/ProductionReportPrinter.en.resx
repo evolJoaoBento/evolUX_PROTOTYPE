@@ -183,6 +183,9 @@
   <data name="Printing" xml:space="preserve">
     <value>Printing</value>
   </data>
+  <data name="PrintStatus" xml:space="preserve">
+    <value>Files for Printing</value>
+  </data>
   <data name="ProductionStatus" xml:space="preserve">
     <value>Production Detail / Print</value>
   </data>

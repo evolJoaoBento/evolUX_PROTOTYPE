@@ -46,11 +46,11 @@ namespace evolUX.UI.Areas.Finishing.Services
             }
         }
 
-        public async Task<ProductionReportViewModel> GetProductionReport(string profileList, int runID, int serviceCompanyID, bool filterOnlyPrint)
+        public async Task<ProductionReportViewModel> GetProductionReport(string profileList, List<int> runIDList, int serviceCompanyID, bool filterOnlyPrint)
         {
             try
             {
-                var response = await _productionReportRepository.GetProductionReport(profileList, runID, serviceCompanyID, filterOnlyPrint);
+                var response = await _productionReportRepository.GetProductionReport(profileList, runIDList, serviceCompanyID, filterOnlyPrint);
                 return response;
             }
             catch (FlurlHttpException ex)

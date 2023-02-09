@@ -26,11 +26,16 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             return await response.GetJsonAsync<ProductionRunReportViewModel>();
         }
 
-        public async Task<ProductionReportViewModel> GetProductionReport(string profileList, int runID, int serviceCompanyID, bool filterOnlyPrint)
+        public async Task<ProductionReportViewModel> GetProductionReport(string profileList, List<int> runIDList, int serviceCompanyID, bool filterOnlyPrint)
         {
+            DataTable RunIDList = new DataTable();
+            RunIDList.Columns.Add("ID", typeof(int));
+            foreach (int runID in runIDList)
+                RunIDList.Rows.Add(runID);
+
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ProfileList", profileList);
-            dictionary.Add("RunID", runID);
+            dictionary.Add("RunIDList", RunIDList);
             dictionary.Add("ServiceCompanyID", serviceCompanyID);
             dictionary.Add("FilterOnlyPrint", filterOnlyPrint);
 

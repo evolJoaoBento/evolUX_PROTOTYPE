@@ -57,7 +57,7 @@ namespace evolUX.API.Areas.Core.Repositories
         public async Task<IEnumerable<string>> GetServers(IEnumerable<int> profiles)
         {
 
-            string profilesstr = profiles.toCommaSeperatedString();
+            string profilesstr = profiles.toCommaSeparatedString();
 
             string sql = string.Format(@"SELECT DISTINCT CompanyServer
                             FROM [PROFILES]

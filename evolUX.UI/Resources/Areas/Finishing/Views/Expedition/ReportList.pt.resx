@@ -129,10 +129,16 @@
   <data name="ExpeditionReportList" xml:space="preserve">
     <value>Guias Geradas</value>
   </data>
+  <data name="FileName" xml:space="preserve">
+    <value>Ficheiro de Produção</value>
+  </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
   <data name="Submit" xml:space="preserve">
     <value>Listar</value>
+  </data>
+  <data name="TotalPostalObjects" xml:space="preserve">
+    <value>Nº de Objectos Postais</value>
   </data>
 </root>

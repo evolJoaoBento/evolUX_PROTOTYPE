@@ -150,6 +150,9 @@
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
+  <data name="NoPendingProductions" xml:space="preserve">
+    <value>Sem Produções Pendentes</value>
+  </data>
   <data name="Originals" xml:space="preserve">
     <value>Originais</value>
   </data>

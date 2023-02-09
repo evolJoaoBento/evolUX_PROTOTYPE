@@ -9,7 +9,7 @@ namespace evolUX.API.Extensions
         {
             return string.Join(",",list);
         }
-        public static string toCommaSeperatedString(this IEnumerable<int> list)
+        public static string toCommaSeparatedString(this IEnumerable<int> list)
         {
             return string.Join(",", list);
         }
