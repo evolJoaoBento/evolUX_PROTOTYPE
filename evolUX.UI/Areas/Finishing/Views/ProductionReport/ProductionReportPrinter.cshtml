@@ -23,6 +23,38 @@
     <h1 class="display-4 text-center">@localizer["ProductionStatus"]</h1>
     <h2 class="display-5 text-center">@ViewBag.RunName</h2>
 </div>
+<div class="filter-div">
+    <form style="height: 100%">
+
+        <div style="margin-left: 50px">
+            <label>
+                @*Needs tooltip*@
+                <img class="settings-circle circle buttom-icon" style="background:white; width:30px;height:30px;padding:3px" src="~/images/bwpaper.png">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="1">
+                <img />
+
+            </label>
+            <label style="margin: 15px;">
+                <img class="settings-circle circle buttom-icon" style="background:white; width:30px;height:30px;padding:3px" src="~/images/printer color.png">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="1">
+                <img />
+            </label>
+        </div>
+        <div id="text-buttons" style="margin-left: 10px;">
+            <label class="btn btn-outline-dark">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="1">Simplex
+            </label>
+            <label class="btn btn-outline-dark">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="0">Duplex
+            </label>
+        </div>
+        <div style="display: flex; position:absolute; right: 10px; bottom: 10 px;">
+            <input class="btn btn-dark m-2" type="submit">
+        </div>
+        
+    </form>
+
+</div>
 @if (Model == null)
 {
     <tr><td colspan="5" class="text-center">No Model Data</td></tr>
