@@ -2,6 +2,8 @@
 @using Shared.ViewModels.Areas.Finishing
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
 
 @model ProductionRunReportViewModel
 
@@ -20,7 +22,64 @@
 }
 else
 {
-    <div id="TitlePage">
+   @* <div id="filter-div">
+        <form>
+            @{
+                var list = ViewBag.list;
+
+            }
+            <select id="paperMedia" name="PaperMedia">
+                @foreach (var i in list)
+                {
+                    string value = i.paperMediaID.ToString();
+                    <option value="@value">@i.paperMedia</option>
+                }
+            </select>
+            <select id="expType" name="ExpType">
+                @foreach (var i in list)
+                {
+                    string value = i.expType.ToString();
+                    <option value="@value">@i.expTypeDesc</option>
+                }
+            </select>
+            <select id="expCompany" name="ExpCompany">
+                @foreach (var i in list)
+                {
+                    string value = i.expCompanyID.ToString();
+                    <option value="@value">@i.expCompany</option>
+                }
+            </select>
+            <select id="stationMedia" name="StationMedia">
+                @foreach (var i in list)
+                {
+                    string value = i.stationMediaID.ToString();
+                    <option value="@value">@i.stationMedia</option>
+                }
+            </select>
+            <select id="serviceTask" name="ServiceTask">
+                @foreach (var i in list)
+                {
+                    string value = i.serviceTaskID.ToString();
+                    <option value="@value">@i.serviceTaskCode</option>
+                }
+            </select>
+            <div>
+                <label class="btn btn-primary">
+                    <input class="alt-toggle-box" type="checkbox">BW
+                </label>
+                <label class="btn btn-primary">
+                    <input class="alt-toggle-box" type="checkbox">C
+                </label>
+            </div>
+            <div>
+                <button class="toggle-button">S</button>
+                <button class="toggle-button">D</button>
+            </div>
+        </form>
+
+    </div>*@
+    string siteURL = configuration.GetValue<string>("SiteURL");
+     <div id="TitlePage">
         <h1 class="display-4 text-center">@localizer["ProductionRunStatus"]</h1>
     </div>
     <div class="my-3">
@@ -35,7 +94,7 @@ else
         {
                 ServiceCompanyName += TempData["ServiceCompanyName"];
         }
-        <table class="table table-sm table-hover table-collapse-seperate">
+            <table class="table table-sm table-hover table-collapse-seperate" style=" padding-right: 10px">
             <col>
             <colgroup span="2"></colgroup>
             <colgroup span="3"></colgroup>

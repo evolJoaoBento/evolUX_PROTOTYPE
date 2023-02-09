@@ -23,6 +23,7 @@
     <h1 class="display-4 text-center">@localizer["ProductionStatus"]</h1>
     <h2 class="display-5 text-center">@ViewBag.RunName</h2>
 </div>
+
 @foreach (ProductionDetailInfo pinfo in Model.ProductionReport)
 {
     int PrintTotal = 0;

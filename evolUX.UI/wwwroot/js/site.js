@@ -61,6 +61,7 @@ $(function () {
 
         });
     });
+    
 
 });
 
@@ -185,3 +186,21 @@ function uncheckBoxAll(elementName, elementId) {
         }
     }
 }
+
+const boxes = document.querySelectorAll('.alt-toggle-box');
+
+boxes.forEach(box => {
+    box.addEventListener('click', function () {
+
+        boxes.forEach(cb => {
+            if (cb !== this && cb.name == box.name) {
+                cb.checked = false;
+                cb.parentElement.classList.remove('checkbox-selected');
+            } else if (cb == this && cb.checked) {
+                cb.parentElement.classList.add('checkbox-selected');
+            } else if (cb == this && !cb.checked) {
+                cb.parentElement.classList.remove('checkbox-selected');
+            }
+        });
+    });
+});
