@@ -199,7 +199,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                     int runID = Convert.ToInt32(checkedFile[2]);
                     int fileID = Convert.ToInt32(checkedFile[3]);
 
-                    rElement.ExpFileList.Add(new ExpFileElement(runID, fileID));
+                    rElement.ExpFileList.Add(new FileBase(runID, fileID));
                 }
                 Result result = await _expeditionService.RegistExpeditionReport(expFiles, username, userID);
                 return PartialView("MessageView", new MessageViewModel(result.ErrorID.ToString(), "", result.Error));

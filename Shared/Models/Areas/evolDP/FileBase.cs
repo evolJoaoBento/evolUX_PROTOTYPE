@@ -1,19 +1,24 @@
-﻿namespace Shared.Models.Areas.Finishing
+﻿using Shared.Models.Areas.Core;
+
+namespace Shared.Models.Areas.Finishing
 {
-    public class ExpFileElement
+    public class FileBase
     {
         public int RunID { get; set; }
         public int FileID { get; set; }
         public string FileName { get; set; }
-        public ExpFileElement()
+        public string FilePath { get; set; }
+        public FileBase()
         {
             FileName = "";
+            FilePath = "";
         }
-        public ExpFileElement(int runID, int fileID)
+        public FileBase(int runID, int fileID)
         {
             RunID = runID;
             FileID = fileID;
             FileName = "";
+            FilePath = "";
         }
     }
 }

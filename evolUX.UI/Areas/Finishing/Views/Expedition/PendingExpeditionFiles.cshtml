@@ -1,4 +1,5 @@
 ﻿@using Shared.ViewModels.Areas.Finishing
+@using Shared.ViewModels.Areas.evolDP
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Shared.Models.Areas.Finishing
 @inject IViewLocalizer localizer
@@ -124,7 +125,7 @@ else
                         </tr>
                     @foreach(ExpContractFileElement cc in r.ContractList)
                     {
-                    @foreach (ExpFileElement f in cc.FileList)
+                    @foreach (FileBase f in cc.FileList)
                     {
                         cValue = "Checked" + s.ServiceCompanyCode.ToString()+ "|" + c.ExpCompanyID.ToString() + "|" + r.RunID.ToString();
                         <tr>
