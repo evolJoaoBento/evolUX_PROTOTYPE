@@ -1,6 +1,6 @@
-﻿using evolUX.API.Areas.EvolDP.Models;
+﻿using Shared.Models.Areas.evolDP;
 
-namespace evolUX.API.Areas.EvolDP.ViewModels
+namespace Shared.ViewModels.Areas.evolDP
 {
     public class DocCodeViewModel
     {

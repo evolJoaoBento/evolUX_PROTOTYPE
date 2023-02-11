@@ -1,6 +1,5 @@
-﻿using evolUX.API.Areas.EvolDP.Models;
-using evolUX.API.Areas.EvolDP.ViewModels;
-using Shared.Models.Areas.evolDP;
+﻿using Shared.Models.Areas.evolDP;
+using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
 {
@@ -21,8 +20,8 @@ namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
         public Task<IEnumerable<Company>> GetExpeditionCompanies();
         public Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(string expeditionType);
         public Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes();
-        public Task<IEnumerable<TreatmentType>> GetTreatmentTypes(string treatmentType);
-        public Task<IEnumerable<TreatmentType>> GetTreatmentTypes();
+        public Task<IEnumerable<ServiceTask>> GetTreatmentTypes(string treatmentType);
+        public Task<IEnumerable<ServiceTask>> GetTreatmentTypes();
         public Task<IEnumerable<int>> GetFinishingList(string finishing);
         public Task<IEnumerable<int>> GetArchiveList(string archive);
         public Task<IEnumerable<Email>> GetEmailList(string email);

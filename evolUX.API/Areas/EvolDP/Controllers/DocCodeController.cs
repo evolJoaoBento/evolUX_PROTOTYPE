@@ -1,6 +1,4 @@
 ﻿using evolUX.API.Areas.Core.Services.Interfaces;
-using evolUX.API.Areas.EvolDP.Models;
-using evolUX.API.Areas.EvolDP.ViewModels;
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +9,8 @@ using Newtonsoft.Json.Converters;
 using System.Dynamic;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
 using System.Data.SqlClient;
+using Shared.ViewModels.Areas.evolDP;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.Areas.EvolDP.Controllers
 {
@@ -31,7 +31,7 @@ namespace evolUX.Areas.EvolDP.Controllers
         //TODO: DOCUMENT UNTESTED
         //TODO: HANDLE HTTP RESPONSES
         [HttpGet]
-        [ActionName("DocCode")]
+        [ActionName("DocCodeGroup")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<DocCodeViewModel>> GetDocCodeGroup()
         {
@@ -52,14 +52,19 @@ namespace evolUX.Areas.EvolDP.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        //TODO: DOCUMENT UNTESTED
-        //TODO: HANDLE HTTP RESPONSES
-        [HttpGet("details")]
+
+        [HttpGet]
         [ActionName("DocCode")]
-        public async Task<ActionResult<DocCodeViewModel>> GetDocCode([FromQuery] string docLayout, [FromQuery] string docType)
+        public async Task<ActionResult<DocCodeViewModel>> GetDocCode([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
+                object obj;
+                dictionary.TryGetValue("DocLayout", out obj);
+                string docLayout = Convert.ToString(obj);
+                dictionary.TryGetValue("DocType", out obj);
+                string docType = Convert.ToString(obj);
+
                 DocCodeViewModel viewmodel = await _docCodeService.GetDocCode(docLayout, docType);
                 _logger.LogInfo("DocCode Get");
                 return Ok(viewmodel);
@@ -144,7 +149,7 @@ namespace evolUX.Areas.EvolDP.Controllers
                 viewmodel.AggregationList = await _docCodeService.GetAggregationList(viewmodel.DocCodeConfig.AggrCompatibility);
                 viewmodel.ExpeditionCompanies = await _docCodeService.GetExpeditionCompanies(viewmodel.DocCodeConfig.CompanyName);
                 viewmodel.ExpeditionTypes = await _docCodeService.GetExpeditionTypes(viewmodel.DocCodeConfig.ExpeditionType);
-                viewmodel.TreatmentTypes = await _docCodeService.GetTreatmentTypes(viewmodel.DocCodeConfig.TreatmentType);
+                viewmodel.TreatmentTypes = await _docCodeService.GetServiceTasks(viewmodel.DocCodeConfig.TreatmentType);
                 viewmodel.FinishingList = await _docCodeService.GetFinishingList(viewmodel.DocCodeConfig.Finishing);
                 viewmodel.ArchiveList = await _docCodeService.GetArchiveList(viewmodel.DocCodeConfig.Archive);
                 viewmodel.EmailList = await _docCodeService.GetEmailList(viewmodel.DocCodeConfig.Email);

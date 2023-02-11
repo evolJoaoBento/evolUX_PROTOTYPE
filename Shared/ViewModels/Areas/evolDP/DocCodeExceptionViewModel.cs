@@ -1,7 +1,6 @@
-﻿using evolUX.API.Areas.EvolDP.Models;
-using Shared.Models.Areas.evolDP;
+﻿using Shared.Models.Areas.evolDP;
 
-namespace evolUX.API.Areas.EvolDP.ViewModels
+namespace Shared.ViewModels.Areas.evolDP
 {
     public class DocCodeExceptionViewModel
     {
@@ -13,7 +12,7 @@ namespace evolUX.API.Areas.EvolDP.ViewModels
         public IEnumerable<int> AggregationList { get; set; }
         public IEnumerable<Company> ExpeditionCompanies { get; set; }
         public IEnumerable<ExpeditionsType> ExpeditionTypes{ get; set; }
-        public IEnumerable<TreatmentType> TreatmentTypes{ get; set; }
+        public IEnumerable<ServiceTask> TreatmentTypes{ get; set; }
         public IEnumerable<int> FinishingList{ get; set; }
         public IEnumerable<int> ArchiveList{ get; set; }
         public IEnumerable<Email> EmailList { get; set; }

@@ -1,5 +1,4 @@
-﻿using evolUX.API.Areas.EvolDP.Models;
-using evolUX.API.Areas.EvolDP.ViewModels;
+﻿using Shared.ViewModels.Areas.evolDP;
 using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Areas.EvolDP.Services.Interfaces
@@ -18,7 +17,7 @@ namespace evolUX.API.Areas.EvolDP.Services.Interfaces
         public Task<IEnumerable<int>> GetAggregationList(string aggrCompatibility);
         public Task<IEnumerable<Company>> GetExpeditionCompanies(string companyName);
         public Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(string expeditionType);
-        public Task<IEnumerable<TreatmentType>> GetTreatmentTypes(string treatmentType);
+        public Task<IEnumerable<ServiceTask>> GetServiceTasks(string serviceTask);
         public Task<IEnumerable<int>> GetFinishingList(string finishing);
         public Task<IEnumerable<int>> GetArchiveList(string archive);
         public Task<IEnumerable<Email>> GetEmailList(string email);

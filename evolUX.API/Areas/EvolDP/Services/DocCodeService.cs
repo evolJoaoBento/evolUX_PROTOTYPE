@@ -1,7 +1,6 @@
 ﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
-using evolUX.API.Areas.EvolDP.Models;
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
-using evolUX.API.Areas.EvolDP.ViewModels;
+using Shared.ViewModels.Areas.evolDP;
 using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Areas.EvolDP.Services
@@ -164,11 +163,11 @@ namespace evolUX.API.Areas.EvolDP.Services
         }
          
 
-        public async Task<IEnumerable<TreatmentType>> GetTreatmentTypes(string treatmentType)
+        public async Task<IEnumerable<ServiceTask>> GetServiceTasks(string treatmentType)
         {
             if (treatmentType==null)
             {
-                IEnumerable<TreatmentType> treatmentTypeList = await _repository.DocCode.GetTreatmentTypes();
+                IEnumerable<ServiceTask> treatmentTypeList = await _repository.DocCode.GetTreatmentTypes();
                 if (treatmentTypeList == null)
                 {
 
@@ -177,7 +176,7 @@ namespace evolUX.API.Areas.EvolDP.Services
             }
             else
             {
-                IEnumerable<TreatmentType> treatmentTypeList = await _repository.DocCode.GetTreatmentTypes(treatmentType);
+                IEnumerable<ServiceTask> treatmentTypeList = await _repository.DocCode.GetTreatmentTypes(treatmentType);
                 if (treatmentTypeList == null)
                 {
 

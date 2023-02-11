@@ -153,6 +153,9 @@
   <data name="ActionDocumentTypification" xml:space="preserve">
     <value>Tipos de Documento</value>
   </data>
+  <data name="ActionDocumentTypification_Link" xml:space="preserve">
+    <value>/evolDP/DocCode/Index</value>
+  </data>
   <data name="ActionEnvelopeRange" xml:space="preserve">
     <value>Gamas de Envelopes</value>
   </data>

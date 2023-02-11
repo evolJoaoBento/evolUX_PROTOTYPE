@@ -1,4 +1,4 @@
-﻿namespace evolUX.API.Areas.EvolDP.Models
+﻿namespace Shared.Models.Areas.evolDP
 {
     public class EnvelopeMedia
     {

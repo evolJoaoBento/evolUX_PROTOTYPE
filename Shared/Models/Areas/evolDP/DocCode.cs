@@ -1,14 +1,7 @@
-﻿using evolUX.API.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace evolUX.API.Areas.EvolDP.Models
+﻿namespace Shared.Models.Areas.evolDP
 {
     public class DocCode
     {
-        //TODO: CLEANUP
         public int DocCodeID { get; set; }
         public string DocLayout { get; set; }
         public string DocType { get; set; }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace evolUX.API.Areas.EvolDP.Models
+﻿namespace Shared.Models.Areas.evolDP
 {
     public class DocCodeExceptionModel
     {

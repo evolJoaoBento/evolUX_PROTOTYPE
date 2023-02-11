@@ -1,9 +1,8 @@
 ﻿using Dapper;
-using evolUX.API.Areas.EvolDP.Models;
-using evolUX.API.Areas.EvolDP.ViewModels;
+using Shared.Models.Areas.evolDP;
+using Shared.ViewModels.Areas.evolDP;
 using evolUX.API.Data.Context;
 using System.Data;
-using Shared.Models.Areas.evolDP;
 using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
 
 namespace evolUX.API.Areas.EvolDP.Repositories
@@ -19,58 +18,21 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 
         public async Task<IEnumerable<DocCode>> GetDocCodeGroup()
         {
-            string sql = @"SELECT	d.DocLayout,
-									d.DocType,
-									(SELECT TOP 1 d1.[Description]
-										   FROM RD_DOCCODE d1 WITH(NOLOCK)
-										   WHERE d1.DocLayout = d.DocLayout AND d1.DocType = d.DocType
-										   ORDER BY ISNULL(d1.ExceptionLevel1ID,0) ASC, 
-														ISNULL(d1.ExceptionLevel2ID,0) ASC,
-														ISNULL(d1.ExceptionLevel3ID,0) ASC) 
-									as DocDescription
-							FROM	RD_DOCCODE d WITH(NOLOCK)";
+            string sql = @"RD_UX_GET_DOCCODE_GROUP";
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<DocCode> docCodeList = await connection.QueryAsync<DocCode>(sql);
+                IEnumerable<DocCode> docCodeList = await connection.QueryAsync<DocCode>(sql, commandType: CommandType.StoredProcedure);
                 return docCodeList;
             }
         }
-        //TODO: DAPPER NESTED OBJECTS 
+
         public async Task<IEnumerable<DocCode>> GetDocCode(string docLayout, string docType)
         {
-            string sql = @"SELECT	d.DocCodeID,
-									d.DocLayout
-									d.DocType,
-									e1.ExceptionLevelID,
-									e1.ExceptionCode,
-									e1.ExceptionDescription,
-									e2.ExceptionLevelID,
-									e2.ExceptionCode,
-									e2.ExceptionDescription,
-									e3.ExceptionLevelID,
-									e3.ExceptionCode,
-									e3.ExceptionDescription,
-									[Description] as DocDescription
-							FROM 	RD_DOCCODE d WITH(NOLOCK)
-							LEFT OUTER JOIN
-									RDC_EXCEPTION_LEVEL1 e1 WITH(NOLOCK)
-									ON	
-									e1.ExceptionLevelID = d.ExceptionLevel1ID
-							LEFT OUTER JOIN
-									RDC_EXCEPTION_LEVEL2 e2 WITH(NOLOCK)
-									ON	
-									e2.ExceptionLevelID = d.ExceptionLevel2ID
-							LEFT OUTER JOIN
-									RDC_EXCEPTION_LEVEL3 e3 WITH(NOLOCK)
-									ON	
-									e3.ExceptionLevelID = d.ExceptionLevel3ID
-							WHERE	d.DocLayout = @DOCLAYOUT
-									AND		
-									d.DocType = @DOCTYPE";
+            string sql = @"RD_UX_GET_DOCCODE";
 
             var parameters = new DynamicParameters();
-            parameters.Add("DOCLAYOUT", docLayout, DbType.String);
-            parameters.Add("DOCTYPE", docType, DbType.String);
+            parameters.Add("DocLayout", docLayout, DbType.String);
+            parameters.Add("DocType", docType, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<DocCode> docCodeList = await connection.QueryAsync<DocCode, ExceptionLevel, ExceptionLevel, ExceptionLevel, DocCode>(sql,
@@ -444,7 +406,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             }
         }
 
-        public async Task<IEnumerable<TreatmentType>> GetTreatmentTypes(string treatmentType)
+        public async Task<IEnumerable<ServiceTask>> GetTreatmentTypes(string treatmentType)
         {
             string sql = $@"SELECT 	e1.Description,
 									e1.ServiceTaskID as value
@@ -458,18 +420,18 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             parameters.Add("treatmentType", treatmentType, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<TreatmentType> treatmentTypes = await connection.QueryAsync<TreatmentType>(sql, parameters);
+                IEnumerable<ServiceTask> treatmentTypes = await connection.QueryAsync<ServiceTask>(sql, parameters);
                 return treatmentTypes;
             }
         }
-        public async Task<IEnumerable<TreatmentType>> GetTreatmentTypes()
+        public async Task<IEnumerable<ServiceTask>> GetTreatmentTypes()
         {
             string sql = $@"SELECT 	Description,
 									ServiceTaskID
 							FROM 	RD_SERVICE_TASK";
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<TreatmentType> treatmentTypes = await connection.QueryAsync<TreatmentType>(sql);
+                IEnumerable<ServiceTask> treatmentTypes = await connection.QueryAsync<ServiceTask>(sql);
                 return treatmentTypes;
             }
         }
