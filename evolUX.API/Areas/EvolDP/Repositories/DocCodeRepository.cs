@@ -43,7 +43,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
                                             docCode.ExceptionLevel2 = e2;
                                             docCode.ExceptionLevel3 = e3;
                                             return docCode;
-                                        }, parameters, splitOn: "ExceptionLevelID");
+                                        }, parameters, commandType: CommandType.StoredProcedure, splitOn: "ExceptionLevelID");
                 return docCodeList;
             }
         }
