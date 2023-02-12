@@ -44,7 +44,7 @@ namespace evolUX.API.Areas.EvolDP.Services
             return viewmodel;
         }
 
-        public async Task<DocCodeConfigOptionsViewModel> GetDocCodeConfigOptions(DocCode docCode)
+        public async Task<DocCodeConfigOptionsViewModel> GetDocCodeConfigOptions(DocCode? docCode)
         {
             DocCodeConfigOptionsViewModel viewmodel = new DocCodeConfigOptionsViewModel();
             viewmodel.DocCodeConfig = new DocCode();
@@ -84,6 +84,7 @@ namespace evolUX.API.Areas.EvolDP.Services
             viewmodel.EnvMediaGroups = await _repository.DocCode.GetEnvelopeMediaGroups(null);
             viewmodel.AggregationList = await _repository.DocCode.GetAggregationList();
             viewmodel.ExpeditionTypes = await _repository.DocCode.GetExpeditionTypes(null);
+            viewmodel.ExpCodeList = await _repository.DocCode.GetExpCompanyServiceTask("");
             viewmodel.ServiceTasks = await _repository.DocCode.GetServiceTasks(null);
             viewmodel.FinishingList = await _repository.DocCode.GetOptionList("Finishing");
             viewmodel.ArchiveList = await _repository.DocCode.GetOptionList("Archive");

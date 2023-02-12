@@ -2,7 +2,7 @@
 {
     public class Company
     {
-        public int CompanyID { get; set; }
+        public int ID { get; set; }
         public string CompanyName { get; set; }
         public string CompanyCode { get; set; }
         public string CompanyAddress { get; set; }
@@ -11,7 +11,7 @@
         public string CompanyCountry { get; set; }
         public Company()
         {
-            CompanyID = 0;
+            ID = 0;
             CompanyName = string.Empty;
             CompanyCode = string.Empty;
             CompanyAddress = string.Empty;

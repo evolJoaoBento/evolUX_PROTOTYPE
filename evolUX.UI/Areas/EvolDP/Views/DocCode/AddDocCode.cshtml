@@ -5,7 +5,7 @@
 @inject IViewLocalizer localizer
 @inject IConfiguration configuration
 
-@model DocCodeViewModel;
+@model DocCodeConfigOptionsViewModel;
 @{
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
 }
@@ -15,59 +15,177 @@
 }
 else
 {
-    <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doclayout="@Model.DocCodeList.First().DocLayout" asp-route-doctype="@Model.DocCodeList.First().DocType" asp-route-docdescription="@Model.DocCodeList.First().DocDescription">
-        <img style="background:none; width:50px;height:50px;" src="@siteURL/images/add_doc.png" title="@localizer["AddDocCode"]" />
-    </a>
+    string submitTag = "SubmitAdd";
+    if (TempData["Source"]?.ToString() == "ChangeDocCodeConfig")
+        submitTag = "SubmitChange";
+    string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
+    string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
+    string ExceptionLevel3IDLabel = TempData["ExceptionLevel3ID"]?.ToString();
+    string ElectronicLabel = TempData["Electronic"]?.ToString();
+    string ElectronicHideLabel = TempData["ElectronicHide"]?.ToString();
+    string EMailLabel = TempData["EMail"]?.ToString();
+    string EMailHideLabel = TempData["EMailHide"]?.ToString();
+    string ArchiveLabel = TempData["Archive"]?.ToString();
+    string FinishingLabel = TempData["Finishing"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel1IDLabel))
+        ExceptionLevel1IDLabel = localizer["ExceptionLevel1ID"].Value;
+    if (string.IsNullOrEmpty(ExceptionLevel2IDLabel))
+        ExceptionLevel2IDLabel = localizer["ExceptionLevel2ID"].Value;
+    if (string.IsNullOrEmpty(ExceptionLevel2IDLabel))
+        ExceptionLevel3IDLabel = localizer["ExceptionLevel3ID"].Value;
+    if (string.IsNullOrEmpty(ElectronicLabel))
+        ElectronicLabel = localizer["Electronic"].Value;
+    if (string.IsNullOrEmpty(ElectronicHideLabel))
+        ElectronicHideLabel = localizer["ElectronicHide"].Value;
+    if (string.IsNullOrEmpty(EMailLabel))
+        EMailLabel = localizer["EMail"].Value;
+    if (string.IsNullOrEmpty(EMailHideLabel))
+        EMailHideLabel = localizer["EMailHide"].Value;
+    if (string.IsNullOrEmpty(ArchiveLabel))
+        ArchiveLabel = localizer["Archive"].Value;
+    if (string.IsNullOrEmpty(FinishingLabel))
+        FinishingLabel = localizer["Finishing"].Value;
+<form id="AddDocDocConfigFrm" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="RegistDocCodeConfig">
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr>
-                <th>@localizer["DocLayout"]</th>
-                <th>@localizer["DocType"]</th>
-                <th>@localizer["ExceptionLevel1ID"]</th>
-                <th>@localizer["ExceptionLevel2ID"]</th>
-                <th>@localizer["ExceptionLevel3ID"]</th>
-                <th>@localizer["DocDescription"]</th>
-            </tr>
+            <tr><td colspan="2">@localizer[TempData["Source"] + "Add"]</td></tr>
         </thead>
         <tbody id="bootstrap-overrides">
-            @foreach (var p in Model.DocCodeList)
+            @if (TempData["Source"]?.ToString() == "AddDocCodeConfig"
+               || TempData["Source"]?.ToString() == "DocCode"
+               || TempData["Source"]?.ToString() == "ChangeDocCodeConfig")
             {
                 <tr>
-                    <td><a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCodeConfig" asp-route-doccodeid="@p.DocCodeID">@p.DocLayout</a></td>
-                    <td>@p.DocType</td>
+                    <th>@localizer["DocLayout"]</th>
+                    <td>@Model.DocCodeConfig.DocLayout</td>
+                </tr>
+                <tr>
+                    <th>@localizer["DocType"]</th>
                     <td>
-                        @if (p.ExceptionLevel1 == null || string.IsNullOrEmpty(p.ExceptionLevel1.ExceptionDescription))
+                        @if (Model.DocCodeConfig.DocType == null || string.IsNullOrEmpty(Model.DocCodeConfig.DocType))
                         {
                             @localizer["EmptyField"]
                         }
                         else
                         {
-                            @p.ExceptionLevel1.ExceptionDescription
+                            @Model.DocCodeConfig.DocType
                         }
                     </td>
-                    <td>
-                        @if (p.ExceptionLevel2 == null || string.IsNullOrEmpty(p.ExceptionLevel2.ExceptionDescription))
-                        {
-                            @localizer["EmptyField"]
-                        }
-                        else
-                        {
-                            @p.ExceptionLevel2.ExceptionDescription
-                        }
-                    </td>
-                    <td>
-                        @if (p.ExceptionLevel3 == null || string.IsNullOrEmpty(p.ExceptionLevel3.ExceptionDescription))
-                        {
-                            @localizer["EmptyField"]
-                        }
-                        else
-                        {
-                            @p.ExceptionLevel3.ExceptionDescription
-                        }
-                    </td>
-                    <td>@p.DocDescription</td>
                 </tr>
             }
+            else
+            {
+                <tr>
+                    <th>@localizer["DocLayout"]</th>
+                    <td><input id=DocLayout name=DocLayout type="text" maxlength="20" /></td>
+                </tr>
+                <tr>
+                    <th>@localizer["DocType"]</th>
+                    <td><input id=DocType name=DocType type="text" maxlength="8" /></td>
+                </tr>
+            }
+            @if (TempData["Source"]?.ToString() == "AddDocCodeConfig"
+               || TempData["Source"]?.ToString() == "ChangeDocCodeConfig")
+            {
+                <tr>
+                    <th>@ExceptionLevel1IDLabel</th>
+                    <td>
+                    @if (Model.DocCodeConfig.ExceptionLevel1 == null || string.IsNullOrEmpty(Model.DocCodeConfig.ExceptionLevel1.ExceptionDescription))
+                    {
+                        @localizer["EmptyField"]
+                    }
+                    else
+                    {
+                        @Model.DocCodeConfig.ExceptionLevel1.ExceptionDescription
+                    }
+                    </td>
+                </tr>
+                <tr>
+                    <th>@ExceptionLevel2IDLabel</th>
+                    <td>
+                    @if (Model.DocCodeConfig.ExceptionLevel2 == null || string.IsNullOrEmpty(Model.DocCodeConfig.ExceptionLevel2.ExceptionDescription))
+                    {
+                        @localizer["EmptyField"]
+                    }
+                    else
+                    {
+                        @Model.DocCodeConfig.ExceptionLevel2.ExceptionDescription
+                    }
+                    </td>
+                </tr>
+                <tr>
+                    <th>@ExceptionLevel3IDLabel</th>
+                    <td>
+                    @if (Model.DocCodeConfig.ExceptionLevel3 == null || string.IsNullOrEmpty(Model.DocCodeConfig.ExceptionLevel3.ExceptionDescription))
+                    {
+                        @localizer["EmptyField"]
+                    }
+                    else
+                    {
+                        @Model.DocCodeConfig.ExceptionLevel3.ExceptionDescription
+                    }
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>@ExceptionLevel1IDLabel</th>
+                    <td>
+                        <select name="Exceptionslevel1ID">
+                            <option id="" value="0">@localizer["EmptyField"]</option>
+                            @foreach (ExceptionLevel e in Model.Exceptionslevel1List)
+                            {
+                                <option id="" value="@e.ExceptionLevelID">@e.ExceptionCode - @e.ExceptionDescription </option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>@ExceptionLevel2IDLabel</th>
+                    <td>
+                        <select name="Exceptionslevel2ID">
+                            <option id="" value="0">@localizer["EmptyField"]</option>
+                            @foreach (ExceptionLevel e in Model.Exceptionslevel2List)
+                            {
+                                <option id="" value="@e.ExceptionLevelID">@e.ExceptionCode - @e.ExceptionDescription </option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>@ExceptionLevel3IDLabel</th>
+                    <td>
+                        <select name="Exceptionslevel3ID">
+                            <option id="" value="0">@localizer["EmptyField"]</option>
+                            @foreach (ExceptionLevel e in Model.Exceptionslevel3List)
+                            {
+                                <option id="" value="@e.ExceptionLevelID">@e.ExceptionCode - @e.ExceptionDescription </option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+            }
+            <tr>
+                <th>@localizer["DocDescription"]</th>
+                <td>
+                    <input id=DocDescription name=DocDescription type="text" maxlength="256" value="@Model.DocCodeConfig.DocDescription" />
+                </td>
+            </tr>
+            <tr>
+                <th>@localizer["PrintMatchCode"]</th>
+                <td>
+                    <input id=PrintMatchCode name=PrintMatchCode type="text" maxlength="10" value="@Model.DocCodeConfig.PrintMatchCode" />
+                </td>
+            </tr>
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2" class="d-flex justify-content-center m-4">
+                    <input type="submit" value="@localizer[submitTag]" name="Submit" class="btn btn-block btn-outline-info" />
+                </td>
+            </tr>
+        </tfoot>
     </table>
+</form>
 }

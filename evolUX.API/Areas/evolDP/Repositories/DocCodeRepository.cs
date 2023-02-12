@@ -5,6 +5,7 @@ using evolUX.API.Data.Context;
 using System.Data;
 using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
 using Shared.Models.Areas.Finishing;
+using evolUX.API.Models;
 
 namespace evolUX.API.Areas.EvolDP.Repositories
 {
@@ -90,19 +91,26 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             }
         }
 
+        public async Task<IEnumerable<ExpCompanyServiceTask>> GetExpCompanyServiceTask(string expCode)
+        {
+            string sql = @"RD_UX_GET_EXPCOMPANY_SERVICE_TASK";
+            var parameters = new DynamicParameters();
+            if (!string.IsNullOrEmpty(expCode))
+                parameters.Add("ExpCode", expCode, DbType.Int64);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ExpCompanyServiceTask> expCodes = await connection.QueryAsync<ExpCompanyServiceTask>(sql,
+                    parameters);
+                return expCodes;
+            }
+        }
+        
         public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMediaGroups(int? envMediaGroupID)
         {
-            string sql = $@"SELECT		e1.Description,
-									e1.EnvMediaGroupID
-						FROM		[DMS_evolDP].[dbo].[RD_ENVELOPE_MEDIA_GROUP] e1
-						LEFT OUTER JOIN   
-									[DMS_evolDP].[dbo].[RD_ENVELOPE_MEDIA_GROUP] e2
-						ON			e1.EnvMediaGroupID<>e2.EnvMediaGroupID
-							AND		e2.EnvMediaGroupID = @envMediaGroupID  
-						ORDER BY	e2.EnvMediaGroupID";
-
+            string sql = @"RD_UX_GET_ENVELOPE_MEDIA_GROUP";
             var parameters = new DynamicParameters();
-            parameters.Add("envMediaGroupID", envMediaGroupID, DbType.String);
+            if (envMediaGroupID != null && envMediaGroupID > 0) 
+                parameters.Add("EnvMediaGroupID", envMediaGroupID, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<EnvelopeMedia> envMedia = await connection.QueryAsync<EnvelopeMedia>(sql,
@@ -119,16 +127,10 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 
         public async Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(int? expeditionType)
         {
-            string sql = $@"SELECT 		e1.Description,	
-										e1.ExpeditionType
-							FROM 		RD_EXPEDITION_TYPE e1
-							LEFT OUTER JOIN
-							RD_EXPEDITION_TYPE e2
-							ON			e1.ExpeditionType<>e2.ExpeditionType
-							AND			e2.ExpeditionType = '@expeditionType'
-							ORDER BY	e2.ExpeditionType";
+            string sql = @"RD_UX_GET_EXPEDITION_TYPE";
             var parameters = new DynamicParameters();
-            parameters.Add("expeditionType", expeditionType, DbType.String);
+            if (expeditionType != null && expeditionType > 0)
+                parameters.Add("ExpeditionType", expeditionType, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<ExpeditionsType> expeditionCompanies = await connection.QueryAsync<ExpeditionsType>(sql, parameters);
@@ -138,20 +140,14 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 
         public async Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID)
         {
-            string sql = $@"SELECT 	e1.Description,
-									e1.ServiceTaskID as value
-							FROM 	RD_SERVICE_TASK e1
-							LEFT OUTER JOIN
-									RD_SERVICE_TASK e2
-							ON e1.ServiceTaskID<>e2.ServiceTaskID
-							AND e2.ServiceTaskID = '@treatmentType'
-							ORDER BY e2.ServiceTaskID";
+            string sql = @"RD_UX_GET_SERVICE_TASK";
             var parameters = new DynamicParameters();
-            parameters.Add("treatmentType", serviceTaskID, DbType.String);
+            if (serviceTaskID != null && serviceTaskID > 0)
+                parameters.Add("ServiceTaskID", serviceTaskID, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<ServiceTask> treatmentTypes = await connection.QueryAsync<ServiceTask>(sql, parameters);
-                return treatmentTypes;
+                IEnumerable<ServiceTask> serviceTasks = await connection.QueryAsync<ServiceTask>(sql, parameters);
+                return serviceTasks;
             }
         }
 

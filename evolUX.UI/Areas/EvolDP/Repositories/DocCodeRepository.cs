@@ -5,6 +5,7 @@ using evolUX.UI.Repositories;
 using evolUX_dev.Areas.EvolDP.Models;
 using Flurl.Http;
 using Flurl.Http.Configuration;
+using Newtonsoft.Json;
 using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.ViewModels.Areas.Finishing;
@@ -89,13 +90,18 @@ namespace evolUX.UI.Areas.EvolDP.Repositories
             }
         }
 
-        public async Task<DocCodeConfigOptionsViewModel> GetDocCodeConfigOptions(DocCode docCode)
+        public async Task<DocCodeConfigOptionsViewModel> GetDocCodeConfigOptions(DocCode? docCode)
         {
             try
             {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
-                dictionary.Add("DocCode", docCode);
-                var response = await _flurlClient.Request("/API/evolDP/DocCode/GetDocCodeConfigOptions")
+
+                if (docCode != null)
+                {
+                    string docCodeJSON = JsonConvert.SerializeObject(docCode);
+                    dictionary.Add("DocCode", docCodeJSON);
+                }
+                var response = await _flurlClient.Request("/API/evolDP/DocCode/DocCodeConfigOptions")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .SendJsonAsync(HttpMethod.Get, dictionary);
                 if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);

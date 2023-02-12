@@ -5,11 +5,13 @@ using Flurl.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shared.Models.Areas.Core;
 using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.evolDP;
+using System.Data;
 using System.Net;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
@@ -178,11 +180,51 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> AddDocCode(DocCode docCode)
+        public async Task<IActionResult> AddDocCode(DocCode? docCode)
         {
             try
-            {
+            {  
                 DocCodeConfigOptionsViewModel result = await _docCodeService.GetDocCodeConfigOptions(docCode);
+                string ExpCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
+                if (!string.IsNullOrEmpty(ExpCompanyList) && result != null)
+                    result.ExpCompanies = JsonConvert.DeserializeObject<List<Company>>(ExpCompanyList);
+
+                string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
+                TempData["ExceptionLevel1ID"] = "";
+                TempData["ExceptionLevel2ID"] = "";
+                TempData["ExceptionLevel3ID"] = "";
+                TempData["Electronic"] = "";
+                TempData["ElectronicHide"] = "";
+                TempData["EMail"] = "";
+                TempData["EMailHide"] = "";
+                TempData["Archive"] = "";
+                TempData["Finishing"] = "";
+                if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
+                {
+                    var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
+                    if (evolDP_Desc != null)
+                    {
+                        var b = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID");
+                        if (b != null) { TempData["ExceptionLevel1ID"] = b.FieldDescription; }
+                        b = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID");
+                        if (b != null) { TempData["ExceptionLevel2ID"] = b.FieldDescription; }
+                        b = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID");
+                        if (b != null) { TempData["ExceptionLevel3ID"] = b.FieldDescription; }
+                        b = evolDP_Desc.Find(x => x.FieldName == "Electronic");
+                        if (b != null) { TempData["Electronic"] = b.FieldDescription; }
+                        b = evolDP_Desc.Find(x => x.FieldName == "ElectronicHide");
+                        if (b != null) { TempData["ElectronicHide"] = b.FieldDescription; }
+                        b = evolDP_Desc.Find(x => x.FieldName == "EMail");
+                        if (b != null) { TempData["EMail"] = b.FieldDescription; }
+                        b = evolDP_Desc.Find(x => x.FieldName == "EMailHide");
+                        if (b != null) { TempData["EMailHide"] = b.FieldDescription; }
+                        b = evolDP_Desc.Find(x => x.FieldName == "Archive");
+                        if (b != null) { TempData["Archive"] = b.FieldDescription; }
+                        b = evolDP_Desc.Find(x => x.FieldName == "Finishing");
+                        if (b != null) { TempData["Finishing"] = b.FieldDescription; }
+                    }
+                }
+
                 return View(result);
             }
             catch (FlurlHttpException ex)

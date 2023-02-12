@@ -19,7 +19,7 @@
 }
 else
 {
-    string BusinessCodeLabel = (string)TempData["BusinessCode"];
+    string BusinessCodeLabel = TempData["BusinessCode"]?.ToString();
     if (string.IsNullOrEmpty(BusinessCodeLabel))
         BusinessCodeLabel = localizer["BusinessCode"].Value;
     <div id="TitlePage">

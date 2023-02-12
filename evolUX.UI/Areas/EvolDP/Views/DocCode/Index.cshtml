@@ -8,6 +8,7 @@
 @model DocCodeGroupViewModel;
 @{
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    TempData["Source"] = "Index";
 }
 
 <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode">

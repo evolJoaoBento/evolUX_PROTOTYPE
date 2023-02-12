@@ -49,7 +49,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                     {
                         sList.Add(new Company
                         {
-                            CompanyID = Int32.Parse(row["ID"].ToString()),
+                            ID = Int32.Parse(row["ID"].ToString()),
                             CompanyCode = (string)row["CompanyCode"],
                             CompanyName = (string)row["CompanyName"]
                         });

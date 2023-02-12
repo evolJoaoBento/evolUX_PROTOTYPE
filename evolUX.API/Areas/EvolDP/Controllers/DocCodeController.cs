@@ -115,12 +115,18 @@ namespace evolUX.Areas.EvolDP.Controllers
         }
 
 
-        [HttpPost()]
-        [ActionName("GetDocCodeConfigOptions")]
-        public async Task<ActionResult<DocCodeConfigOptionsViewModel>> GetDocCodeConfigOptions([FromBody] DocCode docCode)
+        [HttpGet]
+        [ActionName("DocCodeConfigOptions")]
+        public async Task<ActionResult<DocCodeConfigOptionsViewModel>> GetDocCodeConfigOptions([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
+                object obj;
+                dictionary.TryGetValue("DocCode", out obj);
+                DocCode? docCode = null;
+                if (obj != null)
+                    docCode = JsonConvert.DeserializeObject<DocCode>(Convert.ToString(obj));
+
                 DocCodeConfigOptionsViewModel viewmodel = await _docCodeService.GetDocCodeConfigOptions(docCode);
                 _logger.LogInfo("DocCodeConfigOptions Get");
                 return Ok(viewmodel);
@@ -138,7 +144,7 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         }
 
-        [HttpPost()]
+        [HttpPost]
         [ActionName("RegistDocCodeConfig")]
         public async Task<ActionResult<DocCodeViewModel>> RegistDocCodeConfig([FromBody] DocCode docCode)
         {
@@ -162,8 +168,6 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         }
 
-        //TODO: DOCUMENT UNTESTED
-        //TODO: HANDLE HTTP RESPONSES
         [HttpDelete("{docCodeID}")]
         [ActionName("DeleteDocCode")]
         public async Task<ActionResult<DocCodeResultsViewModel>> DeleteDocCode([FromRoute] int docCodeID)

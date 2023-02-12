@@ -10,6 +10,7 @@ namespace Shared.ViewModels.Areas.evolDP
         public IEnumerable<ExceptionLevel> Exceptionslevel3List { get; set; }
         public IEnumerable<EnvelopeMedia> EnvMediaGroups { get; set; }
         public IEnumerable<int> AggregationList { get; set; }
+        public IEnumerable<ExpCompanyServiceTask> ExpCodeList { get; set; }
         public IEnumerable<Company> ExpCompanies { get; set; }
         public IEnumerable<ExpeditionsType> ExpeditionTypes{ get; set; }
         public IEnumerable<ServiceTask> ServiceTasks{ get; set; }
