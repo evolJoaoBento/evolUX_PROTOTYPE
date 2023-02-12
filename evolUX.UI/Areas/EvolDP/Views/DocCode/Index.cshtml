@@ -59,7 +59,7 @@ else
                                         @foreach (var d in dg.DocCodes)
                                         {
                                         <tr>
-                                            <td><a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doclayout="@d.DocLayout" asp-route-doctype="@d.DocType"><img style="background:none; width:25px;height:25px;" src="@siteURL/images/list.png" /></a></td>
+                                            <td><a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccode="@d"><img style="background:none; width:25px;height:25px;" src="@siteURL/images/list.png" /></a></td>
                                             <td>@d.DocLayout</td>
                                             <td>@if (string.IsNullOrEmpty(d.DocType))
                                                 {

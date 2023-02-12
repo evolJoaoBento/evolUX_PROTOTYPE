@@ -4,21 +4,19 @@ namespace Shared.ViewModels.Areas.evolDP
 {
     public class DocCodeConfigOptionsViewModel
     {
-        public DocCodeConfig DocCodeConfig { get; set; }
-        public IEnumerable<ExceptionLevel> DocExceptionslevel1 { get; set; }
-        public IEnumerable<ExceptionLevel> DocExceptionslevel2 { get; set; }
-        public IEnumerable<ExceptionLevel> DocExceptionslevel3 { get; set; }
-        public IEnumerable<EnvelopeMedia> EnvelopeMediaGroups { get; set; }
+        public DocCode DocCodeConfig { get; set; }
+        public IEnumerable<ExceptionLevel> Exceptionslevel1List { get; set; }
+        public IEnumerable<ExceptionLevel> Exceptionslevel2List { get; set; }
+        public IEnumerable<ExceptionLevel> Exceptionslevel3List { get; set; }
+        public IEnumerable<EnvelopeMedia> EnvMediaGroups { get; set; }
         public IEnumerable<int> AggregationList { get; set; }
-        public IEnumerable<Company> ExpeditionCompanies { get; set; }
+        public IEnumerable<Company> ExpCompanies { get; set; }
         public IEnumerable<ExpeditionsType> ExpeditionTypes{ get; set; }
-        public IEnumerable<ServiceTask> TreatmentTypes{ get; set; }
-        public IEnumerable<int> FinishingList{ get; set; }
-        public IEnumerable<int> ArchiveList{ get; set; }
-        public IEnumerable<Email> EmailList { get; set; }
-        public IEnumerable<int> EmailHideList { get; set; }
-        public IEnumerable<Electronic> ElectronicList { get; set; }
-        public IEnumerable<int> ElectronicHideList { get; set; }
+        public IEnumerable<ServiceTask> ServiceTasks{ get; set; }
+        public IEnumerable<GenericOptionValue> FinishingList{ get; set; }
+        public IEnumerable<GenericOptionValue> ArchiveList{ get; set; }
+        public GenericOptionList EmailList { get; set; } = new GenericOptionList();
+        public GenericOptionList ElectronicList { get; set; } = new GenericOptionList();
 
 
     }

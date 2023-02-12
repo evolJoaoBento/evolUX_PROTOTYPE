@@ -2,6 +2,10 @@
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.Models.Areas.evolDP;
+using System.Security.Cryptography.Xml;
+using System.Globalization;
+using Microsoft.SqlServer.Server;
+using Shared.Models.General;
 
 namespace evolUX.API.Areas.EvolDP.Services
 {
@@ -23,234 +27,78 @@ namespace evolUX.API.Areas.EvolDP.Services
         public async Task<DocCodeViewModel> GetDocCode(string docLayout, string docType)
         {
             DocCodeViewModel viewmodel = new DocCodeViewModel();
-            viewmodel.DocCodeList = await _repository.DocCode.GetDocCode(docLayout, docType);
+            viewmodel.DocCodeList = await _repository.DocCode.GetDocCode(docLayout, docType, -1);
+            foreach(DocCode doc in viewmodel.DocCodeList) 
+            {
+                doc.DocCodeConfigs = (await _repository.DocCode.GetDocCodeConfig(doc.DocCodeID, null, null)).ToList();
+            }
             return viewmodel;
-        }        
-        public async Task<DocCodeConfigViewModel> GetDocCodeConfig(int docCodeID)
+        }
+
+        public async Task<DocCodeViewModel> GetDocCodeConfig(int docCodeID, DateTime? startDate, bool? maxDateFlag)
         {
-            DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
-            viewmodel.DocCodeConfigList = await _repository.DocCode.GetDocCodeConfig(docCodeID);
+            DocCodeViewModel viewmodel = new DocCodeViewModel();
+            List<DocCode> docCodeList = new List<DocCode>();
+            docCodeList.Add(new DocCode() { DocCodeID = docCodeID});
+            docCodeList[0].DocCodeConfigs = (await _repository.DocCode.GetDocCodeConfig(docCodeID, startDate, null)).ToList();
             return viewmodel;
-        }        
-
-        public async Task<DocCodeConfig> GetDocCodeConfig(int docCodeID, int startdate)
-        {
-            DocCodeConfig docCodeConfig = await _repository.DocCode.GetDocCodeConfig(docCodeID, startdate);
-            if (docCodeConfig == null)
-            {
-
-            }
-            return docCodeConfig;
         }
 
-        public async Task<DocCodeConfig> GetDocCodeConfigOptions(int docCodeID)
+        public async Task<DocCodeConfigOptionsViewModel> GetDocCodeConfigOptions(DocCode docCode)
         {
-            DocCodeConfig docCodeConfig = await _repository.DocCode.GetDocCodeConfigOptions(docCodeID);
-            if (docCodeConfig == null)
+            DocCodeConfigOptionsViewModel viewmodel = new DocCodeConfigOptionsViewModel();
+            viewmodel.DocCodeConfig = new DocCode();
+            if (docCode != null)
             {
-
-            }
-            return docCodeConfig;
-        }
-
-        public async Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel1()
-        {
-            IEnumerable<ExceptionLevel> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel1();
-            if (docExceptionList == null)
-            {
-
-            }
-            return docExceptionList;
-        }
-
-        public async Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel2()
-        {
-            IEnumerable<ExceptionLevel> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel2();
-            if (docExceptionList == null)
-            {
-
-            }
-            return docExceptionList;
-        }
-
-        public async Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel3()
-        {
-            IEnumerable<ExceptionLevel> docExceptionList = await _repository.DocCode.GetDocExceptionsLevel3();
-            if (docExceptionList == null)
-            {
-
-            }
-            return docExceptionList;
-        }
-
-        public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMediaGroups(string envMediaGroupID)
-        {
-            if(envMediaGroupID == null)
-            {
-                IEnumerable<EnvelopeMedia> envMediaList = await _repository.DocCode.GetEnvelopeMediaGroups();
-                if (envMediaList == null)
+                if (docCode.DocCodeID > 0 || !string.IsNullOrEmpty(docCode.DocLayout))
                 {
-
+                    viewmodel.DocCodeConfig = docCode;
+                    if (docCode.DocCodeID <= 0)
+                    {
+                        DocCodeViewModel docView = new DocCodeViewModel();
+                        docView.DocCodeList = await _repository.DocCode.GetDocCode(docCode.DocLayout,  docCode.DocType, 1);
+                        if (docView.DocCodeList == null || docView.DocCodeList.Count() == 0)
+                            viewmodel.DocCodeConfig = new DocCode();
+                        else
+                            viewmodel.DocCodeConfig = docView.DocCodeList?.First();
+                    }
                 }
-                return envMediaList;
-            }
-            else
-            {
-                IEnumerable<EnvelopeMedia> envMediaList = await _repository.DocCode.GetEnvelopeMediaGroups(envMediaGroupID);
-                if (envMediaList == null)
+                if (viewmodel.DocCodeConfig.DocCodeID > 0)
                 {
-
+                    DateTime sDate;
+                    DateTime? startDate = null;
+                    if (viewmodel.DocCodeConfig.DocCodeConfigs != null && viewmodel.DocCodeConfig.DocCodeConfigs.Count > 0)
+                    {
+                        if (DateTime.TryParseExact(viewmodel.DocCodeConfig.DocCodeConfigs[0].StartDate.ToString(), "yyyyMMdd", 
+                            System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out sDate))
+                            startDate = sDate;
+                    }
+                    viewmodel.DocCodeConfig.DocCodeConfigs = (await _repository.DocCode.GetDocCodeConfig(viewmodel.DocCodeConfig.DocCodeID, startDate, true)).ToList();
+                    if (startDate!= null) { viewmodel.DocCodeConfig.DocCodeConfigs[0].IsEditable = true; }
                 }
-                return envMediaList;
             }
-            
-            
+            //Recolhe as outras configs
+            viewmodel.Exceptionslevel1List = await _repository.DocCode.GetDocExceptionsLevel(1);
+            viewmodel.Exceptionslevel2List = await _repository.DocCode.GetDocExceptionsLevel(2);
+            viewmodel.Exceptionslevel3List = await _repository.DocCode.GetDocExceptionsLevel(3);
+            viewmodel.EnvMediaGroups = await _repository.DocCode.GetEnvelopeMediaGroups(null);
+            viewmodel.AggregationList = await _repository.DocCode.GetAggregationList();
+            viewmodel.ExpeditionTypes = await _repository.DocCode.GetExpeditionTypes(null);
+            viewmodel.ServiceTasks = await _repository.DocCode.GetServiceTasks(null);
+            viewmodel.FinishingList = await _repository.DocCode.GetOptionList("Finishing");
+            viewmodel.ArchiveList = await _repository.DocCode.GetOptionList("Archive");
+            viewmodel.EmailList.List = await _repository.DocCode.GetOptionList("Email");
+            viewmodel.EmailList.HideList = await _repository.DocCode.GetOptionList("EmailHide");
+            viewmodel.ElectronicList.List = await _repository.DocCode.GetOptionList("Electronic");
+            viewmodel.ElectronicList.HideList = await _repository.DocCode.GetOptionList("ElectronicHide");
+            return viewmodel;
         }
 
-        public async Task<IEnumerable<int>> GetAggregationList(string aggrCompatibility)
+        public async Task PostDocCodeConfig(DocCode docCode)
         {
-            IEnumerable<int> aggregationList = await _repository.DocCode.GetAggregationList(aggrCompatibility);
-            if (aggregationList == null)
-            {
-
-            }
-            return aggregationList;
+            await _repository.DocCode.PostDocCodeConfig(docCode);
         }
 
-        public async Task<IEnumerable<Company>> GetExpeditionCompanies(string companyName)
-        {
-            if(companyName == null)
-            {
-                IEnumerable<Company> companyList = await _repository.DocCode.GetExpeditionCompanies();
-                if (companyList == null)
-                {
-
-                }
-                return companyList;
-            }
-            else
-            {
-                IEnumerable<Company> companyList = await _repository.DocCode.GetExpeditionCompanies(companyName);
-                if (companyList == null)
-                {
-
-                }
-                return companyList;
-            }
-            
-        }
-
-        public async Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(string expeditionType)
-        {
-            if (expeditionType==null)
-            {
-                IEnumerable<ExpeditionsType> expeditionTypeList = await _repository.DocCode.GetExpeditionTypes();
-                if (expeditionTypeList == null)
-                {
-
-                }
-                return expeditionTypeList;
-            }
-            else
-            {
-                IEnumerable<ExpeditionsType> expeditionTypeList = await _repository.DocCode.GetExpeditionTypes(expeditionType);
-                if (expeditionTypeList == null)
-                {
-
-                }
-                return expeditionTypeList;
-            }
-        }
-         
-
-        public async Task<IEnumerable<ServiceTask>> GetServiceTasks(string treatmentType)
-        {
-            if (treatmentType==null)
-            {
-                IEnumerable<ServiceTask> treatmentTypeList = await _repository.DocCode.GetTreatmentTypes();
-                if (treatmentTypeList == null)
-                {
-
-                }
-                return treatmentTypeList;
-            }
-            else
-            {
-                IEnumerable<ServiceTask> treatmentTypeList = await _repository.DocCode.GetTreatmentTypes(treatmentType);
-                if (treatmentTypeList == null)
-                {
-
-                }
-                return treatmentTypeList;
-            }
-            
-        }
-
-        public async Task<IEnumerable<int>> GetFinishingList(string finishing)
-        {
-            IEnumerable<int> finishingList = await _repository.DocCode.GetFinishingList(finishing);
-            if (finishingList == null)
-            {
-
-            }
-            return finishingList;
-        }
-
-        public async Task<IEnumerable<int>> GetArchiveList(string archive)
-        {
-            IEnumerable<int> archiveList = await _repository.DocCode.GetArchiveList(archive);
-            if (archiveList == null)
-            {
-
-            }
-            return archiveList;
-        }
-
-        public async Task<IEnumerable<Email>> GetEmailList(string email)
-        {
-            IEnumerable<Email> emailList = await _repository.DocCode.GetEmailList(email);
-            if (emailList == null)
-            {
-
-            }
-            return emailList;
-        }
-
-        public async Task<IEnumerable<int>> GetEmailHideList(string emailHide)
-        {
-            IEnumerable<int> emailHideList = await _repository.DocCode.GetEmailHideList(emailHide);
-            if (emailHideList == null)
-            {
-
-            }
-            return emailHideList;
-        }
-
-        public async Task<IEnumerable<Electronic>> GetElectronicList(string electronic)
-        {
-            IEnumerable<Electronic> electronicList = await _repository.DocCode.GetElectronicList(electronic);
-            if (electronicList == null)
-            {
-
-            }
-            return electronicList;
-        }
-
-        public async Task<IEnumerable<int>> GetElectronicHideList(string electronicHide)
-        {
-            IEnumerable<int> electronicHideList = await _repository.DocCode.GetElectronicHideList(electronicHide);
-            if (electronicHideList == null)
-            {
-
-            }
-            return electronicHideList;
-        }
-        public async Task PostDocCodeConfig(DocCodeConfig model)
-        {
-            await _repository.DocCode.PostDocCodeConfig(model);
-            
-
-        }
         public async Task<IEnumerable<string>> DeleteDocCode(int docCodeID)
         {
             IEnumerable<string>  results = await _repository.DocCode.DeleteDocCode(docCodeID);
@@ -261,7 +109,6 @@ namespace evolUX.API.Areas.EvolDP.Services
             return results;
 
         }
-
 
         public async Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(int docCodeID)
         {

@@ -30,10 +30,11 @@ END
 GO
 ALTER  PROCEDURE [dbo].[RD_UX_GET_DOCCODE]
 	@DocLayout varchar(20),
-	@DocType varchar(8)
+	@DocType varchar(8),
+	@NumRows int = -1
 AS
 BEGIN
-	SELECT	d.DocCodeID,
+	SELECT	TOP(@NumRows) d.DocCodeID,
 			d.DocLayout,
 			d.DocType,
 			[Description] as DocDescription,
@@ -143,18 +144,24 @@ BEGIN
 	BEGIN
 		SELECT DISTINCT 
 			CASE @Option 
+				WHEN 'Finishing' THEN Finishing*1 
+				WHEN 'Archive' THEN Archive*2 
+				WHEN 'ElectronicHide' THEN ElectronicHide*16 
+				WHEN 'EmailHide' THEN EmailHide*128 
+			END [ID],
+			CASE @Option 
 				WHEN 'Finishing' THEN CAST(Finishing as varchar) 
 				WHEN 'Archive' THEN CAST(Archive as varchar) 
 				WHEN 'ElectronicHide' THEN CAST(ElectronicHide as varchar) 
 				WHEN 'EmailHide' THEN CAST(EmailHide as varchar) 
-			END OptionValue
+			END [Description]
 		FROM RDC_SUPORT_TYPE WITH(NOLOCK)
 	END
 	ELSE
 	BEGIN
 		IF (@Option = 'Email')
 		BEGIN
-			SELECT SuportStream OptionValue
+			SELECT SuportTypeValue [ID], SuportStream [Description]
 			FROM RDC_SUPORT_TYPE_REFERENCE
 			WHERE SuportTypeValue & 224 > 0
 		END
@@ -162,13 +169,13 @@ BEGIN
 		BEGIN
 			IF (@Option = 'Electronic')
 			BEGIN
-				SELECT SuportStream OptionValue
+				SELECT SuportTypeValue [ID], SuportStream [Description]
 				FROM RDC_SUPORT_TYPE_REFERENCE
 				WHERE SuportTypeValue & 28 > 0
 			END
 			ELSE
 			BEGIN
-				SELECT SuportStream OptionValue
+				SELECT SuportTypeValue [ID], SuportStream [Description]
 				FROM RDC_SUPORT_TYPE_REFERENCE
 				WHERE SuportTypeValue is NULL
 			END
@@ -237,7 +244,9 @@ BEGIN
 	WHERE dc.DocCodeID = @DocCodeID
 		AND 
 		(
-			(@MaxDateFlag = 0 AND (@StartDate is NULL OR dc.StartDate = @StartDate))
+			dc.StartDate = @StartDate
+		OR
+			(@MaxDateFlag = 0 AND @StartDate is NULL)
 		OR
 			(@MaxDateFlag = 1 AND dc.StartDate = (SELECT MAX(StartDate) FROM RD_DOCCODE_CONFIG WHIT(NOLOCK) WHERE DocCodeID = dc.DocCodeID))
 		)

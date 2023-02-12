@@ -84,11 +84,11 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> DocCode(string DocLayout, string DocType)
+        public async Task<IActionResult> DocCode(DocCode docCode)
         {
             try
             {
-                DocCodeViewModel result = await _docCodeService.GetDocCode(DocLayout, DocType);
+                DocCodeViewModel result = await _docCodeService.GetDocCode(docCode.DocLayout, docCode.DocType);
                 return View(result);
             }
             catch (FlurlHttpException ex)
@@ -127,11 +127,19 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> DocCodeConfig(int DocCodeID)
+        public async Task<IActionResult> DocCodeConfig(DocCode docCode)
         {
             try
             {
-                DocCodeViewModel result = await _docCodeService.GetDocCodeConfig(DocCodeID);
+                DocCodeViewModel result = await _docCodeService.GetDocCodeConfig(docCode.DocCodeID);
+                if (result != null)
+                {
+                    DocCode d = result.DocCodeList.First();
+                    d.DocLayout = docCode.DocLayout;
+                    d.DocType = docCode.DocType;
+                    d.PrintMatchCode = docCode.PrintMatchCode;
+                    d.DocDescription = docCode.DocDescription;
+                }
                 return View(result);
             }
             catch (FlurlHttpException ex)
@@ -170,11 +178,11 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> AddDocCode(string DocLayout, string DocType, string DocDescription)
+        public async Task<IActionResult> AddDocCode(DocCode docCode)
         {
             try
             {
-                DocCodeViewModel result = await _docCodeService.GetDocCode(DocLayout, DocType);
+                DocCodeConfigOptionsViewModel result = await _docCodeService.GetDocCodeConfigOptions(docCode);
                 return View(result);
             }
             catch (FlurlHttpException ex)

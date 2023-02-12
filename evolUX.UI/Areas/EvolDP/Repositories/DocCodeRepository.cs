@@ -5,6 +5,7 @@ using evolUX.UI.Repositories;
 using evolUX_dev.Areas.EvolDP.Models;
 using Flurl.Http;
 using Flurl.Http.Configuration;
+using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.ViewModels.Areas.Finishing;
 using System.Net;
@@ -76,6 +77,30 @@ namespace evolUX.UI.Areas.EvolDP.Repositories
                 if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
                 if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
                 return await response.GetJsonAsync<DocCodeViewModel>();
+            }
+
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                dynamic d = ex.GetResponseJsonAsync();
+                return d;
+            }
+        }
+
+        public async Task<DocCodeConfigOptionsViewModel> GetDocCodeConfigOptions(DocCode docCode)
+        {
+            try
+            {
+                Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                dictionary.Add("DocCode", docCode);
+                var response = await _flurlClient.Request("/API/evolDP/DocCode/GetDocCodeConfigOptions")
+                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                    .SendJsonAsync(HttpMethod.Get, dictionary);
+                if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+                return await response.GetJsonAsync<DocCodeConfigOptionsViewModel>();
             }
 
             catch (FlurlHttpException ex)
