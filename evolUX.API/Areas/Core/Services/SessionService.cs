@@ -53,6 +53,8 @@ namespace evolUX.API.Areas.Core.Services
                 //IgnoreFilePrinterSpecsPermition;
                 //PrintFilePermition;
 
+                DataTable evolDP_DESCRIPTION = await _repository.Session.evolDP_DESCRIPTION();
+                result.Add("evolDP/evolDP_DESCRIPTION", JsonConvert.SerializeObject(evolDP_DESCRIPTION));
                 DataTable serviceCompanies = await _repository.Session.GetCompanies(servers, "SERVICE");
                 result.Add("evolDP/ServiceCompanies", JsonConvert.SerializeObject(serviceCompanies));
                 DataTable expeditionCompanies = await _repository.Session.GetCompanies(servers, "EXPEDITION");

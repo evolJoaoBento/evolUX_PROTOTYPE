@@ -49,7 +49,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
         }
         // HANDLE DOC MESSAGE IN UPPER LEVELS
         // DATA VALIDATION SHOULD BE DONE ON THE SERVICE LAYER
-        public async Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(string ID)
+        public async Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(int docCodeID)
         {
             string sql = @"	SET NOCOUNT ON
 							IF (NOT EXISTS(SELECT TOP 1 * 
@@ -99,22 +99,22 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 								LEFT OUTER JOIN
 										RDC_EXCEPTION_LEVEL3 e3 WITH(NOLOCK)
 								ON		e3.ExceptionLevelID = d.ExceptionLevel3ID
-								WHERE	d.DocCodeID=@DOCCODEID
+								WHERE	d.DocCodeID=@DocCodeID
 								ORDER BY dcc.StartDate DESC
 							END
 							SET NOCOUNT OFF";
 
             var parameters = new DynamicParameters();
-            parameters.Add("DOCCODEID", ID, DbType.String);
+            parameters.Add("DocCodeID", docCodeID, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<DocCodeConfig> docCodeConfigList = await connection.QueryAsync<DocCodeConfig, ExceptionLevel, ExceptionLevel, ExceptionLevel, DocCodeConfig>(sql,
                     (d, e1, e2, e3) =>
                     {
                         DocCodeConfig docCodeConfig = d;
-                        docCodeConfig.DocExceptionLevel1 = e1;
-                        docCodeConfig.DocExceptionLevel2 = e2;
-                        docCodeConfig.DocExceptionLevel3 = e3;
+                        docCodeConfig.ExceptionLevel1 = e1;
+                        docCodeConfig.ExceptionLevel2 = e2;
+                        docCodeConfig.ExceptionLevel3 = e3;
                         return docCodeConfig;
                     }, parameters, splitOn: "ExceptionDescription");
                 return docCodeConfigList;
@@ -124,7 +124,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
         //HANDLE FIELD NAMES IN UPPER LEVELS finishing, exceptions, archive, email, email hide, electronic, electronic hide
         //HANDLE TEXT RESPONSES IN UPPER LEVELS result, print match code, aggrcompatibility, fnishing, archive, email, emailhide, eletronic, eletronic hide
         //RD_GET_DOCCODE_CONFIG
-        public async Task<DocCodeConfig> GetDocCodeConfig(string ID, int startdate)
+        public async Task<DocCodeConfig> GetDocCodeConfig(int docCodeID, int startdate)
         {
             string sql = @"	SELECT
 										d.DocCodeID,
@@ -207,7 +207,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 										WHERE d.DocCodeID = @DocCodeID
 									";
             var parameters = new DynamicParameters();
-            parameters.Add("DocCodeID", ID, DbType.String);
+            parameters.Add("DocCodeID", docCodeID, DbType.Int64);
             parameters.Add("DocStartDate", startdate, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -215,9 +215,9 @@ namespace evolUX.API.Areas.EvolDP.Repositories
                     (d, e1, e2, e3) =>
                     {
                         DocCodeConfig docCodeConfig = d;
-                        docCodeConfig.DocExceptionLevel1 = e1;
-                        docCodeConfig.DocExceptionLevel2 = e2;
-                        docCodeConfig.DocExceptionLevel3 = e3;
+                        docCodeConfig.ExceptionLevel1 = e1;
+                        docCodeConfig.ExceptionLevel2 = e2;
+                        docCodeConfig.ExceptionLevel3 = e3;
                         return docCodeConfig;
                     }, parameters, splitOn: "ExceptionDescription");
                 return docCodeConfigList.AsList().FirstOrDefault();
@@ -226,7 +226,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
         }
 
 
-        public async Task<DocCodeConfig> GetDocCodeConfigOptions(string ID)
+        public async Task<DocCodeConfig> GetDocCodeConfigOptions(int docCodeID)
         {
             string sql = $@"SELECT	[DocCodeID]
 									,[StartDate]
@@ -234,12 +234,12 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 							where	DocCodeID =@DOCCODEID";
 
             var parameters = new DynamicParameters();
-            parameters.Add("DocCodeID", ID, DbType.String);
+            parameters.Add("DocCodeID", docCodeID, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 DocCodeConfig docCodeConfig = await connection.QueryFirstOrDefaultAsync<DocCodeConfig>(sql,
                     parameters);
-                return await GetDocCodeConfig(ID, int.Parse(docCodeConfig.StartDate));
+                return await GetDocCodeConfig(docCodeID, int.Parse(docCodeConfig.StartDate));
             }
         }
 
@@ -606,14 +606,14 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             parameters2.Add("DOCENVMEDIAID", model.EnvMedia, DbType.String);
             parameters2.Add("DOCEXPTYPEID", model.ExpeditionType, DbType.String);
             parameters2.Add("DOCEXPCOMPANYID", model.CompanyName, DbType.String);
-            parameters2.Add("DOCSERVICETASK", model.TreatmentType, DbType.String);
+            parameters2.Add("DOCSERVICETASK", model.ServiceTask, DbType.String);
 
             parameters2.Add("DOCCADUCITYDATE", model.CaducityDate, DbType.String);
             parameters2.Add("DOCMAXPRODDATE", model.MaxProdDate, DbType.String);
             parameters2.Add("DOCMAXSHEETS", model.ProdMaxSheets, DbType.String);
-            parameters2.Add("DOCEXCEPTIONLEVEL1", model.DocExceptionLevel1.ExceptionLevelID, DbType.String);
-            parameters2.Add("DOCEXCEPTIONLEVEL2", model.DocExceptionLevel2.ExceptionLevelID, DbType.String);
-            parameters2.Add("DOCEXCEPTIONLEVEL3", model.DocExceptionLevel3.ExceptionLevelID, DbType.String);
+            parameters2.Add("DOCEXCEPTIONLEVEL1", model.ExceptionLevel1.ExceptionLevelID, DbType.String);
+            parameters2.Add("DOCEXCEPTIONLEVEL2", model.ExceptionLevel2.ExceptionLevelID, DbType.String);
+            parameters2.Add("DOCEXCEPTIONLEVEL3", model.ExceptionLevel3.ExceptionLevelID, DbType.String);
             parameters2.Add("DOCDESCRIPTION", model.DocDescription, DbType.String);
             parameters2.Add("DOCARCHCADUCITY", model.ArchCaducityDate, DbType.String);
 
@@ -626,7 +626,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             }
         }
 
-        public async Task<IEnumerable<string>> DeleteDocCode(string ID)
+        public async Task<IEnumerable<string>> DeleteDocCode(int docCodeID)
         {
             string sql = @"SET NOCOUNT ON  
 								IF (EXISTS(SELECT TOP 1 * FROM RT_DOCUMENT WHERE DocCodeID = @ID ))   
@@ -653,7 +653,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 								END   
 				SET NOCOUNT OFF";
             var parameters = new DynamicParameters();
-            parameters.Add("ID", ID, DbType.String);
+            parameters.Add("ID", docCodeID, DbType.Int64);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -664,7 +664,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 
 
         //HANDLE TEXT RESPONSES ON HIGHER LEVELS aggrCompatibility
-        public async Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(string ID)
+        public async Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(int docCodeID)
         {
             string sql = $@"SELECT	d.DocLayout, 
 									d.DocType, 
@@ -704,7 +704,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 							ON e3.ExceptionLevelID = d.ExceptionLevel3ID
 							ORDER BY dc1.DocCodeID ASC, d.DocLayout,d.DocType,d.ExceptionLevel1ID,d.ExceptionLevel2ID,d.ExceptionLevel3ID";
             var parameters = new DynamicParameters();
-            parameters.Add("DOCCODEID", ID, DbType.String);
+            parameters.Add("DOCCODEID", docCodeID, DbType.String);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -722,7 +722,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
         }
 
         //HANDLE TEXT RESPONSES ON HIGHER LEVELS aggrCompatibility
-        public async Task<AggregateDocCode> GetAggregateDocCode(string ID)
+        public async Task<AggregateDocCode> GetAggregateDocCode(int docCodeID)
         {
             string sql = $@"SELECT  d.DocCodeID,
 									d.DocLayout
@@ -757,7 +757,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 											WHERE DocCodeID = dc.DocCodeID
 												AND StartDate <= CONVERT(varchar,CURRENT_TIMESTAMP,112))";
             var parameters = new DynamicParameters();
-            parameters.Add("DOCCODEID", ID, DbType.String);
+            parameters.Add("DOCCODEID", docCodeID, DbType.String);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {

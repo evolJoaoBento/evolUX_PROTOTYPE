@@ -6,5 +6,6 @@ namespace evolUX.UI.Areas.EvolDP.Repositories.Interfaces
     {
         public Task<DocCodeViewModel> GetDocCodeGroup();
         public Task<DocCodeViewModel> GetDocCode(string docLayout, string docType);
+        public Task<DocCodeViewModel> GetDocCodeConfig(int docCodeID);
     }
 }

@@ -9,6 +9,6 @@
         public ExceptionLevel ExceptionLevel1 { get; set; }
         public ExceptionLevel ExceptionLevel2 { get; set; }
         public ExceptionLevel ExceptionLevel3 { get; set; }
-
+        public string PrintMatchCode { get; set; }
     }
 }

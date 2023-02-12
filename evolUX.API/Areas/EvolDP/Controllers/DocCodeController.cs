@@ -85,11 +85,11 @@ namespace evolUX.Areas.EvolDP.Controllers
         //TODO: HANDLE HTTP RESPONSES
         [HttpGet("{ID}")]
         [ActionName("DocCodeConfig")]
-        public async Task<ActionResult<DocCodeConfigViewModel>> GetDocCodeConfig([FromRoute] string ID)
+        public async Task<ActionResult<DocCodeConfigViewModel>> GetDocCodeConfig([FromRoute] int docCodeID)
         {
             try
             {
-                DocCodeConfigViewModel viewmodel = await _docCodeService.GetDocCodeConfig(ID);
+                DocCodeConfigViewModel viewmodel = await _docCodeService.GetDocCodeConfig(docCodeID);
                 _logger.LogInfo("DocCodeConfig Get");
                 return Ok(viewmodel);
             }
@@ -109,13 +109,13 @@ namespace evolUX.Areas.EvolDP.Controllers
         //TODO: HANDLE HTTP RESPONSES
         [HttpGet("{ID}/details")]
         [ActionName("DocCodeConfig")]
-        public async Task<ActionResult<DocCodeConfigViewModel>> GetDocCodeConfig([FromRoute] string ID, [FromQuery] int startdate)
+        public async Task<ActionResult<DocCodeConfigViewModel>> GetDocCodeConfig([FromRoute] int docCodeID, [FromQuery] int startdate)
         {
             try
             {
                 DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
                 List<DocCodeConfig> list = new List<DocCodeConfig>();
-                list.Add(await _docCodeService.GetDocCodeConfig(ID, startdate));
+                list.Add(await _docCodeService.GetDocCodeConfig(docCodeID, startdate));
                 viewmodel.DocCodeConfigList = list;
                 _logger.LogInfo("DocCodeConfig Get");
                 return Ok(viewmodel);
@@ -136,12 +136,12 @@ namespace evolUX.Areas.EvolDP.Controllers
         //TODO: HANDLE HTTP RESPONSES
         [HttpGet("{ID}")]
         [ActionName("DocCodeConfigOptions")]
-        public async Task<ActionResult<DocCodeConfigOptionsViewModel>> AddDocCodeConfig([FromRoute] string ID)
+        public async Task<ActionResult<DocCodeConfigOptionsViewModel>> AddDocCodeConfig([FromRoute] int docCodeID)
         {
             try
             {
                 DocCodeConfigOptionsViewModel viewmodel = new DocCodeConfigOptionsViewModel();
-                viewmodel.DocCodeConfig = await _docCodeService.GetDocCodeConfigOptions(ID);
+                viewmodel.DocCodeConfig = await _docCodeService.GetDocCodeConfigOptions(docCodeID);
                 viewmodel.DocExceptionslevel1 = await _docCodeService.GetDocExceptionsLevel1();
                 viewmodel.DocExceptionslevel2 = await _docCodeService.GetDocExceptionsLevel2();
                 viewmodel.DocExceptionslevel3 = await _docCodeService.GetDocExceptionsLevel3();
@@ -149,7 +149,7 @@ namespace evolUX.Areas.EvolDP.Controllers
                 viewmodel.AggregationList = await _docCodeService.GetAggregationList(viewmodel.DocCodeConfig.AggrCompatibility);
                 viewmodel.ExpeditionCompanies = await _docCodeService.GetExpeditionCompanies(viewmodel.DocCodeConfig.CompanyName);
                 viewmodel.ExpeditionTypes = await _docCodeService.GetExpeditionTypes(viewmodel.DocCodeConfig.ExpeditionType);
-                viewmodel.TreatmentTypes = await _docCodeService.GetServiceTasks(viewmodel.DocCodeConfig.TreatmentType);
+                viewmodel.TreatmentTypes = await _docCodeService.GetServiceTasks(viewmodel.DocCodeConfig.ServiceTask);
                 viewmodel.FinishingList = await _docCodeService.GetFinishingList(viewmodel.DocCodeConfig.Finishing);
                 viewmodel.ArchiveList = await _docCodeService.GetArchiveList(viewmodel.DocCodeConfig.Archive);
                 viewmodel.EmailList = await _docCodeService.GetEmailList(viewmodel.DocCodeConfig.Email);
@@ -205,12 +205,12 @@ namespace evolUX.Areas.EvolDP.Controllers
         //TODO: HANDLE HTTP RESPONSES
         [HttpDelete("{ID}")]
         [ActionName("DocCode")]
-        public async Task<ActionResult<DocCodeResultsViewModel>> DeleteDocCode([FromRoute] string ID)
+        public async Task<ActionResult<DocCodeResultsViewModel>> DeleteDocCode([FromRoute] int docCodeID)
         {
             try
             {
                 DocCodeResultsViewModel viewmodel = new DocCodeResultsViewModel();
-                viewmodel.Results = await _docCodeService.DeleteDocCode(ID);
+                viewmodel.Results = await _docCodeService.DeleteDocCode(docCodeID);
                 _logger.LogInfo("DocCodeException Get");
                 return Ok(viewmodel);
             }
@@ -229,13 +229,13 @@ namespace evolUX.Areas.EvolDP.Controllers
         //Podia se mandar um aviso sobre algo nao ser compativel no futuro
         [HttpGet("{ID}")]
         [ActionName("Compatibility")]
-        public async Task<ActionResult<DocCodeCompatabilityViewModel>> CompatibilityOptions([FromRoute] string ID)
+        public async Task<ActionResult<DocCodeCompatabilityViewModel>> CompatibilityOptions([FromRoute] int docCodeID)
         {
             try
             {
                 DocCodeCompatabilityViewModel viewmodel = new DocCodeCompatabilityViewModel();
-                viewmodel.DocCode = await _docCodeService.GetAggregateDocCode(ID);
-                viewmodel.DocCodeList = await _docCodeService.GetAggregateDocCodes(ID);
+                viewmodel.DocCode = await _docCodeService.GetAggregateDocCode(docCodeID);
+                viewmodel.DocCodeList = await _docCodeService.GetAggregateDocCodes(docCodeID);
                 _logger.LogInfo("DocCodeException Get");
                 return Ok(viewmodel);
             }

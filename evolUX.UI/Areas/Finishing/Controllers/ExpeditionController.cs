@@ -37,6 +37,17 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         public async Task<IActionResult> PendingExpedition()
         {
+            string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
+            TempData["BusinessCode"] = "";
+            if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
+            {
+                var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
+                if (evolDP_Desc != null) 
+                {
+                    var b = evolDP_Desc.Find(x => x.FieldName == "BusinessCode");
+                    if (b != null) { TempData["BusinessCode"] = b.FieldDescription; }
+                }
+            }
             string CompanyBusinessList = HttpContext.Session.GetString("evolDP/CompanyBusiness");
             try
             {
@@ -237,6 +248,17 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         public async Task<IActionResult> Index()
         {
+            string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
+            TempData["BusinessCode"] = "";
+            if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
+            {
+                var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
+                if (evolDP_Desc != null)
+                {
+                    var b = evolDP_Desc.Find(x => x.FieldName == "BusinessCode");
+                    if (b != null) { TempData["BusinessCode"] = b.FieldDescription; }
+                }
+            }
             string CompanyBusinessList = HttpContext.Session.GetString("evolDP/CompanyBusiness");
             try
             {
@@ -304,7 +326,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 string expFolder = _configuration.GetValue<string>("ExpeditionFolder");
                 ViewBag.ExpFolder = expFolder;
 
-                string expeditionURL = _configuration.GetValue<string>("SiteURL");
+                string expeditionURL = _configuration.GetValue<string>("evolUXSiteURL");
                 ViewBag.ExpeditionURL = expeditionURL + "/expedition/";
 
                 string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");

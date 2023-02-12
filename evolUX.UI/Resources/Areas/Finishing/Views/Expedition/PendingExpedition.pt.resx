@@ -120,7 +120,7 @@
   <data name="All" xml:space="preserve">
     <value>Todas</value>
   </data>
-  <data name="Business" xml:space="preserve">
+  <data name="BusinessCode" xml:space="preserve">
     <value>Área de Negócio</value>
   </data>
   <data name="NoModelData" xml:space="preserve">

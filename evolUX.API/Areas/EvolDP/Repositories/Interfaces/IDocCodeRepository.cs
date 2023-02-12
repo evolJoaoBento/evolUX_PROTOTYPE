@@ -7,9 +7,9 @@ namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
     {
         public Task<IEnumerable<DocCode>> GetDocCodeGroup();
         public Task<IEnumerable<DocCode>> GetDocCode(string docLayout, string docType);
-        public Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(string ID);
-        public Task<DocCodeConfig> GetDocCodeConfig(string ID, int startdate);
-        public Task<DocCodeConfig> GetDocCodeConfigOptions(string ID);
+        public Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(int docCodeID);
+        public Task<DocCodeConfig> GetDocCodeConfig(int docCodeID, int startdate);
+        public Task<DocCodeConfig> GetDocCodeConfigOptions(int docCodeID);
         public Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel1();
         public Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel2();
         public Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel3();
@@ -31,9 +31,9 @@ namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
         public Task<IEnumerable<Electronic>> GetElectronicList();
         public Task<IEnumerable<int>> GetElectronicHideList(string electronicHide);
         public Task PostDocCodeConfig(DocCodeConfig model);
-        public Task<IEnumerable<string>> DeleteDocCode(string ID);
-        Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(string ID);
-        Task<AggregateDocCode> GetAggregateDocCode(string ID);
+        public Task<IEnumerable<string>> DeleteDocCode(int docCodeID);
+        Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(int docCodeID);
+        Task<AggregateDocCode> GetAggregateDocCode(int docCodeID);
         Task ChangeCompatibility(DocCodeCompatabilityViewModel model);
     }
 }

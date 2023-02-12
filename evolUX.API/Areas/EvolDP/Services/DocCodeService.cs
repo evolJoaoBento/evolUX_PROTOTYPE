@@ -26,16 +26,16 @@ namespace evolUX.API.Areas.EvolDP.Services
             viewmodel.DocCodeList = await _repository.DocCode.GetDocCode(docLayout, docType);
             return viewmodel;
         }        
-        public async Task<DocCodeConfigViewModel> GetDocCodeConfig(string ID)
+        public async Task<DocCodeConfigViewModel> GetDocCodeConfig(int docCodeID)
         {
             DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
-            viewmodel.DocCodeConfigList = await _repository.DocCode.GetDocCodeConfig(ID);
+            viewmodel.DocCodeConfigList = await _repository.DocCode.GetDocCodeConfig(docCodeID);
             return viewmodel;
         }        
 
-        public async Task<DocCodeConfig> GetDocCodeConfig(string ID, int startdate)
+        public async Task<DocCodeConfig> GetDocCodeConfig(int docCodeID, int startdate)
         {
-            DocCodeConfig docCodeConfig = await _repository.DocCode.GetDocCodeConfig(ID,startdate);
+            DocCodeConfig docCodeConfig = await _repository.DocCode.GetDocCodeConfig(docCodeID, startdate);
             if (docCodeConfig == null)
             {
 
@@ -43,9 +43,9 @@ namespace evolUX.API.Areas.EvolDP.Services
             return docCodeConfig;
         }
 
-        public async Task<DocCodeConfig> GetDocCodeConfigOptions(string ID)
+        public async Task<DocCodeConfig> GetDocCodeConfigOptions(int docCodeID)
         {
-            DocCodeConfig docCodeConfig = await _repository.DocCode.GetDocCodeConfigOptions(ID);
+            DocCodeConfig docCodeConfig = await _repository.DocCode.GetDocCodeConfigOptions(docCodeID);
             if (docCodeConfig == null)
             {
 
@@ -251,9 +251,9 @@ namespace evolUX.API.Areas.EvolDP.Services
             
 
         }
-        public async Task<IEnumerable<string>> DeleteDocCode(string ID)
+        public async Task<IEnumerable<string>> DeleteDocCode(int docCodeID)
         {
-            IEnumerable<string>  results = await _repository.DocCode.DeleteDocCode(ID);
+            IEnumerable<string>  results = await _repository.DocCode.DeleteDocCode(docCodeID);
             if (results == null)
             {
 
@@ -263,9 +263,9 @@ namespace evolUX.API.Areas.EvolDP.Services
         }
 
 
-        public async Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(string ID)
+        public async Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(int docCodeID)
         {
-            IEnumerable<AggregateDocCode> aggregateDocCodes = await _repository.DocCode.GetAggregateDocCodes(ID);
+            IEnumerable<AggregateDocCode> aggregateDocCodes = await _repository.DocCode.GetAggregateDocCodes(docCodeID);
             if (aggregateDocCodes == null)
             {
 
@@ -273,9 +273,9 @@ namespace evolUX.API.Areas.EvolDP.Services
             return aggregateDocCodes;
         }
 
-        public async Task<AggregateDocCode> GetAggregateDocCode(string ID)
+        public async Task<AggregateDocCode> GetAggregateDocCode(int docCodeID)
         {
-            AggregateDocCode aggregateDocCode = await _repository.DocCode.GetAggregateDocCode(ID);
+            AggregateDocCode aggregateDocCode = await _repository.DocCode.GetAggregateDocCode(docCodeID);
             if (aggregateDocCode == null)
             {
 

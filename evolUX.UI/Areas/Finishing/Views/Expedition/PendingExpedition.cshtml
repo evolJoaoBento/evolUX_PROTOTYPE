@@ -2,6 +2,7 @@
 @using Shared.ViewModels.Areas.evolDP
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer localizer
+@inject IConfiguration configuration
 @model BusinessViewModel
 
 <div class="d-flex justify-content-center" >
@@ -18,13 +19,16 @@
 }
 else
 {
+    string BusinessCodeLabel = (string)TempData["BusinessCode"];
+    if (string.IsNullOrEmpty(BusinessCodeLabel))
+        BusinessCodeLabel = localizer["BusinessCode"].Value;
     <div id="TitlePage">
         <h1 class="display-4 text-center">@localizer["PendingExpedition"]</h1>
     </div>
     <form id="ServiceCompaniesFrm" class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="Expedition" asp-action="PendingExpeditionFiles">
         <table class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
             <tr>
-                <td><h4 class="text-center" style="color: var(--darkestgrey)">@localizer["Business"]</h4> </td>
+                <td><h4 class="text-center" style="color: var(--darkestgrey)">@BusinessCodeLabel</h4> </td>
             </tr>
             <tr>
                 <td>

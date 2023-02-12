@@ -14,5 +14,6 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
         public Task<DataTable> GetCompanyBusinness(IEnumerable<string> servers, string CompanyType);
         public Task<IEnumerable<string>> GetPermissions(IEnumerable<int> profiles);
         public Task<IEnumerable<string>> GetPermissions(IEnumerable<int> profiles, string localizationKey);
+        public Task<DataTable> evolDP_DESCRIPTION();
     }
 }
