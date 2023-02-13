@@ -120,6 +120,18 @@
   <data name="AddDocCodeConfigAdd" xml:space="preserve">
     <value>Adicionar Configuração para Tipo de Documento</value>
   </data>
+  <data name="AggCompatibility0" xml:space="preserve">
+    <value>Não Agregável</value>
+  </data>
+  <data name="AggCompatibility1" xml:space="preserve">
+    <value>Agregável com todos</value>
+  </data>
+  <data name="AggCompatibility2" xml:space="preserve">
+    <value>Condicionalmente Agregável (Necessário configurar compatibilidades)</value>
+  </data>
+  <data name="AggCompatibility3" xml:space="preserve">
+    <value>Agregável apenas com o mesmo tipo (Layout/Subtipo)</value>
+  </data>
   <data name="AggrCompatibility" xml:space="preserve">
     <value>Tipo de Agregação</value>
   </data>
@@ -186,6 +198,18 @@
   <data name="ExpeditionType" xml:space="preserve">
     <value>Tipo de Expedição</value>
   </data>
+  <data name="ExpeditionType1" xml:space="preserve">
+    <value>Correio Normal</value>
+  </data>
+  <data name="ExpeditionType2" xml:space="preserve">
+    <value>Correio Prioritário</value>
+  </data>
+  <data name="ExpeditionType3" xml:space="preserve">
+    <value>Correio Registado</value>
+  </data>
+  <data name="ExpeditionType4" xml:space="preserve">
+    <value>Correio Registado c/ Aviso Receção</value>
+  </data>
   <data name="Finishing" xml:space="preserve">
     <value>Envio por papel/correio</value>
   </data>
@@ -209,6 +233,9 @@
   </data>
   <data name="ServiceTask" xml:space="preserve">
     <value>Tipo de Tratamento</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Data Efetiva das configurações</value>
   </data>
   <data name="SubmitAdd" xml:space="preserve">
     <value>Adicionar</value>

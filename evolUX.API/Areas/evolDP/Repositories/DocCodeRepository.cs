@@ -35,7 +35,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             var parameters = new DynamicParameters();
             parameters.Add("DocLayout", docLayout, DbType.String);
             parameters.Add("DocType", docType, DbType.String);
-            if (numRows <= 0) numRows = -1;
+            if (numRows <= 0) numRows = 2147483647;
             parameters.Add("NumRows", numRows, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -205,7 +205,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             parameters2.Add("DOCSUBTYPE", docCode.DocType, DbType.String);
             parameters2.Add("DOCSTARTDATE", docCode.DocCodeConfigs[0].StartDate, DbType.String);
             parameters2.Add("DOCAGGREGATION", docCode.DocCodeConfigs[0].AggrCompatibility, DbType.String);
-            parameters2.Add("DOCENVMEDIAID", docCode.DocCodeConfigs[0].EnvMedia, DbType.String);
+            parameters2.Add("DOCENVMEDIAID", docCode.DocCodeConfigs[0].EnvMediaID, DbType.String);
             parameters2.Add("DOCEXPTYPEID", docCode.DocCodeConfigs[0].ExpeditionType, DbType.String);
             parameters2.Add("DOCEXPCOMPANYID", docCode.DocCodeConfigs[0].ExpCompanyName, DbType.String);
             parameters2.Add("DOCSERVICETASK", docCode.DocCodeConfigs[0].ServiceTaskDesc, DbType.String);

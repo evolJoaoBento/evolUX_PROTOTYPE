@@ -31,7 +31,7 @@ GO
 ALTER  PROCEDURE [dbo].[RD_UX_GET_DOCCODE]
 	@DocLayout varchar(20),
 	@DocType varchar(8),
-	@NumRows int = -1
+	@NumRows int =  2147483647
 AS
 BEGIN
 	SELECT	TOP(@NumRows) d.DocCodeID,
@@ -209,11 +209,11 @@ BEGIN
 	st.ServiceTaskCode,
 	st.[Description] ServiceTaskDesc,
 	dc.SuportType,
-	s.Finishing,
-	s.Archive,
-	s.Electronic,
+	s.Finishing * 1,
+	s.Archive * 2,
+	s.Electronic ElectronicDesc,
 	s.ElectronicHide,
-	s.EMail,
+	s.EMail EMailDesc,
 	s.EMailHide,
 	dc.[Priority], 
 	--dc.AgingDays, --Descontinuado

@@ -15,6 +15,7 @@
 }
 else
 {
+    string value;
     string submitTag = "SubmitAdd";
     if (TempData["Source"]?.ToString() == "ChangeDocCodeConfig")
         submitTag = "SubmitChange";
@@ -77,11 +78,11 @@ else
             {
                 <tr>
                     <th>@localizer["DocLayout"]</th>
-                    <td><input id=DocLayout name=DocLayout type="text" maxlength="20" /></td>
+                    <td><input id=DocLayout name=DocLayout type="text" maxlength="20" style="width: 100%"/></td>
                 </tr>
                 <tr>
                     <th>@localizer["DocType"]</th>
-                    <td><input id=DocType name=DocType type="text" maxlength="8" /></td>
+                    <td><input id=DocType name=DocType type="text" maxlength="8" style="width: 100%"/></td>
                 </tr>
             }
             @if (TempData["Source"]?.ToString() == "AddDocCodeConfig"
@@ -132,11 +133,11 @@ else
                 <tr>
                     <th>@ExceptionLevel1IDLabel</th>
                     <td>
-                        <select name="Exceptionslevel1ID">
-                            <option id="" value="0">@localizer["EmptyField"]</option>
+                        <select name="Exceptionslevel1ID" style="width: 100%">
+                            <option value="0">@localizer["EmptyField"]</option>
                             @foreach (ExceptionLevel e in Model.Exceptionslevel1List)
                             {
-                                <option id="" value="@e.ExceptionLevelID">@e.ExceptionCode - @e.ExceptionDescription </option>
+                                <option value="@e.ExceptionLevelID">@e.ExceptionCode - @e.ExceptionDescription </option>
                             }
                         </select>
                     </td>
@@ -144,7 +145,7 @@ else
                 <tr>
                     <th>@ExceptionLevel2IDLabel</th>
                     <td>
-                        <select name="Exceptionslevel2ID">
+                        <select name="Exceptionslevel2ID" style="width: 100%">
                             <option id="" value="0">@localizer["EmptyField"]</option>
                             @foreach (ExceptionLevel e in Model.Exceptionslevel2List)
                             {
@@ -156,7 +157,7 @@ else
                 <tr>
                     <th>@ExceptionLevel3IDLabel</th>
                     <td>
-                        <select name="Exceptionslevel3ID">
+                        <select name="Exceptionslevel3ID" style="width: 100%">
                             <option id="" value="0">@localizer["EmptyField"]</option>
                             @foreach (ExceptionLevel e in Model.Exceptionslevel3List)
                             {
@@ -169,19 +170,97 @@ else
             <tr>
                 <th>@localizer["DocDescription"]</th>
                 <td>
-                    <input id=DocDescription name=DocDescription type="text" maxlength="256" value="@Model.DocCodeConfig.DocDescription" />
+                    <input id=DocDescription name=DocDescription type="text" maxlength="256" style="width: 100%" value="@Model.DocCodeConfig.DocDescription" />
                 </td>
             </tr>
             <tr>
                 <th>@localizer["PrintMatchCode"]</th>
                 <td>
-                    <input id=PrintMatchCode name=PrintMatchCode type="text" maxlength="10" value="@Model.DocCodeConfig.PrintMatchCode" />
+                    <input id=PrintMatchCode name=PrintMatchCode type="text" maxlength="10" style="width: 100%" value="@Model.DocCodeConfig.PrintMatchCode" />
+                </td>
+            </tr>
+            @if(TempData["Source"]?.ToString() != "ChangeDocCodeConfig" && Model.DocCodeConfig.DocCodeConfigs[0].IsEditable)
+            {
+                <tr>
+                    <th>@localizer["StartDate"]</th>
+                        <td><input id="StartDate" name="StartDate" type="datetime" value="@DateTime.Now.ToShortDateString()" /></td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>@localizer["StartDate"]</th>
+                    <td>@DateTime.ParseExact(Model.DocCodeConfig.DocCodeConfigs[0].StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToShortDateString()" /></td>
+                </tr>
+            }
+            <tr>
+                <th>@localizer["EnvMedia"]</th>
+                <td>
+                    <select name="EnvMediaID" style="width: 100%">
+                    @if(Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].EnvMediaID > 0)
+                    {
+                        <option value="@Model.DocCodeConfig.DocCodeConfigs[0].EnvMediaID">@Model.DocCodeConfig.DocCodeConfigs[0].EnvMediaDesc</option>
+                    }
+                    @foreach (EnvelopeMedia e in Model.EnvMediaGroups.Where(x => x.EnvMediaGroupID != Model.DocCodeConfig.DocCodeConfigs[0].EnvMediaID))
+                    {
+                        <option value="@e.EnvMediaGroupID">@e.Description</option>
+                    }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>@localizer["AggrCompatibility"]</th>
+                <td>
+                    <select name="AggrCompatibility" style="width: 100%">
+                        @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].AggrCompatibility >= 0)
+                        {
+                            value = "AggCompatibility" + Model.DocCodeConfig.DocCodeConfigs[0].AggrCompatibility.ToString();
+                            <option value="@Model.DocCodeConfig.DocCodeConfigs[0].AggrCompatibility">@localizer[@value]</option>
+                        }
+                        @foreach (int a in Model.AggregationList.Where(x => x != Model.DocCodeConfig.DocCodeConfigs[0].AggrCompatibility))
+                        {
+                            value = "AggCompatibility" + a.ToString();
+                            <option value="@a">@localizer[value]</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>@localizer["ExpCompany"] / @localizer["ServiceTask"]</th>
+                <td>
+                    <select name="ExpCode" style="width: 100%">
+                        @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && !string.IsNullOrEmpty(Model.DocCodeConfig.DocCodeConfigs[0].ExpCode))
+                        {
+                            <option value="@Model.DocCodeConfig.DocCodeConfigs[0].ExpCode">@Model.DocCodeConfig.DocCodeConfigs[0].ExpCompanyName / @Model.DocCodeConfig.DocCodeConfigs[0].ServiceTaskDesc</option>
+                        }
+                        @foreach (ExpCompanyServiceTask e in Model.ExpCodeList.Where(x => x.ExpCode != Model.DocCodeConfig.DocCodeConfigs[0].ExpCode))
+                        {
+                            <option value="@e.ExpCode">@Model.ExpCompanies.First(x => x.ID == e.ExpCompanyID).CompanyName / @Model.ServiceTasks.First(x => x.ServiceTaskID == e.ServiceTaskID).ServiceTaskDesc</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>@localizer["ExpeditionType"]</th>
+                <td>
+                    <select name="ExpeditionType" style="width: 100%">
+                        @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].ExpeditionType > 0)
+                        {
+                            value = "ExpeditionType" + Model.DocCodeConfig.DocCodeConfigs[0].ExpeditionType.ToString();
+                            <option value="@Model.DocCodeConfig.DocCodeConfigs[0].ExpeditionType">@localizer[value]</option>
+                        }
+                        @foreach (ExpeditionsType e in Model.ExpeditionTypes.Where(x => x.ExpeditionType != Model.DocCodeConfig.DocCodeConfigs[0].ExpeditionType))
+                        {
+                            value = "ExpeditionType" + Model.DocCodeConfig.DocCodeConfigs[0].ExpeditionType.ToString();
+                            <option value="@e.ExpeditionType">@localizer[value]</option>
+                        }
+                    </select>
                 </td>
             </tr>
         </tbody>
-        <tfoot>
+        <tfoot id="bootstrap-overrides">
             <tr>
-                <td colspan="2" class="d-flex justify-content-center m-4">
+                <td colspan="2">
                     <input type="submit" value="@localizer[submitTag]" name="Submit" class="btn btn-block btn-outline-info" />
                 </td>
             </tr>

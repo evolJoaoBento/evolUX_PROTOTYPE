@@ -86,10 +86,11 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> DocCode(DocCode docCode)
+        public async Task<IActionResult> DocCode(string doccodeJson)
         {
             try
             {
+                DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
                 DocCodeViewModel result = await _docCodeService.GetDocCode(docCode.DocLayout, docCode.DocType);
                 return View(result);
             }
@@ -129,10 +130,11 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> DocCodeConfig(DocCode docCode)
+        public async Task<IActionResult> DocCodeConfig(string doccodeJson)
         {
             try
             {
+                DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
                 DocCodeViewModel result = await _docCodeService.GetDocCodeConfig(docCode.DocCodeID);
                 if (result != null)
                 {
@@ -180,10 +182,13 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> AddDocCode(DocCode? docCode)
+        public async Task<IActionResult> AddDocCode(string doccodeJson)
         {
             try
-            {  
+            {
+                DocCode? docCode = null;
+                if (!string.IsNullOrEmpty(doccodeJson))
+                    docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
                 DocCodeConfigOptionsViewModel result = await _docCodeService.GetDocCodeConfigOptions(docCode);
                 string ExpCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
                 if (!string.IsNullOrEmpty(ExpCompanyList) && result != null)
