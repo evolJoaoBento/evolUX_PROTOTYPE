@@ -193,6 +193,13 @@ ALTER  PROCEDURE [dbo].[RD_UX_GET_DOCCODE_CONFIG]
 	@MaxDateFlag bit = 0
 AS
 BEGIN
+	SET NOCOUNT ON
+	DECLARE @SuportTable IDDescList
+
+	INSERT INTO @SuportTable ([ID], [Desc])
+	SELECT SuportTypeValue [ID], SuportStream [Desc]
+	FROM RDC_SUPORT_TYPE_REFERENCE
+
 	SELECT CAST((CASE WHEN CAST(CONVERT(varchar,CURRENT_TIMESTAMP,112) as int) > dc.StartDate THEN 0 ELSE 1 END) as bit) IsEditable,
 	d.DocCodeID,
 	d.[Description] DocDescription,
@@ -209,12 +216,14 @@ BEGIN
 	st.ServiceTaskCode,
 	st.[Description] ServiceTaskDesc,
 	dc.SuportType,
-	s.Finishing * 1,
-	s.Archive * 2,
-	s.Electronic ElectronicDesc,
-	s.ElectronicHide,
-	s.EMail EMailDesc,
-	s.EMailHide,
+	(dc.SuportType & 1) Finishing,
+	(dc.SuportType & 2) Archive,
+	(dc.SuportType & 12) Electronic,
+	dbo.[GetFormat4SuportType](28, dc.SuportType, ' /', @SuportTable) ElectronicDesc,
+	(dc.SuportType & 16) ElectronicHide,
+	(dc.SuportType & 96) EMail,
+	dbo.[GetFormat4SuportType](224, dc.SuportType, ' /', @SuportTable) EMailDesc,
+	(dc.SuportType & 128) EMailHide,
 	dc.[Priority], 
 	--dc.AgingDays, --Descontinuado
 	dc.CaducityDate,
@@ -238,9 +247,6 @@ BEGIN
 	INNER JOIN
 		RD_SERVICE_TASK st WITH(NOLOCK)
 	ON st.ServiceTaskID = est.ServiceTaskID
-	LEFT OUTER JOIN
-		RDC_SUPORT_TYPE s WITH(NOLOCK)
-	ON s.SuportType = dc.SuportType		
 	WHERE dc.DocCodeID = @DocCodeID
 		AND 
 		(
