@@ -107,7 +107,7 @@ ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_TASK]
 	@ServiceTaskID int = NULL
 AS
 BEGIN
-	SELECT ServiceTaskID, ServiceTaskCode, [Description], StationExceededDesc, ComplementServiceTaskID, ExternalExpeditionMode
+	SELECT ServiceTaskID, ServiceTaskCode, [Description] ServiceTaskDesc, StationExceededDesc, ComplementServiceTaskID, ExternalExpeditionMode
 	FROM RD_SERVICE_TASK
 	WHERE @ServiceTaskID is NULL OR ServiceTaskID = @ServiceTaskID
 	ORDER BY ServiceTaskID
@@ -200,6 +200,19 @@ BEGIN
 	SELECT SuportTypeValue [ID], SuportStream [Desc]
 	FROM RDC_SUPORT_TYPE_REFERENCE
 
+	DECLARE @ElectronicBits int,
+			@EmailBits int
+	SELECT @ElectronicBits = 4+8,
+			@EmailBits = 32+64
+
+	SELECT @ElectronicBits = @ElectronicBits + CASE WHEN UPPER(FieldDescription) = 'TRUE' THEN 16 ELSE 0 END
+	FROM evolDP_DESCRIPTION WITH(NOLOCK)
+	WHERE FieldName = 'ElectronicJoin'
+
+	SELECT @EmailBits = @EmailBits + CASE WHEN UPPER(FieldDescription) = 'TRUE' THEN 128 ELSE 0 END
+	FROM evolDP_DESCRIPTION WITH(NOLOCK)
+	WHERE FieldName = 'EmailJoin'
+
 	SELECT CAST((CASE WHEN CAST(CONVERT(varchar,CURRENT_TIMESTAMP,112) as int) > dc.StartDate THEN 0 ELSE 1 END) as bit) IsEditable,
 	d.DocCodeID,
 	d.[Description] DocDescription,
@@ -218,11 +231,11 @@ BEGIN
 	dc.SuportType,
 	(dc.SuportType & 1) Finishing,
 	(dc.SuportType & 2) Archive,
-	(dc.SuportType & 12) Electronic,
-	dbo.[GetFormat4SuportType](28, dc.SuportType, ' /', @SuportTable) ElectronicDesc,
+	(dc.SuportType & @ElectronicBits) Electronic,
+	dbo.[GetFormat4SuportType](@ElectronicBits, dc.SuportType, ' /', @SuportTable) ElectronicDesc,
 	(dc.SuportType & 16) ElectronicHide,
-	(dc.SuportType & 96) EMail,
-	dbo.[GetFormat4SuportType](224, dc.SuportType, ' /', @SuportTable) EMailDesc,
+	(dc.SuportType & @EmailBits) EMail,
+	dbo.[GetFormat4SuportType](@EmailBits, dc.SuportType, ' /', @SuportTable) EMailDesc,
 	(dc.SuportType & 128) EMailHide,
 	dc.[Priority], 
 	--dc.AgingDays, --Descontinuado

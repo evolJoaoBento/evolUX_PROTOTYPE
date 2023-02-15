@@ -204,29 +204,44 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                 TempData["EMailHide"] = "";
                 TempData["Archive"] = "";
                 TempData["Finishing"] = "";
+                TempData["EmailJoin"] = false;
+                TempData["ElectronicJoin"] = false;
                 if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
                 {
                     var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
                     if (evolDP_Desc != null)
                     {
-                        var b = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID");
-                        if (b != null) { TempData["ExceptionLevel1ID"] = b.FieldDescription; }
-                        b = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID");
-                        if (b != null) { TempData["ExceptionLevel2ID"] = b.FieldDescription; }
-                        b = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID");
-                        if (b != null) { TempData["ExceptionLevel3ID"] = b.FieldDescription; }
-                        b = evolDP_Desc.Find(x => x.FieldName == "Electronic");
-                        if (b != null) { TempData["Electronic"] = b.FieldDescription; }
-                        b = evolDP_Desc.Find(x => x.FieldName == "ElectronicHide");
-                        if (b != null) { TempData["ElectronicHide"] = b.FieldDescription; }
-                        b = evolDP_Desc.Find(x => x.FieldName == "EMail");
-                        if (b != null) { TempData["EMail"] = b.FieldDescription; }
-                        b = evolDP_Desc.Find(x => x.FieldName == "EMailHide");
-                        if (b != null) { TempData["EMailHide"] = b.FieldDescription; }
-                        b = evolDP_Desc.Find(x => x.FieldName == "Archive");
-                        if (b != null) { TempData["Archive"] = b.FieldDescription; }
-                        b = evolDP_Desc.Find(x => x.FieldName == "Finishing");
-                        if (b != null) { TempData["Finishing"] = b.FieldDescription; }
+                        bool b = false;
+                        var val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID");
+                        if (val != null) { TempData["ExceptionLevel1ID"] = val.FieldDescription; }
+                        val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID");
+                        if (val != null) { TempData["ExceptionLevel2ID"] = val.FieldDescription; }
+                        val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID");
+                        if (val != null) { TempData["ExceptionLevel3ID"] = val.FieldDescription; }
+                        val = evolDP_Desc.Find(x => x.FieldName == "Electronic");
+                        if (val != null) { TempData["Electronic"] = val.FieldDescription; }
+                        val = evolDP_Desc.Find(x => x.FieldName == "ElectronicHide");
+                        if (val != null) { TempData["ElectronicHide"] = val.FieldDescription; }
+                        val = evolDP_Desc.Find(x => x.FieldName == "EMail");
+                        if (val != null) { TempData["EMail"] = val.FieldDescription; }
+                        val = evolDP_Desc.Find(x => x.FieldName == "EMailHide");
+                        if (val != null) { TempData["EMailHide"] = val.FieldDescription; }
+                        val = evolDP_Desc.Find(x => x.FieldName == "Archive");
+                        if (val != null) { TempData["Archive"] = val.FieldDescription; }
+                        val = evolDP_Desc.Find(x => x.FieldName == "Finishing");
+                        if (val != null) { TempData["Finishing"] = val.FieldDescription; }
+                        val = evolDP_Desc.Find(x => x.FieldName == "EmailJoin");
+                        if (val != null)
+                        {
+                            string v = val.FieldDescription;
+                            if (bool.TryParse(v, out b)) { TempData["EmailJoin"] = b; }
+                        }
+                        val = evolDP_Desc.Find(x => x.FieldName == "ElectronicJoin");
+                        if (val != null)
+                        {
+                            string v = val.FieldDescription;
+                            if (bool.TryParse(v, out b)) { TempData["ElectronicJoin"] = b; }
+                        }
                     }
                 }
 

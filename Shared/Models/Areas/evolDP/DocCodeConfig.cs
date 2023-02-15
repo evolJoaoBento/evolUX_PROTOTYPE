@@ -13,7 +13,7 @@
         public int ServiceTaskID { get; set; }
         public string ServiceTaskCode { get; set; }
         public string ServiceTaskDesc { get; set; }
-        public int SupotType { get; set; }
+        public int SuportType { get; set; }
         public int Finishing { get; set; }
         public int Archive { get; set; }
         public int Electronic { get; set; }

@@ -141,6 +141,12 @@
   <data name="Archive" xml:space="preserve">
     <value>Arquivar</value>
   </data>
+  <data name="Archive0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="Archive1" xml:space="preserve">
+    <value>Sim</value>
+  </data>
   <data name="CaducityDate" xml:space="preserve">
     <value>Data de Caducidade para Produção</value>
   </data>
@@ -171,11 +177,23 @@
   <data name="ElectronicHide" xml:space="preserve">
     <value>Flag adicional</value>
   </data>
+  <data name="ElectronicHide0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="ElectronicHide1" xml:space="preserve">
+    <value>Sim</value>
+  </data>
   <data name="EMail" xml:space="preserve">
     <value>Envio por email</value>
   </data>
   <data name="EMailHide" xml:space="preserve">
     <value>Flag adicional de email</value>
+  </data>
+  <data name="EMailHide0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="EMailHide1" xml:space="preserve">
+    <value>Sim</value>
   </data>
   <data name="EmptyField" xml:space="preserve">
     <value>&amp;lt;vazio&amp;gt;</value>
@@ -212,6 +230,12 @@
   </data>
   <data name="Finishing" xml:space="preserve">
     <value>Envio por papel/correio</value>
+  </data>
+  <data name="Finishing0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="Finishing1" xml:space="preserve">
+    <value>Sim</value>
   </data>
   <data name="IndexAdd" xml:space="preserve">
     <value>Adicionar Tipo de Documento</value>

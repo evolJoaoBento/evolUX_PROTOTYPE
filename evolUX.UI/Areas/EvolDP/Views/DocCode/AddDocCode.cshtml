@@ -16,6 +16,7 @@
 else
 {
     string value;
+    int bitValue = 1;
     string submitTag = "SubmitAdd";
     if (TempData["Source"]?.ToString() == "ChangeDocCodeConfig")
         submitTag = "SubmitChange";
@@ -251,13 +252,131 @@ else
                         }
                         @foreach (ExpeditionsType e in Model.ExpeditionTypes.Where(x => x.ExpeditionType != Model.DocCodeConfig.DocCodeConfigs[0].ExpeditionType))
                         {
-                            value = "ExpeditionType" + Model.DocCodeConfig.DocCodeConfigs[0].ExpeditionType.ToString();
+                                value = "ExpeditionType" + e.ExpeditionType.ToString();
                             <option value="@e.ExpeditionType">@localizer[value]</option>
                         }
                     </select>
                 </td>
             </tr>
-        </tbody>
+                <tr>
+                    <th>@localizer["Archive"]</th>
+                    <td>
+                        <select name="Archive" style="width: 100%">
+                            @{bitValue = 2;}
+                            @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].Archive >= 0)
+                            {
+                                value = "Archive" + (Model.DocCodeConfig.DocCodeConfigs[0].Archive / bitValue).ToString();
+                                <option value="@Model.DocCodeConfig.DocCodeConfigs[0].Archive">@localizer[value]</option>
+                            }
+                            @foreach (GenericOptionValue e in Model.ArchiveList.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].Archive))
+                            {
+                                value = "Archive" + (e.ID / bitValue).ToString();
+                                <option value="@e.ID">@localizer[value]</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>@localizer["Finishing"]</th>
+                    <td>
+                        <select name="Finishing" style="width: 100%">
+                            @{bitValue = 1;}
+                            @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].Finishing >= 0)
+                            {
+                                value = "Finishing" + (Model.DocCodeConfig.DocCodeConfigs[0].Finishing / bitValue).ToString();
+                                <option value="@Model.DocCodeConfig.DocCodeConfigs[0].Finishing">@localizer[value]</option>
+                            }
+                            @foreach (GenericOptionValue e in Model.FinishingList.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].Finishing*1))
+                            {
+                                value = "Finishing" + (e.ID / bitValue).ToString();
+                                    <option value="@e.ID">@localizer[value]</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>@localizer["MaxProdDate"]</th>
+                    <td><input id="MaxProdDate" name="MaxProdDate" type="datetime" value="@Model.DocCodeConfig.DocCodeConfigs[0].MaxProdDate" /></td>
+                </tr>
+                @if (Model.EmailList.List.Count() > 0)
+                {
+                    <tr>
+                    <th>@localizer["EMail"]</th>
+                    <td>
+                        <select name="EMail" style="width: 100%">
+                            @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].Email >= 0)
+                            {
+                                <option value="@Model.DocCodeConfig.DocCodeConfigs[0].Email">@Model.DocCodeConfig.DocCodeConfigs[0].EmailDesc</option>
+                            }
+                            @foreach (GenericOptionValue e in Model.EmailList.List.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].Email))
+                            {
+                                <option value="@e.ID">@e.Description</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                }
+                @if (!(bool)TempData["EmailJoin"] && Model.EmailList.HideList.Count() > 0)
+                {
+                    <tr>
+                        <th>@localizer["EMailHide"]</th>
+                        <td>
+                            <select name="EMailHide" style="width: 100%">
+                             @{bitValue = 128;}
+                               @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].EmailHide >= 0)
+                                {
+                                    value = "EMailHide" + (Model.DocCodeConfig.DocCodeConfigs[0].EmailHide / bitValue).ToString();
+                                    <option value="@Model.DocCodeConfig.DocCodeConfigs[0].EmailHide">@localizer[value]</option>
+                                }
+                                @foreach (GenericOptionValue e in Model.EmailList.HideList.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].EmailHide))
+                                {
+                                    value = "EMailHide" + (e.ID / bitValue).ToString();
+                                    <option value="@e.ID">@localizer[value]</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                }
+                @if (Model.ElectronicList.List.Count() > 0)
+                {
+                    <tr>
+                    <th>@localizer["Electronic"]</th>
+                    <td>
+                        <select name="Electronic" style="width: 100%">
+                            @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].Electronic >= 0)
+                            {
+                                <option value="@Model.DocCodeConfig.DocCodeConfigs[0].Electronic">@Model.DocCodeConfig.DocCodeConfigs[0].ElectronicDesc</option>
+                            }
+                            @foreach (GenericOptionValue e in Model.ElectronicList.List.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].Electronic))
+                            {
+                                <option value="@e.ID">@e.Description</option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+                }
+                @if (!(bool)TempData["ElectronicJoin"] && Model.ElectronicList.HideList.Count() > 0)
+                {
+                    <tr>
+                        <th>@localizer["ElectronicHide"]</th>
+                        <td>
+                            <select name="EMailHide" style="width: 100%">
+                                @{bitValue = 16;}
+                                @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].ElectronicHide >= 0)
+                                {
+                                    value = "ElectronicHide" + (Model.DocCodeConfig.DocCodeConfigs[0].ElectronicHide / bitValue).ToString();
+                                    <option value="@Model.DocCodeConfig.DocCodeConfigs[0].ElectronicHide">@localizer[value]</option>
+                                }
+                                @foreach (GenericOptionValue e in Model.ElectronicList.HideList.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].ElectronicHide))
+                                {
+                                    value = "ElectronicHide" + (e.ID / bitValue).ToString();
+                                    <option value="@e.ID">@localizer[value]</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                }
+            </tbody>
         <tfoot id="bootstrap-overrides">
             <tr>
                 <td colspan="2">
