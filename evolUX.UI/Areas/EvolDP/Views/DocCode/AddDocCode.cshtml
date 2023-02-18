@@ -47,6 +47,9 @@ else
         ArchiveLabel = localizer["Archive"].Value;
     if (string.IsNullOrEmpty(FinishingLabel))
         FinishingLabel = localizer["Finishing"].Value;
+    DocCodeConfig? dConfig = null;
+    if (Model.DocCodeConfig.DocCodeConfigs != null && Model.DocCodeConfig.DocCodeConfigs.Count() > 0)
+        dConfig = Model.DocCodeConfig.DocCodeConfigs[0];
 <form id="AddDocDocConfigFrm" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="RegistDocCodeConfig">
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
@@ -180,7 +183,7 @@ else
                     <input id=PrintMatchCode name=PrintMatchCode type="text" maxlength="10" style="width: 100%" value="@Model.DocCodeConfig.PrintMatchCode" />
                 </td>
             </tr>
-            @if(TempData["Source"]?.ToString() != "ChangeDocCodeConfig" && Model.DocCodeConfig.DocCodeConfigs[0].IsEditable)
+            @if (dConfig == null || (TempData["Source"]?.ToString() != "ChangeDocCodeConfig" && dConfig.IsEditable))
             {
                 <tr>
                     <th>@localizer["StartDate"]</th>
@@ -191,18 +194,18 @@ else
             {
                 <tr>
                     <th>@localizer["StartDate"]</th>
-                    <td>@DateTime.ParseExact(Model.DocCodeConfig.DocCodeConfigs[0].StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToShortDateString()" /></td>
+                    <td>@DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToShortDateString()" /></td>
                 </tr>
             }
             <tr>
                 <th>@localizer["EnvMedia"]</th>
                 <td>
                     <select name="EnvMediaID" style="width: 100%">
-                    @if(Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].EnvMediaID > 0)
+                    @if (dConfig != null && dConfig.EnvMediaID > 0)
                     {
-                        <option value="@Model.DocCodeConfig.DocCodeConfigs[0].EnvMediaID">@Model.DocCodeConfig.DocCodeConfigs[0].EnvMediaDesc</option>
+                        <option value="@dConfig?.EnvMediaID">@dConfig.EnvMediaDesc</option>
                     }
-                    @foreach (EnvelopeMedia e in Model.EnvMediaGroups.Where(x => x.EnvMediaGroupID != Model.DocCodeConfig.DocCodeConfigs[0].EnvMediaID))
+                    @foreach (EnvelopeMedia e in Model.EnvMediaGroups.Where(x => dConfig?.EnvMediaID == null || x.EnvMediaGroupID != dConfig?.EnvMediaID))
                     {
                         <option value="@e.EnvMediaGroupID">@e.Description</option>
                     }
@@ -213,12 +216,12 @@ else
                 <th>@localizer["AggrCompatibility"]</th>
                 <td>
                     <select name="AggrCompatibility" style="width: 100%">
-                        @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].AggrCompatibility >= 0)
+                        @if (dConfig != null && dConfig?.AggrCompatibility >= 0)
                         {
-                            value = "AggCompatibility" + Model.DocCodeConfig.DocCodeConfigs[0].AggrCompatibility.ToString();
-                            <option value="@Model.DocCodeConfig.DocCodeConfigs[0].AggrCompatibility">@localizer[@value]</option>
+                            value = "AggCompatibility" + dConfig.AggrCompatibility.ToString();
+                            <option value="@dConfig.AggrCompatibility">@localizer[@value]</option>
                         }
-                        @foreach (int a in Model.AggregationList.Where(x => x != Model.DocCodeConfig.DocCodeConfigs[0].AggrCompatibility))
+                        @foreach (int a in Model.AggregationList.Where(x => (dConfig == null || x != dConfig.AggrCompatibility)))
                         {
                             value = "AggCompatibility" + a.ToString();
                             <option value="@a">@localizer[value]</option>
@@ -230,11 +233,11 @@ else
                 <th>@localizer["ExpCompany"] / @localizer["ServiceTask"]</th>
                 <td>
                     <select name="ExpCode" style="width: 100%">
-                        @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && !string.IsNullOrEmpty(Model.DocCodeConfig.DocCodeConfigs[0].ExpCode))
+                        @if (dConfig != null &&  !string.IsNullOrEmpty(dConfig.ExpCode))
                         {
-                            <option value="@Model.DocCodeConfig.DocCodeConfigs[0].ExpCode">@Model.DocCodeConfig.DocCodeConfigs[0].ExpCompanyName / @Model.DocCodeConfig.DocCodeConfigs[0].ServiceTaskDesc</option>
+                            <option value="@dConfig.ExpCode">@dConfig.ExpCompanyName / @dConfig.ServiceTaskDesc</option>
                         }
-                        @foreach (ExpCompanyServiceTask e in Model.ExpCodeList.Where(x => x.ExpCode != Model.DocCodeConfig.DocCodeConfigs[0].ExpCode))
+                        @foreach (ExpCompanyServiceTask e in Model.ExpCodeList.Where(x => (dConfig == null || x.ExpCode != dConfig.ExpCode)))
                         {
                             <option value="@e.ExpCode">@Model.ExpCompanies.First(x => x.ID == e.ExpCompanyID).CompanyName / @Model.ServiceTasks.First(x => x.ServiceTaskID == e.ServiceTaskID).ServiceTaskDesc</option>
                         }
@@ -245,12 +248,12 @@ else
                 <th>@localizer["ExpeditionType"]</th>
                 <td>
                     <select name="ExpeditionType" style="width: 100%">
-                        @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].ExpeditionType > 0)
+                        @if (dConfig != null && dConfig.ExpeditionType > 0)
                         {
-                            value = "ExpeditionType" + Model.DocCodeConfig.DocCodeConfigs[0].ExpeditionType.ToString();
-                            <option value="@Model.DocCodeConfig.DocCodeConfigs[0].ExpeditionType">@localizer[value]</option>
+                            value = "ExpeditionType" + dConfig.ExpeditionType.ToString();
+                            <option value="@dConfig.ExpeditionType">@localizer[value]</option>
                         }
-                        @foreach (ExpeditionsType e in Model.ExpeditionTypes.Where(x => x.ExpeditionType != Model.DocCodeConfig.DocCodeConfigs[0].ExpeditionType))
+                        @foreach (ExpeditionsType e in Model.ExpeditionTypes.Where(x => (dConfig == null || x.ExpeditionType != dConfig.ExpeditionType)))
                         {
                                 value = "ExpeditionType" + e.ExpeditionType.ToString();
                             <option value="@e.ExpeditionType">@localizer[value]</option>
@@ -263,12 +266,12 @@ else
                     <td>
                         <select name="Archive" style="width: 100%">
                             @{bitValue = 2;}
-                            @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].Archive >= 0)
+                            @if (dConfig != null && dConfig.Archive >= 0)
                             {
-                                value = "Archive" + (Model.DocCodeConfig.DocCodeConfigs[0].Archive / bitValue).ToString();
-                                <option value="@Model.DocCodeConfig.DocCodeConfigs[0].Archive">@localizer[value]</option>
+                                value = "Archive" + (dConfig.Archive / bitValue).ToString();
+                                <option value="@dConfig.Archive">@localizer[value]</option>
                             }
-                            @foreach (GenericOptionValue e in Model.ArchiveList.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].Archive))
+                            @foreach (GenericOptionValue e in Model.ArchiveList.Where(x => (dConfig == null || x.ID != dConfig.Archive)))
                             {
                                 value = "Archive" + (e.ID / bitValue).ToString();
                                 <option value="@e.ID">@localizer[value]</option>
@@ -281,12 +284,12 @@ else
                     <td>
                         <select name="Finishing" style="width: 100%">
                             @{bitValue = 1;}
-                            @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].Finishing >= 0)
+                            @if (dConfig != null && dConfig.Finishing >= 0)
                             {
-                                value = "Finishing" + (Model.DocCodeConfig.DocCodeConfigs[0].Finishing / bitValue).ToString();
-                                <option value="@Model.DocCodeConfig.DocCodeConfigs[0].Finishing">@localizer[value]</option>
+                                value = "Finishing" + (dConfig.Finishing / bitValue).ToString();
+                                <option value="@dConfig.Finishing">@localizer[value]</option>
                             }
-                            @foreach (GenericOptionValue e in Model.FinishingList.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].Finishing*1))
+                            @foreach (GenericOptionValue e in Model.FinishingList.Where(x => (dConfig == null || x.ID != dConfig.Finishing * 1)))
                             {
                                 value = "Finishing" + (e.ID / bitValue).ToString();
                                     <option value="@e.ID">@localizer[value]</option>
@@ -295,8 +298,16 @@ else
                     </td>
                 </tr>
                 <tr>
+                    @if (dConfig != null)
+                    {
+                        value = dConfig.MaxProdDate;
+                    }
+                    else
+                    {
+                        value = "dd/mm/yyyy";
+                    }
                     <th>@localizer["MaxProdDate"]</th>
-                    <td><input id="MaxProdDate" name="MaxProdDate" type="datetime" value="@Model.DocCodeConfig.DocCodeConfigs[0].MaxProdDate" /></td>
+                    <td><input id="MaxProdDate" name="MaxProdDate" type="datetime" value="@value" /></td>
                 </tr>
                 @if (Model.EmailList.List.Count() > 0)
                 {
@@ -304,11 +315,11 @@ else
                     <th>@localizer["EMail"]</th>
                     <td>
                         <select name="EMail" style="width: 100%">
-                            @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].Email >= 0)
+                            @if (dConfig != null && dConfig.Email >= 0)
                             {
-                                <option value="@Model.DocCodeConfig.DocCodeConfigs[0].Email">@Model.DocCodeConfig.DocCodeConfigs[0].EmailDesc</option>
+                                <option value="@dConfig.Email">@dConfig.EmailDesc</option>
                             }
-                            @foreach (GenericOptionValue e in Model.EmailList.List.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].Email))
+                            @foreach (GenericOptionValue e in Model.EmailList.List.Where(x => (dConfig == null || x.ID != dConfig.Email)))
                             {
                                 <option value="@e.ID">@e.Description</option>
                             }
@@ -323,12 +334,12 @@ else
                         <td>
                             <select name="EMailHide" style="width: 100%">
                              @{bitValue = 128;}
-                               @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].EmailHide >= 0)
+                                @if (dConfig != null && dConfig.EmailHide >= 0)
                                 {
-                                    value = "EMailHide" + (Model.DocCodeConfig.DocCodeConfigs[0].EmailHide / bitValue).ToString();
-                                    <option value="@Model.DocCodeConfig.DocCodeConfigs[0].EmailHide">@localizer[value]</option>
+                                    value = "EMailHide" + (dConfig.EmailHide / bitValue).ToString();
+                                    <option value="@dConfig.EmailHide">@localizer[value]</option>
                                 }
-                                @foreach (GenericOptionValue e in Model.EmailList.HideList.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].EmailHide))
+                                @foreach (GenericOptionValue e in Model.EmailList.HideList.Where(x => (dConfig == null || x.ID != dConfig.EmailHide)))
                                 {
                                     value = "EMailHide" + (e.ID / bitValue).ToString();
                                     <option value="@e.ID">@localizer[value]</option>
@@ -343,11 +354,11 @@ else
                     <th>@localizer["Electronic"]</th>
                     <td>
                         <select name="Electronic" style="width: 100%">
-                            @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].Electronic >= 0)
+                            @if (dConfig != null && dConfig.Electronic >= 0)
                             {
-                                <option value="@Model.DocCodeConfig.DocCodeConfigs[0].Electronic">@Model.DocCodeConfig.DocCodeConfigs[0].ElectronicDesc</option>
+                                <option value="@dConfig.Electronic">@dConfig.ElectronicDesc</option>
                             }
-                            @foreach (GenericOptionValue e in Model.ElectronicList.List.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].Electronic))
+                            @foreach (GenericOptionValue e in Model.ElectronicList.List.Where(x => (dConfig == null || x.ID != dConfig.Electronic)))
                             {
                                 <option value="@e.ID">@e.Description</option>
                             }
@@ -362,12 +373,12 @@ else
                         <td>
                             <select name="EMailHide" style="width: 100%">
                                 @{bitValue = 16;}
-                                @if (Model.DocCodeConfig.DocCodeConfigs.Count > 0 && Model.DocCodeConfig.DocCodeConfigs[0].ElectronicHide >= 0)
+                                @if (dConfig != null && dConfig.ElectronicHide >= 0)
                                 {
-                                    value = "ElectronicHide" + (Model.DocCodeConfig.DocCodeConfigs[0].ElectronicHide / bitValue).ToString();
-                                    <option value="@Model.DocCodeConfig.DocCodeConfigs[0].ElectronicHide">@localizer[value]</option>
+                                    value = "ElectronicHide" + (dConfig.ElectronicHide / bitValue).ToString();
+                                    <option value="@dConfig.ElectronicHide">@localizer[value]</option>
                                 }
-                                @foreach (GenericOptionValue e in Model.ElectronicList.HideList.Where(x => x.ID != Model.DocCodeConfig.DocCodeConfigs[0].ElectronicHide))
+                                @foreach (GenericOptionValue e in Model.ElectronicList.HideList.Where(x => (dConfig == null || x.ID != dConfig.ElectronicHide)))
                                 {
                                     value = "ElectronicHide" + (e.ID / bitValue).ToString();
                                     <option value="@e.ID">@localizer[value]</option>
