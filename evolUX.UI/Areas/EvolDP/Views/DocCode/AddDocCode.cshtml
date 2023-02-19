@@ -255,7 +255,7 @@ else
                         }
                         @foreach (ExpeditionsType e in Model.ExpeditionTypes.Where(x => (dConfig == null || x.ExpeditionType != dConfig.ExpeditionType)))
                         {
-                                value = "ExpeditionType" + e.ExpeditionType.ToString();
+                            value = "ExpeditionType" + e.ExpeditionType.ToString();
                             <option value="@e.ExpeditionType">@localizer[value]</option>
                         }
                     </select>
@@ -268,7 +268,7 @@ else
                             @{bitValue = 2;}
                             @if (dConfig != null && dConfig.Archive >= 0)
                             {
-                                value = "Archive" + (dConfig.Archive / bitValue).ToString();
+                                value = Model.ArchiveList.FirstOrDefault(x => x.ID == dConfig.Archive).Code;
                                 <option value="@dConfig.Archive">@localizer[value]</option>
                             }
                             @foreach (GenericOptionValue e in Model.ArchiveList.Where(x => (dConfig == null || x.ID != dConfig.Archive)))
@@ -283,16 +283,14 @@ else
                     <th>@localizer["Finishing"]</th>
                     <td>
                         <select name="Finishing" style="width: 100%">
-                            @{bitValue = 1;}
                             @if (dConfig != null && dConfig.Finishing >= 0)
                             {
-                                value = "Finishing" + (dConfig.Finishing / bitValue).ToString();
+                                value = Model.FinishingList.FirstOrDefault(x => x.ID == dConfig.Finishing).Code;
                                 <option value="@dConfig.Finishing">@localizer[value]</option>
                             }
-                            @foreach (GenericOptionValue e in Model.FinishingList.Where(x => (dConfig == null || x.ID != dConfig.Finishing * 1)))
+                            @foreach (GenericOptionValue e in Model.FinishingList.Where(x => (dConfig == null || x.ID != dConfig.Finishing)))
                             {
-                                value = "Finishing" + (e.ID / bitValue).ToString();
-                                    <option value="@e.ID">@localizer[value]</option>
+                                <option value="@e.ID">@localizer[e.Code]</option>
                             }
                         </select>
                     </td>
@@ -309,7 +307,7 @@ else
                     <th>@localizer["MaxProdDate"]</th>
                     <td><input id="MaxProdDate" name="MaxProdDate" type="datetime" value="@value" /></td>
                 </tr>
-                @if (Model.EmailList.List.Count() > 0)
+                @if (Model.EmailList.List.Count() > 1)
                 {
                     <tr>
                     <th>@localizer["EMail"]</th>
@@ -317,17 +315,18 @@ else
                         <select name="EMail" style="width: 100%">
                             @if (dConfig != null && dConfig.Email >= 0)
                             {
-                                <option value="@dConfig.Email">@dConfig.EmailDesc</option>
+                                value = Model.EmailList.List.FirstOrDefault(x => x.ID == dConfig.Email).Code;
+                                <option value="@dConfig.Email">@localizer[value]</option>
                             }
-                            @foreach (GenericOptionValue e in Model.EmailList.List.Where(x => (dConfig == null || x.ID != dConfig.Email)))
+                            @foreach (GenericOptionValue e in Model.EmailList.List.Where(x => (dConfig == null || x.ID != dConfig.Email)).OrderBy(x => x.ID))
                             {
-                                <option value="@e.ID">@e.Description</option>
+                                <option value="@e.ID">@localizer[e.Code]</option>
                             }
                         </select>
                     </td>
                 </tr>
                 }
-                @if (!(bool)TempData["EmailJoin"] && Model.EmailList.HideList.Count() > 0)
+                @if (!(bool)TempData["EmailJoin"] && Model.EmailList.HideList.Count() > 1)
                 {
                     <tr>
                         <th>@localizer["EMailHide"]</th>
@@ -336,19 +335,18 @@ else
                              @{bitValue = 128;}
                                 @if (dConfig != null && dConfig.EmailHide >= 0)
                                 {
-                                    value = "EMailHide" + (dConfig.EmailHide / bitValue).ToString();
+                                    value = Model.EmailList.HideList.FirstOrDefault(x => x.ID == dConfig.EmailHide).Code;
                                     <option value="@dConfig.EmailHide">@localizer[value]</option>
                                 }
-                                @foreach (GenericOptionValue e in Model.EmailList.HideList.Where(x => (dConfig == null || x.ID != dConfig.EmailHide)))
+                                @foreach (GenericOptionValue e in Model.EmailList.HideList.Where(x => (dConfig == null || x.ID != dConfig.EmailHide)).OrderBy(x => x.ID))
                                 {
-                                    value = "EMailHide" + (e.ID / bitValue).ToString();
-                                    <option value="@e.ID">@localizer[value]</option>
+                                    <option value="@e.ID">@localizer[e.Code]</option>
                                 }
                             </select>
                         </td>
                     </tr>
                 }
-                @if (Model.ElectronicList.List.Count() > 0)
+                @if (Model.ElectronicList.List.Count() > 1)
                 {
                     <tr>
                     <th>@localizer["Electronic"]</th>
@@ -358,15 +356,15 @@ else
                             {
                                 <option value="@dConfig.Electronic">@dConfig.ElectronicDesc</option>
                             }
-                            @foreach (GenericOptionValue e in Model.ElectronicList.List.Where(x => (dConfig == null || x.ID != dConfig.Electronic)))
+                                @foreach (GenericOptionValue e in Model.ElectronicList.List.Where(x => (dConfig == null || x.ID != dConfig.Electronic)).OrderBy(x => x.ID))
                             {
-                                <option value="@e.ID">@e.Description</option>
+                                <option value="@e.ID">@localizer[e.Code]</option>
                             }
                         </select>
                     </td>
                 </tr>
                 }
-                @if (!(bool)TempData["ElectronicJoin"] && Model.ElectronicList.HideList.Count() > 0)
+                @if (!(bool)TempData["ElectronicJoin"] && Model.ElectronicList.HideList.Count() > 1)
                 {
                     <tr>
                         <th>@localizer["ElectronicHide"]</th>
@@ -375,13 +373,12 @@ else
                                 @{bitValue = 16;}
                                 @if (dConfig != null && dConfig.ElectronicHide >= 0)
                                 {
-                                    value = "ElectronicHide" + (dConfig.ElectronicHide / bitValue).ToString();
+                                    value = Model.ElectronicList.HideList.FirstOrDefault(x => x.ID == dConfig.ElectronicHide).Code;
                                     <option value="@dConfig.ElectronicHide">@localizer[value]</option>
                                 }
-                                @foreach (GenericOptionValue e in Model.ElectronicList.HideList.Where(x => (dConfig == null || x.ID != dConfig.ElectronicHide)))
+                                @foreach (GenericOptionValue e in Model.ElectronicList.HideList.Where(x => (dConfig == null || x.ID != dConfig.ElectronicHide)).OrderBy(x => x.ID))
                                 {
-                                    value = "ElectronicHide" + (e.ID / bitValue).ToString();
-                                    <option value="@e.ID">@localizer[value]</option>
+                                    <option value="@e.ID">@localizer[e.Code]</option>
                                 }
                             </select>
                         </td>

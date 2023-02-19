@@ -140,28 +140,42 @@ BEGIN
 		END
 	END
 
+	CREATE TABLE #OPTION_LIST
+	([ID] int NOT NULL,
+	 [Code] varchar(20) NOT NULL,
+	 [Description] varchar(256))
+
+
 	IF (@Option = 'Finishing' OR @Option = 'Archive' OR @Option = 'ElectronicHide' OR @Option = 'EmailHide')
 	BEGIN
+		INSERT INTO #OPTION_LIST([ID], [Code], [Description])
 		SELECT DISTINCT 
 			CASE @Option 
 				WHEN 'Finishing' THEN Finishing*1 
 				WHEN 'Archive' THEN Archive*2 
 				WHEN 'ElectronicHide' THEN ElectronicHide*16 
 				WHEN 'EmailHide' THEN EmailHide*128 
-			END [ID],
+			END,
+			@Option + CASE @Option 
+				WHEN 'Finishing' THEN CAST(Finishing as varchar) 
+				WHEN 'Archive' THEN CAST(Archive as varchar) 
+				WHEN 'ElectronicHide' THEN CAST(ElectronicHide as varchar) 
+				WHEN 'EmailHide' THEN CAST(EmailHide as varchar) 
+			END,
 			CASE @Option 
 				WHEN 'Finishing' THEN CAST(Finishing as varchar) 
 				WHEN 'Archive' THEN CAST(Archive as varchar) 
 				WHEN 'ElectronicHide' THEN CAST(ElectronicHide as varchar) 
 				WHEN 'EmailHide' THEN CAST(EmailHide as varchar) 
-			END [Description]
+			END
 		FROM RDC_SUPORT_TYPE WITH(NOLOCK)
 	END
 	ELSE
 	BEGIN
 		IF (@Option = 'Email')
 		BEGIN
-			SELECT SuportTypeValue [ID], SuportStream [Description]
+			INSERT INTO #OPTION_LIST([ID], [Code], [Description])
+			SELECT SuportTypeValue [ID], SuportStream [Code], SuportTypeDescription [Description]
 			FROM RDC_SUPORT_TYPE_REFERENCE
 			WHERE SuportTypeValue & 224 > 0
 		END
@@ -169,18 +183,30 @@ BEGIN
 		BEGIN
 			IF (@Option = 'Electronic')
 			BEGIN
-				SELECT SuportTypeValue [ID], SuportStream [Description]
+				INSERT INTO #OPTION_LIST([ID], [Code], [Description])
+				SELECT SuportTypeValue [ID], SuportStream [Code], SuportTypeDescription [Description]
 				FROM RDC_SUPORT_TYPE_REFERENCE
 				WHERE SuportTypeValue & 28 > 0
 			END
 			ELSE
 			BEGIN
-				SELECT SuportTypeValue [ID], SuportStream [Description]
+				INSERT INTO #OPTION_LIST([ID], [Code], [Description])
+				SELECT SuportTypeValue [ID], SuportStream [Code], SuportTypeDescription [Description]
 				FROM RDC_SUPORT_TYPE_REFERENCE
 				WHERE SuportTypeValue is NULL
 			END
 		END
+		IF ((SELECT COUNT(1) FROM #OPTION_LIST) > 0)
+		BEGIN
+			INSERT INTO #OPTION_LIST([ID], [Code], [Description])
+			SELECT 0 [ID], @Option + '0' [Code], @Option [Description]
+		END
 	END
+
+	SELECT [ID], [Code], [Description]
+	FROM #OPTION_LIST
+
+	DROP TABLE #OPTION_LIST
 END
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_DOCCODE_CONFIG]') AND type in (N'P', N'PC'))
 BEGIN
