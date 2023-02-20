@@ -252,6 +252,12 @@
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
+  <data name="Other" xml:space="preserve">
+    <value>Outros Formatos</value>
+  </data>
+  <data name="Other0" xml:space="preserve">
+    <value>Não</value>
+  </data>
   <data name="PrintMatchCode" xml:space="preserve">
     <value>Grupo de Serviços de Impressão</value>
   </data>

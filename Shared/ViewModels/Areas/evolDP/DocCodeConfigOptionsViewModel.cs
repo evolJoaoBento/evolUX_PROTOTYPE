@@ -14,11 +14,10 @@ namespace Shared.ViewModels.Areas.evolDP
         public IEnumerable<Company> ExpCompanies { get; set; }
         public IEnumerable<ExpeditionsType> ExpeditionTypes{ get; set; }
         public IEnumerable<ServiceTask> ServiceTasks{ get; set; }
-        public IEnumerable<GenericOptionValue> FinishingList{ get; set; }
-        public IEnumerable<GenericOptionValue> ArchiveList{ get; set; }
-        public GenericOptionList EmailList { get; set; } = new GenericOptionList();
-        public GenericOptionList ElectronicList { get; set; } = new GenericOptionList();
-
-
+        //public IEnumerable<GenericOptionValue> FinishingList{ get; set; }
+        //public IEnumerable<GenericOptionValue> ArchiveList{ get; set; }
+        //public GenericOptionList EmailList { get; set; } = new GenericOptionList();
+        //public GenericOptionList ElectronicList { get; set; } = new GenericOptionList();
+        public GenericOptionList SuportTypeList{ get; set; }
     }
 }

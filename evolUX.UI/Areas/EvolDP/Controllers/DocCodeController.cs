@@ -12,7 +12,9 @@ using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.evolDP;
 using System.Data;
+using System.Globalization;
 using System.Net;
+using System.Reflection;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
@@ -195,52 +197,45 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                     result.ExpCompanies = JsonConvert.DeserializeObject<List<Company>>(ExpCompanyList);
 
                 string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
+                string cultureCode = CultureInfo.CurrentCulture.Name;
+                if (!string.IsNullOrEmpty(cultureCode))
+                    cultureCode = cultureCode.Substring(0,2);
                 TempData["ExceptionLevel1ID"] = "";
                 TempData["ExceptionLevel2ID"] = "";
                 TempData["ExceptionLevel3ID"] = "";
-                TempData["Electronic"] = "";
-                TempData["ElectronicHide"] = "";
-                TempData["EMail"] = "";
-                TempData["EMailHide"] = "";
-                TempData["Archive"] = "";
-                TempData["Finishing"] = "";
-                TempData["EmailJoin"] = false;
-                TempData["ElectronicJoin"] = false;
+                foreach (GenericOptionValue option in result.SuportTypeList.List)
+                    TempData[option.Code] = "";
+                foreach (GenericOptionValue option in result.SuportTypeList.OptionList)
+                    TempData[option.GroupCode] = "";
                 if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
                 {
                     var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
                     if (evolDP_Desc != null)
                     {
                         bool b = false;
-                        var val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID");
+                        var val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID" + "_" + cultureCode);
+                        if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID"); }
                         if (val != null) { TempData["ExceptionLevel1ID"] = val.FieldDescription; }
-                        val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID");
+
+                        val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID" + "_" + cultureCode);
+                        if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID"); }
                         if (val != null) { TempData["ExceptionLevel2ID"] = val.FieldDescription; }
-                        val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID");
+
+                        val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID" + "_" + cultureCode);
+                        if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID"); }
                         if (val != null) { TempData["ExceptionLevel3ID"] = val.FieldDescription; }
-                        val = evolDP_Desc.Find(x => x.FieldName == "Electronic");
-                        if (val != null) { TempData["Electronic"] = val.FieldDescription; }
-                        val = evolDP_Desc.Find(x => x.FieldName == "ElectronicHide");
-                        if (val != null) { TempData["ElectronicHide"] = val.FieldDescription; }
-                        val = evolDP_Desc.Find(x => x.FieldName == "EMail");
-                        if (val != null) { TempData["EMail"] = val.FieldDescription; }
-                        val = evolDP_Desc.Find(x => x.FieldName == "EMailHide");
-                        if (val != null) { TempData["EMailHide"] = val.FieldDescription; }
-                        val = evolDP_Desc.Find(x => x.FieldName == "Archive");
-                        if (val != null) { TempData["Archive"] = val.FieldDescription; }
-                        val = evolDP_Desc.Find(x => x.FieldName == "Finishing");
-                        if (val != null) { TempData["Finishing"] = val.FieldDescription; }
-                        val = evolDP_Desc.Find(x => x.FieldName == "EmailJoin");
-                        if (val != null)
+
+                        foreach (GenericOptionValue option in result.SuportTypeList.List)
                         {
-                            string v = val.FieldDescription;
-                            if (bool.TryParse(v, out b)) { TempData["EmailJoin"] = b; }
+                            val = evolDP_Desc.Find(x => x.FieldName == option.Code + "_" + cultureCode);
+                            if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == option.Code); }
+                            if (val != null) { TempData[option.Code] = val.FieldDescription; }
                         }
-                        val = evolDP_Desc.Find(x => x.FieldName == "ElectronicJoin");
-                        if (val != null)
-                        {
-                            string v = val.FieldDescription;
-                            if (bool.TryParse(v, out b)) { TempData["ElectronicJoin"] = b; }
+                        foreach (GenericOptionValue option in result.SuportTypeList.OptionList)
+                        { 
+                            val = evolDP_Desc.Find(x => x.FieldName == option.GroupCode + "_" + cultureCode);
+                            if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == option.GroupCode); }
+                            if (val != null) { TempData[option.GroupCode] = val.FieldDescription; }
                         }
                     }
                 }

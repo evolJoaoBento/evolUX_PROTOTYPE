@@ -86,12 +86,32 @@ namespace evolUX.API.Areas.EvolDP.Services
             viewmodel.ExpeditionTypes = await _repository.DocCode.GetExpeditionTypes(null);
             viewmodel.ExpCodeList = await _repository.DocCode.GetExpCompanyServiceTask("");
             viewmodel.ServiceTasks = await _repository.DocCode.GetServiceTasks(null);
-            viewmodel.FinishingList = await _repository.DocCode.GetOptionList("Finishing");
-            viewmodel.ArchiveList = await _repository.DocCode.GetOptionList("Archive");
-            viewmodel.EmailList.List = await _repository.DocCode.GetOptionList("Email");
-            viewmodel.EmailList.HideList = await _repository.DocCode.GetOptionList("EmailHide");
-            viewmodel.ElectronicList.List = await _repository.DocCode.GetOptionList("Electronic");
-            viewmodel.ElectronicList.HideList = await _repository.DocCode.GetOptionList("ElectronicHide");
+            viewmodel.SuportTypeList = await _repository.DocCode.GetSuporTypeOptionList();
+            if (viewmodel.SuportTypeList != null)
+            {
+                List<GenericOptionValue> optionList = new List<GenericOptionValue>();
+                if (viewmodel.SuportTypeList.List != null && viewmodel.SuportTypeList.List.Count() > 0)
+                {
+                    List<string> options = viewmodel.SuportTypeList.List.Select(x => x.GroupCode).Distinct().ToList();
+                    foreach (string option in options)
+                    {
+                        optionList.Add(new GenericOptionValue()
+                        {
+                            ID = viewmodel.SuportTypeList.List.Where(x => x.GroupCode == option && x.ID != 0).Min(x => x.ID),
+                            Code = option,
+                            GroupCode = option
+                        });
+                    }
+                }
+
+                viewmodel.SuportTypeList.OptionList = optionList;
+            }
+            //viewmodel.FinishingList = await _repository.DocCode.GetOptionList("Finishing");
+            //viewmodel.ArchiveList = await _repository.DocCode.GetOptionList("Archive");
+            //viewmodel.EmailList.List = await _repository.DocCode.GetOptionList("Email");
+            //viewmodel.EmailList.HideList = await _repository.DocCode.GetOptionList("EmailHide");
+            //viewmodel.ElectronicList.List = await _repository.DocCode.GetOptionList("Electronic");
+            //viewmodel.ElectronicList.HideList = await _repository.DocCode.GetOptionList("ElectronicHide");
             return viewmodel;
         }
 

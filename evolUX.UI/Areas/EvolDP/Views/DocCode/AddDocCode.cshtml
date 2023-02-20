@@ -8,7 +8,11 @@
 @model DocCodeConfigOptionsViewModel;
 @{
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    var json = JsonConvert.SerializeObject(Model.SuportTypeList);
 }
+<script>
+    var suporTypeList = @Html.Raw(json);
+</script>
 @if (Model == null)
 {
     <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
@@ -16,37 +20,24 @@
 else
 {
     string value;
-    int bitValue = 1;
+    int suportType = 0;
     string submitTag = "SubmitAdd";
     if (TempData["Source"]?.ToString() == "ChangeDocCodeConfig")
         submitTag = "SubmitChange";
+    GenericOptionValue OptionValue;
     string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
     string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
     string ExceptionLevel3IDLabel = TempData["ExceptionLevel3ID"]?.ToString();
-    string ElectronicLabel = TempData["Electronic"]?.ToString();
-    string ElectronicHideLabel = TempData["ElectronicHide"]?.ToString();
-    string EMailLabel = TempData["EMail"]?.ToString();
-    string EMailHideLabel = TempData["EMailHide"]?.ToString();
-    string ArchiveLabel = TempData["Archive"]?.ToString();
-    string FinishingLabel = TempData["Finishing"]?.ToString();
-    if (string.IsNullOrEmpty(ExceptionLevel1IDLabel))
-        ExceptionLevel1IDLabel = localizer["ExceptionLevel1ID"].Value;
-    if (string.IsNullOrEmpty(ExceptionLevel2IDLabel))
-        ExceptionLevel2IDLabel = localizer["ExceptionLevel2ID"].Value;
-    if (string.IsNullOrEmpty(ExceptionLevel2IDLabel))
-        ExceptionLevel3IDLabel = localizer["ExceptionLevel3ID"].Value;
-    if (string.IsNullOrEmpty(ElectronicLabel))
-        ElectronicLabel = localizer["Electronic"].Value;
-    if (string.IsNullOrEmpty(ElectronicHideLabel))
-        ElectronicHideLabel = localizer["ElectronicHide"].Value;
-    if (string.IsNullOrEmpty(EMailLabel))
-        EMailLabel = localizer["EMail"].Value;
-    if (string.IsNullOrEmpty(EMailHideLabel))
-        EMailHideLabel = localizer["EMailHide"].Value;
-    if (string.IsNullOrEmpty(ArchiveLabel))
-        ArchiveLabel = localizer["Archive"].Value;
-    if (string.IsNullOrEmpty(FinishingLabel))
-        FinishingLabel = localizer["Finishing"].Value;
+    foreach (GenericOptionValue option in Model.SuportTypeList.List)
+    {
+        if (string.IsNullOrEmpty(TempData[option.Code]?.ToString()))
+            TempData[option.Code] = localizer[option.Code].Value;
+    }    
+    foreach (GenericOptionValue option in Model.SuportTypeList.OptionList)
+    {
+        if (string.IsNullOrEmpty(TempData[option.GroupCode]?.ToString()))
+            TempData[option.GroupCode] = localizer[option.GroupCode].Value;
+    }
     DocCodeConfig? dConfig = null;
     if (Model.DocCodeConfig.DocCodeConfigs != null && Model.DocCodeConfig.DocCodeConfigs.Count() > 0)
         dConfig = Model.DocCodeConfig.DocCodeConfigs[0];
@@ -261,129 +252,53 @@ else
                     </select>
                 </td>
             </tr>
+            <tr>
+                @if (dConfig != null)
+                {
+                    value = dConfig.MaxProdDate;
+                }
+                else
+                {
+                    value = "dd/mm/yyyy";
+                }
+                <th>@localizer["MaxProdDate"]</th>
+                <td><input id="MaxProdDate" name="MaxProdDate" type="datetime" value="@value" /></td>
+            </tr>
+            @if (dConfig != null && dConfig.SuportType != null)
+            {
+                suportType = dConfig.SuportType;
+            }
+            else
+            {
+                suportType = -1;
+            }
+            @foreach(GenericOptionValue option in Model.SuportTypeList.OptionList)
+            {
                 <tr>
-                    <th>@localizer["Archive"]</th>
+                    <th>@TempData[option.GroupCode].ToString()</th>
                     <td>
-                        <select name="Archive" style="width: 100%">
-                            @{bitValue = 2;}
-                            @if (dConfig != null && dConfig.Archive >= 0)
+                        @if (suportType >= 0)
+                        {
+                            OptionValue = Model.SuportTypeList.List.First(x => x.GroupCode == option.GroupCode && (x.ID & suportType) == x.ID);
+                            suportType = suportType - OptionValue.ID;
+                        }
+                        else
+                        {
+                            OptionValue = null;
+                        }
+                        <select name="@option.GroupCode" id="suportType_@option.GroupCode"  style="width: 100%" onchange="suportTypeChange(this)">
+                            @if (dConfig != null && OptionValue != null)
                             {
-                                value = Model.ArchiveList.FirstOrDefault(x => x.ID == dConfig.Archive).Code;
-                                <option value="@dConfig.Archive">@localizer[value]</option>
+                                <option value="@OptionValue.ID">@TempData[OptionValue.Code]</option>
                             }
-                            @foreach (GenericOptionValue e in Model.ArchiveList.Where(x => (dConfig == null || x.ID != dConfig.Archive)))
+                            @foreach (GenericOptionValue e in Model.SuportTypeList.List.Where(x => x.GroupCode == option.GroupCode && (OptionValue == null || x.ID != OptionValue.ID)))
                             {
-                                value = "Archive" + (e.ID / bitValue).ToString();
-                                <option value="@e.ID">@localizer[value]</option>
+                                <option value="@e.ID">@TempData[e.Code]</option>
                             }
                         </select>
                     </td>
                 </tr>
-                <tr>
-                    <th>@localizer["Finishing"]</th>
-                    <td>
-                        <select name="Finishing" style="width: 100%">
-                            @if (dConfig != null && dConfig.Finishing >= 0)
-                            {
-                                value = Model.FinishingList.FirstOrDefault(x => x.ID == dConfig.Finishing).Code;
-                                <option value="@dConfig.Finishing">@localizer[value]</option>
-                            }
-                            @foreach (GenericOptionValue e in Model.FinishingList.Where(x => (dConfig == null || x.ID != dConfig.Finishing)))
-                            {
-                                <option value="@e.ID">@localizer[e.Code]</option>
-                            }
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    @if (dConfig != null)
-                    {
-                        value = dConfig.MaxProdDate;
-                    }
-                    else
-                    {
-                        value = "dd/mm/yyyy";
-                    }
-                    <th>@localizer["MaxProdDate"]</th>
-                    <td><input id="MaxProdDate" name="MaxProdDate" type="datetime" value="@value" /></td>
-                </tr>
-                @if (Model.EmailList.List.Count() > 1)
-                {
-                    <tr>
-                    <th>@localizer["EMail"]</th>
-                    <td>
-                        <select name="EMail" style="width: 100%">
-                            @if (dConfig != null && dConfig.Email >= 0)
-                            {
-                                value = Model.EmailList.List.FirstOrDefault(x => x.ID == dConfig.Email).Code;
-                                <option value="@dConfig.Email">@localizer[value]</option>
-                            }
-                            @foreach (GenericOptionValue e in Model.EmailList.List.Where(x => (dConfig == null || x.ID != dConfig.Email)).OrderBy(x => x.ID))
-                            {
-                                <option value="@e.ID">@localizer[e.Code]</option>
-                            }
-                        </select>
-                    </td>
-                </tr>
-                }
-                @if (!(bool)TempData["EmailJoin"] && Model.EmailList.HideList.Count() > 1)
-                {
-                    <tr>
-                        <th>@localizer["EMailHide"]</th>
-                        <td>
-                            <select name="EMailHide" style="width: 100%">
-                             @{bitValue = 128;}
-                                @if (dConfig != null && dConfig.EmailHide >= 0)
-                                {
-                                    value = Model.EmailList.HideList.FirstOrDefault(x => x.ID == dConfig.EmailHide).Code;
-                                    <option value="@dConfig.EmailHide">@localizer[value]</option>
-                                }
-                                @foreach (GenericOptionValue e in Model.EmailList.HideList.Where(x => (dConfig == null || x.ID != dConfig.EmailHide)).OrderBy(x => x.ID))
-                                {
-                                    <option value="@e.ID">@localizer[e.Code]</option>
-                                }
-                            </select>
-                        </td>
-                    </tr>
-                }
-                @if (Model.ElectronicList.List.Count() > 1)
-                {
-                    <tr>
-                    <th>@localizer["Electronic"]</th>
-                    <td>
-                        <select name="Electronic" style="width: 100%">
-                            @if (dConfig != null && dConfig.Electronic >= 0)
-                            {
-                                <option value="@dConfig.Electronic">@dConfig.ElectronicDesc</option>
-                            }
-                                @foreach (GenericOptionValue e in Model.ElectronicList.List.Where(x => (dConfig == null || x.ID != dConfig.Electronic)).OrderBy(x => x.ID))
-                            {
-                                <option value="@e.ID">@localizer[e.Code]</option>
-                            }
-                        </select>
-                    </td>
-                </tr>
-                }
-                @if (!(bool)TempData["ElectronicJoin"] && Model.ElectronicList.HideList.Count() > 1)
-                {
-                    <tr>
-                        <th>@localizer["ElectronicHide"]</th>
-                        <td>
-                            <select name="EMailHide" style="width: 100%">
-                                @{bitValue = 16;}
-                                @if (dConfig != null && dConfig.ElectronicHide >= 0)
-                                {
-                                    value = Model.ElectronicList.HideList.FirstOrDefault(x => x.ID == dConfig.ElectronicHide).Code;
-                                    <option value="@dConfig.ElectronicHide">@localizer[value]</option>
-                                }
-                                @foreach (GenericOptionValue e in Model.ElectronicList.HideList.Where(x => (dConfig == null || x.ID != dConfig.ElectronicHide)).OrderBy(x => x.ID))
-                                {
-                                    <option value="@e.ID">@localizer[e.Code]</option>
-                                }
-                            </select>
-                        </td>
-                    </tr>
-                }
+            }
             </tbody>
         <tfoot id="bootstrap-overrides">
             <tr>
@@ -394,4 +309,45 @@ else
         </tfoot>
     </table>
 </form>
+}
+@section Scripts
+{
+    <script type="text/javascript">
+        function suportTypeChange(selectElement)
+        {
+            var suportTypeValue = parseInt(selectElement.value, 10);
+            var suportTypeFilteredList = suporTypeList.ValidList.filter(function (value) {
+                return (suportTypeValue == 0 || (value & suportTypeValue) == suportTypeValue);
+            });
+
+            suportTypeFilteredList.forEach(function(value)
+            {
+                alert(value.toString());
+            })
+            const selectElements = document.querySelectorAll('select[id^="suportType_"]');
+            selectElements.forEach(sElement => {
+                if (sElement.id != selectElement.id)
+                {
+                    var newSPValue = suportTypeValue + parseInt(sElement.value, 10);
+                    var result = suportTypeFilteredList.filter(function (value) {
+                        return (newSPValue == 0 || (value & newSPValue) == newSPValue);
+                    });
+                    if (result.length > 0)
+                        suportTypeValue += parseInt(sElement.value,10);
+                    else
+                    {
+                        let selectedIndex = -1; // initialize to -1 in case the value is not found
+                        for (let i = 0; i < sElement.options.length; i++) {
+                            if (sElement.options[i].value == "0") {
+                                selectedIndex = i;
+                                break;
+                            }
+                        }
+                        sElement.selectedIndex = selectedIndex;
+                    }
+                }
+            });
+            alert(suportTypeValue);
+        }
+    </script>
 }

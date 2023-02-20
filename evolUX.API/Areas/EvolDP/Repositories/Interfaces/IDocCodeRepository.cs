@@ -14,7 +14,8 @@ namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
         public Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(int? expeditionType);
         public Task<IEnumerable<ExpCompanyServiceTask>> GetExpCompanyServiceTask(string expCode);
         public Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID);
-        public Task<IEnumerable<GenericOptionValue>> GetOptionList(string option);
+        public Task<GenericOptionList> GetSuporTypeOptionList();
+        //public Task<IEnumerable<GenericOptionValue>> GetOptionList(string option);
         public Task PostDocCodeConfig(DocCode docCode);
         public Task<IEnumerable<string>> DeleteDocCode(int docCodeID);
         Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(int docCodeID);

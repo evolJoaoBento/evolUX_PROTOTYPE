@@ -19,6 +19,7 @@ using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Models.Areas.Finishing;
 using Shared.Models.General;
+using System.Globalization;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -37,6 +38,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         public async Task<IActionResult> PendingExpedition()
         {
+            string cultureCode = CultureInfo.CurrentCulture.Name;
             string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
             TempData["BusinessCode"] = "";
             if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
@@ -44,7 +46,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
                 if (evolDP_Desc != null) 
                 {
-                    var b = evolDP_Desc.Find(x => x.FieldName == "BusinessCode");
+                    var b = evolDP_Desc.Find(x => x.FieldName == "BusinessCode" + "_" + cultureCode);
+                    if (b == null) { b = evolDP_Desc.Find(x => x.FieldName == "BusinessCode" + "_" + cultureCode); }
                     if (b != null) { TempData["BusinessCode"] = b.FieldDescription; }
                 }
             }
@@ -248,6 +251,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         public async Task<IActionResult> Index()
         {
+            string cultureCode = CultureInfo.CurrentCulture.Name;
             string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
             TempData["BusinessCode"] = "";
             if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
@@ -255,7 +259,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
                 if (evolDP_Desc != null)
                 {
-                    var b = evolDP_Desc.Find(x => x.FieldName == "BusinessCode");
+                    var b = evolDP_Desc.Find(x => x.FieldName == "BusinessCode" + "_" + cultureCode);
+                    if (b == null) { b = evolDP_Desc.Find(x => x.FieldName == "BusinessCode" + "_" + cultureCode); }
                     if (b != null) { TempData["BusinessCode"] = b.FieldDescription; }
                 }
             }
