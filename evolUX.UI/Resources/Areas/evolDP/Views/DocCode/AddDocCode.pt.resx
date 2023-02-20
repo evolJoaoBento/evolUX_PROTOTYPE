@@ -246,6 +246,9 @@
   <data name="IndexAdd" xml:space="preserve">
     <value>Adicionar Tipo de Documento</value>
   </data>
+  <data name="InvalidDate" xml:space="preserve">
+    <value>Configuração de Data Inválida</value>
+  </data>
   <data name="MaxProdDate" xml:space="preserve">
     <value>Data Limite para Retenção</value>
   </data>
