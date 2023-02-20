@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AddDocCodeConfigAdd" xml:space="preserve">
+    <value>Adicionar Configuração para Tipo de Documento</value>
+  </data>
+  <data name="AggCompatibility0" xml:space="preserve">
+    <value>Não Agregável</value>
+  </data>
+  <data name="AggCompatibility1" xml:space="preserve">
+    <value>Agregável com todos</value>
+  </data>
+  <data name="AggCompatibility2" xml:space="preserve">
+    <value>Condicionalmente Agregável (Necessário configurar compatibilidades)</value>
+  </data>
+  <data name="AggCompatibility3" xml:space="preserve">
+    <value>Agregável apenas com o mesmo tipo (Layout/Subtipo)</value>
+  </data>
+  <data name="AggrCompatibility" xml:space="preserve">
+    <value>Tipo de Agregação</value>
+  </data>
+  <data name="ArchCaducityDate" xml:space="preserve">
+    <value>Data de Caducidade em Arquivo</value>
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value>Arquivar</value>
+  </data>
+  <data name="Archive0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="Archive1" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="CaducityDate" xml:space="preserve">
+    <value>Data de Caducidade para Produção</value>
+  </data>
+  <data name="ChangeDocCodeConfigAdd" xml:space="preserve">
+    <value>Alterar Configuração para Tipo de Documento</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detalhe</value>
+  </data>
+  <data name="DocCode" xml:space="preserve">
+    <value>Tipo de Documento</value>
+  </data>
+  <data name="DocCodeAdd" xml:space="preserve">
+    <value>Adicionar Tipo de Documento</value>
+  </data>
+  <data name="DocDescription" xml:space="preserve">
+    <value>Descrição</value>
+  </data>
+  <data name="DocLayout" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="DocType" xml:space="preserve">
+    <value>Subtipo</value>
+  </data>
+  <data name="Electronic" xml:space="preserve">
+    <value>Gerar outros formatos</value>
+  </data>
+  <data name="Electronic0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="ElectronicHide" xml:space="preserve">
+    <value>Flag adicional</value>
+  </data>
+  <data name="ElectronicHide0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="ElectronicHide1" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="EMail" xml:space="preserve">
+    <value>Envio por email</value>
+  </data>
+  <data name="Email0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="EMailHide" xml:space="preserve">
+    <value>Flag adicional de email</value>
+  </data>
+  <data name="EMailHide0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="EMailHide1" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="EmptyField" xml:space="preserve">
+    <value>&amp;lt;vazio&amp;gt;</value>
+  </data>
+  <data name="EnvMedia" xml:space="preserve">
+    <value>Grupo de Envelopes</value>
+  </data>
+  <data name="ExceptionLevel1ID" xml:space="preserve">
+    <value>Exceção Nível 1</value>
+  </data>
+  <data name="ExceptionLevel2ID" xml:space="preserve">
+    <value>Exceção Nível 2</value>
+  </data>
+  <data name="ExceptionLevel3ID" xml:space="preserve">
+    <value>Exceção Nível 3</value>
+  </data>
+  <data name="ExpCompany" xml:space="preserve">
+    <value>Companhia de Expedição</value>
+  </data>
+  <data name="ExpeditionType" xml:space="preserve">
+    <value>Tipo de Expedição</value>
+  </data>
+  <data name="ExpeditionType1" xml:space="preserve">
+    <value>Correio Normal</value>
+  </data>
+  <data name="ExpeditionType2" xml:space="preserve">
+    <value>Correio Prioritário</value>
+  </data>
+  <data name="ExpeditionType3" xml:space="preserve">
+    <value>Correio Registado</value>
+  </data>
+  <data name="ExpeditionType4" xml:space="preserve">
+    <value>Correio Registado c/ Aviso Receção</value>
+  </data>
+  <data name="Finishing" xml:space="preserve">
+    <value>Envio por papel/correio</value>
+  </data>
+  <data name="Finishing0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="Finishing1" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="IndexAdd" xml:space="preserve">
+    <value>Adicionar Tipo de Documento</value>
+  </data>
+  <data name="MaxProdDate" xml:space="preserve">
+    <value>Data Limite para Retenção</value>
+  </data>
+  <data name="NoModelData" xml:space="preserve">
+    <value>Sem Dados</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Outros Formatos</value>
+  </data>
+  <data name="Other0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="PrintMatchCode" xml:space="preserve">
+    <value>Grupo de Serviços de Impressão</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Prioridade</value>
+  </data>
+  <data name="ProdMaxSheets" xml:space="preserve">
+    <value>Limte de Folhas para Agregação</value>
+  </data>
+  <data name="ServiceTask" xml:space="preserve">
+    <value>Tipo de Tratamento</value>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Data Efetiva das configurações</value>
+  </data>
+  <data name="SubmitAdd" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="SubmitChange" xml:space="preserve">
+    <value>Alterar</value>
+  </data>
+</root>

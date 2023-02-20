@@ -31,7 +31,7 @@ else
                     <select name="ServiceCompanyValues">
                         @foreach (Company c in Model.ServiceCompanies)
                         {
-                            <option value="@(c.CompanyID + "|" + c.CompanyCode + "|" + c.CompanyName)">@c.CompanyName</option>
+                            <option value="@(c.ID + "|" + c.CompanyCode + "|" + c.CompanyName)">@c.CompanyName</option>
                         }
                     </select>
                 </td>

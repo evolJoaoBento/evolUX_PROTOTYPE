@@ -5,7 +5,9 @@ END
 GO
 ALTER  PROCEDURE [dbo].[RP_UX_GET_EXPEDITION_REPORTS]
 	@BusinessID int = NULL,
-	@ServiceCompanyList IDList READONLY
+	@ServiceCompanyList IDList READONLY,
+	@FromDate Datetime = NULL,
+	@UntilDate Datetime = NULL
 AS
 BEGIN
 	IF (@BusinessID = 0)
@@ -60,6 +62,8 @@ BEGIN
 		RD_COMPANY sc WITH(NOLOCK)
 	ON sc.CompanyID = pd.ServiceCompanyID
 	WHERE (@BusinessID is NULL OR b.BusinessID = @BusinessID)
+		AND rp.ExpTimeStamp >= ISNULL(@FromDate, DATEADD(YEAR,-1, CURRENT_TIMESTAMP)) 
+		AND rp.ExpTimeStamp <= ISNULL(@UntilDate, CURRENT_TIMESTAMP)
 	ORDER BY pd.ServiceCompanyID, rp.ExpCompanyID, b.CompanyID, b.BusinessID, rp.ExpTimeStamp DESC, ec.ContractID
 END
 GO

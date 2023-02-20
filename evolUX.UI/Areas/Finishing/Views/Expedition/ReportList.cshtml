@@ -41,20 +41,26 @@ else
     {
         string Level0Name = "level";
         string Level1Name = "detail";
+        string Level2Name = "expFile";
+        string Level3Name = "expLevel";
 
-        int count = 0;
-        int level = 0;
-        string idValue = "arrow" + count.ToString();
+        int level0 = 0;
+        int level1 = 0;
+        int level2 = 0;
+        int level3 = 0;
+        string idValue = "arrow" + level1.ToString();
         string nameValue = "";
         string fName = "";
         string fileName = "";
         string fLink = "";
         string rFilename = "";
         string rLink = "";
+
+        int sum = 0;
         @foreach (ExpServiceCompanyFileElement s in Model.ExpeditionList)
         {
-            level++;
-            nameValue = Level0Name + level.ToString();
+            level0++;
+            nameValue = Level0Name + level0.ToString();
             idValue = "arrow" + nameValue;
             <table class="table table-bordered table-sm">
             <thead>
@@ -82,8 +88,8 @@ else
                 <tr><td>
                 <table class="table table-bordered table-sm table-striped">
                 @{
-                    count++;
-                    nameValue = Level1Name + count.ToString();
+                    level1++;
+                    nameValue = Level1Name + level1.ToString();
                     idValue = "arrow" + nameValue;
                 }
                 <thead>
@@ -109,7 +115,7 @@ else
                 </thead>
                 <tbody id="@nameValue">
                     <tr>
-                        <th>@localizer["FileName"]</th>
+                        <th>@localizer["ExpReportName"]</th>
                         <th>@localizer["Registred"]</th>
                         <th>@localizer["ReportTimeStamp"]</th>
                         <th>@localizer["ClientName"]</th>
@@ -152,7 +158,71 @@ else
                         fLink = ViewBag.ExpeditionURL + fileName;
                         rLink = ViewBag.ExpeditionURL + rFilename;
                     <tr>
-                        <td><a target="_blank" href='@fLink'>@fileName</td>
+                        <td>
+                             <a target="_blank" href='@fLink'>@fileName</a>
+                            @if(rp.ExpFileList.Count > 0)
+                            {
+                                level2++;
+                                nameValue = Level2Name + level2.ToString();
+                                idValue = "arrow" + nameValue;
+                                sum = 0;
+                                <a class="bx bx-plus" href="javascript:showDetail('@nameValue')" id="@idValue">
+                                </a>                     
+                                <table id="@nameValue"  class="table table-bordered table-sm table-striped" style="display: none">
+                                    <thead>
+                                       <tr>
+                                            <th>@localizer["FileName"]</th>
+                                            <th>@localizer["TotalPostalObjects"]</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach(ExpFileInfo f in rp.ExpFileList)
+                                        {
+                                            sum = sum + f.TotalPostObjs;
+                                            <tr>
+                                                <td>
+                                                    @f.FileName
+                                                    @if (f.ExpCompanyLevels.Count > 0)
+                                                    {
+                                                        level3++;
+                                                        nameValue = Level3Name + level3.ToString();
+                                                        idValue = "arrow" + nameValue;
+                                                        <a class="bx bx-plus" href="javascript:showDetail('@nameValue')" id="@idValue">
+                                                        </a>
+                                                        <table id="@nameValue"  class="table table-bordered table-sm table-striped" style="display: none">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>@localizer["ExpCompanyLevel"]</th>
+                                                                    <th>@localizer["MaxWeight"]</th>
+                                                                    <th>@localizer["PostalObjects"]</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach (ExpLevelInfo l in f.ExpCompanyLevels)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@l.ExpCompanyLevel</td>
+                                                                        <td>@l.ExpeditionLevelDesc</td>
+                                                                        <td>@l.PostalObjects</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    }
+                                                </td>
+                                                <td>@f.TotalPostObjs</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td>@localizer["Total"]</td>
+                                            <td>@sum</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            }      
+                        </td>
                         @if (!string.IsNullOrEmpty(rp.ExpRegistReportID) && File.Exists(ViewBag.ExpFolder + "\\" + rFilename))
                         {
                         <td><a target="_blank" href='@rLink'>@rp.ExpRegistReportID</td>

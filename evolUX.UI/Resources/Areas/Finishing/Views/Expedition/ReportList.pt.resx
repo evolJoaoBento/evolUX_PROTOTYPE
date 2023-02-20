@@ -123,22 +123,58 @@
   <data name="Business" xml:space="preserve">
     <value>Área de Negócio</value>
   </data>
+  <data name="ClientName" xml:space="preserve">
+    <value>Cliente Expedidor</value>
+  </data>
+  <data name="ClientNr" xml:space="preserve">
+    <value>Nº Cliente</value>
+  </data>
+  <data name="ContractNr" xml:space="preserve">
+    <value>Nº Contrato</value>
+  </data>
+  <data name="EmptyResult" xml:space="preserve">
+    <value>Não existem Guias de Expedição com menos de um ano</value>
+  </data>
+  <data name="ExpCompanyLevel" xml:space="preserve">
+    <value>Escalão</value>
+  </data>
   <data name="ExpeditionReport" xml:space="preserve">
     <value>Guias de Expedição</value>
   </data>
   <data name="ExpeditionReportList" xml:space="preserve">
     <value>Guias Geradas</value>
   </data>
+  <data name="ExpReportName" xml:space="preserve">
+    <value>Guia de Expedição</value>
+  </data>
   <data name="FileName" xml:space="preserve">
     <value>Ficheiro de Produção</value>
+  </data>
+  <data name="MaxWeight" xml:space="preserve">
+    <value>Peso Máximo</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
+  <data name="PostalObjects" xml:space="preserve">
+    <value>Nº de Objectos Postais</value>
+  </data>
+  <data name="Registred" xml:space="preserve">
+    <value>Guia de Registos</value>
+  </data>
+  <data name="ReportNr" xml:space="preserve">
+    <value>Nº Guia</value>
+  </data>
+  <data name="ReportTimeStamp" xml:space="preserve">
+    <value>Data/Hora</value>
+  </data>
   <data name="Submit" xml:space="preserve">
     <value>Listar</value>
   </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
   <data name="TotalPostalObjects" xml:space="preserve">
-    <value>Nº de Objectos Postais</value>
+    <value>Objectos Postais</value>
   </data>
 </root>

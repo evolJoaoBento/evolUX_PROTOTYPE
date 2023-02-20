@@ -125,6 +125,19 @@ namespace evolUX.API.Areas.Core.Repositories
                 return dt;
             }
         }
+        public async Task<DataTable> evolDP_DESCRIPTION()
+        {
+            string sql = string.Format(@"SELECT FieldName, FieldDescription
+                        FROM [dbo].[evolDP_DESCRIPTION] WITH(NOLOCK)");
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                connection.Open();
+                var obs = await connection.QueryAsync(sql);
+                DataTable dt = _context.ToDataTable(obs);
+                return dt;
+            }
+        }
 
         public async Task<IEnumerable<SideBarAction>> GetSideBarActions(IEnumerable<int> profiles)
         {

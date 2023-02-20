@@ -119,7 +119,7 @@ namespace evolUX.API.Areas.Finishing.Repositories
                             expContractFile.ClientName = (string)r["ClientName"];
                             lastContractID = contractID;
                         }
-                        ExpFileElement expFile = new ExpFileElement();
+                        FileBase expFile = new FileBase();
                         expContractFile.FileList.Add(expFile);
                         expFile.RunID = runID;
                         expFile.FileID = (int)r["FileID"];
@@ -219,6 +219,37 @@ namespace evolUX.API.Areas.Finishing.Repositories
                         expReport.ExpContract.ContractNr = (int)r["ContractNr"];
                         expReport.ExpContract.ClientNr = (int)r["ClientNr"];
                         expReport.ExpContract.ClientName = (string)r["ClientName"];
+
+                        sql = @"RP_UX_GET_EXPEDITION_REPORT_FILES";
+                        parameters = new DynamicParameters();
+                        parameters.Add("ExpReportID", expReport.ExpReportID, DbType.Int64);
+
+                        var fResult = await connection.QueryAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                        var fileDT = _context.ToDataTable(fResult);
+                        if (fileDT != null)
+                        {
+                            int lastRunID = 0;
+                            int lastFileID = 0;
+                            ExpFileInfo expFile = new ExpFileInfo();
+                            foreach (DataRow f in fileDT.Rows)
+                            {
+                                int RunID = (int)f["RunID"];
+                                int FileID = (int)f["FileID"];
+                                if (lastRunID != RunID || lastFileID != FileID)
+                                {
+                                    expFile = new ExpFileInfo();
+                                    expReport.ExpFileList.Add(expFile);
+
+                                    expFile.RunID = RunID;
+                                    expFile.FileID = FileID;
+                                    expFile.FileName = (string)f["FileName"];
+                                    expFile.TotalPostObjs = (int)f["TotalPostObjs"];
+                                    lastRunID = RunID;
+                                    lastFileID = FileID;
+                                }
+                                expFile.ExpCompanyLevels.Add(new ExpLevelInfo((int)f["ExpCompanyLevel"], f.IsNull("MaxWeight") ? -1 : (int)f["MaxWeight"], (string)f["ExpeditionLevelDesc"], (int)f["PostalObjects"]));
+                            }
+                        }
                     }
                 }
                 return expeditionList;

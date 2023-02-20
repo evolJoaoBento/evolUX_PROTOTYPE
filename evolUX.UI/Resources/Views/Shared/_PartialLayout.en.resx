@@ -153,6 +153,9 @@
   <data name="ActionDocumentTypification" xml:space="preserve">
     <value>Document Typification</value>
   </data>
+  <data name="ActionDocumentTypification_Link" xml:space="preserve">
+    <value>/evolDP/DocCode/Index</value>
+  </data>
   <data name="ActionEnvelopeRange" xml:space="preserve">
     <value>Envelope Range Configuration</value>
   </data>

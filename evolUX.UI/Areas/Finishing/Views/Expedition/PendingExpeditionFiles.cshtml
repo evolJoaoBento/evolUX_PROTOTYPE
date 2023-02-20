@@ -1,4 +1,5 @@
 ﻿@using Shared.ViewModels.Areas.Finishing
+@using Shared.ViewModels.Areas.evolDP
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Shared.Models.Areas.Finishing
 @inject IViewLocalizer localizer
@@ -30,7 +31,7 @@
 }
 else
 {
-    string siteURL = configuration.GetValue<string>("SiteURL");
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
 
     <div id="TitlePage">
         <h1 class="display-4 text-center">@localizer["PendingExpedition"] @ViewBag.BusinessDescription</h1>
@@ -124,7 +125,7 @@ else
                         </tr>
                     @foreach(ExpContractFileElement cc in r.ContractList)
                     {
-                    @foreach (ExpFileElement f in cc.FileList)
+                    @foreach (FileBase f in cc.FileList)
                     {
                         cValue = "Checked" + s.ServiceCompanyCode.ToString()+ "|" + c.ExpCompanyID.ToString() + "|" + r.RunID.ToString();
                         <tr>

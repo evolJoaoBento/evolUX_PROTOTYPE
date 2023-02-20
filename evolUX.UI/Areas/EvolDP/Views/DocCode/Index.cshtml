@@ -1,0 +1,85 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model DocCodeGroupViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    TempData["Source"] = "Index";
+}
+
+<a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode">
+    <img style="background:none; width:50px;height:50px;" src="@siteURL/images/add_doc.png" title="@localizer["AddDocCode"]" />
+</a>
+
+<!--<div>
+    <a class="btn btn-primary" asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevel1">Configurar Companhia</a>
+    <a class="btn btn-primary" asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevel2">Configurar Rede/Canal</a>
+    <a class="btn btn-primary" asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevel3">Configurar Segmento de Cliente</a>
+</div>-->
+@if (Model == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string Level0Name = "level";
+
+    int level = 0;
+    string idValue = "arrow" + level.ToString();
+    string nameValue = "";
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th colspan="3">@localizer["DocCode"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+                @foreach (var dg in Model.DocCodeList)
+                {
+                    level++;
+                    nameValue = Level0Name + level.ToString();
+                    idValue = "arrow" + nameValue;
+                    <tr>
+                        <td>
+                            @dg.DocLayout<a class="bx bx-plus" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <table id="@nameValue" class="table table-sm table-hover table-collapse-seperate" style="display: none">
+                                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                    <tr>
+                                        <th>@localizer["Detail"]</th>
+                                        <th>@localizer["DocLayout"]</th>
+                                        <th>@localizer["DocType"]</th>
+                                        <th>@localizer["DocDescription"]</th>
+                                        <th>@localizer["PrintMatchCode"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bootstrap-overrides">
+                                        @foreach (DocCode d in dg.DocCodes)
+                                        {
+                                        <tr>
+                                        <td><a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(d)"><img style="background:none; width:25px;height:25px;" src="@siteURL/images/list.png" /></a></td>
+                                            <td>@d.DocLayout</td>
+                                            <td>@if (string.IsNullOrEmpty(d.DocType))
+                                                {
+                                                    @localizer["EmptyField"]
+                                                }
+                                                else
+                                                {
+                                                    @d.DocType
+                                                }
+                                            </td>
+                                            <td>@d.DocDescription</td>
+                                            <td>@d.PrintMatchCode</td>
+                                        </tr>
+                                        }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+        </tbody>
+    </table>
+}

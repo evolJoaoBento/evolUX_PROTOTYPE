@@ -65,7 +65,7 @@ namespace evolUX.API.Areas.Finishing.Services
                     fTable.Columns.Add("ID2", typeof(int));
 
                     string filelist = "";
-                    foreach (ExpFileElement f in e.ExpFileList)
+                    foreach (FileBase f in e.ExpFileList)
                     {
                         DataRow row = fTable.NewRow();
                         row["ID1"] = f.RunID;

@@ -1,6 +1,4 @@
 ﻿using evolUX.API.Areas.Core.Services.Interfaces;
-using evolUX.API.Areas.EvolDP.Models;
-using evolUX.API.Areas.EvolDP.ViewModels;
 using evolUX.API.Areas.EvolDP.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -11,6 +9,9 @@ using Newtonsoft.Json.Converters;
 using System.Dynamic;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
 using System.Data.SqlClient;
+using Shared.ViewModels.Areas.evolDP;
+using Shared.Models.Areas.evolDP;
+using System.Globalization;
 
 namespace evolUX.Areas.EvolDP.Controllers
 {
@@ -31,7 +32,7 @@ namespace evolUX.Areas.EvolDP.Controllers
         //TODO: DOCUMENT UNTESTED
         //TODO: HANDLE HTTP RESPONSES
         [HttpGet]
-        [ActionName("DocCode")]
+        [ActionName("DocCodeGroup")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<DocCodeViewModel>> GetDocCodeGroup()
         {
@@ -52,14 +53,19 @@ namespace evolUX.Areas.EvolDP.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-        //TODO: DOCUMENT UNTESTED
-        //TODO: HANDLE HTTP RESPONSES
-        [HttpGet("details")]
+
+        [HttpGet]
         [ActionName("DocCode")]
-        public async Task<ActionResult<DocCodeViewModel>> GetDocCode([FromQuery] string docLayout, [FromQuery] string docType)
+        public async Task<ActionResult<DocCodeViewModel>> GetDocCode([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
+                object obj;
+                dictionary.TryGetValue("DocLayout", out obj);
+                string docLayout = Convert.ToString(obj);
+                dictionary.TryGetValue("DocType", out obj);
+                string docType = Convert.ToString(obj);
+
                 DocCodeViewModel viewmodel = await _docCodeService.GetDocCode(docLayout, docType);
                 _logger.LogInfo("DocCode Get");
                 return Ok(viewmodel);
@@ -78,13 +84,21 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         //TODO: DOCUMENT UNTESTED
         //TODO: HANDLE HTTP RESPONSES
-        [HttpGet("{ID}")]
+        [HttpGet]
         [ActionName("DocCodeConfig")]
-        public async Task<ActionResult<DocCodeConfigViewModel>> GetDocCodeConfig([FromRoute] string ID)
+        public async Task<ActionResult<DocCodeViewModel>> GetDocCodeConfig([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                DocCodeConfigViewModel viewmodel = await _docCodeService.GetDocCodeConfig(ID);
+                object obj;
+                dictionary.TryGetValue("DocCodeID", out obj);
+                int docCodeID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("StartDate", out obj);
+                DateTime? startDate = (DateTime?)obj;
+                dictionary.TryGetValue("MaxDateFlag", out obj);
+                bool? maxDateFlag = (bool?)obj;
+
+                DocCodeViewModel viewmodel = await _docCodeService.GetDocCodeConfig(docCodeID, startDate, maxDateFlag);
                 _logger.LogInfo("DocCodeConfig Get");
                 return Ok(viewmodel);
             }
@@ -100,58 +114,21 @@ namespace evolUX.Areas.EvolDP.Controllers
             }
         }
 
-        //TODO: DOCUMENT UNTESTED
-        //TODO: HANDLE HTTP RESPONSES
-        [HttpGet("{ID}/details")]
-        [ActionName("DocCodeConfig")]
-        public async Task<ActionResult<DocCodeConfigViewModel>> GetDocCodeConfig([FromRoute] string ID, [FromQuery] int startdate)
-        {
-            try
-            {
-                DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
-                List<DocCodeConfig> list = new List<DocCodeConfig>();
-                list.Add(await _docCodeService.GetDocCodeConfig(ID, startdate));
-                viewmodel.DocCodeConfigList = list;
-                _logger.LogInfo("DocCodeConfig Get");
-                return Ok(viewmodel);
-            }
-            catch (SqlException ex)
-            {
-                return StatusCode(503, "Internal Server Error");
-            }
-            catch (Exception ex)
-            {
-                //log error
-                _logger.LogError($"Something went wrong inside Get DocCodeConfig action: {ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
 
-        //TODO: DOCUMENT UNTESTED
-        //TODO: HANDLE HTTP RESPONSES
-        [HttpGet("{ID}")]
+        [HttpGet]
         [ActionName("DocCodeConfigOptions")]
-        public async Task<ActionResult<DocCodeConfigOptionsViewModel>> AddDocCodeConfig([FromRoute] string ID)
+        public async Task<ActionResult<DocCodeConfigOptionsViewModel>> GetDocCodeConfigOptions([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                DocCodeConfigOptionsViewModel viewmodel = new DocCodeConfigOptionsViewModel();
-                viewmodel.DocCodeConfig = await _docCodeService.GetDocCodeConfigOptions(ID);
-                viewmodel.DocExceptionslevel1 = await _docCodeService.GetDocExceptionsLevel1();
-                viewmodel.DocExceptionslevel2 = await _docCodeService.GetDocExceptionsLevel2();
-                viewmodel.DocExceptionslevel3 = await _docCodeService.GetDocExceptionsLevel3();
-                viewmodel.EnvelopeMediaGroups = await _docCodeService.GetEnvelopeMediaGroups(viewmodel.DocCodeConfig.EnvMedia);
-                viewmodel.AggregationList = await _docCodeService.GetAggregationList(viewmodel.DocCodeConfig.AggrCompatibility);
-                viewmodel.ExpeditionCompanies = await _docCodeService.GetExpeditionCompanies(viewmodel.DocCodeConfig.CompanyName);
-                viewmodel.ExpeditionTypes = await _docCodeService.GetExpeditionTypes(viewmodel.DocCodeConfig.ExpeditionType);
-                viewmodel.TreatmentTypes = await _docCodeService.GetTreatmentTypes(viewmodel.DocCodeConfig.TreatmentType);
-                viewmodel.FinishingList = await _docCodeService.GetFinishingList(viewmodel.DocCodeConfig.Finishing);
-                viewmodel.ArchiveList = await _docCodeService.GetArchiveList(viewmodel.DocCodeConfig.Archive);
-                viewmodel.EmailList = await _docCodeService.GetEmailList(viewmodel.DocCodeConfig.Email);
-                viewmodel.EmailHideList = await _docCodeService.GetEmailHideList(viewmodel.DocCodeConfig.EmailHide);
-                viewmodel.ElectronicList = await _docCodeService.GetElectronicList(viewmodel.DocCodeConfig.Electronic);
-                viewmodel.ElectronicHideList = await _docCodeService.GetElectronicHideList(viewmodel.DocCodeConfig.ElectronicHide);
-                _logger.LogInfo("DocCodeException Get");
+                object obj;
+                dictionary.TryGetValue("DocCode", out obj);
+                DocCode? docCode = null;
+                if (obj != null)
+                    docCode = JsonConvert.DeserializeObject<DocCode>(Convert.ToString(obj));
+
+                DocCodeConfigOptionsViewModel viewmodel = await _docCodeService.GetDocCodeConfigOptions(docCode);
+                _logger.LogInfo("DocCodeConfigOptions Get");
                 return Ok(viewmodel);
             }
             catch (SqlException ex)
@@ -161,26 +138,21 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get DocCodeConfigOptions action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
         }
 
-        //TODO: DOCUMENT UNTESTED
-        //TODO: HANDLE HTTP RESPONSES
-        [HttpPost()]
-        [ActionName("DocCodeConfig")]
-        public async Task<ActionResult<DocCodeConfigViewModel>> AddDocCodeConfig([FromBody] DocCodeConfig model)
+        [HttpPost]
+        [ActionName("RegistDocCodeConfig")]
+        public async Task<ActionResult<DocCodeViewModel>> RegistDocCodeConfig([FromBody] DocCode docCode)
         {
             try
             {
-                DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
-                await _docCodeService.PostDocCodeConfig(model);
-                List<DocCodeConfig> list = new List<DocCodeConfig>();
-                list.Add(await _docCodeService.GetDocCodeConfig(model.DocCodeID, int.Parse(model.StartDate)));
-                viewmodel.DocCodeConfigList = list;
-                _logger.LogInfo("DocCodeException Get");
+                await _docCodeService.PostDocCodeConfig(docCode);
+                DocCodeViewModel viewmodel = await _docCodeService.GetDocCodeConfig(docCode.DocCodeID, DateTime.ParseExact(docCode.DocCodeConfigs[0].StartDate.ToString(), "yyyyMMdd", CultureInfo.InvariantCulture), null);
+                _logger.LogInfo("RegistDocCodeConfig Get");
                 return Ok(viewmodel);
             }
             catch (SqlException ex)
@@ -190,22 +162,20 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get RegistDocCodeConfig action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
         }
 
-        //TODO: DOCUMENT UNTESTED
-        //TODO: HANDLE HTTP RESPONSES
-        [HttpDelete("{ID}")]
-        [ActionName("DocCode")]
-        public async Task<ActionResult<DocCodeResultsViewModel>> DeleteDocCode([FromRoute] string ID)
+        [HttpDelete("{docCodeID}")]
+        [ActionName("DeleteDocCode")]
+        public async Task<ActionResult<DocCodeResultsViewModel>> DeleteDocCode([FromRoute] int docCodeID)
         {
             try
             {
                 DocCodeResultsViewModel viewmodel = new DocCodeResultsViewModel();
-                viewmodel.Results = await _docCodeService.DeleteDocCode(ID);
+                viewmodel.Results = await _docCodeService.DeleteDocCode(docCodeID);
                 _logger.LogInfo("DocCodeException Get");
                 return Ok(viewmodel);
             }
@@ -222,16 +192,16 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         }
         //Podia se mandar um aviso sobre algo nao ser compativel no futuro
-        [HttpGet("{ID}")]
+        [HttpGet("{docCodeID}")]
         [ActionName("Compatibility")]
-        public async Task<ActionResult<DocCodeCompatabilityViewModel>> CompatibilityOptions([FromRoute] string ID)
+        public async Task<ActionResult<DocCodeCompatabilityViewModel>> CompatibilityOptions([FromRoute] int docCodeID)
         {
             try
             {
                 DocCodeCompatabilityViewModel viewmodel = new DocCodeCompatabilityViewModel();
-                viewmodel.DocCode = await _docCodeService.GetAggregateDocCode(ID);
-                viewmodel.DocCodeList = await _docCodeService.GetAggregateDocCodes(ID);
-                _logger.LogInfo("DocCodeException Get");
+                viewmodel.DocCode = await _docCodeService.GetAggregateDocCode(docCodeID);
+                viewmodel.DocCodeList = await _docCodeService.GetAggregateDocCodes(docCodeID);
+                _logger.LogInfo("CompatibilityOptions");
                 return Ok(viewmodel);
             }
             catch (SqlException ex)
@@ -241,20 +211,20 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside CompatibilityOptions action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
         }
 
         [HttpPut()]
-        [ActionName("Compatibility")]
-        public async Task<ActionResult<DocCodeResultsViewModel>> DeleteDocCode([FromBody] DocCodeCompatabilityViewModel model)
+        [ActionName("ChangeCompatibility")]
+        public async Task<ActionResult<DocCodeResultsViewModel>> ChangeCompatibility([FromBody] DocCodeCompatabilityViewModel model)
         {
             try
             {
                 await _docCodeService.ChangeCompatibility(model);
-                _logger.LogInfo("DocCodeException Get");
+                _logger.LogInfo("ChangeCompatibility");
                 return Ok();
             }
             catch (SqlException ex)
@@ -264,7 +234,7 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside ChangeCompatibility action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
