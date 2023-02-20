@@ -316,26 +316,50 @@ else
         function suportTypeChange(selectElement)
         {
             var suportTypeValue = parseInt(selectElement.value, 10);
+            alert("Change: " + suportTypeValue.toString());
             var suportTypeFilteredList = suporTypeList.ValidList.filter(function (value) {
                 return (suportTypeValue == 0 || (value & suportTypeValue) == suportTypeValue);
             });
-
+            suportTypeFilteredList.forEach(function(value)
+            {
+                alert("Available1: " + value.toString());
+            });
             const selectElements = document.querySelectorAll('select[id^="suportType_"]');
             selectElements.forEach(sElement => {
                 if (sElement.id != selectElement.id)
                 {
-                    var newSPValue = suportTypeValue + parseInt(sElement.value, 10);
+                    var newSPValue = parseInt(sElement.value, 10) + suportTypeValue;
                     var result = suportTypeFilteredList.filter(function (value) {
-                        return (newSPValue == 0 || (value & newSPValue) == newSPValue);
+                        return (parseInt(sElement.value, 10) == 0 || (value & newSPValue) == newSPValue);
                     });
-                    if (result.length > 0)
-                        suportTypeValue += parseInt(sElement.value,10);
+                    if (result.length > 0 || parseInt(sElement.value, 10) == 0)
+                    {
+                        suportTypeValue += parseInt(sElement.value, 10);
+                        suportTypeFilteredList = result.length > 0 ? result : suportTypeFilteredList;
+
+                        //alert("New2: " + suportTypeValue.toString());
+                        //suportTypeFilteredList.forEach(function (value) {
+                        //    alert("Available2: " + value.toString());
+                        //});
+                    }
                     else
                     {
                         let selectedIndex = -1; // initialize to -1 in case the value is not found
-                        for (let i = 0; i < sElement.options.length; i++) {
-                            if (sElement.options[i].value == "0") {
+                        for (let i = sElement.options.length - 1; i >= 0; i--) 
+                        {
+                            newSPValue = parseInt(sElement.options[i].value, 10) + suportTypeValue;
+                            result = suportTypeFilteredList.filter(function (value) {
+                                return (parseInt(sElement.options[i].value, 10) == 0 || (value & newSPValue) == newSPValue);
+                            });
+                            if (result.length > 0 || parseInt(sElement.options[i].value, 10) == 0) {
                                 selectedIndex = i;
+                                suportTypeValue += parseInt(sElement.options[i].value, 10);
+                                suportTypeFilteredList = result.length > 0 ? result : suportTypeFilteredList;
+
+                                //alert("New3: " + suportTypeValue.toString());
+                                //suportTypeFilteredList.forEach(function (value) {
+                                //    alert("Available3: " + value.toString());
+                                //});
                                 break;
                             }
                         }
@@ -343,7 +367,7 @@ else
                     }
                 }
             });
-            alert(suportTypeValue);
+            alert("Final: " + suportTypeValue.toString());
         }
     </script>
 }
