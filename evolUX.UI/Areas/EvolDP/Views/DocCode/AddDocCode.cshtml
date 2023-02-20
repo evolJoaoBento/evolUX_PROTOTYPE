@@ -256,35 +256,34 @@ else
                 @if (dConfig != null)
                 {
                     value = dConfig.MaxProdDate;
+                    if (dConfig.SuportType != null)
+                    {
+                        suportType = dConfig.SuportType;
+                    }
+                    else
+                    {
+                            suportType = 0;
+                    }
                 }
                 else
                 {
                     value = "dd/mm/yyyy";
+                    suportType = 0;
                 }
                 <th>@localizer["MaxProdDate"]</th>
-                <td><input id="MaxProdDate" name="MaxProdDate" type="datetime" value="@value" /></td>
+                <td>
+                    <input id="MaxProdDate" name="MaxProdDate" type="datetime" value="@value" />
+                    <input style="display: none" id="SuportType" name="SuportType" value="@suportType" />
+                </td>
             </tr>
-            @if (dConfig != null && dConfig.SuportType != null)
-            {
-                suportType = dConfig.SuportType;
-            }
-            else
-            {
-                suportType = -1;
-            }
             @foreach(GenericOptionValue option in Model.SuportTypeList.OptionList)
             {
                 <tr>
                     <th>@TempData[option.GroupCode].ToString()</th>
                     <td>
-                        @if (suportType >= 0)
-                        {
+                        @{
                             OptionValue = Model.SuportTypeList.List.First(x => x.GroupCode == option.GroupCode && (x.ID & suportType) == x.ID);
                             suportType = suportType - OptionValue.ID;
-                        }
-                        else
-                        {
-                            OptionValue = null;
                         }
                         <select name="@option.GroupCode" id="suportType_@option.GroupCode"  style="width: 100%" onchange="suportTypeChange(this)">
                             @foreach (GenericOptionValue e in Model.SuportTypeList.List.Where(x => x.GroupCode == option.GroupCode).OrderByDescending(x => x.ID))
@@ -356,6 +355,8 @@ else
                     }
                 }
             });
+            const suportTypeElement = document.getElementById("SuportType");
+            suportTypeElement.value = suportTypeValue.toString();
         }
     </script>
 }
