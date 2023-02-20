@@ -204,3 +204,14 @@ boxes.forEach(box => {
         });
     });
 });
+
+const printerOpt = document.getElementById('print-options');
+
+printerOpt.addEventListener('click', function () {
+
+    if (printerOpt.parentElement.classList.contains('print-filter-open')) {
+        printerOpt.parentElement.classList.remove('print-filter-open');
+    } else {
+        printerOpt.parentElement.classList.add('print-filter-open');
+    }
+});
