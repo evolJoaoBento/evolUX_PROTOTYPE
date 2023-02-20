@@ -150,6 +150,23 @@ namespace evolUX.API.Areas.EvolDP.Repositories
                 return serviceTasks;
             }
         }
+        
+        public async Task<GenericOptionList> GetSuporTypeOptionList()
+        {
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                GenericOptionList result = new GenericOptionList();
+                string sql = @"RDC_UX_GET_SUPORT_TYPE_CONFIG";
+                var parameters = new DynamicParameters();
+                result.List = await connection.QueryAsync<GenericOptionValue>(sql,
+                    parameters, commandType: CommandType.StoredProcedure);
+
+                sql = @"SELECT CAST(SuportType as int) [ID]
+                        FROM [dbo].[RDC_SUPORT_TYPE]";
+                result.ValidList = await connection.QueryAsync<int>(sql);
+                return result;
+            }
+        }
 
         public async Task<IEnumerable<GenericOptionValue>> GetOptionList(string option)
         {
@@ -174,12 +191,12 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 								'@DOCEMAIL',
 								@DOCELECTRONICFORMATHIDE";
             var parameters = new DynamicParameters();
-            parameters.Add("DOCFINISHING", docCode.DocCodeConfigs[0].Finishing, DbType.String);
-            parameters.Add("DOCARCHIVE", docCode.DocCodeConfigs[0].Archive, DbType.String);
-            parameters.Add("DOCEMAIL", docCode.DocCodeConfigs[0].Email, DbType.String);
-            parameters.Add("DOCEMAILHIDE", docCode.DocCodeConfigs[0].EmailHide, DbType.String);
-            parameters.Add("DOCELECTRONICFORMATHIDE", docCode.DocCodeConfigs[0].ElectronicHide, DbType.String);
-            parameters.Add("DOCELECTRONICFORMAT", docCode.DocCodeConfigs[0].Electronic, DbType.String);
+            //parameters.Add("DOCFINISHING", docCode.DocCodeConfigs[0].Finishing, DbType.String);
+            //parameters.Add("DOCARCHIVE", docCode.DocCodeConfigs[0].Archive, DbType.String);
+            //parameters.Add("DOCEMAIL", docCode.DocCodeConfigs[0].Email, DbType.String);
+            //parameters.Add("DOCEMAILHIDE", docCode.DocCodeConfigs[0].EmailHide, DbType.String);
+            //parameters.Add("DOCELECTRONICFORMATHIDE", docCode.DocCodeConfigs[0].ElectronicHide, DbType.String);
+            //parameters.Add("DOCELECTRONICFORMAT", docCode.DocCodeConfigs[0].Electronic, DbType.String);
             string sql2 = @"EXEC RD_NEW_DOCCODE_CONFIG 
 								'@DOCLAYOUT',
 								'@DOCSUBTYPE',

@@ -320,10 +320,6 @@ else
                 return (suportTypeValue == 0 || (value & suportTypeValue) == suportTypeValue);
             });
 
-            suportTypeFilteredList.forEach(function(value)
-            {
-                alert(value.toString());
-            })
             const selectElements = document.querySelectorAll('select[id^="suportType_"]');
             selectElements.forEach(sElement => {
                 if (sElement.id != selectElement.id)
