@@ -6,6 +6,7 @@ using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using evolUX.UI.Exceptions;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
+using Shared.Models.Areas.Finishing;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
@@ -51,6 +52,35 @@ namespace evolUX.UI.Areas.Finishing.Services
             try
             {
                 var response = await _productionReportRepository.GetProductionReport(profileList, runIDList, serviceCompanyID, filterOnlyPrint);
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.HResult;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+        }
+        public async Task<IEnumerable<ProductionDetailInfo>> GetProductionReportFilters(string profileList, List<int> runIDList, int serviceCompanyID, bool filterOnlyPrint)
+        {
+            try
+            {
+                var response = await _productionReportRepository.GetProductionReportFilters(profileList, runIDList, serviceCompanyID, filterOnlyPrint);
                 return response;
             }
             catch (FlurlHttpException ex)

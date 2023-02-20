@@ -7,6 +7,7 @@ using System.Data;
 using System.Net;
 using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using evolUX.UI.Repositories;
+using Shared.Models.Areas.Finishing;
 
 namespace evolUX.UI.Areas.Finishing.Repositories
 {
@@ -45,6 +46,26 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ProductionReportViewModel>();
+        }
+        public async Task<IEnumerable<ProductionDetailInfo>> GetProductionReportFilters(string profileList, List<int> runIDList, int serviceCompanyID, bool filterOnlyPrint)
+        {
+            DataTable RunIDList = new DataTable();
+            RunIDList.Columns.Add("ID", typeof(int));
+            foreach (int runID in runIDList)
+                RunIDList.Rows.Add(runID);
+
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ProfileList", profileList);
+            dictionary.Add("RunIDList", RunIDList);
+            dictionary.Add("ServiceCompanyID", serviceCompanyID);
+            dictionary.Add("FilterOnlyPrint", filterOnlyPrint);
+
+            var response = await _flurlClient.Request("/API/finishing/ProductionReport/GetProductionReportFilters")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<IEnumerable<ProductionDetailInfo>>();
         }
     }
 }
