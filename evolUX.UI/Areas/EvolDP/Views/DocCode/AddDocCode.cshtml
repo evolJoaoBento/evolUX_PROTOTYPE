@@ -54,7 +54,18 @@ else
             {
                 <tr>
                     <th>@localizer["DocLayout"]</th>
-                    <td>@Model.DocCodeConfig.DocLayout</td>
+                    <td>@Model.DocCodeConfig.DocLayout
+                        @if (TempData["Source"]?.ToString() == "AddDocCodeConfig"
+                           || TempData["Source"]?.ToString() == "ChangeDocCodeConfig")
+                        {
+                            <input name="DocCodeID" style="display: none" value="@Model.DocCodeConfig.DocCodeID" />
+                        }
+                        else
+                        {
+                            <input name="DocLayout" style="display: none" value="@Model.DocCodeConfig.DocLayout" />
+                            <input name="DocType" style="display: none" value="@Model.DocCodeConfig.DocType" />
+                        }
+                    </td>
                 </tr>
                 <tr>
                     <th>@localizer["DocType"]</th>
@@ -179,7 +190,7 @@ else
             {
                 <tr>
                     <th>@localizer["StartDate"]</th>
-                        <td><input id="StartDate" name="StartDate" type="datetime" value="@DateTime.Now.ToShortDateString()" /></td>
+                    <td><input id="StartDate" name="StartDate" type="datetime" value="@DateTime.Now.ToShortDateString()" /></td>
                 </tr>
             }
             else
@@ -220,6 +231,30 @@ else
                         }
                     </select>
                 </td>
+            </tr>
+            <tr>
+                <th>@localizer["Priority"]</th>
+                @if (dConfig != null && dConfig?.Priority >= 0)
+                {
+                    value = dConfig.Priority.ToString();
+                }
+                else
+                {
+                    value = "0";
+                }
+                <td><input id="Priority" name="Priority" type="number" value="@value" /></td>
+            </tr>
+            <tr>
+                <th>@localizer["ProdMaxSheets"]</th>
+                @if (dConfig != null && dConfig?.ProdMaxSheets > 0)
+                {
+                    value = dConfig.ProdMaxSheets.ToString();
+                }
+                else
+                {
+                    value = "";
+                }
+                <td><input id="ProdMaxSheets" name="ProdMaxSheets" value="@value" /></td>
             </tr>
             <tr>
                 <th>@localizer["ExpCompany"] / @localizer["ServiceTask"]</th>
@@ -310,7 +345,7 @@ else
                 }
                 else
                 {
-                    value = "dd/mm/yyyy+20";
+                    value = "31/12/9999";
                 }
                 <th>@localizer["ArchCaducityDate"]</th>
                 <td>

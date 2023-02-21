@@ -118,5 +118,31 @@ namespace evolUX.UI.Areas.EvolDP.Repositories
                 return d;
             }
         }
+
+        public async Task<DocCodeViewModel> RegistDocCodeConfig(DocCode docCode)
+        {
+            try
+            {
+                Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                string docCodeJSON = JsonConvert.SerializeObject(docCode);
+                dictionary.Add("DocCode", docCodeJSON);
+
+                var response = await _flurlClient.Request("/API/evolDP/DocCode/RegistDocCodeConfig")
+                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                    .SendJsonAsync(HttpMethod.Get, dictionary);
+                if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+                return await response.GetJsonAsync<DocCodeViewModel>();
+            }
+
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                dynamic d = ex.GetResponseJsonAsync();
+                return d;
+            }
+        }
     }
 }

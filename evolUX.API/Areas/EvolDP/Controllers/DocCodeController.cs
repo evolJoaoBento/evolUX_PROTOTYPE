@@ -82,8 +82,6 @@ namespace evolUX.Areas.EvolDP.Controllers
             }
         }
 
-        //TODO: DOCUMENT UNTESTED
-        //TODO: HANDLE HTTP RESPONSES
         [HttpGet]
         [ActionName("DocCodeConfig")]
         public async Task<ActionResult<DocCodeViewModel>> GetDocCodeConfig([FromBody] Dictionary<string, object> dictionary)
@@ -144,14 +142,21 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         }
 
-        [HttpPost]
+        [HttpGet]
         [ActionName("RegistDocCodeConfig")]
-        public async Task<ActionResult<DocCodeViewModel>> RegistDocCodeConfig([FromBody] DocCode docCode)
+        public async Task<ActionResult<DocCodeViewModel>> RegistDocCodeConfig([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
+                object obj;
+                dictionary.TryGetValue("DocCode", out obj);
+                DocCode? docCode = null;
+                if (obj != null)
+                    docCode = JsonConvert.DeserializeObject<DocCode>(Convert.ToString(obj));
+
                 await _docCodeService.PostDocCodeConfig(docCode);
                 DocCodeViewModel viewmodel = await _docCodeService.GetDocCodeConfig(docCode.DocCodeID, DateTime.ParseExact(docCode.DocCodeConfigs[0].StartDate.ToString(), "yyyyMMdd", CultureInfo.InvariantCulture), null);
+
                 _logger.LogInfo("RegistDocCodeConfig Get");
                 return Ok(viewmodel);
             }

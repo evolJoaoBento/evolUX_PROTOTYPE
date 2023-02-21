@@ -30,7 +30,7 @@ namespace evolUX.API.Areas.EvolDP.Services
             viewmodel.DocCodeList = await _repository.DocCode.GetDocCode(docLayout, docType, -1);
             foreach(DocCode doc in viewmodel.DocCodeList) 
             {
-                doc.DocCodeConfigs = (await _repository.DocCode.GetDocCodeConfig(doc.DocCodeID, null, null)).ToList();
+                doc.DocCodeConfigs = (await _repository.DocCode.GetDocCodeConfig(doc.DocCodeID, (int?)null, null)).ToList();
             }
             return viewmodel;
         }
@@ -106,18 +106,14 @@ namespace evolUX.API.Areas.EvolDP.Services
 
                 viewmodel.SuportTypeList.OptionList = optionList;
             }
-            //viewmodel.FinishingList = await _repository.DocCode.GetOptionList("Finishing");
-            //viewmodel.ArchiveList = await _repository.DocCode.GetOptionList("Archive");
-            //viewmodel.EmailList.List = await _repository.DocCode.GetOptionList("Email");
-            //viewmodel.EmailList.HideList = await _repository.DocCode.GetOptionList("EmailHide");
-            //viewmodel.ElectronicList.List = await _repository.DocCode.GetOptionList("Electronic");
-            //viewmodel.ElectronicList.HideList = await _repository.DocCode.GetOptionList("ElectronicHide");
             return viewmodel;
         }
 
-        public async Task PostDocCodeConfig(DocCode docCode)
+        public async Task<DocCodeViewModel> PostDocCodeConfig(DocCode docCode)
         {
-            await _repository.DocCode.PostDocCodeConfig(docCode);
+            DocCodeViewModel viewmodel = new DocCodeViewModel();
+            viewmodel.DocCodeList = await _repository.DocCode.PostDocCodeConfig(docCode);
+            return viewmodel;
         }
 
         public async Task<IEnumerable<string>> DeleteDocCode(int docCodeID)

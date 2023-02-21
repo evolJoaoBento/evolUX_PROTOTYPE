@@ -29,8 +29,9 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_DOCCODE]
 END
 GO
 ALTER  PROCEDURE [dbo].[RD_UX_GET_DOCCODE]
-	@DocLayout varchar(20),
-	@DocType varchar(8),
+	@DocCodeID int = NULL,
+	@DocLayout varchar(20) = NULL,
+	@DocType varchar(8) = NULL,
 	@NumRows int =  2147483647
 AS
 BEGIN
@@ -60,9 +61,8 @@ BEGIN
 			RDC_EXCEPTION_LEVEL3 e3 WITH(NOLOCK)
 			ON	
 			e3.ExceptionLevelID = d.ExceptionLevel3ID
-	WHERE	d.DocLayout = @DocLayout
-			AND		
-			d.DocType = @DocType
+	WHERE	(@DocCodeID is NULL AND d.DocLayout = @DocLayout AND d.DocType = @DocType)
+			OR d.DocCodeID = @DocCodeID
 	ORDER BY d.ExceptionLevel1ID, d.ExceptionLevel2ID, d.ExceptionLevel3ID
 END
 GO

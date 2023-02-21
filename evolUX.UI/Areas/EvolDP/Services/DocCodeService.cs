@@ -34,5 +34,10 @@ namespace evolUX.UI.Areas.EvolDP.Services
             var response = await _docCodeRepository.GetDocCodeConfigOptions(docCode);
             return response;
         }
+        public async Task<DocCodeViewModel> RegistDocCodeConfig(DocCode docCode)
+        {
+            var response = await _docCodeRepository.RegistDocCodeConfig(docCode);
+            return response;
+        }
     }
 }
