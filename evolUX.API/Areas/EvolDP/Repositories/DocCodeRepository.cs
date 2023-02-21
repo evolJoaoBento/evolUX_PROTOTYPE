@@ -6,6 +6,7 @@ using System.Data;
 using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
 using Shared.Models.Areas.Finishing;
 using evolUX.API.Models;
+using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.EvolDP.Repositories
 {
@@ -24,6 +25,27 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<DocCode> docCodeList = await connection.QueryAsync<DocCode>(sql, commandType: CommandType.StoredProcedure);
+                return docCodeList;
+            }
+        }
+
+        public async Task<IEnumerable<DocCode>> GetDocCode(int docCodeID)
+        {
+            string sql = @"RD_UX_GET_DOCCODE";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("DocCodeID", docCodeID, DbType.Int64);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<DocCode> docCodeList = await connection.QueryAsync<DocCode, ExceptionLevel, ExceptionLevel, ExceptionLevel, DocCode>(sql,
+                                        (d, e1, e2, e3) =>
+                                        {
+                                            DocCode docCode = d;
+                                            docCode.ExceptionLevel1 = e1;
+                                            docCode.ExceptionLevel2 = e2;
+                                            docCode.ExceptionLevel3 = e3;
+                                            return docCode;
+                                        }, parameters, commandType: CommandType.StoredProcedure, splitOn: "ExceptionLevelID");
                 return docCodeList;
             }
         }
@@ -52,21 +74,18 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             }
         }
 
-        public async Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(int docCodeID, DateTime? startDate, bool? maxDateFlag)
+        public async Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(int docCodeID, int? startDate, bool? maxDateFlag)
         {
             string sql = @"RD_UX_GET_DOCCODE_CONFIG";
 
             var parameters = new DynamicParameters();
             parameters.Add("DocCodeID", docCodeID, DbType.Int64);
             if (startDate != null)
-            {
-                int startDateInt = Int32.Parse(((DateTime)startDate).ToString("yyyyMMdd"));
-                parameters.Add("StartDate", startDateInt, DbType.Int64);
-            }
+                parameters.Add("StartDate", startDate, DbType.Int64);
+
             if (maxDateFlag != null)
-            {
                 parameters.Add("MaxDateFlag", maxDateFlag, DbType.Boolean);
-            }
+
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<DocCodeConfig> docCodeConfigList = await connection.QueryAsync<DocCodeConfig>(sql, parameters,
@@ -74,6 +93,14 @@ namespace evolUX.API.Areas.EvolDP.Repositories
 
                 return docCodeConfigList;
             }
+        }
+
+        public async Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(int docCodeID, DateTime? startDate, bool? maxDateFlag)
+        {
+            int? startDateInt = null;
+            if (startDate != null)
+                startDateInt = Int32.Parse(((DateTime)startDate).ToString("yyyyMMdd"));
+            return await GetDocCodeConfig(docCodeID, startDateInt, maxDateFlag);
         }
 
         public async Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel(int level)
@@ -181,67 +208,68 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             }
         }
 
-        public async Task PostDocCodeConfig(DocCode docCode)
+        public async Task<IEnumerable<DocCode>> PostDocCodeConfig(DocCode docCode)
         {
-            string sql = @"EXEC RDC_GET_SUPORTTYPE_BY_CONFIG 
-								@DOCFINISHING ,
-								@DOCARCHIVE ,
-								'@DOCELECTRONICFORMAT',
-								@DOCEMAILHIDE,
-								'@DOCEMAIL',
-								@DOCELECTRONICFORMATHIDE";
+            string sql2 = @"EXEC RD_NEW_DOCCODE_CONFIG";
+            string sql = @"RD_NEW_DOCCODE_CONFIG";
             var parameters = new DynamicParameters();
-            //parameters.Add("DOCFINISHING", docCode.DocCodeConfigs[0].Finishing, DbType.String);
-            //parameters.Add("DOCARCHIVE", docCode.DocCodeConfigs[0].Archive, DbType.String);
-            //parameters.Add("DOCEMAIL", docCode.DocCodeConfigs[0].Email, DbType.String);
-            //parameters.Add("DOCEMAILHIDE", docCode.DocCodeConfigs[0].EmailHide, DbType.String);
-            //parameters.Add("DOCELECTRONICFORMATHIDE", docCode.DocCodeConfigs[0].ElectronicHide, DbType.String);
-            //parameters.Add("DOCELECTRONICFORMAT", docCode.DocCodeConfigs[0].Electronic, DbType.String);
-            string sql2 = @"EXEC RD_NEW_DOCCODE_CONFIG 
-								'@DOCLAYOUT',
-								'@DOCSUBTYPE',
-								@DOCSTARTDATE, 
-								@DOCAGGREGATION,
-								@DOCENVMEDIAID, 
-								@DOCEXPTYPEID, 
-								@DOCEXPCOMPANYID, 
-								@DOCSERVICETASK,
-								@DOCSUPPORTTYPE,
-								@DOCPRIORITY, 
-								0, 
-								'@DOCCADUCITYDATE', 
-								'@DOCMAXPRODDATE', 
-								@DOCMAXSHEETS,
-								@DOCEXCEPTIONLEVEL1, 
-								@DOCEXCEPTIONLEVEL2, 
-								@DOCEXCEPTIONLEVEL3,
-								'@DOCDESCRIPTION',
-								'@DOCARCHCADUCITY'";
-            var parameters2 = new DynamicParameters();
-            parameters2.Add("DOCLAYOUT", docCode.DocLayout, DbType.String);
-            parameters2.Add("DOCSUBTYPE", docCode.DocType, DbType.String);
-            parameters2.Add("DOCSTARTDATE", docCode.DocCodeConfigs[0].StartDate, DbType.String);
-            parameters2.Add("DOCAGGREGATION", docCode.DocCodeConfigs[0].AggrCompatibility, DbType.String);
-            parameters2.Add("DOCENVMEDIAID", docCode.DocCodeConfigs[0].EnvMediaID, DbType.String);
-            parameters2.Add("DOCEXPTYPEID", docCode.DocCodeConfigs[0].ExpeditionType, DbType.String);
-            parameters2.Add("DOCEXPCOMPANYID", docCode.DocCodeConfigs[0].ExpCompanyName, DbType.String);
-            parameters2.Add("DOCSERVICETASK", docCode.DocCodeConfigs[0].ServiceTaskDesc, DbType.String);
+            if (docCode.DocCodeID > 0)
+            {
+                parameters.Add("DocCodeID", docCode.DocCodeID, DbType.Int64);
+            }
+            else
+            {
+                parameters.Add("DocLayout", docCode.DocLayout, DbType.String);
+                parameters.Add("DocType", docCode.DocType, DbType.String);
+                if (docCode.ExceptionLevel1 != null && docCode.ExceptionLevel1.ExceptionLevelID > 0)
+                    parameters.Add("ExceptionLevel1ID", docCode.ExceptionLevel1.ExceptionLevelID, DbType.Int64);
 
-            parameters2.Add("DOCCADUCITYDATE", docCode.DocCodeConfigs[0].CaducityDate, DbType.String);
-            parameters2.Add("DOCMAXPRODDATE", docCode.DocCodeConfigs[0].MaxProdDate, DbType.String);
-            parameters2.Add("DOCMAXSHEETS", docCode.DocCodeConfigs[0].ProdMaxSheets, DbType.String);
-            parameters2.Add("DOCEXCEPTIONLEVEL1", docCode.ExceptionLevel1.ExceptionLevelID, DbType.String);
-            parameters2.Add("DOCEXCEPTIONLEVEL2", docCode.ExceptionLevel2.ExceptionLevelID, DbType.String);
-            parameters2.Add("DOCEXCEPTIONLEVEL3", docCode.ExceptionLevel3.ExceptionLevelID, DbType.String);
-            parameters2.Add("DOCDESCRIPTION", docCode.DocDescription, DbType.String);
-            parameters2.Add("DOCARCHCADUCITY", docCode.DocCodeConfigs[0].ArchCaducityDate, DbType.String);
+                if (docCode.ExceptionLevel2 != null && docCode.ExceptionLevel2.ExceptionLevelID > 0)
+                    parameters.Add("ExceptionLevel2ID", docCode.ExceptionLevel2.ExceptionLevelID, DbType.Int64);
+
+                if (docCode.ExceptionLevel3 != null && docCode.ExceptionLevel3.ExceptionLevelID > 0)
+                    parameters.Add("ExceptionLevel3ID", docCode.ExceptionLevel3.ExceptionLevelID, DbType.Int64);
+            }
+
+            parameters.Add("Description", docCode.DocDescription, DbType.String);
+            parameters.Add("PrintMatchCode", docCode.PrintMatchCode, DbType.String);
+
+            parameters.Add("StartDate", docCode.DocCodeConfigs[0].StartDate, DbType.String);
+            parameters.Add("AggrCompatibility", docCode.DocCodeConfigs[0].AggrCompatibility, DbType.Int32);
+            parameters.Add("EnvMediaID", docCode.DocCodeConfigs[0].EnvMediaID, DbType.Int64);
+            parameters.Add("ExpeditionType", docCode.DocCodeConfigs[0].ExpeditionType, DbType.Int64);
+            parameters.Add("ExpCode", docCode.DocCodeConfigs[0].ExpCode, DbType.String);
+            parameters.Add("SuportType", docCode.DocCodeConfigs[0].SuportType, DbType.Int32);
+            parameters.Add("Priority", docCode.DocCodeConfigs[0].Priority, DbType.Int64);
+
+            if (docCode.DocCodeConfigs[0].ProdMaxSheets > 0)
+                parameters.Add("ProdMaxSheets", docCode.DocCodeConfigs[0].ProdMaxSheets, DbType.Int64);
+
+            parameters.Add("MaxProdDate", docCode.DocCodeConfigs[0].MaxProdDate, DbType.String);
+            parameters.Add("ArchCaducityDate", docCode.DocCodeConfigs[0].ArchCaducityDate, DbType.String);
+            parameters.Add("CaducityDate", docCode.DocCodeConfigs[0].CaducityDate, DbType.String);
+
+            foreach(string p in parameters.ParameterNames)
+            {
+                sql2 += string.Format(" @{0} = '{1}',", p, parameters.Get<object>(p));
+            }
+            if (sql2.Substring(sql2.Length-1,1) == ",")
+                sql2 = sql2.Substring(0,sql2.Length-1);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                string supportType = await connection.QueryFirstOrDefaultAsync<string>(sql, parameters);
-                parameters2.Add("DOCSUPPORTTYPE", supportType, DbType.String);
-                IEnumerable<GenericOptionList> treatmentTypes = await connection.QueryAsync<GenericOptionList>(sql2, parameters2);
-                return;
+
+                IEnumerable<int> docCodeIDResult = await connection.QueryAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
+                int docCodeID = docCode.DocCodeID;
+                if (docCodeIDResult != null && docCodeIDResult.Count() > 0)
+                    docCodeID = docCodeIDResult.First();
+
+                IEnumerable<DocCode> docCodeList = await GetDocCode(docCodeID);
+                if (docCodeList != null && docCodeList.Count() > 0)
+                {
+                    docCodeList.First().DocCodeConfigs = (await GetDocCodeConfig(docCodeID, docCode.DocCodeConfigs[0].StartDate, null)).ToList();
+                }
+                return docCodeList;
             }
         }
 
