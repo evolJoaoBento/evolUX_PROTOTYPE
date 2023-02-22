@@ -769,3 +769,232 @@ CLOSE tCursor
 DEALLOCATE tCursor
 
 DROP TABLE #ChildActions
+GO
+DECLARE @ActionID int,
+	@NewLocalizationKey varchar(50),
+	@ParentLocalizationKey varchar(50),
+	@NewDescription varchar(255),
+	@ParentActionID int,
+	@DefaultOrder int
+
+CREATE TABLE #ChildActions(LocalizationKey varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS, DefaultOrder int, [Description] varchar(255), evolGUIActionID int)
+
+INSERT INTO #ChildActions
+SELECT DISTINCT 'AddDocCode', 0, 'Adicionar Tipo de Documento', ActionID
+FROM ACTIONS
+WHERE [Description] like 'Adicionar%Tipo de Documento'
+	OR 
+	  [Description] like 'Adicionar%Tipo de Documento'
+
+INSERT INTO #ChildActions
+SELECT DISTINCT 'DeleteDocCode',0, 'Apagar Tipo de Documento', ActionID
+FROM ACTIONS
+WHERE [Description] like 'Apagar%Tipo de Documento'
+
+
+DECLARE tCursor CURSOR LOCAL FOR
+SELECT LocalizationKey, DefaultOrder, [Description]
+FROM #ChildActions
+ORDER BY DefaultOrder ASC
+
+OPEN tCursor
+FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SET @ActionID = NULL
+	SELECT @ActionID = ActionID
+	FROM evolUX_ACTIONS
+	WHERE LocalizationKey = @NewLocalizationKey
+
+	IF (@ActionID is NULL)
+	BEGIN
+		SELECT @ActionID = (MAX(ActionID) / 100)*100 + 10
+		FROM ACTIONS
+		WHERE ActionID < 10000
+
+		WHILE (EXISTS(SELECT TOP 1 1 FROM ACTIONS WHERE ActionID = @ActionID)
+			OR EXISTS(SELECT TOP 1 1 FROM evolUX_ACTIONS WHERE ActionID = @ActionID))
+		BEGIN
+			SET @ActionID = @ActionID + 10
+		END
+
+		INSERT INTO [evolUX_ACTIONS](ActionID, ActionTypeID, LocalizationKey, [Description], ParentActionID, DefaultOrder, HistoryFlag, evolGUI_ActionID, evolGUI_TypeID)
+		SELECT @ActionID, 3, @NewLocalizationKey, @NewDescription, NULL, @DefaultOrder, 0, NULL, 0
+	END
+
+	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
+	SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+	FROM #ChildActions c
+	INNER JOIN
+		[PERMISSIONS] p
+	ON	c.evolGUIActionID = p.ActionID
+	INNER JOIN
+		[evolUX_ACTIONS] u
+	ON u.LocalizationKey = c.LocalizationKey
+	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+
+	FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+END
+CLOSE tCursor
+DEALLOCATE tCursor
+
+--SELECT DISTINCT a.*, p.*, c.*
+--FROM [dbo].[evolUX_PERMISSIONS] p
+--INNER JOIN
+--	[evolUX_ACTIONS] a
+--ON a.ActionID = p.ActionID
+--INNER JOIN
+--	#ChildActions c
+--ON c.LocalizationKey = a.LocalizationKey
+--ORDER BY a.LocalizationKey, p.ProfileID, p.PermissionID, c.evolGUIActionID
+
+DROP TABLE #ChildActions
+GO
+DECLARE @ActionID int,
+	@NewLocalizationKey varchar(50),
+	@ParentLocalizationKey varchar(50),
+	@NewDescription varchar(255),
+	@ParentActionID int,
+	@DefaultOrder int
+
+SELECT @ParentLocalizationKey = 'ActionDocumentTypification'
+
+SELECT @ParentActionID = ActionID
+FROM evolUX_ACTIONS
+WHERE LocalizationKey = @ParentLocalizationKey
+
+CREATE TABLE #ChildActions(LocalizationKey varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS, DefaultOrder int, [Description] varchar(255), evolGUIActionID int)
+
+INSERT INTO #ChildActions
+SELECT DISTINCT 'ActionDocCode', 20, 'Configurar Tipos de Documentos', evolGUI_ActionID
+FROM evolUX_ACTIONS
+WHERE LocalizationKey = @ParentLocalizationKey
+
+INSERT INTO #ChildActions
+SELECT DISTINCT 'ActionExceptionLevel1ID', 20, 'Configurar Exceção Nível 1', ActionID
+FROM ACTIONS
+WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+
+INSERT INTO #ChildActions
+SELECT DISTINCT 'ActionExceptionLevel2ID', 30, 'Configurar Exceção Nível 2', ActionID
+FROM ACTIONS
+WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+
+INSERT INTO #ChildActions
+SELECT DISTINCT 'ActionExceptionLevel3ID', 40, 'Configurar Exceção Nível 3', ActionID
+FROM ACTIONS
+WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+
+DECLARE tCursor CURSOR LOCAL FOR
+SELECT LocalizationKey, DefaultOrder, [Description]
+FROM #ChildActions
+ORDER BY DefaultOrder ASC
+
+OPEN tCursor
+FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SET @ActionID = NULL
+	SELECT @ActionID = ActionID
+	FROM evolUX_ACTIONS
+	WHERE LocalizationKey = @NewLocalizationKey
+
+	IF (@ActionID is NULL)
+	BEGIN
+		SELECT @ActionID = (MAX(ActionID) / 100)*100 + 10
+		FROM ACTIONS
+		WHERE ActionID < 10000
+
+		WHILE (EXISTS(SELECT TOP 1 1 FROM ACTIONS WHERE ActionID = @ActionID)
+			OR EXISTS(SELECT TOP 1 1 FROM evolUX_ACTIONS WHERE ActionID = @ActionID))
+		BEGIN
+			SET @ActionID = @ActionID + 10
+		END
+
+		INSERT INTO [evolUX_ACTIONS](ActionID, ActionTypeID, LocalizationKey, [Description], ParentActionID, DefaultOrder, HistoryFlag, evolGUI_ActionID, evolGUI_TypeID)
+		SELECT @ActionID, 1, @NewLocalizationKey, @NewDescription, @ParentActionID, @DefaultOrder, 0, NULL, 0
+	END
+
+	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
+	SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+	FROM #ChildActions c
+	INNER JOIN
+		[PERMISSIONS] p
+	ON	c.evolGUIActionID = p.ActionID
+	INNER JOIN
+		[evolUX_ACTIONS] u
+	ON u.LocalizationKey = c.LocalizationKey
+	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+
+	FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+END
+CLOSE tCursor
+DEALLOCATE tCursor
+
+DELETE #ChildActions
+
+INSERT INTO #ChildActions
+SELECT 'AddExceptionLevel', 0, 'Adicionar/Alterar Exceção', ActionID
+FROM ACTIONS
+WHERE [Description] like 'Alterar @PARAMETERS/ACTION/EXCEPTION/%'
+	OR 
+	  [Description] like 'Submeter @PARAMETERS/ACTION/EXCEPTION/%'
+	OR 
+	  [Description] like 'Adicionar @PARAMETERS/ACTION/EXCEPTION/%'
+
+INSERT INTO #ChildActions
+SELECT 'DeleteExceptionLevel', 0, 'Apagar Exceção', ActionID
+FROM ACTIONS
+WHERE [Description] like 'Apagar @PARAMETERS/ACTION/EXCEPTION/%'
+
+DECLARE tCursor CURSOR LOCAL FOR
+SELECT LocalizationKey, DefaultOrder, [Description]
+FROM #ChildActions
+ORDER BY DefaultOrder ASC
+
+OPEN tCursor
+FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SET @ActionID = NULL
+	SELECT @ActionID = ActionID
+	FROM evolUX_ACTIONS
+	WHERE LocalizationKey = @NewLocalizationKey
+
+	IF (@ActionID is NULL)
+	BEGIN
+		SELECT @ActionID = (MAX(ActionID) / 100)*100 + 10
+		FROM ACTIONS
+		WHERE ActionID < 10000
+
+		WHILE (EXISTS(SELECT TOP 1 1 FROM ACTIONS WHERE ActionID = @ActionID)
+			OR EXISTS(SELECT TOP 1 1 FROM evolUX_ACTIONS WHERE ActionID = @ActionID))
+		BEGIN
+			SET @ActionID = @ActionID + 10
+		END
+
+		INSERT INTO [evolUX_ACTIONS](ActionID, ActionTypeID, LocalizationKey, [Description], ParentActionID, DefaultOrder, HistoryFlag, evolGUI_ActionID, evolGUI_TypeID)
+		SELECT @ActionID, 3, @NewLocalizationKey, @NewDescription, NULL, @DefaultOrder, 0, NULL, 0
+	END
+
+	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
+	SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+	FROM #ChildActions c
+	INNER JOIN
+		[PERMISSIONS] p
+	ON	c.evolGUIActionID = p.ActionID
+	INNER JOIN
+		[evolUX_ACTIONS] u
+	ON u.LocalizationKey = c.LocalizationKey
+	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+
+	FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+END
+CLOSE tCursor
+DEALLOCATE tCursor
+
+DROP TABLE #ChildActions
+GO

@@ -15,14 +15,21 @@
 }
 else
 {
+    string checkedStr = "";
     string docTypeDesc = "";
     string eLevel1Desc = "";
     string eLevel2Desc = "";
     string eLevel3Desc = "";
 
     string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel1IDLabel))
+        ExceptionLevel1IDLabel = localizer["ExceptionLevel1ID"].Value;
     string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel2IDLabel))
+        ExceptionLevel2IDLabel = localizer["ExceptionLevel2ID"].Value;
     string ExceptionLevel3IDLabel = TempData["ExceptionLevel3ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel3IDLabel))
+        ExceptionLevel3IDLabel = localizer["ExceptionLeve3ID"].Value;
 
     DocCode docCode = Model.DocCode;
     <div>
@@ -32,18 +39,17 @@ else
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <td colspan="8">@localizer["DocCodeAggCompatibility"]
-                </td>
+                <th colspan="8">@localizer["DocCodeAggCompatibility"]
+                </th>
            </tr>
            <tr>
-                <th>@localizer["DocCodeID"]</th>
+                <th colspan="2">@localizer["DocCodeID"]</th>
                 <th>@localizer["DocLayout"]</th>
                 <th>@localizer["DocType"]</th>
                 <th>@ExceptionLevel1IDLabel</th>
                 <th>@ExceptionLevel2IDLabel</th>
                 <th>@ExceptionLevel3IDLabel</th>
                 <th>@localizer["DocDescription"]</th>
-                <th>@localizer["PrintMatchCode"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
@@ -56,200 +62,123 @@ else
                 {
                     docTypeDesc = docCode.DocType;
                 }
-                @if (docCode.ExceptionLevel1 == null || string.IsNullOrEmpty(docCode.ExceptionLevel1.ExceptionDescription))
+                @if (docCode.ExceptionLevel1 == null || string.IsNullOrEmpty(docCode.ExceptionLevel1.ExceptionCode))
                 {
                     eLevel1Desc = localizer["EmptyField"].Value;
                 }
                 else
                 {
-                    eLevel1Desc = docCode.ExceptionLevel1.ExceptionDescription;
+                    eLevel1Desc = docCode.ExceptionLevel1.ExceptionCode;
                 }
-                @if (docCode.ExceptionLevel2 == null || string.IsNullOrEmpty(docCode.ExceptionLevel2.ExceptionDescription))
+                @if (docCode.ExceptionLevel2 == null || string.IsNullOrEmpty(docCode.ExceptionLevel2.ExceptionCode))
                 {
                     eLevel2Desc = localizer["EmptyField"].Value;
                 }
                 else
                 {
-                    eLevel2Desc = docCode.ExceptionLevel2.ExceptionDescription;
+                    eLevel2Desc = docCode.ExceptionLevel2.ExceptionCode;
                 }
-                @if (docCode.ExceptionLevel3 == null || string.IsNullOrEmpty(docCode.ExceptionLevel3.ExceptionDescription))
+                @if (docCode.ExceptionLevel3 == null || string.IsNullOrEmpty(docCode.ExceptionLevel3.ExceptionCode))
                 {
                     eLevel3Desc = localizer["EmptyField"].Value;
                 }
                 else
                 {
-                    eLevel3Desc = docCode.ExceptionLevel3.ExceptionDescription;
+                    eLevel3Desc = docCode.ExceptionLevel3.ExceptionCode;
                 }
-                <td>@docCode.DocCodeID</td>
+                <td colspan="2">@docCode.DocCodeID</td>
                 <td>@docCode.DocLayout</td>
                 <td>@docTypeDesc</td>
                 <td>@eLevel1Desc</td>
                 <td>@eLevel2Desc</td>
                 <td>@eLevel3Desc</td>
                 <td>@docCode.DocDescription</td>
-                <td>@docCode.PrintMatchCode</td>
+            </tr>
+            <tr>
+                <td colspan="8">
+                    <form id="AddAggCompatibilityFrm" asp-area="evolDP" asp-controller="DocCode" asp-action="ChangeCompatibility" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)"
+                      data-ajax="true"
+                      data-ajax-method="POST">
+                        <p class="my-3 d-flex justify-content-center">
+                            <input value="@localizer["Submit"]" type="submit" name="Submit" class="btn btn-block btn-primary" />
+                        </p>
+                        <p class="my-3 d-flex justify-content-left" class="btn btn-block btn-primary">
+                            <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' title='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedDocCodeList', '')">
+                                <img style="background:none; width:30px;height:30px;" src="@siteURL/images/select-multiple.png" />
+                            </button>
+                            <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" title='@localizer["UnSelectAll"]' onclick="javascript:uncheckBoxAll('CheckedDocCodeList', '')">
+                                <img style="background:none; width:30px;height:30px;" src="@siteURL/images/unselect-multiple.png" />
+                            </button>
+                        </p>                     
+                        <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th colspan="2">@localizer["DocCodeID"]</th>
+                                <th>@localizer["DocLayout"]</th>
+                                <th>@localizer["DocType"]</th>
+                                <th>@ExceptionLevel1IDLabel</th>
+                                <th>@ExceptionLevel2IDLabel</th>
+                                <th>@ExceptionLevel3IDLabel</th>
+                                <th>@localizer["DocDescription"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (AggregateDocCode agg in Model.AggDocCodeList.OrderByDescending(x => x.Compatible))
+                        {
+                            <tr>
+                                @if (string.IsNullOrEmpty(agg.DocType))
+                                {
+                                    docTypeDesc = localizer["EmptyField"].Value;
+                                }
+                                else
+                                {
+                                    docTypeDesc = agg.DocType;
+                                }
+                                @if (agg.ExceptionLevel1 == null || string.IsNullOrEmpty(agg.ExceptionLevel1.ExceptionCode))
+                                {
+                                    eLevel1Desc = localizer["EmptyField"].Value;
+                                }
+                                else
+                                {
+                                    eLevel1Desc = agg.ExceptionLevel1.ExceptionCode;
+                                }
+                                @if (agg.ExceptionLevel2 == null || string.IsNullOrEmpty(agg.ExceptionLevel2.ExceptionCode))
+                                {
+                                    eLevel2Desc = localizer["EmptyField"].Value;
+                                }
+                                else
+                                {
+                                    eLevel2Desc = agg.ExceptionLevel2.ExceptionCode;
+                                }
+                                @if (agg.ExceptionLevel3 == null || string.IsNullOrEmpty(agg.ExceptionLevel3.ExceptionCode))
+                                {
+                                    eLevel3Desc = localizer["EmptyField"].Value;
+                                }
+                                else
+                                {
+                                    eLevel3Desc = agg.ExceptionLevel3.ExceptionCode;
+                                }
+                                @if (agg.Compatible)
+                                    checkedStr = "checked";
+                                else
+                                    checkedStr = "";
+                                <td align="center">
+                                    <input name="CheckedDocCodeList" type="checkbox" value="@agg.DocCodeID" @checkedStr>
+                                </td>
+                                <td>@agg.DocCodeID</td>                                        
+                                <td>@agg.DocLayout</td>
+                                <td>@docTypeDesc</td>
+                                <td>@eLevel1Desc</td>
+                                <td>@eLevel2Desc</td>
+                                <td>@eLevel3Desc</td>
+                                <td>@agg.DocDescription</td>
+                            </tr>
+                        }
+                    </form>
+                </td>
             </tr>
         </tbody>
     </table>
-    string Level0Name = "level";
-    string Level1Name = "detail";
-
-    int count = 0;
-    int level = 0;
-    string idValue = "arrow" + count.ToString();
-    string nameValue = "";
-    string cValue = "";
-    <form id="AddAggCompatibilityFrm" asp-area="evolDP" asp-controller="DocCode" asp-action="ChangeCompatibility"
-      data-ajax="true"
-      data-ajax-method="POST"
-      data-ajax-mode="replace"
-      data-ajax-update="#response"
-      data-ajax-complete="refreshPage"
-      data-ajax-loading="myLoader">
-@*        @foreach (ExpServiceCompanyFileElement s in Model.ExpeditionList)
-        {
-            level++;
-            nameValue = Level0Name + level.ToString();
-            idValue = "arrow" + nameValue;
-            <table class="table table-bordered table-sm">
-                <thead>
-                    @if (!ViewBag.hasMultipleServiceCompanies)
-                    {
-                        <tr><th>@localizer["PendingExpeditionFiles"]</th></tr>
-                    }
-                    else
-                    {
-                        <tr>
-                            <th>
-                                @localizer["PendingExpeditionFiles"] [@s.ServiceCompanyName]
-                                @if (Model.ExpeditionList.Count() > 0)
-                                {
-                                    <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
-                                }
-                            </th>
-                        </tr>
-                    }
-                </thead>
-                <tbody id="@nameValue">
-                    @foreach (ExpCompanyFileElement c in s.ExpCompanyList)
-                    {
-                        @foreach (ExpBusinessFileElement b in c.BusinessList)
-                        {
-                            @foreach (ExpRunFileElement r in b.RunList)
-                            {
-                                <tr>
-                                    <td>
-                                        <table class="table table-bordered table-sm table-striped">
-                                            @{
-                                                count++;
-                                                nameValue = Level1Name + count.ToString();
-                                                idValue = "arrow" + nameValue;
-                                            }
-                                            <thead>
-                                                @if (ViewBag.hasMultipleCompanyBusiness)
-                                                {
-                                                    <tr>
-                                                        <th colspan="5">
-                                                            @c.ExpCompanyCode / @b.BusinessDescription [@r.RunDate (@r.RunSequence)]
-                                                            <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
-                                                        </th>
-                                                    </tr>
-                                                }
-                                                else
-                                                {
-                                                    <tr>
-                                                        <th colspan="5">
-                                                            @c.ExpCompanyCode / @r.RunDate (@r.RunSequence)
-                                                            <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue">
-                                                            </a>
-                                                        </th>
-                                                    </tr>
-                                                }
-                                            </thead>
-                                            <tbody id="@nameValue">
-                                                <tr>
-                                                    <th style="background:none;width:50px;height:50px;"></th>
-                                                    <th>@localizer["FileName"]</th>
-                                                    <th>@localizer["ClientName"]</th>
-                                                    <th>@localizer["ContractNr"]</th>
-                                                    <th>@localizer["ClientNr"]</th>
-                                                </tr>
-                                                @foreach (ExpContractFileElement cc in r.ContractList)
-                                                {
-                                                    @foreach (FileBase f in cc.FileList)
-                                                    {
-                                                        cValue = "Checked" + s.ServiceCompanyCode.ToString() + "|" + c.ExpCompanyID.ToString() + "|" + r.RunID.ToString();
-                                                        <tr>
-                                                            <td align="center">
-                                                                <input value="@s.ServiceCompanyCode|@c.ExpCompanyID|@f.RunID|@f.FileID" name="CheckedFileList" type="checkbox" id="@cValue">
-                                                            </td>
-                                                            <td>@f.FileName</td>
-                                                            <td>@cc.ClientName</td>
-                                                            <td>@cc.ContractNr</td>
-                                                            <td>@cc.ClientNr</td>
-                                                        </tr>
-                                                    }
-                                                }
-                                                @{
-                                                    cValue = s.ServiceCompanyCode.ToString() + "|" + c.ExpCompanyID.ToString() + "|" + r.RunID.ToString();
-                                                }
-                                                <tr>
-                                                    <td colspan="5">
-                                                        <button style="background:none;width:20px;height:20px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
-                                                            <img style="background:none; width:20px;height:20px;" src="@siteURL/images/select-multiple.png" />
-                                                        </button>
-                                                        <button style="background:none;width:20px;height:20px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '@cValue')">
-                                                            <img style="background:none; width:20px;height:20px;" src="@siteURL/images/unselect-multiple.png" />
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    }
-                    <tr>
-                        @{
-                            cValue = s.ServiceCompanyCode.ToString();
-                        }
-                        <td>
-                            <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
-                                <img style="background:none; width:30px;height:30px;" src="@siteURL/images/select-multiple.png" />
-                            </button>
-                            <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '@cValue')">
-                                <img style="background:none; width:30px;height:30px;" src="@siteURL/images/unselect-multiple.png" />
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    @{
-                        cValue = localizer["ExistsExpeditionReportsJobs"].Value
-                        .Replace("@#Jobs#@", s.ExpeditionReportsJobs.Count.ToString())
-                        .Replace("@#ServiceCompany#@", s.ServiceCompanyName);
-                        if (s.ExpeditionReportsJobs.Count > 0)
-                        {
-                            cValue += ". " + localizer["LastRegistedExpeditionReportsJob"].Value
-                            .Replace("@#RegistTimeStamp#@", s.ExpeditionReportsJobs[0].RegistrationTimeStamp.ToString());
-                        }
-                    }
-                    <tr><th colspan="5">@cValue</th></tr>
-                </tfoot>
-            </table>
-        }
-*@        @if (level > 1)
-        {
-            <p class="my-3 d-flex justify-content-left" class="btn btn-block btn-primary">
-                <input type="button" name="cmdselect" value='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '')">
-                <input type="button" name="cmdunselect" value="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '')">
-            </p>
-        }
-        <p class="my-3 d-flex justify-content-center">
-            <input value="@localizer["Submit"]" type="submit" name="Submit" class="btn btn-block btn-primary" />
-        </p>
-    </form>
     <div id="response" class="d-flex justify-content-center m-5"></div>
 }
 @section Scripts

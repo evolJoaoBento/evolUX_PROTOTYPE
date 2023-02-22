@@ -3,16 +3,39 @@
 @using Shared.Models.Areas.Core
 @using Newtonsoft.Json
 @using Microsoft.AspNetCore.Http
+@using System.Globalization;
 @inject IHttpContextAccessor Accessor
 @inject IViewLocalizer localizer
 
 <div id="sidebar" class="sidebar close">
     @{
         IEnumerable<SideBarAction> sideBarActions = JsonConvert.DeserializeObject<IEnumerable<SideBarAction>>(Accessor.HttpContext.Session.GetString("evolUX/SideBarActions"));
+        List<dynamic> evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(Accessor.HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION"));
+
+        string cultureCode = CultureInfo.CurrentCulture.Name;
+        if (!string.IsNullOrEmpty(cultureCode))
+            cultureCode = cultureCode.Substring(0, 2); 
+            
         int itemCount = 0;
+        string menuDesc1;
+        string menuDesc2;
+        string menuDesc3;
+        string value;
     }
     <ul id="nav-links-wrapper" class="nav-links">
-        @foreach(var actionLevel1 in sideBarActions){
+        @foreach(var actionLevel1 in sideBarActions)
+        {
+            menuDesc1 = localizer[actionLevel1.LocalizationKey]?.Value;
+            if (actionLevel1.LocalizationKey == "ActionMenuEvolDPConfig" && !string.IsNullOrEmpty(menuDesc1))
+            {
+                value = actionLevel1.LocalizationKey;
+                if (value.StartsWith("Action"))
+                    value = value.Substring(6);
+
+                var val = evolDP_Desc.Find(x => x.FieldName == value + "_" + cultureCode);
+                if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == value); }
+                if (val != null) { menuDesc1 = val.FieldDescription; }
+            }
             <li style="">
                 <div class="iocn-link">
                     <a>
@@ -32,28 +55,50 @@
                         {
                             @localizer[actionLevel1.LocalizationKey + "_Icon"]
                         }
-                        <span class="link_name">@localizer[actionLevel1.LocalizationKey]</span>
+                        <span class="link_name">@menuDesc1</span>
                     </a>
                     <i class='bx bxs-chevron-down arrow' style="color:var(--evol-grey)"></i>
                 </div>
                 <ul class="sub-menu">
-                    <li><a class="link_name">@localizer[actionLevel1.LocalizationKey]</a></li>
+                    <li><a class="link_name">@menuDesc1</a></li>
                     @foreach(var actionLevel2 in actionLevel1.ChildActions)
                     {
+                        menuDesc2 = localizer[actionLevel2.LocalizationKey]?.Value;
+                        if (actionLevel1.LocalizationKey == "ActionMenuEvolDPConfig" && !string.IsNullOrEmpty(menuDesc2))
+                        {
+                            value = actionLevel2.LocalizationKey;
+                            if (value.StartsWith("Action"))
+                                value = value.Substring(6);
+
+                            var val = evolDP_Desc.Find(x => x.FieldName == value + "_" + cultureCode);
+                            if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == value); }
+                            if (val != null) { menuDesc2 = val.FieldDescription; }
+                        }
                         if (actionLevel2.ChildActions.Count > 0)
                         {
                             <li>
                                 <div class="sub-sub-menu-title">
                                     <a href="#">
-                                        <span class="link_name">@localizer[actionLevel2.LocalizationKey]</span>
+                                        <span class="link_name">@menuDesc2</span>
                                     </a>
                                     <i class='bx bxs-chevron-down arrow' style="color:var(--evol-grey)"></i>
                                 </div>
                                 <ul class="sub-sub-menu">
-                                    <li><a class="link_name" href="#">@localizer[actionLevel2.LocalizationKey]</a></li>
+                                    <li><a class="link_name" href="#">@menuDesc2</a></li>
                                     @foreach(var actionLevel3 in actionLevel2.ChildActions)
                                     {
-                                        <li><a href="@localizer[actionLevel3.LocalizationKey  + "_Link"]">@localizer[actionLevel3.LocalizationKey]</a></li>
+                                        menuDesc3 = localizer[actionLevel3.LocalizationKey]?.Value;
+                                        if (actionLevel1.LocalizationKey == "ActionMenuEvolDPConfig" && !string.IsNullOrEmpty(menuDesc3))
+                                        {
+                                            value = actionLevel3.LocalizationKey;
+                                            if (value.StartsWith("Action"))
+                                                value = value.Substring(6);
+
+                                            var val = evolDP_Desc.Find(x => x.FieldName == value + "_" + cultureCode);
+                                            if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == value); }
+                                            if (val != null) { menuDesc3 = val.FieldDescription; }
+                                        }
+                                        <li><a href="@localizer[actionLevel3.LocalizationKey  + "_Link"]">@menuDesc3</a></li>
                                     }
                                 </ul>
                             </li>
@@ -65,16 +110,16 @@
                                 {
                                     if (!string.IsNullOrEmpty(actionLevel2.URL))
                                     {
-                                        <a href="@actionLevel2.URL">@localizer[actionLevel2.LocalizationKey]</a>
+                                        <a href="@actionLevel2.URL">@menuDesc2</a>
                                     }
                                     else
                                     {
-                                        <a href="#">@localizer[actionLevel2.LocalizationKey]</a>
+                                        <a href="#">@menuDesc2</a>
                                     }
                                 }
                                 else
                                 {
-                                    <a href="@localizer[actionLevel2.LocalizationKey  + "_Link"]">@localizer[actionLevel2.LocalizationKey]</a>
+                                    <a href="@localizer[actionLevel2.LocalizationKey  + "_Link"]">@menuDesc2</a>
                                 }
                             </li >
                         }

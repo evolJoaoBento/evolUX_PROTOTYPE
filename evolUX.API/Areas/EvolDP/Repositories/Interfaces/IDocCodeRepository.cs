@@ -15,7 +15,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
         public Task<IEnumerable<DocCode>> SetDocCodeConfig(DocCode docCode);
         public Task<IEnumerable<DocCode>> ChangeDocCode(DocCode docCode);
 
-        public Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel(int level);
+        public Task<IEnumerable<ExceptionLevel>> GetExceptionLevel(int level);
         public Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMediaGroups(int? envMediaGroupID);
         public Task<IEnumerable<int>> GetAggregationList();
         public Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(int? expeditionType);

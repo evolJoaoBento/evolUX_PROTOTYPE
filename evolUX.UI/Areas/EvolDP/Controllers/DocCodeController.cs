@@ -98,6 +98,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             {
                 DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
                 DocCodeViewModel result = await _docCodeService.GetDocCode(docCode.DocLayout, docCode.DocType);
+                GetExceptionConfigs();
                 return View(result);
             }
             catch (FlurlHttpException ex)
@@ -575,19 +576,21 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> GetCompatibility(string doccodeJson)
+        public async Task<IActionResult> AddAggCompatibility(string doccodeJson)
         {
             try
             {
                 DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
 
   
-                DocCodeCompatibilityViewModel result = await _docCodeService.GetCompatibility(docCode.DocCodeID);
-                if (result != null)
+                DocCodeCompatibilityViewModel viewmodel = await _docCodeService.GetCompatibility(docCode.DocCodeID);
+                if (viewmodel != null)
                 {
-                    result.DocCode = docCode;
+                    viewmodel.DocCode = docCode;
+                    GetExceptionConfigs();
                     TempData["Message"] = "Success";
-                    return View("AddAggCompatibility", result);
+                    return View(viewmodel);
+
                 }
                 else
                 {
@@ -632,28 +635,19 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
 
         }
+     
         public async Task<IActionResult> ChangeCompatibility(string doccodeJson, List<string> CheckedDocCodeList)
         {
             try
             {
                 DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
  
-                DataTable docCodeList = new DataTable();
-                docCodeList.Columns.Add("ID", typeof(int));
+                DocCodeCompatibilityViewModel viewmodel = await _docCodeService.ChangeCompatibility(docCode.DocCodeID, CheckedDocCodeList);
+                if (viewmodel != null)
+                {
+                    viewmodel.DocCode = docCode;
+                    return View("AddAggCompatibility", viewmodel);
 
-                string filelist = "";
-                foreach (string value in CheckedDocCodeList)
-                {
-                    DataRow row = docCodeList.NewRow();
-                    row["ID"] = Int32.Parse(value);
-                    docCodeList.Rows.Add(row);
-                }
-                DocCodeCompatibilityViewModel result = await _docCodeService.ChangeCompatibility(docCode.DocCodeID, docCodeList);
-                if (result != null)
-                {
-                    result.DocCode = docCode;
-                    TempData["Message"] = "Success";
-                    return View("AddAggCompatibility", result);
                 }
                 else
                 {
@@ -698,6 +692,97 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
 
         }
+        public async Task<IActionResult> ExceptionLevel(int Level)
+        {
+            try
+            {
+                ExceptionLevelViewModel result = await _docCodeService.GetExceptionLevel(Level);
+
+                string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
+                string cultureCode = CultureInfo.CurrentCulture.Name;
+                if (!string.IsNullOrEmpty(cultureCode))
+                    cultureCode = cultureCode.Substring(0, 2);
+                TempData["ExceptionLevelID"] = "";
+                if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
+                {
+                    var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
+                    if (evolDP_Desc != null)
+                    {
+                        bool b = false;
+                        string except = string.Format("ExceptionLevel{0}ID", Level);
+                        var val = evolDP_Desc.Find(x => x.FieldName == except + "_" + cultureCode);
+                        if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == except); }
+                        if (val != null) { TempData["ExceptionLevelID"] = val.FieldDescription; }
+                    }
+                }
+                return View(result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+
+        private void GetExceptionConfigs()
+        {
+            string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
+            string cultureCode = CultureInfo.CurrentCulture.Name;
+            if (!string.IsNullOrEmpty(cultureCode))
+                cultureCode = cultureCode.Substring(0, 2);
+            TempData["ExceptionLevel1ID"] = "";
+            TempData["ExceptionLevel2ID"] = "";
+            TempData["ExceptionLevel3ID"] = "";
+            if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
+            {
+                var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
+                if (evolDP_Desc != null)
+                {
+                    bool b = false;
+                    var val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID" + "_" + cultureCode);
+                    if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID"); }
+                    if (val != null) { TempData["ExceptionLevel1ID"] = val.FieldDescription; }
+
+                    val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID" + "_" + cultureCode);
+                    if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID"); }
+                    if (val != null) { TempData["ExceptionLevel2ID"] = val.FieldDescription; }
+
+                    val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID" + "_" + cultureCode);
+                    if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID"); }
+                    if (val != null) { TempData["ExceptionLevel3ID"] = val.FieldDescription; }
+                }
+            }
+        }
+
 
         private GenericOptionList GetConfigs() 
         {

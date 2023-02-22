@@ -105,7 +105,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             return await GetDocCodeConfig(docCodeID, startDateInt, maxDateFlag);
         }
 
-        public async Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel(int level)
+        public async Task<IEnumerable<ExceptionLevel>> GetExceptionLevel(int level)
         {
             string sql = string.Format(@"SELECT	ExceptionLevelID,
 									ExceptionCode,

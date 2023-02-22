@@ -80,14 +80,22 @@ namespace evolUX.API.Areas.EvolDP.Services
                 }
             }
             //Recolhe as outras configs
-            viewmodel.Exceptionslevel1List = await _repository.DocCode.GetDocExceptionsLevel(1);
-            viewmodel.Exceptionslevel2List = await _repository.DocCode.GetDocExceptionsLevel(2);
-            viewmodel.Exceptionslevel3List = await _repository.DocCode.GetDocExceptionsLevel(3);
+            viewmodel.Exceptionslevel1List = await _repository.DocCode.GetExceptionLevel(1);
+            viewmodel.Exceptionslevel2List = await _repository.DocCode.GetExceptionLevel(2);
+            viewmodel.Exceptionslevel3List = await _repository.DocCode.GetExceptionLevel(3);
             viewmodel.EnvMediaGroups = await _repository.DocCode.GetEnvelopeMediaGroups(null);
             viewmodel.AggregationList = await _repository.DocCode.GetAggregationList();
             viewmodel.ExpeditionTypes = await _repository.DocCode.GetExpeditionTypes(null);
             viewmodel.ExpCodeList = await _repository.DocCode.GetExpCompanyServiceTask("");
             viewmodel.ServiceTasks = await _repository.DocCode.GetServiceTasks(null);
+            return viewmodel;
+        }
+
+        public async Task<ExceptionLevelViewModel> GetExceptionLevel(int level)
+        {
+            ExceptionLevelViewModel viewmodel = new ExceptionLevelViewModel();
+            viewmodel.Level = level;
+            viewmodel.ExceptionslevelList = await _repository.DocCode.GetExceptionLevel(level);
             return viewmodel;
         }
 

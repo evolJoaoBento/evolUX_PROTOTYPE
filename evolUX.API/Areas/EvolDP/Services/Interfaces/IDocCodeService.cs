@@ -11,6 +11,7 @@ namespace evolUX.API.Areas.EvolDP.Services.Interfaces
         public Task<DocCodeViewModel> GetDocCode(string docLayout, string docType);
         public Task<DocCodeConfigViewModel> GetDocCodeConfig(int docCodeID, DateTime? startDate, bool? maxDateFlag);
         public Task<DocCodeConfigOptionsViewModel> GetDocCodeConfigOptions(DocCode? docCode);
+        public Task<ExceptionLevelViewModel> GetExceptionLevel(int level);
         public Task<DocCodeViewModel> SetDocCodeConfig(DocCode docCode);
         public Task<DocCodeViewModel> ChangeDocCode(DocCode docCode);
         public Task<Result> DeleteDocCodeConfig(int docCodeID, int startDate);

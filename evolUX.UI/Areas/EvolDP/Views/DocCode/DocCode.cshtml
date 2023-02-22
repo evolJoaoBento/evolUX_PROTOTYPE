@@ -21,6 +21,16 @@ else
     string eLevel2Desc = "";
     string eLevel3Desc = "";
 
+    string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel1IDLabel))
+        ExceptionLevel1IDLabel = localizer["ExceptionLevel1ID"].Value;
+    string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel2IDLabel))
+        ExceptionLevel2IDLabel = localizer["ExceptionLevel2ID"].Value;
+    string ExceptionLevel3IDLabel = TempData["ExceptionLevel3ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel3IDLabel))
+        ExceptionLevel3IDLabel = localizer["ExceptionLeve3ID"].Value;
+
     DocCode docCode = Model.DocCodeList?.First();
     TempData["Source"] = "DocCode";
     <div>
@@ -37,9 +47,9 @@ else
                 <th></th>
                 <th>@localizer["DocLayout"]</th>
                 <th>@localizer["DocType"]</th>
-                <th>@localizer["ExceptionLevel1ID"]</th>
-                <th>@localizer["ExceptionLevel2ID"]</th>
-                <th>@localizer["ExceptionLevel3ID"]</th>
+                <th>@ExceptionLevel1IDLabel</th>
+                <th>@ExceptionLevel2IDLabel</th>
+                <th>@ExceptionLevel3IDLabel</th>
                 <th>@localizer["DocDescription"]</th>
             </tr>
         </thead>
