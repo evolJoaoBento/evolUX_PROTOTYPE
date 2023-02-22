@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.ViewModels.Areas.Finishing;
+using Shared.ViewModels.General;
 using System.Net;
 
 namespace evolUX.UI.Areas.EvolDP.Repositories
@@ -66,7 +67,7 @@ namespace evolUX.UI.Areas.EvolDP.Repositories
             }
         }
 
-        public async Task<DocCodeViewModel> GetDocCodeConfig(int docCodeID)
+        public async Task<DocCodeConfigViewModel> GetDocCodeConfig(int docCodeID)
         {
             try
             {
@@ -77,7 +78,7 @@ namespace evolUX.UI.Areas.EvolDP.Repositories
                     .SendJsonAsync(HttpMethod.Get, dictionary);
                 if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
                 if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-                return await response.GetJsonAsync<DocCodeViewModel>();
+                return await response.GetJsonAsync<DocCodeConfigViewModel>();
             }
 
             catch (FlurlHttpException ex)
@@ -119,7 +120,7 @@ namespace evolUX.UI.Areas.EvolDP.Repositories
             }
         }
 
-        public async Task<DocCodeViewModel> RegistDocCodeConfig(DocCode docCode)
+        public async Task<DocCodeConfigViewModel> RegistDocCodeConfig(DocCode docCode)
         {
             try
             {
@@ -132,7 +133,84 @@ namespace evolUX.UI.Areas.EvolDP.Repositories
                     .SendJsonAsync(HttpMethod.Get, dictionary);
                 if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
                 if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-                return await response.GetJsonAsync<DocCodeViewModel>();
+                return await response.GetJsonAsync<DocCodeConfigViewModel>();
+            }
+
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                dynamic d = ex.GetResponseJsonAsync();
+                return d;
+            }
+        }
+
+        public async Task<DocCodeConfigViewModel> ChangeDocCode(DocCode docCode)
+        {
+            try
+            {
+                Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                string docCodeJSON = JsonConvert.SerializeObject(docCode);
+                dictionary.Add("DocCode", docCodeJSON);
+
+                var response = await _flurlClient.Request("/API/evolDP/DocCode/ChangeDocCode")
+                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                    .SendJsonAsync(HttpMethod.Get, dictionary);
+                if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+                return await response.GetJsonAsync<DocCodeConfigViewModel>();
+            }
+
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                dynamic d = ex.GetResponseJsonAsync();
+                return d;
+            }
+        }
+
+        public async Task<ResultsViewModel> DeleteDocCodeConfig(int docCodeID, int startDate)
+        {
+            try
+            {
+                Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                dictionary.Add("DocCodeID", docCodeID);
+                dictionary.Add("StartDate", startDate);
+                var response = await _flurlClient.Request("/API/evolDP/DocCode/DeleteDocCodeConfig")
+                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                    .SendJsonAsync(HttpMethod.Get, dictionary);
+                if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+                return await response.GetJsonAsync<ResultsViewModel>();
+            }
+
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                dynamic d = ex.GetResponseJsonAsync();
+                return d;
+            }
+        }
+
+        public async Task<ResultsViewModel> DeleteDocCode(DocCode docCode)
+        {
+            try
+            {
+                Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                string docCodeJSON = JsonConvert.SerializeObject(docCode);
+                dictionary.Add("DocCode", docCodeJSON);
+
+                var response = await _flurlClient.Request("/API/evolDP/DocCode/DeleteDocCode")
+                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                    .SendJsonAsync(HttpMethod.Get, dictionary);
+                if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+                return await response.GetJsonAsync<ResultsViewModel>();
             }
 
             catch (FlurlHttpException ex)

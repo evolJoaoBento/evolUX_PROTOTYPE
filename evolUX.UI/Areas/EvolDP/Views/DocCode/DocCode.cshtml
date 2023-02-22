@@ -15,14 +15,21 @@
 }
 else
 {
+    string value = "";
+    string docTypeDesc = "";
+    string eLevel1Desc = "";
+    string eLevel2Desc = "";
+    string eLevel3Desc = "";
+
     DocCode docCode = Model.DocCodeList?.First();
     TempData["Source"] = "DocCode";
-    <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+    <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="AddDocCode">
         <img style="background:none; width:50px;height:50px;" src="@siteURL/images/add_doc.png" title="@localizer["AddDocCode"]" />
     </a>
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
+                <th></th>
                 <th>@localizer["DocLayout"]</th>
                 <th>@localizer["DocType"]</th>
                 <th>@localizer["ExceptionLevel1ID"]</th>
@@ -34,39 +41,50 @@ else
         <tbody id="bootstrap-overrides">
             @foreach (var p in Model.DocCodeList)
             {
+                @if (string.IsNullOrEmpty(p.DocType))
+                {
+                    docTypeDesc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    docTypeDesc = p.DocType;
+                }
+                @if (p.ExceptionLevel1 == null || string.IsNullOrEmpty(p.ExceptionLevel1.ExceptionDescription))
+                {
+                    eLevel1Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel1Desc = p.ExceptionLevel1.ExceptionDescription;
+                }
+                @if (p.ExceptionLevel2 == null || string.IsNullOrEmpty(p.ExceptionLevel2.ExceptionDescription))
+                {
+                    eLevel2Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel2Desc = p.ExceptionLevel2.ExceptionDescription;
+                }
+                @if (p.ExceptionLevel3 == null || string.IsNullOrEmpty(p.ExceptionLevel3.ExceptionDescription))
+                {
+                    eLevel3Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel3Desc = p.ExceptionLevel3.ExceptionDescription;
+                }
+                value = p.DocLayout + "/" + docTypeDesc + "/" + eLevel1Desc + "/" + eLevel2Desc + "/" + eLevel3Desc;
                 <tr>
-                    <td><a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(p)">@p.DocLayout</a></td>
-                    <td>@p.DocType</td>
                     <td>
-                        @if (p.ExceptionLevel1 == null || string.IsNullOrEmpty(p.ExceptionLevel1.ExceptionDescription))
-                        {
-                            @localizer["EmptyField"]
-                        }
-                        else
-                        {
-                            @p.ExceptionLevel1.ExceptionDescription
-                        }
+                        <a asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(p)">
+                            <img style="background:none; width:25px;height:25px;" src="@siteURL/images/config_doc.png" title="@localizer["DocCodeConfigDetail"]: @value" />
+                        </a>
                     </td>
-                    <td>
-                        @if (p.ExceptionLevel2 == null || string.IsNullOrEmpty(p.ExceptionLevel2.ExceptionDescription))
-                        {
-                            @localizer["EmptyField"]
-                        }
-                        else
-                        {
-                            @p.ExceptionLevel2.ExceptionDescription
-                        }
-                    </td>
-                    <td>
-                        @if (p.ExceptionLevel3 == null || string.IsNullOrEmpty(p.ExceptionLevel3.ExceptionDescription))
-                        {
-                            @localizer["EmptyField"]
-                        }
-                        else
-                        {
-                            @p.ExceptionLevel3.ExceptionDescription
-                        }
-                    </td>
+                    <td>@p.DocLayout</td>
+                    <td>@docTypeDesc</td>
+                    <td>@eLevel1Desc</td>
+                    <td>@eLevel2Desc</td>
+                    <td>@eLevel3Desc</td>
                     <td>@p.DocDescription</td>
                 </tr>
             }

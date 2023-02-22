@@ -9,8 +9,10 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Shared.Models.Areas.Core;
 using Shared.Models.Areas.evolDP;
+using Shared.Models.General;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.evolDP;
+using Shared.ViewModels.General;
 using System.Data;
 using System.Globalization;
 using System.Net;
@@ -133,21 +135,75 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> DocCodeConfig(string doccodeJson)
+        public async Task<IActionResult> GetDocCodeConfig(string doccodeJson)
         {
             try
             {
                 DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
-                DocCodeViewModel result = await _docCodeService.GetDocCodeConfig(docCode.DocCodeID);
+                DocCodeConfigViewModel result = await _docCodeService.GetDocCodeConfig(docCode.DocCodeID);
                 if (result != null)
                 {
-                    DocCode d = result.DocCodeList.First();
-                    d.DocLayout = docCode.DocLayout;
-                    d.DocType = docCode.DocType;
-                    d.PrintMatchCode = docCode.PrintMatchCode;
-                    d.DocDescription = docCode.DocDescription;
+                    result.DocCode.DocLayout = docCode.DocLayout;
+                    result.DocCode.DocType = docCode.DocType;
+                    result.DocCode.PrintMatchCode = docCode.PrintMatchCode;
+                    result.DocCode.DocDescription = docCode.DocDescription;
+                    result.DocCode.ExceptionLevel1 = docCode.ExceptionLevel1;
+                    result.DocCode.ExceptionLevel2 = docCode.ExceptionLevel2;
+                    result.DocCode.ExceptionLevel3 = docCode.ExceptionLevel3;
+
+                    result.SuportTypeList = new GenericOptionList();
+                    result.SuportTypeList.List = new List<GenericOptionValue>();
+                    result.SuportTypeList.OptionList = new List<GenericOptionValue>();
+                    result.SuportTypeList.ValidList = new List<int>();
+
+                    string SuportTypeListJSON = HttpContext.Session.GetString("evolDP/SuportTypeList");
+                    if (!string.IsNullOrEmpty(SuportTypeListJSON))
+                        result.SuportTypeList = JsonConvert.DeserializeObject<GenericOptionList>(SuportTypeListJSON);
+                    string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
+                    string cultureCode = CultureInfo.CurrentCulture.Name;
+                    if (!string.IsNullOrEmpty(cultureCode))
+                        cultureCode = cultureCode.Substring(0, 2);
+                    TempData["ExceptionLevel1ID"] = "";
+                    TempData["ExceptionLevel2ID"] = "";
+                    TempData["ExceptionLevel3ID"] = "";
+                    foreach (GenericOptionValue option in result.SuportTypeList.List)
+                        TempData[option.Code] = "";
+                    foreach (GenericOptionValue option in result.SuportTypeList.OptionList)
+                        TempData[option.GroupCode] = "";
+                    if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
+                    {
+                        var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
+                        if (evolDP_Desc != null)
+                        {
+                            bool b = false;
+                            var val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID" + "_" + cultureCode);
+                            if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID"); }
+                            if (val != null) { TempData["ExceptionLevel1ID"] = val.FieldDescription; }
+
+                            val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID" + "_" + cultureCode);
+                            if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID"); }
+                            if (val != null) { TempData["ExceptionLevel2ID"] = val.FieldDescription; }
+
+                            val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID" + "_" + cultureCode);
+                            if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID"); }
+                            if (val != null) { TempData["ExceptionLevel3ID"] = val.FieldDescription; }
+
+                            foreach (GenericOptionValue option in result.SuportTypeList.List)
+                            {
+                                val = evolDP_Desc.Find(x => x.FieldName == option.Code + "_" + cultureCode);
+                                if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == option.Code); }
+                                if (val != null) { TempData[option.Code] = val.FieldDescription; }
+                            }
+                            foreach (GenericOptionValue option in result.SuportTypeList.OptionList)
+                            {
+                                val = evolDP_Desc.Find(x => x.FieldName == option.GroupCode + "_" + cultureCode);
+                                if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == option.GroupCode); }
+                                if (val != null) { TempData[option.GroupCode] = val.FieldDescription; }
+                            }
+                        }
+                    }
                 }
-                return View(result);
+                return View("DocCodeConfigList", result);
             }
             catch (FlurlHttpException ex)
             {
@@ -185,62 +241,25 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> AddDocCode(string doccodeJson)
+        public async Task<IActionResult> AddDocCode(string doccodeJson, string source)
         {
             try
             {
+                if (!string.IsNullOrEmpty(source))
+                { TempData["Source"] = source; }
+
                 DocCode? docCode = null;
                 if (!string.IsNullOrEmpty(doccodeJson))
                     docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
                 DocCodeConfigOptionsViewModel result = await _docCodeService.GetDocCodeConfigOptions(docCode);
-                string ExpCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
-                if (!string.IsNullOrEmpty(ExpCompanyList) && result != null)
-                    result.ExpCompanies = JsonConvert.DeserializeObject<List<Company>>(ExpCompanyList);
-
-                string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
-                string cultureCode = CultureInfo.CurrentCulture.Name;
-                if (!string.IsNullOrEmpty(cultureCode))
-                    cultureCode = cultureCode.Substring(0,2);
-                TempData["ExceptionLevel1ID"] = "";
-                TempData["ExceptionLevel2ID"] = "";
-                TempData["ExceptionLevel3ID"] = "";
-                foreach (GenericOptionValue option in result.SuportTypeList.List)
-                    TempData[option.Code] = "";
-                foreach (GenericOptionValue option in result.SuportTypeList.OptionList)
-                    TempData[option.GroupCode] = "";
-                if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
+                if (result != null)
                 {
-                    var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
-                    if (evolDP_Desc != null)
-                    {
-                        bool b = false;
-                        var val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID" + "_" + cultureCode);
-                        if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID"); }
-                        if (val != null) { TempData["ExceptionLevel1ID"] = val.FieldDescription; }
+                    string ExpCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
+                    if (!string.IsNullOrEmpty(ExpCompanyList))
+                        result.ExpCompanies = JsonConvert.DeserializeObject<List<Company>>(ExpCompanyList);
 
-                        val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID" + "_" + cultureCode);
-                        if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID"); }
-                        if (val != null) { TempData["ExceptionLevel2ID"] = val.FieldDescription; }
-
-                        val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID" + "_" + cultureCode);
-                        if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID"); }
-                        if (val != null) { TempData["ExceptionLevel3ID"] = val.FieldDescription; }
-
-                        foreach (GenericOptionValue option in result.SuportTypeList.List)
-                        {
-                            val = evolDP_Desc.Find(x => x.FieldName == option.Code + "_" + cultureCode);
-                            if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == option.Code); }
-                            if (val != null) { TempData[option.Code] = val.FieldDescription; }
-                        }
-                        foreach (GenericOptionValue option in result.SuportTypeList.OptionList)
-                        { 
-                            val = evolDP_Desc.Find(x => x.FieldName == option.GroupCode + "_" + cultureCode);
-                            if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == option.GroupCode); }
-                            if (val != null) { TempData[option.GroupCode] = val.FieldDescription; }
-                        }
-                    }
+                    result.SuportTypeList = GetConfigs();
                 }
-
                 return View(result);
             }
             catch (FlurlHttpException ex)
@@ -279,7 +298,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
-        public async Task<IActionResult> RegistDocCodeConfig(IFormCollection form)
+        public async Task<IActionResult> RegistDocCodeConfig(IFormCollection form, string source)
         {
             try
             {
@@ -315,55 +334,133 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                 else
                     docCode.DocCodeID = intValue;
 
-
                 docCode.DocDescription = form["DocDescription"].ToString();
                 docCode.PrintMatchCode = form["PrintMatchCode"].ToString();
 
-                docCode.DocCodeConfigs.Add(new DocCodeConfig());
                 strValue = form["StartDate"].ToString();
-                if (!string.IsNullOrEmpty(strValue))
+                if (string.IsNullOrEmpty(strValue))
                 {
-                    DateTime sDate;
-                    if (DateTime.TryParse(strValue, out sDate))
-                        strValue = sDate.ToString("yyyyMMdd",CultureInfo.InvariantCulture);
+                    DocCodeConfigViewModel result = await _docCodeService.ChangeDocCode(docCode);
+                    if (result != null)
+                    {
+                        result.SuportTypeList = GetConfigs();
+                        TempData["Source"] = source;
+                        return View("DocCodeConfigList", result);
+                    }
+                    else
+                    {
+                        ErrorViewModel viewModel = new ErrorViewModel();
+                        viewModel.ErrorResult = new ErrorResult();
+                        viewModel.ErrorResult.Message = "EmptyResult";
+                        return View("Error", viewModel);
+                    }
                 }
-                if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
-                    docCode.DocCodeConfigs[0].StartDate = intValue;
                 else
-                    docCode.DocCodeConfigs[0].StartDate = Int32.Parse(DateTime.Now.ToString("yyyyMMdd"));
+                {
+                    docCode.DocCodeConfigs.Add(new DocCodeConfig());
+                    strValue = form["StartDate"].ToString();
+                    if (!string.IsNullOrEmpty(strValue))
+                    {
+                        DateTime sDate;
+                        if (DateTime.TryParse(strValue, out sDate))
+                            strValue = sDate.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
+                    }
+                    if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
+                        docCode.DocCodeConfigs[0].StartDate = intValue;
+                    else
+                        docCode.DocCodeConfigs[0].StartDate = Int32.Parse(DateTime.Now.ToString("yyyyMMdd"));
 
-                strValue = form["EnvMediaID"].ToString();
-                if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
-                    docCode.DocCodeConfigs[0].EnvMediaID = intValue;
+                    strValue = form["EnvMediaID"].ToString();
+                    if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
+                        docCode.DocCodeConfigs[0].EnvMediaID = intValue;
 
-                strValue = form["AggrCompatibility"].ToString();
-                if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
-                    docCode.DocCodeConfigs[0].AggrCompatibility = intValue;
+                    strValue = form["AggrCompatibility"].ToString();
+                    if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
+                        docCode.DocCodeConfigs[0].AggrCompatibility = intValue;
 
-                strValue = form["Priority"].ToString();
-                if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
-                    docCode.DocCodeConfigs[0].Priority = intValue;
+                    strValue = form["Priority"].ToString();
+                    if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
+                        docCode.DocCodeConfigs[0].Priority = intValue;
 
-                strValue = form["ProdMaxSheets"].ToString();
-                if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
-                    docCode.DocCodeConfigs[0].ProdMaxSheets = intValue;
+                    strValue = form["ProdMaxSheets"].ToString();
+                    if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
+                        docCode.DocCodeConfigs[0].ProdMaxSheets = intValue;
 
-                docCode.DocCodeConfigs[0].ExpCode = form["ExpCode"].ToString();
+                    docCode.DocCodeConfigs[0].ExpCode = form["ExpCode"].ToString();
 
-                strValue = form["ExpeditionType"].ToString();
-                if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
-                    docCode.DocCodeConfigs[0].ExpeditionType = intValue;
+                    strValue = form["ExpeditionType"].ToString();
+                    if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
+                        docCode.DocCodeConfigs[0].ExpeditionType = intValue;
 
-                docCode.DocCodeConfigs[0].MaxProdDate = form["MaxProdDate"].ToString();
-                strValue = form["SuportType"].ToString();
-                if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
-                    docCode.DocCodeConfigs[0].SuportType = intValue;
+                    docCode.DocCodeConfigs[0].MaxProdDate = form["MaxProdDate"].ToString();
+                    strValue = form["SuportType"].ToString();
+                    if (!string.IsNullOrEmpty(strValue) && Int32.TryParse(strValue, out intValue))
+                        docCode.DocCodeConfigs[0].SuportType = intValue;
 
-                docCode.DocCodeConfigs[0].ArchCaducityDate = form["ArchCaducityDate"].ToString();
-                docCode.DocCodeConfigs[0].CaducityDate = form["CaducityDate"].ToString();
+                    docCode.DocCodeConfigs[0].ArchCaducityDate = form["ArchCaducityDate"].ToString();
+                    docCode.DocCodeConfigs[0].CaducityDate = form["CaducityDate"].ToString();
+                    DocCodeConfigViewModel result = await _docCodeService.RegistDocCodeConfig(docCode);
+                    if (result != null)
+                    {
+                        result.SuportTypeList = GetConfigs();
+                        TempData["Source"] = source;
+                        return View("DocCodeConfig", result);
+                    }
+                    else
+                    {
+                        ErrorViewModel viewModel = new ErrorViewModel();
+                        viewModel.ErrorResult = new ErrorResult();
+                        viewModel.ErrorResult.Message = "EmptyResult";
+                        return View("Error", viewModel);
+                    }
+                }
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
 
-                DocCodeViewModel result = await _docCodeService.RegistDocCodeConfig(docCode);
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
 
+        }
+
+        public async Task<IActionResult> DocCodeConfig(DocCode docCode, string doccodeJson)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(doccodeJson))
+                    docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
+
+                DocCodeConfigViewModel result = new DocCodeConfigViewModel();
+                result.DocCode = docCode;
+                result.SuportTypeList = GetConfigs();
                 return View(result);
             }
             catch (FlurlHttpException ex)
@@ -400,6 +497,190 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                 }
             }
 
+        }
+
+        public async Task<IActionResult> DeleteDocCodeConfig(int docCodeID, int startDate, string doccodeJson)
+        {
+            try
+            {
+                DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
+                ResultsViewModel deleteResult = await _docCodeService.DeleteDocCodeConfig(docCodeID, startDate);
+                if (deleteResult.Results.ErrorID == 0)
+                {
+                    DocCodeConfigViewModel result = await _docCodeService.GetDocCodeConfig(docCode.DocCodeID);
+                    if (result != null)
+                    {
+                        docCode.DocCodeConfigs = result.DocCode.DocCodeConfigs;
+                        result.DocCode = docCode;
+
+                        result.SuportTypeList = GetConfigs();
+                    }
+                    return View("DocCodeConfigList", result);
+                }
+                else
+                {
+                    TempData["Message"] = deleteResult.Results.Error;
+                    DocCodeConfigViewModel result = new DocCodeConfigViewModel();
+                    result.DocCode = docCode;
+                    string SuportTypeListJSON = HttpContext.Session.GetString("evolDP/SuportTypeList");
+                    if (!string.IsNullOrEmpty(SuportTypeListJSON))
+                        result.SuportTypeList = JsonConvert.DeserializeObject<GenericOptionList>(SuportTypeListJSON);
+                    return View("DocCodeConfigList", result);
+                }
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+
+        public async Task<IActionResult> DeleteDocCode(string doccodeJson)
+        {
+            try
+            {
+                DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
+
+                ResultsViewModel deleteResult = await _docCodeService.DeleteDocCode(docCode);
+                if (deleteResult.Results.ErrorID == 0)
+                {
+                    DocCodeViewModel result = await _docCodeService.GetDocCode(docCode.DocLayout, docCode.DocType);
+                    if (result != null && result.DocCodeList != null && result.DocCodeList.Count() > 0)
+                        return View("DocCode", result);
+                    else
+                        return View("Index");
+                }
+                else
+                {
+                    TempData["Message"] = deleteResult.Results.Error;
+                    DocCodeConfigViewModel result = new DocCodeConfigViewModel();
+                    result.DocCode = docCode;
+                    result.SuportTypeList = GetConfigs();
+                    return View("DocCodeConfigList", result);
+                }
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+
+        private GenericOptionList GetConfigs() 
+        {
+            GenericOptionList suportTypeList = null;
+            string SuportTypeListJSON = HttpContext.Session.GetString("evolDP/SuportTypeList");
+            if (!string.IsNullOrEmpty(SuportTypeListJSON))
+                suportTypeList = JsonConvert.DeserializeObject<GenericOptionList>(SuportTypeListJSON);
+            if (suportTypeList == null)
+            {
+                suportTypeList = new GenericOptionList();
+                suportTypeList.List = new List<GenericOptionValue>();
+                suportTypeList.OptionList = new List<GenericOptionValue>();
+                suportTypeList.ValidList = new List<int>();
+            }
+            string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
+            string cultureCode = CultureInfo.CurrentCulture.Name;
+            if (!string.IsNullOrEmpty(cultureCode))
+                cultureCode = cultureCode.Substring(0, 2);
+            TempData["ExceptionLevel1ID"] = "";
+            TempData["ExceptionLevel2ID"] = "";
+            TempData["ExceptionLevel3ID"] = "";
+            foreach (GenericOptionValue option in suportTypeList.List)
+                TempData[option.Code] = "";
+            foreach (GenericOptionValue option in suportTypeList.OptionList)
+                TempData[option.GroupCode] = "";
+            if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
+            {
+                var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
+                if (evolDP_Desc != null)
+                {
+                    bool b = false;
+                    var val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID" + "_" + cultureCode);
+                    if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel1ID"); }
+                    if (val != null) { TempData["ExceptionLevel1ID"] = val.FieldDescription; }
+
+                    val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID" + "_" + cultureCode);
+                    if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel2ID"); }
+                    if (val != null) { TempData["ExceptionLevel2ID"] = val.FieldDescription; }
+
+                    val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID" + "_" + cultureCode);
+                    if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == "ExceptionLevel3ID"); }
+                    if (val != null) { TempData["ExceptionLevel3ID"] = val.FieldDescription; }
+
+                    foreach (GenericOptionValue option in suportTypeList.List)
+                    {
+                        val = evolDP_Desc.Find(x => x.FieldName == option.Code + "_" + cultureCode);
+                        if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == option.Code); }
+                        if (val != null) { TempData[option.Code] = val.FieldDescription; }
+                    }
+                    foreach (GenericOptionValue option in suportTypeList.OptionList)
+                    {
+                        val = evolDP_Desc.Find(x => x.FieldName == option.GroupCode + "_" + cultureCode);
+                        if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == option.GroupCode); }
+                        if (val != null) { TempData[option.GroupCode] = val.FieldDescription; }
+                    }
+                }
+            }
+            return suportTypeList;
         }
     }
 }

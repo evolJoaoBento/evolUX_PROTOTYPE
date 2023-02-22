@@ -12,6 +12,8 @@ using System.Data.SqlClient;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.Models.Areas.evolDP;
 using System.Globalization;
+using Shared.ViewModels.General;
+using System.Reflection.Emit;
 
 namespace evolUX.Areas.EvolDP.Controllers
 {
@@ -84,7 +86,7 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         [HttpGet]
         [ActionName("DocCodeConfig")]
-        public async Task<ActionResult<DocCodeViewModel>> GetDocCodeConfig([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<DocCodeConfigViewModel>> GetDocCodeConfig([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -96,7 +98,7 @@ namespace evolUX.Areas.EvolDP.Controllers
                 dictionary.TryGetValue("MaxDateFlag", out obj);
                 bool? maxDateFlag = (bool?)obj;
 
-                DocCodeViewModel viewmodel = await _docCodeService.GetDocCodeConfig(docCodeID, startDate, maxDateFlag);
+                DocCodeConfigViewModel viewmodel = await _docCodeService.GetDocCodeConfig(docCodeID, startDate, maxDateFlag);
                 _logger.LogInfo("DocCodeConfig Get");
                 return Ok(viewmodel);
             }
@@ -144,7 +146,7 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         [HttpGet]
         [ActionName("RegistDocCodeConfig")]
-        public async Task<ActionResult<DocCodeViewModel>> RegistDocCodeConfig([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<DocCodeConfigViewModel>> RegistDocCodeConfig([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -154,8 +156,8 @@ namespace evolUX.Areas.EvolDP.Controllers
                 if (obj != null)
                     docCode = JsonConvert.DeserializeObject<DocCode>(Convert.ToString(obj));
 
-                await _docCodeService.PostDocCodeConfig(docCode);
-                DocCodeViewModel viewmodel = await _docCodeService.GetDocCodeConfig(docCode.DocCodeID, DateTime.ParseExact(docCode.DocCodeConfigs[0].StartDate.ToString(), "yyyyMMdd", CultureInfo.InvariantCulture), null);
+                DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
+                viewmodel.DocCode = (await _docCodeService.SetDocCodeConfig(docCode)).DocCodeList.First();
 
                 _logger.LogInfo("RegistDocCodeConfig Get");
                 return Ok(viewmodel);
@@ -173,15 +175,83 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         }
 
-        [HttpDelete("{docCodeID}")]
-        [ActionName("DeleteDocCode")]
-        public async Task<ActionResult<DocCodeResultsViewModel>> DeleteDocCode([FromRoute] int docCodeID)
+        [HttpGet]
+        [ActionName("ChangeDocCode")]
+        public async Task<ActionResult<DocCodeConfigViewModel>> ChangeDocCode([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                DocCodeResultsViewModel viewmodel = new DocCodeResultsViewModel();
-                viewmodel.Results = await _docCodeService.DeleteDocCode(docCodeID);
-                _logger.LogInfo("DocCodeException Get");
+                object obj;
+                dictionary.TryGetValue("DocCode", out obj);
+                DocCode? docCode = null;
+                if (obj != null)
+                    docCode = JsonConvert.DeserializeObject<DocCode>(Convert.ToString(obj));
+
+                DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
+                viewmodel.DocCode = (await _docCodeService.ChangeDocCode(docCode)).DocCodeList.First();
+
+                _logger.LogInfo("ChangeDocCode Get");
+                return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get RegistDocCodeConfig action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+
+        }
+
+        [HttpGet]
+        [ActionName("DeleteDocCodeConfig")]
+        public async Task<ActionResult<ResultsViewModel>> DeleteDocCodeConfig([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("DocCodeID", out obj);
+                int docCodeID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("StartDate", out obj);
+                int startDate = Convert.ToInt32(obj.ToString());
+
+                ResultsViewModel viewmodel = new ResultsViewModel();
+                viewmodel.Results = await _docCodeService.DeleteDocCodeConfig(docCodeID, startDate);
+                _logger.LogInfo("DeleteDocCodeConfig");
+                return Ok(viewmodel);
+
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+
+        }
+
+        [HttpGet]
+        [ActionName("DeleteDocCode")]
+        public async Task<ActionResult<ResultsViewModel>> DeleteDocCode([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("DocCode", out obj);
+                DocCode? docCode = null;
+                if (obj != null)
+                    docCode = JsonConvert.DeserializeObject<DocCode>(Convert.ToString(obj));
+
+                ResultsViewModel viewmodel = new ResultsViewModel();
+                viewmodel.Results = await _docCodeService.DeleteDocCode(docCode.DocCodeID);
+                _logger.LogInfo("DeleteDocCode");
                 return Ok(viewmodel);
             }
             catch (SqlException ex)
@@ -196,6 +266,7 @@ namespace evolUX.Areas.EvolDP.Controllers
             }
 
         }
+
         //Podia se mandar um aviso sobre algo nao ser compativel no futuro
         [HttpGet("{docCodeID}")]
         [ActionName("Compatibility")]

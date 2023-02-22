@@ -1,4 +1,5 @@
 ﻿using Shared.Models.Areas.evolDP;
+using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
@@ -10,6 +11,9 @@ namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
         public Task<IEnumerable<DocCode>> GetDocCode(string docLayout, string docType, int numRows);
         public Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(int docCodeID, int? startDate, bool? maxDateFlag);
         public Task<IEnumerable<DocCodeConfig>> GetDocCodeConfig(int docCodeID, DateTime? startDate, bool? maxDateFlag);
+        public Task<IEnumerable<DocCode>> SetDocCodeConfig(DocCode docCode);
+        public Task<IEnumerable<DocCode>> ChangeDocCode(DocCode docCode);
+
         public Task<IEnumerable<ExceptionLevel>> GetDocExceptionsLevel(int level);
         public Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMediaGroups(int? envMediaGroupID);
         public Task<IEnumerable<int>> GetAggregationList();
@@ -17,9 +21,10 @@ namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
         public Task<IEnumerable<ExpCompanyServiceTask>> GetExpCompanyServiceTask(string expCode);
         public Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID);
         public Task<GenericOptionList> GetSuporTypeOptionList();
-        //public Task<IEnumerable<GenericOptionValue>> GetOptionList(string option);
-        public Task<IEnumerable<DocCode>> PostDocCodeConfig(DocCode docCode);
-        public Task<IEnumerable<string>> DeleteDocCode(int docCodeID);
+
+        public Task<Result> DeleteDocCodeConfig(int docCodeID, int startDate);
+        public Task<Result> DeleteDocCode(int docCodeID);
+
         Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(int docCodeID);
         Task<AggregateDocCode> GetAggregateDocCode(int docCodeID);
         Task ChangeCompatibility(DocCodeCompatabilityViewModel model);

@@ -120,11 +120,8 @@
   <data name="AddDocCode" xml:space="preserve">
     <value>Adicionar Tipo de Documento</value>
   </data>
-  <data name="Detail" xml:space="preserve">
-    <value>Ver Detalhe</value>
-  </data>
   <data name="DocCode" xml:space="preserve">
-    <value>Tipo de Documento</value>
+    <value>Tipos de Documento</value>
   </data>
   <data name="DocDescription" xml:space="preserve">
     <value>Descrição</value>
@@ -136,7 +133,10 @@
     <value>Subtipo</value>
   </data>
   <data name="EmptyField" xml:space="preserve">
-    <value>&amp;lt;vazio&amp;gt;</value>
+    <value>&lt;vazio&gt;</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Listar Tipos de Documento</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>

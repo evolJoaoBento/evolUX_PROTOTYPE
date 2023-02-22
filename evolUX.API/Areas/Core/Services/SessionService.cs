@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Areas.Core.Services
 {
@@ -61,6 +62,27 @@ namespace evolUX.API.Areas.Core.Services
                 result.Add("evolDP/ExpeditionCompanies", JsonConvert.SerializeObject(expeditionCompanies));
                 DataTable companyBusiness = await _repository.Session.GetCompanyBusinness(servers, "SERVICE");
                 result.Add("evolDP/CompanyBusiness", JsonConvert.SerializeObject(companyBusiness));
+
+                GenericOptionList SuportTypeList = await _repository.DocCode.GetSuporTypeOptionList();
+                if (SuportTypeList != null)
+                {
+                    List<GenericOptionValue> optionList = new List<GenericOptionValue>();
+                    if (SuportTypeList.List != null && SuportTypeList.List.Count() > 0)
+                    {
+                        List<string> options = SuportTypeList.List.Select(x => x.GroupCode).Distinct().ToList();
+                        foreach (string option in options)
+                        {
+                            optionList.Add(new GenericOptionValue()
+                            {
+                                ID = SuportTypeList.List.Where(x => x.GroupCode == option && x.ID != 0).Min(x => x.ID),
+                                Code = option,
+                                GroupCode = option
+                            });
+                        }
+                    }
+                    SuportTypeList.OptionList = optionList;
+                }
+                result.Add("evolDP/SuportTypeList", JsonConvert.SerializeObject(SuportTypeList));
             }
             return result;
         }

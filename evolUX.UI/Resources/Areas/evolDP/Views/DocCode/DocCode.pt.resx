@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddDocCode" xml:space="preserve">
+    <value>Adicionar Tipo de Documento</value>
+  </data>
   <data name="Archive" xml:space="preserve">
     <value>Arquivar</value>
   </data>
@@ -125,6 +128,12 @@
   </data>
   <data name="DocCode" xml:space="preserve">
     <value>Tipo de Documento</value>
+  </data>
+  <data name="DocCodeConfigDetail" xml:space="preserve">
+    <value>Configurações do Tipo de Documento</value>
+  </data>
+  <data name="DocCodeDetail" xml:space="preserve">
+    <value>Detalhe do Tipo de Documento</value>
   </data>
   <data name="DocDescription" xml:space="preserve">
     <value>Descrição</value>
@@ -148,7 +157,7 @@
     <value>Flag adicional de email</value>
   </data>
   <data name="EmptyField" xml:space="preserve">
-    <value>&amp;lt;vazio&amp;gt;</value>
+    <value>&lt;vazio&gt;</value>
   </data>
   <data name="ExceptionLevel1ID" xml:space="preserve">
     <value>Exceção Nível 1</value>

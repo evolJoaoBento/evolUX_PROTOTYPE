@@ -34,14 +34,11 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 return View(null);
 
             DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
-            if (ServiceCompanyDT.Rows.Count > 1)
-            {
-                ViewBag.hasServiceCompanies = false;
-            }
-            else
-            {
+            if (ServiceCompanyDT.Rows.Count > 0)
                 ViewBag.hasServiceCompanies = true;
-            }
+            else
+                ViewBag.hasServiceCompanies = false;
+
             return View();
         }
 

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,58 +117,187 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="EnvelopeMachine" xml:space="preserve">
-    <value />
+  <data name="AddDocCodeConfig" xml:space="preserve">
+    <value>Adicionar Configuração para Tipo de Documento</value>
   </data>
-  <data name="FileID" xml:space="preserve">
-    <value>FileID</value>
+  <data name="AggCompatibility0" xml:space="preserve">
+    <value>Não Agregável</value>
   </data>
-  <data name="FileName" xml:space="preserve">
-    <value>Ficheiro</value>
+  <data name="AggCompatibility1" xml:space="preserve">
+    <value>Agregável com todos</value>
   </data>
-  <data name="FilesLeftToRegistFullfill" xml:space="preserve">
-    <value>Ficheiros com envelopagens por Registar</value>
+  <data name="AggCompatibility2" xml:space="preserve">
+    <value>Condicionalmente Agregável (Necessário configurar compatibilidades)</value>
   </data>
-  <data name="FilesLeftToRegistPrint" xml:space="preserve">
-    <value>Ficheiros com impressões por Registar</value>
+  <data name="AggCompatibility3" xml:space="preserve">
+    <value>Agregável apenas com o mesmo tipo (Layout/Subtipo)</value>
   </data>
-  <data name="FullFillMaterialCode" xml:space="preserve">
-    <value>Tipo de Envelope</value>
+  <data name="AggrCompatibility" xml:space="preserve">
+    <value>Tipo de Agregação</value>
+  </data>
+  <data name="ArchCaducityDate" xml:space="preserve">
+    <value>Data de Caducidade em Arquivo</value>
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value>Arquivar</value>
+  </data>
+  <data name="Archive0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="Archive1" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="CaducityDate" xml:space="preserve">
+    <value>Data de Caducidade para Produção</value>
+  </data>
+  <data name="DocCodeConfigChange" xml:space="preserve">
+    <value>Alterar Configuração</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detalhe da Configuração</value>
+  </data>
+  <data name="DocCode" xml:space="preserve">
+    <value>Tipo de Documento</value>
+  </data>
+  <data name="DocCodeConfigAdd" xml:space="preserve">
+    <value>Adicionar Configuração para Tipo de Documento</value>
+  </data>
+  <data name="DocDescription" xml:space="preserve">
+    <value>Descrição</value>
+  </data>
+  <data name="DocLayout" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="DocType" xml:space="preserve">
+    <value>Subtipo</value>
+  </data>
+  <data name="Electronic" xml:space="preserve">
+    <value>Gerar outros formatos</value>
+  </data>
+  <data name="Electronic0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="ElectronicHide" xml:space="preserve">
+    <value>Flag adicional</value>
+  </data>
+  <data name="ElectronicHide0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="ElectronicHide1" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="EMail" xml:space="preserve">
+    <value>Envio por email</value>
+  </data>
+  <data name="Email0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="EMailHide" xml:space="preserve">
+    <value>Flag adicional de email</value>
+  </data>
+  <data name="EMailHide0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="EMailHide1" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="EmptyField" xml:space="preserve">
+    <value>&lt;vazio&gt;</value>
+  </data>
+  <data name="EnvMedia" xml:space="preserve">
+    <value>Grupo de Envelopes</value>
+  </data>
+  <data name="ExceptionLevel1ID" xml:space="preserve">
+    <value>Exceção Nível 1</value>
+  </data>
+  <data name="ExceptionLevel2ID" xml:space="preserve">
+    <value>Exceção Nível 2</value>
+  </data>
+  <data name="ExceptionLevel3ID" xml:space="preserve">
+    <value>Exceção Nível 3</value>
+  </data>
+  <data name="ExpCompany" xml:space="preserve">
+    <value>Companhia de Expedição</value>
+  </data>
+  <data name="ExpeditionType" xml:space="preserve">
+    <value>Tipo de Expedição</value>
+  </data>
+  <data name="ExpeditionType1" xml:space="preserve">
+    <value>Correio Normal</value>
+  </data>
+  <data name="ExpeditionType2" xml:space="preserve">
+    <value>Correio Prioritário</value>
+  </data>
+  <data name="ExpeditionType3" xml:space="preserve">
+    <value>Correio Registado</value>
+  </data>
+  <data name="ExpeditionType4" xml:space="preserve">
+    <value>Correio Registado c/ Aviso Receção</value>
+  </data>
+  <data name="Finishing" xml:space="preserve">
+    <value>Envio por papel/correio</value>
+  </data>
+  <data name="Finishing0" xml:space="preserve">
+    <value>Não</value>
+  </data>
+  <data name="Finishing1" xml:space="preserve">
+    <value>Sim</value>
+  </data>
+  <data name="IndexAdd" xml:space="preserve">
+    <value>Adicionar Tipo de Documento</value>
+  </data>
+  <data name="InvalidDate" xml:space="preserve">
+    <value>Configuração de Data Inválida</value>
+  </data>
+  <data name="MaxProdDate" xml:space="preserve">
+    <value>Data Limite para Retenção</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
-  <data name="NoneToRegistFullfillFiles" xml:space="preserve">
-    <value>Sem ficheiros com envelopagens por Registar</value>
+  <data name="Other" xml:space="preserve">
+    <value>Outros Formatos</value>
   </data>
-  <data name="NoneToRegistPrintFiles" xml:space="preserve">
-    <value>Sem ficheiros com impressões por Registar</value>
+  <data name="Other0" xml:space="preserve">
+    <value>Não</value>
   </data>
-  <data name="Operator" xml:space="preserve">
-    <value>Operador</value>
+  <data name="PrintMatchCode" xml:space="preserve">
+    <value>Grupo de Serviços de Impressão</value>
   </data>
-  <data name="PendingRegistDetail" xml:space="preserve">
-    <value>Envelopagem/Impressão Pendentes</value>
+  <data name="Priority" xml:space="preserve">
+    <value>Prioridade</value>
   </data>
-  <data name="Printer" xml:space="preserve">
-    <value>Impressora</value>
+  <data name="ProdMaxSheets" xml:space="preserve">
+    <value>Limite de Folhas para Agregação</value>
   </data>
-  <data name="RunDescription" xml:space="preserve">
-    <value>Descrição do Run</value>
+  <data name="ServiceTask" xml:space="preserve">
+    <value>Tipo de Tratamento</value>
   </data>
-  <data name="RunID" xml:space="preserve">
-    <value>RunID</value>
+  <data name="StartDate" xml:space="preserve">
+    <value>Data Efetiva das Configurações</value>
   </data>
-  <data name="SentToPrinterTimeStamp" xml:space="preserve">
-    <value>Enviado para a Impressora</value>
+  <data name="Action" xml:space="preserve">
+    <value>Ações</value>
   </data>
-  <data name="ServiceCompanyCode" xml:space="preserve">
-    <value>Finishing Provider</value>
+  <data name="Date" xml:space="preserve">
+    <value>Data</value>
   </data>
-  <data name="TotalPostObjs" xml:space="preserve">
-    <value>Envelopagens</value>
+  <data name="DeleteDocCode" xml:space="preserve">
+    <value>Apagar Tipo de Documento</value>
   </data>
-  <data name="TotalPrint" xml:space="preserve">
-    <value>Impressões</value>
+  <data name="DeleteDocCodeConfig" xml:space="preserve">
+    <value>Apagar Configuração</value>
+  </data>
+  <data name="DocCodeID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="ChangeDocCode" xml:space="preserve">
+    <value>Editar Tipo de Documento</value>
+  </data>
+  <data name="deleteMsgDocCode" xml:space="preserve">
+    <value>Tem a certeza que quer apagar Tipo de Documento?</value>
+  </data>
+  <data name="deleteMsgDocCodeConfig" xml:space="preserve">
+    <value>Tem a certeza que quer apagar Configuração do Tipo de Documento?</value>
   </data>
 </root>

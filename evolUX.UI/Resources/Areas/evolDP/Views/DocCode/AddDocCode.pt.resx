@@ -117,7 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddDocCodeConfigAdd" xml:space="preserve">
+  <data name="AddDocCodeConfig" xml:space="preserve">
     <value>Adicionar Configuração para Tipo de Documento</value>
   </data>
   <data name="AggCompatibility0" xml:space="preserve">
@@ -150,7 +150,7 @@
   <data name="CaducityDate" xml:space="preserve">
     <value>Data de Caducidade para Produção</value>
   </data>
-  <data name="ChangeDocCodeConfigAdd" xml:space="preserve">
+  <data name="DocCodeConfigChange" xml:space="preserve">
     <value>Alterar Configuração para Tipo de Documento</value>
   </data>
   <data name="Detail" xml:space="preserve">
@@ -159,7 +159,7 @@
   <data name="DocCode" xml:space="preserve">
     <value>Tipo de Documento</value>
   </data>
-  <data name="DocCodeAdd" xml:space="preserve">
+  <data name="AddDocCode" xml:space="preserve">
     <value>Adicionar Tipo de Documento</value>
   </data>
   <data name="DocDescription" xml:space="preserve">
@@ -202,7 +202,7 @@
     <value>Sim</value>
   </data>
   <data name="EmptyField" xml:space="preserve">
-    <value>&amp;lt;vazio&amp;gt;</value>
+    <value>&lt;vazio&gt;</value>
   </data>
   <data name="EnvMedia" xml:space="preserve">
     <value>Grupo de Envelopes</value>
@@ -243,7 +243,7 @@
   <data name="Finishing1" xml:space="preserve">
     <value>Sim</value>
   </data>
-  <data name="IndexAdd" xml:space="preserve">
+  <data name="AddDoc" xml:space="preserve">
     <value>Adicionar Tipo de Documento</value>
   </data>
   <data name="InvalidDate" xml:space="preserve">
@@ -268,7 +268,7 @@
     <value>Prioridade</value>
   </data>
   <data name="ProdMaxSheets" xml:space="preserve">
-    <value>Limte de Folhas para Agregação</value>
+    <value>Limite de Folhas para Agregação</value>
   </data>
   <data name="ServiceTask" xml:space="preserve">
     <value>Tipo de Tratamento</value>
@@ -281,5 +281,8 @@
   </data>
   <data name="SubmitChange" xml:space="preserve">
     <value>Alterar</value>
+  </data>
+  <data name="DocCodeChange" xml:space="preserve">
+    <value>Editar Tipo de Documento</value>
   </data>
 </root>

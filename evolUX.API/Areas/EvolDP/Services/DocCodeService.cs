@@ -28,19 +28,19 @@ namespace evolUX.API.Areas.EvolDP.Services
         {
             DocCodeViewModel viewmodel = new DocCodeViewModel();
             viewmodel.DocCodeList = await _repository.DocCode.GetDocCode(docLayout, docType, -1);
-            foreach(DocCode doc in viewmodel.DocCodeList) 
-            {
-                doc.DocCodeConfigs = (await _repository.DocCode.GetDocCodeConfig(doc.DocCodeID, (int?)null, null)).ToList();
-            }
+            //foreach(DocCode doc in viewmodel.DocCodeList) 
+            //{
+            //    doc.DocCodeConfigs = (await _repository.DocCode.GetDocCodeConfig(doc.DocCodeID, (int?)null, null)).ToList();
+            //}
             return viewmodel;
         }
 
-        public async Task<DocCodeViewModel> GetDocCodeConfig(int docCodeID, DateTime? startDate, bool? maxDateFlag)
+        public async Task<DocCodeConfigViewModel> GetDocCodeConfig(int docCodeID, DateTime? startDate, bool? maxDateFlag)
         {
-            DocCodeViewModel viewmodel = new DocCodeViewModel();
-            List<DocCode> docCodeList = new List<DocCode>();
-            docCodeList.Add(new DocCode() { DocCodeID = docCodeID});
-            docCodeList[0].DocCodeConfigs = (await _repository.DocCode.GetDocCodeConfig(docCodeID, startDate, null)).ToList();
+            DocCodeConfigViewModel viewmodel = new DocCodeConfigViewModel();
+            viewmodel.DocCode = new DocCode();
+            viewmodel.DocCode.DocCodeID = docCodeID;
+            viewmodel.DocCode.DocCodeConfigs = (await _repository.DocCode.GetDocCodeConfig(docCodeID, startDate, null)).ToList();
             return viewmodel;
         }
 
@@ -86,39 +86,26 @@ namespace evolUX.API.Areas.EvolDP.Services
             viewmodel.ExpeditionTypes = await _repository.DocCode.GetExpeditionTypes(null);
             viewmodel.ExpCodeList = await _repository.DocCode.GetExpCompanyServiceTask("");
             viewmodel.ServiceTasks = await _repository.DocCode.GetServiceTasks(null);
-            viewmodel.SuportTypeList = await _repository.DocCode.GetSuporTypeOptionList();
-            if (viewmodel.SuportTypeList != null)
-            {
-                List<GenericOptionValue> optionList = new List<GenericOptionValue>();
-                if (viewmodel.SuportTypeList.List != null && viewmodel.SuportTypeList.List.Count() > 0)
-                {
-                    List<string> options = viewmodel.SuportTypeList.List.Select(x => x.GroupCode).Distinct().ToList();
-                    foreach (string option in options)
-                    {
-                        optionList.Add(new GenericOptionValue()
-                        {
-                            ID = viewmodel.SuportTypeList.List.Where(x => x.GroupCode == option && x.ID != 0).Min(x => x.ID),
-                            Code = option,
-                            GroupCode = option
-                        });
-                    }
-                }
-
-                viewmodel.SuportTypeList.OptionList = optionList;
-            }
             return viewmodel;
         }
 
-        public async Task<DocCodeViewModel> PostDocCodeConfig(DocCode docCode)
+        public async Task<DocCodeViewModel> SetDocCodeConfig(DocCode docCode)
         {
             DocCodeViewModel viewmodel = new DocCodeViewModel();
-            viewmodel.DocCodeList = await _repository.DocCode.PostDocCodeConfig(docCode);
+            viewmodel.DocCodeList = await _repository.DocCode.SetDocCodeConfig(docCode);
             return viewmodel;
         }
 
-        public async Task<IEnumerable<string>> DeleteDocCode(int docCodeID)
+        public async Task<DocCodeViewModel> ChangeDocCode(DocCode docCode)
         {
-            IEnumerable<string>  results = await _repository.DocCode.DeleteDocCode(docCodeID);
+            DocCodeViewModel viewmodel = new DocCodeViewModel();
+            viewmodel.DocCodeList = await _repository.DocCode.ChangeDocCode(docCode);
+            return viewmodel;
+        }
+
+        public async Task<Result> DeleteDocCode(int docCodeID)
+        {
+            Result results = await _repository.DocCode.DeleteDocCode(docCodeID);
             if (results == null)
             {
 
@@ -127,6 +114,15 @@ namespace evolUX.API.Areas.EvolDP.Services
 
         }
 
+        public async Task<Result> DeleteDocCodeConfig(int docCodeID, int startDate)
+        {
+            Result results = await _repository.DocCode.DeleteDocCodeConfig(docCodeID, startDate);
+            if (results == null)
+            {
+
+            }
+            return results;
+        }
         public async Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(int docCodeID)
         {
             IEnumerable<AggregateDocCode> aggregateDocCodes = await _repository.DocCode.GetAggregateDocCodes(docCodeID);

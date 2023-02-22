@@ -3,7 +3,9 @@ using evolUX.UI.Areas.EvolDP.Repositories.Interfaces;
 using evolUX.UI.Areas.EvolDP.Services.Interfaces;
 using Flurl.Http;
 using Shared.Models.Areas.evolDP;
+using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
+using Shared.ViewModels.General;
 
 namespace evolUX.UI.Areas.EvolDP.Services
 {
@@ -24,7 +26,7 @@ namespace evolUX.UI.Areas.EvolDP.Services
             var response = await _docCodeRepository.GetDocCode(docLayout, docType);
             return response;
         }
-        public async Task<DocCodeViewModel> GetDocCodeConfig(int docCodeID)
+        public async Task<DocCodeConfigViewModel> GetDocCodeConfig(int docCodeID)
         {
             var response = await _docCodeRepository.GetDocCodeConfig(docCodeID);
             return response;
@@ -34,9 +36,24 @@ namespace evolUX.UI.Areas.EvolDP.Services
             var response = await _docCodeRepository.GetDocCodeConfigOptions(docCode);
             return response;
         }
-        public async Task<DocCodeViewModel> RegistDocCodeConfig(DocCode docCode)
+        public async Task<DocCodeConfigViewModel> RegistDocCodeConfig(DocCode docCode)
         {
             var response = await _docCodeRepository.RegistDocCodeConfig(docCode);
+            return response;
+        }
+        public async Task<DocCodeConfigViewModel> ChangeDocCode(DocCode docCode)
+        {
+            var response = await _docCodeRepository.ChangeDocCode(docCode);
+            return response;
+        }
+        public async Task<ResultsViewModel> DeleteDocCodeConfig(int docCodeID, int startDate)
+        {
+            var response = await _docCodeRepository.DeleteDocCodeConfig(docCodeID, startDate);
+            return response;
+        }
+        public async Task<ResultsViewModel> DeleteDocCode(DocCode docCode)
+        {
+            var response = await _docCodeRepository.DeleteDocCode(docCode);
             return response;
         }
     }

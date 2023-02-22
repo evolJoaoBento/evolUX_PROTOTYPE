@@ -1,0 +1,414 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model DocCodeConfigViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    var json = JsonConvert.SerializeObject(Model.SuportTypeList);
+}
+<script>
+    var suporTypeList = @Html.Raw(json);
+    const invalidDateStr = '@localizer["InvalidDate"]';
+</script>
+@if (Model == null || Model.DocCode == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string headerDesc = "DocCodeConfig";
+    if (!string.IsNullOrEmpty(TempData["Source"]?.ToString()))
+        headerDesc = TempData["Source"].ToString();
+    string value;
+    int suportType = 0;
+    GenericOptionValue OptionValue;
+    string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
+    string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
+    string ExceptionLevel3IDLabel = TempData["ExceptionLevel3ID"]?.ToString();
+    foreach (GenericOptionValue option in Model.SuportTypeList.List)
+    {
+        if (string.IsNullOrEmpty(TempData[option.Code]?.ToString()))
+            TempData[option.Code] = localizer[option.Code].Value;
+    }    
+    foreach (GenericOptionValue option in Model.SuportTypeList.OptionList)
+    {
+        if (string.IsNullOrEmpty(TempData[option.GroupCode]?.ToString()))
+            TempData[option.GroupCode] = localizer[option.GroupCode].Value;
+    }
+    DocCode docCode = Model.DocCode;
+    DocCodeConfig dConfig = null;
+    if (docCode.DocCodeConfigs != null && docCode.DocCodeConfigs.Count() > 0)
+        dConfig = docCode.DocCodeConfigs[0];
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr><td colspan="2">@localizer[headerDesc]</td></tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            <tr>
+                <th>@localizer["DocCodeID"]</th>
+                <td>@docCode.DocCodeID</td>
+            </tr>
+            <tr>
+                <th>@localizer["DocLayout"]</th>
+                <td>@docCode.DocLayout</td>
+            </tr>
+            <tr>
+                <th>@localizer["DocType"]</th>
+                <td>@docCode.DocType</td>
+            </tr>
+            <tr>
+                <th>@ExceptionLevel1IDLabel</th>
+                <td>
+                @if (docCode.ExceptionLevel1 == null || string.IsNullOrEmpty(docCode.ExceptionLevel1.ExceptionDescription))
+                {
+                    @localizer["EmptyField"]
+                }
+                else
+                {
+                    @docCode.ExceptionLevel1.ExceptionDescription
+                }
+                </td>
+            </tr>
+            <tr>
+                <th>@ExceptionLevel2IDLabel</th>
+                <td>
+                @if (docCode.ExceptionLevel2 == null || string.IsNullOrEmpty(docCode.ExceptionLevel2.ExceptionDescription))
+                {
+                    @localizer["EmptyField"]
+                }
+                else
+                {
+                    @docCode.ExceptionLevel2.ExceptionDescription
+                }
+                </td>
+            </tr>
+            <tr>
+                <th>@ExceptionLevel3IDLabel</th>
+                <td>
+                @if (docCode.ExceptionLevel3 == null || string.IsNullOrEmpty(docCode.ExceptionLevel3.ExceptionDescription))
+                {
+                    @localizer["EmptyField"]
+                }
+                else
+                {
+                    @docCode.ExceptionLevel3.ExceptionDescription
+                }
+                </td>
+            </tr>
+            <tr>
+                <th>@localizer["DocDescription"]</th>
+                <td>@docCode.DocDescription</td>
+            </tr>
+            <tr>
+                <th>@localizer["PrintMatchCode"]</th>
+                <td>@docCode.PrintMatchCode</td>
+            </tr>
+            @if (dConfig == null)
+            {
+                <tr>
+                    <td colspan="2">
+                        <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="AddDocCodeConfig">
+                            <img style="background:none; width:50px;height:50px;" src="@siteURL/images/config_doc.png" title="@localizer["AddDocCodeConfig"]" />
+                        </a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>@localizer["StartDate"]</th>
+                    <td>@DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToShortDateString()</td>
+                </tr>
+                <tr>
+                    <th>@localizer["EnvMedia"]</th>
+                    <td>@dConfig.EnvMediaDesc</td>
+                </tr>
+                <tr>
+                    <th>@localizer["AggrCompatibility"]</th>
+                    @{value = "AggCompatibility" + dConfig.AggrCompatibility.ToString();}
+                    <td>@localizer[value]</td>
+                </tr>
+                <tr>
+                    <th>@localizer["Priority"]</th>
+                    <td>@dConfig.Priority</td>
+                </tr>
+                <tr>
+                    <th>@localizer["ProdMaxSheets"]</th>
+                    @if (dConfig != null && dConfig?.ProdMaxSheets > 0)
+                    {
+                        value = dConfig.ProdMaxSheets.ToString();
+                    }
+                    else
+                    {
+                        value = "";
+                    }
+                    <td>@value</td>
+                </tr>
+                <tr>
+                    <th>@localizer["ExpCompany"]</th>
+                    <td>@dConfig.ExpCompanyName</td>
+                </tr>
+                <tr>
+                    <th>@localizer["ExpeditionType"]</th>
+                    @{value = "ExpeditionType" + dConfig.ExpeditionType.ToString();}
+                    <td>@localizer[value]</td>
+                </tr>
+                <tr>
+                    <th>@localizer["ServiceTask"]</th>
+                    <td>@dConfig.ServiceTaskDesc</td>
+                </tr>
+                <tr>
+                    <th>@localizer["MaxProdDate"]</th>
+                    <td>@dConfig.MaxProdDate</td>
+                </tr>
+                suportType = dConfig.SuportType;
+                @foreach(GenericOptionValue option in Model.SuportTypeList.OptionList)
+                {
+                    <tr>
+                        <th>@TempData[option.GroupCode].ToString()</th>
+                        @{
+                            OptionValue = Model.SuportTypeList.List.OrderByDescending(x => x.ID).First(x => x.GroupCode == option.GroupCode && (x.ID & suportType) == x.ID);
+                            suportType = suportType - OptionValue.ID;
+                        }
+                        <td>@TempData[OptionValue.Code]</td>
+                    </tr>
+                }
+                <tr>
+                    <th>@localizer["ArchCaducityDate"]</th>
+                    <td>@dConfig.ArchCaducityDate</td>
+                </tr>
+                <tr>
+                    <th>@localizer["CaducityDate"]</th>
+                    <td>@dConfig.CaducityDate</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot id="bootstrap-overrides">
+        </tfoot>
+    </table>
+}
+@section Scripts
+{
+    <script type="text/javascript">
+        function suportTypeChange(selectElement)
+        {
+            var suportTypeValue = parseInt(selectElement.value, 10);
+            var suportTypeFilteredList = suporTypeList.ValidList.filter(function (value) {
+                return (suportTypeValue == 0 || (value & suportTypeValue) == suportTypeValue);
+            });
+            const selectElements = document.querySelectorAll('select[id^="suportType_"]');
+            selectElements.forEach(sElement => {
+                if (sElement.id != selectElement.id)
+                {
+                    var newSPValue = parseInt(sElement.value, 10) + suportTypeValue;
+                    var result = suportTypeFilteredList.filter(function (value) {
+                        return (parseInt(sElement.value, 10) == 0 || (value & newSPValue) == newSPValue);
+                    });
+                    if (result.length > 0 || parseInt(sElement.value, 10) == 0)
+                    {
+                        suportTypeValue += parseInt(sElement.value, 10);
+                        suportTypeFilteredList = result.length > 0 ? result : suportTypeFilteredList;
+                    }
+                    else
+                    {
+                        let selectedIndex = -1; // initialize to -1 in case the value is not found
+
+                        for (let i = 0; i < sElement.options.length; i++) {
+                            newSPValue = parseInt(sElement.options[i].value, 10) + suportTypeValue;
+                            result = suportTypeFilteredList.filter(function (value) {
+                                return (parseInt(sElement.options[i].value, 10) == 0 || (value & newSPValue) == newSPValue);
+                            });
+                            if (result.length > 0 || parseInt(sElement.options[i].value, 10) == 0) {
+                                selectedIndex = i;
+                                suportTypeValue += parseInt(sElement.options[i].value, 10);
+                                suportTypeFilteredList = result.length > 0 ? result : suportTypeFilteredList;
+
+                                break;
+                            }
+                        }
+                        sElement.selectedIndex = selectedIndex;
+                    }
+                }
+            });
+            const suportTypeElement = document.getElementById("SuportType");
+            suportTypeElement.value = suportTypeValue.toString();
+        }
+        function dateConfigValidation(event) {
+            var input = event.target; // get the input element that triggered the event
+            const label = document.getElementById(input.id.replace("dateConfig_","label_"));
+            const divLabel = document.getElementById(input.id.replace("dateConfig_","div_"));
+            divLabel.style.display = "none";
+            label.textContent = "";
+
+            let dateString = "";
+            let invalidDateString = "";
+            const dateValues = input.value.split(";");
+            dateValues.forEach(dValue => {
+                let newDate = dValue.trim();
+                if (newDate.length != 0) {
+                    newDate = dateConfigVal(newDate);
+                    if (newDate.length == 0) {
+                        if (invalidDateString.length == 0)
+                            invalidDateString = dValue.trim();
+                        else
+                            invalidDateString = invalidDateString + ";" + dValue.trim();
+                    }
+                    else if (dateString.length == 0)
+                        dateString = newDate;
+                    else
+                        dateString = dateString + ";" + newDate;
+                }
+            });
+            if (dateString.length > 0)
+            {
+                const dValues = dateString.split(";");
+                const distinctList = [...new Set(dValues)];
+                dateString = distinctList.join(";");
+            }
+            input.value = dateString;
+            if (invalidDateString.length > 0)
+            {
+                label.textContent = invalidDateStr + ": " + invalidDateString;
+                divLabel.style.display = "";
+                input.focus();
+            }
+        }
+        function dateConfigVal(dateStr)
+        {
+            let remaneDate = dateStr.trim().toLowerCase();
+
+            let workingDay = "";
+            let workingDayFlag = remaneDate.indexOf("wd");
+            if (workingDayFlag == 0) {
+                remaneDate = remaneDate.slice(workingDayFlag + 2);
+                let i = remaneDate.indexOf(" ");
+                if (i == 0 || i == 1)
+                {
+                    if (i == 1)
+                    {
+                        if (remaneDate.substring(0, 1) != "+" && remaneDate.substring(0, 1) != "-")
+                            return "";
+                        else
+                            workingDay = remaneDate.substring(0, 1);
+                    }
+                    else
+                        workingDay = "-";
+                    remaneDate = remaneDate.slice(i + 1).trim();
+                }
+                else return "";
+            }
+
+            let weekDayFlag = remaneDate.indexOf("ww");
+            let weekDay = -1;
+            if (weekDayFlag == 0) 
+            {
+                remaneDate = remaneDate.slice(weekDayFlag + 2);
+                let i = remaneDate.indexOf(" ");
+                if (i == 1) {
+                    weekDay = parseInt(remaneDate.substring(0, 1), 10);
+                    if (!(weekDay >= 0 && weekDay <= 6))
+                        return "";
+                    remaneDate = remaneDate.slice(i).trim();
+                }
+                else return "";
+            }
+            let day = "dd";
+            let month = "mm";
+            let year = "yyyy";
+
+            let end = remaneDate.indexOf('/');
+            if (end >= 0) 
+            {
+                day = remaneDate.substring(0, end).trim();
+
+                remaneDate = remaneDate.slice(end + 1).trim();
+                end = remaneDate.indexOf('/');
+                if (end < 0) 
+                    return "";
+
+                month = remaneDate.substring(0, end).trim();
+
+                year = remaneDate.slice(end + 1).trim();
+
+                // Dia
+                start = day.indexOf("+");
+                if (start > 0 && day.substring(0,start).trim() == "dd") {
+                    let nDay = parseInt(day.slice(start + 1), 10);
+                    if (nDay > 0)
+                    {
+                        day = "dd+" + nDay.toString();
+                    }
+                    else
+                        return "";
+                }
+                else if (start >= 0)
+                    return "";
+                else if (day != "dd") {
+                    let nDay = parseInt(day, 10);
+                    if (nDay > 0)
+                    {
+                        day = nDay.toString();
+                    }
+                    else
+                        return "";
+                }
+
+                // Mês
+                start = month.indexOf("+");
+                if (start > 0 && month.substring(0, start).trim() == "mm") {
+                    let nMonth = parseInt(month.slice(start + 1), 10);
+                    if (nMonth > 0) {
+                        month = "mm+" + nMonth.toString();
+                    }
+                    else
+                        return "";
+                }
+                else if (start >= 0)
+                    return "";
+                else if (month != "mm") {
+                    let nMonth = parseInt(month, 10);
+                    if (nMonth > 0) {
+                        month = nMonth.toString();
+                    }
+                    else
+                        return "";
+                }
+
+                // Ano
+                start = year.indexOf("+");
+                if (start > 0 && year.substring(0, start).trim() == "yyyy") {
+                    let nYear = parseInt(year.slice(start + 1), 10);
+                    if (nYear > 0) {
+                        year = "yyyy+" + nYear.toString();
+                    }
+                    else
+                        return "";
+                }
+                else if (start >= 0)
+                    return "";
+                else if (year != "yyyy") {
+                    let nYear = parseInt(year, 10);
+                    if (nYear > 0) {
+                        year = nYear.toString();
+                    }
+                    else
+                        return "";
+                }
+            }
+
+            remaneDate = "";
+            if (workingDayFlag == 0)
+                remaneDate += "wd" + workingDay + " ";
+
+            if (weekDayFlag == 0 && weekDay >= 0)
+                remaneDate += "ww" + weekDay.toString() + " ";
+
+            remaneDate += day + "/" + month + "/" + year;
+            return (remaneDate);
+        }
+    </script>
+}
