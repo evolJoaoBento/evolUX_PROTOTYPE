@@ -34,7 +34,7 @@ else
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
 
     <div id="TitlePage">
-        <h1 class="display-4 text-center">@localizer["PendingExpedition"] @ViewBag.BusinessDescription</h1>
+        <h1>@localizer["PendingExpedition"] @ViewBag.BusinessDescription</h1>
     </div>
     @if (Model.ExpeditionList.Count() == 0)
     {
