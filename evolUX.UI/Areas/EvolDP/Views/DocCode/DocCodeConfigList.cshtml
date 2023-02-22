@@ -67,7 +67,7 @@ else
                         </a>
                         if (aggConditional)
                         {
-                            <a asp-area="evolDP" asp-controller="DocCode" asp-action="GetCompatibility" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+                            <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddAggCompatibility" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
                                 <img style="background:none; width:50px;height:50px;" src="@siteURL/images/link_doc.png" title="@localizer["AggCompatibilityAdd"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
                             </a>
                         }

@@ -4,7 +4,8 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_DOCCODE_
 END
 GO
 ALTER  PROCEDURE [dbo].[RD_UX_GET_DOCCODE_AGGREGATION]
-	@DocCodeID int
+	@DocCodeID int,
+	@Filter bit = 0
 AS
 BEGIN
 	SELECT	d.DocCodeID,
@@ -50,6 +51,7 @@ BEGIN
 		AND (dc.AggrCompatibility in (1,2)
 			OR
 			(dc.AggrCompatibility = 3 AND d.DocLayout = x.DocLayout AND d.DocType = x.DocType))
+		AND (@Filter = 0 OR a.RefDocCodeID = @DocCodeID)
 	GROUP BY d.DocCodeID,
 			d.DocLayout,
 			d.DocType,

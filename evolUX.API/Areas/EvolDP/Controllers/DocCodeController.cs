@@ -309,8 +309,16 @@ namespace evolUX.Areas.EvolDP.Controllers
                 dictionary.TryGetValue("DocCodeList", out obj);
                 string DocCodeListJSON = Convert.ToString(obj);
 
-                DataTable docCodeList = JsonConvert.DeserializeObject<DataTable>(DocCodeListJSON);
+                List<string> dcList = JsonConvert.DeserializeObject<List<string>>(DocCodeListJSON);
+                DataTable docCodeList = new DataTable();
+                docCodeList.Columns.Add("ID", typeof(int));
 
+                foreach (string value in dcList)
+                {
+                    DataRow row = docCodeList.NewRow();
+                    row["ID"] = Int32.Parse(value);
+                    docCodeList.Rows.Add(row);
+                }
                 DocCodeCompatibilityViewModel viewmodel = new DocCodeCompatibilityViewModel();
                 viewmodel.AggDocCodeList = await _docCodeService.ChangeCompatibility(docCodeID, docCodeList);
                 _logger.LogInfo("ChangeCompatibility");

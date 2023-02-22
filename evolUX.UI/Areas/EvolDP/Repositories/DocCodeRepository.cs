@@ -247,7 +247,7 @@ namespace evolUX.UI.Areas.EvolDP.Repositories
                 return d;
             }
         }
-        public async Task<DocCodeCompatibilityViewModel> ChangeCompatibility(int docCodeID, DataTable docCodeList)
+        public async Task<DocCodeCompatibilityViewModel> ChangeCompatibility(int docCodeID, List<string> docCodeList)
         {
             try
             {

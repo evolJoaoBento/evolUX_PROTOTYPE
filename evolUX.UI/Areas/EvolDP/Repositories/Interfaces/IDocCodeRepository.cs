@@ -16,6 +16,6 @@ namespace evolUX.UI.Areas.EvolDP.Repositories.Interfaces
         public Task<ResultsViewModel> DeleteDocCodeConfig(int docCodeID, int startDate);
         public Task<ResultsViewModel> DeleteDocCode(DocCode docCode);
         public Task<DocCodeCompatibilityViewModel> GetCompatibility(int docCodeID);
-        public Task<DocCodeCompatibilityViewModel> ChangeCompatibility(int docCodeID, DataTable docCodeList);
+        public Task<DocCodeCompatibilityViewModel> ChangeCompatibility(int docCodeID, List<string> docCodeList);
     }
 }

@@ -62,7 +62,7 @@ namespace evolUX.UI.Areas.EvolDP.Services
             var response = await _docCodeRepository.GetCompatibility(docCodeID);
             return response;
         }
-        public async Task<DocCodeCompatibilityViewModel> ChangeCompatibility(int docCodeID, DataTable docCodeList)
+        public async Task<DocCodeCompatibilityViewModel> ChangeCompatibility(int docCodeID, List<string> docCodeList)
         {
             var response = await _docCodeRepository.ChangeCompatibility(docCodeID, docCodeList);
             return response;
