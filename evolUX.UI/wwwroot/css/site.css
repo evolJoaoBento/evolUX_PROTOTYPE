@@ -1,12 +1,15 @@
 :root {
     --es-gradient: linear-gradient(66deg, rgba(233,60,82,1) 3%, rgba(245,126,72,1) 15%, rgba(87,82,150,1) 44%, rgba(90, 205, 239, 1) 62%);
     --evoldp-gradient: linear-gradient(66deg, rgba(233,60,82,1) 10%, rgba(245,126,72,1) 80%);
-    --evoldp-color: rgba(233,60,82,1);
+    --evoldp-color: rgba(245,126,72,1);
+    --evolNew-color: rgba(233,60,82,1);
     --evolUX-gradient: linear-gradient(66deg, rgba(87,82,150,1) 10%, rgba(233,60,82,1) 80%);
     --evolUX-color: rgba(87,82,150,1);
+    --evolUX-color-light: rgb(162, 158, 207);
     --evolflow-gradient: linear-gradient(66deg, rgba(90,205,239,1) 10%, rgba(233,60,82,1) 80%);
     --evoltext-gradient: linear-gradient(66deg,rgba(233,60,82,1) 0%, rgba(245,126,72,1) 150%);
     --evolflow-color: rgba(90,205,239,1);
+    --evolflow-color-light: rgb(194, 241, 255);
     --evol-grey: rgb(100, 100, 100);
     --evol-black: rgb(55, 55, 55);
     --evol-lightergrey: rgba(191,191,191,1);
@@ -492,7 +495,7 @@ label {
 }
 
 .filter-div {
-    top: 350px;
+    top: calc(20vh);
     right: -180px;
     width: 200px;
     height: 60%;
@@ -532,10 +535,10 @@ label {
     font-size: 15px;
 }
 .print-filter {
-    top: 290px;
+    top: calc(14vh);
     height: 50px;
-    right: -255px;
-    width: 300px;
+    right: -275px;
+    width: 320px;
     background: white;
     box-shadow: 0px 0px 4px 1px #ccc;
     position: fixed;
@@ -615,5 +618,72 @@ label {
 }
 #TitlePage {
     margin-top: calc(3vh);
-    margin-bottom: calc(1vh);
+    margin-bottom: calc(2vh);
 }
+
+.btn-evoldp:hover {
+    filter: drop-shadow(0px 0px 1px rgb(0, 224, 255));
+    color: var(--evolflow-color);
+    border-color: var(--evolflow-color);
+    transform: scale(1.02);
+    transition: all 0.1s ease;
+    background: transparent;
+}
+
+.btn-evoldp {
+    color: var(--evolflow-color);
+    border-color: var(--evolflow-color);
+}
+/*
+    @eInfo.ExpCompanyName - @eInfo.ExpeditionTypeDesc
+    @sInfo.ServiceTaskDesc
+    @localizer["Papers"] [@mInfo.PaperMaterialList]
+    @if (!string.IsNullOrEmpty(mInfo.StationMaterialList))
+    {
+        <p/>@localizer["AdditionalInserts"]
+        @(" [" + mInfo.StationMaterialList + "]")
+    }
+*/
+.collapsible {
+    background-color: var(--evol-lightestgrey);
+    border: none;
+    color: black;
+    cursor: pointer;
+    padding: 2px;
+    width: 100%;
+    height: 3px;
+    text-align: left;
+    outline: none;
+    font-size: 1.2rem;
+    transition: background-color 0.3s;
+    transform: translateY(-20px);
+    z-index: 100;
+}
+
+    .collapsible:hover {
+        background-color: var(--evolflow-color);
+    }
+
+.content {
+    overflow: scroll;
+    height: 0;
+    width:92vw;
+    transition: all 0.8s ease;
+    opacity:0;
+}
+
+    .content p {
+        margin-top: 30px;
+        margin-bottom: 20px;
+    }
+
+.collapsible.active {
+    background-color: var(--evoldp-color);
+    color: white;
+}
+.collapsible.active:hover {
+    background-color: var(--evolflow-color);
+    color: white;
+}
+
+
