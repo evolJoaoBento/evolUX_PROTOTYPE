@@ -16,6 +16,7 @@ using Shared.ViewModels.General;
 using System.Reflection.Emit;
 using Dapper;
 using System.Data;
+using System;
 
 namespace evolUX.Areas.EvolDP.Controllers
 {
@@ -157,7 +158,7 @@ namespace evolUX.Areas.EvolDP.Controllers
                 int level = Convert.ToInt32(obj.ToString());
 
                 ExceptionLevelViewModel viewmodel = await _docCodeService.GetExceptionLevel(level);
-                _logger.LogInfo("GetDocExceptionsLevel Get");
+                _logger.LogInfo("GetExceptionLevel Get");
                 return Ok(viewmodel);
             }
             catch (SqlException ex)
@@ -167,11 +168,74 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Get GetDocExceptionsLevel action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get GetExceptionLevel action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
         }
+
+        [HttpGet]
+        [ActionName("SetExceptionLevel")]
+        public async Task<ActionResult<ExceptionLevelViewModel>> SetExceptionLevel([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("Level", out obj);
+                int level = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("ExceptionID", out obj);
+                int exceptionID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("ExceptionCode", out obj);
+                string exceptionCode = Convert.ToString(obj);
+                dictionary.TryGetValue("ExceptionDescription", out obj);
+                string exceptionDescription = Convert.ToString(obj);
+
+                ExceptionLevelViewModel viewmodel = await _docCodeService.SetExceptionLevel(level, exceptionID, exceptionCode, exceptionDescription);
+                _logger.LogInfo("SetExceptionLevel Get");
+                return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get SetExceptionLevel action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+
+        }
+
+        [HttpGet]
+        [ActionName("DeleteExceptionLevel")]
+        public async Task<ActionResult<ExceptionLevelViewModel>> DeleteExceptionLevel([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("Level", out obj);
+                int level = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("ExceptionID", out obj);
+                int exceptionID = Convert.ToInt32(obj.ToString());
+
+                ExceptionLevelViewModel viewmodel = await _docCodeService.DeleteExceptionLevel(level, exceptionID);
+                _logger.LogInfo("DeleteExceptionLevel Get");
+                return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get DeleteExceptionLevel action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+
+        }
+        
 
         [HttpGet]
         [ActionName("RegistDocCodeConfig")]

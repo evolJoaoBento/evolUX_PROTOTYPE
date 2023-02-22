@@ -46,12 +46,12 @@ else
             <tr id="Hide|" style="display: none">
                     <form id="AddExceptionFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="ConfigExceptionLevel" asp-route-source="Add" asp-route-Level="@Model.Level">
                         <td>
-                            <img type="submit" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="@siteURL/images/Ok.png" />
-                            <img onclick="CancelRow('')" style="background:none; width:25px;height:25px;" src="@siteURL/images/cancel.png" title="@localizer["Cancel"]"/>
+                           <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="@siteURL/images/Ok.png"/>
+                           <img onclick="CancelRow('')" type="image"style="background:none; width:25px;height:25px;" src="@siteURL/images/cancel.png" title="@localizer["Cancel"]"/>
                         </td>
                         <td></td>
-                        <td><input id=ExceptionCode name=v type="text" maxlength="4" style="width: 100%" /></td>
-                        <td><input id=ExceptionDescription name=v type="text" maxlength="256" style="width: 100%" /></td>
+                        <td><input id=ExceptionCode name=ExceptionCode type="text" maxlength="4" style="width: 100%" /></td>
+                        <td><input id=ExceptionDescription name=ExceptionDescription type="text" maxlength="256" style="width: 100%" /></td>
                     </form>
             </tr>
             @foreach(ExceptionLevel e in Model.ExceptionslevelList)
@@ -60,7 +60,7 @@ else
                 <tr id="Exception|@value">
                     <td>
                         <img onclick="EditRow('@value')" style="background:none; width:25px;height:25px;" src="@siteURL/images/edit.png" title="@localizer["ChangeException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
-                        <a asp-area="evolDP" asp-controller="DocCode" asp-action="DeleteExceptionLevel" asp-route-exceptionlevel="@Model.Level"  asp-route-exceptionlevelID="@e.ExceptionLevelID">
+                        <a asp-area="evolDP" asp-controller="DocCode" asp-action="DeleteExceptionLevel" asp-route-level="@Model.Level"  asp-route-exceptionID="@e.ExceptionLevelID">
                             <img onclick="return confirmExceptionDelete()" style="background:none; width:25px;height:25px;" src="@siteURL/images/delete.png" title="@localizer["DeleteException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
                         </a>
                     </td>
@@ -71,12 +71,13 @@ else
                 <tr id="Hide|@value" style="display: none">
                     <form id="AddExceptionFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="ConfigExceptionLevel" asp-route-source="Edit" asp-route-Level="@Model.Level">
                     <td>
-                        <img type="submit" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="@siteURL/images/Ok.png" />
-                        <img onclick="CancelRow('@value')" style="background:none; width:25px;height:25px;" src="@siteURL/images/cancel.png" title="@localizer["Cancel"]"/>
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="@siteURL/images/Ok.png" />
+                        <img onclick="CancelRow('@value')" type="image" style="background:none; width:25px;height:25px;" src="@siteURL/images/cancel.png" title="@localizer["Cancel"]" />
                     </td>
                     <td>@e.ExceptionLevelID</td>
-                    <td><input id=ExceptionCode name=v type="text" maxlength="4" style="width: 100%" value="@e.ExceptionCode" /></td>
-                    <td><input id=ExceptionDescription name=v type="text" maxlength="256" style="width: 100%" value="@e.ExceptionDescription" /></td>
+                    <input style="display: none" id=ExceptionLevelID name=ExceptionLevelID value="@e.ExceptionLevelID" />
+                    <td><input id=ExceptionCode name=ExceptionCode type="text" maxlength="4" style="width: 100%" value="@e.ExceptionCode" /></td>
+                    <td><input id=ExceptionDescription name=ExceptionDescription type="text" maxlength="256" style="width: 100%" value="@e.ExceptionDescription" /></td>
                 </form>
                 </tr>
             }
@@ -100,6 +101,7 @@ else
             eSshow('Exception|' + value);
             var obj = document.getElementById("AddExceptionFrm|" + value);
             obj.disabled = true;
+            return false;
         }
         function EditRow(value) {
             eShide('Exception|' + value);
@@ -107,6 +109,14 @@ else
             var obj = document.getElementById("AddExceptionFrm|" + value);
             obj.disabled = false;
 
+            let str = 'Hide|' + value;
+            trElements = document.querySelectorAll('tr[id^="Hide|"]');
+            trElements.forEach(tElement => {
+                if (tElement.id != str) {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                }
+            });
         }
     </script>
 }

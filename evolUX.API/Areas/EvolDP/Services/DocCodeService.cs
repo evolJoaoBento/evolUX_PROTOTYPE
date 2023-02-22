@@ -99,6 +99,23 @@ namespace evolUX.API.Areas.EvolDP.Services
             return viewmodel;
         }
 
+        public async Task<ExceptionLevelViewModel> SetExceptionLevel(int level, int exceptionID, string exceptionCode, string exceptionDescription)
+        {
+            ExceptionLevelViewModel viewmodel = new ExceptionLevelViewModel();
+            viewmodel.Level = level;
+            viewmodel.ExceptionslevelList = await _repository.DocCode.SetExceptionLevel(level, exceptionID, exceptionCode, exceptionDescription);
+            return viewmodel;
+        }
+
+        public async Task<ExceptionLevelViewModel> DeleteExceptionLevel(int level, int exceptionID)
+        {
+            ExceptionLevelViewModel viewmodel = new ExceptionLevelViewModel();
+            viewmodel.Level = level;
+            viewmodel.ExceptionslevelList = await _repository.DocCode.DeleteExceptionLevel(level, exceptionID);
+            return viewmodel;
+        }
+        
+        
         public async Task<DocCodeViewModel> SetDocCodeConfig(DocCode docCode)
         {
             DocCodeViewModel viewmodel = new DocCodeViewModel();

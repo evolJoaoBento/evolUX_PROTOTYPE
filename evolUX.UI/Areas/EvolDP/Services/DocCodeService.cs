@@ -47,6 +47,17 @@ namespace evolUX.UI.Areas.EvolDP.Services
             var response = await _docCodeRepository.GetExceptionLevel(level);
             return response;
         }
+        public async Task<ExceptionLevelViewModel> SetExceptionLevel(int level, int exceptionID, string exceptionCode, string exceptionDescription)
+        {
+            var response = await _docCodeRepository.SetExceptionLevel(level, exceptionID, exceptionCode, exceptionDescription);
+            return response;
+        }
+        public async Task<ExceptionLevelViewModel> DeleteExceptionLevel(int level, int exceptionID)
+        {
+            var response = await _docCodeRepository.DeleteExceptionLevel(level, exceptionID);
+            return response;
+        }
+
         public async Task<DocCodeConfigViewModel> ChangeDocCode(DocCode docCode)
         {
             var response = await _docCodeRepository.ChangeDocCode(docCode);

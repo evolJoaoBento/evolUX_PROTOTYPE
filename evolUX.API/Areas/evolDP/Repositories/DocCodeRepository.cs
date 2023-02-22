@@ -120,6 +120,68 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             }
         }
 
+        public async Task<IEnumerable<ExceptionLevel>> SetExceptionLevel(int level, int exceptionID, string exceptionCode, string exceptionDescription)
+        {
+            string sql = "";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExceptionCode", exceptionCode, DbType.String);
+            parameters.Add("ExceptionDescription", exceptionDescription, DbType.String);
+
+            if (exceptionID == 0)
+            {
+                sql += string.Format(@"SET NOCOUNT ON
+                            INSERT INTO RDC_EXCEPTION_LEVEL{0}(ExceptionLevelID, ExceptionCode, ExceptionDescription)
+                            SELECT (SELECT ISNULL(MAX(ExceptionLevelID),0) + 1 FROM RDC_EXCEPTION_LEVEL{0}), @ExceptionCode, @ExceptionDescription
+                            WHERE NOT EXISTS (SELECT TOP 1 1 FROM RDC_EXCEPTION_LEVEL{0} WITH(NOLOCK) WHERE ExceptionCode = @ExceptionCode)", level);
+            }
+            else
+            { 
+                parameters.Add("ExceptionLevelID", exceptionID, DbType.Int64);
+                sql += string.Format(@"SET NOCOUNT ON
+                            UPDATE RDC_EXCEPTION_LEVEL{0}
+                            SET ExceptionCode = @ExceptionCode, ExceptionDescription = @ExceptionDescription
+                            WHERE ExceptionLevelID = @ExceptionLevelID", level);
+            }
+            sql += string.Format(@"
+                            SELECT	ExceptionLevelID,
+									ExceptionCode,
+									ExceptionDescription
+							FROM	RDC_EXCEPTION_LEVEL{0}
+							ORDER BY ExceptionCode", level);
+            
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ExceptionLevel> docCodeException = await connection.QueryAsync<ExceptionLevel>(sql, parameters);
+                return docCodeException;
+            }
+        }
+
+        public async Task<IEnumerable<ExceptionLevel>> DeleteExceptionLevel(int level, int exceptionID)
+        {
+            string sql = "";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExceptionLevelID", exceptionID, DbType.Int64);
+
+            sql += string.Format(@"SET NOCOUNT ON
+                            DELETE RDC_EXCEPTION_LEVEL{0}
+                            WHERE ExceptionLevelID = @ExceptionLevelID", level);
+
+            sql += string.Format(@"
+                            SELECT	ExceptionLevelID,
+									ExceptionCode,
+									ExceptionDescription
+							FROM	RDC_EXCEPTION_LEVEL{0}
+							ORDER BY ExceptionCode", level);
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ExceptionLevel> docCodeException = await connection.QueryAsync<ExceptionLevel>(sql, parameters);
+                return docCodeException;
+            }
+
+        }
+        
+        
         public async Task<IEnumerable<ExpCompanyServiceTask>> GetExpCompanyServiceTask(string expCode)
         {
             string sql = @"RD_UX_GET_EXPCOMPANY_SERVICE_TASK";
