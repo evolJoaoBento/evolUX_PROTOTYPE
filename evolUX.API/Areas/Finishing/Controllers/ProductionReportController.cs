@@ -88,5 +88,39 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        [HttpGet]
+        [ActionName("GetProductionReportFilters")]
+        public async Task<ActionResult<IEnumerable<ProductionDetailInfo>>> GetProductionPrinterReportFilters([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("ProfileList", out obj);
+                string ProfileListJSON = Convert.ToString(obj);
+                dictionary.TryGetValue("RunIDList", out obj);
+                string RunIDListJSON = Convert.ToString(obj);
+                DataTable RunIDList = JsonConvert.DeserializeObject<DataTable>(RunIDListJSON);
+
+                dictionary.TryGetValue("ServiceCompanyID", out obj);
+                int ServiceCompanyID = Convert.ToInt32(obj.ToString());
+                IEnumerable<int> ProfileList = JsonConvert.DeserializeObject<IEnumerable<int>>(ProfileListJSON);
+                dictionary.TryGetValue("FilterOnlyPrint", out obj);
+                bool FilterOnlyPrint = Convert.ToBoolean(obj.ToString());
+
+                IEnumerable<ProductionDetailInfo> viewmodel = await _productionReportService.GetProductionReportFilters(ProfileList, RunIDList, ServiceCompanyID, FilterOnlyPrint);
+                _logger.LogInfo("ProductionReportFilters Get");
+                return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get DocCode action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
     }
 }

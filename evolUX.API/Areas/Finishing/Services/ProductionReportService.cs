@@ -7,6 +7,7 @@ using Shared.Models.Areas.Core;
 using System.Xml;
 using Shared.Models.General;
 using evolUX.API.Models;
+using System.Collections.Generic;
 
 namespace evolUX.API.Areas.Finishing.Services
 {
@@ -124,6 +125,12 @@ namespace evolUX.API.Areas.Finishing.Services
                 }
             }
             return viewmodel;
+        }
+
+        public async Task<IEnumerable<ProductionDetailInfo>> GetProductionReportFilters(IEnumerable<int> profileList, DataTable runIDList, int serviceCompanyID, bool filterOnlyPrint)
+        {
+            IEnumerable<ProductionDetailInfo> productionReport = await _repository.ProductionReport.GetProductionReport(runIDList, serviceCompanyID);
+            return productionReport;
         }
 
         public async Task<IEnumerable<ProductionRunInfo>> GetProductionRunReport(int ServiceCompanyID)

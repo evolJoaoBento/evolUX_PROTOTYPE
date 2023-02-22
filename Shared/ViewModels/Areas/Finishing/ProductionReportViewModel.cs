@@ -10,5 +10,6 @@ namespace Shared.ViewModels.Areas.Finishing
         public string ServiceCompanyName { get; set; }
         public IEnumerable<ProdExpeditionElement> ProductionReport { get; set; }
         public IEnumerable<PrinterInfo> Printers { get; set; }
+        public IEnumerable<ProductionDetailInfo> filters { get; set; }
     }
 }

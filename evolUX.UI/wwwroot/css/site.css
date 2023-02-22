@@ -238,6 +238,12 @@ footer div{
     border: 1px solid var(--darkerborder);
 }
 
+#bootstrap-overrides .headcol {
+    background-color: var(--evol-lightestgrey);
+    width: 20%;
+    /*box-shadow: 0px 2px 4px 0px #ccc;*/
+}
+
 .table-div {
     overflow-y: scroll;
     overflow-x: scroll;
@@ -253,7 +259,7 @@ footer div{
 
 .sticky-header {
     position: sticky;
-    top: 0px;
+    top: 50px;
     z-index: 1;
 }
 
@@ -394,4 +400,189 @@ tr.table-end .headcol b {
         transform: scale(1.03);
         transform: rotate(-2deg);
     }
+
+input[type="checkbox"] {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+label {
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+/*.toggle-button {
+    background-color: gray;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+}
+
+    .toggle-button.selected {
+        background-color: blue;
+    }*/
+.alt-toggle-box {
+    opacity:0;
+    position :absolute;
+}
+
+.checkbox-selected {
+    filter: drop-shadow(0px 0px 1px rgb(84,195,237));
+    transform:scale(1.1);
+    transition:all 0.1s ease;
+}
+
+#text-buttons .checkbox-selected {
+    filter: drop-shadow(0px 0px 10px rgb(84,195,237));
+    color: rgb(84,195,237);
+    border-color: rgb(84,195,237);
+    transform: scale(1);
+    transition: all 0.1s ease;
+}
+#text-buttons .btn:hover {
+    filter: drop-shadow(0px 0px 10px rgb(0));
+    background-color: transparent;
+    color:black;
+    transform:scale(1.05);
+    transition: all 0.1s ease;
+}
+
+#text-buttons .btn {
+    width: 80px;
+    margin-right: 10px;
+}
+#text-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translate(7px);
+}
+
+#color-buttons {
+    display: flex;
+    justify-content: center;    
+    align-items: center;
+    padding: 12px;
+    margin-top: 12px;
+    transform: translate(19px);
+}
+
+    #color-buttons .button-icon {
+        margin-right: 30px;
+        width: 30px;
+        height: 30px;
+    }
+
+#text-buttons .checkbox-selected:hover {
+    color: rgb(84,195,237);
+}
+
+.button-icon {
+    width: 24px;
+    height: 24px;
+    padding: 2px;
+    transition: all 0.1s ease;
     
+}
+.button-icon:hover {
+    transform: scale(1.1);
+    transition: all 0.1s ease;
+    cursor: pointer;
+}
+
+.filter-div {
+    top: 350px;
+    right: -180px;
+    width: 200px;
+    height: 60%;
+    background: white;
+    box-shadow: 0px 0px 4px 1px #ccc;
+    position: fixed;
+    z-index: 10;
+    transition: all 0.5s ease;
+    font-size: 13px;
+}
+.filter-div::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-image: linear-gradient(to bottom, rgba(233,60,82,1) 3%, rgba(245,126,72,1) 15%, rgba(87,82,150,1) 44%, rgba(90, 205, 239, 1) 62%);
+}
+.filter-div:hover {
+    right: 0px;
+}
+
+.filter-div select {
+    width: 170px;
+    font-size: 13px;
+    overflow: hidden;
+}
+
+.filter-div form {
+    padding: 15px;  
+}
+
+.filter-div h5 {
+    margin-top: 15px;
+    width: 170px;
+    font-size: 15px;
+}
+.print-filter {
+    top: 290px;
+    height: 50px;
+    right: -255px;
+    width: 300px;
+    background: white;
+    box-shadow: 0px 0px 4px 1px #ccc;
+    position: fixed;
+    z-index: 10;
+    transition: all 0.5s ease;
+    font-size: 13px;
+}
+
+.print-filter select {
+    width: 150px;
+    overflow: hidden;
+    margin-right: 20px;
+}
+
+.print-filter div {
+    margin-left: 52px;
+    margin-top: 15px;
+}
+
+    .print-filter .button-icon {
+        margin-left: 10px;
+        margin-top: 9px;
+        position: absolute;
+    }
+.print-filter-open {
+    right: 0px;
+}
+.print-filter::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-image: linear-gradient(to top, rgba(233,60,82,1) 3%, rgba(245,126,72,1) 15%, rgba(87,82,150,1) 44%, rgba(90, 205, 239, 1) 62%);
+}
+.table-hover thead{
+    /*box-shadow: 0px 2px 4px 1px #ccc;*/
+}
+.evol-max-width{
+    min-width: 100%;
+    overflow:scroll;
+}
+.evol-max-width-plus {
+    width: 100%;
+    padding-right: 10px;
+}
+.table {
+    margin-right: 10px;
+}

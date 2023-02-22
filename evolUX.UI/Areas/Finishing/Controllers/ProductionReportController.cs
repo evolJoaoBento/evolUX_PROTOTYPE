@@ -229,6 +229,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
                 string profileList = HttpContext.Session.GetString("evolUX/Profiles");
                 ProductionReportViewModel result = await _productionReportService.GetProductionReport(profileList, runIDList, ServiceCompanyID, true);
+                IEnumerable<ProductionDetailInfo> filters = await _productionReportService.GetProductionReportFilters(profileList, runIDList, ServiceCompanyID, true);
+
                 if (result != null)
                 {
                     if (result.ProductionReport != null && result.ProductionReport.Count() > 0)
@@ -260,7 +262,56 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                         }
                     }
                 }
+                result.filters = filters;
                 ViewBag.RunName = RunName;
+                return View(result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+
+                var resultError = await ex.GetResponseJsonAsync<ErrorResult>();
+                return View("Error", resultError);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                var resultError = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", resultError);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+        }
+        public async Task<IActionResult> ProductionReportPrinterFilters(string RunIDList, int ServiceCompanyID, string RunName)
+        {
+            try
+            {
+                List<int> runIDList = new List<int>();
+                string[] runIDListStr = RunIDList.Split('|');
+                if (string.IsNullOrEmpty(RunIDList) || runIDListStr.Length == 0)
+                {
+                    return PartialView("MessageView", new MessageViewModel(_localizer["Missing Runs"]));
+                }
+                foreach (string r in runIDListStr)
+                    runIDList.Add(int.Parse(r));
+
+                string profileList = HttpContext.Session.GetString("evolUX/Profiles");
+                IEnumerable<ProductionDetailInfo> result = await _productionReportService.GetProductionReportFilters(profileList, runIDList, ServiceCompanyID, true);
+                
                 return View(result);
             }
             catch (FlurlHttpException ex)
