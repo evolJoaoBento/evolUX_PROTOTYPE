@@ -63,11 +63,11 @@
     {
         <partial name="~/Views/Shared/_PartialLayout.cshtml" />
     }
-    @{
+   @* @{
         var breadCrumbList = ViewBag.Breadcrumbs as List<Breadcrumb>;
-    }
+    }*@
     <div id="page-content-wrapper" class="home-section" style="@(User.Identity.IsAuthenticated ? "":"left: 0;width: 100%;")">
-        @if (ViewBag.Breadcrumbs != null && @breadCrumbList.Count > 1)
+        @*@if (ViewBag.Breadcrumbs != null && @breadCrumbList.Count > 1)
         {
             <nav aria-label="breadcrumb" style="">
                 <ol class="breadcrumb bg-white justify-content-center justify-content-md-start justify-content-lg-start justify-content-xl-start">
@@ -84,7 +84,7 @@
                     }
                 </ol>
             </nav>
-        }
+        }*@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -92,7 +92,7 @@
 
 
 
-    <footer class="border-top text-muted">
+    <footer class="border-top text-muted evol-footer">
         <div>
             &copy; 2023 - evolUX
         </div>
