@@ -7,6 +7,7 @@ using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
 using Shared.Models.Areas.Finishing;
 using evolUX.API.Models;
 using System.Data.SqlClient;
+using Shared.Models.General;
 
 namespace evolUX.API.Areas.EvolDP.Repositories
 {
@@ -208,9 +209,8 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             }
         }
 
-        public async Task<IEnumerable<DocCode>> PostDocCodeConfig(DocCode docCode)
+        public async Task<IEnumerable<DocCode>> SetDocCodeConfig(DocCode docCode)
         {
-            string sql2 = @"EXEC RD_NEW_DOCCODE_CONFIG";
             string sql = @"RD_NEW_DOCCODE_CONFIG";
             var parameters = new DynamicParameters();
             if (docCode.DocCodeID > 0)
@@ -249,16 +249,8 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             parameters.Add("ArchCaducityDate", docCode.DocCodeConfigs[0].ArchCaducityDate, DbType.String);
             parameters.Add("CaducityDate", docCode.DocCodeConfigs[0].CaducityDate, DbType.String);
 
-            foreach(string p in parameters.ParameterNames)
-            {
-                sql2 += string.Format(" @{0} = '{1}',", p, parameters.Get<object>(p));
-            }
-            if (sql2.Substring(sql2.Length-1,1) == ",")
-                sql2 = sql2.Substring(0,sql2.Length-1);
-
             using (var connection = _context.CreateConnectionEvolDP())
             {
-
                 IEnumerable<int> docCodeIDResult = await connection.QueryAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
                 int docCodeID = docCode.DocCodeID;
                 if (docCodeIDResult != null && docCodeIDResult.Count() > 0)
@@ -273,42 +265,55 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             }
         }
 
-        public async Task<IEnumerable<string>> DeleteDocCode(int docCodeID)
+        public async Task<IEnumerable<DocCode>> ChangeDocCode(DocCode docCode)
         {
-            string sql = @"SET NOCOUNT ON  
-								IF (EXISTS(SELECT TOP 1 * FROM RT_DOCUMENT WHERE DocCodeID = @ID ))   
-								BEGIN    
-									SELECT 'Existem Documentos registados com este Tipo de Documento!<BR>Não foi possível apagar Tipo de Documento!' RESULTADO   
-								END   
-							ELSE	
-								BEGIN    
-									IF (EXISTS(SELECT TOP 1 * FROM RT_DOCUMENT_SET WHERE DocCodeID = @ID ))   
-										BEGIN     
-											SELECT 'Existem Conjuntos de Documentos registados com este Tipo de Documento!<BR>Não foi possível apagar Tipo de Documento!' RESULTADO    
-										END    
-									ELSE    
-										BEGIN     
-											DELETE RD_DOCCODE_CONFIG    
-												WHERE DocCodeID = @ID        
-											DELETE RD_DOCCODE_AGGREGATION_COMPATIBILITY     
-												WHERE RefDocCodeID = @ID       
-													OR AggDocCodeID = @ID        
-											DELETE RD_DOCCODE     
-												WHERE DocCodeID = @ID        
-												SELECT 'Tipo de Documento Apagado com Sucesso!' RESULTADO    
-										END   
-								END   
-				SET NOCOUNT OFF";
+            string sql = @"RD_UPDATE_DOCCODE";
             var parameters = new DynamicParameters();
-            parameters.Add("ID", docCodeID, DbType.Int64);
+            parameters.Add("DocCodeID", docCode.DocCodeID, DbType.Int64);
+
+            parameters.Add("Description", docCode.DocDescription, DbType.String);
+            parameters.Add("PrintMatchCode", docCode.PrintMatchCode, DbType.String);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<string> results = await connection.QueryAsync<string>(sql, parameters);
-                return results;
+                await connection.QueryAsync<int>(sql, parameters, commandType: CommandType.StoredProcedure);
+                IEnumerable<DocCode> docCodeList = await GetDocCode(docCode.DocCodeID);
+                if (docCodeList != null && docCodeList.Count() > 0)
+                {
+                    docCodeList.First().DocCodeConfigs = (await GetDocCodeConfig(docCode.DocCodeID, (int?)null, null)).ToList();
+                }
+                return docCodeList;
             }
         }
 
+        public async Task<Result> DeleteDocCode(int docCodeID)
+        {
+            string sql = @"RD_DELETE_DOCCODE";
+            var parameters = new DynamicParameters();
+            parameters.Add("DocCodeID", docCodeID, DbType.Int64);
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<Result> results = await connection.QueryAsync<Result>(sql, parameters,
+                   commandType: CommandType.StoredProcedure);
+                return results.First();
+            }
+        }
+
+        public async Task<Result> DeleteDocCodeConfig(int docCodeID, int startDate)
+        {
+            string sql = @"RD_DELETE_DOCCODE_CONFIG";
+            var parameters = new DynamicParameters();
+            parameters.Add("DocCodeID", docCodeID, DbType.Int64);
+            parameters.Add("StartDate", startDate, DbType.Int64);
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<Result> results = await connection.QueryAsync<Result>(sql, parameters,
+                   commandType: CommandType.StoredProcedure);
+                return results.First();
+            }
+        }
 
         //HANDLE TEXT RESPONSES ON HIGHER LEVELS aggrCompatibility
         public async Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(int docCodeID)
