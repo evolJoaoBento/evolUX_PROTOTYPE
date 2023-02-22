@@ -150,17 +150,29 @@
   <data name="ActionDeleteUser" xml:space="preserve">
     <value>Delete User</value>
   </data>
-  <data name="ActionDocumentTypification" xml:space="preserve">
-    <value>Document Typification</value>
+  <data name="ActionDocCode" xml:space="preserve">
+    <value>Layouts / Types</value>
   </data>
-  <data name="ActionDocumentTypification_Link" xml:space="preserve">
+  <data name="ActionDocCode_Link" xml:space="preserve">
     <value>/evolDP/DocCode/Index</value>
+  </data>
+  <data name="ActionDocumentTypification" xml:space="preserve">
+    <value>Documents</value>
   </data>
   <data name="ActionEnvelopeRange" xml:space="preserve">
     <value>Envelope Range Configuration</value>
   </data>
   <data name="ActionErrorManagement" xml:space="preserve">
     <value>Error Management</value>
+  </data>
+  <data name="ActionExceptionLevel1ID" xml:space="preserve">
+    <value>Exception Level 1</value>
+  </data>
+  <data name="ActionExceptionLevel2ID" xml:space="preserve">
+    <value>Exception Level 2</value>
+  </data>
+  <data name="ActionExceptionLevel3ID" xml:space="preserve">
+    <value>Exception Level 3</value>
   </data>
   <data name="ActionExpCodes" xml:space="preserve">
     <value>Service/Expedition Codes</value>

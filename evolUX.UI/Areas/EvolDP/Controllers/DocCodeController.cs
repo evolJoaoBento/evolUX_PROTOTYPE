@@ -98,6 +98,7 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             {
                 DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
                 DocCodeViewModel result = await _docCodeService.GetDocCode(docCode.DocLayout, docCode.DocType);
+                GetExceptionConfigs();
                 return View(result);
             }
             catch (FlurlHttpException ex)
@@ -691,6 +692,66 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
             }
 
         }
+        public async Task<IActionResult> ExceptionLevel(int Level)
+        {
+            try
+            {
+                ExceptionLevelViewModel result = await _docCodeService.GetExceptionLevel(Level);
+
+                string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
+                string cultureCode = CultureInfo.CurrentCulture.Name;
+                if (!string.IsNullOrEmpty(cultureCode))
+                    cultureCode = cultureCode.Substring(0, 2);
+                TempData["ExceptionLevelID"] = "";
+                if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
+                {
+                    var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
+                    if (evolDP_Desc != null)
+                    {
+                        bool b = false;
+                        string except = string.Format("ExceptionLevel{0}ID", Level);
+                        var val = evolDP_Desc.Find(x => x.FieldName == except + "_" + cultureCode);
+                        if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == except); }
+                        if (val != null) { TempData["ExceptionLevelID"] = val.FieldDescription; }
+                    }
+                }
+                return View(result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
 
         private void GetExceptionConfigs()
         {
@@ -721,6 +782,8 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                 }
             }
         }
+
+
         private GenericOptionList GetConfigs() 
         {
             GenericOptionList suportTypeList = null;

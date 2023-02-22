@@ -147,6 +147,30 @@ namespace evolUX.UI.Areas.EvolDP.Repositories
             }
         }
 
+        public async Task<ExceptionLevelViewModel> GetExceptionLevel(int level)
+        {
+            try
+            {
+                Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                dictionary.Add("Level", level);
+                var response = await _flurlClient.Request("/API/evolDP/DocCode/ExceptionLevel")
+                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                    .SendJsonAsync(HttpMethod.Get, dictionary);
+                if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+                return await response.GetJsonAsync<ExceptionLevelViewModel>();
+            }
+
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                dynamic d = ex.GetResponseJsonAsync();
+                return d;
+            }
+        }
+
         public async Task<DocCodeConfigViewModel> ChangeDocCode(DocCode docCode)
         {
             try

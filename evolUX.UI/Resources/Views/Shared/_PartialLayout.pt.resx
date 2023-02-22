@@ -150,17 +150,38 @@
   <data name="ActionDeleteUser" xml:space="preserve">
     <value>Apagar</value>
   </data>
-  <data name="ActionDocumentTypification" xml:space="preserve">
-    <value>Tipos de Documento</value>
+  <data name="ActionDocCode" xml:space="preserve">
+    <value>Layouts / Tipos</value>
   </data>
-  <data name="ActionDocumentTypification_Link" xml:space="preserve">
+  <data name="ActionDocCode_Link" xml:space="preserve">
     <value>/evolDP/DocCode/Index</value>
+  </data>
+  <data name="ActionDocumentTypification" xml:space="preserve">
+    <value>Documentos</value>
   </data>
   <data name="ActionEnvelopeRange" xml:space="preserve">
     <value>Gamas de Envelopes</value>
   </data>
   <data name="ActionErrorManagement" xml:space="preserve">
     <value>Gestão de Erros</value>
+  </data>
+  <data name="ActionExceptionLevel1ID" xml:space="preserve">
+    <value>Exceção Nível 1</value>
+  </data>
+  <data name="ActionExceptionLevel1ID_Link" xml:space="preserve">
+    <value>/evolDP/DocCode/ExceptionLevel?Level=1</value>
+  </data>
+  <data name="ActionExceptionLevel2ID" xml:space="preserve">
+    <value>Exceção Nível 2</value>
+  </data>
+  <data name="ActionExceptionLevel2ID_Link" xml:space="preserve">
+    <value>/evolDP/DocCode/ExceptionLevel?Level=2</value>
+  </data>
+  <data name="ActionExceptionLevel3ID" xml:space="preserve">
+    <value>Exceção Nível 3</value>
+  </data>
+  <data name="ActionExceptionLevel3ID_Link" xml:space="preserve">
+    <value>/evolDP/DocCode/ExceptionLevel?Level=3</value>
   </data>
   <data name="ActionExpCodes" xml:space="preserve">
     <value>Códigos Tratamento/Expedição</value>

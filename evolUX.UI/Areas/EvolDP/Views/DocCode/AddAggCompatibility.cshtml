@@ -22,8 +22,14 @@ else
     string eLevel3Desc = "";
 
     string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel1IDLabel))
+        ExceptionLevel1IDLabel = localizer["ExceptionLevel1ID"].Value;
     string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel2IDLabel))
+        ExceptionLevel2IDLabel = localizer["ExceptionLevel2ID"].Value;
     string ExceptionLevel3IDLabel = TempData["ExceptionLevel3ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel3IDLabel))
+        ExceptionLevel3IDLabel = localizer["ExceptionLeve3ID"].Value;
 
     DocCode docCode = Model.DocCode;
     <div>

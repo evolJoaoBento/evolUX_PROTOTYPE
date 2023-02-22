@@ -42,6 +42,11 @@ namespace evolUX.UI.Areas.EvolDP.Services
             var response = await _docCodeRepository.RegistDocCodeConfig(docCode);
             return response;
         }
+        public async Task<ExceptionLevelViewModel> GetExceptionLevel(int level)
+        {
+            var response = await _docCodeRepository.GetExceptionLevel(level);
+            return response;
+        }
         public async Task<DocCodeConfigViewModel> ChangeDocCode(DocCode docCode)
         {
             var response = await _docCodeRepository.ChangeDocCode(docCode);

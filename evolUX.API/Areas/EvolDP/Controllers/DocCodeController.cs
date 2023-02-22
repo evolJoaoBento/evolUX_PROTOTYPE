@@ -147,6 +147,33 @@ namespace evolUX.Areas.EvolDP.Controllers
         }
 
         [HttpGet]
+        [ActionName("ExceptionLevel")]
+        public async Task<ActionResult<ExceptionLevelViewModel>> GetExceptionLevel([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("Level", out obj);
+                int level = Convert.ToInt32(obj.ToString());
+
+                ExceptionLevelViewModel viewmodel = await _docCodeService.GetExceptionLevel(level);
+                _logger.LogInfo("GetDocExceptionsLevel Get");
+                return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get GetDocExceptionsLevel action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+
+        }
+
+        [HttpGet]
         [ActionName("RegistDocCodeConfig")]
         public async Task<ActionResult<DocCodeConfigViewModel>> RegistDocCodeConfig([FromBody] Dictionary<string, object> dictionary)
         {
