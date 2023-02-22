@@ -1,6 +1,7 @@
 ﻿using Shared.Models.Areas.evolDP;
 using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
+using System.Data;
 
 namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
 {
@@ -25,8 +26,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
         public Task<Result> DeleteDocCodeConfig(int docCodeID, int startDate);
         public Task<Result> DeleteDocCode(int docCodeID);
 
-        Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(int docCodeID);
-        Task<AggregateDocCode> GetAggregateDocCode(int docCodeID);
-        Task ChangeCompatibility(DocCodeCompatabilityViewModel model);
+        public Task<IEnumerable<AggregateDocCode>> GetCompatibility(int docCodeID);
+        public Task<IEnumerable<AggregateDocCode>> ChangeCompatibility(int docCodeID, DataTable docCodeList);
     }
 }

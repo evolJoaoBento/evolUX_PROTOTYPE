@@ -6,6 +6,8 @@ using System.Security.Cryptography.Xml;
 using System.Globalization;
 using Microsoft.SqlServer.Server;
 using Shared.Models.General;
+using System.Data;
+using System.Diagnostics;
 
 namespace evolUX.API.Areas.EvolDP.Services
 {
@@ -123,29 +125,23 @@ namespace evolUX.API.Areas.EvolDP.Services
             }
             return results;
         }
-        public async Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(int docCodeID)
+        public async Task<IEnumerable<AggregateDocCode>> GetCompatibility(int docCodeID)
         {
-            IEnumerable<AggregateDocCode> aggregateDocCodes = await _repository.DocCode.GetAggregateDocCodes(docCodeID);
-            if (aggregateDocCodes == null)
+            IEnumerable<AggregateDocCode> aggList = await _repository.DocCode.GetCompatibility(docCodeID);
+            if (aggList == null)
             {
 
             }
-            return aggregateDocCodes;
+            return aggList;
         }
-
-        public async Task<AggregateDocCode> GetAggregateDocCode(int docCodeID)
+        public async Task<IEnumerable<AggregateDocCode>> ChangeCompatibility(int docCodeID, DataTable docCodeList)
         {
-            AggregateDocCode aggregateDocCode = await _repository.DocCode.GetAggregateDocCode(docCodeID);
-            if (aggregateDocCode == null)
+            IEnumerable<AggregateDocCode> aggList = await _repository.DocCode.ChangeCompatibility(docCodeID, docCodeList);
+            if (aggList == null)
             {
 
             }
-            return aggregateDocCode;
-        }
-
-        public async Task ChangeCompatibility(DocCodeCompatabilityViewModel model)
-        {
-            await _repository.DocCode.ChangeCompatibility(model);
+            return aggList;
         }
     }
 }

@@ -52,6 +52,24 @@ else
     DocCodeConfig? dConfig = null;
     if (Model.DocCodeConfig.DocCodeConfigs != null && Model.DocCodeConfig.DocCodeConfigs.Count() > 0)
         dConfig = Model.DocCodeConfig.DocCodeConfigs[0];
+    <div>
+        @if (sourceDesc == "AddDoc")
+        {
+            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="Index">
+            </a>
+        }
+        else if (sourceDesc == "AddDocCode")
+        {
+            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(Model.DocCodeConfig)">
+            </a>
+        }
+        else if (sourceDesc == "AddDocCodeConfig" || sourceDesc == "DocCodeChange"
+        || sourceDesc == "DocCodeConfigChange")
+        {
+            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(Model.DocCodeConfig)">
+            </a>
+        }
+    </div>
 <form id="AddDocDocConfigFrm" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="RegistDocCodeConfig" asp-route-source="@sourceDesc">
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">

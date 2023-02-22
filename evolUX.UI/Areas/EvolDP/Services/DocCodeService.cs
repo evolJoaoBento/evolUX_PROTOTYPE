@@ -6,6 +6,7 @@ using Shared.Models.Areas.evolDP;
 using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.ViewModels.General;
+using System.Data;
 
 namespace evolUX.UI.Areas.EvolDP.Services
 {
@@ -54,6 +55,16 @@ namespace evolUX.UI.Areas.EvolDP.Services
         public async Task<ResultsViewModel> DeleteDocCode(DocCode docCode)
         {
             var response = await _docCodeRepository.DeleteDocCode(docCode);
+            return response;
+        }
+        public async Task<DocCodeCompatibilityViewModel> GetCompatibility(int docCodeID)
+        {
+            var response = await _docCodeRepository.GetCompatibility(docCodeID);
+            return response;
+        }
+        public async Task<DocCodeCompatibilityViewModel> ChangeCompatibility(int docCodeID, DataTable docCodeList)
+        {
+            var response = await _docCodeRepository.ChangeCompatibility(docCodeID, docCodeList);
             return response;
         }
     }

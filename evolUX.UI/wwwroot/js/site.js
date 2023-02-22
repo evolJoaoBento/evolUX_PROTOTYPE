@@ -139,7 +139,7 @@ Function that shows the detail by selecting the respective button
 ********************************************************************************/
 function showDetail(startName) {
     eSshow(startName);
-    changeClass('arrow' + startName, 'bx-plus', 'bx-minus');
+    changeClass('arrow' + startName, 'bxs-chevron-down', 'bxs-chevron-up');
     document.getElementById('arrow' + startName).href = "javascript:hideDetail('" + startName + "');";
 }
 
@@ -149,7 +149,7 @@ Function that hides the detail by selecting the respective button
 ********************************************************************************/
 function hideDetail(startName) {
     eShide(startName);
-    changeClass('arrow' + startName, 'bx-minus', 'bx-plus');
+    changeClass('arrow' + startName, 'bxs-chevron-up', 'bxs-chevron-down');
     document.getElementById('arrow' + startName).href = "javascript:showDetail('" + startName + "');";
 }
 /*******************************************************************************

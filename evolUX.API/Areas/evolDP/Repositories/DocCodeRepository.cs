@@ -8,6 +8,7 @@ using Shared.Models.Areas.Finishing;
 using evolUX.API.Models;
 using System.Data.SqlClient;
 using Shared.Models.General;
+using Shared.Models.Areas.Core;
 
 namespace evolUX.API.Areas.EvolDP.Repositories
 {
@@ -315,157 +316,42 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             }
         }
 
-        //HANDLE TEXT RESPONSES ON HIGHER LEVELS aggrCompatibility
-        public async Task<IEnumerable<AggregateDocCode>> GetAggregateDocCodes(int docCodeID)
+        public async Task<IEnumerable<AggregateDocCode>> GetCompatibility(int docCodeID)
         {
-            string sql = $@"SELECT	d.DocLayout, 
-									d.DocType, 
-									e1.ExceptionLevelID,
-									e1.ExceptionCode,
-									e1.ExceptionDescription,
-									e2.ExceptionLevelID,
-									e2.ExceptionCode,
-									e2.ExceptionDescription,
-									e3.ExceptionLevelID,
-									e3.ExceptionCode,
-									d.[Description] as DocDescription,
-									ISNULL(CAST(d.DocCodeID as varchar),'') [Campatible],
-									ISNULL(CASE WHEN dac.AggDocCodeID is null then 0 else 1 end, '') [CheckStatus]
-							FROM
-								RD_DOCCODE d
-							LEFT OUTER JOIN
-
-								RD_DOCCODE_AGGREGATION_COMPATIBILITY dac
-							ON d.DocCodeID = dac.AggDocCodeID
-
-								AND RefDocCodeID = @DOCCODEID
-							LEFT OUTER JOIN
-								RD_DOCCODE dc1
-							ON dc1.DocCodeID = @DOCCODEID
-
-								AND dc1.DocCodeID<> d.DocCodeID
-							 LEFT OUTER JOIN
-
-								RDC_EXCEPTION_LEVEL1 e1 WITH(NOLOCK)
-							ON e1.ExceptionLevelID = d.ExceptionLevel1ID
-							LEFT OUTER JOIN
-								RDC_EXCEPTION_LEVEL2 e2 WITH(NOLOCK)
-							ON e2.ExceptionLevelID = d.ExceptionLevel2ID
-							LEFT OUTER JOIN
-								RDC_EXCEPTION_LEVEL3 e3 WITH(NOLOCK)
-							ON e3.ExceptionLevelID = d.ExceptionLevel3ID
-							ORDER BY dc1.DocCodeID ASC, d.DocLayout,d.DocType,d.ExceptionLevel1ID,d.ExceptionLevel2ID,d.ExceptionLevel3ID";
+            string sql = "RD_UX_GET_DOCCODE_AGGREGATION";
             var parameters = new DynamicParameters();
-            parameters.Add("DOCCODEID", docCodeID, DbType.String);
+            parameters.Add("DocCodeID", docCodeID, DbType.Int64);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, ExceptionLevel, ExceptionLevel, ExceptionLevel, AggregateDocCode>(sql,
-                                        (d, e1, e2, e3) =>
-                                        {
-                                            AggregateDocCode docCode = d;
-                                            docCode.DocExceptionLevel1 = e1;
-                                            docCode.DocExceptionLevel2 = e2;
-                                            docCode.DocExceptionLevel3 = e3;
-                                            return docCode;
-                                        }, parameters, splitOn: "ExceptionLevelID");
-                return docCodeList;
+                try
+                {
+                    IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, ExceptionLevel, ExceptionLevel, ExceptionLevel, AggregateDocCode>(sql,
+                                            (d, e1, e2, e3) =>
+                                            {
+                                                AggregateDocCode docCode = d;
+                                                docCode.ExceptionLevel1 = e1;
+                                                docCode.ExceptionLevel2 = e2;
+                                                docCode.ExceptionLevel3 = e3;
+                                                return docCode;
+                                            }, parameters, commandType: CommandType.StoredProcedure, splitOn: "ExceptionLevelID");
+                    return docCodeList;
+                }
+                catch (Exception ex) { string lop = ex.Message; return null; }
             }
         }
 
-        //HANDLE TEXT RESPONSES ON HIGHER LEVELS aggrCompatibility
-        public async Task<AggregateDocCode> GetAggregateDocCode(int docCodeID)
+        public async Task<IEnumerable<AggregateDocCode>> ChangeCompatibility(int docCodeID, DataTable docCodeList)
         {
-            string sql = $@"SELECT  d.DocCodeID,
-									d.DocLayout
-									d.DocType,
-									e1.ExceptionLevelID,
-									e1.ExceptionCode,
-									e1.ExceptionDescription,
-									e2.ExceptionLevelID,
-									e2.ExceptionCode,
-									e2.ExceptionDescription,
-									e3.ExceptionLevelID,
-									e3.ExceptionCode,
-									e3.ExceptionDescription,
-									d.[Description] as DocDescription
-									dc.AggrCompatibility
-							FROM [DMS_evolDP].[dbo].[RD_DOCCODE] d
-							INNER JOIN
-								[DMS_evolDP].[dbo].[RD_DOCCODE_CONFIG] dc
-							ON d.DocCodeID = dc.DocCodeID
-							LEFT OUTER JOIN
-								[DMS_evolDP].[dbo].[RDC_EXCEPTION_LEVEL1] e1 WITH(NOLOCK)
-							ON	e1.ExceptionLevelID = d.ExceptionLevel1ID
-							LEFT OUTER JOIN
-								[DMS_evolDP].[dbo].[RDC_EXCEPTION_LEVEL2] e2 WITH(NOLOCK)
-							ON	e2.ExceptionLevelID = d.ExceptionLevel2ID
-							LEFT OUTER JOIN
-								[DMS_evolDP].[dbo].[RDC_EXCEPTION_LEVEL3] e3 WITH(NOLOCK)
-							ON	e3.ExceptionLevelID = d.ExceptionLevel3ID
-							WHERE d.DocCodeID = @DOCCODEID
-								AND dc.StartDate = (SELECT MAX(StartDate)
-											FROM [DMS_evolDP].[dbo].[RD_DOCCODE_CONFIG]
-											WHERE DocCodeID = dc.DocCodeID
-												AND StartDate <= CONVERT(varchar,CURRENT_TIMESTAMP,112))";
+            string sql = "RD_UX_SET_DOCCODE_AGGREGATION";
             var parameters = new DynamicParameters();
-            parameters.Add("DOCCODEID", docCodeID, DbType.String);
+            parameters.Add("DocCodeID", docCodeID, DbType.Int64);
+            parameters.Add("DocCodeList", docCodeList.AsTableValuedParameter("IDlist"));
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, ExceptionLevel, ExceptionLevel, ExceptionLevel, AggregateDocCode>(sql,
-                                        (d, e1, e2, e3) =>
-                                        {
-                                            AggregateDocCode docCode = d;
-                                            docCode.DocExceptionLevel1 = e1;
-                                            docCode.DocExceptionLevel2 = e2;
-                                            docCode.DocExceptionLevel3 = e3;
-                                            return docCode;
-                                        }, parameters, splitOn: "ExceptionLevelID");
-                return docCodeList.First();
-            }
-        }
-
-        public async Task ChangeCompatibility(DocCodeCompatabilityViewModel model)
-        {
-            string itemsChecked = "";
-            string finalString = "";
-            foreach (AggregateDocCode selection in model.DocCodeList)
-            {
-                if (model.DocCodeList.Last() == selection)
-                {
-                    itemsChecked += selection;
-                }
-                else
-                {
-                    itemsChecked += selection.DocCodeID + ", ";
-                }
-            }
-            if (string.IsNullOrEmpty(itemsChecked))
-            {
-                finalString = "is NULL";
-            }
-            else
-            {
-                finalString = "in (" + itemsChecked + ")";
-            }
-            string sql = $@"EXEC RD_SET_DOCCODE_AGGREGATION @ID, @FINALSTRING";
-            var parameters = new DynamicParameters();
-            parameters.Add("ID", model.DocCode.DocCodeID, DbType.String);
-            parameters.Add("FINALSTRING", finalString, DbType.String);
-
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                IEnumerable<AggregateDocCode> docCodeList = await connection.QueryAsync<AggregateDocCode, ExceptionLevel, ExceptionLevel, ExceptionLevel, AggregateDocCode>(sql,
-                                        (d, e1, e2, e3) =>
-                                        {
-                                            AggregateDocCode docCode = d;
-                                            docCode.DocExceptionLevel1 = e1;
-                                            docCode.DocExceptionLevel2 = e2;
-                                            docCode.DocExceptionLevel3 = e3;
-                                            return docCode;
-                                        }, parameters, splitOn: "ExceptionLevelID");
-                return;
+                await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                return await GetCompatibility(docCodeID);
             }
         }
     }

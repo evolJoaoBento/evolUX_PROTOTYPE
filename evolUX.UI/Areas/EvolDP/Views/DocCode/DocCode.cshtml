@@ -23,9 +23,14 @@ else
 
     DocCode docCode = Model.DocCodeList?.First();
     TempData["Source"] = "DocCode";
-    <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="AddDocCode">
-        <img style="background:none; width:50px;height:50px;" src="@siteURL/images/add_doc.png" title="@localizer["AddDocCode"]" />
-    </a>
+    <div>
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="Index">
+        </a>
+        <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="AddDocCode">
+            <img style="background:none; width:50px;height:50px;" src="@siteURL/images/add_doc.png" title="@localizer["AddDocCode"]" />
+        </a>
+    </div>
+   
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>

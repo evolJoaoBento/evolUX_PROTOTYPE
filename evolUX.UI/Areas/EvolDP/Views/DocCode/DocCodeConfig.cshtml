@@ -8,12 +8,7 @@
 @model DocCodeConfigViewModel;
 @{
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
-    var json = JsonConvert.SerializeObject(Model.SuportTypeList);
 }
-<script>
-    var suporTypeList = @Html.Raw(json);
-    const invalidDateStr = '@localizer["InvalidDate"]';
-</script>
 @if (Model == null || Model.DocCode == null)
 {
     <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
@@ -43,6 +38,19 @@ else
     DocCodeConfig dConfig = null;
     if (docCode.DocCodeConfigs != null && docCode.DocCodeConfigs.Count() > 0)
         dConfig = docCode.DocCodeConfigs[0];
+    <div>
+        @if (headerDesc == "AddDoc" || headerDesc == "AddDocCode")
+        {
+            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+            </a>
+        }
+        else if (headerDesc == "AddDocCodeConfig" || headerDesc == "DocCodeChange"
+            || headerDesc == "DocCodeConfigChange")
+        {
+            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+            </a>
+        }
+    </div>
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr><td colspan="2">@localizer[headerDesc]</td></tr>
@@ -194,221 +202,5 @@ else
 @section Scripts
 {
     <script type="text/javascript">
-        function suportTypeChange(selectElement)
-        {
-            var suportTypeValue = parseInt(selectElement.value, 10);
-            var suportTypeFilteredList = suporTypeList.ValidList.filter(function (value) {
-                return (suportTypeValue == 0 || (value & suportTypeValue) == suportTypeValue);
-            });
-            const selectElements = document.querySelectorAll('select[id^="suportType_"]');
-            selectElements.forEach(sElement => {
-                if (sElement.id != selectElement.id)
-                {
-                    var newSPValue = parseInt(sElement.value, 10) + suportTypeValue;
-                    var result = suportTypeFilteredList.filter(function (value) {
-                        return (parseInt(sElement.value, 10) == 0 || (value & newSPValue) == newSPValue);
-                    });
-                    if (result.length > 0 || parseInt(sElement.value, 10) == 0)
-                    {
-                        suportTypeValue += parseInt(sElement.value, 10);
-                        suportTypeFilteredList = result.length > 0 ? result : suportTypeFilteredList;
-                    }
-                    else
-                    {
-                        let selectedIndex = -1; // initialize to -1 in case the value is not found
-
-                        for (let i = 0; i < sElement.options.length; i++) {
-                            newSPValue = parseInt(sElement.options[i].value, 10) + suportTypeValue;
-                            result = suportTypeFilteredList.filter(function (value) {
-                                return (parseInt(sElement.options[i].value, 10) == 0 || (value & newSPValue) == newSPValue);
-                            });
-                            if (result.length > 0 || parseInt(sElement.options[i].value, 10) == 0) {
-                                selectedIndex = i;
-                                suportTypeValue += parseInt(sElement.options[i].value, 10);
-                                suportTypeFilteredList = result.length > 0 ? result : suportTypeFilteredList;
-
-                                break;
-                            }
-                        }
-                        sElement.selectedIndex = selectedIndex;
-                    }
-                }
-            });
-            const suportTypeElement = document.getElementById("SuportType");
-            suportTypeElement.value = suportTypeValue.toString();
-        }
-        function dateConfigValidation(event) {
-            var input = event.target; // get the input element that triggered the event
-            const label = document.getElementById(input.id.replace("dateConfig_","label_"));
-            const divLabel = document.getElementById(input.id.replace("dateConfig_","div_"));
-            divLabel.style.display = "none";
-            label.textContent = "";
-
-            let dateString = "";
-            let invalidDateString = "";
-            const dateValues = input.value.split(";");
-            dateValues.forEach(dValue => {
-                let newDate = dValue.trim();
-                if (newDate.length != 0) {
-                    newDate = dateConfigVal(newDate);
-                    if (newDate.length == 0) {
-                        if (invalidDateString.length == 0)
-                            invalidDateString = dValue.trim();
-                        else
-                            invalidDateString = invalidDateString + ";" + dValue.trim();
-                    }
-                    else if (dateString.length == 0)
-                        dateString = newDate;
-                    else
-                        dateString = dateString + ";" + newDate;
-                }
-            });
-            if (dateString.length > 0)
-            {
-                const dValues = dateString.split(";");
-                const distinctList = [...new Set(dValues)];
-                dateString = distinctList.join(";");
-            }
-            input.value = dateString;
-            if (invalidDateString.length > 0)
-            {
-                label.textContent = invalidDateStr + ": " + invalidDateString;
-                divLabel.style.display = "";
-                input.focus();
-            }
-        }
-        function dateConfigVal(dateStr)
-        {
-            let remaneDate = dateStr.trim().toLowerCase();
-
-            let workingDay = "";
-            let workingDayFlag = remaneDate.indexOf("wd");
-            if (workingDayFlag == 0) {
-                remaneDate = remaneDate.slice(workingDayFlag + 2);
-                let i = remaneDate.indexOf(" ");
-                if (i == 0 || i == 1)
-                {
-                    if (i == 1)
-                    {
-                        if (remaneDate.substring(0, 1) != "+" && remaneDate.substring(0, 1) != "-")
-                            return "";
-                        else
-                            workingDay = remaneDate.substring(0, 1);
-                    }
-                    else
-                        workingDay = "-";
-                    remaneDate = remaneDate.slice(i + 1).trim();
-                }
-                else return "";
-            }
-
-            let weekDayFlag = remaneDate.indexOf("ww");
-            let weekDay = -1;
-            if (weekDayFlag == 0) 
-            {
-                remaneDate = remaneDate.slice(weekDayFlag + 2);
-                let i = remaneDate.indexOf(" ");
-                if (i == 1) {
-                    weekDay = parseInt(remaneDate.substring(0, 1), 10);
-                    if (!(weekDay >= 0 && weekDay <= 6))
-                        return "";
-                    remaneDate = remaneDate.slice(i).trim();
-                }
-                else return "";
-            }
-            let day = "dd";
-            let month = "mm";
-            let year = "yyyy";
-
-            let end = remaneDate.indexOf('/');
-            if (end >= 0) 
-            {
-                day = remaneDate.substring(0, end).trim();
-
-                remaneDate = remaneDate.slice(end + 1).trim();
-                end = remaneDate.indexOf('/');
-                if (end < 0) 
-                    return "";
-
-                month = remaneDate.substring(0, end).trim();
-
-                year = remaneDate.slice(end + 1).trim();
-
-                // Dia
-                start = day.indexOf("+");
-                if (start > 0 && day.substring(0,start).trim() == "dd") {
-                    let nDay = parseInt(day.slice(start + 1), 10);
-                    if (nDay > 0)
-                    {
-                        day = "dd+" + nDay.toString();
-                    }
-                    else
-                        return "";
-                }
-                else if (start >= 0)
-                    return "";
-                else if (day != "dd") {
-                    let nDay = parseInt(day, 10);
-                    if (nDay > 0)
-                    {
-                        day = nDay.toString();
-                    }
-                    else
-                        return "";
-                }
-
-                // Mês
-                start = month.indexOf("+");
-                if (start > 0 && month.substring(0, start).trim() == "mm") {
-                    let nMonth = parseInt(month.slice(start + 1), 10);
-                    if (nMonth > 0) {
-                        month = "mm+" + nMonth.toString();
-                    }
-                    else
-                        return "";
-                }
-                else if (start >= 0)
-                    return "";
-                else if (month != "mm") {
-                    let nMonth = parseInt(month, 10);
-                    if (nMonth > 0) {
-                        month = nMonth.toString();
-                    }
-                    else
-                        return "";
-                }
-
-                // Ano
-                start = year.indexOf("+");
-                if (start > 0 && year.substring(0, start).trim() == "yyyy") {
-                    let nYear = parseInt(year.slice(start + 1), 10);
-                    if (nYear > 0) {
-                        year = "yyyy+" + nYear.toString();
-                    }
-                    else
-                        return "";
-                }
-                else if (start >= 0)
-                    return "";
-                else if (year != "yyyy") {
-                    let nYear = parseInt(year, 10);
-                    if (nYear > 0) {
-                        year = nYear.toString();
-                    }
-                    else
-                        return "";
-                }
-            }
-
-            remaneDate = "";
-            if (workingDayFlag == 0)
-                remaneDate += "wd" + workingDay + " ";
-
-            if (weekDayFlag == 0 && weekDay >= 0)
-                remaneDate += "ww" + weekDay.toString() + " ";
-
-            remaneDate += day + "/" + month + "/" + year;
-            return (remaneDate);
-        }
     </script>
 }

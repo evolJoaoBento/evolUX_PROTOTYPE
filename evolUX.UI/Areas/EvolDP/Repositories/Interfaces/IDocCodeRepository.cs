@@ -1,6 +1,7 @@
 ﻿using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.ViewModels.General;
+using System.Data;
 
 namespace evolUX.UI.Areas.EvolDP.Repositories.Interfaces
 {
@@ -14,5 +15,7 @@ namespace evolUX.UI.Areas.EvolDP.Repositories.Interfaces
         public Task<DocCodeConfigViewModel> ChangeDocCode(DocCode docCode);
         public Task<ResultsViewModel> DeleteDocCodeConfig(int docCodeID, int startDate);
         public Task<ResultsViewModel> DeleteDocCode(DocCode docCode);
+        public Task<DocCodeCompatibilityViewModel> GetCompatibility(int docCodeID);
+        public Task<DocCodeCompatibilityViewModel> ChangeCompatibility(int docCodeID, DataTable docCodeList);
     }
 }

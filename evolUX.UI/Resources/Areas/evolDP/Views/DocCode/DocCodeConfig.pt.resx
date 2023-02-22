@@ -136,10 +136,10 @@
     <value>Agregável com todos</value>
   </data>
   <data name="AggCompatibility2" xml:space="preserve">
-    <value>Condicionalmente Agregável (Necessário configurar compatibilidades)</value>
+    <value>Agregável Condicional</value>
   </data>
   <data name="AggCompatibility3" xml:space="preserve">
-    <value>Agregável apenas com o mesmo tipo (Layout/Subtipo)</value>
+    <value>Agregável com o mesmo tipo (Layout/Subtipo)</value>
   </data>
   <data name="AggrCompatibility" xml:space="preserve">
     <value>Tipo de Agregação</value>

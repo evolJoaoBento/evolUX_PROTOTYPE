@@ -10,6 +10,7 @@ using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.ViewModels.Areas.Finishing;
 using Shared.ViewModels.General;
+using System.Data;
 using System.Net;
 
 namespace evolUX.UI.Areas.EvolDP.Repositories
@@ -211,6 +212,56 @@ namespace evolUX.UI.Areas.EvolDP.Repositories
                 if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
                 if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
                 return await response.GetJsonAsync<ResultsViewModel>();
+            }
+
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                dynamic d = ex.GetResponseJsonAsync();
+                return d;
+            }
+        }
+
+        public async Task<DocCodeCompatibilityViewModel> GetCompatibility(int docCodeID)
+        {
+            try
+            {
+                Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                dictionary.Add("DocCodeID", docCodeID);
+                var response = await _flurlClient.Request("/API/evolDP/DocCode/GetCompatibility")
+                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                    .SendJsonAsync(HttpMethod.Get, dictionary);
+                if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+                return await response.GetJsonAsync<DocCodeCompatibilityViewModel>();
+            }
+
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                dynamic d = ex.GetResponseJsonAsync();
+                return d;
+            }
+        }
+        public async Task<DocCodeCompatibilityViewModel> ChangeCompatibility(int docCodeID, DataTable docCodeList)
+        {
+            try
+            {
+                Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                dictionary.Add("DocCodeID", docCodeID);
+                string ListJSON = JsonConvert.SerializeObject(docCodeList);
+                dictionary.Add("DocCodeList", ListJSON);
+
+                var response = await _flurlClient.Request("/API/evolDP/DocCode/ChangeCompatibility")
+                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                    .SendJsonAsync(HttpMethod.Get, dictionary);
+                if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+                if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+                return await response.GetJsonAsync<DocCodeCompatibilityViewModel>();
             }
 
             catch (FlurlHttpException ex)

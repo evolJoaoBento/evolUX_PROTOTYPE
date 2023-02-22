@@ -14,6 +14,8 @@ using Shared.Models.Areas.evolDP;
 using System.Globalization;
 using Shared.ViewModels.General;
 using System.Reflection.Emit;
+using Dapper;
+using System.Data;
 
 namespace evolUX.Areas.EvolDP.Controllers
 {
@@ -267,18 +269,21 @@ namespace evolUX.Areas.EvolDP.Controllers
 
         }
 
-        //Podia se mandar um aviso sobre algo nao ser compativel no futuro
-        [HttpGet("{docCodeID}")]
-        [ActionName("Compatibility")]
-        public async Task<ActionResult<DocCodeCompatabilityViewModel>> CompatibilityOptions([FromRoute] int docCodeID)
+        [HttpGet]
+        [ActionName("GetCompatibility")]
+        public async Task<ActionResult<DocCodeCompatibilityViewModel>> GetCompatibility([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                DocCodeCompatabilityViewModel viewmodel = new DocCodeCompatabilityViewModel();
-                viewmodel.DocCode = await _docCodeService.GetAggregateDocCode(docCodeID);
-                viewmodel.DocCodeList = await _docCodeService.GetAggregateDocCodes(docCodeID);
-                _logger.LogInfo("CompatibilityOptions");
+                object obj;
+                dictionary.TryGetValue("DocCodeID", out obj);
+                int docCodeID = Convert.ToInt32(obj.ToString());
+
+                DocCodeCompatibilityViewModel viewmodel = new DocCodeCompatibilityViewModel();
+                viewmodel.AggDocCodeList = await _docCodeService.GetCompatibility(docCodeID);
+                _logger.LogInfo("GetCompatibility");
                 return Ok(viewmodel);
+
             }
             catch (SqlException ex)
             {
@@ -287,21 +292,30 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside CompatibilityOptions action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
-
         }
 
-        [HttpPut()]
+        [HttpGet]
         [ActionName("ChangeCompatibility")]
-        public async Task<ActionResult<DocCodeResultsViewModel>> ChangeCompatibility([FromBody] DocCodeCompatabilityViewModel model)
+        public async Task<ActionResult<DocCodeCompatibilityViewModel>> ChangeCompatibility([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                await _docCodeService.ChangeCompatibility(model);
+                object obj;
+                dictionary.TryGetValue("DocCodeID", out obj);
+                int docCodeID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("DocCodeList", out obj);
+                string DocCodeListJSON = Convert.ToString(obj);
+
+                DataTable docCodeList = JsonConvert.DeserializeObject<DataTable>(DocCodeListJSON);
+
+                DocCodeCompatibilityViewModel viewmodel = new DocCodeCompatibilityViewModel();
+                viewmodel.AggDocCodeList = await _docCodeService.ChangeCompatibility(docCodeID, docCodeList);
                 _logger.LogInfo("ChangeCompatibility");
-                return Ok();
+                return Ok(viewmodel);
+
             }
             catch (SqlException ex)
             {
@@ -310,10 +324,11 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside ChangeCompatibility action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
         }
+
     }
 }

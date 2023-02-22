@@ -1,0 +1,277 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model DocCodeCompatibilityViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+}
+@if (Model == null || Model.DocCode == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string docTypeDesc = "";
+    string eLevel1Desc = "";
+    string eLevel2Desc = "";
+    string eLevel3Desc = "";
+
+    string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
+    string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
+    string ExceptionLevel3IDLabel = TempData["ExceptionLevel3ID"]?.ToString();
+
+    DocCode docCode = Model.DocCode;
+    <div>
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCodeConfigList" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+        </a>
+    </div>
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <td colspan="8">@localizer["DocCodeAggCompatibility"]
+                </td>
+           </tr>
+           <tr>
+                <th>@localizer["DocCodeID"]</th>
+                <th>@localizer["DocLayout"]</th>
+                <th>@localizer["DocType"]</th>
+                <th>@ExceptionLevel1IDLabel</th>
+                <th>@ExceptionLevel2IDLabel</th>
+                <th>@ExceptionLevel3IDLabel</th>
+                <th>@localizer["DocDescription"]</th>
+                <th>@localizer["PrintMatchCode"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            <tr>
+                @if (string.IsNullOrEmpty(docCode.DocType))
+                {
+                    docTypeDesc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    docTypeDesc = docCode.DocType;
+                }
+                @if (docCode.ExceptionLevel1 == null || string.IsNullOrEmpty(docCode.ExceptionLevel1.ExceptionDescription))
+                {
+                    eLevel1Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel1Desc = docCode.ExceptionLevel1.ExceptionDescription;
+                }
+                @if (docCode.ExceptionLevel2 == null || string.IsNullOrEmpty(docCode.ExceptionLevel2.ExceptionDescription))
+                {
+                    eLevel2Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel2Desc = docCode.ExceptionLevel2.ExceptionDescription;
+                }
+                @if (docCode.ExceptionLevel3 == null || string.IsNullOrEmpty(docCode.ExceptionLevel3.ExceptionDescription))
+                {
+                    eLevel3Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel3Desc = docCode.ExceptionLevel3.ExceptionDescription;
+                }
+                <td>@docCode.DocCodeID</td>
+                <td>@docCode.DocLayout</td>
+                <td>@docTypeDesc</td>
+                <td>@eLevel1Desc</td>
+                <td>@eLevel2Desc</td>
+                <td>@eLevel3Desc</td>
+                <td>@docCode.DocDescription</td>
+                <td>@docCode.PrintMatchCode</td>
+            </tr>
+        </tbody>
+    </table>
+    string Level0Name = "level";
+    string Level1Name = "detail";
+
+    int count = 0;
+    int level = 0;
+    string idValue = "arrow" + count.ToString();
+    string nameValue = "";
+    string cValue = "";
+    <form id="AddAggCompatibilityFrm" asp-area="evolDP" asp-controller="DocCode" asp-action="ChangeCompatibility"
+      data-ajax="true"
+      data-ajax-method="POST"
+      data-ajax-mode="replace"
+      data-ajax-update="#response"
+      data-ajax-complete="refreshPage"
+      data-ajax-loading="myLoader">
+@*        @foreach (ExpServiceCompanyFileElement s in Model.ExpeditionList)
+        {
+            level++;
+            nameValue = Level0Name + level.ToString();
+            idValue = "arrow" + nameValue;
+            <table class="table table-bordered table-sm">
+                <thead>
+                    @if (!ViewBag.hasMultipleServiceCompanies)
+                    {
+                        <tr><th>@localizer["PendingExpeditionFiles"]</th></tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <th>
+                                @localizer["PendingExpeditionFiles"] [@s.ServiceCompanyName]
+                                @if (Model.ExpeditionList.Count() > 0)
+                                {
+                                    <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
+                                }
+                            </th>
+                        </tr>
+                    }
+                </thead>
+                <tbody id="@nameValue">
+                    @foreach (ExpCompanyFileElement c in s.ExpCompanyList)
+                    {
+                        @foreach (ExpBusinessFileElement b in c.BusinessList)
+                        {
+                            @foreach (ExpRunFileElement r in b.RunList)
+                            {
+                                <tr>
+                                    <td>
+                                        <table class="table table-bordered table-sm table-striped">
+                                            @{
+                                                count++;
+                                                nameValue = Level1Name + count.ToString();
+                                                idValue = "arrow" + nameValue;
+                                            }
+                                            <thead>
+                                                @if (ViewBag.hasMultipleCompanyBusiness)
+                                                {
+                                                    <tr>
+                                                        <th colspan="5">
+                                                            @c.ExpCompanyCode / @b.BusinessDescription [@r.RunDate (@r.RunSequence)]
+                                                            <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
+                                                        </th>
+                                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    <tr>
+                                                        <th colspan="5">
+                                                            @c.ExpCompanyCode / @r.RunDate (@r.RunSequence)
+                                                            <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue">
+                                                            </a>
+                                                        </th>
+                                                    </tr>
+                                                }
+                                            </thead>
+                                            <tbody id="@nameValue">
+                                                <tr>
+                                                    <th style="background:none;width:50px;height:50px;"></th>
+                                                    <th>@localizer["FileName"]</th>
+                                                    <th>@localizer["ClientName"]</th>
+                                                    <th>@localizer["ContractNr"]</th>
+                                                    <th>@localizer["ClientNr"]</th>
+                                                </tr>
+                                                @foreach (ExpContractFileElement cc in r.ContractList)
+                                                {
+                                                    @foreach (FileBase f in cc.FileList)
+                                                    {
+                                                        cValue = "Checked" + s.ServiceCompanyCode.ToString() + "|" + c.ExpCompanyID.ToString() + "|" + r.RunID.ToString();
+                                                        <tr>
+                                                            <td align="center">
+                                                                <input value="@s.ServiceCompanyCode|@c.ExpCompanyID|@f.RunID|@f.FileID" name="CheckedFileList" type="checkbox" id="@cValue">
+                                                            </td>
+                                                            <td>@f.FileName</td>
+                                                            <td>@cc.ClientName</td>
+                                                            <td>@cc.ContractNr</td>
+                                                            <td>@cc.ClientNr</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                                @{
+                                                    cValue = s.ServiceCompanyCode.ToString() + "|" + c.ExpCompanyID.ToString() + "|" + r.RunID.ToString();
+                                                }
+                                                <tr>
+                                                    <td colspan="5">
+                                                        <button style="background:none;width:20px;height:20px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
+                                                            <img style="background:none; width:20px;height:20px;" src="@siteURL/images/select-multiple.png" />
+                                                        </button>
+                                                        <button style="background:none;width:20px;height:20px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '@cValue')">
+                                                            <img style="background:none; width:20px;height:20px;" src="@siteURL/images/unselect-multiple.png" />
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                    <tr>
+                        @{
+                            cValue = s.ServiceCompanyCode.ToString();
+                        }
+                        <td>
+                            <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
+                                <img style="background:none; width:30px;height:30px;" src="@siteURL/images/select-multiple.png" />
+                            </button>
+                            <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '@cValue')">
+                                <img style="background:none; width:30px;height:30px;" src="@siteURL/images/unselect-multiple.png" />
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    @{
+                        cValue = localizer["ExistsExpeditionReportsJobs"].Value
+                        .Replace("@#Jobs#@", s.ExpeditionReportsJobs.Count.ToString())
+                        .Replace("@#ServiceCompany#@", s.ServiceCompanyName);
+                        if (s.ExpeditionReportsJobs.Count > 0)
+                        {
+                            cValue += ". " + localizer["LastRegistedExpeditionReportsJob"].Value
+                            .Replace("@#RegistTimeStamp#@", s.ExpeditionReportsJobs[0].RegistrationTimeStamp.ToString());
+                        }
+                    }
+                    <tr><th colspan="5">@cValue</th></tr>
+                </tfoot>
+            </table>
+        }
+*@        @if (level > 1)
+        {
+            <p class="my-3 d-flex justify-content-left" class="btn btn-block btn-primary">
+                <input type="button" name="cmdselect" value='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '')">
+                <input type="button" name="cmdunselect" value="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '')">
+            </p>
+        }
+        <p class="my-3 d-flex justify-content-center">
+            <input value="@localizer["Submit"]" type="submit" name="Submit" class="btn btn-block btn-primary" />
+        </p>
+    </form>
+    <div id="response" class="d-flex justify-content-center m-5"></div>
+}
+@section Scripts
+{
+    <script type="text/javascript">
+      function confirmDocCodeConfigDelete() {
+        if (confirm(deleteMsgDocCodeConfig)) {
+          // User clicked "OK", handle the deletion
+          return true;
+        } else {
+          // User clicked "Cancel", do nothing
+          return false;
+        }
+      }
+       function confirmDocCodeDelete() {
+        if (confirm(deleteMsgDocCode)) {
+          // User clicked "OK", handle the deletion
+          return true;
+        } else {
+          // User clicked "Cancel", do nothing
+          return false;
+        }
+      }
+      </script>
+}
