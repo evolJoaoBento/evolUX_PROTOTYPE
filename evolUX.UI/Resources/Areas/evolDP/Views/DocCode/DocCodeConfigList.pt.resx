@@ -303,4 +303,7 @@
   <data name="AggCompatibilityAdd" xml:space="preserve">
     <value>Adicionar Compatibilidades de Agregação</value>
   </data>
+  <data name="Export" xml:space="preserve">
+    <value>Gerar script SQL</value>
+  </data>
 </root>

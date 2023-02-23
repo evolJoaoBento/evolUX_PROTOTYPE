@@ -31,5 +31,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
 
         public Task<IEnumerable<AggregateDocCode>> GetCompatibility(int docCodeID);
         public Task<IEnumerable<AggregateDocCode>> ChangeCompatibility(int docCodeID, DataTable docCodeList);
+        public Task<DocCodeData4ScriptViewModel> DocCodeData4Script(int docCodeID, int startDate);
+        
     }
 }

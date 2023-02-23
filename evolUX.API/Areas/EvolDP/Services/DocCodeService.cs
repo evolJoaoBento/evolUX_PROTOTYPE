@@ -168,5 +168,14 @@ namespace evolUX.API.Areas.EvolDP.Services
             }
             return aggList;
         }
+        public async Task<DocCodeData4ScriptViewModel> DocCodeData4Script(int docCodeID, int startDate)
+        {
+            DocCodeData4ScriptViewModel results = await _repository.DocCode.DocCodeData4Script(docCodeID, startDate);
+            if (results == null)
+            {
+
+            }
+            return results;
+        }
     }
 }

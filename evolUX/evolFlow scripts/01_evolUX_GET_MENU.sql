@@ -35,7 +35,7 @@ FROM ACTIONS
 WHERE (ActionTypeID = 0
 		OR (ActionTypeID = 1 AND parActionID in (SELECT ActionID FROM Actions WHERE ActionTypeID = 0))
 		OR (ActionTypeID = 1 AND parActionID in (SELECT ActionID FROM Actions WHERE(ActionTypeID = 1 AND parActionID in (SELECT ActionID FROM Actions WHERE ActionTypeID = 0)))))
-	AND [Description] not in ('Estados de Jobs','Estado de Jobs Activos')
+	AND [Description] not in ('Estados de Jobs','Estado de Jobs Activos','Adicionar Tipo de Documento','Adicionar Gamas de Envelopes')
 GO
 CREATE TABLE [dbo].[evolUX_PERMISSIONS](
 	[ActionID] [int] NOT NULL,

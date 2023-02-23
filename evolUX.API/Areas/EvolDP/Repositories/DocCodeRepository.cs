@@ -416,5 +416,32 @@ namespace evolUX.API.Areas.EvolDP.Repositories
                 return await GetCompatibility(docCodeID);
             }
         }
+        
+        public async Task<DocCodeData4ScriptViewModel> DocCodeData4Script(int docCodeID, int startDate)
+        {
+            string sql = @"RD_UX_GET_DOCCODE_DATA_FOR_SCRIPT";
+            var parameters = new DynamicParameters();
+            parameters.Add("DocCodeID", docCodeID, DbType.Int64);
+            parameters.Add("StartDate", startDate, DbType.Int64);
+
+            DocCodeData4ScriptViewModel result = new DocCodeData4ScriptViewModel();
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                var reader = connection.QueryMultiple(sql, parameters,
+                   commandType: CommandType.StoredProcedure);
+                if (reader != null) {
+                    result.ExceptionLevelList = reader.Read<ExceptionLevelScript>().ToList();
+                    List< DocCodeConfigScript> config = reader.Read<DocCodeConfigScript>().ToList();
+                    if (config != null && config.Count > 0)
+                    {
+                        result.Doc = config.First();
+                    }
+                    result.AggDocCodeList = reader.Read<DocCodeScript>().ToList();
+
+                    reader.Dispose();
+                }
+                return result;
+            }
+        }
     }
 }

@@ -1,24 +1,16 @@
-﻿using evolUX.UI.Areas.Core.Models;
-using evolUX.UI.Areas.EvolDP.Services.Interfaces;
+﻿using evolUX.UI.Areas.EvolDP.Services.Interfaces;
 using evolUX.UI.Exceptions;
 using Flurl.Http;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Shared.Models.Areas.Core;
 using Shared.Models.Areas.evolDP;
-using Shared.Models.Areas.Finishing;
-using Shared.Models.General;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.ViewModels.General;
 using System.Data;
 using System.Globalization;
-using System.Net;
-using System.Reflection;
-using System.Reflection.Emit;
+using System.Text;
 
 namespace evolUX.UI.Areas.EvolDP.Controllers
 {
@@ -516,6 +508,60 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
 
         }
 
+        public async Task<IActionResult> DocCodeData4Script(int docCodeID, int startDate)
+        {
+            try
+            {
+                List<string> script = await _docCodeService.DocCodeData4Script(docCodeID, startDate);
+                if (script != null && script.Count() == 2 && !string.IsNullOrEmpty(script[0]))
+                {
+                    byte[] byteArray = Encoding.UTF8.GetBytes(script[0]);
+                    Response.ContentType = "text/plain";
+                    Response.Headers.Add("Content-Disposition", "attachment; filename=" + script[1]);
+
+                    // End the response
+                    return File(byteArray, "text/plain");
+
+                }
+                else return PartialView("Message", new MessageViewModel() { MessageDetail = "EmptyResult"});
+
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+
         public async Task<IActionResult> DeleteDocCode(string doccodeJson)
         {
             try
@@ -916,7 +962,6 @@ namespace evolUX.UI.Areas.EvolDP.Controllers
                 }
             }
         }
-
 
         private GenericOptionList GetConfigs() 
         {
