@@ -132,6 +132,9 @@
   <data name="ExpCenterCode" xml:space="preserve">
     <value>Center</value>
   </data>
+  <data name="ExpCompany" xml:space="preserve">
+    <value>Expedition Company</value>
+  </data>
   <data name="ExpCompanyCode" xml:space="preserve">
     <value>Company</value>
   </data>
@@ -174,14 +177,29 @@
   <data name="Papers" xml:space="preserve">
     <value>Papers</value>
   </data>
+  <data name="Please select an option" xml:space="preserve">
+    <value>Please select an option</value>
+  </data>
   <data name="PlexCode" xml:space="preserve">
     <value>Type</value>
+  </data>
+  <data name="PrintBlackWhite" xml:space="preserve">
+    <value>Black/White Printing</value>
+  </data>
+  <data name="PrintColor" xml:space="preserve">
+    <value>Color Printing</value>
+  </data>
+  <data name="PrintDuplex" xml:space="preserve">
+    <value>Duplex Printing</value>
   </data>
   <data name="PrinterOperator" xml:space="preserve">
     <value>Operator [Printer]</value>
   </data>
   <data name="Printing" xml:space="preserve">
     <value>Printing</value>
+  </data>
+  <data name="PrintSimplex" xml:space="preserve">
+    <value>Simplex Printing</value>
   </data>
   <data name="PrintStatus" xml:space="preserve">
     <value>Files for Printing</value>
@@ -192,8 +210,11 @@
   <data name="SequenceNumber" xml:space="preserve">
     <value>Sequence Number</value>
   </data>
+  <data name="ServiceTask" xml:space="preserve">
+    <value>Service to Provide</value>
+  </data>
   <data name="ServiceTaskCode" xml:space="preserve">
-    <value>Handling</value>
+    <value>Service</value>
   </data>
   <data name="SPLEX" xml:space="preserve">
     <value>Simplex</value>

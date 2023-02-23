@@ -54,41 +54,41 @@
 </div>
 <div class="filter-div">
     <form style="height: 100%; margin:5px;">
-        <h5 class="">Papers</h5>
+        <h5 class="">@localizer["Papers"]</h5>
         <select id="yourSelectIdpaper">
-            <option value="">Please select an option</option>
+            <option value="">@localizer["Please select an option"]</option>
             @foreach (var option in papers)
             {
             <option value="@option.Key">@option.Value</option>
             }
         </select>
-        <h5 class="">Stations</h5>
+        <h5 class="">@localizer["Stations"]</h5>
         <select id="yourSelectIdstation">
-            <option value="">Please select an option</option>
+            <option value="">@localizer["Please select an option"]</option>
             @foreach (var option in stations)
             {
             <option value="@option.Key">@option.Value</option>
             }
         </select>
-        <h5 class="">Expedition Type</h5>
+        <h5 class="">@localizer["ExpeditionType"]</h5>
         <select id="yourSelectIdexpedition">
-            <option value="">Please select an option</option>
+            <option value="">@localizer["Please select an option"]</option>
             @foreach (var option in expeditionType)
             {
             <option value="@option.Key">@option.Value</option>
             }
         </select>
-        <h5 class="">Expedition Company</h5>
+        <h5 class="">@localizer["ExpCompany"]</h5>
         <select id="yourSelectIdcompanies">
-            <option value="">Please select an option</option>
+            <option value="">@localizer["Please select an option"]</option>
             @foreach (var option in companies)
             {
             <option value="@option.Key">@option.Value.Name</option>
             }
         </select>
-        <h5 class="">Service Type</h5>
+        <h5 class="">@localizer["ServiceType"]</h5>
         <select id="yourSelectIdservicetypes">
-            <option value="">Please select an option</option>
+            <option value="">@localizer["Please select an option"]</option>
             @foreach (var option in serviceTypes)
             {
                 <option value="@option.Key">@option.Value.Name</option>
@@ -96,24 +96,36 @@
         </select>
         <div id="color-buttons">
             <label>
-                @*Needs tooltip*@
-                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/bwpaper.png">
+                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_bw.png" title="@localizer["PrintBlackWhite"]">
                 <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="1">
                 <img />
 
             </label>
             <label>
-                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer color.png">
+                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_color.png" title="@localizer["PrintColor"]">
                 <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="1">
                 <img />
             </label>
         </div>
-        <div id="text-buttons">
+        <!--        <div id="text-buttons">
             <label class="btn btn-outline-dark">
                 <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="1">Simplex
             </label>
             <label class="btn btn-outline-dark">
                 <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="0">Duplex
+            </label>
+        </div> -->
+        <div id="color-buttons">
+            <label>
+                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_simplex.png" title="@localizer["PrintSimplex"]">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="1">
+                <img />
+
+            </label>
+            <label>
+                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_duplex.png" title="@localizer["PrintDuplex"]">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="0">
+                <img />
             </label>
         </div>
         <div style="display: flex; position:absolute; right: 10px; bottom: 10px;">
