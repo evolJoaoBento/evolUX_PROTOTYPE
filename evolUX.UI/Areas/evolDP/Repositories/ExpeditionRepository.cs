@@ -6,9 +6,9 @@ using System.Net;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
-    public class ExpeditionTypeRepository : RepositoryBase, IExpeditionTypeRepository
+    public class ExpeditionRepository : RepositoryBase, IExpeditionRepository
     {
-        public ExpeditionTypeRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
+        public ExpeditionRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
 

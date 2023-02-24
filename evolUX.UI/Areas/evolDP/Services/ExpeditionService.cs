@@ -4,11 +4,11 @@ using Flurl.Http;
 
 namespace evolUX.UI.Areas.evolDP.Services
 {
-    public class ExpeditionTypeService : IExpeditionTypeService
+    public class ExpeditionService : IExpeditionService
     {
-        private readonly IExpeditionTypeRepository _expeditionTypeRepository;
+        private readonly IExpeditionRepository _expeditionTypeRepository;
 
-        public ExpeditionTypeService(IExpeditionTypeRepository expeditionTypeRepository)
+        public ExpeditionService(IExpeditionRepository expeditionTypeRepository)
         {
             _expeditionTypeRepository = expeditionTypeRepository;
         }

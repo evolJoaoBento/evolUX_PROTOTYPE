@@ -14,14 +14,14 @@ namespace evolUX.API.Areas.Core.Repositories
     {
         private readonly DapperContext _context;
         private IEnvelopeMediaRepository _envelopeMedia;
-        private IExpeditionCompaniesRepository _expeditionCompanies;
-        private IExpeditionTypeRepository _expeditionType;
-        private IExpeditionZoneRepository _expeditionZone;
+        private IExpeditionRepository _expeditionType;
         private IFinishingRepository _finishing;
         private IUserRepository _user;
         private ISidebarRepository _sidebar;
         private IDocCodeRepository _docCode;
         private IClientRepository _project;
+        private IExpeditionRepository _expedition;
+
         private IProductionReportRepository _productionReport;
         private IRegistJobRepository _registJob;
         private ISessionRepository _session;
@@ -31,7 +31,7 @@ namespace evolUX.API.Areas.Core.Repositories
         private IPendingRegistRepository _pendingRegistRepository;
         private IPostalObjectRepository _postalObjectRepository;
         private IPendingRecoverRepository _pendingRecoverRepository;
-        private IExpeditionRepository _expeditionRepository;
+        private IExpeditionReportRepository _expeditionReportRepository;
 
 
         public WrapperRepository(DapperContext context)
@@ -51,39 +51,16 @@ namespace evolUX.API.Areas.Core.Repositories
                 return _envelopeMedia;
             }
         }
-        public IExpeditionCompaniesRepository ExpeditionCompanies
-        {
-            get
-            {
-                if (_expeditionCompanies == null)
-                {
-                    _expeditionCompanies = new ExpeditionCompaniesRepository(_context);
-                }
-                return _expeditionCompanies;
-            }
-        }
 
-        public IExpeditionTypeRepository ExpeditionType
+        public IExpeditionRepository Expedition
         {
             get
             {
                 if (_expeditionType == null)
                 {
-                    _expeditionType = new ExpeditionTypeRepository(_context);
+                    _expeditionType = new ExpeditionRepository(_context);
                 }
                 return _expeditionType;
-            }
-        }
-
-        public IExpeditionZoneRepository ExpeditionZone
-        {
-            get
-            {
-                if (_expeditionZone == null)
-                {
-                    _expeditionZone = new ExpeditionZoneRepository(_context);
-                }
-                return _expeditionZone;
             }
         }
 
@@ -250,15 +227,15 @@ namespace evolUX.API.Areas.Core.Repositories
             }
         }
 
-        public IExpeditionRepository Expedition
+        public IExpeditionReportRepository ExpeditionReport
         {
             get
             {
-                if (_expeditionRepository == null)
+                if (_expeditionReportRepository == null)
                 {
-                    _expeditionRepository = new ExpeditionRepository(_context);
+                    _expeditionReportRepository = new ExpeditionReportRepository(_context);
                 }
-                return _expeditionRepository;
+                return _expeditionReportRepository;
             }
         }
     }

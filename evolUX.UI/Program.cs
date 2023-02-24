@@ -56,8 +56,8 @@ builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IDocCodeRepository, DocCodeRepository>();
 builder.Services.AddSingleton<IClientService, ClientService>();
 builder.Services.AddSingleton<IClientRepository, ClientRepository>();
-builder.Services.AddSingleton<IExpeditionTypeRepository, ExpeditionTypeRepository>();
-builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
+builder.Services.AddSingleton<IExpeditionRepository, ExpeditionRepository>();
+builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
 
 //Finishing
 builder.Services.AddSingleton<IProductionReportService, ProductionReportService>();
@@ -76,8 +76,8 @@ builder.Services.AddSingleton<IPendingRegistService, PendingRegistService>();
 builder.Services.AddSingleton<IPendingRegistRepository, PendingRegistRepository>();
 builder.Services.AddSingleton<IPendingRecoverService, PendingRecoverService>();
 builder.Services.AddSingleton<IPendingRecoverRepository, PendingRecoverRepository>();
-builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
-builder.Services.AddSingleton<IExpeditionRepository, ExpeditionRepository>();
+builder.Services.AddSingleton<IExpeditionReportService, ExpeditionReportService>();
+builder.Services.AddSingleton<IExpeditionReportRepository, ExpeditionReportRepository>();
 
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

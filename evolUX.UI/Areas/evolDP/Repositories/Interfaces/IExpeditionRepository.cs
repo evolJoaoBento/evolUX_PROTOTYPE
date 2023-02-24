@@ -2,7 +2,7 @@
 
 namespace evolUX.UI.Areas.evolDP.Repositories.Interfaces
 {
-    public interface IExpeditionTypeRepository
+    public interface IExpeditionRepository
     {
         public Task<IFlurlResponse> GetExpeditionTypes();
     }

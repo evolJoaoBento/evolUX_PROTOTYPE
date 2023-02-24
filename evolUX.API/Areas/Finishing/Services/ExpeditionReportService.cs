@@ -13,17 +13,17 @@ using System.Collections.Generic;
 
 namespace evolUX.API.Areas.Finishing.Services
 {
-    public class ExpeditionService : IExpeditionService
+    public class ExpeditionReportService : IExpeditionReportService
     {
         private readonly IWrapperRepository _repository;
-        public ExpeditionService(IWrapperRepository repository)
+        public ExpeditionReportService(IWrapperRepository repository)
         {
             _repository = repository;
         }
 
         public async Task<IEnumerable<Business>> GetCompanyBusiness(DataTable CompanyBusinessList)
         {
-            IEnumerable<Business> companyBusiness = await _repository.Expedition.GetCompanyBusiness(CompanyBusinessList);
+            IEnumerable<Business> companyBusiness = await _repository.ExpeditionReport.GetCompanyBusiness(CompanyBusinessList);
             if (companyBusiness == null)
             {
 
@@ -36,7 +36,7 @@ namespace evolUX.API.Areas.Finishing.Services
         {
             ExpeditionListViewModel viewmodel = new ExpeditionListViewModel();
 
-            viewmodel.ExpeditionList = (List<ExpServiceCompanyFileElement>)await _repository.Expedition.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
+            viewmodel.ExpeditionList = (List<ExpServiceCompanyFileElement>)await _repository.ExpeditionReport.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
             if (viewmodel.ExpeditionList != null)
             {
                 foreach(ExpServiceCompanyFileElement s in viewmodel.ExpeditionList)
@@ -73,7 +73,7 @@ namespace evolUX.API.Areas.Finishing.Services
                         fTable.Rows.Add(row);
                         filelist += string.Format("<FILE R=\"{0}\" F=\"{1}\"/>", f.RunID, f.FileID);
                     }
-                    int RequestID = await _repository.Expedition.RegistFileList(fTable, userName);
+                    int RequestID = await _repository.ExpeditionReport.RegistFileList(fTable, userName);
                     if (RequestID > 0)
                     {
                         Dictionary<string, object> dictionary = new Dictionary<string, object>();
@@ -120,7 +120,7 @@ namespace evolUX.API.Areas.Finishing.Services
         {
             ExpeditionListViewModel viewmodel = new ExpeditionListViewModel();
 
-            viewmodel.ExpeditionList = (List<ExpServiceCompanyFileElement>)await _repository.Expedition.GetExpeditionReportList(BusinessID, ServiceCompanyList);
+            viewmodel.ExpeditionList = (List<ExpServiceCompanyFileElement>)await _repository.ExpeditionReport.GetExpeditionReportList(BusinessID, ServiceCompanyList);
             if (viewmodel.ExpeditionList != null)
             {
                 foreach (ExpServiceCompanyFileElement s in viewmodel.ExpeditionList)

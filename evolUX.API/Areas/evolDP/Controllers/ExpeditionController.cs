@@ -1,28 +1,75 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Areas.Core.Services.Interfaces;
 using evolUX.API.Areas.evolDP.Services.Interfaces;
+using System.Data.SqlClient;
+using evolUX.API.Areas.evolDP.Services;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using System.Dynamic;
-using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
-    [Route("api/evoldp/envelopemedia/[action]")]
     [ApiController]
-    public class ExpeditionCompaniesController : Controller
+    [Route("api/evoldp/expeditiontype/[action]")]
+    public class ExpeditionController : ControllerBase
     {
         private readonly ILoggerService _logger;
-        private readonly IExpeditionCompaniesService _expeditionCompaniesService;
+        private readonly IExpeditionService _expeditionService;
 
-        public ExpeditionCompaniesController (ILoggerService logger, IExpeditionCompaniesService expeditionCompaniesService)
+        public ExpeditionController(ILoggerService logger, IExpeditionService expeditionService)
         {
             _logger = logger;
-            _expeditionCompaniesService = expeditionCompaniesService;
+            _expeditionService = expeditionService;
         }
-        //TODO: UNTESTED
+
+        [HttpGet]
+        [ActionName("GetExpeditionTypes")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<List<dynamic>>> GetExpeditionTypes()
+        {
+            try
+            {
+                //var expeditionTypeList = await _repository.ExpeditionType.GetExpeditionTypes();
+                var expeditionTypeList = await _expeditionService.GetExpeditionTypes();
+                _logger.LogInfo("Expedition Type Get");
+                return Ok(expeditionTypeList);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetEnvelopeMedia action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+        [HttpGet]
+        [ActionName("GetExpeditionZones")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<List<dynamic>>> GetExpeditionZones()
+        {
+            try
+            {
+                //var expeditionTypeList = await _repository.ExpeditionType.GetExpeditionTypes();
+                var expeditionZoneList = await _expeditionService.GetExpeditionZones();
+                _logger.LogInfo("Expedition Zone Get");
+                return Ok(expeditionZoneList);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetEnvelopeMedia action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("GetExpeditionCompanies")]
@@ -30,7 +77,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         {
             try
             {
-                var expeditionCompaniesList = await _expeditionCompaniesService.GetExpeditionCompanies();
+                var expeditionCompaniesList = await _expeditionService.GetExpeditionCompanies();
                 _logger.LogInfo("Expedition Companies Get");
                 return Ok(expeditionCompaniesList);
             }
@@ -55,7 +102,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
             {
                 var converter = new ExpandoObjectConverter();
                 var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
-                var expeditionCompanyConfigsList = await _expeditionCompaniesService.GetExpeditionCompanyConfigs(exObjExpandoObject);
+                var expeditionCompanyConfigsList = await _expeditionService.GetExpeditionCompanyConfigs(exObjExpandoObject);
                 _logger.LogInfo("Expedition Company Configs Get");
                 return Ok(expeditionCompanyConfigsList);
             }
@@ -70,6 +117,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
         //TODO: UNTESTED
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
@@ -80,7 +128,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
             {
                 var converter = new ExpandoObjectConverter();
                 var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
-                var expeditionCompanyConfigsList = await _expeditionCompaniesService.GetExpeditionCompanyConfigCharacteristics(exObjExpandoObject);
+                var expeditionCompanyConfigsList = await _expeditionService.GetExpeditionCompanyConfigCharacteristics(exObjExpandoObject);
                 _logger.LogInfo("Expedition Company Config Characteristics Get");
                 return Ok(expeditionCompanyConfigsList);
             }

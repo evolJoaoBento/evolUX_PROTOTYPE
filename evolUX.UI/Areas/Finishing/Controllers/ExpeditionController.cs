@@ -27,9 +27,9 @@ namespace evolUX.UI.Areas.Finishing.Controllers
     public class ExpeditionController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly IExpeditionService _expeditionService;
+        private readonly IExpeditionReportService _expeditionService;
         private readonly IStringLocalizer<ExpeditionController> _localizer;
-        public ExpeditionController(IExpeditionService expeditionService, IStringLocalizer<ExpeditionController> localizer, IConfiguration configuration)
+        public ExpeditionController(IExpeditionReportService expeditionService, IStringLocalizer<ExpeditionController> localizer, IConfiguration configuration)
         {
             _expeditionService = expeditionService;
             _localizer = localizer;

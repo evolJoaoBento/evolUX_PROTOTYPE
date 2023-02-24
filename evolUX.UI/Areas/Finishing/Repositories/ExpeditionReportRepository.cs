@@ -3,26 +3,24 @@ using evolUX.UI.Exceptions;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Newtonsoft.Json;
-using System.Data;
 using System.Net;
 using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using Shared.Models.General;
 using evolUX.UI.Repositories;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.Models.Areas.Finishing;
-using System.Reflection;
 
 namespace evolUX.UI.Areas.Finishing.Repositories
 {
-    public class ExpeditionRepository : RepositoryBase, IExpeditionRepository
+    public class ExpeditionReportRepository : RepositoryBase, IExpeditionReportRepository
     {
-        public ExpeditionRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
+        public ExpeditionReportRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
 
         public async Task<BusinessViewModel> GetCompanyBusiness(string ServiceCompanyList)
         {
-            var response = await _flurlClient.Request("/API/finishing/Expedition/GetCompanyBusiness")
+            var response = await _flurlClient.Request("/API/finishing/ExpeditionReport/GetCompanyBusiness")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, ServiceCompanyList);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
@@ -35,7 +33,7 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ServiceCompanyList", ServiceCompanyList);
             dictionary.Add("BusinessID", BusinessID);
-            var response = await _flurlClient.Request("/API/finishing/Expedition/GetPendingExpeditionFiles")
+            var response = await _flurlClient.Request("/API/finishing/ExpeditionReport/GetPendingExpeditionFiles")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                  .SendJsonAsync(HttpMethod.Get, dictionary);
 
@@ -52,7 +50,7 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             string ListJSON = JsonConvert.SerializeObject(expFiles);
             dictionary.Add("ExpFiles", ListJSON);
 
-            var response = await _flurlClient.Request("/API/Finishing/Expedition/RegistExpeditionReport")
+            var response = await _flurlClient.Request("/API/Finishing/ExpeditionReport/RegistExpeditionReport")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
@@ -64,7 +62,7 @@ namespace evolUX.UI.Areas.Finishing.Repositories
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ServiceCompanyList", ServiceCompanyList);
             dictionary.Add("BusinessID", BusinessID);
-            var response = await _flurlClient.Request("/API/finishing/Expedition/GetExpeditionReportList")
+            var response = await _flurlClient.Request("/API/finishing/ExpeditionReport/GetExpeditionReportList")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                  .SendJsonAsync(HttpMethod.Get, dictionary);
 

@@ -10,10 +10,10 @@ using evolUX.API.Models;
 
 namespace evolUX.API.Areas.Finishing.Repositories
 {
-    public class ExpeditionRepository : IExpeditionRepository
+    public class ExpeditionReportRepository : IExpeditionReportRepository
     {
         private readonly DapperContext _context;
-        public ExpeditionRepository(DapperContext context)
+        public ExpeditionReportRepository(DapperContext context)
         {
             _context = context;
         }

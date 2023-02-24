@@ -13,10 +13,10 @@ using Shared.Models.Areas.Finishing;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
-    public class ExpeditionService : IExpeditionService
+    public class ExpeditionReportService : IExpeditionReportService
     {
-        private readonly IExpeditionRepository _expeditionRepository;
-        public ExpeditionService(IExpeditionRepository expeditionRepository)
+        private readonly IExpeditionReportRepository _expeditionRepository;
+        public ExpeditionReportService(IExpeditionReportRepository expeditionRepository)
         {
             _expeditionRepository = expeditionRepository;
         }

@@ -162,6 +162,9 @@
   <data name="ActionEnvelopeRange" xml:space="preserve">
     <value>Envelope Range Configuration</value>
   </data>
+  <data name="ActionEnvelopeRange_Link" xml:space="preserve">
+    <value>/evolDP/Material/EnvelopeMedia</value>
+  </data>
   <data name="ActionErrorManagement" xml:space="preserve">
     <value>Error Management</value>
   </data>
@@ -181,7 +184,13 @@
     <value>Guias de Expedição</value>
   </data>
   <data name="ActionExpeditionCompanies" xml:space="preserve">
-    <value>Expedition Companies</value>
+    <value>Companies</value>
+  </data>
+  <data name="ActionExpeditionCompanies_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Companies</value>
+  </data>
+  <data name="ActionExpeditionConfig" xml:space="preserve">
+    <value>Expedition</value>
   </data>
   <data name="ActionExpeditionReport" xml:space="preserve">
     <value>Relatórios de Expedição</value>
@@ -193,10 +202,16 @@
     <value>/Finishing/Expedition/ReportList</value>
   </data>
   <data name="ActionExpeditionTypes" xml:space="preserve">
-    <value>Expedition Types</value>
+    <value>Types</value>
+  </data>
+  <data name="ActionExpeditionTypes_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Index</value>
   </data>
   <data name="ActionExpeditionZones" xml:space="preserve">
-    <value>Expedition Zones</value>
+    <value>Zones</value>
+  </data>
+  <data name="ActionExpeditionZones_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Zones</value>
   </data>
   <data name="ActionFlowsSchedulerRules" xml:space="preserve">
     <value>Automatic Job Registration</value>
@@ -219,11 +234,23 @@
   <data name="ActionMarkFilesinError" xml:space="preserve">
     <value>Mark Files in Error</value>
   </data>
+  <data name="ActionMaterialManagement" xml:space="preserve">
+    <value>Porfolio</value>
+  </data>
+  <data name="ActionMaterialManagement_Link" xml:space="preserve">
+    <value>/evolDP/Material/Management</value>
+  </data>
   <data name="ActionMaterialProductionRepor" xml:space="preserve">
     <value>Production Control / Materials</value>
   </data>
   <data name="ActionMaterials" xml:space="preserve">
     <value>Materials</value>
+  </data>
+  <data name="ActionMaterialType" xml:space="preserve">
+    <value>Types</value>
+  </data>
+  <data name="ActionMaterialType_Link" xml:space="preserve">
+    <value>/evolDP/Material/Index</value>
   </data>
   <data name="ActionMenuClientPages" xml:space="preserve">
     <value>Custom Pages</value>
@@ -376,10 +403,22 @@
     <value>Retentions</value>
   </data>
   <data name="ActionServiceCompanies" xml:space="preserve">
-    <value>Service Companies</value>
+    <value>Companies</value>
+  </data>
+  <data name="ActionServiceCompanies_Link" xml:space="preserve">
+    <value>/evolDP/Services/Companies</value>
   </data>
   <data name="ActionServiceCompanyServices" xml:space="preserve">
-    <value>Service Company Services</value>
+    <value>Types</value>
+  </data>
+  <data name="ActionServicesConfig" xml:space="preserve">
+    <value>Services</value>
+  </data>
+  <data name="ActionServiceTasks" xml:space="preserve">
+    <value>Tasks</value>
+  </data>
+  <data name="ActionServiceTasks_Link" xml:space="preserve">
+    <value>/evolDP/Services/Index</value>
   </data>
   <data name="ActionSupportInformation" xml:space="preserve">
     <value>Suport Information</value>

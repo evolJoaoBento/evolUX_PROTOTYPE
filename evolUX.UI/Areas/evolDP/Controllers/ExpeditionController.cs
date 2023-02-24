@@ -6,11 +6,11 @@ using System.Net;
 namespace evolUX.UI.Areas.evolDP.Controllers
 {
     [Area("EvolDP")]
-    public class ExpeditionTypeController : Controller
+    public class ExpeditionController : Controller
     {
-        private readonly IExpeditionTypeService _expeditionTypeService;
+        private readonly IExpeditionService _expeditionTypeService;
 
-        public ExpeditionTypeController(IExpeditionTypeService expeditionTypeService)
+        public ExpeditionController(IExpeditionService expeditionTypeService)
         {
             _expeditionTypeService = expeditionTypeService;
         }

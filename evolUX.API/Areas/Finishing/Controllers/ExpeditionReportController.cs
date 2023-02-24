@@ -18,12 +18,12 @@ namespace evolUX.API.Areas.Finishing.Controllers
 {
     [Route("api/finishing/[controller]/[action]")]
     [ApiController]
-    public class ExpeditionController : ControllerBase
+    public class ExpeditionReportController : ControllerBase
     {
         private readonly IWrapperRepository _repository;
         private readonly ILoggerService _logger;
-        private readonly IExpeditionService _expeditionService;
-        public ExpeditionController(IWrapperRepository repository, ILoggerService logger, IExpeditionService expeditionService)
+        private readonly IExpeditionReportService _expeditionService;
+        public ExpeditionReportController(IWrapperRepository repository, ILoggerService logger, IExpeditionReportService expeditionService)
         {
             _repository = repository;
             _logger = logger;

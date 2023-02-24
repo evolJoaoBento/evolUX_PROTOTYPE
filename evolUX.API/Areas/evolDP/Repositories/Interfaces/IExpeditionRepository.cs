@@ -1,7 +1,9 @@
-﻿namespace evolUX.API.Areas.evolDP.Services.Interfaces
+﻿namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
 {
-    public interface IExpeditionCompaniesService
+    public interface IExpeditionRepository
     {
+        public Task<List<dynamic>> GetExpeditionTypes();
+        public Task<List<dynamic>> GetExpeditionZones();
         public Task<List<dynamic>> GetExpeditionCompanies();
         public Task<List<dynamic>> GetExpeditionCompanyConfigs(dynamic data);
         public Task<List<dynamic>> GetExpeditionCompanyConfigCharacteristics(dynamic data);

@@ -35,9 +35,7 @@ builder.Services.AddSingleton<IWrapperRepository, WrapperRepository>();
 //evolDP
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IClientService, ClientService>();
-builder.Services.AddSingleton<IExpeditionCompaniesService, ExpeditionCompaniesService>();
-builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
-builder.Services.AddSingleton<IExpeditionZoneService, ExpeditionZoneService>();
+builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
 
 //Finishing
 builder.Services.AddSingleton<IProductionReportService, ProductionReportService>();
@@ -48,7 +46,7 @@ builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillServic
 builder.Services.AddSingleton<IRecoverService, RecoverService>();
 builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();
 builder.Services.AddSingleton<IPendingRecoverService, PendingRecoverService>();
-builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
+builder.Services.AddSingleton<IExpeditionReportService, ExpeditionReportService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

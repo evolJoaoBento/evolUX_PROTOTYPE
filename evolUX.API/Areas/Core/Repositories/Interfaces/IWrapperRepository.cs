@@ -1,5 +1,4 @@
 ﻿using evolUX.API.Areas.evolDP.Repositories.Interfaces;
-using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Areas.Finishing.Repositories.Interfaces;
 
 namespace evolUX.API.Areas.Core.Repositories.Interfaces
@@ -7,12 +6,6 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
     public interface IWrapperRepository
     {
         IEnvelopeMediaRepository EnvelopeMedia { get; }
-
-        IExpeditionCompaniesRepository ExpeditionCompanies { get; }
-
-        IExpeditionTypeRepository ExpeditionType { get; }
-
-        IExpeditionZoneRepository ExpeditionZone { get; }
 
         IFinishingRepository Finishing { get; }
 
@@ -23,6 +16,8 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
         IDocCodeRepository DocCode { get; }
 
         IClientRepository Client { get; }
+
+        IExpeditionRepository Expedition { get; }
 
         IProductionReportRepository ProductionReport { get; }
 
@@ -42,6 +37,6 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
 
         IPendingRecoverRepository PendingRecover { get; }
 
-        IExpeditionRepository Expedition { get; }
+        IExpeditionReportRepository ExpeditionReport { get; }
     }
 }
