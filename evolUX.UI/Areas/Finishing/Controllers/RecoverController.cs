@@ -51,6 +51,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             try
             {
                 ResultsViewModel result = await _recoverService.RegistTotalRecover(FileBarcode, user, ServiceCompanyList, PermissionLevel);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return PartialView("MessageView", new MessageViewModel("0", "", _localizer["RegistTotalRecover" + result.Results.Error]));
             }
             catch (ControledErrorException ex)
@@ -102,6 +103,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             try
             {
                 ResultsViewModel result = await _recoverService.RegistPartialRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return PartialView("MessageView", new MessageViewModel("0", "", _localizer["RegistPartialRecover" + result.Results.Error]));
             }
             catch (ControledErrorException ex)
@@ -153,6 +155,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             try
             {
                 ResultsViewModel result = await _recoverService.RegistDetailRecover(StartBarcode, EndBarcode, user, ServiceCompanyList, PermissionLevel);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return PartialView("MessageView", new MessageViewModel("0", "", _localizer["RegistDetailRecover" + result.Results.Error]));
             }
             catch (ControledErrorException ex)

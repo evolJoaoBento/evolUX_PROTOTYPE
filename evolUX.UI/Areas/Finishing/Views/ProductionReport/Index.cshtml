@@ -3,7 +3,11 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer localizer
 @model ServiceCompanyViewModel
+@{
+    bool PrintFile = false;
 
+    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+}
 <div class="d-flex justify-content-center" >
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
       <span class="sr-only">Loading...</span>

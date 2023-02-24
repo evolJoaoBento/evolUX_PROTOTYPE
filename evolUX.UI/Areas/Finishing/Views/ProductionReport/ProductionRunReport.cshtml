@@ -2,11 +2,14 @@
 @using Shared.ViewModels.Areas.Finishing
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer localizer
-
 @model ProductionRunReportViewModel
 
 @*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
+@{
+    bool PrintFile = false;
 
+    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+}
 <div class="d-flex justify-content-center" >
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
       <span class="sr-only">Loading...</span>
@@ -31,10 +34,12 @@ else
         <div id="TitlePage">
             <h1>@localizer["ProductionRunStatus"]</h1>
         </div>
-        <div class="my-3">
+        
             @if (Model.ProductionRunReport.Count() == 0)
             {
-                <h4 class="display-4 text-center">@localizer["EmptyResult"]</h4>
+                <div class="my-3">
+                    <h4 class="display-4 text-center">@localizer["EmptyResult"]</h4>
+                </div>
             }
             else
             {
@@ -43,7 +48,13 @@ else
                 {
                     ServiceCompanyName += TempData["ServiceCompanyName"];
                 }
-                <a class='li-circle circle bx bx-printer' style="color:rgb(90 205 239)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runidlist="@string.Join("|", Model.ProductionRunReport.Select(x => x.RunID).ToList())" asp-route-servicecompanyid="@TempData["ServiceCompanyID"]" asp-route-runname=""></a>
+                if (PrintFile)
+                {
+                    <div>
+                    <a class='bx bx-printer' style="color:rgb(245 126 72);" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runidlist="@string.Join("|", Model.ProductionRunReport.Select(x => x.RunID).ToList())" asp-route-servicecompanyid="@TempData["ServiceCompanyID"]" asp-route-runname=""></a>
+                    </div>
+                }
+            <div class="my-3">
                 <table class="table table-sm table-hover table-collapse-seperate">
                     <col>
                     <colgroup span="2"></colgroup>
@@ -110,18 +121,18 @@ else
                                 <td class="headcol" >@RunName
                                     @if (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0)
                                     {
-                                        <a class='bx bx-file' style="color:rgb(90 205 239)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
+                                        <a class='bx bx-file' style="color:rgb(245 126 72)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
                                     }
                                     else
                                     {
                                         @*<a class='bx bx-file' style="color:var(--evol-grey)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runid="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>*@
-                                        <a class='bx bx-file' style="color:rgb(245 126 72)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
-                                    }
-                                    @if (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0)
+                                        <a class='bx bx-file' style="color:rgb(90 205 239)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>                                        
+                                    }                                   
+@*                                    @if (PrintFile && (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0))
                                     {
-                                        <a class='bx bx-printer' style="color:rgb(90 205 239)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
+                                        <a class='bx bx-printer' style="color:rgb(245 126 72)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
                                     }
-                                </td>
+*@                                </td>
                                 <td>@p.FilesLeftToPrint</td> @*Originals*@
                                 @{
                                     OriginalsTotal += p.FilesLeftToPrint;
@@ -232,8 +243,8 @@ else
                         </tr>
                     </tbody>
                 </table>
-            }
-        </div>
+            </div>
+        }
     }
 }
 

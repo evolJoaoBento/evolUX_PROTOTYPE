@@ -8,6 +8,9 @@
 @model DocCodeViewModel;
 @{
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddDocCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddDocCode") != null) { AddDocCode = true; }
 }
 @if (Model == null)
 {

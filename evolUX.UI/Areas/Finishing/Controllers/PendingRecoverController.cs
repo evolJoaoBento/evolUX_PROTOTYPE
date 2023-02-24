@@ -39,6 +39,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 if (ServiceCompanies.Rows.Count > 1)
                 {
                     ServiceCompanyViewModel result = new ServiceCompanyViewModel();
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     List<Company> sList = new List<Company>();
                     foreach (DataRow row in ServiceCompanies.Rows)
                     {
@@ -108,6 +109,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 TempData["ServiceCompanyName"] = ServiceCompanyName;
 
                 PendingRecoverDetailViewModel result = await _pendingRecoverService.GetPendingRecoveries(ServiceCompanyID, ServiceCompanyCode);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 ViewBag.ServiceCompanyID = ServiceCompanyID;
                 ViewBag.ServiceCompanyCode = ServiceCompanyCode;
 

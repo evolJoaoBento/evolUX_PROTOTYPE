@@ -130,7 +130,7 @@
     <value>Tipo de Documento</value>
   </data>
   <data name="DocCodeAggCompatibility" xml:space="preserve">
-    <value>Configurar Compatibilidades de Agregação para Tipo de Documento</value>
+    <value>Compatibilidades de Agregação para Tipo de Documento</value>
   </data>
   <data name="DocCodeSelection" xml:space="preserve">
     <value>Selecionar Tipos de Dcumentos Compatíveis</value>

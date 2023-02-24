@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
 using Shared.Models.Areas.evolDP;
+using Shared.Models.General;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.ViewModels.General;
@@ -31,6 +32,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 if (result != null && result.DocCodeList != null && result.DocCodeList.Count() > 0)
                 {
                     DocCodeGroupViewModel docCodeGroup = new DocCodeGroupViewModel();
+                    docCodeGroup.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     docCodeGroup.DocCodeList = new List<DocCodeGroup>();
                     List<DocCode> docList = new List<DocCode>();
                     string lastDocLayout = string.Empty;
@@ -91,6 +93,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
                 DocCodeViewModel result = await _docCodeService.GetDocCode(docCode.DocLayout, docCode.DocType);
                 GetExceptionConfigs();
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View(result);
             }
             catch (FlurlHttpException ex)
@@ -137,6 +140,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 DocCodeConfigViewModel result = await _docCodeService.GetDocCodeConfig(docCode.DocCodeID);
                 if (result != null)
                 {
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     result.DocCode.DocLayout = docCode.DocLayout;
                     result.DocCode.DocType = docCode.DocType;
                     result.DocCode.PrintMatchCode = docCode.PrintMatchCode;
@@ -198,6 +202,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 DocCodeConfigOptionsViewModel result = await _docCodeService.GetDocCodeConfigOptions(docCode);
                 if (result != null)
                 {
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     string ExpCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
                     if (!string.IsNullOrEmpty(ExpCompanyList))
                         result.ExpCompanies = JsonConvert.DeserializeObject<List<Company>>(ExpCompanyList);
@@ -346,6 +351,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                     DocCodeConfigViewModel result = await _docCodeService.RegistDocCodeConfig(docCode);
                     if (result != null)
                     {
+                        result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                         result.SuportTypeList = GetConfigs();
                         TempData["Source"] = source;
                         return View("DocCodeConfig", result);
@@ -403,6 +409,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                     docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
 
                 DocCodeConfigViewModel result = new DocCodeConfigViewModel();
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 result.DocCode = docCode;
                 result.SuportTypeList = GetConfigs();
                 return View(result);
@@ -454,6 +461,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                     DocCodeConfigViewModel result = await _docCodeService.GetDocCodeConfig(docCode.DocCodeID);
                     if (result != null)
                     {
+                        result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                         docCode.DocCodeConfigs = result.DocCode.DocCodeConfigs;
                         result.DocCode = docCode;
 
@@ -572,6 +580,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 if (deleteResult.Results.ErrorID == 0)
                 {
                     DocCodeViewModel result = await _docCodeService.GetDocCode(docCode.DocLayout, docCode.DocType);
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     if (result != null && result.DocCodeList != null && result.DocCodeList.Count() > 0)
                         return View("DocCode", result);
                     else
@@ -628,10 +637,10 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             {
                 DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
 
-  
                 DocCodeCompatibilityViewModel viewmodel = await _docCodeService.GetCompatibility(docCode.DocCodeID);
                 if (viewmodel != null)
                 {
+                    viewmodel.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     viewmodel.DocCode = docCode;
                     GetExceptionConfigs();
                     TempData["Message"] = "Success";
@@ -689,6 +698,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 DocCode docCode = JsonConvert.DeserializeObject<DocCode>(doccodeJson);
  
                 DocCodeCompatibilityViewModel viewmodel = await _docCodeService.ChangeCompatibility(docCode.DocCodeID, CheckedDocCodeList);
+                viewmodel.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 if (viewmodel != null)
                 {
                     viewmodel.DocCode = docCode;
@@ -744,6 +754,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             try
             {
                 ExceptionLevelViewModel result = await _docCodeService.GetExceptionLevel(Level);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
 
                 string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
                 string cultureCode = CultureInfo.CurrentCulture.Name;
@@ -812,6 +823,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                     exceptionID = 0;
 
                 ExceptionLevelViewModel result = await _docCodeService.SetExceptionLevel(Level, exceptionID, exceptionCode, exceptionDescription);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
 
                 string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
                 string cultureCode = CultureInfo.CurrentCulture.Name;
@@ -877,6 +889,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                     result = await _docCodeService.DeleteExceptionLevel(Level, exceptionID);
                 else
                     result = await _docCodeService.GetExceptionLevel(Level);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
 
                 string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
                 string cultureCode = CultureInfo.CurrentCulture.Name;

@@ -10,7 +10,11 @@
       <span class="sr-only">Loading...</span>
     </div>
 </div>
- 
+ @{
+    bool PrintFile = false;
+
+    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+}
 @if (Model == null)
 {
     <div id="ResultPage">

@@ -47,6 +47,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             {
 
                 PrinterViewModel result = await _printService.GetPrinters(profileList, filesSpecs, ignoreProfiles);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View(result);
             }
             catch (ErrorViewModelException ex)

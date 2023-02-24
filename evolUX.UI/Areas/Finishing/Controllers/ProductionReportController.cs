@@ -44,6 +44,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 if (ServiceCompanies.Rows.Count > 1)
                 {
                     ServiceCompanyViewModel result = new ServiceCompanyViewModel();
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     List<Company> sList = new List<Company>();
                     foreach(DataRow row in ServiceCompanies.Rows)
                     {
@@ -113,6 +114,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             {
 
                 ProductionRunReportViewModel result = await _productionReportService.GetProductionRunReport(ServiceCompanyID);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanies"));
                 if (ServiceCompanyDT.Rows.Count > 1)
                 {
@@ -178,6 +180,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
                 if (result != null && result.ProductionReport != null && result.ProductionReport.Count() > 0)
                 {
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     //TempData["ServiceCompanyCode"] = result.ProductionReport.First().ServiceCompanyCode;
                 }
                 ViewBag.RunName = RunName;
@@ -233,6 +236,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
                 if (result != null)
                 {
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     if (result.ProductionReport != null && result.ProductionReport.Count() > 0)
                     {
                         

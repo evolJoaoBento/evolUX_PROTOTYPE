@@ -57,6 +57,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 if (string.IsNullOrEmpty(CompanyBusinessList))
                     return View(null);
                 BusinessViewModel result = await _expeditionService.GetCompanyBusiness(CompanyBusinessList);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 if (result != null && result.CompanyBusiness.Count() > 0)
                 {
                     if (result.CompanyBusiness.Count() > 1)
@@ -129,6 +130,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 TempData["BusinessDescription"] = BusinessDescription;
 
                 ExpeditionListViewModel result = await _expeditionService.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 ViewBag.BusinessID = BusinessID;
                 ViewBag.BusinessCode = BusinessCode;
 
@@ -270,6 +272,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 if (string.IsNullOrEmpty(CompanyBusinessList))
                     return View(null);
                 BusinessViewModel result = await _expeditionService.GetCompanyBusiness(CompanyBusinessList);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 if (result != null && result.CompanyBusiness.Count() > 0)
                 {
                     if (result.CompanyBusiness.Count() > 1)
@@ -348,6 +351,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 TempData["BusinessDescription"] = BusinessDescription;
 
                 ExpeditionListViewModel result = await _expeditionService.GetExpeditionReportList(BusinessID, ServiceCompanyList);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 ViewBag.BusinessID = BusinessID;
                 ViewBag.BusinessCode = BusinessCode;
 
