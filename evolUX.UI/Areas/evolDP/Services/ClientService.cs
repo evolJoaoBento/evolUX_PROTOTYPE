@@ -10,68 +10,35 @@ namespace evolUX.UI.Areas.evolDP.Services
 {
     public class ClientService : IClientService
     {
-        private readonly IClientRepository _projectRepository;
-        public ClientService(IClientRepository projectRepository)
+        private readonly IClientRepository _clienttRepository;
+        public ClientService(IClientRepository clientRepository)
         {
-            _projectRepository = projectRepository;
+            _clienttRepository = clientRepository;
         }
         public async Task<BusinessViewModel> GetCompanyBusiness(string CompanyBusinessList)
         {
-            try
-            {
-                var response = await _projectRepository.GetCompanyBusiness(CompanyBusinessList);
-                return response;
-            }
-            catch (FlurlHttpException ex)
-            {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-                ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.RequestID = ex.Source;
-                viewModel.ErrorResult = new ErrorResult();
-                viewModel.ErrorResult.Code = (int)ex.StatusCode;
-                viewModel.ErrorResult.Message = ex.Message;
-                throw new ErrorViewModelException(viewModel);
-            }
-            catch (HttpNotFoundException ex)
-            {
-                ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.RequestID = ex.Source;
-                viewModel.ErrorResult = new ErrorResult();
-                viewModel.ErrorResult.Code = (int)ex.HResult;
-                viewModel.ErrorResult.Message = ex.Message;
-                throw new ErrorViewModelException(viewModel);
-            }
+            var response = await _clienttRepository.GetCompanyBusiness(CompanyBusinessList);
+            return response;
         }
         public async Task<ProjectListViewModel> GetProjects(string CompanyBusinessList)
         {
-            try
-            {
-                var response = await _projectRepository.GetProjects(CompanyBusinessList);
-                return response;
-            }
-            catch (FlurlHttpException ex)
-            {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-                ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.RequestID = ex.Source;
-                viewModel.ErrorResult = new ErrorResult();
-                viewModel.ErrorResult.Code = (int)ex.StatusCode;
-                viewModel.ErrorResult.Message = ex.Message;
-                throw new ErrorViewModelException(viewModel);
-            }
-            catch (HttpNotFoundException ex)
-            {
-                ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.RequestID = ex.Source;
-                viewModel.ErrorResult = new ErrorResult();
-                viewModel.ErrorResult.Code = (int)ex.HResult;
-                viewModel.ErrorResult.Message = ex.Message;
-                throw new ErrorViewModelException(viewModel);
-            }
+            var response = await _clienttRepository.GetProjects(CompanyBusinessList);
+            return response;
+        }
+        public async Task<ConstantParameterViewModel> GetParameters()
+        {
+            var response = await _clienttRepository.GetParameters();
+            return response;
+        }
+        public async Task<ConstantParameterViewModel> SetParameter(int parameterID, string parameterRef, int parameterValue, string parameterDescription)
+        {
+            var response = await _clienttRepository.SetParameter(parameterID, parameterRef, parameterValue, parameterDescription);
+            return response;
+        }
+        public async Task<ConstantParameterViewModel> DeleteParameter(int parameterID)
+        {
+            var response = await _clienttRepository.DeleteParameter(parameterID);
+            return response;
         }
 
     }

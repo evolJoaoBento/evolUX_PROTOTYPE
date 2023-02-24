@@ -135,7 +135,7 @@ namespace evolUX.API.Areas.Core.Repositories
             }
         }
 
-        public IClientRepository Project
+        public IClientRepository Client
         {
             get
             {

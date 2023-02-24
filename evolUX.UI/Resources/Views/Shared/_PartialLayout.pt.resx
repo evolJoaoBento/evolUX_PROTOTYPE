@@ -247,19 +247,19 @@
     <value>&lt;i class='li-circle circle bx bx-pie-chart collapse-icon' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuError" xml:space="preserve">
-    <value>evolDP  Tratamento Erros</value>
+    <value>evolDP - Tratamento Erros</value>
   </data>
   <data name="ActionMenuError_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle  bx bx-error collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuEvolDPConfig" xml:space="preserve">
-    <value>evolDP  Configurações</value>
+    <value>evolDP - Configurações</value>
   </data>
   <data name="ActionMenuEvolDPConfig_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle bx bx-cog collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuEvolFlowConfig" xml:space="preserve">
-    <value>evolFlow Configurações</value>
+    <value>evolFlow - Configurações</value>
   </data>
   <data name="ActionMenuEvolFlowConfig_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle  bx bx-cog collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
@@ -362,6 +362,9 @@
   </data>
   <data name="ActionPurgeParameters" xml:space="preserve">
     <value>Parâmetros Expurgos</value>
+  </data>
+  <data name="ActionPurgeParameters_Link" xml:space="preserve">
+    <value>/evolDP/Client/ConstantParameter</value>
   </data>
   <data name="ActionRecoverReport" xml:space="preserve">
     <value>Recuperações</value>

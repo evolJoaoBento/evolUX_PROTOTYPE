@@ -508,7 +508,7 @@ BEGIN
 	SELECT @ActionID, 1, @NewLocalizationKey, @NewDescription, @ParentActionID, @DefaultOrder, 0, NULL, 0
 END
 INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
-SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+SELECT DISTINCT u.ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
 FROM [PERMISSIONS] p
 INNER JOIN
 	[evolUX_ACTIONS] u
@@ -516,10 +516,10 @@ ON u.ActionID = p.ActionID
 INNER JOIN
 	#ChildActions c
 ON u.LocalizationKey = c.LocalizationKey
-WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = u.ActionID AND ProfileID = p.ProfileID)
 
 UPDATE evolUX_ACTIONS
-SET ParentActionID = @ActionID, DefaultOrder = c.DefaultOrder
+SET ParentActionID = u.ActionID, DefaultOrder = c.DefaultOrder
 FROM evolUX_ACTIONS u
 INNER JOIN
 	#ChildActions c
@@ -575,7 +575,7 @@ BEGIN
 END
 
 INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
-SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+SELECT DISTINCT u.ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
 FROM [PERMISSIONS] p
 INNER JOIN
 	[evolUX_ACTIONS] u
@@ -583,10 +583,10 @@ ON u.ActionID = p.ActionID
 INNER JOIN
 	#ChildActions c
 ON u.LocalizationKey = c.LocalizationKey
-WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = u.ActionID AND ProfileID = p.ProfileID)
 
 UPDATE evolUX_ACTIONS
-SET ParentActionID = @ActionID, DefaultOrder = c.DefaultOrder
+SET ParentActionID = u.ActionID, DefaultOrder = c.DefaultOrder
 FROM evolUX_ACTIONS u
 INNER JOIN
 	#ChildActions c
@@ -685,7 +685,7 @@ BEGIN
 	END
 
 	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
-	SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+	SELECT DISTINCT u.ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
 	FROM #ChildActions c
 	INNER JOIN
 		[PERMISSIONS] p
@@ -693,7 +693,7 @@ BEGIN
 	INNER JOIN
 		[evolUX_ACTIONS] u
 	ON u.LocalizationKey = c.LocalizationKey
-	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = u.ActionID AND ProfileID = p.ProfileID)
 
 	FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
 END
@@ -753,7 +753,7 @@ BEGIN
 	END
 
 	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
-	SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+	SELECT DISTINCT u.ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
 	FROM #ChildActions c
 	INNER JOIN
 		[PERMISSIONS] p
@@ -761,7 +761,7 @@ BEGIN
 	INNER JOIN
 		[evolUX_ACTIONS] u
 	ON u.LocalizationKey = c.LocalizationKey
-	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = u.ActionID AND ProfileID = p.ProfileID)
 
 	FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
 END
@@ -824,7 +824,7 @@ BEGIN
 	END
 
 	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
-	SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+	SELECT DISTINCT u.ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
 	FROM #ChildActions c
 	INNER JOIN
 		[PERMISSIONS] p
@@ -832,7 +832,7 @@ BEGIN
 	INNER JOIN
 		[evolUX_ACTIONS] u
 	ON u.LocalizationKey = c.LocalizationKey
-	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = u.ActionID AND ProfileID = p.ProfileID)
 
 	FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
 END
@@ -934,7 +934,7 @@ BEGIN
 	END
 
 	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
-	SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+	SELECT DISTINCT u.ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
 	FROM #ChildActions c
 	INNER JOIN
 		[PERMISSIONS] p
@@ -942,7 +942,7 @@ BEGIN
 	INNER JOIN
 		[evolUX_ACTIONS] u
 	ON u.LocalizationKey = c.LocalizationKey
-	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = u.ActionID AND ProfileID = p.ProfileID)
 
 	FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
 END
@@ -997,7 +997,7 @@ BEGIN
 	END
 
 	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
-	SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+	SELECT DISTINCT u.ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
 	FROM #ChildActions c
 	INNER JOIN
 		[PERMISSIONS] p
@@ -1005,7 +1005,69 @@ BEGIN
 	INNER JOIN
 		[evolUX_ACTIONS] u
 	ON u.LocalizationKey = c.LocalizationKey
-	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = u.ActionID AND ProfileID = p.ProfileID)
+
+	FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+END
+CLOSE tCursor
+DEALLOCATE tCursor
+
+DELETE #ChildActions
+
+INSERT INTO #ChildActions
+SELECT 'AddConstantParameter', 0, 'Adicionar/Alterar Parâmtero', ActionID
+FROM ACTIONS
+WHERE [Description] like 'Alterar Par_metro de Expurgo'
+	OR 
+	  [Description] like 'Submissão do Par_metro de Expurgo'
+	OR 
+	  [Description] like 'Adicionar Par_metro de Expurgo'
+
+INSERT INTO #ChildActions
+SELECT 'DeleteConstantParameter', 0, 'Apagar Parâmetro', NULL
+
+
+DECLARE tCursor CURSOR LOCAL FOR
+SELECT LocalizationKey, DefaultOrder, [Description]
+FROM #ChildActions
+ORDER BY DefaultOrder ASC
+
+OPEN tCursor
+FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SET @ActionID = NULL
+	SELECT @ActionID = ActionID
+	FROM evolUX_ACTIONS
+	WHERE LocalizationKey = @NewLocalizationKey
+
+	IF (@ActionID is NULL)
+	BEGIN
+		SELECT @ActionID = (MAX(ActionID) / 100)*100 + 10
+		FROM ACTIONS
+		WHERE ActionID < 10000
+
+		WHILE (EXISTS(SELECT TOP 1 1 FROM ACTIONS WHERE ActionID = @ActionID)
+			OR EXISTS(SELECT TOP 1 1 FROM evolUX_ACTIONS WHERE ActionID = @ActionID))
+		BEGIN
+			SET @ActionID = @ActionID + 10
+		END
+
+		INSERT INTO [evolUX_ACTIONS](ActionID, ActionTypeID, LocalizationKey, [Description], ParentActionID, DefaultOrder, HistoryFlag, evolGUI_ActionID, evolGUI_TypeID)
+		SELECT @ActionID, 3, @NewLocalizationKey, @NewDescription, NULL, @DefaultOrder, 0, NULL, 0
+	END
+
+	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
+	SELECT DISTINCT u.ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+	FROM #ChildActions c
+	INNER JOIN
+		[PERMISSIONS] p
+	ON	c.evolGUIActionID = p.ActionID
+	INNER JOIN
+		[evolUX_ACTIONS] u
+	ON u.LocalizationKey = c.LocalizationKey
+	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = u.ActionID AND ProfileID = p.ProfileID)
 
 	FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
 END

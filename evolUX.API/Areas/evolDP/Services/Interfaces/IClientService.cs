@@ -6,5 +6,8 @@ namespace evolUX.API.Areas.evolDP.Services.Interfaces
     public interface IClientService
     {
         public Task<ProjectListViewModel> GetProjects(DataTable CompanyBusinessList);
+        public Task<ConstantParameterViewModel> GetParameters();
+        public Task<ConstantParameterViewModel> SetParameter(int parameterID, string parameterRef, int parameterValue, string parameterDescription);
+        public Task<ConstantParameterViewModel> DeleteParameter(int parameterID);
     }
 }

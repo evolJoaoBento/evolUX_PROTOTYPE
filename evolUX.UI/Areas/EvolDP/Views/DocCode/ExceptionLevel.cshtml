@@ -22,6 +22,9 @@
 }
 else
 {
+     <div id="TitlePage">
+        <h1>@ExceptionLevelIDLabel</h1>
+    </div>
     string value;
 
     string errorMessage = TempData["Message"]?.ToString();
@@ -29,14 +32,8 @@ else
 
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr>
-                <td colspan="4">
-                    @ExceptionLevelIDLabel
-                    <img onclick="EditRow('')" style="background:none; width:40px;height:40px;" src="@siteURL/images/add.png" title="@localizer["AddException"] @ExceptionLevelIDLabel" />
-                </td>
-           </tr>
            <tr>
-                <th></th>
+                <th style="text-align: center"><img onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="@siteURL/images/add.png" title="@localizer["AddException"] @ExceptionLevelIDLabel" /></th>
                 <th>@localizer["ExceptionID"]</th>
                 <th>@localizer["ExceptionCode"]</th>
                 <th>@localizer["ExceptionDescription"]</th>

@@ -22,7 +22,7 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
 
         IDocCodeRepository DocCode { get; }
 
-        IClientRepository Project { get; }
+        IClientRepository Client { get; }
 
         IProductionReportRepository ProductionReport { get; }
 

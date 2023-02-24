@@ -66,8 +66,8 @@ namespace evolUX.API.Areas.Core.Repositories
 
             using (var connection = _context.CreateConnectionEvolFlow())
             {
-                IEnumerable<string> servers = await connection.QueryAsync<string>(sql);
-                return servers;
+                IEnumerable<string> permissions = await connection.QueryAsync<string>(sql);
+                return permissions;
             }
         }
 

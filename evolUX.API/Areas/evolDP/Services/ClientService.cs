@@ -21,7 +21,27 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             ProjectListViewModel viewmodel = new ProjectListViewModel();
 
-            viewmodel.Projects = (List<ProjectElement>)await _repository.Project.GetProjects(CompanyBusinessList);
+            viewmodel.Projects = (List<ProjectElement>)await _repository.Client.GetProjects(CompanyBusinessList);
+            return viewmodel;
+        }
+        public async Task<ConstantParameterViewModel> GetParameters()
+        {
+            ConstantParameterViewModel viewmodel = new ConstantParameterViewModel();
+            viewmodel.ConstantsList = await _repository.Client.GetParameters();
+            return viewmodel;
+        }
+
+        public async Task<ConstantParameterViewModel> SetParameter(int parameterID, string parameterRef, int parameterValue, string parameterDescription)
+        {
+            ConstantParameterViewModel viewmodel = new ConstantParameterViewModel();
+            viewmodel.ConstantsList = await _repository.Client.SetParameter(parameterID, parameterRef, parameterValue, parameterDescription);
+            return viewmodel;
+        }
+
+        public async Task<ConstantParameterViewModel> DeleteParameter(int parameterID)
+        {
+            ConstantParameterViewModel viewmodel = new ConstantParameterViewModel();
+            viewmodel.ConstantsList = await _repository.Client.DeleteParameter(parameterID);
             return viewmodel;
         }
     }

@@ -3,7 +3,7 @@ using Shared.Models.Areas.Finishing;
 
 namespace Shared.ViewModels.Areas.Finishing
 {
-    public class ProductionReportViewModel
+    public class ProductionReportViewModel: ItemPermissions
     {
         public int ServiceCompanyID { get; set; }
         public string ServiceCompanyCode { get; set; }

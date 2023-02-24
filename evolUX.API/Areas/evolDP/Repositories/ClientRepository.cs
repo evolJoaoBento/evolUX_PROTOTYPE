@@ -1,9 +1,8 @@
 ﻿using Dapper;
-using Shared.Models.Areas.Finishing;
-using Shared.Models.Areas.evolDP;
-using evolUX.API.Data.Context;
-using System.Data;
 using evolUX.API.Areas.evolDP.Repositories.Interfaces;
+using evolUX.API.Data.Context;
+using Shared.Models.Areas.evolDP;
+using System.Data;
 
 namespace evolUX.API.Areas.evolDP.Repositories
 {
@@ -92,6 +91,86 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 }
                 return projectsList;
             }
+        }
+
+        public async Task<IEnumerable<ConstantParameter>> GetParameters()
+        {
+            string sql = string.Format(@"SELECT	ParameterID,
+									ParameterRef,
+									ParameterValue,
+									ParameterDescription
+							FROM	RD_CONSTANT_PARAMETERS
+							ORDER BY ParameterRef");
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ConstantParameter> constants = await connection.QueryAsync<ConstantParameter>(sql);
+                return constants;
+            }
+        }
+
+        public async Task<IEnumerable<ConstantParameter>> SetParameter(int parameterID, string parameterRef, int parameterValue, string parameterDescription)
+        {
+            string sql = "";
+            var parameters = new DynamicParameters();
+            parameters.Add("ParameterRef", parameterRef, DbType.String);
+            parameters.Add("ParameterValue", parameterValue, DbType.Int64);
+            parameters.Add("ParameterDescription", parameterDescription, DbType.String);
+
+            if (parameterID == 0)
+            {
+                sql += string.Format(@"SET NOCOUNT ON
+                            INSERT INTO RD_CONSTANT_PARAMETERS(ParameterID, ParameterRef, ParameterValue, ParameterDescription)
+                            SELECT (SELECT ISNULL(MAX(ParameterID),0) + 1 FROM RD_CONSTANT_PARAMETERS), @ParameterValue, @ParameterDescription
+                            WHERE NOT EXISTS (SELECT TOP 1 1 FROM RD_CONSTANT_PARAMETERS WITH(NOLOCK) WHERE ParameterRef = @ParameterRef)");
+            }
+            else
+            {
+                parameters.Add("ParameterID", parameterID, DbType.Int64);
+                sql += string.Format(@"SET NOCOUNT ON
+                            UPDATE RD_CONSTANT_PARAMETERS
+                            SET ParameterRef = @ParameterRef, ParameterValue = @ParameterValue, ParameterDescription = @ParameterDescription
+                            WHERE ParameterID = @ParameterID");
+            }
+            sql += string.Format(@"
+                            SELECT	ParameterID,
+									ParameterRef,
+									ParameterValue,
+									ParameterDescription
+							FROM	RD_CONSTANT_PARAMETERS
+							ORDER BY ParameterRef");
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ConstantParameter> constants = await connection.QueryAsync<ConstantParameter>(sql, parameters);
+                return constants;
+            }
+        }
+
+        public async Task<IEnumerable<ConstantParameter>> DeleteParameter(int parameterID)
+        {
+            string sql = "";
+            var parameters = new DynamicParameters();
+            parameters.Add("ParameterID", parameterID, DbType.Int64);
+
+            sql += string.Format(@"SET NOCOUNT ON
+                            DELETE RD_CONSTANT_PARAMETERS
+                            WHERE ParameterID = @ParameterID");
+
+            sql += string.Format(@"
+                            SELECT	ParameterID,
+									ParameterRef,
+									ParameterValue,
+								    ParameterDescription
+							FROM	RD_CONSTANT_PARAMETERS
+							ORDER BY ParameterRef");
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ConstantParameter> constants = await connection.QueryAsync<ConstantParameter>(sql, parameters);
+                return constants;
+            }
+
         }
     }
 }

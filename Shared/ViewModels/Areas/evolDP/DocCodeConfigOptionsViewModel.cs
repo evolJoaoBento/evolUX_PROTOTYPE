@@ -1,8 +1,9 @@
-﻿using Shared.Models.Areas.evolDP;
+﻿using Shared.Models.Areas.Core;
+using Shared.Models.Areas.evolDP;
 
 namespace Shared.ViewModels.Areas.evolDP
 {
-    public class DocCodeConfigOptionsViewModel
+    public class DocCodeConfigOptionsViewModel: ItemPermissions
     {
         public DocCode DocCodeConfig { get; set; }
         public IEnumerable<ExceptionLevel> Exceptionslevel1List { get; set; }

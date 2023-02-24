@@ -171,13 +171,13 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             }
         }
 
-        public async Task<ExceptionLevelViewModel> SetExceptionLevel(int level, int exceptionID, string exceptionCode, string exceptionDescription)
+        public async Task<ExceptionLevelViewModel> SetExceptionLevel(int level, int parameterID, string exceptionCode, string exceptionDescription)
         {
             try
             {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
                 dictionary.Add("Level", level);
-                dictionary.Add("ExceptionID", exceptionID);
+                dictionary.Add("ExceptionID", parameterID);
                 dictionary.Add("ExceptionCode", exceptionCode);
                 dictionary.Add("ExceptionDescription", exceptionDescription);
                 var response = await _flurlClient.Request("/API/evolDP/DocCode/SetExceptionLevel")
@@ -198,13 +198,13 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             }
         }
 
-        public async Task<ExceptionLevelViewModel> DeleteExceptionLevel(int level, int exceptionID)
+        public async Task<ExceptionLevelViewModel> DeleteExceptionLevel(int level, int parameterID)
         {
             try
             {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
                 dictionary.Add("Level", level);
-                dictionary.Add("ExceptionID", exceptionID);
+                dictionary.Add("ExceptionID", parameterID);
                 var response = await _flurlClient.Request("/API/evolDP/DocCode/DeleteExceptionLevel")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .SendJsonAsync(HttpMethod.Get, dictionary);
