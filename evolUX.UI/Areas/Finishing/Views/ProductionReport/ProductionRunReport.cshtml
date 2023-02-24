@@ -9,6 +9,8 @@
     bool PrintFile = false;
 
     if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+    int totalFilesLeftToPrint = Model.ProductionRunReport.Sum(x => x.FilesLeftToPrint);
+    int totalRecFilesLeftToPrint = Model.ProductionRunReport.Sum(x => x.RecFilesLeftToPrint);
 }
 <div class="d-flex justify-content-center" >
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
@@ -48,10 +50,12 @@ else
                 {
                     ServiceCompanyName += TempData["ServiceCompanyName"];
                 }
-                if (PrintFile)
+                if (PrintFile && (totalFilesLeftToPrint > 0 || totalRecFilesLeftToPrint > 0))
                 {
                     <div>
-                    <a class='bx bx-printer' style="color:rgb(245 126 72);" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runidlist="@string.Join("|", Model.ProductionRunReport.Select(x => x.RunID).ToList())" asp-route-servicecompanyid="@TempData["ServiceCompanyID"]" asp-route-runname=""></a>
+                    <a asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runidlist="@string.Join("|", Model.ProductionRunReport.Select(x => x.RunID).ToList())" asp-route-servicecompanyid="@TempData["ServiceCompanyID"]" asp-route-runname="">
+                        <img class="button-icon" style="width:40px;height:40px" src="~/images/printer-solid-24.png">
+                    </a>
                     </div>
                 }
             <div class="my-3">

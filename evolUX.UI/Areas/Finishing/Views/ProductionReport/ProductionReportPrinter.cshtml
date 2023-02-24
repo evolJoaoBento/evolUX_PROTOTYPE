@@ -10,8 +10,9 @@
 
 @{
     bool PrintFile = false;
-
+    bool IgnoreFilePrinterSpecs = false;
     if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+    if (Model.Permissions.Find(x => x == "IgnoreFilePrinterSpecs") != null) { IgnoreFilePrinterSpecs = true; }
 
     IList<ProductionDetailInfo> filters = Model.filters.ToList();
     TempData["filters"] = JsonConvert.SerializeObject(filters);
@@ -136,7 +137,7 @@
             <input class="btn btn-outline-info btn-evoldp m-2" type="submit">
         </div>
         <div style="margin-top:10px">
-            @if (ViewBag.PermissionIgnoreFilePrinterSpecs)
+            @if (IgnoreFilePrinterSpecs)
             {
                 <label class="checkbox"> @Html.CheckBox("checkAll", false) @localizer["AllFiles"]</label>
             }
@@ -174,8 +175,10 @@ else
                         }
                     </select>
 
-                   
-                    <input type="submit" name="Submit" class="btn btn-block btn-outline-info btn-evoldp" style="position:relative; top: -8px;"/>
+                    @if (PrintFile)
+                    {
+                        <input type="submit" name="Submit" class="btn btn-block btn-outline-info btn-evoldp" style="position:relative; top: -8px;"/>
+                    }
                 </div>
             </div>
             
