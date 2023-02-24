@@ -3,14 +3,14 @@ using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.evolDP;
 using evolUX.API.Data.Context;
 using System.Data;
-using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
+using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using Shared.Models.Areas.Finishing;
 using evolUX.API.Models;
 using System.Data.SqlClient;
 using Shared.Models.General;
 using Shared.Models.Areas.Core;
 
-namespace evolUX.API.Areas.EvolDP.Repositories
+namespace evolUX.API.Areas.evolDP.Repositories
 {
     public class DocCodeRepository : IDocCodeRepository
     {
