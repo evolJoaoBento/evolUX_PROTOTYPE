@@ -53,82 +53,84 @@
     <h2>@ViewBag.RunName</h2>
 </div>
 <div class="filter-div">
-    <form style="height: 100%; margin:5px;">
-        <h5 class="">Papers</h5>
-        <select id="yourSelectIdpaper">
-            <option value="">Please select an option</option>
-            @foreach (var option in papers)
-            {
-            <option value="@option.Key">@option.Value</option>
-            }
-        </select>
-        <h5 class="">Stations</h5>
-        <select id="yourSelectIdstation">
-            <option value="">Please select an option</option>
-            @foreach (var option in stations)
-            {
-            <option value="@option.Key">@option.Value</option>
-            }
-        </select>
-        <h5 class="">Expedition Type</h5>
-        <select id="yourSelectIdexpedition">
-            <option value="">Please select an option</option>
-            @foreach (var option in expeditionType)
-            {
-            <option value="@option.Key">@option.Value</option>
-            }
-        </select>
-        <h5 class="">Expedition Company</h5>
-        <select id="yourSelectIdcompanies">
-            <option value="">Please select an option</option>
-            @foreach (var option in companies)
-            {
-            <option value="@option.Key">@option.Value.Name</option>
-            }
-        </select>
-        <h5 class="">Service Type</h5>
-        <select id="yourSelectIdservicetypes">
-            <option value="">Please select an option</option>
-            @foreach (var option in serviceTypes)
-            {
-                <option value="@option.Key">@option.Value.Name</option>
-            }
-        </select>
-        <div id="color-buttons">
-            <label>
-                @*Needs tooltip*@
-                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/bwpaper.png">
-                <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="1">
-                <img />
+    <div class="scrollbar" style="height: 100%">
+        <form style="height: 100%; margin:5px">
+            <h5 class="">Papers</h5>
+            <select id="yourSelectIdpaper">
+                <option value="">Please select an option</option>
+                @foreach (var option in papers)
+                {
+                    <option value="@option.Key">@option.Value</option>
+                }
+            </select>
+            <h5 class="">Stations</h5>
+            <select id="yourSelectIdstation">
+                <option value="">Please select an option</option>
+                @foreach (var option in stations)
+                {
+                    <option value="@option.Key">@option.Value</option>
+                }
+            </select>
+            <h5 class="">Expedition Type</h5>
+            <select id="yourSelectIdexpedition">
+                <option value="">Please select an option</option>
+                @foreach (var option in expeditionType)
+                {
+                    <option value="@option.Key">@option.Value</option>
+                }
+            </select>
+            <h5 class="">Expedition Company</h5>
+            <select id="yourSelectIdcompanies">
+                <option value="">Please select an option</option>
+                @foreach (var option in companies)
+                {
+                    <option value="@option.Key">@option.Value.Name</option>
+                }
+            </select>
+            <h5 class="">Service Type</h5>
+            <select id="yourSelectIdservicetypes">
+                <option value="">Please select an option</option>
+                @foreach (var option in serviceTypes)
+                {
+                    <option value="@option.Key">@option.Value.Name</option>
+                }
+            </select>
+            <div id="color-buttons">
+                <label>
+                    @*Needs tooltip*@
+                    <img class="settings-circle circle button-icon" style="background:white;" src="~/images/bwpaper.png">
+                    <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="1">
+                    <img />
 
-            </label>
-            <label>
-                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer color.png">
-                <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="1">
-                <img />
-            </label>
-        </div>
-        <div id="text-buttons">
-            <label class="btn btn-outline-dark">
-                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="1">Simplex
-            </label>
-            <label class="btn btn-outline-dark">
-                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="0">Duplex
-            </label>
-        </div>
-        <div style="display: flex; position:absolute; right: 10px; bottom: 10px;">
-            <input class="btn btn-outline-info btn-evoldp m-2" type="submit">
-        </div>
-        <div style="margin-top:10px">
-            @if (ViewBag.PermissionIgnoreFilePrinterSpecs)
-            {
-                <label class="checkbox"> @Html.CheckBox("checkAll", false) @localizer["AllFiles"]</label>
-            }
-        </div>
-        
-        
-    </form>
+                </label>
+                <label>
+                    <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer color.png">
+                    <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="1">
+                    <img />
+                </label>
+            </div>
+            <div id="text-buttons">
+                <label class="btn btn-outline-dark">
+                    <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="1">Simplex
+                </label>
+                <label class="btn btn-outline-dark">
+                    <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="0">Duplex
+                </label>
+            </div>
+            <div style="margin-top:10px">
+                @if (ViewBag.PermissionIgnoreFilePrinterSpecs)
+                {
+                        <label class="checkbox"> @Html.CheckBox("checkAll", false) @localizer["AllFiles"]</label>
+                }
+            </div>
+            <div style="padding-bottom: 60px">
+                <input class="btn btn-outline-info btn-evoldp" id="filterbutton" style="margin-top:10px; float:right">
+            </div>
+            
 
+
+        </form>
+    </div>
 </div>
 @if (Model == null)
 {
@@ -172,7 +174,7 @@ else
                 string nameValue = "";
                 string cValue = "";
             }
-            <table class="table table-striped">
+            <table class="table">
                 <thead>
                     
                 </thead>
@@ -189,7 +191,7 @@ else
                         int PostObjsTotal = 0;
                         Dictionary<string, int> PaperTotal = new Dictionary<string, int>();
                         Dictionary<string, int> StationTotal = new Dictionary<string, int>();
-                        <tr>
+                        <tr class="collapsible">
                             <th style="width:400px">@eInfo.ExpCompanyName - @eInfo.ExpeditionTypeDesc</th>
                             <th style="width:400px">@sInfo.ServiceTaskDesc</th>
                             <th>
@@ -202,195 +204,195 @@ else
                                     @(" [" + mInfo.StationMaterialList + "]")
                                 }
                             </th>
-                    <th></th>
-                    </tr>
-                                <tr>
-                                    <td colspan="4">
-                                        <b class="btn collapsible justify-content-center"></b>
-                                        <div class="content">
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                @*<b class="btn collapsible justify-content-center"></b>*@
+                                <div class="content">
                                         
-                                            <table class="table table-sm table-hover table-collapse-seperate">
-                                                <col>
-                                                <col>
-                                                <col>
-                                                    @{
-                                                        int printingSpan = 5 + mInfo.FileList.First().PaperTotals.Keys.Count;
+                                    <table class="table table-sm table-hover table-collapse-seperate">
+                                        <col>
+                                        <col>
+                                        <col>
+                                            @{
+                                                int printingSpan = 5 + mInfo.FileList.First().PaperTotals.Keys.Count;
+                                            }
+                                        <colgroup span="@printingSpan"></colgroup>
+                                            @{
+                                                int envelopingSpan = 4;
+                                                if (mInfo.StationList.Length > 0)
+                                                {
+                                                    envelopingSpan += mInfo.FileList.First().StationTotals.Keys.Count;
+                                                }
+                                            }
+                                        <colgroup span="@envelopingSpan"></colgroup>
+                                        <colgroup span="5"></colgroup>
+                                        <thead id="bootstrap-overrides" class="table-info">
+                                            <tr class="text-center">
+                                                <th class="headcol" rowspan="3" scope="col">@localizer["Files"]</th>@*FileName RegistShortFileName*@
+                                                <th rowspan="3" scope="col">@localizer["ServiceTaskCode"]</th>@*ServiceTaskCode*@
+                                                <th colspan="@printingSpan" scope="colgroup">@localizer["Printing"]</th>
+                                                <th colspan="@envelopingSpan" scope="colgroup">@localizer["Fullfilling"]</th>
+                                                <th colspan="5" scope="colgroup">@localizer["Expedition"]</th>
+                                            </tr>
+                                            <tr class="text-center">
+                                                <th rowspan="2" scope="col">@localizer["PrinterOperator"]</th>@*PrinterOperator + Printer*@
+                                                <th rowspan="2" scope="col">@localizer["PlexCode"]</th>@*PlexCode*@
+                                                <th rowspan="2" scope="col">@localizer["TotalPrint"]</th>@*TotalPrint*@
+                                                <th colspan="2" scope="colgroup" class="hideextra">@localizer["SequenceNumber"]</th>
+                                                <th colspan="@mInfo.FileList.First().PaperTotals.Keys.Count" scope="colgroup">@localizer["Materials"]</th>
+                                                <th colspan="2" scope="colgroup">@localizer["Envelope"]</th>
+                                                <th rowspan="2" scope="col">@localizer["TotalPostObjs"]</th> @*TotalPostObjs*@
+                                                <th rowspan="2" scope="col">@localizer["ExpLevel"]</th>@*ExpLevel*@
+                                                    @if (mInfo.StationList.Length > 0)
+                                                    {
+                                                    <th colspan="@mInfo.FileList.First().StationTotals.Keys.Count" scope="colgroup">@localizer["Stations"]</th>
                                                     }
-                                                <colgroup span="@printingSpan"></colgroup>
-                                                    @{
-                                                        int envelopingSpan = 4;
-                                                        if (mInfo.StationList.Length > 0)
+                                                <th rowspan="2" scope="col">@localizer["ExpCompanyCode"]</th>@*ExpCompanyCode*@
+                                                <th rowspan="2" scope="col">@localizer["ExpCenterCode"]</th>@*ExpCenterCode*@
+                                                <th rowspan="2" scope="col">@localizer["ExpeditionZone"]</th>@*ExpeditionZone*@
+                                                <th rowspan="2" scope="rowgroup">@localizer["ExpeditionType"]</th>@*ExpeditionType*@
+                                                <th rowspan="2" scope="rowgroup">@localizer["ExpeditionLevel"]</th>@*ExpeditionLevel*@
+                                            </tr>
+                                            <tr class="text-center">
+                                                <th scope="col">@localizer["StartSeqNum"]</th>@*StartSeqNum*@
+                                                <th scope="col">@localizer["EndSeqNum"]</th>@*EndSeqNum*@
+                                                    @foreach (string paper in mInfo.FileList.First().PaperTotals.Keys)
+                                                    {
+                                                    <th scope="row">@paper</th>
+                                                        PaperTotal.Add(paper, 0);
+                                                    }
+                                                <th scope="col">@localizer["FullFillMaterialCode"]</th>@*FullFillMaterialCode*@
+                                                <th scope="col">@localizer["FullFillMaterialRef"]</th>@*FullFillMaterialRef*@
+                                                    @if (mInfo.StationList.Length > 0)
+                                                    {
+                                                        @foreach (string station in mInfo.FileList.First().StationTotals.Keys)
                                                         {
-                                                            envelopingSpan += mInfo.FileList.First().StationTotals.Keys.Count;
+                                                        <th scope="row">@station</th>
+                                                            StationTotal.Add(station, 0);
                                                         }
                                                     }
-                                                <colgroup span="@envelopingSpan"></colgroup>
-                                                <colgroup span="5"></colgroup>
-                                                <thead id="bootstrap-overrides" class="table-info">
-                                                    <tr class="text-center">
-                                                        <th class="headcol" rowspan="3" scope="col">@localizer["Files"]</th>@*FileName RegistShortFileName*@
-                                                        <th rowspan="3" scope="col">@localizer["ServiceTaskCode"]</th>@*ServiceTaskCode*@
-                                                        <th colspan="@printingSpan" scope="colgroup">@localizer["Printing"]</th>
-                                                        <th colspan="@envelopingSpan" scope="colgroup">@localizer["Fullfilling"]</th>
-                                                        <th colspan="5" scope="colgroup">@localizer["Expedition"]</th>
-                                                    </tr>
-                                                    <tr class="text-center">
-                                                        <th rowspan="2" scope="col">@localizer["PrinterOperator"]</th>@*PrinterOperator + Printer*@
-                                                        <th rowspan="2" scope="col">@localizer["PlexCode"]</th>@*PlexCode*@
-                                                        <th rowspan="2" scope="col">@localizer["TotalPrint"]</th>@*TotalPrint*@
-                                                        <th colspan="2" scope="colgroup" class="hideextra">@localizer["SequenceNumber"]</th>
-                                                        <th colspan="@mInfo.FileList.First().PaperTotals.Keys.Count" scope="colgroup">@localizer["Materials"]</th>
-                                                        <th colspan="2" scope="colgroup">@localizer["Envelope"]</th>
-                                                        <th rowspan="2" scope="col">@localizer["TotalPostObjs"]</th> @*TotalPostObjs*@
-                                                        <th rowspan="2" scope="col">@localizer["ExpLevel"]</th>@*ExpLevel*@
-                                                            @if (mInfo.StationList.Length > 0)
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bootstrap-overrides">
+                                                @foreach (ProdFileInfo p in mInfo.FileList)
+                                                {
+                                                <tr>
+                                                    <td class="headcol">
+                                                            @if (!p.FilePrintedFlag)
                                                             {
-                                                            <th colspan="@mInfo.FileList.First().StationTotals.Keys.Count" scope="colgroup">@localizer["Stations"]</th>
+                                                                string fJSON = JsonConvert.SerializeObject(p);
+                                                            <div class='bx bx-printer' style="color:var(--evol-grey)">
+                                                                <input type="checkbox" name="FileCheck" id="@p.FilePlexType|@p.FileColor" value="@fJSON">
+                                                            </div>
+                                                            <label>@p.FileName</label>
                                                             }
-                                                        <th rowspan="2" scope="col">@localizer["ExpCompanyCode"]</th>@*ExpCompanyCode*@
-                                                        <th rowspan="2" scope="col">@localizer["ExpCenterCode"]</th>@*ExpCenterCode*@
-                                                        <th rowspan="2" scope="col">@localizer["ExpeditionZone"]</th>@*ExpeditionZone*@
-                                                        <th rowspan="2" scope="rowgroup">@localizer["ExpeditionType"]</th>@*ExpeditionType*@
-                                                        <th rowspan="2" scope="rowgroup">@localizer["ExpeditionLevel"]</th>@*ExpeditionLevel*@
-                                                    </tr>
-                                                    <tr class="text-center">
-                                                        <th scope="col">@localizer["StartSeqNum"]</th>@*StartSeqNum*@
-                                                        <th scope="col">@localizer["EndSeqNum"]</th>@*EndSeqNum*@
-                                                            @foreach (string paper in mInfo.FileList.First().PaperTotals.Keys)
+                                                            else
                                                             {
-                                                            <th scope="row">@paper</th>
-                                                                PaperTotal.Add(paper, 0);
+                                                            <div class="disabled">@p.FileName</div>
                                                             }
-                                                        <th scope="col">@localizer["FullFillMaterialCode"]</th>@*FullFillMaterialCode*@
-                                                        <th scope="col">@localizer["FullFillMaterialRef"]</th>@*FullFillMaterialRef*@
-                                                            @if (mInfo.StationList.Length > 0)
-                                                            {
-                                                                @foreach (string station in mInfo.FileList.First().StationTotals.Keys)
-                                                                {
-                                                                <th scope="row">@station</th>
-                                                                    StationTotal.Add(station, 0);
-                                                                }
-                                                            }
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="bootstrap-overrides">
-                                                        @foreach (ProdFileInfo p in mInfo.FileList)
-                                                        {
-                                                        <tr>
-                                                            <td class="headcol">
-                                                                    @if (!p.FilePrintedFlag)
-                                                                    {
-                                                                        string fJSON = JsonConvert.SerializeObject(p);
-                                                                    <div class='bx bx-printer' style="color:var(--evol-grey)">
-                                                                        <input type="checkbox" name="FileCheck" id="@p.FilePlexType|@p.FileColor" value="@fJSON">
-                                                                    </div>
-                                                                    <label>@p.FileName</label>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                    <div class="disabled">@p.FileName</div>
-                                                                    }
 
-                                                                    @if (p.RegistDetailFileName != "")
-                                                                    {
-                                                                        @if (!p.RegistDetailFilePrintedFlag)
-                                                                        {
-                                                                            ProdFileInfo pregist = p;
-                                                                            pregist.FileName = p.RegistDetailFileName;
-                                                                            pregist.ShortFileName = p.RegistDetailShortFileName;
-                                                                            pregist.FilePrinterSpecs = p.RegistDetailFilePrinterSpecs;
-                                                                            pregist.PrintRecNumber = p.RegistDetailFileRecNumber;
-                                                                            string fJSON = JsonConvert.SerializeObject(pregist);
-                                                                        <p />
-                                                                        <div class='bx bx-printer' style="color:var(--evol-grey)">
-                                                                            <input type="checkbox" name="FileCheck" id="@p.RegistDetailFilePlexType|@p.RegistDetailFileColor" value="@fJSON">
-                                                                        </div>
-                                                                        <label>@pregist.FileName</label>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                        <div class="disabled">@p.RegistDetailFileName</div>
-                                                                        }
-                                                                    }
-                                                            </td>
-                                                            <td>@sInfo.ServiceTaskCode</td>
-                                                            <td>
-                                                                    @if (p.PrinterOperator != null)
-                                                                    {
-                                                                    <div>@p.PrinterOperator [@p.Printer]</div>
-                                                                    }
-                                                            </td>
-                                                            <td>@p.PlexCode</td>
-                                                            <td>@p.TotalPrint</td>
-                                                                @{
-                                                                    PrintTotal += p.TotalPrint;
-                                                                }
-                                                            <td>@p.StartSeqNum</td>
-                                                            <td>@p.EndSeqNum</td>
-                                                                @foreach (string paper in p.PaperTotals.Keys)
+                                                            @if (p.RegistDetailFileName != "")
+                                                            {
+                                                                @if (!p.RegistDetailFilePrintedFlag)
                                                                 {
-                                                                <td scope="row">@p.PaperTotals[paper]</td>
-                                                                    PaperTotal[paper] += p.PaperTotals[paper];
+                                                                    ProdFileInfo pregist = p;
+                                                                    pregist.FileName = p.RegistDetailFileName;
+                                                                    pregist.ShortFileName = p.RegistDetailShortFileName;
+                                                                    pregist.FilePrinterSpecs = p.RegistDetailFilePrinterSpecs;
+                                                                    pregist.PrintRecNumber = p.RegistDetailFileRecNumber;
+                                                                    string fJSON = JsonConvert.SerializeObject(pregist);
+                                                                <p />
+                                                                <div class='bx bx-printer' style="color:var(--evol-grey)">
+                                                                    <input type="checkbox" name="FileCheck" id="@p.RegistDetailFilePlexType|@p.RegistDetailFileColor" value="@fJSON">
+                                                                </div>
+                                                                <label>@pregist.FileName</label>
                                                                 }
-                                                            <td>@p.FullFillMaterialCode</td>
-                                                            <td>@p.EnvMaterialRef</td>
-                                                            <td>@p.TotalPostObjs</td>
-                                                                @{
-                                                                    PostObjsTotal += p.TotalPostObjs;
-                                                                }
-                                                                @if (mInfo.StationList.Length > 0)
+                                                                else
                                                                 {
-                                                                    @foreach (string station in p.StationTotals.Keys)
-                                                                    {
-                                                                    <td scope="row">@p.StationTotals[station]</td>
-                                                                        StationTotal[station] += p.StationTotals[station];
-                                                                    }
-
+                                                                <div class="disabled">@p.RegistDetailFileName</div>
                                                                 }
-                                                            <td>@p.ExpLevel</td>
-                                                            <td>@eInfo.ExpCompanyCode</td>
-                                                            <td class="hideextra">@p.ExpCenterCode</td>
-                                                            <td class="hideextra">@p.ExpeditionZone</td>
-                                                            <td class="hideextra">@eInfo.ExpeditionType</td>
-                                                            <td class="hideextra">@p.ExpeditionLevel</td>
-                                                        </tr>
+                                                            }
+                                                    </td>
+                                                    <td>@sInfo.ServiceTaskCode</td>
+                                                    <td>
+                                                            @if (p.PrinterOperator != null)
+                                                            {
+                                                            <div>@p.PrinterOperator [@p.Printer]</div>
+                                                            }
+                                                    </td>
+                                                    <td>@p.PlexCode</td>
+                                                    <td>@p.TotalPrint</td>
+                                                        @{
+                                                            PrintTotal += p.TotalPrint;
                                                         }
-                                                    <tr class="table-end">
-                                                        <b>
-                                                        <td class="table-end-data headcol">@localizer["Totals"]</td></b>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="table-end-data">@PrintTotal</td>
-                                                        <td></td>
-                                                        <td></td>
-                                                            @foreach (string paper in PaperTotal.Keys)
+                                                    <td>@p.StartSeqNum</td>
+                                                    <td>@p.EndSeqNum</td>
+                                                        @foreach (string paper in p.PaperTotals.Keys)
+                                                        {
+                                                        <td scope="row">@p.PaperTotals[paper]</td>
+                                                            PaperTotal[paper] += p.PaperTotals[paper];
+                                                        }
+                                                    <td>@p.FullFillMaterialCode</td>
+                                                    <td>@p.EnvMaterialRef</td>
+                                                    <td>@p.TotalPostObjs</td>
+                                                        @{
+                                                            PostObjsTotal += p.TotalPostObjs;
+                                                        }
+                                                        @if (mInfo.StationList.Length > 0)
+                                                        {
+                                                            @foreach (string station in p.StationTotals.Keys)
                                                             {
-                                                            <td scope="row" class="table-end-data">@PaperTotal[paper]</td>
+                                                            <td scope="row">@p.StationTotals[station]</td>
+                                                                StationTotal[station] += p.StationTotals[station];
                                                             }
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td class="table-end-data">@PostObjsTotal</td>
-                                                            @if (StationTotal.Count != 0)
-                                                            {
-                                                                @foreach (string station in StationTotal.Keys)
-                                                                {
-                                                                <td scope="row" class="table-end-data">@StationTotal[station]</td>
-                                                                }
-                                                            }
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                            @*<td><a asp-area="EvolDP" asp-controller="DocCode" asp-action="DocCodeLevel1" asp-route-doclayout="@p.DocLayout" asp-route-docsubtype="@p.DocType">Mais</a></td>*@
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </td>
-                                </tr>
+
+                                                        }
+                                                    <td>@p.ExpLevel</td>
+                                                    <td>@eInfo.ExpCompanyCode</td>
+                                                    <td class="hideextra">@p.ExpCenterCode</td>
+                                                    <td class="hideextra">@p.ExpeditionZone</td>
+                                                    <td class="hideextra">@eInfo.ExpeditionType</td>
+                                                    <td class="hideextra">@p.ExpeditionLevel</td>
+                                                </tr>
+                                                }
+                                            <tr class="table-end">
+                                                <b>
+                                                <td class="table-end-data headcol">@localizer["Totals"]</td></b>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td class="table-end-data">@PrintTotal</td>
+                                                <td></td>
+                                                <td></td>
+                                                    @foreach (string paper in PaperTotal.Keys)
+                                                    {
+                                                    <td scope="row" class="table-end-data">@PaperTotal[paper]</td>
+                                                    }
+                                                <td></td>
+                                                <td></td>
+                                                <td class="table-end-data">@PostObjsTotal</td>
+                                                    @if (StationTotal.Count != 0)
+                                                    {
+                                                        @foreach (string station in StationTotal.Keys)
+                                                        {
+                                                        <td scope="row" class="table-end-data">@StationTotal[station]</td>
+                                                        }
+                                                    }
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                    @*<td><a asp-area="EvolDP" asp-controller="DocCode" asp-action="DocCodeLevel1" asp-route-doclayout="@p.DocLayout" asp-route-docsubtype="@p.DocType">Mais</a></td>*@
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
                     }
                 }
             }

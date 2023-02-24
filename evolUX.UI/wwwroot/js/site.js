@@ -222,7 +222,7 @@ var i;
 for (i = 0; i < coll.length; i++) {
     coll[i].addEventListener("click", function () {
         this.classList.toggle("active");
-        var content = this.nextElementSibling;
+        var content = this.nextElementSibling.querySelector('td').querySelector('div');
         if (content.style.height) {
             content.style.height = null;
             content.style.opacity = "0";
@@ -232,3 +232,9 @@ for (i = 0; i < coll.length; i++) {
         } 
     });
 }
+var scrollbar = document.querySelector('.scrollbar');
+scrollbar.addEventListener('scroll', function () {
+    var thumb = scrollbar.querySelector('::after');
+    var percentage = scrollbar.scrollTop / (scrollbar.scrollHeight - scrollbar.clientHeight) * 100;
+    thumb.style.top = percentage + '%';
+});
