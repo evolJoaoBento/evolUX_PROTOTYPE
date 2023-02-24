@@ -1,4 +1,4 @@
-﻿namespace evolUX.API.Areas.EvolDP.Services.Interfaces
+﻿namespace evolUX.API.Areas.evolDP.Services.Interfaces
 {
     public interface IExpeditionZoneService
     {

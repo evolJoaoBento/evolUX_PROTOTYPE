@@ -1,9 +1,9 @@
-﻿using evolUX.UI.Areas.EvolDP.Services.Interfaces;
+﻿using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace evolUX.UI.Areas.EvolDP.Controllers
+namespace evolUX.UI.Areas.evolDP.Controllers
 {
     [Area("EvolDP")]
     public class ExpeditionTypeController : Controller

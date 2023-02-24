@@ -1,8 +1,8 @@
-﻿using evolUX.UI.Areas.EvolDP.Repositories.Interfaces;
-using evolUX.UI.Areas.EvolDP.Services.Interfaces;
+﻿using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
+using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using Flurl.Http;
 
-namespace evolUX.UI.Areas.EvolDP.Services
+namespace evolUX.UI.Areas.evolDP.Services
 {
     public class ExpeditionTypeService : IExpeditionTypeService
     {

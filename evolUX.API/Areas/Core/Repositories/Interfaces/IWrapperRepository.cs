@@ -1,4 +1,5 @@
-﻿using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
+﻿using evolUX.API.Areas.evolDP.Repositories.Interfaces;
+using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Areas.Finishing.Repositories.Interfaces;
 
 namespace evolUX.API.Areas.Core.Repositories.Interfaces
@@ -20,6 +21,8 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
         ISidebarRepository Sidebar { get; }
 
         IDocCodeRepository DocCode { get; }
+
+        IClientRepository Project { get; }
 
         IProductionReportRepository ProductionReport { get; }
 

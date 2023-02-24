@@ -1,9 +1,12 @@
 ﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
-using evolUX.API.Areas.EvolDP.Repositories;
-using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
+using evolUX.API.Areas.evolDP.Repositories;
+using evolUX.API.Areas.evolDP.Repositories.Interfaces;
+using evolUX.API.Areas.evolDP.Repositories;
+using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Areas.Finishing.Repositories;
 using evolUX.API.Areas.Finishing.Repositories.Interfaces;
 using evolUX.API.Data.Context;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Areas.Core.Repositories
 {
@@ -18,6 +21,7 @@ namespace evolUX.API.Areas.Core.Repositories
         private IUserRepository _user;
         private ISidebarRepository _sidebar;
         private IDocCodeRepository _docCode;
+        private IClientRepository _project;
         private IProductionReportRepository _productionReport;
         private IRegistJobRepository _registJob;
         private ISessionRepository _session;
@@ -131,6 +135,17 @@ namespace evolUX.API.Areas.Core.Repositories
             }
         }
 
+        public IClientRepository Project
+        {
+            get
+            {
+                if (_project == null)
+                {
+                    _project = new ClientRepository(_context);
+                }
+                return _project;
+            }
+        }
         public IProductionReportRepository ProductionReport
         {
             get

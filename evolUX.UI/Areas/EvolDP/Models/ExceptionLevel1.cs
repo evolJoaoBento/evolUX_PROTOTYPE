@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace evolUX_dev.Areas.EvolDP.Models
+namespace evolUX_dev.Areas.evolDP.Models
 {
     public class ExceptionLevel1
     {

@@ -2,10 +2,10 @@ using evolUX.UI.Areas.Core.Repositories;
 using evolUX.UI.Areas.Core.Repositories.Interfaces;
 using evolUX.UI.Areas.Core.Services;
 using evolUX.UI.Areas.Core.Services.Interfaces;
-using evolUX.UI.Areas.EvolDP.Repositories;
-using evolUX.UI.Areas.EvolDP.Repositories.Interfaces;
-using evolUX.UI.Areas.EvolDP.Services;
-using evolUX.UI.Areas.EvolDP.Services.Interfaces;
+using evolUX.UI.Areas.evolDP.Repositories;
+using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
+using evolUX.UI.Areas.evolDP.Services;
+using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using evolUX.UI.Areas.Finishing.Repositories;
 using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using evolUX.UI.Areas.Finishing.Services;
@@ -54,6 +54,8 @@ builder.Services.AddSingleton<IUserRepository, UserRepository>();
 //evolDP
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IDocCodeRepository, DocCodeRepository>();
+builder.Services.AddSingleton<IClientService, ClientService>();
+builder.Services.AddSingleton<IClientRepository, ClientRepository>();
 builder.Services.AddSingleton<IExpeditionTypeRepository, ExpeditionTypeRepository>();
 builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
 

@@ -1,6 +1,6 @@
 ﻿using evolUX.API.Models;
-using evolUX.UI.Areas.EvolDP.Repositories.Interfaces;
-using evolUX.UI.Areas.EvolDP.Services.Interfaces;
+using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
+using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using Flurl.Http;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Models.Areas.evolDP;
@@ -9,7 +9,7 @@ using Shared.ViewModels.Areas.evolDP;
 using Shared.ViewModels.General;
 using System.Data;
 
-namespace evolUX.UI.Areas.EvolDP.Services
+namespace evolUX.UI.Areas.evolDP.Services
 {
     public class DocCodeService : IDocCodeService
     {

@@ -1,9 +1,9 @@
 ﻿using Dapper;
-using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
+using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Data.Context;
 using System.Data;
 
-namespace evolUX.API.Areas.EvolDP.Repositories
+namespace evolUX.API.Areas.evolDP.Repositories
 {
     public class EnvelopeMediaRepository : IEnvelopeMediaRepository
     {

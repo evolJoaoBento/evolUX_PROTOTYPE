@@ -1,7 +1,7 @@
 ﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
-using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using evolUX.API.Areas.evolDP.Services.Interfaces;
 
-namespace evolUX.API.Areas.EvolDP.Services
+namespace evolUX.API.Areas.evolDP.Services
 {
     public class EnvelopeMediaService : IEnvelopeMediaService
     {

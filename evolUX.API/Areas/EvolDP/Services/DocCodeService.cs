@@ -1,5 +1,5 @@
 ﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
-using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using evolUX.API.Areas.evolDP.Services.Interfaces;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.Models.Areas.evolDP;
 using System.Security.Cryptography.Xml;
@@ -9,7 +9,7 @@ using Shared.Models.General;
 using System.Data;
 using System.Diagnostics;
 
-namespace evolUX.API.Areas.EvolDP.Services
+namespace evolUX.API.Areas.evolDP.Services
 {
     public class DocCodeService : IDocCodeService
     {

@@ -1,8 +1,8 @@
 ﻿using evolUX.API.Models;
-using evolUX.UI.Areas.EvolDP.Repositories.Interfaces;
+using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
 using evolUX.UI.Exceptions;
 using evolUX.UI.Repositories;
-using evolUX_dev.Areas.EvolDP.Models;
+using evolUX_dev.Areas.evolDP.Models;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using Newtonsoft.Json;
@@ -13,7 +13,7 @@ using Shared.ViewModels.General;
 using System.Data;
 using System.Net;
 
-namespace evolUX.UI.Areas.EvolDP.Repositories
+namespace evolUX.UI.Areas.evolDP.Repositories
 {
     public class DocCodeRepository : RepositoryBase, IDocCodeRepository
     {

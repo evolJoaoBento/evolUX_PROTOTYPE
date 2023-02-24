@@ -3,7 +3,7 @@ using Shared.ViewModels.Areas.evolDP;
 using Shared.ViewModels.General;
 using System.Data;
 
-namespace evolUX.UI.Areas.EvolDP.Repositories.Interfaces
+namespace evolUX.UI.Areas.evolDP.Repositories.Interfaces
 {
     public interface IDocCodeRepository
     {

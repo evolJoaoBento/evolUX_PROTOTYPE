@@ -9,7 +9,7 @@ using evolUX.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-namespace evolUX.Areas.EvolDP.Controllers
+namespace evolUX.Areas.evolDP.Controllers
 {
     [ApiController]
     [Route("evoldp/[controller]")]

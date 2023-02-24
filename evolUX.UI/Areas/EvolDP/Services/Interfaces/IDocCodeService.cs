@@ -4,7 +4,7 @@ using Shared.ViewModels.General;
 using System;
 using System.Data;
 
-namespace evolUX.UI.Areas.EvolDP.Services.Interfaces
+namespace evolUX.UI.Areas.evolDP.Services.Interfaces
 {
     public interface IDocCodeService
     {

@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using evolUX.API.Areas.Core.Services.Interfaces;
-using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using evolUX.API.Areas.evolDP.Services.Interfaces;
 using System.Data.SqlClient;
 
-namespace evolUX.API.Areas.EvolDP.Controllers
+namespace evolUX.API.Areas.evolDP.Controllers
 {
     [ApiController]
     [Route("api/evoldp/expeditiontype/[action]")]

@@ -70,7 +70,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                     else
                     {
                         string scValues = result.CompanyBusiness.First().BusinessID + "|" + result.CompanyBusiness.First().BusinessCode + "|" + result.CompanyBusiness.First().Description;
-                        return RedirectToAction("ExpeditionFileList", new { CompanyBusinessValues = scValues });
+                        return RedirectToAction("PendingExpeditionFiles", new { CompanyBusinessValues = scValues });
                     }
                 }
                 else

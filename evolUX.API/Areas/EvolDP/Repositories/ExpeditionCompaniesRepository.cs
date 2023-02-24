@@ -1,9 +1,9 @@
 ﻿using Dapper;
 using evolUX.API.Data.Context;
-using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
+using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using System.Data;
 
-namespace evolUX.API.Areas.EvolDP.Repositories
+namespace evolUX.API.Areas.evolDP.Repositories
 {
     public class ExpeditionCompaniesRepository : IExpeditionCompaniesRepository
     {

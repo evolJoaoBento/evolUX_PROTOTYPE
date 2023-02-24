@@ -867,7 +867,7 @@ WHERE LocalizationKey = @ParentLocalizationKey
 CREATE TABLE #ChildActions(LocalizationKey varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS, DefaultOrder int, [Description] varchar(255), evolGUIActionID int)
 
 INSERT INTO #ChildActions
-SELECT DISTINCT 'ActionDocCode', 20, 'Configurar Tipos de Documentos', evolGUI_ActionID
+SELECT DISTINCT 'ActionDocCode', 10, 'Configurar Tipos de Documentos', evolGUI_ActionID
 FROM evolUX_ACTIONS
 WHERE LocalizationKey = @ParentLocalizationKey
 
@@ -885,6 +885,16 @@ INSERT INTO #ChildActions
 SELECT DISTINCT 'ActionExceptionLevel3ID', 40, 'Configurar Exceção Nível 3', ActionID
 FROM ACTIONS
 WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+
+INSERT INTO #ChildActions
+SELECT DISTINCT 'ActionProjectVersions', 50, 'Versões de Projectos', ActionID
+FROM ACTIONS
+WHERE  [Description] like 'Vers_es de Projectos'
+
+INSERT INTO #ChildActions
+SELECT DISTINCT 'ActionPurgeParameters', 60, 'Parâmetros Expurgos', ActionID
+FROM ACTIONS
+WHERE  [Description] like 'Par_metros Expurgos'
 
 DECLARE tCursor CURSOR LOCAL FOR
 SELECT LocalizationKey, DefaultOrder, [Description]
@@ -915,6 +925,12 @@ BEGIN
 
 		INSERT INTO [evolUX_ACTIONS](ActionID, ActionTypeID, LocalizationKey, [Description], ParentActionID, DefaultOrder, HistoryFlag, evolGUI_ActionID, evolGUI_TypeID)
 		SELECT @ActionID, 1, @NewLocalizationKey, @NewDescription, @ParentActionID, @DefaultOrder, 0, NULL, 0
+	END
+	ELSE
+	BEGIN
+		UPDATE [evolUX_ACTIONS]
+		SET ActionTypeID = 1, [Description] = @NewDescription, ParentActionID = @ParentActionID, DefaultOrder = @DefaultOrder
+		WHERE ActionID = @ActionID
 	END
 
 	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)

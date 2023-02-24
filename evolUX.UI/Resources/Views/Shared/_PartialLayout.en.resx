@@ -343,7 +343,10 @@
     <value>List</value>
   </data>
   <data name="ActionProjectVersions" xml:space="preserve">
-    <value>Project Versions</value>
+    <value>Formatting Projects</value>
+  </data>
+  <data name="ActionProjectVersions_Link" xml:space="preserve">
+    <value>/evolDP/Project/Projects</value>
   </data>
   <data name="ActionPurgeFlows" xml:space="preserve">
     <value>Purges</value>

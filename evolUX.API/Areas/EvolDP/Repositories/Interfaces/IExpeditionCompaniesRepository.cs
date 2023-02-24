@@ -1,4 +1,4 @@
-﻿namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
+﻿namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
 {
     public interface IExpeditionCompaniesRepository
     {

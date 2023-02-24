@@ -1,7 +1,7 @@
 using evolUX.API.Areas.Core.Services;
 using evolUX.API.Areas.Core.Services.Interfaces;
-using evolUX.API.Areas.EvolDP.Services;
-using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using evolUX.API.Areas.evolDP.Services;
+using evolUX.API.Areas.evolDP.Services.Interfaces;
 using evolUX.API.Areas.Finishing.Services;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Context;
@@ -34,6 +34,7 @@ builder.Services.AddSingleton<IWrapperRepository, WrapperRepository>();
 
 //evolDP
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
+builder.Services.AddSingleton<IClientService, ClientService>();
 builder.Services.AddSingleton<IExpeditionCompaniesService, ExpeditionCompaniesService>();
 builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
 builder.Services.AddSingleton<IExpeditionZoneService, ExpeditionZoneService>();

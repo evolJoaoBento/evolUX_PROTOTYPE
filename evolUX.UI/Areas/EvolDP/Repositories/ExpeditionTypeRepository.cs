@@ -1,10 +1,10 @@
 ﻿using evolUX.UI.Repositories;
-using evolUX.UI.Areas.EvolDP.Repositories.Interfaces;
+using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using System.Net;
 
-namespace evolUX.UI.Areas.EvolDP.Repositories
+namespace evolUX.UI.Areas.evolDP.Repositories
 {
     public class ExpeditionTypeRepository : RepositoryBase, IExpeditionTypeRepository
     {

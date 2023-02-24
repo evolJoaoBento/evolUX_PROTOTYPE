@@ -1,5 +1,5 @@
 ﻿using evolUX.API.Areas.Core.Services.Interfaces;
-using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using evolUX.API.Areas.evolDP.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +18,7 @@ using Dapper;
 using System.Data;
 using System;
 
-namespace evolUX.Areas.EvolDP.Controllers
+namespace evolUX.Areas.evolDP.Controllers
 {
     [Route("api/evoldp/doccode/[action]")]
 

@@ -18,7 +18,7 @@ using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
 using Shared.Models.Areas.Finishing;
 using Microsoft.Extensions.Localization;
-using evolUX_dev.Areas.EvolDP.Models;
+using evolUX_dev.Areas.evolDP.Models;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {

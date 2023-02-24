@@ -1,7 +1,7 @@
 ﻿using evolUX.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace evolUX.Areas.EvolDP.Controllers
+namespace evolUX.Areas.evolDP.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]

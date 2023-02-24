@@ -1,4 +1,4 @@
-﻿using evolUX.UI.Areas.EvolDP.Services.Interfaces;
+﻿using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using evolUX.UI.Exceptions;
 using Flurl.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +12,7 @@ using System.Data;
 using System.Globalization;
 using System.Text;
 
-namespace evolUX.UI.Areas.EvolDP.Controllers
+namespace evolUX.UI.Areas.evolDP.Controllers
 {
     [Area("EvolDP")]
     public class DocCodeController : Controller

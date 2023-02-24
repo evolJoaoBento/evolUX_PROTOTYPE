@@ -1,6 +1,6 @@
 ﻿using Flurl.Http;
 
-namespace evolUX.UI.Areas.EvolDP.Repositories.Interfaces
+namespace evolUX.UI.Areas.evolDP.Repositories.Interfaces
 {
     public interface IExpeditionTypeRepository
     {
