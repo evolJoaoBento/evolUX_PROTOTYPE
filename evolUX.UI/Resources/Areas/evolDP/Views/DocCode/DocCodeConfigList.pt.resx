@@ -169,7 +169,7 @@
     <value>Layout</value>
   </data>
   <data name="DocType" xml:space="preserve">
-    <value>Subtipo</value>
+    <value>Tipo</value>
   </data>
   <data name="Electronic" xml:space="preserve">
     <value>Gerar outros formatos</value>
@@ -305,5 +305,11 @@
   </data>
   <data name="Export" xml:space="preserve">
     <value>Gerar script SQL</value>
+  </data>
+  <data name="DocCodeConfigList" xml:space="preserve">
+    <value>Detalhe do Tipo de Documento</value>
+  </data>
+  <data name="PrintMatchCodeEmpty" xml:space="preserve">
+    <value>Documentos Genéricos</value>
   </data>
 </root>

@@ -338,7 +338,7 @@ SET LocalizationKey = 'Action' + CASE RTRIM(LTRIM([Description]))
 	WHEN 'Gamas de Envelopes' THEN 'EnvelopeRange'
 	WHEN 'Materiais' THEN 'Materials'
 	WHEN 'Companhias de Serviços' THEN 'ServiceCompanies'
-	WHEN 'Serviços por Companhia' THEN 'ServiceCompanyServices'
+	WHEN 'Serviços por Companhia' THEN 'ServicesProvided'
 	WHEN 'Companhias de Expedição' THEN 'ExpeditionCompanies'
 	WHEN 'Códigos Tratamento/Expedição' THEN 'ExpCodes'
 	WHEN 'Versões de Projectos' THEN 'ProjectVersions'
@@ -820,7 +820,7 @@ DECLARE @ActionID int,
 	@ParentActionID int,
 	@DefaultOrder int
 
-SELECT @ParentLocalizationKey = 'ActionMaterials'
+SELECT @ParentLocalizationKey = 'ActionConsumables'
 
 UPDATE evolUX_Actions
 SET DefaultOrder = 20
@@ -1564,7 +1564,7 @@ DECLARE @ActionID int,
 	@ParentActionID int,
 	@DefaultOrder int
 
-SELECT @ParentLocalizationKey = 'ActionMenuEvolDPConfig', @NewLocalizationKey = 'ActionServicesConfig', 
+SELECT @ParentLocalizationKey = 'ActionMenuEvolDPConfig', @NewLocalizationKey = 'ActionServiceProvision', 
 	@NewDescription = 'Configuração de Serviços', @DefaultOrder = 40
 
 SELECT @ParentActionID = ActionID
@@ -1604,7 +1604,7 @@ FROM [evolUX_PERMISSIONS] p
 INNER JOIN
 	[evolUX_ACTIONS] u
 ON u.ActionID = p.ActionID
-WHERE u.LocalizationKey = 'ActionServiceCompanyServices'
+WHERE u.LocalizationKey = 'ActionServicesProvided'
 AND NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
 
 SELECT @ParentActionID = @ActionID
@@ -1612,14 +1612,14 @@ SELECT @ParentActionID = @ActionID
 UPDATE evolUX_ACTIONS
 SET ParentActionID = @ParentActionID, ActionTypeID = 1, DefaultOrder = 10 
 FROM evolUX_ACTIONS
-WHERE LocalizationKey = 'ActionServiceCompanyServices'
+WHERE LocalizationKey = 'ActionServicesProvided'
 
 UPDATE evolUX_ACTIONS
 SET ParentActionID = @ParentActionID, ActionTypeID = 1, DefaultOrder = 30 
 FROM evolUX_ACTIONS
 WHERE LocalizationKey = 'ActionServiceCompanies'
 
-SELECT @NewLocalizationKey = 'ActionServiceTasks', @NewDescription = 'Configuração de Tipos de Tratamento', @DefaultOrder = 20
+SELECT @NewLocalizationKey = 'ActionServiceWorkFlow', @NewDescription = 'Configuração de Tipos de Tratamento', @DefaultOrder = 20
 
 SET @ActionID = NULL
 SELECT @ActionID = ActionID

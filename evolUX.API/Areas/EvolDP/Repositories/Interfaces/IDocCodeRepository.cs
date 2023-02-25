@@ -21,6 +21,7 @@ namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
 
         public Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMediaGroups(int? envMediaGroupID);
         public Task<IEnumerable<int>> GetAggregationList();
+        public Task<IEnumerable<string>> GetPrintMatchCode();
         public Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(int? expeditionType);
         public Task<IEnumerable<ExpCompanyServiceTask>> GetExpCompanyServiceTask(string expCode);
         public Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID);

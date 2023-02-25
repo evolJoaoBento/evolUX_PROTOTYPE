@@ -9,12 +9,12 @@ namespace evolUX.API.Areas.evolDP.Controllers
 {
     [Route("api/evoldp/envelopemedia/[action]")]
     [ApiController]
-    public class EnvelopeMediaController : Controller
+    public class ConsumablesController : Controller
     {
         private readonly ILoggerService _logger;
-        private readonly IEnvelopeMediaService _envelopeMediaService;
+        private readonly IConsumablesService _envelopeMediaService;
 
-        public EnvelopeMediaController(ILoggerService logger, IEnvelopeMediaService envelopeMediaService)
+        public ConsumablesController(ILoggerService logger, IConsumablesService envelopeMediaService)
         {
             _logger = logger;
             _envelopeMediaService = envelopeMediaService;

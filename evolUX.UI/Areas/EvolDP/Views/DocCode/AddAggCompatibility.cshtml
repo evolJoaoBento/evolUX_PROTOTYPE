@@ -43,10 +43,10 @@ else
         <h1>@localizer["DocCodeAggCompatibility"]</h1>
     </div>
     <div>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCodeConfigList" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
         </a>
     </div>
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
            <tr>
                 <th colspan="2">@localizer["DocCodeID"]</th>
@@ -58,7 +58,7 @@ else
                 <th>@localizer["DocDescription"]</th>
             </tr>
         </thead>
-        <tbody id="bootstrap-overrides">
+        <tbody>
             <tr>
                 @if (string.IsNullOrEmpty(docCode.DocType))
                 {
@@ -114,15 +114,14 @@ else
                             
                         </p> 
                     }
-                        <table class="table table-bordered table-sm">
+                        <table class="table table-sm table-hover table-collapse-seperate">
                         <thead>
                             <tr>
-                                
-                                <th>
+                                <th style="display: flex;justify-content: center">
                                 @if(AddDocCode)
                                 {    
                                     <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' title='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedDocCodeList', '')">
-                                        <img style="background:none; width:30px;height:30px;" src="~/images/select-multiple.png" />
+                                        <img style="background:none; width:30px;height:30px;" src="~/images/link-multiple.png" />
                                     </button>
                                     <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" title='@localizer["UnSelectAll"]' onclick="javascript:uncheckBoxAll('CheckedDocCodeList', '')">
                                         <img style="background:none; width:30px;height:30px;" src="~/images/unselect-multiple.png" />

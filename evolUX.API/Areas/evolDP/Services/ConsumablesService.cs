@@ -3,11 +3,11 @@ using evolUX.API.Areas.evolDP.Services.Interfaces;
 
 namespace evolUX.API.Areas.evolDP.Services
 {
-    public class EnvelopeMediaService : IEnvelopeMediaService
+    public class ConsumablesService : IConsumablesService
     {
         private readonly IWrapperRepository _repository;
 
-        public EnvelopeMediaService(IWrapperRepository repository)
+        public ConsumablesService(IWrapperRepository repository)
         {
             _repository = repository;
         }

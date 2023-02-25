@@ -5,10 +5,10 @@ using System.Data;
 
 namespace evolUX.API.Areas.evolDP.Repositories
 {
-    public class EnvelopeMediaRepository : IEnvelopeMediaRepository
+    public class ConsumablesRepository : IConsumablesRepository
     {
         private readonly DapperContext _context;
-        public EnvelopeMediaRepository(DapperContext context)
+        public ConsumablesRepository(DapperContext context)
         {
             _context = context;
         }

@@ -147,6 +147,9 @@
   <data name="ActionConfiguredFlows" xml:space="preserve">
     <value>Fluxos Configurados</value>
   </data>
+  <data name="ActionConsumables" xml:space="preserve">
+    <value>Consumíveis</value>
+  </data>
   <data name="ActionDeleteUser" xml:space="preserve">
     <value>Apagar</value>
   </data>
@@ -163,7 +166,7 @@
     <value>Gamas de Envelopes</value>
   </data>
   <data name="ActionEnvelopeRange_Link" xml:space="preserve">
-    <value>/evolDP/Material/EnvelopeMedia</value>
+    <value>/evolDP/Consumables/EnvelopeMedia</value>
   </data>
   <data name="ActionErrorManagement" xml:space="preserve">
     <value>Gestão de Erros</value>
@@ -208,7 +211,7 @@
     <value>Tipos</value>
   </data>
   <data name="ActionExpeditionTypes_Link" xml:space="preserve">
-    <value>/evolDP/Expedition/Index</value>
+    <value>/evolDP/Expedition/Types</value>
   </data>
   <data name="ActionExpeditionZones" xml:space="preserve">
     <value>Zonas</value>
@@ -241,19 +244,16 @@
     <value>Porfólio</value>
   </data>
   <data name="ActionMaterialManagement_Link" xml:space="preserve">
-    <value>/evolDP/Material/Management</value>
+    <value>/evolDP/Consumables/Management</value>
   </data>
   <data name="ActionMaterialProductionRepor" xml:space="preserve">
     <value>Controlo de Produção / Consumíveis</value>
-  </data>
-  <data name="ActionMaterials" xml:space="preserve">
-    <value>Materiais</value>
   </data>
   <data name="ActionMaterialType" xml:space="preserve">
     <value>Tipos</value>
   </data>
   <data name="ActionMaterialType_Link" xml:space="preserve">
-    <value>/evolDP/Material/Index</value>
+    <value>/evolDP/Consumables/Types</value>
   </data>
   <data name="ActionMenuClientPages" xml:space="preserve">
     <value>Páginas Costumizadas</value>
@@ -412,19 +412,22 @@
     <value>Companhias</value>
   </data>
   <data name="ActionServiceCompanies_Link" xml:space="preserve">
-    <value>/evolDP/Services/Companies</value>
+    <value>/evolDP/ServiceProvision/Companies</value>
   </data>
-  <data name="ActionServiceCompanyServices" xml:space="preserve">
-    <value>Tipos</value>
+  <data name="ActionServiceProvision" xml:space="preserve">
+    <value>Prestação de Serviços</value>
   </data>
-  <data name="ActionServicesConfig" xml:space="preserve">
-    <value>Serviços</value>
+  <data name="ActionServicesProvided" xml:space="preserve">
+    <value>Tipos de Serviço</value>
   </data>
-  <data name="ActionServiceTasks" xml:space="preserve">
-    <value>Tipos Tratamento</value>
+  <data name="ActionServicesProvided_Link" xml:space="preserve">
+    <value>/evolDP/ServiceProvision/Types</value>
   </data>
-  <data name="ActionServiceTasks_Link" xml:space="preserve">
-    <value>/evolDP/Services/Index</value>
+  <data name="ActionServiceWorkFlow" xml:space="preserve">
+    <value>Tipos de Tratamento</value>
+  </data>
+  <data name="ActionServiceWorkFlow_Link" xml:space="preserve">
+    <value>/evolDP/ServiceProvision/ServiceWorkFlow</value>
   </data>
   <data name="ActionSupportInformation" xml:space="preserve">
     <value>Informação de Suporte</value>

@@ -1,6 +1,6 @@
 ﻿namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
 {
-    public interface IEnvelopeMediaRepository
+    public interface IConsumablesRepository
     {
         public Task<List<dynamic>> GetEnvelopeMedia();
 

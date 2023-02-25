@@ -54,6 +54,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\evolDP\Views\Consumables\" />
+    <Folder Include="Areas\evolDP\Views\ServiceProvision\" />
+    <Folder Include="Resources\Areas\evolDP\Views\Expedition\" />
+    <Folder Include="Resources\Areas\evolDP\Views\ServiceProvision\" />
     <Folder Include="wwwroot\expedition\" />
   </ItemGroup>
 

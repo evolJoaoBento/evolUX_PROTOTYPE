@@ -11,7 +11,6 @@
     var json = JsonConvert.SerializeObject(Model.SuportTypeList);
 
     bool AddDocCode = false;
-
     if (Model.Permissions.Find(x => x == "AddDocCode") != null) { AddDocCode = true; }
 }
 <script>
@@ -25,7 +24,7 @@
 else
 {
     string disable = "";
-    if (AddDocCode)
+    if (!AddDocCode)
         disable = "disabled";
     string value;
     string docTypeDesc = "";
@@ -66,6 +65,9 @@ else
     if (Model.DocCodeConfig.DocCodeConfigs != null && Model.DocCodeConfig.DocCodeConfigs.Count() > 0)
         dConfig = Model.DocCodeConfig.DocCodeConfigs[0];
     <div>
+        <div id="TitlePage">
+            <h1>@localizer[TempData["Source"] + ""]</h1>
+        </div>
         @if (sourceDesc == "AddDoc")
         {
             <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="Index">
@@ -86,12 +88,12 @@ else
 <form id="AddDocDocConfigFrm" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="RegistDocCodeConfig" asp-route-source="@sourceDesc">
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr><td colspan="2">@localizer[TempData["Source"] + ""]</td></tr>
+            <tr><td colspan="2">@localizer["DocCode"]</td></tr>
         </thead>
         <tbody id="bootstrap-overrides">
-            @if (AddDocCode || sourceDesc != "AddDoc")
+            @if (sourceDesc != "AddDoc")
             {
-                @if (sourceDesc != "AddDocCode")
+                @if (!AddDocCode || sourceDesc != "AddDocCode")
                 {
                 <tr>
                     <th>@localizer["DocCodeID"]</th>
@@ -125,15 +127,15 @@ else
             {
                 <tr>
                     <th>@localizer["DocLayout"]</th>
-                    <td><input id=DocLayout name=DocLayout type="text" maxlength="20" style="width: 100%"/></td>
+                    <td><input id=DocLayout @disable name=DocLayout type="text" maxlength="20" style="width: 100%"/></td>
                 </tr>
                 <tr>
                     <th>@localizer["DocType"]</th>
-                    <td><input id=DocType name=DocType type="text" maxlength="8" style="width: 100%"/></td>
+                        <td><input id=DocType @disable name=DocType type="text" maxlength="8" style="width: 100%" /></td>
                 </tr>
             }
-            @if (AddDocCode || (sourceDesc != "AddDocCode"
-                && sourceDesc != "AddDoc"))
+            @if (sourceDesc != "AddDocCode"
+                && sourceDesc != "AddDoc")
             {
                 @if (Model.DocCodeConfig.ExceptionLevel1 == null || string.IsNullOrEmpty(Model.DocCodeConfig.ExceptionLevel1.ExceptionDescription))
                 {
@@ -178,7 +180,7 @@ else
                 <tr>
                     <th>@ExceptionLevel1IDLabel</th>
                     <td>
-                        <select name="Exceptionslevel1ID" style="width: 100%">
+                            <select @disable name="Exceptionslevel1ID" style="width: 100%">
                             <option value="0">@value</option>
                             @foreach (ExceptionLevel e in Model.Exceptionslevel1List)
                             {
@@ -190,7 +192,7 @@ else
                 <tr>
                     <th>@ExceptionLevel2IDLabel</th>
                     <td>
-                        <select name="Exceptionslevel2ID" style="width: 100%">
+                            <select @disable name="Exceptionslevel2ID" style="width: 100%">
                             <option id="" value="0">@value</option>
                             @foreach (ExceptionLevel e in Model.Exceptionslevel2List)
                             {
@@ -202,7 +204,7 @@ else
                 <tr>
                     <th>@ExceptionLevel3IDLabel</th>
                     <td>
-                        <select name="Exceptionslevel3ID" style="width: 100%">
+                            <select @disable name="Exceptionslevel3ID" style="width: 100%">
                             <option id="" value="0">@value</option>
                             @foreach (ExceptionLevel e in Model.Exceptionslevel3List)
                             {
@@ -212,6 +214,7 @@ else
                     </td>
                 </tr>
             }
+            
             <tr>
                 <th>@localizer["DocDescription"]</th>
                 <td>
@@ -221,7 +224,21 @@ else
             <tr>
                 <th>@localizer["PrintMatchCode"]</th>
                 <td>
-                    <input @disable id=PrintMatchCode name=PrintMatchCode type="text" maxlength="10" style="width: 100%" value="@Model.DocCodeConfig.PrintMatchCode" />
+                    <select @disable name="PrintMatchCode" style="width: 100%">
+                        @if (!string.IsNullOrEmpty(Model.DocCodeConfig.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == "PrintMatchCodeEmpty")
+                        {
+                            value = Model.DocCodeConfig.PrintMatchCode;
+                        }
+                        <option value="@Model.DocCodeConfig.PrintMatchCode">@value</option>
+                        @foreach (string pMatch in Model.PrintMatchCodeList.Where(x => x != (string.IsNullOrEmpty(Model.DocCodeConfig.PrintMatchCode)? "" :Model.DocCodeConfig.PrintMatchCode)))
+                        {
+                            @if (!string.IsNullOrEmpty(pMatch) || (value = localizer["PrintMatchCodeEmpty"].Value) == "PrintMatchCodeEmpty")
+                            {
+                                value = pMatch;
+                            }
+                            <option value="@value">@pMatch</option>
+                        }
+                        </select>
                 </td>
             </tr>
             @if (sourceDesc != "DocCodeChange")

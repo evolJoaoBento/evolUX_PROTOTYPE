@@ -45,6 +45,9 @@ else
     DocCodeConfig dConfig = null;
     if (docCode.DocCodeConfigs != null && docCode.DocCodeConfigs.Count() > 0)
         dConfig = docCode.DocCodeConfigs[0];
+    <div id="TitlePage">
+        <h1>@localizer[headerDesc]</h1>
+    </div>
     <div>
         @if (headerDesc == "AddDoc" || headerDesc == "AddDocCode")
         {
@@ -52,16 +55,14 @@ else
             </a>
         }
         else if (headerDesc == "AddDocCodeConfig" || headerDesc == "DocCodeChange"
-            || headerDesc == "DocCodeConfigChange")
+            || headerDesc == "DocCodeConfigChange" || headerDesc == "DocCodeConfig")
         {
             <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
             </a>
         }
     </div>
+ 
     <table class="table table-sm table-hover table-collapse-seperate">
-        <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr><td colspan="2">@localizer[headerDesc]</td></tr>
-        </thead>
         <tbody id="bootstrap-overrides">
             <tr>
                 <th>@localizer["DocCodeID"]</th>
@@ -120,7 +121,11 @@ else
             </tr>
             <tr>
                 <th>@localizer["PrintMatchCode"]</th>
-                <td>@docCode.PrintMatchCode</td>
+                @if (!string.IsNullOrEmpty(docCode.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                {
+                    value = docCode.PrintMatchCode;
+                }
+                <td>@value</td>
             </tr>
             @if (dConfig == null)
             {

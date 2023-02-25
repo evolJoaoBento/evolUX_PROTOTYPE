@@ -13,7 +13,7 @@ namespace evolUX.API.Areas.Core.Repositories
     public class WrapperRepository : IWrapperRepository
     {
         private readonly DapperContext _context;
-        private IEnvelopeMediaRepository _envelopeMedia;
+        private IConsumablesRepository _envelopeMedia;
         private IExpeditionRepository _expeditionType;
         private IFinishingRepository _finishing;
         private IUserRepository _user;
@@ -40,13 +40,13 @@ namespace evolUX.API.Areas.Core.Repositories
         }
 
 
-        public IEnvelopeMediaRepository EnvelopeMedia
+        public IConsumablesRepository EnvelopeMedia
         {
             get
             {
                 if (_envelopeMedia == null)
                 {
-                    _envelopeMedia = new EnvelopeMediaRepository(_context);
+                    _envelopeMedia = new ConsumablesRepository(_context);
                 }
                 return _envelopeMedia;
             }

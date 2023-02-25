@@ -63,34 +63,34 @@ else
     bool aggConditional = false;
     if (docCode.DocCodeConfigs.Where(x => x.AggrCompatibility == 2).ToList().Count > 0)
         aggConditional = true;
+
+    <div id="TitlePage">
+        <h1>@localizer["DocCodeConfigList"]</h1>
+    </div>
     <div>
         <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
         </a>
+        @if (!(docCode.DocCodeConfigs == null || docCode.DocCodeConfigs.Count == 0))
+        {
+            if (AddDocCode)
+            {
+                <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="DocCodeChange">
+                    <img style="background:none; width:50px;height:50px;" src="~/images/edit_doc.png" title="@localizer["ChangeDocCode"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
+                </a>
+                <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="AddDocCodeConfig">
+                    <img style="background:none; width:50px;height:50px;" src="~/images/config_doc.png" title="@localizer["DocCodeConfigAdd"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
+                </a>
+            }
+            if (aggConditional)
+            {
+                <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddAggCompatibility" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+                    <img style="background:none; width:50px;height:50px;" src="~/images/link_doc.png" title="@localizer["AggCompatibilityAdd"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
+                </a>
+            }
+        }
     </div>
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr>
-                <td colspan="8">@localizer["DocCode"]
-                    @if (!(docCode.DocCodeConfigs == null || docCode.DocCodeConfigs.Count == 0))
-                    {
-                        if (AddDocCode)
-                        {
-                            <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="DocCodeChange">
-                                <img style="background:none; width:50px;height:50px;" src="~/images/edit_doc.png" title="@localizer["ChangeDocCode"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
-                            </a>
-                            <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="AddDocCodeConfig">
-                                <img style="background:none; width:50px;height:50px;" src="~/images/config_doc.png" title="@localizer["DocCodeConfigAdd"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
-                            </a>
-                        }
-                        if (aggConditional)
-                        {
-                            <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddAggCompatibility" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
-                                <img style="background:none; width:50px;height:50px;" src="~/images/link_doc.png" title="@localizer["AggCompatibilityAdd"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
-                            </a>
-                        }
-                    }
-                </td>
-           </tr>
            <tr>
                 <th>@localizer["DocCodeID"]</th>
                 <th>@localizer["DocLayout"]</th>
@@ -143,7 +143,11 @@ else
                 <td>@eLevel2Desc</td>
                 <td>@eLevel3Desc</td>
                 <td>@docCode.DocDescription</td>
-                <td>@docCode.PrintMatchCode</td>
+                @if (!string.IsNullOrEmpty(docCode.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                {
+                    value = docCode.PrintMatchCode;
+                }
+                <td>@value</td>
             </tr>
             @if(!string.IsNullOrEmpty(errorMessage))
             {
@@ -209,19 +213,19 @@ else
                                     @if(dConfig.StartDate >= Int32.Parse(DateTime.Now.ToString("yyyyMMdd")))
                                     {
                                     <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="DocCodeConfigChange">
-                                        <img style="background:none; width:25px;height:25px;" src="~/images/edit_doc.png" title="@localizer["DocCodeConfigChange"] @localizer["Date"] = @startDateDesc" />
+                                        <img style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["DocCodeConfigChange"] @localizer["Date"] = @startDateDesc" />
                                     </a>
                                     }
                                     @if(DeleteDocCode)
                                     {
                                     <a asp-area="evolDP" asp-controller="DocCode" asp-action="DeleteDocCodeConfig" asp-route-doccodeid="@docCode.DocCodeID" asp-route-startdate="@dConfig.StartDate" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
-                                        <img onclickif="return confirmDocCodeConfigDelete()" style="background:none; width:25px;height:25px;" src="~/images/delete_doc.png" title="@localizer["DeleteDocCodeConfig"] @localizer["Date"] = @startDateDesc" />
+                                        <img onclickif="return confirmDocCodeConfigDelete()" style="background:none; width:25px;height:25px;" src="~/images/delete.png" title="@localizer["DeleteDocCodeConfig"] @localizer["Date"] = @startDateDesc" />
                                     </a>
                                     }
                                     @if(ExportDocCode)
                                     {
                                     <a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCodeData4Script" asp-route-doccodeid="@docCode.DocCodeID" asp-route-startdate="@dConfig.StartDate" >
-                                        <img style="background:none; width:25px;height:25px;" src="~/images/export_doc.png" title="@localizer["Export"] @localizer["Date"] = @startDateDesc"/>
+                                        <img style="background:none; width:25px;height:25px;" src="~/images/export.png" title="@localizer["Export"] @localizer["Date"] = @startDateDesc"/>
                                     </a>
                                     }                                
                                 }

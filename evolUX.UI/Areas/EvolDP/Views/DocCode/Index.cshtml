@@ -12,7 +12,9 @@
 
     if (Model.Permissions.Find(x => x == "AddDocCode") != null) { AddDocCode = true; }
 }
-
+<div id="TitlePage">
+    <h1>@localizer["DocCodeList"]</h1>
+</div>
 <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-source="AddDoc">
     <img style="background:none; width:50px;height:50px;" src="@siteURL/images/add_doc.png" title="@localizer["AddDocCode"]" />
 </a>
@@ -83,7 +85,11 @@ else
                                             <td>@d.DocLayout</td>
                                             <td>@docTypeDesc</td>
                                             <td>@d.DocDescription</td>
-                                            <td>@d.PrintMatchCode</td>
+                                            @if (!string.IsNullOrEmpty(d.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                                            {
+                                                value = d.PrintMatchCode;
+                                            }
+                                            <td>@value</td>
                                         </tr>
                                         }
                                 </tbody>

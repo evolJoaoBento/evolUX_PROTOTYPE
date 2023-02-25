@@ -85,6 +85,7 @@ namespace evolUX.API.Areas.evolDP.Services
             viewmodel.Exceptionslevel3List = await _repository.DocCode.GetExceptionLevel(3);
             viewmodel.EnvMediaGroups = await _repository.DocCode.GetEnvelopeMediaGroups(null);
             viewmodel.AggregationList = await _repository.DocCode.GetAggregationList();
+            viewmodel.PrintMatchCodeList = await _repository.DocCode.GetPrintMatchCode();
             viewmodel.ExpeditionTypes = await _repository.DocCode.GetExpeditionTypes(null);
             viewmodel.ExpCodeList = await _repository.DocCode.GetExpCompanyServiceTask("");
             viewmodel.ServiceTasks = await _repository.DocCode.GetServiceTasks(null);

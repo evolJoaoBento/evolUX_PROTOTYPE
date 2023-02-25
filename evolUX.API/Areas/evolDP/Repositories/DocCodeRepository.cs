@@ -216,6 +216,15 @@ namespace evolUX.API.Areas.evolDP.Repositories
             return ilist;
         }
 
+        public async Task<IEnumerable<string>> GetPrintMatchCode()
+        {
+            string sql = @"SELECT LTRIM(RTRIM(PrintMatchCode)) FROM RDC_PRINTMATCHCODE";
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<string> results = await connection.QueryAsync<string>(sql);
+                return results;
+            }
+        }
         public async Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(int? expeditionType)
         {
             string sql = @"RD_UX_GET_EXPEDITION_TYPE";

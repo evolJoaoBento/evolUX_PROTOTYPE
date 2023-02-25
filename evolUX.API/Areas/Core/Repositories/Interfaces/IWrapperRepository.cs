@@ -5,7 +5,7 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
 {
     public interface IWrapperRepository
     {
-        IEnvelopeMediaRepository EnvelopeMedia { get; }
+        IConsumablesRepository EnvelopeMedia { get; }
 
         IFinishingRepository Finishing { get; }
 

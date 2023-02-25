@@ -118,10 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddDocCode" xml:space="preserve">
-    <value>Adicionar Tipo de Documento</value>
+    <value>Adicionar Layout / Tipo de Documento</value>
   </data>
   <data name="DocCode" xml:space="preserve">
-    <value>Tipos de Documento</value>
+    <value>Código de Layout</value>
+  </data>
+  <data name="DocCodeList" xml:space="preserve">
+    <value>Lista de Layouts / Tipos de Documentos</value>
   </data>
   <data name="DocDescription" xml:space="preserve">
     <value>Descrição</value>
@@ -130,7 +133,7 @@
     <value>Layout</value>
   </data>
   <data name="DocType" xml:space="preserve">
-    <value>Subtipo</value>
+    <value>Tipo</value>
   </data>
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
