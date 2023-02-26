@@ -144,9 +144,6 @@
   <data name="CompanyPostalCode" xml:space="preserve">
     <value>Código Postal</value>
   </data>
-  <data name="CompanyPostalCodeDesc" xml:space="preserve">
-    <value>Código Postal / Localidade</value>
-  </data>
   <data name="CompanyPostalCodeDescription" xml:space="preserve">
     <value>Localidade</value>
   </data>
@@ -159,6 +156,9 @@
   <data name="ExpCompanyContracts" xml:space="preserve">
     <value>Listar contratos da Companhia</value>
   </data>
+  <data name="ExpCompanyDetail" xml:space="preserve">
+    <value>Ver detalhes da Companhia de Expedição</value>
+  </data>
   <data name="ExpCompanyList" xml:space="preserve">
     <value>Companhias de Expedição</value>
   </data>
@@ -170,6 +170,9 @@
   </data>
   <data name="ID" xml:space="preserve">
     <value>ID</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Ver detalhes do Tipo de Expedição</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>

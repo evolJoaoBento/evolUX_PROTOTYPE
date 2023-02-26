@@ -97,7 +97,7 @@ namespace evolUX.API.Areas.Core.Repositories
             }
         }
 
-        public async Task<DataTable> GetCompanyBusinness(IEnumerable<string> servers, string CompanyType)
+        public async Task<DataTable> GetCompanyBusiness(IEnumerable<string> servers, string CompanyType)
         {
             string serversStr = servers.toCommaSeperatedFormatedString();
 

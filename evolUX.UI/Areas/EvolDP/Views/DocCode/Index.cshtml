@@ -16,7 +16,7 @@
     <h1>@localizer["DocCodeList"]</h1>
 </div>
 <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-source="AddDoc">
-    <img style="background:none; width:50px;height:50px;" src="@siteURL/images/add_doc.png" title="@localizer["AddDocCode"]" />
+    <img style="background:none; width:50px;height:50px;" src="~/images/add_doc.png" title="@localizer["AddDocCode"]" />
 </a>
 @if (Model == null)
 {
@@ -73,7 +73,7 @@ else
                                                 value = d.DocLayout + "/" + docTypeDesc;
                                             }
                                             <a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(d)">
-                                                <img style="background:none; width:25px;height:25px;" src="@siteURL/images/list.png" title="@localizer["List"]: @value" />
+                                                <img style="background:none; width:25px;height:25px;" src="~/images/list.png" title="@localizer["List"]: @value" />
                                                 </a>
                                             </td>
                                             <td>@d.DocLayout</td>

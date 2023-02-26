@@ -50,56 +50,98 @@ else
                 <th>@localizer["CompanyName"]</th>
                 <th>@localizer["CompanyCode"]</th>
                 <th>@localizer["CompanyAddress"]</th>
-                <th>@localizer["CompanyPostalCodeDesc"]</th>
+                <th>@localizer["CompanyPostalCode"]</th>
+                <th>@localizer["CompanyPostalCodeDescription"]</th>
                 <th>@localizer["CompanyCountry"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
             @foreach (var expCompany in Model.ExpCompanies)
             {
+                List<ExpeditionTypeElement> expCompanyTypeList = new List<ExpeditionTypeElement>();
+                foreach (ExpeditionTypeElement t in Model.Types)
+                {
+                    ExpeditionTypeElement newExpType = new ExpeditionTypeElement();
+                    newExpType.ExpeditionType = t.ExpeditionType;
+                    newExpType.Priority = t.Priority;
+                    newExpType.Description = t.Description;
+                    newExpType.ExpCompanyTypesList = t.ExpCompanyTypesList.Where(x => x.ExpCompanyID == expCompany.ID);
+                    if (newExpType.ExpCompanyTypesList.Count() > 0)
+                        expCompanyTypeList.Add(newExpType);
+                }
                 level++;
                 nameValue = Level0Name + level.ToString();
                 idValue = "arrow" + nameValue;
                 value = expCompany.ID.ToString();
+                
                 <tr>
-                    <td>
-                        @if (AddExpCompany)
+                    <td width="150px">
+                        @if (AddExpCompany || AddExpeditionType)
                         {
-                            ExpeditionTypeViewModel newModel = new ExpeditionTypeViewModel();
-                            List<ExpeditionTypeElement> typeList = new List<ExpeditionTypeElement>();
-                            newModel.ExpCompanies = new List<Company>();
-                            newModel.ExpCompanies.ToList().Add(expCompany);
-
-                            foreach (ExpeditionTypeElement exp in Model.Types)
-                            {
-                                ExpeditionTypeElement newExp = new ExpeditionTypeElement();
-                                newExp.ExpeditionType = exp.ExpeditionType;
-                                newExp.Description = exp.Description;
-                                newExp.Priority = exp.Priority;
-                                newExp.ExpCompanyTypesList = exp.ExpCompanyTypesList.Where(x => x.ExpCompanyID == expCompany.ID);
-                                typeList.Add(newExp);
-                            }
-                            newModel.Types = typeList;
-
-                            <a asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompany" asp-route-expeditiontypeviewJson="@JsonConvert.SerializeObject(Model)">
-                                <img style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeExpCompany"]: @expCompany.CompanyName" />
+                            <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expeditiontypeviewJson="@JsonConvert.SerializeObject(Model)">
+                                <img style="background:none; width:35px;height:35px;" src="~/images/menu.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
                             </a>
                         }
                         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyContracts" asp-route-expCompanyid="@expCompany.ID">
-                            <img style="background:none; width:25px;height:25px;" src="~/images/contract.png" title="@localizer["ExpCompanyContracts"]: @expCompany.CompanyName" />
+                            <img style="background:none; width:35px;height:35px;" src="~/images/contract.png" title="@localizer["ExpCompanyContracts"]: @expCompany.CompanyName" />
                         </a>
 
                         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpRegistRange" asp-route-expCompanyid="@expCompany.ID">
-                            <img style="background:none; width:25px;height:25px;" src="~/images/RegistredMail.png" title="@localizer["ExpRegistRange"]: @expCompany.CompanyName" />
+                            <img style="background:none; width:35px;height:35px;" src="~/images/RegistredMail.png" title="@localizer["ExpRegistRange"]: @expCompany.CompanyName" />
                         </a>
                     </td>
-                    <td>@expCompany.ID</td>
+                    <td>
+                        @expCompany.ID
+                        @if (expCompanyTypeList.Count() > 0)
+                        {
+                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                        }
+                    </td>
                     <td>@expCompany.CompanyName</td>
                     <td>@expCompany.CompanyCode</td>
                     <td>@expCompany.CompanyAddress</td>
-                    <td>@expCompany.CompanyPostalCode   @expCompany.CompanyPostalCodeDescription</td>
+                    <td>@expCompany.CompanyPostalCode</td>
+                    <td>@expCompany.CompanyPostalCodeDescription</td>
                     <td>@expCompany.CompanyCountry</td>
                 </tr>
+                @if (expCompanyTypeList.Count() > 0)
+                {
+                    <tr id="@nameValue" style="display: none">
+                        <td></td>
+                        <td colspan="7">
+                            <table class="table table-sm table-hover table-collapse-seperate">
+                            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                <tr>
+                                    <th>@localizer["ExpeditionType"]</th>
+                                    <th title="@localizer["RegistModeTip"]">@localizer["RegistMode"]</th>
+                                    <th title="@localizer["SeparationModeTip"]">@localizer["SeparationMode"]</th>
+                                    <th title="@localizer["BarcodeRegistModeTip"]">@localizer["BarcodeRegistMode"]</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bootstrap-overrides">
+                                @foreach (ExpeditionTypeElement c in expCompanyTypeList)
+                                {
+                                    <tr>
+                                        <td>@c.Description</td>
+                                        @{
+                                            value = c.ExpCompanyTypesList.First().RegistMode ? "checked" : "";
+                                        }
+                                        <td><input type="checkbox" id="RegistMode" @value disabled /></td>
+                                        @{
+                                            value = c.ExpCompanyTypesList.First().SeparationMode ? "checked" : "";
+                                        }
+                                        <td><input type="checkbox" id="SeparationMode" @value disabled /></td>
+                                        @{
+                                            value = c.ExpCompanyTypesList.First().BarcodeRegistMode != null ? ((bool)c.ExpCompanyTypesList.First().BarcodeRegistMode ? "1" : "0") : "0";
+                                        }
+                                        <td>@value</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

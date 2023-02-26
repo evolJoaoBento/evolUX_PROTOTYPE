@@ -127,9 +127,9 @@
     <value>Sem Dados</value>
   </data>
   <data name="PendingExpedition" xml:space="preserve">
-    <value>Expedição Pendente</value>
+    <value>Guias de Expedição</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Listar</value>
+    <value>Ver Expedição Pendente</value>
   </data>
 </root>

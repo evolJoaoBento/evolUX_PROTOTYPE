@@ -8,6 +8,7 @@ using Shared.ViewModels.Areas.evolDP;
 using evolUX.API.Models;
 using Shared.ViewModels.Areas.Finishing;
 using Shared.Models.Areas.evolDP;
+using evolUX_dev.Areas.evolDP.Models;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
@@ -19,9 +20,11 @@ namespace evolUX.UI.Areas.evolDP.Repositories
 
         public async Task<ExpeditionTypeViewModel> GetExpeditionCompanies(string expCompanyList)
         {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ExpCompanyList", expCompanyList);
             var response = await _flurlClient.Request("/API/evolDP/Expedition/GetExpeditionCompanies")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                .SendJsonAsync(HttpMethod.Get, expCompanyList);
+                .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ExpeditionTypeViewModel>();

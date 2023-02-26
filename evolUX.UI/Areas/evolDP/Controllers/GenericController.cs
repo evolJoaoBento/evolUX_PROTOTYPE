@@ -17,11 +17,11 @@ namespace evolUX.UI.Areas.evolDP.Controllers
     public class GenericController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly IGenericService _projectService;
+        private readonly IGenericService _genericService;
         private readonly IStringLocalizer<GenericController> _localizer;
-        public GenericController(IGenericService projectService, IStringLocalizer<GenericController> localizer, IConfiguration configuration)
+        public GenericController(IGenericService genericService, IStringLocalizer<GenericController> localizer, IConfiguration configuration)
         {
-            _projectService = projectService;
+            _genericService = genericService;
             _localizer = localizer;
             _configuration = configuration;
         }
@@ -46,7 +46,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             {
                 if (string.IsNullOrEmpty(CompanyBusinessList))
                     return View(null);
-                BusinessViewModel result = await _projectService.GetCompanyBusiness(CompanyBusinessList);
+                BusinessViewModel result = await _genericService.GetCompanyBusiness(CompanyBusinessList);
                 if (result != null && result.CompanyBusiness.Count() > 0)
                 {
                     if (result.CompanyBusiness.Count() > 1)
@@ -115,7 +115,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 }
 
 
-                ProjectListViewModel result = await _projectService.GetProjects(CompanyBusinessList);
+                ProjectListViewModel result = await _genericService.GetProjects(CompanyBusinessList);
  
                 if (CompanyBusinessDT.Rows.Count > 1)
                 {
@@ -163,7 +163,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
         {
             try
             {
-                ConstantParameterViewModel result = await _projectService.GetParameters();
+                ConstantParameterViewModel result = await _genericService.GetParameters();
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View(result);
             }
@@ -218,7 +218,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 if (!string.IsNullOrEmpty(strValue) && !Int32.TryParse(strValue, out parameterValue))
                     parameterValue = 0;
 
-                ConstantParameterViewModel result = await _projectService.SetParameter(parameterID, parameterRef, parameterValue, parameterDescription);
+                ConstantParameterViewModel result = await _genericService.SetParameter(parameterID, parameterRef, parameterValue, parameterDescription);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
 
                 return View("ConstantParameter", result);
@@ -265,9 +265,9 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             {
                 ConstantParameterViewModel result;
                 if (parameterID != 0)
-                    result = await _projectService.DeleteParameter(parameterID);
+                    result = await _genericService.DeleteParameter(parameterID);
                 else
-                    result = await _projectService.GetParameters();
+                    result = await _genericService.GetParameters();
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
 
                 return View("ConstantParameter", result);

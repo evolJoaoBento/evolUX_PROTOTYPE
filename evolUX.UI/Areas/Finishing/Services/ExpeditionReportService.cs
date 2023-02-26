@@ -15,16 +15,16 @@ namespace evolUX.UI.Areas.Finishing.Services
 {
     public class ExpeditionReportService : IExpeditionReportService
     {
-        private readonly IExpeditionReportRepository _expeditionRepository;
-        public ExpeditionReportService(IExpeditionReportRepository expeditionRepository)
+        private readonly IExpeditionReportRepository _expeditionReportRepository;
+        public ExpeditionReportService(IExpeditionReportRepository expeditionReportRepository)
         {
-            _expeditionRepository = expeditionRepository;
+            _expeditionReportRepository = expeditionReportRepository;
         }
         public async Task<BusinessViewModel> GetCompanyBusiness(string CompanyBusinessList)
         {
             try
             {
-                var response = await _expeditionRepository.GetCompanyBusiness(CompanyBusinessList);
+                var response = await _expeditionReportRepository.GetCompanyBusiness(CompanyBusinessList);
                 return response;
             }
             catch (FlurlHttpException ex)
@@ -53,7 +53,7 @@ namespace evolUX.UI.Areas.Finishing.Services
         {
             try
             {
-                var response = await _expeditionRepository.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
+                var response = await _expeditionReportRepository.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
                 return response;
             }
             catch (FlurlHttpException ex)
@@ -83,7 +83,7 @@ namespace evolUX.UI.Areas.Finishing.Services
         {
             try
             {
-                Result response = await _expeditionRepository.RegistExpeditionReport(expFiles, username, userID);
+                Result response = await _expeditionReportRepository.RegistExpeditionReport(expFiles, username, userID);
                 return response;
             }
             catch (FlurlHttpException ex)
@@ -115,7 +115,7 @@ namespace evolUX.UI.Areas.Finishing.Services
         {
             try
             {
-                var response = await _expeditionRepository.GetExpeditionReportList(BusinessID, ServiceCompanyList);
+                var response = await _expeditionReportRepository.GetExpeditionReportList(BusinessID, ServiceCompanyList);
                 return response;
             }
             catch (FlurlHttpException ex)

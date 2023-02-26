@@ -38,7 +38,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
         {
             try
             {
-                var response = await _flurlClient.Request("/API/evolDP/Client/GetParameters")
+                var response = await _flurlClient.Request("/API/evolDP/Generic/GetParameters")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .GetAsync();
                 if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);

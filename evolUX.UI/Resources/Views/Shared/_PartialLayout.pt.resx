@@ -204,6 +204,9 @@
   <data name="ActionExpeditionConfig" xml:space="preserve">
     <value>Expedição</value>
   </data>
+  <data name="ActionExpeditionReportList" xml:space="preserve">
+    <value>Guias Geradas</value>
+  </data>
   <data name="ActionExpeditionReportList_Link" xml:space="preserve">
     <value>/Finishing/ExpeditionReport/Index</value>
   </data>

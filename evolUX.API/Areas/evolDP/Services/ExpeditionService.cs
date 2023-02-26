@@ -14,6 +14,22 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             _repository = repository;
         }
+
+        public async Task<ExpeditionTypeViewModel> GetExpeditionCompanies(DataTable expCompanyList)
+        {
+            ExpeditionTypeViewModel viewModel = new ExpeditionTypeViewModel();
+            viewModel.ExpCompanies = await _repository.Generic.GetCompanies(null, expCompanyList);
+            viewModel.Types = await _repository.ExpeditionType.GetExpeditionTypes(null);
+            if (viewModel.Types != null)
+            {
+                foreach (ExpeditionTypeElement e in viewModel.Types.ToList())
+                {
+                    e.ExpCompanyTypesList = await _repository.ExpeditionType.GetExpCompanyTypes(e.ExpeditionType, null, expCompanyList);
+                }
+            }
+            return viewModel;
+        }
+
         public async Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, DataTable? expCompanyList)
         {
             ExpeditionTypeViewModel viewModel = new ExpeditionTypeViewModel();

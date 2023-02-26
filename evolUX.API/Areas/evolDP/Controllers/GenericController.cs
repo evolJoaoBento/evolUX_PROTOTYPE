@@ -6,6 +6,7 @@ using Shared.ViewModels.Areas.evolDP;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
 using System.Data.SqlClient;
 using evolUX.API.Areas.evolDP.Services.Interfaces;
+using evolUX.API.Areas.evolDP.Services;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
@@ -21,6 +22,30 @@ namespace evolUX.API.Areas.evolDP.Controllers
             _repository = repository;
             _logger = logger;
             _genericService = genericService;
+        }
+
+        [HttpGet]
+        [ActionName("GetCompanyBusiness")]
+        public async Task<ActionResult<BusinessViewModel>> GetCompanyBusiness([FromBody] string CompanyBusinessListJSON)
+        {
+            DataTable CompanyBusinessList = JsonConvert.DeserializeObject<DataTable>(CompanyBusinessListJSON);
+            try
+            {
+                BusinessViewModel viewmodel = new BusinessViewModel();
+                viewmodel.CompanyBusiness = await _genericService.GetCompanyBusiness(CompanyBusinessList);
+                _logger.LogInfo("GetCompanyBusiness Get");
+                return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get DocCode action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpGet]

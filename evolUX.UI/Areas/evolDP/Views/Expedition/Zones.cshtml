@@ -43,11 +43,18 @@ else
                         <td>@z.ExpeditionZone</td>
                         <td>
                             @z.Description
-                            @if(z.ExpCompanyZonesList.Count() > 0)
+                            @if (z.ExpCompanyZonesList.Count() > 0)
                             {
-                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
-                            <table id="@nameValue" class="table table-sm table-hover table-collapse-seperate" style="display: none">
-                                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            }
+                        </td>
+                    </tr>
+                    @if (z.ExpCompanyZonesList.Count() > 0)
+                    {
+                    <tr id="@nameValue" style="display: none">
+                        <td colspan="2">
+                            <table class="table table-sm table-hover table-collapse-seperate">
+                            <thead id="bootstrap-overrides" class="table-info sticky-header">
                                     <tr>
                                         <th></th>
                                         <th>@localizer["ExpCompany"]</th>
@@ -73,9 +80,9 @@ else
                                         }
                                 </tbody>
                             </table>
-                            }
                         </td>
                     </tr>
+                    }
                 }
         </tbody>
     </table>

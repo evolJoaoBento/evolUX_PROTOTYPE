@@ -24,14 +24,14 @@ using System.Globalization;
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
     [Area("Finishing")]
-    public class ExpeditionController : Controller
+    public class ExpeditionReportController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly IExpeditionReportService _expeditionService;
-        private readonly IStringLocalizer<ExpeditionController> _localizer;
-        public ExpeditionController(IExpeditionReportService expeditionService, IStringLocalizer<ExpeditionController> localizer, IConfiguration configuration)
+        private readonly IExpeditionReportService _expeditionReportService;
+        private readonly IStringLocalizer<ExpeditionReportController> _localizer;
+        public ExpeditionReportController(IExpeditionReportService expeditionReportService, IStringLocalizer<ExpeditionReportController> localizer, IConfiguration configuration)
         {
-            _expeditionService = expeditionService;
+            _expeditionReportService = expeditionReportService;
             _localizer = localizer;
             _configuration = configuration;
         }
@@ -56,7 +56,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             {
                 if (string.IsNullOrEmpty(CompanyBusinessList))
                     return View(null);
-                BusinessViewModel result = await _expeditionService.GetCompanyBusiness(CompanyBusinessList);
+                BusinessViewModel result = await _expeditionReportService.GetCompanyBusiness(CompanyBusinessList);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 if (result != null && result.CompanyBusiness.Count() > 0)
                 {
@@ -129,7 +129,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 TempData["BusinessCode"] = BusinessCode;
                 TempData["BusinessDescription"] = BusinessDescription;
 
-                ExpeditionListViewModel result = await _expeditionService.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
+                ExpeditionListViewModel result = await _expeditionReportService.GetPendingExpeditionFiles(BusinessID, ServiceCompanyList);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 ViewBag.BusinessID = BusinessID;
                 ViewBag.BusinessCode = BusinessCode;
@@ -217,7 +217,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
                     rElement.ExpFileList.Add(new FileBase(runID, fileID));
                 }
-                Result result = await _expeditionService.RegistExpeditionReport(expFiles, username, userID);
+                Result result = await _expeditionReportService.RegistExpeditionReport(expFiles, username, userID);
                 return PartialView("MessageView", new MessageViewModel(result.ErrorID.ToString(), "", result.Error));
             }
             catch (FlurlHttpException ex)
@@ -271,7 +271,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             {
                 if (string.IsNullOrEmpty(CompanyBusinessList))
                     return View(null);
-                BusinessViewModel result = await _expeditionService.GetCompanyBusiness(CompanyBusinessList);
+                BusinessViewModel result = await _expeditionReportService.GetCompanyBusiness(CompanyBusinessList);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 if (result != null && result.CompanyBusiness.Count() > 0)
                 {
@@ -350,7 +350,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 TempData["BusinessCode"] = BusinessCode;
                 TempData["BusinessDescription"] = BusinessDescription;
 
-                ExpeditionListViewModel result = await _expeditionService.GetExpeditionReportList(BusinessID, ServiceCompanyList);
+                ExpeditionListViewModel result = await _expeditionReportService.GetExpeditionReportList(BusinessID, ServiceCompanyList);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 ViewBag.BusinessID = BusinessID;
                 ViewBag.BusinessCode = BusinessCode;

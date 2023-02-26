@@ -16,7 +16,17 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             _repository = repository;
         }
-        
+
+        public async Task<IEnumerable<Business>> GetCompanyBusiness(DataTable CompanyBusinessList)
+        {
+            IEnumerable<Business> companyBusiness = await _repository.Generic.GetCompanyBusiness(CompanyBusinessList);
+            if (companyBusiness == null)
+            {
+
+            }
+
+            return companyBusiness;
+        }
         public async Task<ProjectListViewModel> GetProjects(DataTable CompanyBusinessList)
         {
             ProjectListViewModel viewmodel = new ProjectListViewModel();

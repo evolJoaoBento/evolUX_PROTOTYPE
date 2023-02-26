@@ -70,6 +70,50 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             }
 
         }
+        public async Task<IActionResult> ExpCompany(string expeditionTypeViewJson)
+        {
+            try
+            {
+                ExpeditionTypeViewModel result = JsonConvert.DeserializeObject<ExpeditionTypeViewModel>(expeditionTypeViewJson);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+
+                return View(result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
 
         public async Task<IActionResult> Types()
         {
@@ -120,25 +164,15 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             }
 
         }
-        public async Task<IActionResult> TypeDetail(string expeditionTypeJson, int expCompanyID)
+        public async Task<IActionResult> TypeDetail(string expeditionTypeJson)
         {
             try
             {
                 ExpeditionTypeViewModel result = new ExpeditionTypeViewModel();
-                if (string.IsNullOrEmpty(expeditionTypeJson) && expCompanyID > 0)
-                {
-                    result = await _expeditionService.GetExpCompanyTypes(null, expCompanyID);
-                    ViewBag.SpecificExpCompany = true;
-                }
-                else
-                {
-                    ExpeditionTypeElement expeditionType = JsonConvert.DeserializeObject<ExpeditionTypeElement>(expeditionTypeJson);
-                    List<ExpeditionTypeElement> types = new List<ExpeditionTypeElement>();
-                    types.Add(expeditionType);
-                    result.Types = types;
-
-                    ViewBag.SpecificExpCompany = false;
-                }
+                ExpeditionTypeElement expeditionType = JsonConvert.DeserializeObject<ExpeditionTypeElement>(expeditionTypeJson);
+                List<ExpeditionTypeElement> types = new List<ExpeditionTypeElement>();
+                types.Add(expeditionType);
+                result.Types = types;
                 string expCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 result.ExpCompanies = JsonConvert.DeserializeObject<List<Company>>(expCompanyList);
