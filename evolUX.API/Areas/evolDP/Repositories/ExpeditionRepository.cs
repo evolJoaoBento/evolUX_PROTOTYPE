@@ -106,7 +106,17 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return expCodes;
             }
         }
-
+        public async Task<IEnumerable<ExpeditionRegistElement>> GetExpeditionRegistIDs(int expCompanyID)
+        {
+            string sql = @"RD_UX_GET_EXPCOMPANY_EXPEDITION_IDS";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ExpeditionRegistElement> expList = await connection.QueryAsync<ExpeditionRegistElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return expList;
+            }
+        }
         public async Task<List<dynamic>> GetExpeditionCompanyConfigs(dynamic data)//TODO: UNTESTED
         {
             var expeditionCompanyConfigsList = new List<dynamic>();

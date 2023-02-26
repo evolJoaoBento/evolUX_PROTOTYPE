@@ -81,5 +81,15 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ExpeditionZoneViewModel>();
         }
+        public async Task<IEnumerable<ExpeditionRegistElement>> GetExpeditionRegistIDs(int expCompanyID)
+        {
+           var response = await _flurlClient.Request("/API/evolDP/Expedition/GetExpeditionRegistIDs")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, expCompanyID);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<IEnumerable<ExpeditionRegistElement>>();
+        }
+
     }
 }

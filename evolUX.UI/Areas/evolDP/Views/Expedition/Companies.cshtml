@@ -39,6 +39,8 @@ else
     string idValue = "arrow" + level.ToString();
     string nameValue = "";
 
+    bool ExistsExpeditionRegist = false;
+
     <div id="TitlePage">
         <h1>@localizer["ExpCompanyList"]</h1>
     </div>
@@ -67,7 +69,11 @@ else
                     newExpType.Description = t.Description;
                     newExpType.ExpCompanyTypesList = t.ExpCompanyTypesList.Where(x => x.ExpCompanyID == expCompany.ID);
                     if (newExpType.ExpCompanyTypesList.Count() > 0)
+                    {
                         expCompanyTypeList.Add(newExpType);
+                        if (newExpType.ExpCompanyTypesList.Where(x => x.RegistMode).Count() > 0)
+                            ExistsExpeditionRegist = true;
+                    }
                 }
                 level++;
                 nameValue = Level0Name + level.ToString();
@@ -78,17 +84,19 @@ else
                     <td width="150px">
                         @if (AddExpCompany || AddExpeditionType)
                         {
-                            <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expeditiontypeviewJson="@JsonConvert.SerializeObject(Model)">
+                            <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expCompanyid="@expCompany.ID" asp-route-expeditiontypeviewJson="@JsonConvert.SerializeObject(Model)">
                                 <img style="background:none; width:35px;height:35px;" src="~/images/menu.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
                             </a>
                         }
-                        <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyContracts" asp-route-expCompanyid="@expCompany.ID">
+                        <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyContracts" asp-route-expCompanyJson="@JsonConvert.SerializeObject(expCompany)">
                             <img style="background:none; width:35px;height:35px;" src="~/images/contract.png" title="@localizer["ExpCompanyContracts"]: @expCompany.CompanyName" />
                         </a>
-
-                        <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpRegistRange" asp-route-expCompanyid="@expCompany.ID">
+                        @if (ExistsExpeditionRegist)
+                        {
+                            <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpRegistRange" asp-route-expCompanyJson="@JsonConvert.SerializeObject(expCompany)">
                             <img style="background:none; width:35px;height:35px;" src="~/images/RegistredMail.png" title="@localizer["ExpRegistRange"]: @expCompany.CompanyName" />
                         </a>
+                        }
                     </td>
                     <td>
                         @expCompany.ID

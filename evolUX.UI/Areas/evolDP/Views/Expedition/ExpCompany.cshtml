@@ -33,6 +33,7 @@ else
     List<ExpeditionTypeElement> expCompanyTypes = new List<ExpeditionTypeElement>();
     List<ExpeditionTypeElement> expCompanyTypesNotIn = new List<ExpeditionTypeElement>();
     Company expCompany = Model.ExpCompanies.First();
+    bool ExistsExpeditionRegist = false;
     foreach (ExpeditionTypeElement exp in Model.Types)
     {
         ExpeditionTypeElement newExp = new ExpeditionTypeElement();
@@ -41,7 +42,11 @@ else
         newExp.Priority = exp.Priority;
         newExp.ExpCompanyTypesList = exp.ExpCompanyTypesList.Where(x => x.ExpCompanyID == expCompany.ID);
         if (newExp.ExpCompanyTypesList.Count() > 0)
+        {
             expCompanyTypes.Add(newExp); 
+            if (newExp.ExpCompanyTypesList.Where(x => x.RegistMode).Count() > 0)
+                ExistsExpeditionRegist = true;
+        }
         else
             expCompanyTypesNotIn.Add(newExp);
     }
@@ -63,10 +68,12 @@ else
         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyContracts" asp-route-expcompanyJson="@JsonConvert.SerializeObject(expCompany)">
             <img style="background:none; width:50px;height:50px;" src="~/images/contract2.png" title="@localizer["ExpCompanyContracts"]" />
         </a>
-
+        if (ExistsExpeditionRegist)
+        {
         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpRegistRange" asp-route-expcompanyJson="@JsonConvert.SerializeObject(expCompany)">
             <img style="background:none; width:50px;height:50px;" src="~/images/RegistredMail2.png" title="@localizer["ExpRegistRange"]" />
         </a>
+        }
     </div>
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">

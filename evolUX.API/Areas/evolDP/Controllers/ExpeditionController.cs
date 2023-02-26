@@ -214,7 +214,30 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 return StatusCode(500, "Internal Server Erros");
             }
         }
-               
+
+        [HttpGet]
+        [ActionName("GetExpeditionRegistIDs")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<ExpeditionZoneViewModel>> GetExpeditionRegistIDs([FromBody] int expCompanyID)
+        {
+            try
+            {
+                var expeditionRegistIDs = await _expeditionService.GetExpeditionRegistIDs(expCompanyID);
+                _logger.LogInfo("ExpeditionRegistIDs Get");
+                return Ok(expeditionRegistIDs);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetExpeditionRegistIDs action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+
         //TODO: UNTESTED
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here

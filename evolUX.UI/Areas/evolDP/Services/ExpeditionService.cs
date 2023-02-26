@@ -41,6 +41,11 @@ namespace evolUX.UI.Areas.evolDP.Services
             return response;
         }
 
-
+        public async Task<IEnumerable<ExpeditionRegistElement>> GetExpeditionRegistIDs(int expCompanyID)
+        {
+            var response = await _expeditionTypeRepository.GetExpeditionRegistIDs(expCompanyID);
+            return response;
+        }
+        
     }
 }

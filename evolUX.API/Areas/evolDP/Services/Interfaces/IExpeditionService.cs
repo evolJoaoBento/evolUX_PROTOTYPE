@@ -14,5 +14,7 @@ namespace evolUX.API.Areas.evolDP.Services.Interfaces
         public Task<IEnumerable<Company>> GetExpeditionCompanies(int? expCompanyID, DataTable? expCompanyList);
         public Task<List<dynamic>> GetExpeditionCompanyConfigs(dynamic data);
         public Task<List<dynamic>> GetExpeditionCompanyConfigCharacteristics(dynamic data);
+        public Task<IEnumerable<ExpeditionRegistElement>> GetExpeditionRegistIDs(int expCompanyID);
+        
     }
 }
