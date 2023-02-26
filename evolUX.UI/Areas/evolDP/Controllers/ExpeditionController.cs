@@ -22,6 +22,54 @@ namespace evolUX.UI.Areas.evolDP.Controllers
         {
             _expeditionService = expeditionService;
         }
+        public async Task<IActionResult> Companies()
+        {
+            try
+            {
+                string expCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
+                ExpeditionTypeViewModel result = await _expeditionService.GetExpeditionCompanies(expCompanyList);
+                if (result != null && result.ExpCompanies != null && result.ExpCompanies.Count() > 0)
+                {
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+                    return View(result);
+                }
+                return View(null);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
 
         public async Task<IActionResult> Types()
         {
@@ -298,5 +346,6 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             }
 
         }
+
     }
 }

@@ -17,6 +17,15 @@ namespace evolUX.UI.Areas.evolDP.Repositories
         {
         }
 
+        public async Task<ExpeditionTypeViewModel> GetExpeditionCompanies(string expCompanyList)
+        {
+            var response = await _flurlClient.Request("/API/evolDP/Expedition/GetExpeditionCompanies")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, expCompanyList);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<ExpeditionTypeViewModel>();
+        }
         public async Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, string expCompanyList)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();

@@ -14,6 +14,11 @@ namespace evolUX.UI.Areas.evolDP.Services
         {
             _expeditionTypeRepository = expeditionTypeRepository;
         }
+        public async Task<ExpeditionTypeViewModel> GetExpeditionCompanies(string expCompanyList)
+        {
+            var response = await _expeditionTypeRepository.GetExpeditionCompanies(expCompanyList);
+            return response;
+        }
         public async Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, string expCompanyList)
         {
             var response = await _expeditionTypeRepository.GetExpeditionTypes(expeditionType, expCompanyList);

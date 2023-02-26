@@ -117,11 +117,38 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Action" xml:space="preserve">
+    <value>Ação</value>
+  </data>
   <data name="BarcodeRegistMode" xml:space="preserve">
     <value>Digito para Chave Pós-Composição</value>
   </data>
   <data name="BarcodeRegistModeTip" xml:space="preserve">
     <value>Controla o 1º digito da chave enviada para Motor de Pós Composição. A chave permite que o Motor tome decisões sobre que códigos de barras colocar e onde colocar.</value>
+  </data>
+  <data name="ChangeExpCompany" xml:space="preserve">
+    <value>Alterar dados da Companhia</value>
+  </data>
+  <data name="CompanyAddress" xml:space="preserve">
+    <value>Morada</value>
+  </data>
+  <data name="CompanyCode" xml:space="preserve">
+    <value>Código</value>
+  </data>
+  <data name="CompanyCountry" xml:space="preserve">
+    <value>País</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="CompanyPostalCode" xml:space="preserve">
+    <value>Código Postal</value>
+  </data>
+  <data name="CompanyPostalCodeDesc" xml:space="preserve">
+    <value>Código Postal / Localidade</value>
+  </data>
+  <data name="CompanyPostalCodeDescription" xml:space="preserve">
+    <value>Localidade</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Descrição</value>
@@ -129,11 +156,20 @@
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
   </data>
-  <data name="ExpCompany" xml:space="preserve">
-    <value>Companhia de Expedição</value>
+  <data name="ExpCompanyContracts" xml:space="preserve">
+    <value>Listar contratos da Companhia</value>
+  </data>
+  <data name="ExpCompanyList" xml:space="preserve">
+    <value>Companhias de Expedição</value>
   </data>
   <data name="ExpeditionType" xml:space="preserve">
     <value>Tipos de Expedição</value>
+  </data>
+  <data name="ExpRegistRange" xml:space="preserve">
+    <value>Ver configurações de Correio Registado para a Companhia</value>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>ID</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
