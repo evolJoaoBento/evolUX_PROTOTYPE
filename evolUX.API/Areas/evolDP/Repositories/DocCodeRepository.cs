@@ -180,36 +180,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
 
         }
-        
-        
-        public async Task<IEnumerable<ExpCompanyServiceTask>> GetExpCompanyServiceTask(string expCode)
-        {
-            string sql = @"RD_UX_GET_EXPCOMPANY_SERVICE_TASK";
-            var parameters = new DynamicParameters();
-            if (!string.IsNullOrEmpty(expCode))
-                parameters.Add("ExpCode", expCode, DbType.Int64);
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                IEnumerable<ExpCompanyServiceTask> expCodes = await connection.QueryAsync<ExpCompanyServiceTask>(sql,
-                    parameters);
-                return expCodes;
-            }
-        }
-        
-        public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMediaGroups(int? envMediaGroupID)
-        {
-            string sql = @"RD_UX_GET_ENVELOPE_MEDIA_GROUP";
-            var parameters = new DynamicParameters();
-            if (envMediaGroupID != null && envMediaGroupID > 0) 
-                parameters.Add("EnvMediaGroupID", envMediaGroupID, DbType.Int64);
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                IEnumerable<EnvelopeMedia> envMedia = await connection.QueryAsync<EnvelopeMedia>(sql,
-                    parameters);
-                return envMedia;
-            }
-        }
-
+                       
         public async Task<IEnumerable<int>> GetAggregationList()
         {
             List<int> ilist = new List<int> { 0, 1, 2, 3 };
@@ -223,31 +194,6 @@ namespace evolUX.API.Areas.evolDP.Repositories
             {
                 IEnumerable<string> results = await connection.QueryAsync<string>(sql);
                 return results;
-            }
-        }
-        public async Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(int? expeditionType)
-        {
-            string sql = @"RD_UX_GET_EXPEDITION_TYPE";
-            var parameters = new DynamicParameters();
-            if (expeditionType != null && expeditionType > 0)
-                parameters.Add("ExpeditionType", expeditionType, DbType.String);
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                IEnumerable<ExpeditionsType> expeditionCompanies = await connection.QueryAsync<ExpeditionsType>(sql, parameters);
-                return expeditionCompanies;
-            }
-        }
-
-        public async Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID)
-        {
-            string sql = @"RD_UX_GET_SERVICE_TASK";
-            var parameters = new DynamicParameters();
-            if (serviceTaskID != null && serviceTaskID > 0)
-                parameters.Add("ServiceTaskID", serviceTaskID, DbType.String);
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                IEnumerable<ServiceTask> serviceTasks = await connection.QueryAsync<ServiceTask>(sql, parameters);
-                return serviceTasks;
             }
         }
         
