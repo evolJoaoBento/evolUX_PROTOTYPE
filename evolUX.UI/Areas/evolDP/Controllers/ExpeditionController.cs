@@ -246,5 +246,57 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             }
 
         }
+
+        public async Task<IActionResult> ZoneDetail(string expeditionZoneJson)
+        {
+            try
+            {
+                ExpeditionZoneViewModel result = new ExpeditionZoneViewModel();
+                ExpeditionZoneElement expeditionZone = JsonConvert.DeserializeObject<ExpeditionZoneElement>(expeditionZoneJson);
+                List<ExpeditionZoneElement> zones = new List<ExpeditionZoneElement>();
+                zones.Add(expeditionZone);
+                result.Zones = zones;
+
+                string expCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+                result.ExpCompanies = JsonConvert.DeserializeObject<List<Company>>(expCompanyList);
+
+                return View("ZoneDetail", result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
     }
 }

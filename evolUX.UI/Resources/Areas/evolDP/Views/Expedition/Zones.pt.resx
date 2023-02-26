@@ -117,55 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BarcodeRegistMode" xml:space="preserve">
-    <value>Digito para Chave Pós-Composição</value>
-  </data>
-  <data name="BarcodeRegistModeTip" xml:space="preserve">
-    <value>Controla o 1º digito da chave enviada para Motor de Pós Composição. A chave permite que o Motor tome decisões sobre que códigos de barras colocar e onde colocar.</value>
-  </data>
   <data name="Description" xml:space="preserve">
     <value>Descrição</value>
   </data>
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
   </data>
+  <data name="ExpCenterCode" xml:space="preserve">
+    <value>Centro de Expedição</value>
+  </data>
   <data name="ExpCompany" xml:space="preserve">
     <value>Companhia de Expedição</value>
   </data>
-  <data name="ExpeditionType" xml:space="preserve">
-    <value>Tipos de Expedição</value>
+  <data name="ExpeditionZone" xml:space="preserve">
+    <value>Zonas de Expedição</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
-  <data name="Priority" xml:space="preserve">
-    <value>Prioridade</value>
+  <data name="ServiceCompanyName" xml:space="preserve">
+    <value>Fornecedor de Serviços</value>
   </data>
-  <data name="RegistMode" xml:space="preserve">
-    <value>Controlo de Registo</value>
+  <data name="ServiceTask" xml:space="preserve">
+    <value>Tipo de Tratamento</value>
   </data>
-  <data name="RegistModeDisabled" xml:space="preserve">
-    <value>Inativo</value>
-  </data>
-  <data name="RegistModeEnabled" xml:space="preserve">
-    <value>Ativo</value>
-  </data>
-  <data name="RegistModeTip" xml:space="preserve">
-    <value>Flag que indica se é atribuido um ID a cada objeto postal para rastreio de correio.</value>
-  </data>
-  <data name="SeparationMode" xml:space="preserve">
-    <value>Separação por escalões de expedição</value>
-  </data>
-  <data name="SeparationModeDisabled" xml:space="preserve">
-    <value>Inativa</value>
-  </data>
-  <data name="SeparationModeEnabled" xml:space="preserve">
-    <value>Ativa</value>
-  </data>
-  <data name="SeparationModeTip" xml:space="preserve">
-    <value>Flag que indica se a alteração de escalão de expedição obriga a ficheiros de produção diferentes.</value>
-  </data>
-  <data name="Type" xml:space="preserve">
-    <value>Tipo</value>
+  <data name="Zone" xml:space="preserve">
+    <value>Zona</value>
   </data>
 </root>

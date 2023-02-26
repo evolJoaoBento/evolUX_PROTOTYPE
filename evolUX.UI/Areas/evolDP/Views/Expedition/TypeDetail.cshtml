@@ -14,15 +14,8 @@
 }
 @if (Model == null)
 {
-    <div id="TitlePage">
-        @if (ViewBag.SpecificExpCompany)
-        {
-            <h1>@localizer["ExpCompanyType"]</h1>
-        }
-        else
-        {
-            <h1>@localizer["ExpCompanyTypes"]</h1>
-        }
+    <div id = "TitlePage" >
+        <h1>@localizer["ExpCompanyTypes"]</h1>
     </div>
     <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Types">
     </a>
@@ -31,18 +24,22 @@
 else
 {
     string expCompanyName = Model.ExpCompanies.Where(x => x.ID == Model.Types.First().ExpCompanyTypesList.First().ExpCompanyID).First().CompanyName;
-    <div id="TitlePage">
-        @if (ViewBag.SpecificExpCompany)
-        {
-            <h1>@expCompanyName - @localizer["ExpCompanyTypes"]</h1>
-        }
-        else
-        {
-            <h1>@expCompanyName - @localizer["ExpCompanyType"]: @Model.Types.First().Description</h1>
-        }
-    </div>
-    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Types">
-    </a>
+    if (ViewBag.SpecificExpCompany)
+    {
+        <div id = "TitlePage" >
+            <h1>@localizer["ExpCompanyType"]</h1>
+        </div>
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyID="@Model.Types.First().ExpCompanyTypesList.First().ExpCompanyID">
+        </a>
+    }
+    else
+    {
+        <div id = "TitlePage" >
+            <h1>@localizer["ExpCompanyTypes"]</h1>
+        </div>
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Types">
+        </a>
+    }
     string value = "";
     string docTypeDesc = "";
     string Level0Name = "level";

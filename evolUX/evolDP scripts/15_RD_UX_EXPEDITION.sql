@@ -117,7 +117,7 @@ ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_ZONE]
 AS
 	SET NOCOUNT ON
 
-	SELECT DISTINCT ec.ExpCompanyID, ez.ExpeditionZone, s.ServiceTaskID, s.ServiceTaskCode, eee.ExpCenterCode, eee.ServiceCompanyID, cs.CompanyName [ServiceCompanyName]
+	SELECT DISTINCT ec.ExpCompanyID, ez.ExpeditionZone, s.ServiceTaskID, s.[Description] ServiceTaskDesc, e.[Priority], eee.ExpCenterCode, eee.ServiceCompanyID, cs.CompanyName [ServiceCompanyName]
 	FROM RD_EXPEDITION_ZONE ez WITH(NOLOCK)
 	INNER JOIN
 		RD_EXPCOMPANY_CONFIG ec WITH(NOLOCK)
@@ -138,11 +138,14 @@ AS
 	INNER JOIN
 		RD_COMPANY cs WITH(NOLOCK)
 	ON cs.CompanyID = eee.ServiceCompanyID
+	INNER JOIN
+		RD_EXPCODE e WITH(NOLOCK)
+	ON e.ExpCode = eee.ExpCode
 	WHERE (@ExpeditionZone is NULL OR @ExpeditionZone = ez.ExpeditionZone)
 		AND
 			(ec.ExpCompanyID = @ExpCompanyID
 			OR ec.ExpCompanyID in (SELECT ID FROM @ExpCompanyList))
-	ORDER BY ez.ExpeditionZone, ec.ExpCompanyID, s.ServiceTaskCode, eee.ExpCenterCode
+	ORDER BY ez.ExpeditionZone, ec.ExpCompanyID, eee.ExpCenterCode, eee.ServiceCompanyID, s.ServiceTaskID, e.[Priority] DESC
 RETURN
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TASK]') AND type in (N'P', N'PC'))

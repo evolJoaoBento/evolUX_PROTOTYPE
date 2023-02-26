@@ -178,13 +178,15 @@ else
                 <td colspan="8">
                     <table class="table table-sm table-hover table-collapse-seperate">
                     <thead id="bootstrap-overrides" class="table-info sticky-header">
-                        <th>@localizer["Action"]</th>
-                        <th>@localizer["StartDate"]</th>
-                        <th>@localizer["AggrCompatibility"]</th>
-                        <th>@localizer["Priority"]</th>
-                        <th>@localizer["ExpCompany"]</th>
-                        <th>@localizer["ExpeditionType"]</th>
-                        <th>@localizer["ServiceTask"]</th>
+                        <tr>
+                            <th>@localizer["Action"]</th>
+                            <th>@localizer["StartDate"]</th>
+                            <th>@localizer["AggrCompatibility"]</th>
+                            <th>@localizer["Priority"]</th>
+                            <th>@localizer["ExpCompany"]</th>
+                            <th>@localizer["ExpeditionType"]</th>
+                            <th>@localizer["ServiceTask"]</th>
+                        </tr>
                     </thead>
                     <tbody>
                         @foreach(DocCodeConfig dConfig in docCode.DocCodeConfigs)
