@@ -6,7 +6,6 @@ namespace evolUX.API.Areas.Finishing.Repositories.Interfaces
 {
     public interface IPendingRecoverRepository
     {
-        public Task<IEnumerable<Company>> GetServiceCompanies(DataTable ServiceCompanyList);
         public Task<IEnumerable<PendingRecoverElement>> GetPendingRecoverFiles(int serviceCompanyID);
         public Task<IEnumerable<PendingRecoverElement>> GetPendingRecoverRegistDetailFiles(int serviceCompanyID);
     }

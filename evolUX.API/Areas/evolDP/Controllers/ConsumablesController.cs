@@ -12,12 +12,12 @@ namespace evolUX.API.Areas.evolDP.Controllers
     public class ConsumablesController : Controller
     {
         private readonly ILoggerService _logger;
-        private readonly IConsumablesService _envelopeMediaService;
+        private readonly IConsumablesService _consumables;
 
-        public ConsumablesController(ILoggerService logger, IConsumablesService envelopeMediaService)
+        public ConsumablesController(ILoggerService logger, IConsumablesService consumables)
         {
             _logger = logger;
-            _envelopeMediaService = envelopeMediaService;
+            _consumables = consumables;
         }
 
         [HttpGet]
@@ -28,7 +28,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
             try
             {
                 //var envelopeMediaList = await _repository.EnvelopeMedia.GetEnvelopeMedia();
-                var envelopeMediaList = await _envelopeMediaService.GetEnvelopeMedia();
+                var envelopeMediaList = await _consumables.GetEnvelopeMedia(null);
                 _logger.LogInfo("Envelope Media Get");
                 return Ok(envelopeMediaList);
             }
@@ -51,8 +51,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         {
             try
             {
-                //var envelopeMediaGroupList = await _repository.EnvelopeMedia.GetEnvelopeMediaGroups();
-                var envelopeMediaGroupList = await _envelopeMediaService.GetEnvelopeMediaGroups();
+                var envelopeMediaGroupList = await _consumables.GetEnvelopeMediaGroups(null);
                 _logger.LogInfo("Return envelope media group list from database");
                 return Ok(envelopeMediaGroupList);
             }

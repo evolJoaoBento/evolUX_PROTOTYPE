@@ -1,20 +1,39 @@
 ﻿using Dapper;
 using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Data.Context;
+using Microsoft.AspNetCore.Components;
 using Shared.Models.Areas.evolDP;
 using System.Data;
 
 namespace evolUX.API.Areas.evolDP.Repositories
 {
-    public class ClientRepository : IClientRepository
+    public class GenericRepository : IGenericRepository
     {
         private readonly DapperContext _context;
-        public ClientRepository(DapperContext context)
+        public GenericRepository(DapperContext context)
         {
             _context = context;
         }
 
         //FOR REFERENCE https://stackoverflow.com/questions/33087629/dapper-dynamic-parameters-with-table-valued-parameters
+        public async Task<IEnumerable<Company>> GetCompanies(int? companyID, DataTable? CompanyList)
+        {
+            string sql = @"RD_UX_GET_COMPANIES_INFO";
+            var parameters = new DynamicParameters();
+            if (companyID != null)
+                parameters.Add("CompanyID", companyID, DbType.Int64);
+            else
+            {
+                parameters.Add("CompanyList", CompanyList.AsTableValuedParameter("IDlist"));
+            }
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<Company> Companies = await connection.QueryAsync<Company>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return Companies;
+            }
+
+        }
         public async Task<IEnumerable<Business>> GetCompanyBusiness(DataTable CompanyBusinessList)
         {
             string sql = @"RD_UX_GET_BUSINESS_INFO";

@@ -5,8 +5,6 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
 {
     public interface IWrapperRepository
     {
-        IConsumablesRepository EnvelopeMedia { get; }
-
         IFinishingRepository Finishing { get; }
 
         IUserRepository User { get; }
@@ -15,9 +13,13 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
 
         IDocCodeRepository DocCode { get; }
 
-        IClientRepository Client { get; }
+        IGenericRepository Generic { get; }
 
-        IExpeditionRepository Expedition { get; }
+        IExpeditionRepository ExpeditionType { get; }
+
+        IConsumablesRepository Consumables { get; }
+
+        IServiceProvisionRepository ServiceProvision { get; }
 
         IProductionReportRepository ProductionReport { get; }
 

@@ -1,8 +1,8 @@
 ﻿using Shared.ViewModels.Areas.evolDP;
 
-namespace evolUX.UI.Areas.evolDP.Repositories.Interfaces
+namespace evolUX.UI.Areas.evolDP.Services.Interfaces
 {
-    public interface IClientRepository
+    public interface IGenericService
     {
         public Task<BusinessViewModel> GetCompanyBusiness(string CompanyBusinessList);
         public Task<ProjectListViewModel> GetProjects(string CompanyBusinessList);

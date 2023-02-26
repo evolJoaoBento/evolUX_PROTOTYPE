@@ -376,7 +376,7 @@
     <value>Projectos de Formatação</value>
   </data>
   <data name="ActionProjectVersions_Link" xml:space="preserve">
-    <value>/evolDP/Client/Projects</value>
+    <value>/evolDP/Generic/Projects</value>
   </data>
   <data name="ActionPurgeFlows" xml:space="preserve">
     <value>Expurgos</value>
@@ -385,7 +385,7 @@
     <value>Parâmetros Expurgos</value>
   </data>
   <data name="ActionPurgeParameters_Link" xml:space="preserve">
-    <value>/evolDP/Client/ConstantParameter</value>
+    <value>/evolDP/Generic/ConstantParameter</value>
   </data>
   <data name="ActionRecoverReport" xml:space="preserve">
     <value>Recuperações</value>

@@ -1,0 +1,95 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model ExpeditionTypeViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddExpeditionType = false;
+
+    if (Model.Permissions.Find(x => x == "AddExpeditionType") != null) { AddExpeditionType = true; }
+}
+<div id="TitlePage">
+    <h1>@localizer["ExpeditionType"]</h1>
+</div>
+
+@if (Model == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string value = "";
+    string docTypeDesc = "";
+    string Level0Name = "level";
+
+    int level = 0;
+    string idValue = "arrow" + level.ToString();
+    string nameValue = "";
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th width="120px">@localizer["Type"]</th>
+                <th width="120px">@localizer["Priority"]</th>
+                <th>@localizer["Description"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+                @foreach (var t in Model.Types)
+                {
+                    level++;
+                    nameValue = Level0Name + level.ToString();
+                    idValue = "arrow" + nameValue;
+                    <tr>
+                        <td>@t.ExpeditionType</td>
+                        <td>@t.Priority</td>
+                        <td>
+                            @t.Description
+                            @if(t.ExpCompanyTypesList.Count() > 0)
+                            {
+                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <table id="@nameValue" class="table table-sm table-hover table-collapse-seperate" style="display: none">
+                                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                    <tr>
+                                        <th></th>
+                                        <th>@localizer["ExpCompany"]</th>
+                                        <th title="@localizer["RegistModeTip"]">@localizer["RegistMode"]</th>
+                                        <th title="@localizer["SeparationModeTip"]">@localizer["SeparationMode"]</th>
+                                        <th title="@localizer["BarcodeRegistModeTip"]">@localizer["BarcodeRegistMode"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bootstrap-overrides">
+                                        @foreach (ExpCompanyType c in t.ExpCompanyTypesList)
+                                        {
+                                            ExpeditionTypeElement newExpType = new ExpeditionTypeElement();
+                                            newExpType.ExpeditionType = t.ExpeditionType;
+                                            newExpType.Priority = t.Priority;
+                                            newExpType.Description = t.Description;
+                                            List<ExpCompanyType> list = new List<ExpCompanyType>();
+                                            list.Add(c);
+                                            newExpType.ExpCompanyTypesList = list;
+                                            <tr>
+                                                <td><a asp-area="evolDP" asp-controller="Expedition" asp-action="TypeDetail" asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(newExpType)">
+                                                        <img style="background:none; width:25px;height:25px;" src="~/images/list.png" title="@localizer["List"]: @value" />
+                                                    </a></td>
+                                                <td>@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName</td>
+                                                @{value = c.RegistMode ? "checked": "";}
+                                                <td><input type="checkbox" id="RegistMode" @value disabled /></td>
+                                                @{value = c.SeparationMode ? "checked": "";}
+                                                <td><input type="checkbox" id="SeparationMode" @value disabled /></td>
+                                                @{value = c.BarcodeRegistMode != null ? ((bool)c.BarcodeRegistMode ? "1" : "0") : "0";}
+                                                <td>@value</td>
+                                            </tr>
+                                        }
+                                </tbody>
+                            </table>
+                            }
+                        </td>
+                    </tr>
+                }
+        </tbody>
+    </table>
+}

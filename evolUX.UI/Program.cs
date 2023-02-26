@@ -1,3 +1,4 @@
+
 using evolUX.UI.Areas.Core.Repositories;
 using evolUX.UI.Areas.Core.Repositories.Interfaces;
 using evolUX.UI.Areas.Core.Services;
@@ -14,8 +15,6 @@ using evolUX.UI.Filters;
 using Flurl.Http.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Negotiate;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Options;
 using System.Globalization;
@@ -54,10 +53,15 @@ builder.Services.AddSingleton<IUserRepository, UserRepository>();
 //evolDP
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IDocCodeRepository, DocCodeRepository>();
-builder.Services.AddSingleton<IClientService, ClientService>();
-builder.Services.AddSingleton<IClientRepository, ClientRepository>();
+builder.Services.AddSingleton<IGenericService, GenericService>();
+builder.Services.AddSingleton<IGenericRepository, GenericRepository>();
 builder.Services.AddSingleton<IExpeditionRepository, ExpeditionRepository>();
 builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
+builder.Services.AddSingleton<IConsumablesRepository, ConsumablesRepository>();
+builder.Services.AddSingleton<IConsumablesService, ConsumablesService>();
+builder.Services.AddSingleton<IServiceProvisionRepository, ServiceProvisionRepository>();
+builder.Services.AddSingleton<IServiceProvisionService, ServiceProvisionService>();
+
 
 //Finishing
 builder.Services.AddSingleton<IProductionReportService, ProductionReportService>();

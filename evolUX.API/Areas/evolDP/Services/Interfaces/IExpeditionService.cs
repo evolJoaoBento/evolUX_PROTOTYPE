@@ -1,10 +1,16 @@
-﻿namespace evolUX.API.Areas.evolDP.Services.Interfaces
+﻿using Shared.Models.Areas.evolDP;
+using Shared.ViewModels.Areas.evolDP;
+using System.Data;
+
+namespace evolUX.API.Areas.evolDP.Services.Interfaces
 {
     public interface IExpeditionService
     {
-        public Task<List<dynamic>> GetExpeditionTypes();
-        public Task<List<dynamic>> GetExpeditionZones();
-        public Task<List<dynamic>> GetExpeditionCompanies();
+        public Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, DataTable? expCompanyList);
+        public Task<ExpeditionTypeViewModel> GetExpCompanyTypes(int? expeditionType, int? expCompanyID);
+        public Task<ExpeditionTypeViewModel> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode, bool returnAll);
+        public Task<ExpeditionZoneViewModel> GetExpeditionZones(int? expeditionZone, DataTable? expCompanyList);
+        public Task<IEnumerable<Company>> GetExpeditionCompanies(int? expCompanyID, DataTable? expCompanyList);
         public Task<List<dynamic>> GetExpeditionCompanyConfigs(dynamic data);
         public Task<List<dynamic>> GetExpeditionCompanyConfigCharacteristics(dynamic data);
     }

@@ -8,15 +8,15 @@ using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
-    public class ClientRepository : RepositoryBase, IClientRepository
+    public class GenericRepository : RepositoryBase, IGenericRepository
     {
-        public ClientRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
+        public GenericRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
 
         public async Task<BusinessViewModel> GetCompanyBusiness(string CompanyBusinessList)
         {
-            var response = await _flurlClient.Request("/API/finishing/Expedition/GetCompanyBusiness")
+            var response = await _flurlClient.Request("/API/evolDP/Generic/GetCompanyBusiness")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, CompanyBusinessList);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
@@ -26,7 +26,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
         }
         public async Task<ProjectListViewModel> GetProjects(string CompanyBusinessList)
         {
-            var response = await _flurlClient.Request("/API/evolDP/Client/GetProjects")
+            var response = await _flurlClient.Request("/API/evolDP/Generic/GetProjects")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, CompanyBusinessList);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);

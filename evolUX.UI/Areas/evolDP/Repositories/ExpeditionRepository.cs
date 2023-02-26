@@ -3,6 +3,11 @@ using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
 using Flurl.Http;
 using Flurl.Http.Configuration;
 using System.Net;
+using evolUX.UI.Exceptions;
+using Shared.ViewModels.Areas.evolDP;
+using evolUX.API.Models;
+using Shared.ViewModels.Areas.Finishing;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
@@ -12,24 +17,57 @@ namespace evolUX.UI.Areas.evolDP.Repositories
         {
         }
 
-        public async Task<IFlurlResponse> GetExpeditionTypes()
+        public async Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, string expCompanyList)
         {
-            try
-            {
-                var response = await _flurlClient.Request("/API/evoldp/expeditiontype/GetExpeditionTypes")
-                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                    .GetAsync();
-                return response;
-            }
-
-            catch (FlurlHttpException ex)
-            {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-                dynamic d = ex.GetResponseJsonAsync();
-                return d;
-            }
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ExpeditionType", expeditionType);
+            dictionary.Add("ExpCompanyList", expCompanyList);
+            var response = await _flurlClient.Request("/API/evolDP/Expedition/GetExpeditionTypes")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<ExpeditionTypeViewModel>();
+        }
+        public async Task<ExpeditionTypeViewModel> GetExpCompanyTypes(int? expeditionType, int? expCompanyID)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ExpeditionType", expeditionType);
+            dictionary.Add("ExpCompanyID", expCompanyID);
+            var response = await _flurlClient.Request("/API/evolDP/Expedition/GetExpCompanyTypes")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<ExpeditionTypeViewModel>();
+        }
+        public async Task<ExpeditionTypeViewModel> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode, bool returnAll)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ExpeditionType", expeditionType);
+            dictionary.Add("ExpCompanyID", expCompanyID);
+            dictionary.Add("RegistMode", registMode);
+            dictionary.Add("SeparationMode", separationMode);
+            dictionary.Add("BarcodeRegistMode", barcodeRegistMode);
+            dictionary.Add("ReturnAll", returnAll);
+            var response = await _flurlClient.Request("/API/evolDP/Expedition/SetExpCompanyType")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<ExpeditionTypeViewModel>();
+        }
+        public async Task<ExpeditionZoneViewModel> GetExpeditionZones(int? expeditionZone, string expCompanyList)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ExpeditionZone", expeditionZone);
+            dictionary.Add("ExpCompanyList", expCompanyList);
+            var response = await _flurlClient.Request("/API/evolDP/Expedition/GetExpeditionZones")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<ExpeditionZoneViewModel>();
         }
     }
 }

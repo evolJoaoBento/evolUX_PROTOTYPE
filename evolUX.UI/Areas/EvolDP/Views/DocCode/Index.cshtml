@@ -18,12 +18,6 @@
 <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-source="AddDoc">
     <img style="background:none; width:50px;height:50px;" src="@siteURL/images/add_doc.png" title="@localizer["AddDocCode"]" />
 </a>
-
-<!--<div>
-    <a class="btn btn-primary" asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevel1">Configurar Companhia</a>
-    <a class="btn btn-primary" asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevel2">Configurar Rede/Canal</a>
-    <a class="btn btn-primary" asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevel3">Configurar Segmento de Cliente</a>
-</div>-->
 @if (Model == null)
 {
     <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>

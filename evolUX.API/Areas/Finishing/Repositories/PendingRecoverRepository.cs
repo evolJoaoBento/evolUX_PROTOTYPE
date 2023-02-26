@@ -48,21 +48,5 @@ namespace evolUX.API.Areas.Finishing.Repositories
                 return pendingRecoverList;
             }
         }
-
-        //FOR REFERENCE https://stackoverflow.com/questions/33087629/dapper-dynamic-parameters-with-table-valued-parameters
-        public async Task<IEnumerable<Company>> GetServiceCompanies(DataTable ServiceCompanyList)
-        {
-            string sql = @"RD_UX_GET_COMPANIES_INFO";
-            var parameters = new DynamicParameters();
-            parameters.Add("CompanyList", ServiceCompanyList.AsTableValuedParameter("IDlist"));
-
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                IEnumerable<Company> serviceCompanies = await connection.QueryAsync<Company>(sql, parameters, commandType: CommandType.StoredProcedure);
-                return serviceCompanies;
-            }
-
-        }
-
     }
 }

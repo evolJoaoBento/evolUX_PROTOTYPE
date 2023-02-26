@@ -30,32 +30,6 @@ namespace evolUX.API.Areas.Finishing.Controllers
             _expeditionService = expeditionService;
         }
 
-
-        //THE SERVICECOMPANYLIST SHOULD USE A SESSION VARIABLE IN THE UI LAYER
-        [HttpGet]
-        [ActionName("GetCompanyBusiness")]
-        public async Task<ActionResult<BusinessViewModel>> GetCompanyBusiness([FromBody] string CompanyBusinessListJSON)
-        {
-            DataTable CompanyBusinessList = JsonConvert.DeserializeObject<DataTable>(CompanyBusinessListJSON);
-            try
-            {
-                BusinessViewModel viewmodel = new BusinessViewModel();
-                viewmodel.CompanyBusiness = await _expeditionService.GetCompanyBusiness(CompanyBusinessList);
-                _logger.LogInfo("GetCompanyBusiness Get");
-                return Ok(viewmodel);
-            }
-            catch (SqlException ex)
-            {
-                return StatusCode(503, "Internal Server Error");
-            }
-            catch (Exception ex)
-            {
-                //log error
-                _logger.LogError($"Something went wrong inside Get DocCode action: {ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
         [HttpGet]
         [ActionName("GetPendingExpeditionFiles")]
         public async Task<ActionResult<ExpeditionListViewModel>> GetPendingExpeditionFiles([FromBody] Dictionary<string, object> dictionary)

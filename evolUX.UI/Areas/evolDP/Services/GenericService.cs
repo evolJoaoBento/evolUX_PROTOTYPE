@@ -8,36 +8,36 @@ using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
 
 namespace evolUX.UI.Areas.evolDP.Services
 {
-    public class ClientService : IClientService
+    public class GenericService : IGenericService
     {
-        private readonly IClientRepository _clienttRepository;
-        public ClientService(IClientRepository clientRepository)
+        private readonly IGenericRepository _genericRepository;
+        public GenericService(IGenericRepository genericRepository)
         {
-            _clienttRepository = clientRepository;
+            _genericRepository = genericRepository;
         }
         public async Task<BusinessViewModel> GetCompanyBusiness(string CompanyBusinessList)
         {
-            var response = await _clienttRepository.GetCompanyBusiness(CompanyBusinessList);
+            var response = await _genericRepository.GetCompanyBusiness(CompanyBusinessList);
             return response;
         }
         public async Task<ProjectListViewModel> GetProjects(string CompanyBusinessList)
         {
-            var response = await _clienttRepository.GetProjects(CompanyBusinessList);
+            var response = await _genericRepository.GetProjects(CompanyBusinessList);
             return response;
         }
         public async Task<ConstantParameterViewModel> GetParameters()
         {
-            var response = await _clienttRepository.GetParameters();
+            var response = await _genericRepository.GetParameters();
             return response;
         }
         public async Task<ConstantParameterViewModel> SetParameter(int parameterID, string parameterRef, int parameterValue, string parameterDescription)
         {
-            var response = await _clienttRepository.SetParameter(parameterID, parameterRef, parameterValue, parameterDescription);
+            var response = await _genericRepository.SetParameter(parameterID, parameterRef, parameterValue, parameterDescription);
             return response;
         }
         public async Task<ConstantParameterViewModel> DeleteParameter(int parameterID)
         {
-            var response = await _clienttRepository.DeleteParameter(parameterID);
+            var response = await _genericRepository.DeleteParameter(parameterID);
             return response;
         }
 

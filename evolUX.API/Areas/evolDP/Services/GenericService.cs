@@ -9,10 +9,10 @@ using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.API.Areas.evolDP.Services
 {
-    public class ClientService : IClientService
+    public class GenericService : IGenericService
     {
         private readonly IWrapperRepository _repository;
-        public ClientService(IWrapperRepository repository)
+        public GenericService(IWrapperRepository repository)
         {
             _repository = repository;
         }
@@ -21,27 +21,27 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             ProjectListViewModel viewmodel = new ProjectListViewModel();
 
-            viewmodel.Projects = (List<ProjectElement>)await _repository.Client.GetProjects(CompanyBusinessList);
+            viewmodel.Projects = (List<ProjectElement>)await _repository.Generic.GetProjects(CompanyBusinessList);
             return viewmodel;
         }
         public async Task<ConstantParameterViewModel> GetParameters()
         {
             ConstantParameterViewModel viewmodel = new ConstantParameterViewModel();
-            viewmodel.ConstantsList = await _repository.Client.GetParameters();
+            viewmodel.ConstantsList = await _repository.Generic.GetParameters();
             return viewmodel;
         }
 
         public async Task<ConstantParameterViewModel> SetParameter(int parameterID, string parameterRef, int parameterValue, string parameterDescription)
         {
             ConstantParameterViewModel viewmodel = new ConstantParameterViewModel();
-            viewmodel.ConstantsList = await _repository.Client.SetParameter(parameterID, parameterRef, parameterValue, parameterDescription);
+            viewmodel.ConstantsList = await _repository.Generic.SetParameter(parameterID, parameterRef, parameterValue, parameterDescription);
             return viewmodel;
         }
 
         public async Task<ConstantParameterViewModel> DeleteParameter(int parameterID)
         {
             ConstantParameterViewModel viewmodel = new ConstantParameterViewModel();
-            viewmodel.ConstantsList = await _repository.Client.DeleteParameter(parameterID);
+            viewmodel.ConstantsList = await _repository.Generic.DeleteParameter(parameterID);
             return viewmodel;
         }
     }

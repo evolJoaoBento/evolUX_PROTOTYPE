@@ -336,7 +336,7 @@ SET LocalizationKey = 'Action' + CASE RTRIM(LTRIM([Description]))
 	WHEN 'Marcar Intervalos de Documentos em Erro' THEN 'MarkDocumentsRangeinError'
 	WHEN 'Tipos de Documento' THEN 'DocumentTypification'
 	WHEN 'Gamas de Envelopes' THEN 'EnvelopeRange'
-	WHEN 'Materiais' THEN 'Materials'
+	WHEN 'Materiais' THEN 'Consumables'
 	WHEN 'Companhias de Serviços' THEN 'ServiceCompanies'
 	WHEN 'Serviços por Companhia' THEN 'ServicesProvided'
 	WHEN 'Companhias de Expedição' THEN 'ExpeditionCompanies'
@@ -1163,7 +1163,7 @@ FROM ACTIONS
 WHERE  [Description] like 'Alterar Faixa de Registos para Expedic__'
 
 INSERT INTO #ChildActions
-SELECT 'AddExpeditionType', 0, 'Alterar Companhia de Expedição', ActionID
+SELECT 'AddExpeditionType', 0, 'Alterar Tipo de Expedição', ActionID
 FROM ACTIONS
 WHERE [Description] like 'Alter Configura__es para Tipo de Expedi__o'
 	OR [Description] like 'Alteração de Configura__es para Tipo de Expedi__o'
@@ -1388,7 +1388,7 @@ DECLARE @ActionID int,
 	@ParentActionID int,
 	@DefaultOrder int
 
-SELECT @ParentLocalizationKey = 'ActionExpeditionConfig', @DefaultOrder = 30, @ParentActionID = ActionID
+SELECT @ParentLocalizationKey = 'ActionExpeditionConfig', @DefaultOrder = 40, @ParentActionID = ActionID
 FROM evolUX_ACTIONS
 WHERE LocalizationKey = 'ActionMenuEvolDPConfig'
 
@@ -1565,7 +1565,7 @@ DECLARE @ActionID int,
 	@DefaultOrder int
 
 SELECT @ParentLocalizationKey = 'ActionMenuEvolDPConfig', @NewLocalizationKey = 'ActionServiceProvision', 
-	@NewDescription = 'Configuração de Serviços', @DefaultOrder = 40
+	@NewDescription = 'Configuração de Serviços', @DefaultOrder = 30
 
 SELECT @ParentActionID = ActionID
 FROM evolUX_ACTIONS

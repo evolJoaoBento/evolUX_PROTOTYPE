@@ -34,8 +34,10 @@ builder.Services.AddSingleton<IWrapperRepository, WrapperRepository>();
 
 //evolDP
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
-builder.Services.AddSingleton<IClientService, ClientService>();
+builder.Services.AddSingleton<IGenericService, GenericService>();
 builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
+builder.Services.AddSingleton<IConsumablesService, ConsumablesService>();
+builder.Services.AddSingleton<IServiceProvisionService, ServiceProvisionService>();
 
 //Finishing
 builder.Services.AddSingleton<IProductionReportService, ProductionReportService>();

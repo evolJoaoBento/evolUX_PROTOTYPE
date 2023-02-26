@@ -267,7 +267,7 @@ else
                         {
                             <option value="@dConfig?.EnvMediaID">@dConfig.EnvMediaDesc</option>
                         }
-                        @foreach (EnvelopeMedia e in Model.EnvMediaGroups.Where(x => dConfig?.EnvMediaID == null || x.EnvMediaGroupID != dConfig?.EnvMediaID))
+                        @foreach (EnvelopeMediaGroup e in Model.EnvMediaGroups.Where(x => dConfig?.EnvMediaID == null || x.EnvMediaGroupID != dConfig?.EnvMediaID))
                         {
                             <option value="@e.EnvMediaGroupID">@e.Description</option>
                         }
@@ -301,7 +301,7 @@ else
                     {
                         value = "0";
                     }
-                    <td><input @disable id="Priority" name="Priority" type="number" value="@value" /></td>
+                    <td><input @disable id="Priority" name="Priority" type="number" min="0"  value="@value" /></td>
                 </tr>
                 <tr>
                     <th>@localizer["ProdMaxSheets"]</th>
@@ -339,7 +339,7 @@ else
                                 value = "ExpeditionType" + dConfig.ExpeditionType.ToString();
                                 <option value="@dConfig.ExpeditionType">@localizer[value]</option>
                             }
-                            @foreach (ExpeditionsType e in Model.ExpeditionTypes.Where(x => (dConfig == null || x.ExpeditionType != dConfig.ExpeditionType)))
+                            @foreach (ExpeditionTypeElement e in Model.ExpeditionTypes.Where(x => (dConfig == null || x.ExpeditionType != dConfig.ExpeditionType)))
                             {
                                 value = "ExpeditionType" + e.ExpeditionType.ToString();
                                 <option value="@e.ExpeditionType">@localizer[value]</option>

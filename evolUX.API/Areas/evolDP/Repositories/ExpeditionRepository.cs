@@ -1,6 +1,9 @@
 ﻿using Dapper;
 using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Data.Context;
+using evolUX.API.Models;
+using Shared.Models.Areas.evolDP;
+using System.ComponentModel.Design;
 using System.Data;
 
 namespace evolUX.API.Areas.evolDP.Repositories
@@ -13,41 +16,94 @@ namespace evolUX.API.Areas.evolDP.Repositories
             _context = context;
         }
 
-        public async Task<List<dynamic>> GetExpeditionTypes()
+        public async Task<IEnumerable<ExpeditionTypeElement>> GetExpeditionTypes(int? expeditionType)
         {
-            var expeditionTypeList = new List<dynamic>();
-            string sql = $"SELECT ExpeditionType as [id], " +
-                            $"Priority as [priority], " +
-                            $"Description as [description] FROM RD_EXPEDITION_TYPE";
-
+            string sql = @"RD_UX_GET_EXPEDITION_TYPE";
+            var parameters = new DynamicParameters();
+            if (expeditionType != null && expeditionType > 0)
+                parameters.Add("ExpeditionType", expeditionType, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                expeditionTypeList = (List<dynamic>)await connection.QueryAsync<dynamic>(sql);
-                return expeditionTypeList;
+                IEnumerable<ExpeditionTypeElement> expList = await connection.QueryAsync<ExpeditionTypeElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return expList;
+            }
+        }
+        public async Task<IEnumerable<ExpCompanyType>> GetExpCompanyTypes(int? expeditionType, int? expCompanyID, DataTable? expCompanyList)
+        {
+            string sql = @"RD_UX_GET_EXPCOMPANY_TYPE";
+            var parameters = new DynamicParameters();
+            if (expeditionType != null && expeditionType > 0)
+                parameters.Add("ExpeditionType", expeditionType, DbType.String);
+            if (expCompanyID != null)
+                parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
+            else
+            {
+                parameters.Add("ExpCompanyList", expCompanyList.AsTableValuedParameter("IDlist"));
+            }
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ExpCompanyType> expList = await connection.QueryAsync<ExpCompanyType>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return expList;
+            }
+        }
+        public async Task SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode)
+        {
+            string sql = @"RD_UX_SET_EXPCOMPANY_TYPE";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExpeditionType", expeditionType, DbType.String);
+            parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
+            parameters.Add("RegistMode", registMode, DbType.Boolean);
+            parameters.Add("SeparationMode", separationMode, DbType.Boolean);
+            parameters.Add("BarcodeRegistMode", barcodeRegistMode, DbType.Boolean);
+            
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                await connection.QueryAsync<ExpCompanyType>(sql, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+        public async Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones(int? expeditionZone)
+        {
+            string sql = @"RD_UX_GET_EXPEDITION_ZONE";
+            var parameters = new DynamicParameters();
+            if (expeditionZone != null && expeditionZone > 0)
+                parameters.Add("ExpeditionZone", expeditionZone, DbType.String);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ExpeditionZoneElement> expList = await connection.QueryAsync<ExpeditionZoneElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return expList;
             }
         }
 
-        public async Task<List<dynamic>> GetExpeditionZones()
+        public async Task<IEnumerable<ExpCompanyZone>> GetExpCompanyZones(int? expeditionZone, int? expCompanyID, DataTable? expCompanyList)
         {
-            var expeditionZoneList = new List<dynamic>();
-            //TODO:
-            string sql = $"SELECT ExpeditionZone as [id], " +
-                            $"Description as [description] FROM RD_EXPEDITION_ZONE";
-
+            string sql = @"RD_UX_GET_EXPCOMPANY_ZONE";
+            var parameters = new DynamicParameters();
+            if (expeditionZone != null && expeditionZone > 0)
+                parameters.Add("ExpeditionZone", expeditionZone, DbType.String);
+            if (expCompanyID != null)
+                parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
+            else
+            {
+                parameters.Add("ExpCompanyList", expCompanyList.AsTableValuedParameter("IDlist"));
+            }
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                expeditionZoneList = (List<dynamic>)await connection.QueryAsync<dynamic>(sql);
-                return expeditionZoneList;
+                IEnumerable<ExpCompanyZone> expList = await connection.QueryAsync<ExpCompanyZone>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return expList;
             }
         }
-        public async Task<List<dynamic>> GetExpeditionCompanies()//TODO: UNTESTED
+
+        public async Task<IEnumerable<ExpCompanyServiceTask>> GetExpCompanyServiceTask(string expCode)
         {
-            var expeditionCompaniesList = new List<dynamic>();
-            string sql = @"RD_UX_GET_EXPEDITION_COMPANIES";
+            string sql = @"RD_UX_GET_EXPCOMPANY_SERVICE_TASK";
+            var parameters = new DynamicParameters();
+            if (!string.IsNullOrEmpty(expCode))
+                parameters.Add("ExpCode", expCode, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                expeditionCompaniesList = (List<dynamic>)await connection.QueryAsync(sql, commandType: CommandType.StoredProcedure);
-                return expeditionCompaniesList;
+                IEnumerable<ExpCompanyServiceTask> expCodes = await connection.QueryAsync<ExpCompanyServiceTask>(sql,
+                    parameters, commandType: CommandType.StoredProcedure);
+                return expCodes;
             }
         }
 
@@ -125,5 +181,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
 
         }
+
+
     }
 }

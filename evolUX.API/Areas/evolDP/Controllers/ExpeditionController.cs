@@ -8,11 +8,14 @@ using evolUX.API.Areas.evolDP.Services;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using System.Dynamic;
+using Shared.ViewModels.Areas.evolDP;
+using System.Collections.Generic;
+using System.Data;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
     [ApiController]
-    [Route("api/evoldp/expeditiontype/[action]")]
+    [Route("api/evoldp/[controller]/[action]")]
     public class ExpeditionController : ControllerBase
     {
         private readonly ILoggerService _logger;
@@ -26,13 +29,25 @@ namespace evolUX.API.Areas.evolDP.Controllers
 
         [HttpGet]
         [ActionName("GetExpeditionTypes")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<List<dynamic>>> GetExpeditionTypes()
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<ExpeditionTypeViewModel>> GetExpeditionTypes([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                //var expeditionTypeList = await _repository.ExpeditionType.GetExpeditionTypes();
-                var expeditionTypeList = await _expeditionService.GetExpeditionTypes();
+                object obj;
+                dictionary.TryGetValue("ExpeditionType", out obj);
+                int value = 0;
+                int? expeditionType = null;
+                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                    expeditionType = value;
+                DataTable? expCompanyList = null;
+                if (expeditionType == null)
+                {
+                    dictionary.TryGetValue("ExpCompanyList", out obj);
+                    string expCompanyListJSON = Convert.ToString(obj);
+                    expCompanyList = JsonConvert.DeserializeObject<DataTable>(expCompanyListJSON).DefaultView.ToTable(false, "ID");
+                }
+                var expeditionTypeList = await _expeditionService.GetExpeditionTypes(expeditionType, expCompanyList);
                 _logger.LogInfo("Expedition Type Get");
                 return Ok(expeditionTypeList);
             }
@@ -47,15 +62,103 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 return StatusCode(500, "Internal Server Erros");
             }
         }
+
         [HttpGet]
-        [ActionName("GetExpeditionZones")]
+        [ActionName("GetExpCompanyTypes")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<List<dynamic>>> GetExpeditionZones()
+        public async Task<ActionResult<ExpeditionTypeViewModel>> GetExpCompanyTypes([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                //var expeditionTypeList = await _repository.ExpeditionType.GetExpeditionTypes();
-                var expeditionZoneList = await _expeditionService.GetExpeditionZones();
+                object obj;
+                int value = 0;
+                dictionary.TryGetValue("ExpCompanyID", out obj);
+                int? expCompanyID = null;
+                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                    expCompanyID = value;
+
+                int? expeditionType = null;
+                 if (expeditionType == null)
+                {
+                    dictionary.TryGetValue("ExpeditionType", out obj);
+                    if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                        expeditionType = value;
+                }
+                var expeditionTypeList = await _expeditionService.GetExpCompanyTypes(expeditionType, expCompanyID);
+                _logger.LogInfo("Expedition Type Get");
+                return Ok(expeditionTypeList);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetEnvelopeMedia action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("SetExpCompanyType")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<ExpeditionTypeViewModel>> SetExpCompanyType([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                int value = 0;
+                dictionary.TryGetValue("ExpCompanyID", out obj);
+                int expCompanyID = Int32.Parse(Convert.ToString(obj));
+                dictionary.TryGetValue("ExpeditionType", out obj);
+                int expeditionType = Int32.Parse(Convert.ToString(obj));
+                dictionary.TryGetValue("RegistMode", out obj);
+                bool registMode = bool.Parse(Convert.ToString(obj));
+                dictionary.TryGetValue("SeparationMode", out obj);
+                bool separationMode = bool.Parse(Convert.ToString(obj));
+                dictionary.TryGetValue("BarcodeRegistMode", out obj);
+                bool barcodeRegistMode = bool.Parse(Convert.ToString(obj));
+                dictionary.TryGetValue("ReturnAll", out obj);
+                bool returnAll = bool.Parse(Convert.ToString(obj));
+
+                var expeditionTypeList = await _expeditionService.SetExpCompanyType(expeditionType, expCompanyID, registMode, separationMode, barcodeRegistMode, returnAll);
+                _logger.LogInfo("Expedition Type Get");
+                return Ok(expeditionTypeList);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetEnvelopeMedia action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("GetExpeditionZones")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<ExpeditionZoneViewModel>> GetExpeditionZones([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("ExpeditionZone", out obj);
+                int value = 0;
+                int? expeditionZone = null;
+                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                    expeditionZone = value;
+                DataTable? expCompanyList = null;
+                if (expeditionZone == null)
+                {
+                    dictionary.TryGetValue("ExpCompanyList", out obj);
+                    string expCompanyListJSON = Convert.ToString(obj);
+                    expCompanyList = JsonConvert.DeserializeObject<DataTable>(expCompanyListJSON).DefaultView.ToTable(false, "ID");
+                }
+                var expeditionZoneList = await _expeditionService.GetExpeditionZones(expeditionZone, expCompanyList);
                 _logger.LogInfo("Expedition Zone Get");
                 return Ok(expeditionZoneList);
             }
@@ -70,14 +173,29 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 return StatusCode(500, "Internal Server Erros");
             }
         }
+       
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("GetExpeditionCompanies")]
-        public async Task<ActionResult<List<dynamic>>> GetExpeditionCompanies()
+        public async Task<ActionResult<List<dynamic>>> GetExpeditionCompanies([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                var expeditionCompaniesList = await _expeditionService.GetExpeditionCompanies();
+                object obj;
+                dictionary.TryGetValue("ExpCompanyID", out obj);
+                int value = 0;
+                int? expCompanyID = null;
+                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                    expCompanyID = value;
+                DataTable expCompanyList = new DataTable();
+                if (expCompanyID == null)
+                {
+                    dictionary.TryGetValue("ExpCompanyList", out obj);
+                    string expCompanyListJSON = Convert.ToString(obj);
+                    expCompanyList = JsonConvert.DeserializeObject<DataTable>(expCompanyListJSON).DefaultView.ToTable(false, "ID");
+                }
+
+                var expeditionCompaniesList = await _expeditionService.GetExpeditionCompanies(expCompanyID, expCompanyList);
                 _logger.LogInfo("Expedition Companies Get");
                 return Ok(expeditionCompaniesList);
             }
@@ -92,6 +210,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+        
         //TODO: UNTESTED
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
@@ -99,7 +218,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         public async Task<ActionResult<List<dynamic>>> GetExpeditionCompanyConfigs([FromBody] dynamic data)
         {
             try
-            {
+            {                
                 var converter = new ExpandoObjectConverter();
                 var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
                 var expeditionCompanyConfigsList = await _expeditionService.GetExpeditionCompanyConfigs(exObjExpandoObject);

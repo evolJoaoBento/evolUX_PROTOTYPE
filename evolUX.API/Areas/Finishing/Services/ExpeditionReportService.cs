@@ -20,17 +20,6 @@ namespace evolUX.API.Areas.Finishing.Services
         {
             _repository = repository;
         }
-
-        public async Task<IEnumerable<Business>> GetCompanyBusiness(DataTable CompanyBusinessList)
-        {
-            IEnumerable<Business> companyBusiness = await _repository.ExpeditionReport.GetCompanyBusiness(CompanyBusinessList);
-            if (companyBusiness == null)
-            {
-
-            }
-
-            return companyBusiness;
-        }
         
         public async Task<ExpeditionListViewModel> GetPendingExpeditionFiles(int BusinessID, DataTable ServiceCompanyList)
         {

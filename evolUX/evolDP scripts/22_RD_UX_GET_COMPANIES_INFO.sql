@@ -10,7 +10,7 @@ AS
 BEGIN
 	IF (@CompanyID is NOT NULL)
 	BEGIN
-		SELECT c.CompanyID,
+		SELECT c.CompanyID [ID],
 			c.CompanyCode,
 			c.CompanyName,
 			c.CompanyAddress,
@@ -24,7 +24,7 @@ BEGIN
 	END
 	ELSE
 	BEGIN
-		SELECT c.CompanyID,
+		SELECT c.CompanyID [ID],
 			c.CompanyCode,
 			c.CompanyName,
 			c.CompanyAddress,

@@ -6,23 +6,21 @@ using Shared.ViewModels.Areas.evolDP;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
 using System.Data.SqlClient;
 using evolUX.API.Areas.evolDP.Services.Interfaces;
-using evolUX.API.Areas.evolDP.Services;
-using System.Reflection.Metadata;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
     [Route("api/evoldp/[controller]/[action]")]
     [ApiController]
-    public class ClientController : ControllerBase
+    public class GenericController : ControllerBase
     {
         private readonly IWrapperRepository _repository;
         private readonly ILoggerService _logger;
-        private readonly IClientService _clientService;
-        public ClientController(IWrapperRepository repository, ILoggerService logger, IClientService clientService)
+        private readonly IGenericService _genericService;
+        public GenericController(IWrapperRepository repository, ILoggerService logger, IGenericService genericService)
         {
             _repository = repository;
             _logger = logger;
-            _clientService = clientService;
+            _genericService = genericService;
         }
 
         [HttpGet]
@@ -32,7 +30,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
             try
             {
                 DataTable CompanyBusinessList = JsonConvert.DeserializeObject<DataTable>(CompanyBusinessListJSON);
-                ProjectListViewModel viewmodel = await _clientService.GetProjects(CompanyBusinessList);
+                ProjectListViewModel viewmodel = await _genericService.GetProjects(CompanyBusinessList);
                 _logger.LogInfo("GetProjects Get");
                 return Ok(viewmodel);
             }
@@ -53,7 +51,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         {
             try
             {
-                ConstantParameterViewModel viewmodel = await _clientService.GetParameters();
+                ConstantParameterViewModel viewmodel = await _genericService.GetParameters();
                 _logger.LogInfo("GetParameters Get");
                 return Ok(viewmodel);
             }
@@ -86,7 +84,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 dictionary.TryGetValue("ParameterDescription", out obj);
                 string parameterDescription = Convert.ToString(obj);
 
-                ConstantParameterViewModel viewmodel = await _clientService.SetParameter(parameterID, parameterRef, parameterValue, parameterDescription);
+                ConstantParameterViewModel viewmodel = await _genericService.SetParameter(parameterID, parameterRef, parameterValue, parameterDescription);
                 _logger.LogInfo("SetParameter Get");
                 return Ok(viewmodel);
             }
@@ -113,7 +111,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 dictionary.TryGetValue("ParameterID", out obj);
                 int parameterID = Convert.ToInt32(obj.ToString());
 
-                ConstantParameterViewModel viewmodel = await _clientService.DeleteParameter(parameterID);
+                ConstantParameterViewModel viewmodel = await _genericService.DeleteParameter(parameterID);
                 _logger.LogInfo("DeleteParameter Get");
                 return Ok(viewmodel);
             }

@@ -20,7 +20,7 @@ namespace evolUX.UI.Areas.Finishing.Repositories
 
         public async Task<BusinessViewModel> GetCompanyBusiness(string ServiceCompanyList)
         {
-            var response = await _flurlClient.Request("/API/finishing/ExpeditionReport/GetCompanyBusiness")
+            var response = await _flurlClient.Request("/API/evolDP/Generic/GetCompanyBusiness")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, ServiceCompanyList);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);

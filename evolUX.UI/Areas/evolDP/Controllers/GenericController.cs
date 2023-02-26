@@ -14,12 +14,12 @@ using evolUX.UI.Areas.evolDP.Services.Interfaces;
 namespace evolUX.UI.Areas.evolDP.Controllers
 {
     [Area("evolDP")]
-    public class ClientController : Controller
+    public class GenericController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly IClientService _projectService;
-        private readonly IStringLocalizer<ClientController> _localizer;
-        public ClientController(IClientService projectService, IStringLocalizer<ClientController> localizer, IConfiguration configuration)
+        private readonly IGenericService _projectService;
+        private readonly IStringLocalizer<GenericController> _localizer;
+        public GenericController(IGenericService projectService, IStringLocalizer<GenericController> localizer, IConfiguration configuration)
         {
             _projectService = projectService;
             _localizer = localizer;

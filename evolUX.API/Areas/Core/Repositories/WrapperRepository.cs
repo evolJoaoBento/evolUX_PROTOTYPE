@@ -1,26 +1,23 @@
 ﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
 using evolUX.API.Areas.evolDP.Repositories;
 using evolUX.API.Areas.evolDP.Repositories.Interfaces;
-using evolUX.API.Areas.evolDP.Repositories;
-using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Areas.Finishing.Repositories;
 using evolUX.API.Areas.Finishing.Repositories.Interfaces;
 using evolUX.API.Data.Context;
-using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Areas.Core.Repositories
 {
     public class WrapperRepository : IWrapperRepository
     {
         private readonly DapperContext _context;
-        private IConsumablesRepository _envelopeMedia;
-        private IExpeditionRepository _expeditionType;
         private IFinishingRepository _finishing;
         private IUserRepository _user;
         private ISidebarRepository _sidebar;
         private IDocCodeRepository _docCode;
-        private IClientRepository _project;
-        private IExpeditionRepository _expedition;
+        private IGenericRepository _generic;
+        private IExpeditionRepository _expeditionType;
+        private IConsumablesRepository _consumables;
+        private IServiceProvisionRepository _serviceProvision;
 
         private IProductionReportRepository _productionReport;
         private IRegistJobRepository _registJob;
@@ -37,31 +34,6 @@ namespace evolUX.API.Areas.Core.Repositories
         public WrapperRepository(DapperContext context)
         {
             _context = context;
-        }
-
-
-        public IConsumablesRepository EnvelopeMedia
-        {
-            get
-            {
-                if (_envelopeMedia == null)
-                {
-                    _envelopeMedia = new ConsumablesRepository(_context);
-                }
-                return _envelopeMedia;
-            }
-        }
-
-        public IExpeditionRepository Expedition
-        {
-            get
-            {
-                if (_expeditionType == null)
-                {
-                    _expeditionType = new ExpeditionRepository(_context);
-                }
-                return _expeditionType;
-            }
         }
 
         public IFinishingRepository Finishing
@@ -111,16 +83,50 @@ namespace evolUX.API.Areas.Core.Repositories
                 return _docCode;
             }
         }
-
-        public IClientRepository Client
+        public IGenericRepository Generic
         {
             get
             {
-                if (_project == null)
+                if (_generic == null)
                 {
-                    _project = new ClientRepository(_context);
+                    _generic = new GenericRepository(_context);
                 }
-                return _project;
+                return _generic;
+            }
+        }
+
+        public IConsumablesRepository Consumables
+        {
+            get
+            {
+                if (_consumables == null)
+                {
+                    _consumables = new ConsumablesRepository(_context);
+                }
+                return _consumables;
+            }
+        }
+        public IExpeditionRepository ExpeditionType
+        {
+            get
+            {
+                if (_expeditionType == null)
+                {
+                    _expeditionType = new ExpeditionRepository(_context);
+                }
+                return _expeditionType;
+            }
+        }
+       
+        public IServiceProvisionRepository ServiceProvision
+        {
+            get
+            {
+                if (_serviceProvision == null)
+                {
+                    _serviceProvision = new ServiceProvisionRepository(_context);
+                }
+                return _serviceProvision;
             }
         }
         public IProductionReportRepository ProductionReport
