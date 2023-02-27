@@ -6,6 +6,7 @@ namespace evolUX.API.Areas.evolDP.Services.Interfaces
 {
     public interface IGenericService
     {
+        public Task<Company> SetCompany(Company company);
         public Task<IEnumerable<Business>> GetCompanyBusiness(DataTable CompanyBusinessList);
         public Task<ProjectListViewModel> GetProjects(DataTable CompanyBusinessList);
         public Task<ConstantParameterViewModel> GetParameters();

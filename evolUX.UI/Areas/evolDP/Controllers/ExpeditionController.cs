@@ -8,6 +8,7 @@ using Shared.Models.Areas.Core;
 using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.evolDP;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
@@ -71,6 +72,71 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             }
 
         }
+        
+        public async Task<IActionResult> ChangeExpCompany(IFormCollection form, string expeditionTypeViewJson)
+        {
+            try
+            {
+                ExpeditionTypeViewModel result = JsonConvert.DeserializeObject<ExpeditionTypeViewModel>(expeditionTypeViewJson);
+                Company expCompany = new Company();
+
+                int value = 0;
+                string str;
+                expCompany.ID = 0;
+                str = form["ExpCompanyID"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    expCompany.ID = value;
+
+                expCompany.CompanyName = form["CompanyName"].ToString();
+                expCompany.CompanyAddress = form["CompanyAddress"].ToString();
+                expCompany.CompanyPostalCode = form["CompanyPostalCode"].ToString();
+                expCompany.CompanyPostalCodeDescription = form["CompanyPostalCodeDescription"].ToString();
+                expCompany.CompanyCountry = form["CompanyCountry"].ToString();
+                expCompany.CompanyCode = form["CompanyCode"].ToString();
+                expCompany.CompanyServer = form["CompanyServer"].ToString();
+
+                result.ExpCompanies = new List<Company>();
+                result.ExpCompanies.ToList().Add(await _expeditionService.SetExpCompany(expCompany));
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+
+                return View(result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+ 
         public async Task<IActionResult> ExpCompany(int expCompanyID, string expeditionTypeViewJson)
         {
             try
@@ -91,7 +157,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 }
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
 
-                return View(result);
+                return View("ExpCompany", result);
             }
             catch (FlurlHttpException ex)
             {
@@ -178,6 +244,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             }
 
         }
+ 
         public async Task<IActionResult> TypeDetail(string expeditionTypeJson)
         {
             try
@@ -394,7 +461,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             }
 
         }
-
+        
         public async Task<IActionResult> ExpRegistRange(string expCompanyJson)
         {
             try
@@ -405,6 +472,219 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
 
                 return View(result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+
+        public async Task<IActionResult> ConfigExpRegistRange(IFormCollection form, string expCompanyJson)
+        {
+            try
+            {
+                int value = 0;
+                string str;
+                ExpeditionRegistElement expRegist = new ExpeditionRegistElement();
+                expRegist.ExpCompanyID = 0;
+                str = form["ExpCompanyID"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    expRegist.ExpCompanyID = value;
+
+                expRegist.CompanyRegistCode = 0;
+                str = form["CompanyRegistCode"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    expRegist.CompanyRegistCode = value;
+
+                expRegist.StartExpeditionID = 0;
+                str = form["StartExpeditionID"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    expRegist.StartExpeditionID = value;
+
+                expRegist.EndExpeditionID = 0;
+                str = form["EndExpeditionID"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    expRegist.EndExpeditionID = value;
+
+                expRegist.RegistCodePrefix = form["RegistCodePrefix"].ToString();
+                expRegist.RegistCodeSuffix = form["RegistCodeSuffix"].ToString();
+
+                expRegist.LastExpeditionID = 0;
+                str = form["LastExpeditionID"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    expRegist.LastExpeditionID = value;
+
+                ExpeditionRegistViewModel result = new ExpeditionRegistViewModel();
+                result.Company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
+                await _expeditionService.SetExpeditionRegistID(expRegist);
+                result.ExpeditionRegistIDs = await _expeditionService.GetExpeditionRegistIDs(result.Company.ID);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+
+                return View("ExpRegistRange", result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+
+        public async Task<IActionResult> ExpContracts(string expCompanyJson)
+        {
+            try
+            {
+                ExpContractViewModel result = new ExpContractViewModel();
+                result.Company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
+                result.ExpeditionContracts = await _expeditionService.GetExpContracts(result.Company.ID);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+
+                return View(result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+
+        public async Task<IActionResult> ConfigExpContract(IFormCollection form, string expCompanyJson)
+        {
+            try
+            {
+                ExpContractElement expContract = new ExpContractElement();
+
+                int value = 0;
+                string str;
+                expContract.ExpCompanyID = 0;
+                str = form["ExpCompanyID"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    expContract.ExpCompanyID = value;
+
+                expContract.ContractID = 0;
+                str = form["ContractID"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    expContract.ContractID = value;
+
+                expContract.ContractNr = 0;
+                str = form["ContractNr"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    expContract.ContractNr = value;
+
+                expContract.ClientNr = 0;
+                str = form["ClientNr"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    expContract.ClientNr = value;
+
+                expContract.ClientName = form["ClientName"].ToString();
+                expContract.ClientNIF = form["ClientNIF"].ToString();
+                expContract.ClientAddress = form["ClientAddress"].ToString();
+                expContract.ClientPostalCode = form["ClientPostalCode"].ToString();
+                expContract.ClientPostalCodeDescription = form["ClientPostalCodeDescription"].ToString();
+                expContract.ClientNIF = form["ClientNIF"].ToString();
+                expContract.CompanyExpeditionCode = form["CompanyExpeditionCode"].ToString();
+
+                expContract.PurchaseOrderNr = 0;
+                str = form["PurchaseOrderNr"].ToString();
+                decimal dec = 0;
+                if (!string.IsNullOrEmpty(str) && decimal.TryParse(str, out dec))
+                    expContract.PurchaseOrderNr = dec;
+
+
+                ExpContractViewModel result = new ExpContractViewModel();
+                result.Company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
+                await _expeditionService.SetExpContract(expContract);
+                result.ExpeditionContracts = await _expeditionService.GetExpContracts(result.Company.ID);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+
+                return View("ExpContracts", result);
             }
             catch (FlurlHttpException ex)
             {

@@ -88,8 +88,8 @@ else
                                 <img style="background:none; width:35px;height:35px;" src="~/images/menu.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
                             </a>
                         }
-                        <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyContracts" asp-route-expCompanyJson="@JsonConvert.SerializeObject(expCompany)">
-                            <img style="background:none; width:35px;height:35px;" src="~/images/contract.png" title="@localizer["ExpCompanyContracts"]: @expCompany.CompanyName" />
+                        <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpContracts" asp-route-expCompanyJson="@JsonConvert.SerializeObject(expCompany)">
+                            <img style="background:none; width:35px;height:35px;" src="~/images/contract.png" title="@localizer["ExpContracts"]: @expCompany.CompanyName" />
                         </a>
                         @if (ExistsExpeditionRegist)
                         {

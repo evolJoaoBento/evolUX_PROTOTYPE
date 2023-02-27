@@ -7,6 +7,7 @@ using evolUX.API.Areas.Core.Repositories.Interfaces;
 using System.Data.SqlClient;
 using evolUX.API.Areas.evolDP.Services.Interfaces;
 using evolUX.API.Areas.evolDP.Services;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
@@ -22,6 +23,30 @@ namespace evolUX.API.Areas.evolDP.Controllers
             _repository = repository;
             _logger = logger;
             _genericService = genericService;
+        }
+
+        [HttpGet]
+        [ActionName("SetCompany")]
+        public async Task<ActionResult<Company>> SetCompany([FromBody] string CompanyJSON)
+        {
+            Company company = JsonConvert.DeserializeObject<Company>(CompanyJSON);
+            try
+            {
+
+                Company newCompany = await _genericService.SetCompany(company);
+                _logger.LogInfo("SetCompany Get");
+                return Ok(newCompany);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get SetCompany action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
         }
 
         [HttpGet]
@@ -70,6 +95,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+ 
         [HttpGet]
         [ActionName("GetParameters")]
         public async Task<ActionResult<ConstantParameterViewModel>> GetParameters()

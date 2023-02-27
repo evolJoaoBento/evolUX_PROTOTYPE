@@ -17,6 +17,18 @@ namespace evolUX.API.Areas.evolDP.Services
             _repository = repository;
         }
 
+        public async Task<Company> SetCompany(Company company)
+        {
+            int companyID = await _repository.Generic.SetCompany(company);
+            IEnumerable<Company> list = await _repository.Generic.GetCompanies(companyID, null);
+            if (list == null)
+            {
+
+            }
+
+            return list.First();
+        }
+
         public async Task<IEnumerable<Business>> GetCompanyBusiness(DataTable CompanyBusinessList)
         {
             IEnumerable<Business> companyBusiness = await _repository.Generic.GetCompanyBusiness(CompanyBusinessList);

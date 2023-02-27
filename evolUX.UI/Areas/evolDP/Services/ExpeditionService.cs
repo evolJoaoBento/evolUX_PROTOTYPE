@@ -14,6 +14,11 @@ namespace evolUX.UI.Areas.evolDP.Services
         {
             _expeditionTypeRepository = expeditionTypeRepository;
         }
+        public async Task<Company> SetExpCompany(Company expCompany)
+        {
+            var response = await _expeditionTypeRepository.SetExpCompany(expCompany);
+            return response;
+        }
         public async Task<ExpeditionTypeViewModel> GetExpeditionCompanies(string expCompanyList)
         {
             var response = await _expeditionTypeRepository.GetExpeditionCompanies(expCompanyList);
@@ -46,6 +51,21 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _expeditionTypeRepository.GetExpeditionRegistIDs(expCompanyID);
             return response;
         }
-        
+        public async Task SetExpeditionRegistID(ExpeditionRegistElement expRegist)
+        {
+            await _expeditionTypeRepository.SetExpeditionRegistID(expRegist);
+            return;
+        }
+        public async Task<IEnumerable<ExpContractElement>> GetExpContracts(int expCompanyID)
+        {
+            var response = await _expeditionTypeRepository.GetExpContracts(expCompanyID);
+            return response;
+        }
+        public async Task SetExpContract(ExpContractElement expContract)
+        {
+            await _expeditionTypeRepository.SetExpContract(expContract);
+            return;
+        }
+
     }
 }

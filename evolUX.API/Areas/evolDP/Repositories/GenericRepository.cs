@@ -3,6 +3,7 @@ using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Data.Context;
 using Microsoft.AspNetCore.Components;
 using Shared.Models.Areas.evolDP;
+using System.ComponentModel.Design;
 using System.Data;
 
 namespace evolUX.API.Areas.evolDP.Repositories
@@ -31,6 +32,31 @@ namespace evolUX.API.Areas.evolDP.Repositories
             {
                 IEnumerable<Company> Companies = await connection.QueryAsync<Company>(sql, parameters, commandType: CommandType.StoredProcedure);
                 return Companies;
+            }
+
+        }
+
+        public async Task<int> SetCompany(Company company)
+        {
+            string sql = @"RD_UX_SET_COMPANY_INFO";
+            var parameters = new DynamicParameters();
+            if (company.ID > 0)
+                parameters.Add("CompanyID", company.ID, DbType.Int64);
+            parameters.Add("CompanyCode", company.CompanyCode, DbType.String);
+            parameters.Add("CompanyName", company.CompanyName, DbType.String);
+            parameters.Add("CompanyAddress", company.CompanyAddress, DbType.String);
+            parameters.Add("CompanyPostalCode", company.CompanyPostalCode, DbType.String);
+            parameters.Add("CompanyPostalCodeDescription", company.CompanyPostalCodeDescription, DbType.String);
+            parameters.Add("CompanyCountry", company.CompanyCountry, DbType.String);
+            if (!string.IsNullOrEmpty(company.CompanyServer))
+                parameters.Add("CompanyServer", company.CompanyServer, DbType.String);
+
+            parameters.Add("@ReturnID", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                int CompanyID = parameters.Get<int>("@ReturnID");
+                return CompanyID;
             }
 
         }

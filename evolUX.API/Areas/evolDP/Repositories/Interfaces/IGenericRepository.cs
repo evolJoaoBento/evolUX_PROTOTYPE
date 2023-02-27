@@ -7,6 +7,7 @@ namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
     public interface IGenericRepository
     {
         public Task<IEnumerable<Company>> GetCompanies(int? companyID, DataTable? CompanyList);
+        public Task<int> SetCompany(Company company);
         public Task<IEnumerable<Business>> GetCompanyBusiness(DataTable CompanyBusinessList);
         public Task<IEnumerable<ProjectElement>> GetProjects(DataTable CompanyBusinessList);
         public Task<IEnumerable<ConstantParameter>> GetParameters();

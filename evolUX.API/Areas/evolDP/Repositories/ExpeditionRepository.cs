@@ -5,6 +5,8 @@ using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
 using System.ComponentModel.Design;
 using System.Data;
+using System.Diagnostics.Contracts;
+using System.Runtime.Intrinsics.Arm;
 
 namespace evolUX.API.Areas.evolDP.Repositories
 {
@@ -58,7 +60,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
             
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                await connection.QueryAsync<ExpCompanyType>(sql, parameters, commandType: CommandType.StoredProcedure);
+                await connection.QueryAsync(sql, parameters, commandType: CommandType.StoredProcedure);
             }
         }
         public async Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones(int? expeditionZone)
@@ -117,6 +119,75 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return expList;
             }
         }
+        public async Task<int> SetExpeditionRegistID(ExpeditionRegistElement expRegist)
+        {
+            string sql = @"RD_UX_SET_EXPCOMPANY_EXPEDITION_IDS";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExpCompanyID", expRegist.ExpCompanyID, DbType.Int64);
+            parameters.Add("StartExpeditionID", expRegist.StartExpeditionID, DbType.Int64);
+            parameters.Add("EndExpeditionID", expRegist.EndExpeditionID, DbType.Int64);
+            parameters.Add("CompanyRegistCode", expRegist.CompanyRegistCode, DbType.Int64);
+            parameters.Add("RegistCodePrefix", expRegist.RegistCodePrefix, DbType.String);
+            parameters.Add("RegistCodeSuffix", expRegist.RegistCodeSuffix, DbType.String);
+            if (expRegist.LastExpeditionID <= 0)
+                expRegist.LastExpeditionID = expRegist.StartExpeditionID - 1;
+            parameters.Add("LastExpeditionID", expRegist.LastExpeditionID, DbType.Int64);
+            parameters.Add("@ReturnID", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                try
+                {
+                    await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+                int StartExpeditionID = parameters.Get<int>("@ReturnID");
+                return StartExpeditionID;
+            }
+
+        }
+        public async Task<IEnumerable<ExpContractElement>> GetExpContracts(int expCompanyID)
+        {
+            string sql = @"RD_UX_GET_EXPCOMPANY_CONTRACTS";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ExpContractElement> expList = await connection.QueryAsync<ExpContractElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return expList;
+            }
+        }
+
+        public async Task<int> SetExpContract(ExpContractElement expContract)
+        {
+            string sql = @"RD_UX_SET_EXPCOMPANY_CONTRACTS";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExpCompanyID", expContract.ExpCompanyID, DbType.Int64);
+            if (expContract.ContractID > 0)
+                parameters.Add("ContractID", expContract.ContractID, DbType.Int64);
+            parameters.Add("ContractNr", expContract.ContractNr, DbType.Int64);
+            parameters.Add("ClientNr", expContract.ClientNr, DbType.Int64);
+            parameters.Add("ClientName", expContract.ClientNr, DbType.String);
+            parameters.Add("ClientNIF", expContract.ClientNr, DbType.String);
+            parameters.Add("ClientAddress", expContract.ClientNr, DbType.String);
+            parameters.Add("ClientPostalCode", expContract.ClientNr, DbType.String);
+            parameters.Add("ClientPostalCodeDescription", expContract.ClientNr, DbType.String);
+            if (!string.IsNullOrEmpty(expContract.CompanyExpeditionCode))
+                parameters.Add("CompanyExpeditionCode", expContract.CompanyExpeditionCode, DbType.String);
+            if (expContract.PurchaseOrderNr > 0)
+                parameters.Add("PurchaseOrderNr", expContract.PurchaseOrderNr, DbType.Decimal);
+
+            parameters.Add("@ReturnID", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                int ContractID = parameters.Get<int>("@ReturnID");
+                return ContractID;
+            }
+        }
+
         public async Task<List<dynamic>> GetExpeditionCompanyConfigs(dynamic data)//TODO: UNTESTED
         {
             var expeditionCompanyConfigsList = new List<dynamic>();

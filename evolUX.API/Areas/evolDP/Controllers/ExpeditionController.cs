@@ -12,6 +12,7 @@ using Shared.ViewModels.Areas.evolDP;
 using System.Collections.Generic;
 using System.Data;
 using Shared.ViewModels.Areas.Finishing;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
@@ -234,6 +235,85 @@ namespace evolUX.API.Areas.evolDP.Controllers
             {
                 //log error
                 _logger.LogError($"Something went wrong inside GetExpeditionRegistIDs action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("SetExpeditionRegistID")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> SetExpeditionRegistID([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("ExpRegist", out obj);
+                string expRegistJSON = Convert.ToString(obj);
+                ExpeditionRegistElement expRegist = JsonConvert.DeserializeObject<ExpeditionRegistElement>(expRegistJSON);
+
+                await _expeditionService.SetExpeditionRegistID(expRegist);
+                _logger.LogInfo("SetExpeditionRegistIDs Get");
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetExpeditionRegistIDs action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("GetExpContracts")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<ExpeditionZoneViewModel>> GetExpContracts([FromBody] int expCompanyID)
+        {
+            try
+            {
+                var expeditionRegistIDs = await _expeditionService.GetExpContracts(expCompanyID);
+                _logger.LogInfo("ExpContracts Get");
+                return Ok(expeditionRegistIDs);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetExpContracts action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("SetExpContract")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<ExpeditionZoneViewModel>> SetExpContract([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("ExpContract", out obj);
+                string expContractJSON = Convert.ToString(obj);
+                ExpContractElement expContract = JsonConvert.DeserializeObject<ExpContractElement>(expContractJSON);
+
+                await _expeditionService.SetExpContract(expContract);
+                _logger.LogInfo("setExpContracts Get");
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetExpContracts action: {ex.Message}");
                 return StatusCode(500, "Internal Server Erros");
             }
         }

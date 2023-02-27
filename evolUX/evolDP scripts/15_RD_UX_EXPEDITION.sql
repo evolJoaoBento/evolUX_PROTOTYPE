@@ -251,13 +251,48 @@ BEGIN
 		REPLICATE('0',8-LEN(CAST(ei.CompanyRegistCode as varchar))) + CAST(ei.CompanyRegistCode as varchar) CompanyRegistCode, -- SRP - Serviço de Regsto Privativo
 		REPLICATE('0',8-LEN(CAST(ei.StartExpeditionID as varchar))) + CAST(ei.StartExpeditionID as varchar) StartExpeditionID, --Registo Inicial
 		REPLICATE('0',8-LEN(CAST(ei.EndExpeditionID as varchar))) + CAST(ei.EndExpeditionID as varchar) EndExpeditionID, --Registo Final 
-		REPLICATE('0',8-LEN(ISNULL(CAST(ei.LastExpeditionID as varchar),'00000000'))) + ISNULL(CAST(ei.LastExpeditionID as varchar),'') LastExpeditionID, --Último Registo Utilizado
+		REPLICATE('0',8-LEN(ISNULL(CAST(ISNULL(ei.LastExpeditionID,0) as varchar),'00000000'))) + ISNULL(CAST(ISNULL(ei.LastExpeditionID,0) as varchar),'') LastExpeditionID, --Último Registo Utilizado
 		ISNULL(ei.RegistCodePrefix,'RP') RegistCodePrefix, --Prefixo
 		ISNULL(ei.RegistCodeSuffix,'PT') RegistCodeSuffix --Sufixo
 	FROM  RD_EXPEDITION_ID ei
 	WHERE ei.ExpCompanyID = @ExpCompanyID
 		AND ei.EndExpeditionID > ISNULL(ei.LastExpeditionID, 0)
 	ORDER BY ISNULL(ei.RegistCodePrefix,'RP') DESC, ei.StartExpeditionID ASC
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_EXPCOMPANY_EXPEDITION_IDS]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_EXPCOMPANY_EXPEDITION_IDS] AS' 
+END
+GO
+--Faixa de registos (listar, alterar e adicionar)
+ALTER  PROCEDURE [dbo].[RD_UX_SET_EXPCOMPANY_EXPEDITION_IDS]
+	@ExpCompanyID int,
+	@StartExpeditionID int,
+	@EndExpeditionID int,
+	@CompanyRegistCode int,
+	@RegistCodePrefix char(2),
+	@RegistCodeSuffix char(2),
+	@LastExpeditionID int = NULL
+AS
+BEGIN
+	SET NOCOUNT ON
+	IF (NOT EXISTS (SELECT TOP 1 1 FROM RD_EXPEDITION_ID WHERE ExpCompanyID = @ExpCompanyID AND StartExpeditionID = @StartExpeditionID))
+	BEGIN
+		INSERT INTO RD_EXPEDITION_ID(ExpCompanyID, StartExpeditionID, EndExpeditionID, CompanyRegistCode, LastExpeditionID, RegistCodePrefix, RegistCodeSuffix)
+		SELECT @ExpCompanyID, @StartExpeditionID, @EndExpeditionID, @CompanyRegistCode, @LastExpeditionID, @RegistCodePrefix, @RegistCodeSuffix
+	END
+	ELSE
+	BEGIN
+		UPDATE RD_EXPEDITION_ID
+		SET EndExpeditionID = @EndExpeditionID,
+			LastExpeditionID = ISNULL(@LastExpeditionID,LastExpeditionID),
+			RegistCodePrefix = @RegistCodePrefix,
+			RegistCodeSuffix = @RegistCodeSuffix
+		WHERE ExpCompanyID = @ExpCompanyID
+			AND StartExpeditionID = @StartExpeditionID
+	END
+	RETURN @StartExpeditionID
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCOMPANY_CONTRACTS]') AND type in (N'P', N'PC'))
@@ -282,5 +317,70 @@ BEGIN
 		CompanyExpeditionCode --Cód. de Cliente para BarCode de Expedição
 	FROM RD_EXPCOMPANY_CONTRACT ec WITH(NOLOCK)
 	WHERE ec.ExpCompanyID = @ExpCompanyID
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_EXPCOMPANY_CONTRACTS]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_EXPCOMPANY_CONTRACTS] AS' 
+END
+GO
+--Contratos (Listar/Adicionar e alterar)
+ALTER  PROCEDURE [dbo].[RD_UX_SET_EXPCOMPANY_CONTRACTS]
+	@ExpCompanyID int,
+	@ContractID int = NULL,
+	@ContractNr int,
+	@ClientNr int, 
+	@ClientName varchar(90), 
+	@ClientNIF varchar(9),  
+	@ClientAddress varchar(100),
+	@ClientPostalCode varchar(10) = NULL,
+	@ClientPostalCodeDescription varchar(50) = NULL,
+	@PurchaseOrderNr numeric(15,0) = NULL, --Nr Ordem de Compra
+	@CompanyExpeditionCode char(2) = NULL
+AS
+BEGIN
+	IF (@ContractID is NULL)
+	BEGIN
+		INSERT INTO RD_EXPCOMPANY_CONTRACT(ExpCompanyID, ContractID, ContractNr, ClientNr, ClientName, ClientNIF, ClientAddress, CompanyExpeditionCode, ClientPostalCode, ClientPostalCodeDescription, PurchaseOrderNr)
+		SELECT ExpCompanyID, ISNULL(MAX(ContractID),0)+ 1, 
+			@ContractNr,
+			@ClientNr, 
+			@ClientName, 
+			@ClientNIF,  
+			@ClientAddress,
+			@ClientPostalCode,
+			@ClientPostalCodeDescription,
+			@PurchaseOrderNr, 
+			@CompanyExpeditionCode 
+			FROM RD_EXPCOMPANY_CONTRACT
+			WHERE ExpCompanyID = @ExpCompanyID
+			GROUP BY ExpCompanyID
+	END
+	ELSE
+	BEGIN
+		SELECT @ContractID = ContractID
+		FROM RD_EXPCOMPANY_CONTRACT
+		WHERE ExpCompanyID = @ExpCompanyID AND ContractNr = @ContractNr AND ContractNr = @ContractNr
+
+		IF (@ContractID is NULL)
+		BEGIN
+			UPDATE RD_EXPCOMPANY_CONTRACT
+			SET ContractNr = @ContractNr,
+				ClientNr = @ClientNr, 
+				ClientName = @ClientName, 
+				ClientNIF = @ClientNIF,  
+				ClientAddress = @ClientAddress,
+				ClientPostalCode = @ClientPostalCode,
+				ClientPostalCodeDescription = @ClientPostalCodeDescription,
+				PurchaseOrderNr = @PurchaseOrderNr,
+				CompanyExpeditionCode = @CompanyExpeditionCode
+			WHERE ExpCompanyID = @ExpCompanyID AND ContractID = @ContractID
+		END
+	END
+	SELECT @ContractID = ContractID
+	FROM RD_EXPCOMPANY_CONTRACT
+	WHERE ExpCompanyID = @ExpCompanyID AND ContractNr = @ContractNr AND ContractNr = @ContractNr
+
+	RETURN @ContractID
 END
 GO

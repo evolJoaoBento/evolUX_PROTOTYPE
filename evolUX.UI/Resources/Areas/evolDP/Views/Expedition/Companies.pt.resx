@@ -153,14 +153,14 @@
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
   </data>
-  <data name="ExpCompanyContracts" xml:space="preserve">
-    <value>Listar contratos da Companhia</value>
-  </data>
   <data name="ExpCompanyDetail" xml:space="preserve">
     <value>Ver detalhes da Companhia de Expedição</value>
   </data>
   <data name="ExpCompanyList" xml:space="preserve">
     <value>Companhias de Expedição</value>
+  </data>
+  <data name="ExpContracts" xml:space="preserve">
+    <value>Listar contratos da Companhia</value>
   </data>
   <data name="ExpeditionType" xml:space="preserve">
     <value>Tipos de Expedição</value>

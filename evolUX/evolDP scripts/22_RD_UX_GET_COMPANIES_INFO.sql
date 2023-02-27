@@ -16,7 +16,8 @@ BEGIN
 			c.CompanyAddress,
 			c.CompanyPostalCode,
 			c.CompanyPostalCodeDescription,
-			c.CompanyCountry
+			c.CompanyCountry,
+			c.CompanyServer
 		FROM
 			RD_COMPANY c WITH(NOLOCK) 
 		WHERE c.CompanyID = @CompanyID
@@ -30,7 +31,8 @@ BEGIN
 			c.CompanyAddress,
 			c.CompanyPostalCode,
 			c.CompanyPostalCodeDescription,
-			c.CompanyCountry
+			c.CompanyCountry,
+			c.CompanyServer
 		FROM
 			@CompanyList cl
 		INNER JOIN
@@ -93,4 +95,56 @@ WHERE c1.[CompanyID] = 1
 				WHERE [CompanyID] = c1.[RelationCompanyID]
 					AND [RelationCompanyID] = c2.[RelationCompanyID]
 					AND [RelationType] = c2.[RelationType])
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_COMPANY_INFO]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_COMPANY_INFO] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_SET_COMPANY_INFO]
+	@CompanyID int = NULL,
+	@CompanyCode varchar(6),
+	@CompanyName varchar(256) = NULL,
+	@CompanyAddress varchar(256) = NULL,
+	@CompanyPostalCode varchar(256) = NULL,
+	@CompanyPostalCodeDescription varchar(256) = NULL,
+	@CompanyCountry varchar(256) = NULL,
+	@CompanyServer varchar(255) = NULL
+AS
+BEGIN
+	IF (@CompanyID is NOT NULL)
+	BEGIN
+		UPDATE RD_COMPANY
+		SET CompanyName = @CompanyName,
+			CompanyAddress = @CompanyAddress,
+			CompanyPostalCode = @CompanyPostalCode,
+			CompanyPostalCodeDescription = @CompanyPostalCodeDescription,
+			CompanyCountry = @CompanyCountry
+		WHERE CompanyID = @CompanyID
+	END
+	ELSE
+	BEGIN
+		SELECT @CompanyID = CompanyID
+		FROM RD_COMPANY
+		WHERE CompanyCode = @CompanyCode
+		IF (@CompanyID IS NULL)
+		BEGIN
+			INSERT INTO RD_COMPANY(CompanyID, CompanyName, CompanyAddress, CompanyPostalCode, CompanyPostalCodeDescription, CompanyCountry, CompanyCode, CompanyServer)
+			SELECT ISNULL(MAX(CompanyID),0) + 1,
+				@CompanyName,
+				@CompanyAddress,
+				@CompanyPostalCode,
+				@CompanyPostalCodeDescription,
+				@CompanyCountry,
+				@CompanyCode,
+				@CompanyServer
+			FROM RD_COMPANY
+
+			SELECT @CompanyID = CompanyID
+			FROM RD_COMPANY
+			WHERE CompanyCode = @CompanyCode
+		END
+	END
+	RETURN @CompanyID
+END
 GO

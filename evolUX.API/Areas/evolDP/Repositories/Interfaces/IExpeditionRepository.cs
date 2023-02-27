@@ -12,8 +12,12 @@ namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
         public Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones(int? expeditionZone);
         public Task<IEnumerable<ExpCompanyZone>> GetExpCompanyZones(int? expeditionZone, int? expCompanyID, DataTable? expCompanyList);
         public Task<IEnumerable<ExpeditionRegistElement>> GetExpeditionRegistIDs(int expCompanyID);
+        public Task<int> SetExpeditionRegistID(ExpeditionRegistElement expRegist);
+        public Task<IEnumerable<ExpContractElement>> GetExpContracts(int expCompanyID);
+        public Task<int> SetExpContract(ExpContractElement expContract);
+
         public Task<IEnumerable<ExpCompanyServiceTask>> GetExpCompanyServiceTask(string expCode);
- 
+
         public Task<List<dynamic>> GetExpeditionCompanyConfigs(dynamic data);
         public Task<List<dynamic>> GetExpeditionCompanyConfigCharacteristics(dynamic data);
     }
