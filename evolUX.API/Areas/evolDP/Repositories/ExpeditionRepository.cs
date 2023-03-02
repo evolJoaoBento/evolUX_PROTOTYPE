@@ -2,6 +2,7 @@
 using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Data.Context;
 using evolUX.API.Models;
+using Microsoft.IdentityModel.Tokens;
 using Shared.Models.Areas.evolDP;
 using System.ComponentModel.Design;
 using System.Data;
@@ -30,6 +31,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return expList;
             }
         }
+
         public async Task<IEnumerable<ExpCompanyType>> GetExpCompanyTypes(int? expeditionType, int? expCompanyID, DataTable? expCompanyList)
         {
             string sql = @"RD_UX_GET_EXPCOMPANY_TYPE";
@@ -48,6 +50,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return expList;
             }
         }
+
         public async Task SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode)
         {
             string sql = @"RD_UX_SET_EXPCOMPANY_TYPE";
@@ -63,6 +66,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 await connection.QueryAsync(sql, parameters, commandType: CommandType.StoredProcedure);
             }
         }
+
         public async Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones(int? expeditionZone)
         {
             string sql = @"RD_UX_GET_EXPEDITION_ZONE";
@@ -108,6 +112,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return expCodes;
             }
         }
+
         public async Task<IEnumerable<ExpeditionRegistElement>> GetExpeditionRegistIDs(int expCompanyID)
         {
             string sql = @"RD_UX_GET_EXPCOMPANY_EXPEDITION_IDS";
@@ -119,6 +124,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return expList;
             }
         }
+
         public async Task<int> SetExpeditionRegistID(ExpeditionRegistElement expRegist)
         {
             string sql = @"RD_UX_SET_EXPCOMPANY_EXPEDITION_IDS";
@@ -148,6 +154,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
 
         }
+
         public async Task<IEnumerable<ExpContractElement>> GetExpContracts(int expCompanyID)
         {
             string sql = @"RD_UX_GET_EXPCOMPANY_CONTRACTS";
@@ -188,81 +195,46 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
         }
 
-        public async Task<List<dynamic>> GetExpeditionCompanyConfigs(dynamic data)//TODO: UNTESTED
+        public async Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int expeditionType, int expeditionZone)
         {
-            var expeditionCompanyConfigsList = new List<dynamic>();
-            string sql = @"SELECT 	EZ.Description as ZoneDescription,
-	                                ET.Description as TypeDescription,
-	                                EZ.ExpeditionZone as ExpeditionZone,
-	                                ET.ExpeditionType as ExpeditionType
-                           FROM	    (select Distinct ExpCompanyID , ExpeditionZone,ExpeditionType
-	                       FROM 	RD_EXPCOMPANY_CONFIG) EC,
-	                                RD_COMPANY C,
-	                                RD_EXPEDITION_Zone EZ,
-	                                RD_EXPEDITION_TYPE ET
-                           WHERE 	EC.ExpCompanyID = C.CompanyID
-	                                and
-	                                EC.ExpeditionZone = EZ.ExpeditionZone
-	                                and
-	                                EC.ExpeditionType = ET.ExpeditionType
-	                                and
-                                    EC.ExpCompanyID = @ExpCompanyID";
+            string sql = @"RD_UX_GET_EXPCOMPANY_CONFIGS";
             var parameters = new DynamicParameters();
-            parameters.Add("ExpCompanyID", data.compId, DbType.String);
+            parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
+            if (expeditionType > 0)
+                parameters.Add("ExpeditionType", expeditionType, DbType.Int64);
+            if (expeditionZone > 0)
+                parameters.Add("ExpeditionZone", expeditionZone, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                expeditionCompanyConfigsList = (List<dynamic>)await connection.QueryAsync<dynamic>(sql, parameters);
+                var expeditionCompanyConfigsList = await connection.QueryAsync<ExpCompanyConfig>(sql, parameters, commandType: CommandType.StoredProcedure);
                 return expeditionCompanyConfigsList;
             }
-
         }
-
-        public async Task<List<dynamic>> GetExpeditionCompanyConfigCharacteristics(dynamic data)//TODO: UNTESTED
+        public async Task SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig)
         {
-            var envelopeMediaGroupList = new List<dynamic>();
-            string sql = @"SELECT	C.CompanyName as CompanyName,
-	                                    EZ.Description ZoneDescription,
-	                                    ET.Description TypeDescription,
-	                                    CASE WHEN EC.MaxWeight is NULL THEN 'Sem limite' ELSE CAST(EC.MaxWeight as varchar) END as MaxWeight,
-	                                    EC.StartDate as StartDate,
-	                                    EC.UnitCost as UnitCost,
-	                                    EC.ExpColumnB as Product,
-	                                    EC.ExpColumnE as Velocity,
-	                                    EC.ExpColumnI as SpecialServices 
-                                FROM 	RD_EXPCOMPANY_CONFIG EC,
-	                                    RD_COMPANY C,
-	                                    RD_EXPEDITION_Zone EZ,
-	                                    RD_EXPEDITION_TYPE ET
-                                WHERE 	EC.ExpCompanyID=C.CompanyID
-	                                    and
-	                                    EC.ExpeditionZone=EZ.ExpeditionZone
-	                                    and
-	                                    EC.ExpeditionType=ET.ExpeditionType
-	                                    and 
-	                                    EC.ExpCompanyID = @COMPID
-	                                    and
-	                                    EC.ExpeditionZone = @EXPZONE
-	                                    and
-	                                    EC.ExpeditionType = @EXPTYPE
-	                                    and
-	                                    EC.StartDate = (SELECT MAX(StartDate) 
-			                    FROM    [DMS_evolDP].[dbo].[RD_EXPCOMPANY_CONFIG] 
-			                    WHERE   ExpCompanyID = EC.ExpCompanyID
-			                            AND ExpeditionZone = EC.ExpeditionZone
-			                            AND ExpeditionType = EC.ExpeditionType
-			                            AND ExpCompanyLevel = EC.ExpCompanyLevel)";
+            string sql = @"RD_UX_SET_EXPCOMPANY_CONFIG";
             var parameters = new DynamicParameters();
-            parameters.Add("COMPID", data.compId, DbType.String);
-            parameters.Add("EXPZONE", data.expZone, DbType.String);
-            parameters.Add("EXPTYPE", data.expType, DbType.String);
-            using (var connection = _context.CreateConnectionEvolDP())
+            parameters.Add("ExpCompanyID", expCompanyConfig.ExpCompanyID, DbType.Int64);
+            parameters.Add("ExpeditionType", expCompanyConfig.ExpeditionType, DbType.Int64);
+            parameters.Add("ExpeditionZone", expCompanyConfig.ExpeditionZone, DbType.Int64);
+            parameters.Add("ExpCompanyLevel", expCompanyConfig.ExpCompanyLevel, DbType.Int64);
+            parameters.Add("StartDate", expCompanyConfig.StartDate, DbType.Int64);
+            parameters.Add("UnitCost", expCompanyConfig.UnitCost, DbType.Double);
+            if (expCompanyConfig.MaxWeight > 0)
+                parameters.Add("MaxWeight", expCompanyConfig.MaxWeight, DbType.String);
+            parameters.Add("ExpColumnA", expCompanyConfig.ExpColumnA, DbType.String);
+            parameters.Add("ExpColumnB", expCompanyConfig.ExpColumnB, DbType.String);
+            parameters.Add("ExpColumnE", expCompanyConfig.ExpColumnE, DbType.String);
+            if (!string.IsNullOrEmpty(expCompanyConfig.ExpColumnI))
+                parameters.Add("ExpColumnI", expCompanyConfig.ExpColumnI, DbType.String);
+            if (!string.IsNullOrEmpty(expCompanyConfig.ExpColumnF))
+                parameters.Add("ExpColumnF", expCompanyConfig.ExpColumnF, DbType.String);
+
+            using(var connection = _context.CreateConnectionEvolDP())
             {
-                envelopeMediaGroupList = (List<dynamic>)await connection.QueryAsync<dynamic>(sql, parameters);
-                return envelopeMediaGroupList;
+                await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                return;
             }
-
         }
-
-
     }
 }

@@ -60,6 +60,7 @@ namespace evolUX.API.Areas.evolDP.Services
 
             return viewModel;
         }
+
         public async Task<ExpeditionTypeViewModel> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode, bool returnAll)
         {
             await _repository.ExpeditionType.SetExpCompanyType(expeditionType, expCompanyID, registMode, separationMode, barcodeRegistMode);
@@ -117,25 +118,19 @@ namespace evolUX.API.Areas.evolDP.Services
             await _repository.ExpeditionType.SetExpContract(expContract);
             return;
         }
-        
-        public async Task<List<dynamic>> GetExpeditionCompanyConfigs(dynamic data)
+
+        public async Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int expeditionType, int expeditionZone)
         {
-            var expeditionCompanyConfigsList = await _repository.ExpeditionType.GetExpeditionCompanyConfigs(data);
-            if (expeditionCompanyConfigsList == null)
+            IEnumerable<ExpCompanyConfig> result = await _repository.ExpeditionType.GetExpCompanyConfigs(expCompanyID, expeditionType, expeditionZone);
+            if (result == null)
             {
 
             }
-            return expeditionCompanyConfigsList;
+            return result;
         }
-
-        public async Task<List<dynamic>> GetExpeditionCompanyConfigCharacteristics(dynamic data)
+        public async Task SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig)
         {
-            var envelopeMediaGroupList = await _repository.ExpeditionType.GetExpeditionCompanyConfigCharacteristics(data);
-            if (envelopeMediaGroupList == null)
-            {
-
-            }
-            return envelopeMediaGroupList;
+            await _repository.ExpeditionType.SetExpCompanyConfig(expCompanyConfig);
         }
     }
 }

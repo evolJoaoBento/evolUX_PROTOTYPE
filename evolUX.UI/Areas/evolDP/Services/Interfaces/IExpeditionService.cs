@@ -16,5 +16,7 @@ namespace evolUX.UI.Areas.evolDP.Services.Interfaces
         public Task SetExpeditionRegistID(ExpeditionRegistElement expRegist);
         public Task<IEnumerable<ExpContractElement>> GetExpContracts(int expCompanyID);
         public Task SetExpContract(ExpContractElement expContract);
+        public Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int expeditionID, int expeditionZone);
+        public Task<IEnumerable<ExpCompanyConfig>> SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig);
     }
 }

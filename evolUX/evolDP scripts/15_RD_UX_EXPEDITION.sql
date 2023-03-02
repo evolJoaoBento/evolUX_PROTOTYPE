@@ -67,12 +67,63 @@ ALTER  PROCEDURE [dbo].[RD_UX_SET_EXPCOMPANY_TYPE]
 	@BarcodeRegistMode bit
 AS
 	SET NOCOUNT ON
+	IF (EXISTS (SELECT TOP 1 1 FROM RD_EXPCOMPANY_TYPE 
+		WHERE ExpeditionType = @ExpeditionType
+			AND ExpCompanyID = @ExpCompanyID))
+	BEGIN
+		UPDATE RD_EXPCOMPANY_TYPE
+		SET RegistMode = @RegistMode, SeparationMode = @SeparationMode, BarcodeRegistMode = @BarcodeRegistMode
+		WHERE ExpeditionType = @ExpeditionType
+			AND ExpCompanyID = @ExpCompanyID
+	END
+	ELSE
+	BEGIN
+		DECLARE @Priority int,
+				@ExpeditionTypeRef int,
+				@StartDate int
+		SELECT @Priority = MAX(e.[Priority])
+		FROM RD_EXPCOMPANY_CONFIG ec WITH(NOLOCK)
+		INNER JOIN
+			RD_EXPCOMPANY_TYPE et WITH(NOLOCK)
+		ON et.ExpCompanyID = ec.ExpCompanyID
+			AND et.ExpeditionType = ec.ExpeditionType
+		INNER JOIN
+			RD_EXPEDITION_TYPE e WITH(NOLOCK)
+		ON e.ExpeditionType = et.ExpeditionType
+		WHERE e.[Priority] <= (SELECT [Priority]
+							FROM RD_EXPEDITION_TYPE
+							WHERE ExpeditionType = @ExpeditionType)
 
-	UPDATE RD_EXPCOMPANY_TYPE
-	SET RegistMode = @RegistMode, SeparationMode = @SeparationMode, BarcodeRegistMode = @BarcodeRegistMode
-	WHERE ExpeditionType = @ExpeditionType
-		AND ExpCompanyID = @ExpCompanyID
+		SELECT @ExpeditionTypeRef = MAX(e.ExpeditionType), @StartDate = MAX(ec.StartDate)
+		FROM RD_EXPCOMPANY_CONFIG ec WITH(NOLOCK)
+		INNER JOIN
+			RD_EXPCOMPANY_TYPE et WITH(NOLOCK)
+		ON et.ExpCompanyID = ec.ExpCompanyID
+			AND et.ExpeditionType = ec.ExpeditionType
+		INNER JOIN
+			RD_EXPEDITION_TYPE e WITH(NOLOCK)
+		ON e.ExpeditionType = et.ExpeditionType
+		WHERE e.[Priority] = @Priority
+			AND e.ExpeditionType <> @ExpeditionType
+							
 
+		INSERT INTO RD_EXPCOMPANY_TYPE(ExpCompanyID, ExpeditionType, RegistMode, SeparationMode, BarcodeRegistMode)
+		SELECT @ExpCompanyID, @ExpeditionType, @RegistMode, @SeparationMode, @BarcodeRegistMode
+		
+		INSERT INTO RD_EXPCOMPANY_CONFIG(ExpCompanyID, ExpeditionZone, ExpeditionType, ExpCompanyLevel, StartDate, UnitCost, MaxWeight, ExpColumnA, ExpColumnB, ExpColumnE, ExpColumnI, ExpColumnF)
+		SELECT ec.ExpCompanyID, ec.ExpeditionZone, @ExpeditionType, ec.ExpCompanyLevel, ec.StartDate, ec.UnitCost, ec.MaxWeight, ec.ExpColumnA, ec.ExpColumnB, ec.ExpColumnE, ec.ExpColumnI, ec.ExpColumnF
+		FROM RD_EXPCOMPANY_CONFIG ec WITH(NOLOCK)
+		INNER JOIN
+			RD_EXPCOMPANY_TYPE et WITH(NOLOCK)
+		ON et.ExpCompanyID = ec.ExpCompanyID
+			AND et.ExpeditionType = ec.ExpeditionType
+		INNER JOIN
+			RD_EXPEDITION_TYPE e WITH(NOLOCK)
+		ON e.ExpeditionType = et.ExpeditionType
+		WHERE ec.ExpCompanyID = @ExpCompanyID
+			AND ec.ExpeditionType = @ExpeditionTypeRef
+			AND ec.StartDate = @StartDate
+	END
 RETURN
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPEDITION_ZONE]') AND type in (N'P', N'PC'))
@@ -200,21 +251,26 @@ GO
 --Configuracoes de escalão (listar e alterar)
 ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_CONFIGS]
 	@ExpCompanyID int,
-	@ExpeditionZone int,
-	@ExpeditionType int
+	@StartDate int = NULL,
+	@ExpeditionType int = NULL,
+	@ExpeditionZone int = NULL
 AS
 BEGIN
 	SELECT 
-		c.CompanyName ExpCompanyName,
-		ec.ExpCompanyLevel,
+		ec.ExpCompanyID,
+		ez.ExpeditionZone,
 		ez.[Description] [ExpeditionZoneDesc],
+		et.ExpeditionType,
 		et.[Description] [ExpeditionTypeDesc],
+		ec.ExpCompanyLevel,
 		ec.MaxWeight,  --Peso Máximo
 		ec.StartDate, --Data de Efetivação
 		ec.UnitCost, --Custo Unitário
+		ec.ExpColumnA, --Zona de Taxação
 		ec.ExpColumnB, --Produto
 		ec.ExpColumnE, --Velocidade
-		ec.ExpColumnI --Serviços Especiais 
+		ec.ExpColumnI, --Serviços Especiais
+		ec.ExpColumnF -- Formato
 	FROM
 		RD_EXPCOMPANY_CONFIG ec WITH(NOLOCK)
 	INNER JOIN
@@ -227,14 +283,124 @@ BEGIN
 		RD_EXPEDITION_TYPE et
 	ON	ec.ExpeditionType = et.ExpeditionType
 	WHERE ec.ExpCompanyID = @ExpCompanyID
-		AND ec.ExpeditionZone = @ExpeditionZone
-		AND ec.ExpeditionType = @ExpeditionType
-		AND ec.StartDate = (SELECT MAX(StartDate) 
-				FROM RD_EXPCOMPANY_CONFIG WITH(NOLOCK)
-				WHERE ExpCompanyID = ec.ExpCompanyID
-				AND ExpeditionZone = ec.ExpeditionZone
-				AND ExpeditionType = ec.ExpeditionType
-				AND ExpCompanyLevel = ec.ExpCompanyLevel)
+		AND (@ExpeditionZone is NULL OR ec.ExpeditionZone = @ExpeditionZone)
+		AND (@ExpeditionType is NULL OR ec.ExpeditionType = @ExpeditionType)
+		AND (@StartDate is NULL OR ec.StartDate = @StartDate)
+		--(SELECT MAX(StartDate) 
+		--		FROM RD_EXPCOMPANY_CONFIG WITH(NOLOCK)
+		--		WHERE ExpCompanyID = ec.ExpCompanyID
+		--		AND ExpeditionZone = ec.ExpeditionZone
+		--		AND ExpeditionType = ec.ExpeditionType
+		--		AND ExpCompanyLevel = ec.ExpCompanyLevel)
+	ORDER BY ec.StartDate DESC, ec.ExpeditionType, ec.ExpeditionZone, ec.MaxWeight 
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_EXPCOMPANY_CONFIGS]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_EXPCOMPANY_CONFIGS] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_SET_EXPCOMPANY_CONFIGS]
+	@ExpCompanyID int,
+	@ExpeditionType int,
+	@ExpeditionZone int,
+	@ExpCompanyLevel int, 
+	@StartDate int, 
+	@UnitCost float, 
+	@MaxWeight int = NULL, 
+	@ExpColumnA varchar(10), 
+	@ExpColumnB varchar(10), 
+	@ExpColumnE varchar(10), 
+	@ExpColumnI varchar(10) = NULL, 
+	@ExpColumnF varchar(10) = NULL
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	IF (NOT EXISTS (SELECT TOP 1 1 FROM RD_EXPCOMPANY_CONFIG WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate))
+	BEGIN		
+		DECLARE @RefStartDate int
+
+		SELECT @RefStartDate = ISNULL(MAX(StartDate),0)
+		FROM RD_EXPCOMPANY_CONFIG
+		WHERE ExpCompanyID = @ExpCompanyID
+			AND StartDate < @StartDate
+
+		INSERT INTO RD_EXPCOMPANY_CONFIG(ExpCompanyID, ExpeditionZone, ExpeditionType, ExpCompanyLevel, StartDate, UnitCost, MaxWeight, ExpColumnA, ExpColumnB, ExpColumnE, ExpColumnI, ExpColumnF)
+		SELECT ExpCompanyID, ExpeditionZone, ExpeditionType, ExpCompanyLevel, @StartDate, UnitCost, MaxWeight, ExpColumnA, ExpColumnB, ExpColumnE, ExpColumnI, ExpColumnF
+		FROM RD_EXPCOMPANY_CONFIG
+		WHERE ExpCompanyID = @ExpCompanyID
+			AND StartDate = @RefStartDate
+	END
+
+	IF (NOT EXISTS (SELECT TOP 1 1 FROM RD_EXPCOMPANY_CONFIG 
+			WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate
+			AND ExpeditionZone = @ExpeditionZone AND ExpeditionType = @ExpeditionType
+			AND ExpCompanyLevel = ISNULL(@ExpCompanyLevel,-1)))
+	BEGIN
+		IF (NOT EXISTS (SELECT TOP 1 1 FROM RD_EXPCOMPANY_CONFIG 
+			WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate
+			AND ExpeditionZone = @ExpeditionZone AND ExpeditionType = @ExpeditionType
+			AND ISNULL(MaxWeight,2147483647) = ISNULL(@MaxWeight,2147483647)))
+		BEGIN
+			DECLARE @MinRefExpCompanyLevel int,
+					@MaxRefExpCompanyLevel int,
+					@RefExpCompanyLevel int
+
+			SELECT @MinRefExpCompanyLevel = ISNULL(MAX(ExpCompanyLevel),0)
+			FROM RD_EXPCOMPANY_CONFIG
+			WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate
+				AND ExpeditionZone = @ExpeditionZone AND ExpeditionType = @ExpeditionType
+				AND ISNULL(MaxWeight,2147483647) < ISNULL(@MaxWeight,2147483647)
+
+			SELECT @MaxRefExpCompanyLevel = ISNULL(MIN(ExpCompanyLevel),0)
+			FROM RD_EXPCOMPANY_CONFIG
+			WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate
+				AND ExpeditionZone = @ExpeditionZone AND ExpeditionType = @ExpeditionType
+				AND ISNULL(MaxWeight,2147483647) > ISNULL(@MaxWeight,2147483647)
+
+			SELECT @RefExpCompanyLevel = @MinRefExpCompanyLevel + (@MaxRefExpCompanyLevel - @MinRefExpCompanyLevel)/2
+			WHILE (EXISTS (SELECT TOP 1 1 FROM RD_EXPCOMPANY_CONFIG
+			WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate
+				AND ExpeditionZone = @ExpeditionZone AND ExpeditionType = @ExpeditionType
+				AND ExpCompanyLevel = @RefExpCompanyLevel)
+				OR @RefExpCompanyLevel = 0)
+			BEGIN
+				SELECT @RefExpCompanyLevel = @RefExpCompanyLevel + 1
+			END
+
+			INSERT INTO RD_EXPCOMPANY_CONFIG(ExpCompanyID, ExpeditionZone, ExpeditionType, ExpCompanyLevel, StartDate, UnitCost, MaxWeight, ExpColumnA, ExpColumnB, ExpColumnE, ExpColumnI, ExpColumnF)
+			SELECT @ExpCompanyID, @ExpeditionZone, @ExpeditionType, @RefExpCompanyLevel, @StartDate, @UnitCost, @MaxWeight, @ExpColumnA, @ExpColumnB, @ExpColumnE, @ExpColumnI, @ExpColumnF
+		END
+		ELSE
+		BEGIN
+			UPDATE RD_EXPCOMPANY_CONFIG
+			SET UnitCost = @UnitCost, 
+				ExpCompanyLevel = @ExpCompanyLevel, 
+				ExpColumnA = @ExpColumnA, 
+				ExpColumnB = @ExpColumnB, 
+				ExpColumnE = @ExpColumnE, 
+				ExpColumnI = @ExpColumnI, 
+				ExpColumnF = @ExpColumnF
+			WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate
+				AND ExpeditionZone = @ExpeditionZone AND ExpeditionType = @ExpeditionType
+				AND ISNULL(MaxWeight,2147483647) = ISNULL(@MaxWeight,2147483647)
+		END
+	END
+	ELSE
+	BEGIN
+		UPDATE RD_EXPCOMPANY_CONFIG
+		SET UnitCost = @UnitCost, 
+			MaxWeight = @MaxWeight, 
+			ExpColumnA = @ExpColumnA, 
+			ExpColumnB = @ExpColumnB, 
+			ExpColumnE = @ExpColumnE, 
+			ExpColumnI = @ExpColumnI, 
+			ExpColumnF = @ExpColumnF
+		WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate
+			AND ExpeditionZone = @ExpeditionZone AND ExpeditionType = @ExpeditionType
+			AND ExpCompanyLevel = @ExpCompanyLevel
+	END
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCOMPANY_EXPEDITION_IDS]') AND type in (N'P', N'PC'))

@@ -5,7 +5,7 @@
 @inject IViewLocalizer localizer
 @inject IConfiguration configuration
 
-@model ExpeditionTypeViewModel;
+@model ExpCompanyViewModel;
 @{
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
     bool AddExpCompany = false;
@@ -24,7 +24,7 @@
     if (Model.Permissions.Find(x => x == "AddExpRegistRange") != null) { AddExpRegistRange = true; }
     if (Model.Permissions.Find(x => x == "ExportExpRegistRange") != null) { ExportExpRegistRange = true; }
 }
-@if (Model == null || Model.ExpCompanies == null || Model.ExpCompanies.Count() == 0)
+@if (Model == null || Model.ExpCompany == null)
 {
     <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
 }
@@ -32,7 +32,7 @@ else
 {
     List<ExpeditionTypeElement> expCompanyTypes = new List<ExpeditionTypeElement>();
     List<ExpeditionTypeElement> expCompanyTypesNotIn = new List<ExpeditionTypeElement>();
-    Company expCompany = Model.ExpCompanies.First();
+    Company expCompany = Model.ExpCompany;
     bool ExistsExpeditionRegist = false;
     foreach (ExpeditionTypeElement exp in Model.Types)
     {
@@ -52,18 +52,17 @@ else
     }
 
     string value;
-    int level = 0;
-    string idValue = "arrow" + level.ToString();
-    string nameValue = "";
-
+    int level0 = 0, level1 = 0;
+    string id0Value = "arrow" + level0.ToString();
+    string name0Value = "level0|" + level0.ToString();
+    string id1Value = "arrow" + level1.ToString();
+    string name1Value = "level1|" + level1.ToString();
+    string startDateDesc;
     <div id="TitlePage">
         <h1>@localizer["ExpCompany"]</h1>
     </div>
     <div>
         <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Companies">
-        </a>
-        <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(expCompany)">
-            <img style="background:none; width:50px;height:50px;" src="~/images/config.png" title="@localizer["ExpCompanyConfig"]" />
         </a>
         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpContracts" asp-route-expcompanyJson="@JsonConvert.SerializeObject(expCompany)">
             <img style="background:none; width:50px;height:50px;" src="~/images/contract2.png" title="@localizer["ExpContracts"]" />
@@ -134,13 +133,13 @@ else
                 @if (AddExpeditionType)
                 {
                 <th rowspan="2">@localizer["Action"]
-                    @if (expCompanyTypesNotIn.Count() > 0 && 1==0) //TODO: Adicionar um tipo de expedição à COmpanhia obriga a configurar escalões
+                    @if (expCompanyTypesNotIn.Count() > 0)
                     {
                     <img onclick="EditRow('Type')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddExpeditionType"]" />
                     }
                 </th>
                 }
-                <th rowspan="2" t>@localizer["ExpeditionType"]</th>
+                <th rowspan="2">@localizer["ExpeditionType"]</th>
                 <th rowspan="2" title="@localizer["RegistModeTip"]">@localizer["RegistMode"]</th>
                 <th rowspan="2" title="@localizer["SeparationModeTip"]">@localizer["SeparationMode"]</th>
                 <th rowspan="2" title="@localizer["BarcodeRegistModeTip"]">@localizer["BarcodeRegistMode"]</th>
@@ -159,7 +158,7 @@ else
                 @if (AddExpeditionType && expCompanyTypesNotIn.Count() > 0)
                 {
                     <tr id="Hide|Type" style="display: none">
-                        <form id="AddFrm|Type" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="AddExpCompanyType"
+                        <form id="AddFrm|Type" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyType"
                   asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(e)" asp-route-specificExpCompany="true">
                         <td style="align-items:center; display:flex">
                             <img onclick="CancelRow('Type')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
@@ -191,6 +190,9 @@ else
                         {
                             <td>
                                 <img onclick="EditRow('@value')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
+                               @* <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(expCompany)" asp-route-expeditiontype="@c.ExpeditionType">
+                                    <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
+                                </a>*@
                             </td>
                         }
                         <td>@e.Description</td>
@@ -248,24 +250,24 @@ else
                             <td><input type="number" min="0" max="1" id="BarcodeRegistMode" name="BarcodeRegistMode" value="@value" /></td>
                                 @{
                                     value = c.GenerateDetailRegist ? "checked" : "";
-                                    nameValue = value + "DRFlagGenerateDetailRegist";
+                                    name0Value = value + "DRFlagGenerateDetailRegist";
                                 }
-                            <td><input type="checkbox" id="@nameValue" @value disabled /></td>
+                            <td><input type="checkbox" id="@name0Value" @value disabled /></td>
                                 @{
                                     value = c.DRFlagRegistado ? "checked" : "";
-                                    nameValue = value + "DRFlagRegistado";
+                                    name0Value = value + "DRFlagRegistado";
                                 }
-                            <td><input type="checkbox" id="@nameValue" @value disabled /></td>
+                            <td><input type="checkbox" id="@name0Value" @value disabled /></td>
                                 @{
                                     value = c.DRFlagEncomenda ? "checked" : "";
-                                    nameValue = value + "DRFlagEncomenda";
+                                    name0Value = value + "DRFlagEncomenda";
                                 }
-                            <td><input type="checkbox" id="@nameValue" @value disabled /></td>
+                            <td><input type="checkbox" id="@name0Value" @value disabled /></td>
                                 @{
                                     value = c.DRFlagPessoal ? "checked" : "";
-                                    nameValue = value + "DRFlagPessoal";
+                                    name0Value = value + "DRFlagPessoal";
                                 }
-                            <td><input type="checkbox" id="@nameValue" @value disabled /></td>
+                            <td><input type="checkbox" id="@name0Value" @value disabled /></td>
 
                             </form>
                         </tr>
@@ -274,6 +276,96 @@ else
             }
         </tbody>
     </table>
+    if (Model.Configs.Count() > 0)
+    {
+        <div id="TitlePage">
+            <h3>@localizer["ExpCompanyConfig"]</h3>
+        </div>
+        <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th width="120px">@localizer["Action"]</th>
+                <th>@localizer["StartDate"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @foreach (var sDate in Model.Configs.Select(x => x.StartDate).Distinct().ToList())
+            {
+                level0++;
+                name0Value = "level" + level0.ToString();
+                id0Value = "arrow" + name0Value;
+                DateTime startDateDT;
+                startDateDesc = sDate.ToString();
+                if (DateTime.TryParseExact(sDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out startDateDT))
+                    startDateDesc = startDateDT.ToShortDateString();
+                <tr>
+                    <td>
+                    <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyviewmodelJson="@JsonConvert.SerializeObject(Model)" asp-route-startdate="@sDate">
+                        <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
+                    </a>
+                    </td>
+                        <td colspan="2">
+                            @startDateDesc<a class="bx bxs-chevron-down" href="javascript:showDetail('@name0Value')" id="@id0Value"></a>
+                    </td>
+                </tr>
+                <tr id="@name0Value" style="display: none">
+                    <td colspan="2">
+                        <table class="table table-sm table-hover table-collapse-seperate">
+                            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                <th width="200px"></th>
+                                <th>@localizer["ExpeditionType"]</th>
+                            </thead>
+                            <tbody>
+                                @foreach(var tType in Model.Configs.Where(x => x.StartDate == sDate).Select(x=> x.ExpeditionType).Distinct().ToList())
+                                {
+                                    List<ExpCompanyConfig> typeList = Model.Configs.Where(x => x.StartDate == sDate && x.ExpeditionType == tType).ToList();
+                                    level1++;
+                                    name1Value = "detail" + level1.ToString();
+                                    id1Value = "arrow" + name1Value;
+                                    <tr>
+                                        <td>
+                                            <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyviewmodelJson="@JsonConvert.SerializeObject(Model)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType">
+                                                <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
+                                            </a>
+                                        </td>
+                                        <td>@typeList.First().ExpeditionTypeDesc
+                                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@name1Value')" id="@id1Value"></a>
+                                        </td>
+                                    </tr>
+                                    <tr  id="@name1Value" style="display: none">
+                                        <td colspan="2">
+                                                <table class="table table-sm table-hover table-collapse-seperate">
+                                                    <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                                        <tr>
+                                                            <th width="280px"></th>
+                                                            <th>@localizer["ExpeditionZone"]</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bootstrap-overrides">
+                                                        @foreach (var zZone in typeList.Select(x => x.ExpeditionZone).Distinct().ToList())
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyviewmodelJson="@JsonConvert.SerializeObject(Model)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType" asp-route-expeditionzone="@zZone">
+                                                                        <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
+                                                                    </a>
+                                                                </td>
+                                                                <td>@typeList.Where(x => x.ExpeditionZone == zZone).First().ExpeditionZoneDesc</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                    </tr>
+                                }
+                             </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
 }
 @section Scripts
     {

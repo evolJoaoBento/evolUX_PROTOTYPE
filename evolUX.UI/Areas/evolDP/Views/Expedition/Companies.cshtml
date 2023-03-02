@@ -85,7 +85,7 @@ else
                         @if (AddExpCompany || AddExpeditionType)
                         {
                             <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expCompanyid="@expCompany.ID" asp-route-expeditiontypeviewJson="@JsonConvert.SerializeObject(Model)">
-                                <img style="background:none; width:35px;height:35px;" src="~/images/menu.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
+                                <img style="background:none; width:35px;height:35px;" src="~/images/config.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
                             </a>
                         }
                         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpContracts" asp-route-expCompanyJson="@JsonConvert.SerializeObject(expCompany)">

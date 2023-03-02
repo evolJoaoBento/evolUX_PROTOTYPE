@@ -66,6 +66,16 @@ namespace evolUX.UI.Areas.evolDP.Services
             await _expeditionTypeRepository.SetExpContract(expContract);
             return;
         }
+        public async Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int expeditionID, int expeditionZone)
+        {
+            var response = await _expeditionTypeRepository.GetExpCompanyConfigs(expCompanyID, expeditionID, expeditionZone);
+            return response;
+        }
+        public async Task<IEnumerable<ExpCompanyConfig>> SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig)
+        {
+            var response = await _expeditionTypeRepository.SetExpCompanyConfig(expCompanyConfig);
+            return response;
+        }
 
     }
 }
