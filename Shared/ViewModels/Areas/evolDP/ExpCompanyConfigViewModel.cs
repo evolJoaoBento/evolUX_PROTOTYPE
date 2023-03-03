@@ -3,11 +3,12 @@ using Shared.Models.Areas.evolDP;
 
 namespace Shared.ViewModels.Areas.evolDP
 {
-    public class ExpCompanyConfigViewModel : ExpCompanyViewModel
+    public class ExpCompanyConfigViewModel : ItemPermissions
     {
-        public IEnumerable<ExpeditionZoneElement> Zones { get; set; }
+        public Company ExpCompany { get; set; }
         public int ExpeditionType { get; set; }
         public int ExpeditionZone { get; set; }
-        public int StartDate { get; set; }
+        public IEnumerable<ExpCompanyConfig> Configs { get; set; }
+        public IEnumerable<ExpeditionZoneElement> Zones { get; set; }
     }
 }

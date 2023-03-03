@@ -29,9 +29,7 @@ namespace evolUX.UI.Areas.evolDP.Services
                 if (expTypes == null)
                     expTypes = (await _expeditionTypeRepository.GetExpCompanyTypes(null, response.ExpCompany.ID))?.ToList();
                 response.ExpTypes = expTypes;
-                response.Configs = await GetExpCompanyConfigs(response.ExpCompany.ID, 0, 0);
-                ExpeditionZoneViewModel zones = await GetExpeditionZones(0, "");
-                response.Zones = zones.Zones.ToList();
+                response.Configs = await GetExpCompanyConfigsResume(response.ExpCompany.ID);
                 ExpeditionTypeViewModel types = await GetExpeditionTypes(0, "");
                 response.Types = types.Types.ToList();
             }
@@ -44,15 +42,7 @@ namespace evolUX.UI.Areas.evolDP.Services
             ExpeditionTypeViewModel companies = await _expeditionTypeRepository.GetExpeditionCompanies(expCompanyID);
             if (companies.ExpCompanies != null && companies.ExpCompanies.Count() > 0)
             {
-                response.ExpCompany = companies.ExpCompanies.First();
-                if (expTypes == null)
-                    expTypes = (await _expeditionTypeRepository.GetExpCompanyTypes(null, response.ExpCompany.ID))?.ToList();
-                response.ExpTypes = expTypes;
-                response.Configs = await GetExpCompanyConfigs(response.ExpCompany.ID, 0, 0);
-                ExpeditionZoneViewModel zones = await GetExpeditionZones(0, "");
-                response.Zones = zones.Zones.ToList();
-                ExpeditionTypeViewModel types = await GetExpeditionTypes(0, "");
-                response.Types = types.Types.ToList();
+                return await GetExpCompanyViewModel(companies.ExpCompanies.First(),expTypes);
             }
             return response;
         }
@@ -103,9 +93,9 @@ namespace evolUX.UI.Areas.evolDP.Services
             await _expeditionTypeRepository.SetExpContract(expContract);
             return;
         }
-        public async Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int expeditionID, int expeditionZone)
+        public async Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int startDate, int expeditionType, int expeditionZone)
         {
-            var response = await _expeditionTypeRepository.GetExpCompanyConfigs(expCompanyID, expeditionID, expeditionZone);
+            var response = await _expeditionTypeRepository.GetExpCompanyConfigs(expCompanyID, startDate, expeditionType, expeditionZone);
             return response;
         }
         public async Task<IEnumerable<ExpCompanyConfig>> SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig)
@@ -113,6 +103,10 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _expeditionTypeRepository.SetExpCompanyConfig(expCompanyConfig);
             return response;
         }
-
+        public async Task<IEnumerable<ExpCompanyConfigResume>> GetExpCompanyConfigsResume(int expCompanyID)
+        {
+            var response = await _expeditionTypeRepository.GetExpCompanyConfigsResume(expCompanyID);
+            return response;
+        }
     }
 }

@@ -110,9 +110,9 @@ namespace evolUX.API.Areas.evolDP.Services
             return;
         }
 
-        public async Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int expeditionType, int expeditionZone)
+        public async Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int startDate, int expeditionType, int expeditionZone)
         {
-            IEnumerable<ExpCompanyConfig> result = await _repository.ExpeditionType.GetExpCompanyConfigs(expCompanyID, expeditionType, expeditionZone);
+            IEnumerable<ExpCompanyConfig> result = await _repository.ExpeditionType.GetExpCompanyConfigs(expCompanyID, startDate, expeditionType, expeditionZone);
             if (result == null)
             {
 
@@ -122,6 +122,15 @@ namespace evolUX.API.Areas.evolDP.Services
         public async Task SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig)
         {
             await _repository.ExpeditionType.SetExpCompanyConfig(expCompanyConfig);
+        }
+        public async Task<IEnumerable<ExpCompanyConfigResume>> GetExpCompanyConfigsResume(int expCompanyID)
+        {
+            IEnumerable<ExpCompanyConfigResume> result = await _repository.ExpeditionType.GetExpCompanyConfigsResume(expCompanyID);
+            if (result == null)
+            {
+
+            }
+            return result;
         }
     }
 }

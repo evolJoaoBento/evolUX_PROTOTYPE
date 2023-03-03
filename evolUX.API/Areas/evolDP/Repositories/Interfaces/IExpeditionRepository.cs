@@ -19,7 +19,8 @@ namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
 
         public Task<IEnumerable<ExpCompanyServiceTask>> GetExpCompanyServiceTask(string expCode);
 
-        public Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int expeditionType, int expeditionZone);
+        public Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int startDate, int expeditionType, int expeditionZone);
         public Task SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig);
+        public Task<IEnumerable<ExpCompanyConfigResume>> GetExpCompanyConfigsResume(int expCompanyID);
     }
 }

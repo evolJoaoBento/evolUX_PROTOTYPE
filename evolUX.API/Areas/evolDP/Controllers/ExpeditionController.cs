@@ -330,8 +330,9 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 int expCompanyID = Int32.Parse(Convert.ToString(obj));
                 int expeditionType = 0;
                 int expeditionZone = 0;
+                int startDate = 0;
                 int value = 0;
-                dictionary.TryGetValue("ExpeditonType", out obj);
+                dictionary.TryGetValue("ExpeditionType", out obj);
                 string str = Convert.ToString(obj).ToString();
                 if (!string.IsNullOrEmpty(str) && Int32.TryParse(str, out value))
                     expeditionType = value;
@@ -339,8 +340,12 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 str = Convert.ToString(obj).ToString();
                 if (!string.IsNullOrEmpty(str) && Int32.TryParse(str, out value))
                     expeditionZone = value;
+                dictionary.TryGetValue("StartDate", out obj);
+                str = Convert.ToString(obj).ToString();
+                if (!string.IsNullOrEmpty(str) && Int32.TryParse(str, out value))
+                    startDate = value;
 
-                var result = await _expeditionService.GetExpCompanyConfigs(expCompanyID, expeditionType, expeditionZone);
+                var result = await _expeditionService.GetExpCompanyConfigs(expCompanyID, startDate, expeditionType, expeditionZone);
                 _logger.LogInfo("Expedition Company Configs Get");
                 return Ok(result);
             }
@@ -359,7 +364,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("SetExpCompanyConfig")]
-        public async Task<ActionResult<IEnumerable<ExpCompanyConfig>>> SetExpCompanyConfig([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult> SetExpCompanyConfig([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -369,9 +374,8 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 ExpCompanyConfig expConfig = JsonConvert.DeserializeObject<ExpCompanyConfig>(expCompanyConfigJSON);
 
                 await _expeditionService.SetExpCompanyConfig(expConfig);
-                IEnumerable<ExpCompanyConfig> result = await _expeditionService.GetExpCompanyConfigs(expConfig.ExpCompanyID, 0, 0);
                 _logger.LogInfo("SetExpCompanyConfig Get");
-                return Ok(result);
+                return Ok();
             }
             catch (SqlException ex)
             {
@@ -381,6 +385,33 @@ namespace evolUX.API.Areas.evolDP.Controllers
             {
                 //log error
                 _logger.LogError($"Something went wrong inside SetExpCompanyConfig action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("GetExpCompanyConfigsResume")]
+        public async Task<ActionResult<IEnumerable<ExpCompanyConfigResume>>> GetExpCompanyConfigsResume([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("ExpCompanyID", out obj);
+                int expCompanyID = Int32.Parse(Convert.ToString(obj));
+
+                var result = await _expeditionService.GetExpCompanyConfigsResume(expCompanyID);
+                _logger.LogInfo("Expedition Company Configs Resume Get");
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetExpCompanyConfigsResume action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }

@@ -43,7 +43,7 @@ else
     string id1Value = "arrow" + level1.ToString();
     string name1Value = "level1|" + level1.ToString();
     string startDateDesc;
-    List<ExpCompanyConfig> startDateConfigs;
+    List<ExpCompanyConfigResume> startDateConfigs;
     List<ExpCompanyConfig> expeditionTypeConfigs;
     List<ExpCompanyConfig> expeditionZoneConfigs;
     <div id="TitlePage">
@@ -309,13 +309,13 @@ else
                             <tbody>
                                 @foreach(var tType in Model.Configs.Where(x => x.StartDate == sDate).Select(x=> x.ExpeditionType).Distinct().ToList())
                                 {
-                                    List<ExpCompanyConfig> typeList = Model.Configs.Where(x => x.StartDate == sDate && x.ExpeditionType == tType).ToList();
+                                    List<ExpCompanyConfigResume> typeList = Model.Configs.Where(x => x.StartDate == sDate && x.ExpeditionType == tType).ToList();
                                     level1++;
                                     name1Value = "detail" + level1.ToString();
                                     id1Value = "arrow" + name1Value;
                                     <tr>
                                         <td>
-                                            <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyviewmodelJson="@JsonConvert.SerializeObject(Model)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType">
+                                            <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType">
                                                 <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
                                             </a>
                                         </td>
@@ -337,7 +337,7 @@ else
                                                         {
                                                             <tr>
                                                                 <td>
-                                                                    <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyviewmodelJson="@JsonConvert.SerializeObject(Model)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType" asp-route-expeditionzone="@zZone">
+                                                                    <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType" asp-route-expeditionzone="@zZone">
                                                                         <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
                                                                     </a>
                                                                 </td>

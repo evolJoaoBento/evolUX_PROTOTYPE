@@ -30,6 +30,8 @@
 }
 else
 {
+    int distinctExpeditionTypes = Model.Configs.Select(x => x.ExpeditionType).Distinct().ToList().Count();
+    int distinctExpeditionZones = Model.Configs.Select(x => x.ExpeditionZone).Distinct().ToList().Count();
     Company expCompany = Model.ExpCompany;
     List<ExpeditionZoneElement> zonesNotInList = new List<ExpeditionZoneElement>();
     string value;
@@ -40,7 +42,7 @@ else
     int OldExpeditionType = Model.ExpeditionType;
     int OldExpeditionZone = Model.ExpeditionZone;
     int OldStartDate = 0;
-    if (Model.ExpeditionZone == 0)
+    if (Model.Zones != null)
     {
         foreach (ExpeditionZoneElement z in Model.Zones)
         {
@@ -54,19 +56,20 @@ else
         <h2>@headerDesc</h2>
     </div>
     <div>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-typesJson="@JsonConvert.SerializeObject(Model.ExpTypes)">
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)"
+       asp-route-startdate="@Model.Configs.First().StartDate" asp-route-expeditiontype="@Model.ExpeditionType" asp-route-expeditionzone="@Model.ExpeditionZone">
         </a>
     </div>
-  @*  <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th>@localizer["Action"]</th>
+                <th width="120px">@localizer["Action"]</th>
                 <th>@localizer["ExpeditionType"]</th>
                 <th colspan="10">@localizer["ExpeditionZone"]</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (ExpCompanyConfig c in Model.expCompanyView.Configs)
+            @foreach (ExpCompanyConfig c in Model.Configs)
             {
                 value = c.ExpeditionType.ToString();
                 if (Model.ExpeditionType != 0)
@@ -89,7 +92,8 @@ else
                         </tr>
                         <tr id="Hide|Zone|@value" style="display: none">
                             <form id="AddFrm|Zone|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfigAdd"
-                  asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.expCompanyView.ExpCompany)">
+                                  asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)"
+                                  asp-route-startdate="@Model.Configs.First().StartDate" asp-route-expeditiontype="@Model.ExpeditionType" asp-route-expeditionzone="@Model.ExpeditionZone">
                             <td style="align-items:center; display:flex">
                                 <img onclick="CancelRow('TypeZone')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                                 <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
@@ -124,22 +128,40 @@ else
                     level0++;
                     nameValue = "level0|" + level0.ToString();
                     idValue = "arrow" + nameValue;
-                }
-                <tr>
-                    @if (AddExpeditionType)
-                    {
-                        <td>
-                            <img onclick="EditRow('Zone|@value')" style="background:none; width:25px;height:25px;" src="~/images/add.png" title="@localizer["ExpCompanyConfigAdd"]" />
-                        </td>
-                    }
-                    <td>@c.ExpeditionTypeDesc</td>
-                    <td colspan="10">@c.ExpeditionZoneDesc
-                        @if (OldExpeditionType != c.ExpeditionType || OldExpeditionZone != c.ExpeditionZone)
+                    <tr>
+                        @if (AddExpeditionType)
                         {
-                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <td>
+                                <img onclick="EditRow('Zone|@value')" style="background:none; width:25px;height:25px;" src="~/images/add.png" title="@localizer["ExpCompanyConfigAdd"]" />
+                            </td>
                         }
-                    </td>
-                </tr>
+                        <td>@c.ExpeditionTypeDesc</td>
+                        <td colspan="10">
+                            @c.ExpeditionZoneDesc
+                            @if (OldExpeditionType != c.ExpeditionType || OldExpeditionZone != c.ExpeditionZone)
+                            {
+                                <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            }
+                        </td>
+                    </tr>
+                }
+                OldExpeditionType = c.ExpeditionType;
+                OldExpeditionZone = c.ExpeditionZone;
+            }
+            </tbody>
+    </table>
+    @*  <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th>@localizer["Action"]</th>
+                <th>@localizer["ExpeditionType"]</th>
+                <th colspan="10">@localizer["ExpeditionZone"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ExpCompanyConfig c in Model.expCompanyView.Configs)
+            {
+ 
                 value = c.ExpeditionType.ToString() + "|" + c.ExpeditionZone.ToString() + "|" + c.ExpCompanyLevel;
                 <tr id="Show|@value">
                     @if (AddExpeditionType)

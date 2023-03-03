@@ -466,16 +466,14 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
 
-        public async Task<IActionResult> ExpCompanyConfig(string expCompanyJson, string expCompanyConfigsJson, int startDate, int expeditionType, int expeditionZone)
+        public async Task<IActionResult> ExpCompanyConfig(string expCompanyJson, int startDate, int expeditionType, int expeditionZone)
         {
             try
             {
                 Company company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
-                List<ExpCompanyConfig> configs = JsonConvert.DeserializeObject<List<ExpCompanyConfig>>(expCompanyConfigsJson);
                 ExpCompanyConfigViewModel result = new ExpCompanyConfigViewModel();
                 result.ExpCompany = company;
-                result.Configs = configs;
-                result.StartDate = startDate;
+                result.Configs = await _expeditionService.GetExpCompanyConfigs(company.ID, startDate, expeditionType, expeditionZone);
                 result.ExpeditionType = expeditionType;
                 result.ExpeditionZone = expeditionZone;
                 if (expeditionZone == 0)
@@ -522,7 +520,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
 
-        public async Task<IActionResult> ChangeExpCompanyConfig(IFormCollection form, string expCompanyJson)
+        public async Task<IActionResult> ChangeExpCompanyConfig(IFormCollection form, string expCompanyJson, int startDate, int expeditionType, int expeditionZone)
         {
             try
             {
@@ -594,7 +592,8 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
                 Company Company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
                 ExpCompanyConfigViewModel result = new ExpCompanyConfigViewModel();
-                result.Configs = await _expeditionService.SetExpCompanyConfig(expCompanyConfig);
+                await _expeditionService.SetExpCompanyConfig(expCompanyConfig);
+                result.Configs = await _expeditionService.GetExpCompanyConfigs(expCompanyConfig.ExpCompanyID, startDate, expeditionType, expeditionZone);
                 result.ExpCompany = company;
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View("ExpCompanyConfig", result);

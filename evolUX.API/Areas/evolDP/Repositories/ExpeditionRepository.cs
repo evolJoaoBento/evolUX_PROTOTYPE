@@ -199,7 +199,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
         }
 
-        public async Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int expeditionType, int expeditionZone)
+        public async Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int startDate, int expeditionType, int expeditionZone)
         {
             string sql = @"RD_UX_GET_EXPCOMPANY_CONFIGS";
             var parameters = new DynamicParameters();
@@ -208,6 +208,8 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 parameters.Add("ExpeditionType", expeditionType, DbType.Int64);
             if (expeditionZone > 0)
                 parameters.Add("ExpeditionZone", expeditionZone, DbType.Int64);
+            if (startDate > 0)
+                parameters.Add("StartDate", startDate, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 var expeditionCompanyConfigsList = await connection.QueryAsync<ExpCompanyConfig>(sql, parameters, commandType: CommandType.StoredProcedure);
@@ -238,6 +240,17 @@ namespace evolUX.API.Areas.evolDP.Repositories
             {
                 await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
                 return;
+            }
+        }
+        public async Task<IEnumerable<ExpCompanyConfigResume>> GetExpCompanyConfigsResume(int expCompanyID)
+        {
+            string sql = @"RD_UX_GET_EXPCOMPANY_CONFIGS_RESUME";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                var expeditionCompanyConfigsList = await connection.QueryAsync<ExpCompanyConfigResume>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return expeditionCompanyConfigsList;
             }
         }
     }

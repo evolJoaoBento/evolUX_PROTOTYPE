@@ -297,6 +297,38 @@ BEGIN
 	ORDER BY ec.StartDate DESC, ec.ExpeditionType, ec.ExpeditionZone, ec.MaxWeight 
 END
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCOMPANY_CONFIGS_RESUME]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_CONFIGS_RESUME] AS' 
+END
+GO
+--Configuracoes de escalão (listar e alterar)
+ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_CONFIGS_RESUME]
+	@ExpCompanyID int
+AS
+BEGIN
+	SELECT 
+		DISTINCT ec.ExpCompanyID,
+		ec.ExpeditionZone,
+		ez.[Description] [ExpeditionZoneDesc],
+		ec.ExpeditionType,
+		et.[Description] [ExpeditionTypeDesc],
+		ec.StartDate
+	FROM
+		RD_EXPCOMPANY_CONFIG ec WITH(NOLOCK)
+	INNER JOIN
+		RD_COMPANY c WITH(NOLOCK)
+	ON	ec.ExpCompanyID = c.CompanyID
+	INNER JOIN
+		RD_EXPEDITION_Zone ez WITH(NOLOCK)
+	ON	ec.ExpeditionZone = ez.ExpeditionZone
+	INNER JOIN
+		RD_EXPEDITION_TYPE et
+	ON	ec.ExpeditionType = et.ExpeditionType
+	WHERE ec.ExpCompanyID = @ExpCompanyID
+	ORDER BY ec.StartDate DESC, ec.ExpeditionType, ec.ExpeditionZone
+END
+GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_EXPCOMPANY_CONFIGS]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_EXPCOMPANY_CONFIGS] AS' 
