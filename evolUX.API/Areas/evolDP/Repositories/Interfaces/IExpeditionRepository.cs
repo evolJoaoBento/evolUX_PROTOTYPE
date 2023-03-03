@@ -1,4 +1,5 @@
 ﻿using Shared.Models.Areas.evolDP;
+using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
 using System.Data;
 
@@ -8,7 +9,7 @@ namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
     {
         public Task<IEnumerable<ExpeditionTypeElement>> GetExpeditionTypes(int? expeditionType);
         public Task<IEnumerable<ExpCompanyType>> GetExpCompanyTypes(int? expeditionType, int? expCompanyID, DataTable? expCompanyList);
-        public Task SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode); 
+        public Task<Result> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode); 
         public Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones(int? expeditionZone);
         public Task<IEnumerable<ExpCompanyZone>> GetExpCompanyZones(int? expeditionZone, int? expCompanyID, DataTable? expCompanyList);
         public Task<IEnumerable<ExpeditionRegistElement>> GetExpeditionRegistIDs(int expCompanyID);

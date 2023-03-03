@@ -24,13 +24,13 @@
     if (Model.Permissions.Find(x => x == "AddExpRegistRange") != null) { AddExpRegistRange = true; }
     if (Model.Permissions.Find(x => x == "ExportExpRegistRange") != null) { ExportExpRegistRange = true; }
 }
-@if (Model == null || Model.expCompanyView.Configs == null)
+@if (Model == null || Model.Configs == null)
 {
     <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
 }
 else
 {
-    Company expCompany = Model.expCompanyView.ExpCompany;
+    Company expCompany = Model.ExpCompany;
     List<ExpeditionZoneElement> zonesNotInList = new List<ExpeditionZoneElement>();
     string value;
     int level0 = 0, level1 = 0;
@@ -44,7 +44,7 @@ else
     {
         foreach (ExpeditionZoneElement z in Model.Zones)
         {
-            if (Model.expCompanyView.Configs.Where(x => x.ExpeditionZone == z.ExpeditionZone).Count() == 0)
+            if (Model.Configs.Where(x => x.ExpeditionZone == z.ExpeditionZone).Count() == 0)
                 zonesNotInList.Add(z);
         }
     }
@@ -54,7 +54,7 @@ else
         <h2>@headerDesc</h2>
     </div>
     <div>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyviewmodelJson="@JsonConvert.SerializeObject(Model.expCompanyView)">
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-typesJson="@JsonConvert.SerializeObject(Model.ExpTypes)">
         </a>
     </div>
   @*  <table class="table table-sm table-hover table-collapse-seperate">

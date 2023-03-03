@@ -135,6 +135,9 @@
   <data name="ExpeditionType" xml:space="preserve">
     <value>Tipos de Expedição</value>
   </data>
+  <data name="List" xml:space="preserve">
+    <value>Ver detalhe para Tipo de Expedição</value>
+  </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>

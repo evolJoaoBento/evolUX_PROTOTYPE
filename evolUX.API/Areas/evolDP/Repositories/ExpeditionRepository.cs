@@ -4,6 +4,7 @@ using evolUX.API.Data.Context;
 using evolUX.API.Models;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Models.Areas.evolDP;
+using Shared.Models.General;
 using System.ComponentModel.Design;
 using System.Data;
 using System.Diagnostics.Contracts;
@@ -51,7 +52,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
         }
 
-        public async Task SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode)
+        public async Task<Result> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode)
         {
             string sql = @"RD_UX_SET_EXPCOMPANY_TYPE";
             var parameters = new DynamicParameters();
@@ -63,7 +64,10 @@ namespace evolUX.API.Areas.evolDP.Repositories
             
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                await connection.QueryAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                
+                IEnumerable<Result> results = await connection.QueryAsync<Result>(sql, parameters,
+                   commandType: CommandType.StoredProcedure);
+                return results.First();
             }
         }
 

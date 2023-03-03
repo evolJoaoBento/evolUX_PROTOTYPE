@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Data;
 using Shared.ViewModels.Areas.Finishing;
 using Shared.Models.Areas.evolDP;
+using Shared.ViewModels.General;
+using System.Reflection.Emit;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
@@ -83,12 +85,10 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
                     expeditionType = value;
                 DataTable? expCompanyList = null;
-                if (expeditionType == null)
-                {
-                    dictionary.TryGetValue("ExpCompanyList", out obj);
-                    string expCompanyListJSON = Convert.ToString(obj);
+                dictionary.TryGetValue("ExpCompanyList", out obj);
+                string expCompanyListJSON = Convert.ToString(obj);
+                if (!string.IsNullOrEmpty(expCompanyListJSON))
                     expCompanyList = JsonConvert.DeserializeObject<DataTable>(expCompanyListJSON).DefaultView.ToTable(false, "ID");
-                }
                 var expeditionTypeList = await _expeditionService.GetExpeditionTypes(expeditionType, expCompanyList);
                 _logger.LogInfo("Expedition Type Get");
                 return Ok(expeditionTypeList);
@@ -108,7 +108,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         [HttpGet]
         [ActionName("GetExpCompanyTypes")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ExpeditionTypeViewModel>> GetExpCompanyTypes([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<IEnumerable<ExpCompanyType>>> GetExpCompanyTypes([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
                     expCompanyID = value;
 
                 int? expeditionType = null;
-                 if (expeditionType == null)
+                if (expeditionType == null)
                 {
                     dictionary.TryGetValue("ExpeditionType", out obj);
                     if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
@@ -145,7 +145,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         [HttpGet]
         [ActionName("SetExpCompanyType")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ExpeditionTypeViewModel>> SetExpCompanyType([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<ResultsViewModel>> SetExpCompanyType([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -161,12 +161,11 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 bool separationMode = bool.Parse(Convert.ToString(obj));
                 dictionary.TryGetValue("BarcodeRegistMode", out obj);
                 bool barcodeRegistMode = bool.Parse(Convert.ToString(obj));
-                dictionary.TryGetValue("ReturnAll", out obj);
-                bool returnAll = bool.Parse(Convert.ToString(obj));
 
-                var expeditionTypeList = await _expeditionService.SetExpCompanyType(expeditionType, expCompanyID, registMode, separationMode, barcodeRegistMode, returnAll);
+                ResultsViewModel viewmodel = new ResultsViewModel();
+                viewmodel.Results = await _expeditionService.SetExpCompanyType(expeditionType, expCompanyID, registMode, separationMode, barcodeRegistMode);
                 _logger.LogInfo("Expedition Type Set");
-                return Ok(expeditionTypeList);
+                return Ok(viewmodel);
             }
             catch (SqlException ex)
             {

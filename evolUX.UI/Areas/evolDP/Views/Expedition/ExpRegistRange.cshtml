@@ -34,7 +34,7 @@ else
     <div id="TitlePage">
         <h1>@localizer["ExpRegistRange"]</h1>
         <h2>@Model.Company.CompanyName</h2>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyid="@Model.Company.ID">
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.Company)">
         </a>
     </div>
     <table class="table table-sm table-hover table-collapse-seperate">

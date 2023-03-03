@@ -10,6 +10,7 @@ using Shared.ViewModels.Areas.Finishing;
 using Shared.Models.Areas.evolDP;
 using evolUX_dev.Areas.evolDP.Models;
 using Newtonsoft.Json;
+using Shared.ViewModels.General;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
@@ -40,6 +41,18 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ExpeditionTypeViewModel>();
         }
+
+        public async Task<ExpeditionTypeViewModel> GetExpeditionCompanies(int expCompanyID)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ExpCompanyID", expCompanyID);
+            var response = await _flurlClient.Request("/API/evolDP/Expedition/GetExpeditionCompanies")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<ExpeditionTypeViewModel>();
+        }
         public async Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, string expCompanyList)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
@@ -52,7 +65,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ExpeditionTypeViewModel>();
         }
-        public async Task<ExpeditionTypeViewModel> GetExpCompanyTypes(int? expeditionType, int? expCompanyID)
+        public async Task<IEnumerable<ExpCompanyType>> GetExpCompanyTypes(int? expeditionType, int? expCompanyID)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ExpeditionType", expeditionType);
@@ -62,9 +75,9 @@ namespace evolUX.UI.Areas.evolDP.Repositories
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<ExpeditionTypeViewModel>();
+            return await response.GetJsonAsync<IEnumerable<ExpCompanyType>>();
         }
-        public async Task<ExpeditionTypeViewModel> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode, bool returnAll)
+        public async Task<ResultsViewModel> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ExpeditionType", expeditionType);
@@ -72,13 +85,12 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             dictionary.Add("RegistMode", registMode);
             dictionary.Add("SeparationMode", separationMode);
             dictionary.Add("BarcodeRegistMode", barcodeRegistMode);
-            dictionary.Add("ReturnAll", returnAll);
             var response = await _flurlClient.Request("/API/evolDP/Expedition/SetExpCompanyType")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<ExpeditionTypeViewModel>();
+            return await response.GetJsonAsync<ResultsViewModel>();
         }
         public async Task<ExpeditionZoneViewModel> GetExpeditionZones(int? expeditionZone, string expCompanyList)
         {

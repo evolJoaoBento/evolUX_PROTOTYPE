@@ -29,6 +29,7 @@ AS
 	SELECT
 		ect.ExpCompanyID,
 		ect.ExpeditionType,
+		et.[Description] ExpeditionTypeDesc,
 		ect.RegistMode, --Controlo de Registo ==> 1 - Ativo, 0 - Desativo
 		ect.SeparationMode, --Separação física de escalões de expedição ==> 1 - Ativo, 0 - Desativo
 		ect.BarcodeRegistMode,
@@ -124,6 +125,7 @@ AS
 			AND ec.ExpeditionType = @ExpeditionTypeRef
 			AND ec.StartDate = @StartDate
 	END
+	SELECT 0 ErrorID, 'Sucess' Error
 RETURN
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPEDITION_ZONE]') AND type in (N'P', N'PC'))

@@ -3,6 +3,7 @@ using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using evolUX_dev.Areas.evolDP.Models;
 using Flurl.Http;
 using Shared.Models.Areas.evolDP;
+using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.UI.Areas.evolDP.Services
@@ -19,6 +20,42 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _expeditionTypeRepository.SetExpCompany(expCompany);
             return response;
         }
+        public async Task<ExpCompanyViewModel> GetExpCompanyViewModel(Company expCompany, List<ExpCompanyType> expTypes)
+        {
+            ExpCompanyViewModel response = new ExpCompanyViewModel();
+            if (expCompany != null)
+            {
+                response.ExpCompany = expCompany;
+                if (expTypes == null)
+                    expTypes = (await _expeditionTypeRepository.GetExpCompanyTypes(null, response.ExpCompany.ID))?.ToList();
+                response.ExpTypes = expTypes;
+                response.Configs = await GetExpCompanyConfigs(response.ExpCompany.ID, 0, 0);
+                ExpeditionZoneViewModel zones = await GetExpeditionZones(0, "");
+                response.Zones = zones.Zones.ToList();
+                ExpeditionTypeViewModel types = await GetExpeditionTypes(0, "");
+                response.Types = types.Types.ToList();
+            }
+            return response;
+        }
+
+        public async Task<ExpCompanyViewModel> GetExpCompanyViewModel(int expCompanyID, List<ExpCompanyType> expTypes)
+        {
+            ExpCompanyViewModel response = new ExpCompanyViewModel();
+            ExpeditionTypeViewModel companies = await _expeditionTypeRepository.GetExpeditionCompanies(expCompanyID);
+            if (companies.ExpCompanies != null && companies.ExpCompanies.Count() > 0)
+            {
+                response.ExpCompany = companies.ExpCompanies.First();
+                if (expTypes == null)
+                    expTypes = (await _expeditionTypeRepository.GetExpCompanyTypes(null, response.ExpCompany.ID))?.ToList();
+                response.ExpTypes = expTypes;
+                response.Configs = await GetExpCompanyConfigs(response.ExpCompany.ID, 0, 0);
+                ExpeditionZoneViewModel zones = await GetExpeditionZones(0, "");
+                response.Zones = zones.Zones.ToList();
+                ExpeditionTypeViewModel types = await GetExpeditionTypes(0, "");
+                response.Types = types.Types.ToList();
+            }
+            return response;
+        }
         public async Task<ExpeditionTypeViewModel> GetExpeditionCompanies(string expCompanyList)
         {
             var response = await _expeditionTypeRepository.GetExpeditionCompanies(expCompanyList);
@@ -29,15 +66,15 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _expeditionTypeRepository.GetExpeditionTypes(expeditionType, expCompanyList);
             return response;
         }
-        public async Task<ExpeditionTypeViewModel> GetExpCompanyTypes(int? expeditionType, int? expCompanyID)
+        public async Task<IEnumerable<ExpCompanyType>> GetExpCompanyTypes(int? expeditionType, int? expCompanyID)
         {
             var response = await _expeditionTypeRepository.GetExpCompanyTypes(expeditionType, expCompanyID);
             return response;
         }
-        public async Task<ExpeditionTypeViewModel> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode, bool returnAll)
+        public async Task SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode)
         {
-            var response = await _expeditionTypeRepository.SetExpCompanyType(expeditionType, expCompanyID, registMode, separationMode, barcodeRegistMode, returnAll);
-            return response;
+            await _expeditionTypeRepository.SetExpCompanyType(expeditionType, expCompanyID, registMode, separationMode, barcodeRegistMode);
+            return;
 
         }
         public async Task<ExpeditionZoneViewModel> GetExpeditionZones(int? expeditionZone, string expCompanyList)

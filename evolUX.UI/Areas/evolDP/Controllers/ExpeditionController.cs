@@ -73,11 +73,10 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
         
-        public async Task<IActionResult> ChangeExpCompany(IFormCollection form, string expeditionTypeViewJson)
+        public async Task<IActionResult> ChangeExpCompany(IFormCollection form)
         {
             try
             {
-                ExpeditionTypeViewModel result = JsonConvert.DeserializeObject<ExpeditionTypeViewModel>(expeditionTypeViewJson);
                 Company expCompany = new Company();
 
                 int value = 0;
@@ -95,10 +94,9 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 expCompany.CompanyCode = form["CompanyCode"].ToString();
                 expCompany.CompanyServer = form["CompanyServer"].ToString();
 
-                List<Company>  expCompanies = new List<Company>();
                 expCompany = await _expeditionService.SetExpCompany(expCompany);
-                expCompanies.Add(expCompany);
-                result.ExpCompanies = expCompanies;
+                ExpCompanyViewModel result = await _expeditionService.GetExpCompanyViewModel(expCompany,null);
+                
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
 
                 return View("ExpCompany", result);
@@ -139,32 +137,16 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
  
-        public async Task<IActionResult> ExpCompany(int expCompanyID, string expeditionTypeViewJson)
+        public async Task<IActionResult> ExpCompany(string expCompanyJson, string typesJson)
         {
             try
             {
-                ExpCompanyViewModel result = new ExpCompanyViewModel();
-                ExpeditionTypeViewModel expTypes;
-                if (!string.IsNullOrEmpty(expeditionTypeViewJson))
-                {
-                    expTypes = JsonConvert.DeserializeObject<ExpeditionTypeViewModel>(expeditionTypeViewJson);
-                }
-                else
-                {
-                    DataTable expCompanyListDT = new DataTable();
-                    expCompanyListDT.Columns.Add("ID", typeof(int));
-                    DataRow row = expCompanyListDT.NewRow();
-                    row["ID"] = expCompanyID;
-                    expCompanyListDT.Rows.Add(row);
-                    string expCompanyList = JsonConvert.SerializeObject(expCompanyListDT);
-
-                    expTypes = await _expeditionService.GetExpeditionCompanies(expCompanyList);
-                }
-                result.ExpCompany = expTypes.ExpCompanies.Where(x => x.ID == expCompanyID).First();
-                result.Types = expTypes.Types;
-                result.Configs = await _expeditionService.GetExpCompanyConfigs(expCompanyID, 0, 0);
+                Company expCompany = JsonConvert.DeserializeObject<Company>(expCompanyJson);
+                List<ExpCompanyType> types = null;
+                if (!string.IsNullOrEmpty(typesJson))
+                    JsonConvert.DeserializeObject<List<ExpCompanyType>>(typesJson);
+                ExpCompanyViewModel result = await _expeditionService.GetExpCompanyViewModel(expCompany, types);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
-
                 return View("ExpCompany", result);
             }
             catch (FlurlHttpException ex)
@@ -304,7 +286,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
 
-        public async Task<IActionResult> ChangeExpCompanyType(IFormCollection form, string expeditionTypeJson, bool specificExpCompany)
+        public async Task<IActionResult> ChangeExpCompanyType(IFormCollection form, string expeditionTypeJson, string source)
         {
             try
             {
@@ -322,15 +304,29 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 if (barcodeRegistModeValue == 1)
                     barcodeRegistMode = true;
 
-                ExpeditionTypeViewModel result = new ExpeditionTypeViewModel();
                 ExpeditionTypeElement expeditionType = JsonConvert.DeserializeObject<ExpeditionTypeElement>(expeditionTypeJson);
-                result = await _expeditionService.SetExpCompanyType(expeditionType.ExpeditionType, expeditionType.ExpCompanyTypesList.First().ExpCompanyID, registMode, separationMode, barcodeRegistMode, specificExpCompany);
+                await _expeditionService.SetExpCompanyType(expeditionType.ExpeditionType, expeditionType.ExpCompanyTypesList.First().ExpCompanyID, registMode, separationMode, barcodeRegistMode);
+                if (source == "ExpCompany")
+                {
+                    ExpCompanyViewModel result = await _expeditionService.GetExpCompanyViewModel(expeditionType.ExpCompanyTypesList.First().ExpCompanyID, null);
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+                    return View("ExpCompany", result);
+                }
+                else
+                {
+                    string expCompanyListStr = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
+                    List<Company> expCompanyList = JsonConvert.DeserializeObject<List<Company>>(expCompanyListStr);
 
-                string expCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
-                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
-                result.ExpCompanies = JsonConvert.DeserializeObject<List<Company>>(expCompanyList);
-                ViewBag.SpecificExpCompany = specificExpCompany;
-                return View("TypeDetail", result);
+                    if (source == "ExpCompany" || source == "TypeDetail")
+                        expCompanyList = expCompanyList.Where(x => x.ID == expeditionType.ExpCompanyTypesList.First().ExpCompanyID).ToList();
+                    expCompanyListStr = JsonConvert.SerializeObject(expCompanyList);
+
+                    ExpeditionTypeViewModel result = await _expeditionService.GetExpeditionTypes(source != "ExpCompany" ? expeditionType.ExpeditionType : null, expCompanyListStr);
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+                    result.ExpCompanies = expCompanyList;
+                    ViewBag.SpecificExpCompany = source == "ExpCompany";
+                    return View("TypeDetail", result);
+                }
             }
             catch (FlurlHttpException ex)
             {
@@ -470,13 +466,15 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
 
-        public async Task<IActionResult> ExpCompanyConfig(string expCompanyViewModelJson, int startDate, int expeditionType, int expeditionZone)
+        public async Task<IActionResult> ExpCompanyConfig(string expCompanyJson, string expCompanyConfigsJson, int startDate, int expeditionType, int expeditionZone)
         {
             try
             {
-                ExpCompanyViewModel request = JsonConvert.DeserializeObject<ExpCompanyViewModel>(expCompanyViewModelJson);
+                Company company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
+                List<ExpCompanyConfig> configs = JsonConvert.DeserializeObject<List<ExpCompanyConfig>>(expCompanyConfigsJson);
                 ExpCompanyConfigViewModel result = new ExpCompanyConfigViewModel();
-                result.expCompanyView = request;
+                result.ExpCompany = company;
+                result.Configs = configs;
                 result.StartDate = startDate;
                 result.ExpeditionType = expeditionType;
                 result.ExpeditionZone = expeditionZone;
@@ -596,8 +594,8 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
                 Company Company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
                 ExpCompanyConfigViewModel result = new ExpCompanyConfigViewModel();
-                result.expCompanyView.Configs = await _expeditionService.SetExpCompanyConfig(expCompanyConfig);
-                result.expCompanyView.ExpCompany = company;
+                result.Configs = await _expeditionService.SetExpCompanyConfig(expCompanyConfig);
+                result.ExpCompany = company;
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View("ExpCompanyConfig", result);
             }
