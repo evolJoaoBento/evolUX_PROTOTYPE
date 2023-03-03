@@ -294,7 +294,7 @@ BEGIN
 		--		AND ExpeditionZone = ec.ExpeditionZone
 		--		AND ExpeditionType = ec.ExpeditionType
 		--		AND ExpCompanyLevel = ec.ExpCompanyLevel)
-	ORDER BY ec.StartDate DESC, ec.ExpeditionType, ec.ExpeditionZone, ec.MaxWeight 
+	ORDER BY ec.StartDate DESC, ec.ExpeditionType, ec.ExpeditionZone, ISNULL(ec.MaxWeight,2147483647) 
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCOMPANY_CONFIGS_RESUME]') AND type in (N'P', N'PC'))

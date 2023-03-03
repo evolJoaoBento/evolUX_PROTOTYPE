@@ -141,8 +141,14 @@
   <data name="DRFlags" xml:space="preserve">
     <value>Aviso de Receção</value>
   </data>
+  <data name="EmptyExpColumnF" xml:space="preserve">
+    <value>&lt;de acordo com o formato do envelope&gt;</value>
+  </data>
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
+  </data>
+  <data name="EmptyMaxWeight" xml:space="preserve">
+    <value>&lt;sem limite&gt;</value>
   </data>
   <data name="ExpColumn" xml:space="preserve">
     <value>Coluna</value>
@@ -205,7 +211,7 @@
     <value>Prioridade</value>
   </data>
   <data name="StartDate" xml:space="preserve">
-    <value>Data de Efetivação</value>
+    <value>Data Início</value>
   </data>
   <data name="SubmitChange" xml:space="preserve">
     <value>Alterar</value>

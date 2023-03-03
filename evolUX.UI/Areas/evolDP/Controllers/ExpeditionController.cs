@@ -560,14 +560,10 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                     expCompanyConfig.MaxWeight = value;
 
                 double valDouble = 0;
-                expCompanyConfig.ExpCompanyLevel = 0;
+                expCompanyConfig.UnitCost = 0;
                 str = form["UnitCost"].ToString();
                 if (!string.IsNullOrEmpty(str) && double.TryParse(str, out valDouble))
                     expCompanyConfig.UnitCost = valDouble;
-
-                str = form["ExpColumnA"].ToString();
-                if (!string.IsNullOrEmpty(str))
-                    expCompanyConfig.ExpColumnA = str;
 
                 str = form["ExpColumnA"].ToString();
                 if (!string.IsNullOrEmpty(str))
