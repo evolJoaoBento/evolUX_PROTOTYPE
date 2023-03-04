@@ -391,6 +391,36 @@ namespace evolUX.API.Areas.evolDP.Controllers
 
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("NewExpCompanyConfig")]
+        public async Task<ActionResult> NewExpCompanyConfig([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("ExpCompanyID", out obj);
+                int expCompanyID = Int32.Parse(Convert.ToString(obj));
+
+                dictionary.TryGetValue("StartDate", out obj);
+                int startDate = Int32.Parse(Convert.ToString(obj));
+
+                await _expeditionService.NewExpCompanyConfig(expCompanyID, startDate);
+                _logger.LogInfo("SetExpCompanyConfig Get");
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside SetExpCompanyConfig action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("GetExpCompanyConfigsResume")]
         public async Task<ActionResult<IEnumerable<ExpCompanyConfigResume>>> GetExpCompanyConfigsResume([FromBody] Dictionary<string, object> dictionary)
         {

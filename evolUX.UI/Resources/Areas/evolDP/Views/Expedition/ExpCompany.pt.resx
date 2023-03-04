@@ -177,6 +177,9 @@
   <data name="ExpCompanyConfig" xml:space="preserve">
     <value>Configuração de Escalões e Custos para Companhia de Expedição</value>
   </data>
+  <data name="ExpCompanyConfigAdd" xml:space="preserve">
+    <value>Adicionar configuração de Escalões e Custos</value>
+  </data>
   <data name="ExpCompanyDetail" xml:space="preserve">
     <value>Ver detalhes da Companhia de Expedição</value>
   </data>
@@ -221,6 +224,9 @@
   </data>
   <data name="StartDate" xml:space="preserve">
     <value>Data Início das configurações</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
   </data>
   <data name="SubmitChange" xml:space="preserve">
     <value>Alterar</value>

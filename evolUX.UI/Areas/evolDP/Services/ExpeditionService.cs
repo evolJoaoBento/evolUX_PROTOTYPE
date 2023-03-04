@@ -98,10 +98,15 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _expeditionTypeRepository.GetExpCompanyConfigs(expCompanyID, startDate, expeditionType, expeditionZone);
             return response;
         }
-        public async Task<IEnumerable<ExpCompanyConfig>> SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig)
+        public async Task SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig)
         {
-            var response = await _expeditionTypeRepository.SetExpCompanyConfig(expCompanyConfig);
-            return response;
+            await _expeditionTypeRepository.SetExpCompanyConfig(expCompanyConfig);
+            return;
+        }
+        public async Task NewExpCompanyConfig(int expCompanyID, int startDate)
+        {
+            await _expeditionTypeRepository.NewExpCompanyConfig(expCompanyID, startDate);
+            return;
         }
         public async Task<IEnumerable<ExpCompanyConfigResume>> GetExpCompanyConfigsResume(int expCompanyID)
         {

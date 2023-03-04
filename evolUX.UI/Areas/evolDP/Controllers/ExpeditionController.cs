@@ -1,5 +1,6 @@
 ﻿using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using evolUX.UI.Exceptions;
+using evolUX_dev.Areas.evolDP.Models;
 using Flurl.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +9,7 @@ using Shared.Models.Areas.Core;
 using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.evolDP;
-using System.ComponentModel.Design;
 using System.Data;
-using System.Data.Common;
-using System.Globalization;
-using System.Net;
 
 namespace evolUX.UI.Areas.evolDP.Controllers
 {
@@ -520,7 +517,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
 
-        public async Task<IActionResult> ChangeExpCompanyConfig(IFormCollection form, string expCompanyJson, int startDate, int expeditionType, int expeditionZone)
+        public async Task<IActionResult> ChangeExpCompanyConfig(IFormCollection form, string expCompanyJson, int startDate, int pageExpeditionType, int pageExpeditionZone)
         {
             try
             {
@@ -548,11 +545,15 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
                     expCompanyConfig.ExpCompanyLevel = value;
 
-                DateTime startDateDT = DateTime.Now;
-                expCompanyConfig.StartDate = 0;
-                str = form["StartDate"].ToString();
-                if (!string.IsNullOrEmpty(str) && DateTime.TryParse(str, out startDateDT))
-                    expCompanyConfig.StartDate = Int32.Parse(((DateTime)startDateDT).ToString("yyyyMMdd"));
+                if (startDate == 0)
+                {
+                    DateTime startDateDT = DateTime.Now;
+                    expCompanyConfig.StartDate = 0;
+                    str = form["StartDate"].ToString();
+                    if (!string.IsNullOrEmpty(str) && DateTime.TryParse(str, out startDateDT))
+                        startDate = Int32.Parse(((DateTime)startDateDT).ToString("yyyyMMdd"));
+                }
+                expCompanyConfig.StartDate = startDate;
 
                 expCompanyConfig.MaxWeight = 0;
                 str = form["MaxWeight"].ToString();
@@ -563,8 +564,15 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 expCompanyConfig.UnitCost = 0;
                 str = form["UnitCost"].ToString();
                 if (!string.IsNullOrEmpty(str) && double.TryParse(str, out valDouble))
-                    expCompanyConfig.UnitCost = valDouble;
-
+                {
+                    if (valDouble.ToString("F2") != str)
+                    {
+                        if (double.TryParse(str.Replace(".", ","), out valDouble))
+                            expCompanyConfig.UnitCost = valDouble;
+                    }
+                    else
+                        expCompanyConfig.UnitCost = valDouble;
+                }
                 str = form["ExpColumnA"].ToString();
                 if (!string.IsNullOrEmpty(str))
                     expCompanyConfig.ExpColumnA = str;
@@ -589,8 +597,71 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 Company Company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
                 ExpCompanyConfigViewModel result = new ExpCompanyConfigViewModel();
                 await _expeditionService.SetExpCompanyConfig(expCompanyConfig);
-                result.Configs = await _expeditionService.GetExpCompanyConfigs(expCompanyConfig.ExpCompanyID, startDate, expeditionType, expeditionZone);
+                result.Configs = await _expeditionService.GetExpCompanyConfigs(expCompanyConfig.ExpCompanyID, startDate, pageExpeditionType, pageExpeditionZone);
                 result.ExpCompany = company;
+                result.ExpeditionZone = pageExpeditionZone;
+                result.ExpeditionType = pageExpeditionType;
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+                return View("ExpCompanyConfig", result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+
+        public async Task<IActionResult> AddExpCompanyConfig(IFormCollection form, string expCompanyJson)
+        {
+            try
+            {
+                Company company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
+
+                DateTime startDateDT = DateTime.Now;
+                int startDate = 0;
+                string str = form["StartDate"].ToString();
+                if (!string.IsNullOrEmpty(str) && DateTime.TryParse(str, out startDateDT))
+                    startDate = Int32.Parse(((DateTime)startDateDT).ToString("yyyyMMdd"));
+
+
+                Company Company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
+                ExpCompanyConfigViewModel result = new ExpCompanyConfigViewModel();
+                await _expeditionService.NewExpCompanyConfig(Company.ID, startDate);
+                result.Configs = await _expeditionService.GetExpCompanyConfigs(Company.ID, startDate, 0, 0);
+                result.ExpCompany = company;
+                result.ExpeditionZone = 0;
+                result.ExpeditionType = 0;
+                ExpeditionZoneViewModel zones = await _expeditionService.GetExpeditionZones(0, "");
+                result.Zones = zones.Zones.ToList();
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View("ExpCompanyConfig", result);
             }

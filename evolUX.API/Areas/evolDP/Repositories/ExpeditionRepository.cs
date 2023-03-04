@@ -218,7 +218,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
         }
         public async Task SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig)
         {
-            string sql = @"RD_UX_SET_EXPCOMPANY_CONFIG";
+            string sql = @"RD_UX_SET_EXPCOMPANY_CONFIGS";
             var parameters = new DynamicParameters();
             parameters.Add("ExpCompanyID", expCompanyConfig.ExpCompanyID, DbType.Int64);
             parameters.Add("ExpeditionType", expCompanyConfig.ExpeditionType, DbType.Int64);
@@ -237,6 +237,19 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 parameters.Add("ExpColumnF", expCompanyConfig.ExpColumnF, DbType.String);
 
             using(var connection = _context.CreateConnectionEvolDP())
+            {
+                await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                return;
+            }
+        }
+        public async Task NewExpCompanyConfig(int expCompanyID, int startDate)
+        {
+            string sql = @"RD_UX_NEW_EXPCOMPANY_CONFIGS";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
+            parameters.Add("StartDate", startDate, DbType.Int64);
+
+            using (var connection = _context.CreateConnectionEvolDP())
             {
                 await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
                 return;

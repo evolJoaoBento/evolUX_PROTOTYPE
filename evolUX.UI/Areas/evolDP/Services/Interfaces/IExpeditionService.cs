@@ -19,7 +19,8 @@ namespace evolUX.UI.Areas.evolDP.Services.Interfaces
         public Task<IEnumerable<ExpContractElement>> GetExpContracts(int expCompanyID);
         public Task SetExpContract(ExpContractElement expContract);
         public Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int startDate, int expeditionType, int expeditionZone);
-        public Task<IEnumerable<ExpCompanyConfig>> SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig);
+        public Task SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig);
         public Task<IEnumerable<ExpCompanyConfigResume>> GetExpCompanyConfigsResume(int expCompanyID);
+        public Task NewExpCompanyConfig(int expCompanyID, int startDate);
     }
 }

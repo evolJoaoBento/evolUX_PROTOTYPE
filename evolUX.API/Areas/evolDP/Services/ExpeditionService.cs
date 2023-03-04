@@ -123,6 +123,10 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             await _repository.ExpeditionType.SetExpCompanyConfig(expCompanyConfig);
         }
+        public async Task NewExpCompanyConfig(int expCompanyID, int startDate)
+        {
+            await _repository.ExpeditionType.NewExpCompanyConfig(expCompanyID, startDate);
+        }
         public async Task<IEnumerable<ExpCompanyConfigResume>> GetExpCompanyConfigsResume(int expCompanyID)
         {
             IEnumerable<ExpCompanyConfigResume> result = await _repository.ExpeditionType.GetExpCompanyConfigsResume(expCompanyID);

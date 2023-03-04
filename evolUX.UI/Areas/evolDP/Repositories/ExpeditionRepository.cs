@@ -78,7 +78,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<ExpCompanyType>>();
         }
-        public async Task<ResultsViewModel> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode)
+        public async Task SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ExpeditionType", expeditionType);
@@ -91,7 +91,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<ResultsViewModel>();
+            return;
         }
         public async Task<ExpeditionZoneViewModel> GetExpeditionZones(int? expeditionZone, string expCompanyList)
         {
@@ -159,7 +159,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<ExpCompanyConfig>>();
         }
-        public async Task<IEnumerable<ExpCompanyConfig>> SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig)
+        public async Task SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ExpCompanyConfig", JsonConvert.SerializeObject(expCompanyConfig));
@@ -168,9 +168,20 @@ namespace evolUX.UI.Areas.evolDP.Repositories
                  .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<IEnumerable<ExpCompanyConfig>>();
+            return;
         }
-
+        public async Task NewExpCompanyConfig(int expCompanyID, int startDate)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ExpCompanyID", expCompanyID);
+            dictionary.Add("StartDate", startDate);
+            var response = await _flurlClient.Request("/API/evolDP/Expedition/NewExpCompanyConfig")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return;
+        }
         public async Task<IEnumerable<ExpCompanyConfigResume>> GetExpCompanyConfigsResume(int expCompanyID)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();

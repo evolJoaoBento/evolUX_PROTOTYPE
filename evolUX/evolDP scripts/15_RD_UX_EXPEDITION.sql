@@ -351,22 +351,6 @@ AS
 BEGIN
 	SET NOCOUNT ON
 
-	IF (NOT EXISTS (SELECT TOP 1 1 FROM RD_EXPCOMPANY_CONFIG WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate))
-	BEGIN		
-		DECLARE @RefStartDate int
-
-		SELECT @RefStartDate = ISNULL(MAX(StartDate),0)
-		FROM RD_EXPCOMPANY_CONFIG
-		WHERE ExpCompanyID = @ExpCompanyID
-			AND StartDate < @StartDate
-
-		INSERT INTO RD_EXPCOMPANY_CONFIG(ExpCompanyID, ExpeditionZone, ExpeditionType, ExpCompanyLevel, StartDate, UnitCost, MaxWeight, ExpColumnA, ExpColumnB, ExpColumnE, ExpColumnI, ExpColumnF)
-		SELECT ExpCompanyID, ExpeditionZone, ExpeditionType, ExpCompanyLevel, @StartDate, UnitCost, MaxWeight, ExpColumnA, ExpColumnB, ExpColumnE, ExpColumnI, ExpColumnF
-		FROM RD_EXPCOMPANY_CONFIG
-		WHERE ExpCompanyID = @ExpCompanyID
-			AND StartDate = @RefStartDate
-	END
-
 	IF (NOT EXISTS (SELECT TOP 1 1 FROM RD_EXPCOMPANY_CONFIG 
 			WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate
 			AND ExpeditionZone = @ExpeditionZone AND ExpeditionType = @ExpeditionType
@@ -434,6 +418,35 @@ BEGIN
 		WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate
 			AND ExpeditionZone = @ExpeditionZone AND ExpeditionType = @ExpeditionType
 			AND ExpCompanyLevel = @ExpCompanyLevel
+	END
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_NEW_EXPCOMPANY_CONFIGS]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_NEW_EXPCOMPANY_CONFIGS] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_NEW_EXPCOMPANY_CONFIGS]
+	@ExpCompanyID int,
+	@StartDate int
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	IF (NOT EXISTS (SELECT TOP 1 1 FROM RD_EXPCOMPANY_CONFIG WHERE ExpCompanyID = @ExpCompanyID AND StartDate = @StartDate))
+	BEGIN		
+		DECLARE @RefStartDate int
+
+		SELECT @RefStartDate = ISNULL(MAX(StartDate),0)
+		FROM RD_EXPCOMPANY_CONFIG
+		WHERE ExpCompanyID = @ExpCompanyID
+			AND StartDate < @StartDate
+
+		INSERT INTO RD_EXPCOMPANY_CONFIG(ExpCompanyID, ExpeditionZone, ExpeditionType, ExpCompanyLevel, StartDate, UnitCost, MaxWeight, ExpColumnA, ExpColumnB, ExpColumnE, ExpColumnI, ExpColumnF)
+		SELECT ExpCompanyID, ExpeditionZone, ExpeditionType, ExpCompanyLevel, @StartDate, UnitCost, MaxWeight, ExpColumnA, ExpColumnB, ExpColumnE, ExpColumnI, ExpColumnF
+		FROM RD_EXPCOMPANY_CONFIG
+		WHERE ExpCompanyID = @ExpCompanyID
+			AND StartDate = @RefStartDate
 	END
 END
 GO
