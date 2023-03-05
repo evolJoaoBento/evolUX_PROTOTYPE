@@ -1679,6 +1679,16 @@ SELECT 'DeleteServiceTask', 30, 'Apagar Tipo de Tratamento', ActionID
 FROM ACTIONS
 WHERE  [Description] like 'Apagar%Tipo de Tratamento%'
 
+INSERT INTO #ChildActions
+SELECT 'AddServiceCompany', 0, 'Adicionar/Alterar Companhia de Serviços', ActionID
+FROM ACTIONS
+WHERE [Description] like 'Alterar Limites da Companhia de Servi_os'
+
+INSERT INTO #ChildActions
+SELECT 'AddServiceCompanyExpCodes', 0, 'Adicionar/Alterar escalões de envelopagem da Companhia de Serviços', ActionID
+FROM ACTIONS
+WHERE [Description] like 'Alterar custos dos Servi_os para Companhia de Servi_os'
+
 DECLARE tCursor CURSOR LOCAL FOR
 SELECT LocalizationKey, DefaultOrder, [Description]
 FROM #ChildActions

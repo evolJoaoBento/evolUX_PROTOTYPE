@@ -1,21 +1,16 @@
 ﻿using Shared.ViewModels.Areas.Finishing;
-using evolUX.API.Areas.Core.ViewModels;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using System.Net;
 using System.Data;
 using Flurl.Http;
 using evolUX.UI.Exceptions;
 using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
-using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
-using Shared.Models.Areas.Finishing;
 using Shared.Models.General;
 using System.Security.Claims;
 using Shared.Models.Areas.evolDP;
+using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -38,7 +33,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
                 if (ServiceCompanies.Rows.Count > 1)
                 {
-                    ServiceCompanyViewModel result = new ServiceCompanyViewModel();
+                    ServiceCompaniesViewModel result = new ServiceCompaniesViewModel();
                     result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     List<Company> sList = new List<Company>();
                     foreach (DataRow row in ServiceCompanies.Rows)

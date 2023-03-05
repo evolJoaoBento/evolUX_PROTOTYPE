@@ -120,14 +120,11 @@
   <data name="Action" xml:space="preserve">
     <value>Ação</value>
   </data>
-  <data name="BarcodeRegistMode" xml:space="preserve">
-    <value>Digito para Chave Pós-Composição</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
-  <data name="BarcodeRegistModeTip" xml:space="preserve">
-    <value>Controla o 1º digito da chave enviada para Motor de Pós Composição. A chave permite que o Motor tome decisões sobre que códigos de barras colocar e onde colocar.</value>
-  </data>
-  <data name="ChangeExpCompany" xml:space="preserve">
-    <value>Alterar dados da Companhia</value>
+  <data name="ChangeServiceCompanyRestriction" xml:space="preserve">
+    <value>Alterar configurações dos Equipamentos </value>
   </data>
   <data name="CompanyAddress" xml:space="preserve">
     <value>Morada</value>
@@ -147,47 +144,62 @@
   <data name="CompanyPostalCodeDescription" xml:space="preserve">
     <value>Localidade</value>
   </data>
-  <data name="Description" xml:space="preserve">
-    <value>Descrição</value>
+  <data name="CostDate" xml:space="preserve">
+    <value>Data Início das configurações</value>
   </data>
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
   </data>
-  <data name="ExpCompanyDetail" xml:space="preserve">
-    <value>Ver detalhes da Companhia de Expedição</value>
+  <data name="FeedPaper" xml:space="preserve">
+    <value>Impressoras de folha solta</value>
   </data>
-  <data name="ExpCompanyList" xml:space="preserve">
-    <value>Companhias de Expedição</value>
+  <data name="FileSheetsCutoffLevel" xml:space="preserve">
+    <value>Referência para limite de folhas por ficheiro</value>
   </data>
-  <data name="ExpContracts" xml:space="preserve">
-    <value>Listar contratos da Companhia</value>
-  </data>
-  <data name="ExpeditionType" xml:space="preserve">
-    <value>Tipos de Expedição</value>
-  </data>
-  <data name="ExpeditionZone" xml:space="preserve">
-    <value>Zona de Expedição</value>
-  </data>
-  <data name="ExpRegistRange" xml:space="preserve">
-    <value>Ver configurações de Correio Registado para a Companhia</value>
+  <data name="FileSheetsCutoffLevelTip" xml:space="preserve">
+    <value>Indica o n.º máximo de folhas a partir do qual se deve criar novo ficheiro de produção</value>
   </data>
   <data name="ID" xml:space="preserve">
     <value>ID</value>
   </data>
-  <data name="List" xml:space="preserve">
-    <value>Ver detalhes do Tipo de Expedição</value>
+  <data name="MaterialPosition" xml:space="preserve">
+    <value>N.º Máximo de Bandejas / Estações</value>
+  </data>
+  <data name="MaterialPositionTip" xml:space="preserve">
+    <value>N.º máximo de Bandejas de papel nas impressoras ou Estações de Envelopagem nas envelopadoras</value>
+  </data>
+  <data name="MaterialPositionTypeFeedPaper" xml:space="preserve">
+    <value>Bandejas</value>
+  </data>
+  <data name="MaterialPositionTypeRollPaper" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MaterialPositionTypeStation" xml:space="preserve">
+    <value>Estações</value>
+  </data>
+  <data name="MaterialType" xml:space="preserve">
+    <value>Tipo de Equipamento</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
-  <data name="Priority" xml:space="preserve">
-    <value>Prioridade</value>
-  </data>
-  <data name="RegistMode" xml:space="preserve">
-    <value>Controlo de Registo</value>
-  </data>
   <data name="RegistModeTip" xml:space="preserve">
     <value>Flag que indica se é atribuido um ID a cada objeto postal para rastreio de correio.</value>
+  </data>
+  <data name="RestrictionMode" xml:space="preserve">
+    <value>Excesso de Adicionais de Envelopagem</value>
+  </data>
+  <data name="RestrictionMode0" xml:space="preserve">
+    <value>Impede Produção do Objecto Postal</value>
+  </data>
+  <data name="RestrictionMode1" xml:space="preserve">
+    <value>Obriga a envelopagem manual do objecto postal</value>
+  </data>
+  <data name="RestrictionModeTip" xml:space="preserve">
+    <value>Ação em caso de n.º de adicionais de envelopagem exceder o n.º máximo de estações</value>
+  </data>
+  <data name="RollPaper" xml:space="preserve">
+    <value>Impressoras de papel contínuo</value>
   </data>
   <data name="SeparationMode" xml:space="preserve">
     <value>Separação por escalões de expedição</value>
@@ -195,7 +207,28 @@
   <data name="SeparationModeTip" xml:space="preserve">
     <value>Flag que indica se a alteração de escalão de expedição obriga a ficheiros de produção diferentes.</value>
   </data>
-  <data name="Type" xml:space="preserve">
-    <value>Tipo</value>
+  <data name="Service" xml:space="preserve">
+    <value>Serviço</value>
+  </data>
+  <data name="ServiceCompany" xml:space="preserve">
+    <value>Companhia de Prestação de Serviços</value>
+  </data>
+  <data name="ServiceCompanyChange" xml:space="preserve">
+    <value>Alterar dados da Companhia</value>
+  </data>
+  <data name="ServiceCompanyConfig" xml:space="preserve">
+    <value>Configuração de Custos de Serviços para Companhia de Serviços</value>
+  </data>
+  <data name="ServiceCompanyExpCodes" xml:space="preserve">
+    <value>Ver configurações de Escalões de Envelopagem</value>
+  </data>
+  <data name="ServiceType" xml:space="preserve">
+    <value>Tipo de Serviços</value>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Envelopadoras</value>
+  </data>
+  <data name="SubmitChange" xml:space="preserve">
+    <value>Alterar</value>
   </data>
 </root>

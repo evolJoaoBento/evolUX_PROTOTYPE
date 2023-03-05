@@ -1,0 +1,170 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model ServiceCompaniesViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddServiceCompany = false;
+    bool AddServiceTask = false;
+    bool DeleteServiceTask = false;
+    bool ExportServiceTask = false;
+    bool AddServiceCompanyExpCodes = false;
+    bool AddExpCode = false;
+    bool DeleteExpCode = false;
+    bool ExportExpCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddServiceCompanyExpCodes") != null) { AddServiceCompanyExpCodes = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceCompany") != null) { AddServiceCompany = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceTask") != null) { AddServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "DeleteServiceTask") != null) { DeleteServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "ExportServiceTask") != null) { ExportServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "AddExpCode") != null) { AddExpCode = true; }
+    if (Model.Permissions.Find(x => x == "DeleteExpCode") != null) { DeleteExpCode = true; }
+    if (Model.Permissions.Find(x => x == "ExportExpCode") != null) { ExportExpCode = true; }
+   
+}
+
+@if (Model == null || Model.ServiceCompanies == null || Model.ServiceCompanies.Count() == 0)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string value;
+    string Level0Name = "level";
+
+    int level = 0;
+    string idValue = "arrow" + level.ToString();
+    string nameValue = "";
+
+    <div id="TitlePage">
+        <h1>@localizer["ServiceCompanyList"]</h1>
+    </div>
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th>@localizer["Action"]</th>
+                <th>@localizer["CompanyName"]</th>
+                <th>@localizer["CompanyCode"]</th>
+                <th>@localizer["CompanyAddress"]</th>
+                <th>@localizer["CompanyPostalCode"]</th>
+                <th>@localizer["CompanyPostalCodeDescription"]</th>
+                <th>@localizer["CompanyCountry"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @foreach (var serviceCompany in Model.ServiceCompanies)
+            {
+                List<ServiceCompanyRestriction> serviceCompanyRestrictionsList = Model.Restrictions.Where(x => x.ServiceCompanyID == serviceCompany.ID).ToList();
+                level++;
+                nameValue = Level0Name + level.ToString();
+                idValue = "arrow" + nameValue;
+                value = serviceCompany.ID.ToString();
+
+                <tr>
+                    <td width="150px">
+                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)" asp-route-restrictionsJson="@JsonConvert.SerializeObject(serviceCompanyRestrictionsList)">
+                            <img style="background:none; width:35px;height:35px;" src="~/images/config.png" title="@localizer["ServiceCompanyDetail"]: @serviceCompany.CompanyName" />
+                        </a>
+                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyExpCodes" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)">
+                            <img style="background:none; width:35px;height:35px;" src="~/images/envelopes.png" title="@localizer["ServiceCompanyExpCodes"]: @serviceCompany.CompanyName" />
+                        </a>
+                     </td>
+                    <td>@serviceCompany.CompanyName
+                        @if (serviceCompanyRestrictionsList.Count() > 0)
+                        {
+                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                        }</td>
+                    <td>@serviceCompany.CompanyCode</td>
+                    <td>@serviceCompany.CompanyAddress</td>
+                    <td>@serviceCompany.CompanyPostalCode</td>
+                    <td>@serviceCompany.CompanyPostalCodeDescription</td>
+                    <td>@serviceCompany.CompanyCountry</td>
+                </tr>
+                @if (serviceCompanyRestrictionsList.Count() > 0)
+                {
+                    <tr id="@nameValue" style="display: none">
+                        <td></td>
+                        <td colspan="6">
+                            <table class="table table-sm table-hover table-collapse-seperate">
+                                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                    <tr>
+                                        <th>@localizer["MaterialType"]</th>
+                                        <th title="@localizer["MaterialPositionTip"]">@localizer["MaterialPosition"]</th>
+                                        <th title="@localizer["FileSheetsCutoffLevelTip"]">@localizer["FileSheetsCutoffLevel"]</th>
+                                        <th title="@localizer["RestrictionModeTip"]">@localizer["RestrictionMode"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bootstrap-overrides">
+                                    @foreach (ServiceCompanyRestriction r in serviceCompanyRestrictionsList)
+                                    {
+                                        <tr>
+                                            @{
+                                                value = @localizer[r.MaterialTypeCode].Value;
+                                                if (value == r.MaterialTypeCode)
+                                                    value = r.MaterialTypeDesc;
+                                            }
+                                            <td>@value</td>
+                                            <td>
+                                                @r.MaterialPosition @localizer["MaterialPositionType" + r.MaterialTypeCode]</td>
+                                            @if (r.MaterialTypeCode.ToUpper() == "STATION")
+                                            {
+                                                <td></td>
+                                                <td>
+                                                    @localizer["RestrictionMode" + (r.RestrictionMode ? "1" : "0")]
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td>@r.FileSheetsCutoffLevel</td>
+                                                <td></td>
+                                            }
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+        function RegistModeChange() {
+            var checkbox = document.getElementById("RegistMode");
+            chkElements = document.querySelectorAll('input[id^="checkedDRFlag"]');
+            chkElements.forEach(tElement => {
+                tElement.checked = checkbox.checked;
+            });
+        }
+        function CancelRow(value) {
+            eShide('Hide|' + value);
+            eSshow('Show|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = true;
+            return false;
+        }
+        function EditRow(value) {
+            eShide('Show|' + value);
+            eSshow('Hide|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = false;
+
+            let str = 'Hide|' + value;
+            trElements = document.querySelectorAll('tr[id^="Hide|"]');
+            trElements.forEach(tElement => {
+                if (tElement.id != str) {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                }
+            });
+        }
+    </script>
+}

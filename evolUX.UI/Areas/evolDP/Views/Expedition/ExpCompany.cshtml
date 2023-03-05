@@ -44,8 +44,6 @@ else
     string name1Value = "level1|" + level1.ToString();
     string startDateDesc;
     List<ExpCompanyConfigResume> startDateConfigs;
-    List<ExpCompanyConfig> expeditionTypeConfigs;
-    List<ExpCompanyConfig> expeditionZoneConfigs;
     <div id="TitlePage">
         <h1>@localizer["ExpCompany"]</h1>
     </div>
@@ -69,9 +67,8 @@ else
                 {
                 <th></th>
                 }
-                <th>@localizer["ID"]</th>
-                <th>@localizer["CompanyName"]</th>
                 <th>@localizer["CompanyCode"]</th>
+                <th>@localizer["CompanyName"]</th>
                 <th>@localizer["CompanyAddress"]</th>
                 <th>@localizer["CompanyPostalCode"]</th>
                 <th>@localizer["CompanyPostalCodeDescription"]</th>
@@ -86,7 +83,6 @@ else
                     <img onclick="EditRow('ExpCompany')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ExpCompanyChange"]" />
                 </td>
                 }
-                <td>@expCompany.ID</td>
                 <td>@expCompany.CompanyCode</td>
                 <td>@expCompany.CompanyName</td>
                 <td>@expCompany.CompanyAddress</td>
@@ -102,7 +98,6 @@ else
                         <img onclick="CancelRow('ExpCompany')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                         <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
                     </td>
-                    <td>@expCompany.ID</td>
                     <td>@expCompany.CompanyCode</td>
                     <input style="display: none" id=ExpCompanyID name=ExpCompanyID value="@expCompany.ID" />
                     <td><input id=CompanyName name=CompanyName type="text" maxlength="256" style="width: 100%" value="@expCompany.CompanyName" /></td>
@@ -288,7 +283,7 @@ else
             @if (AddExpeditionType)
             {
                 <tr id="Hide|ExpCompanyConfig" style="display: none">
-                    <form id="AddExceptionFrm|ExpCompanyConfig" class="d-flex justify-content-center m-5" asp-area="evolDP"
+                    <form id="AddFrm|ExpCompanyConfig" class="d-flex justify-content-center m-5" asp-area="evolDP"
                         asp-controller="Expedition" asp-action="AddExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)">
                         <td style ="align-items:center; display:flex">
                            <img onclick="CancelRow('ExpCompanyConfig')" type="image"style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]"/>

@@ -317,7 +317,6 @@ namespace evolUX.API.Areas.evolDP.Controllers
             }
         }
 
-        //TODO: UNTESTED
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("GetExpCompanyConfigs")]

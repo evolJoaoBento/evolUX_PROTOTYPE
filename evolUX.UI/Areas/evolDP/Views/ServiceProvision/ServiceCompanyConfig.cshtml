@@ -9,27 +9,26 @@
 @model ExpCompanyConfigViewModel;
 @{
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
-    bool AddExpCompany = false;
-    bool AddExpeditionContract = false;
-    bool DeleteExpeditionContract = false;
-    bool ExportExpeditionContract = false;
-    bool AddExpeditionType = false;
-    bool AddExpRegistRange = false;
-    bool ExportExpRegistRange = false;
+    bool AddServiceCompany = false;
+    bool AddServiceTask = false;
+    bool DeleteServiceTask = false;
+    bool ExportServiceTask = false;
+    bool AddServiceCompanyExpCodes = false;
+    bool AddExpCode = false;
+    bool DeleteExpCode = false;
+    bool ExportExpCode = false;
 
-    if (Model.Permissions.Find(x => x == "AddExpeditionType") != null) { AddExpeditionType = true; }
-    if (Model.Permissions.Find(x => x == "AddExpCompany") != null) { AddExpCompany = true; }
-    if (Model.Permissions.Find(x => x == "AddExpeditionContract") != null) { AddExpeditionContract = true; }
-    if (Model.Permissions.Find(x => x == "DeleteExpeditionContract") != null) { DeleteExpeditionContract = true; }
-    if (Model.Permissions.Find(x => x == "ExportExpeditionContract") != null) { ExportExpeditionContract = true; }
-    if (Model.Permissions.Find(x => x == "AddExpRegistRange") != null) { AddExpRegistRange = true; }
-    if (Model.Permissions.Find(x => x == "ExportExpRegistRange") != null) { ExportExpRegistRange = true; }
-    string emptyExpColumnFDesc = localizer["EmptyExpColumnF"].Value;
+    if (Model.Permissions.Find(x => x == "AddServiceCompanyExpCodes") != null) { AddServiceCompanyExpCodes = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceCompany") != null) { AddServiceCompany = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceTask") != null) { AddServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "DeleteServiceTask") != null) { DeleteServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "ExportServiceTask") != null) { ExportServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "AddExpCode") != null) { AddExpCode = true; }
+    if (Model.Permissions.Find(x => x == "DeleteExpCode") != null) { DeleteExpCode = true; }
+    if (Model.Permissions.Find(x => x == "ExportExpCode") != null) { ExportExpCode = true; }
 
     CultureInfo culture = CultureInfo.CurrentCulture;
     string decimalSeparator = culture.NumberFormat.NumberDecimalSeparator;
-
-    string emptyEmptyMaxWeight = localizer["EmptyMaxWeight"].Value;
 }
 @if (Model == null || Model.Configs == null || Model.Configs.Count() == 0)
 {
@@ -84,7 +83,7 @@ else
     @if (!string.IsNullOrEmpty(headerDesc2))
     {
         <h2>@headerDesc2
-            @if (Model.ExpeditionType != 0 && AddExpeditionType && Model.ExpeditionZone == 0)
+            @if (Model.ExpeditionType != 0 && AddServiceCompany && Model.ExpeditionZone == 0)
             {
                 <img onclick="EditRow('@value')" style="background:none; width:25px;height:25px;" src="~/images/add.png" title="@localizer["ExpCompanyConfigAdd"]" />
             }
@@ -97,7 +96,7 @@ else
     {   value = "Zone|" + type.ExpeditionType.ToString();
         if (Model.ExpeditionType != 0)
         {
-            @if (AddExpeditionType && Model.ExpeditionZone == 0)
+            @if (AddServiceCompany && Model.ExpeditionZone == 0)
             {
             <table id="Hide|@value" style="display: none" class="table table-sm table-hover table-collapse-seperate">
                 <thead id="bootstrap-overrides" class="table-info sticky-header">
@@ -166,7 +165,7 @@ else
         <table id="@nameValue" style="@startDisplay" class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                @if(AddExpeditionType)
+                @if(AddServiceCompany)
                 {
                 <th width="120px"></th>
                 }
@@ -187,7 +186,7 @@ else
         {
             value = t.ExpeditionType.ToString() + "|" + t.ExpeditionZone.ToString() + "|" + t.ExpCompanyLevel.ToString();
             <tr id="Show|@value">
-                @if (AddExpeditionType)
+                @if (AddServiceCompany)
                 {
                                 <td width="120px">
                         <img onclick="EditRow('@value')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeExpCompanyConfig"]"/>
@@ -197,32 +196,16 @@ else
                 <td>@zone.ExpeditionZoneDesc</td>
                 <td>@t.ExpCompanyLevel</td>
                 <td>
-                    @if (t.MaxWeight == null)
-                    {
-                        @emptyEmptyMaxWeight
-                    }
-                    else
-                    {
-                        @string.Format("{0} g", t.MaxWeight)
-                    }
+                        @t.MaxWeight
                 </td>
                 <td>@t.UnitCost</td>
                 <td>@t.ExpColumnA</td>
                 <td>@t.ExpColumnB</td>
                 <td>@t.ExpColumnE</td>
                 <td>@t.ExpColumnI</td>
-                <td>
-                    @if (string.IsNullOrEmpty(t.ExpColumnF))
-                    {
-                        @emptyExpColumnFDesc
-                    }
-                    else
-                    {
-                        @t.ExpColumnF
-                    }
-                </td>
+                <td>@t.ExpColumnF</td>
             </tr>
-            @if (AddExpeditionType)
+            @if (AddServiceCompany)
             {
                 <tr id="Hide|@value" style="display: none">
                   <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyConfig"

@@ -8,6 +8,7 @@ using System.Net;
 using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using Shared.Models.General;
 using evolUX.UI.Repositories;
+using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.UI.Areas.Finishing.Repositories
 {
@@ -17,14 +18,14 @@ namespace evolUX.UI.Areas.Finishing.Repositories
         {
         }
 
-        public async Task<ServiceCompanyViewModel> GetServiceCompanies(string ServiceCompanyList)
+        public async Task<ServiceCompaniesViewModel> GetServiceCompanies(string ServiceCompanyList)
         {
             var response = await _flurlClient.Request("/API/finishing/PendingRecover/GetServiceCompanies")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, ServiceCompanyList);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<ServiceCompanyViewModel>();
+            return await response.GetJsonAsync<ServiceCompaniesViewModel>();
 
         }
 
