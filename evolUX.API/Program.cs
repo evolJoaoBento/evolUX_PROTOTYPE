@@ -21,7 +21,7 @@ using evolUX.API.Areas.Core.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//Corw
+//Core
 builder.Services.AddMvc();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
