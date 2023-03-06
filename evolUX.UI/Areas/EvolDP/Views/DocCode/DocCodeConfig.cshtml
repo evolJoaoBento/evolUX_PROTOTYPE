@@ -21,7 +21,7 @@ else
     string value;
     int suportType = 0;
     GenericOptionValue OptionValue;
-   string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
+    string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
     if (string.IsNullOrEmpty(ExceptionLevel1IDLabel))
         ExceptionLevel1IDLabel = localizer["ExceptionLevel1ID"].Value;
     string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
@@ -45,6 +45,7 @@ else
     DocCodeConfig dConfig = null;
     if (docCode.DocCodeConfigs != null && docCode.DocCodeConfigs.Count() > 0)
         dConfig = docCode.DocCodeConfigs[0];
+    string emptyFieldDesc = localizer["EmptyField"].Value;
     <div id="TitlePage">
         <h1>@localizer[headerDesc]</h1>
     </div>
@@ -81,7 +82,7 @@ else
                 <td>
                 @if (docCode.ExceptionLevel1 == null || string.IsNullOrEmpty(docCode.ExceptionLevel1.ExceptionDescription))
                 {
-                    @localizer["EmptyField"]
+                    @emptyFieldDesc
                 }
                 else
                 {
@@ -94,7 +95,7 @@ else
                 <td>
                 @if (docCode.ExceptionLevel2 == null || string.IsNullOrEmpty(docCode.ExceptionLevel2.ExceptionDescription))
                 {
-                    @localizer["EmptyField"]
+                    @emptyFieldDesc
                 }
                 else
                 {
@@ -107,7 +108,7 @@ else
                 <td>
                 @if (docCode.ExceptionLevel3 == null || string.IsNullOrEmpty(docCode.ExceptionLevel3.ExceptionDescription))
                 {
-                    @localizer["EmptyField"]
+                    @emptyFieldDesc
                 }
                 else
                 {

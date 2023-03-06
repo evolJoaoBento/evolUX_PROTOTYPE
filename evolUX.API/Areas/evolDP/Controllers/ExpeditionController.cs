@@ -13,6 +13,8 @@ using System.Collections.Generic;
 using System.Data;
 using Shared.ViewModels.Areas.Finishing;
 using Shared.Models.Areas.evolDP;
+using Shared.ViewModels.General;
+using System.Reflection.Emit;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
@@ -83,12 +85,10 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
                     expeditionType = value;
                 DataTable? expCompanyList = null;
-                if (expeditionType == null)
-                {
-                    dictionary.TryGetValue("ExpCompanyList", out obj);
-                    string expCompanyListJSON = Convert.ToString(obj);
+                dictionary.TryGetValue("ExpCompanyList", out obj);
+                string expCompanyListJSON = Convert.ToString(obj);
+                if (!string.IsNullOrEmpty(expCompanyListJSON))
                     expCompanyList = JsonConvert.DeserializeObject<DataTable>(expCompanyListJSON).DefaultView.ToTable(false, "ID");
-                }
                 var expeditionTypeList = await _expeditionService.GetExpeditionTypes(expeditionType, expCompanyList);
                 _logger.LogInfo("Expedition Type Get");
                 return Ok(expeditionTypeList);
@@ -108,7 +108,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         [HttpGet]
         [ActionName("GetExpCompanyTypes")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ExpeditionTypeViewModel>> GetExpCompanyTypes([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<IEnumerable<ExpCompanyType>>> GetExpCompanyTypes([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
                     expCompanyID = value;
 
                 int? expeditionType = null;
-                 if (expeditionType == null)
+                if (expeditionType == null)
                 {
                     dictionary.TryGetValue("ExpeditionType", out obj);
                     if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
@@ -145,7 +145,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         [HttpGet]
         [ActionName("SetExpCompanyType")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult<ExpeditionTypeViewModel>> SetExpCompanyType([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<ResultsViewModel>> SetExpCompanyType([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -161,12 +161,11 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 bool separationMode = bool.Parse(Convert.ToString(obj));
                 dictionary.TryGetValue("BarcodeRegistMode", out obj);
                 bool barcodeRegistMode = bool.Parse(Convert.ToString(obj));
-                dictionary.TryGetValue("ReturnAll", out obj);
-                bool returnAll = bool.Parse(Convert.ToString(obj));
 
-                var expeditionTypeList = await _expeditionService.SetExpCompanyType(expeditionType, expCompanyID, registMode, separationMode, barcodeRegistMode, returnAll);
+                ResultsViewModel viewmodel = new ResultsViewModel();
+                viewmodel.Results = await _expeditionService.SetExpCompanyType(expeditionType, expCompanyID, registMode, separationMode, barcodeRegistMode);
                 _logger.LogInfo("Expedition Type Set");
-                return Ok(expeditionTypeList);
+                return Ok(viewmodel);
             }
             catch (SqlException ex)
             {
@@ -318,19 +317,36 @@ namespace evolUX.API.Areas.evolDP.Controllers
             }
         }
 
-        //TODO: UNTESTED
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
-        [ActionName("GetExpeditionCompanyConfigs")]
-        public async Task<ActionResult<List<dynamic>>> GetExpeditionCompanyConfigs([FromBody] dynamic data)
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("GetExpCompanyConfigs")]
+        public async Task<ActionResult<IEnumerable<ExpCompanyConfig>>> GetExpCompanyConfigs([FromBody] Dictionary<string, object> dictionary)
         {
             try
-            {                
-                var converter = new ExpandoObjectConverter();
-                var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
-                var expeditionCompanyConfigsList = await _expeditionService.GetExpeditionCompanyConfigs(exObjExpandoObject);
+            {
+                object obj;
+                dictionary.TryGetValue("ExpCompanyID", out obj);
+                int expCompanyID = Int32.Parse(Convert.ToString(obj));
+                int expeditionType = 0;
+                int expeditionZone = 0;
+                int startDate = 0;
+                int value = 0;
+                dictionary.TryGetValue("ExpeditionType", out obj);
+                string str = Convert.ToString(obj).ToString();
+                if (!string.IsNullOrEmpty(str) && Int32.TryParse(str, out value))
+                    expeditionType = value;
+                dictionary.TryGetValue("ExpeditionZone", out obj);
+                str = Convert.ToString(obj).ToString();
+                if (!string.IsNullOrEmpty(str) && Int32.TryParse(str, out value))
+                    expeditionZone = value;
+                dictionary.TryGetValue("StartDate", out obj);
+                str = Convert.ToString(obj).ToString();
+                if (!string.IsNullOrEmpty(str) && Int32.TryParse(str, out value))
+                    startDate = value;
+
+                var result = await _expeditionService.GetExpCompanyConfigs(expCompanyID, startDate, expeditionType, expeditionZone);
                 _logger.LogInfo("Expedition Company Configs Get");
-                return Ok(expeditionCompanyConfigsList);
+                return Ok(result);
             }
             catch (SqlException ex)
             {
@@ -344,19 +360,21 @@ namespace evolUX.API.Areas.evolDP.Controllers
             }
         }
 
-        //TODO: UNTESTED
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
-        [ActionName("GetExpeditionCompanyConfigCharacteristics")]
-        public async Task<ActionResult<List<dynamic>>> GetExpeditionCompanyConfigCharacteristics([FromBody] dynamic data)
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("SetExpCompanyConfig")]
+        public async Task<ActionResult> SetExpCompanyConfig([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                var converter = new ExpandoObjectConverter();
-                var exObjExpandoObject = JsonConvert.DeserializeObject<ExpandoObject>(data.ToString(), converter) as dynamic;
-                var expeditionCompanyConfigsList = await _expeditionService.GetExpeditionCompanyConfigCharacteristics(exObjExpandoObject);
-                _logger.LogInfo("Expedition Company Config Characteristics Get");
-                return Ok(expeditionCompanyConfigsList);
+                object obj;
+                dictionary.TryGetValue("ExpCompanyConfig", out obj);
+                string expCompanyConfigJSON = Convert.ToString(obj);
+                ExpCompanyConfig expConfig = JsonConvert.DeserializeObject<ExpCompanyConfig>(expCompanyConfigJSON);
+
+                await _expeditionService.SetExpCompanyConfig(expConfig);
+                _logger.LogInfo("SetExpCompanyConfig Get");
+                return Ok();
             }
             catch (SqlException ex)
             {
@@ -365,7 +383,64 @@ namespace evolUX.API.Areas.evolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside GetExpeditionCompanyConfigCharacteristics action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside SetExpCompanyConfig action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("NewExpCompanyConfig")]
+        public async Task<ActionResult> NewExpCompanyConfig([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("ExpCompanyID", out obj);
+                int expCompanyID = Int32.Parse(Convert.ToString(obj));
+
+                dictionary.TryGetValue("StartDate", out obj);
+                int startDate = Int32.Parse(Convert.ToString(obj));
+
+                await _expeditionService.NewExpCompanyConfig(expCompanyID, startDate);
+                _logger.LogInfo("SetExpCompanyConfig Get");
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside SetExpCompanyConfig action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("GetExpCompanyConfigsResume")]
+        public async Task<ActionResult<IEnumerable<ExpCompanyConfigResume>>> GetExpCompanyConfigsResume([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("ExpCompanyID", out obj);
+                int expCompanyID = Int32.Parse(Convert.ToString(obj));
+
+                var result = await _expeditionService.GetExpCompanyConfigsResume(expCompanyID);
+                _logger.LogInfo("Expedition Company Configs Resume Get");
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetExpCompanyConfigsResume action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }

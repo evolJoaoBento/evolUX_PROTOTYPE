@@ -48,7 +48,6 @@ else
         <thead id="bootstrap-overrides" class="table-info sticky-header">
            <tr>
                 <th>@localizer["Action"]</th>
-                <th>@localizer["ID"]</th>
                 <th>@localizer["CompanyName"]</th>
                 <th>@localizer["CompanyCode"]</th>
                 <th>@localizer["CompanyAddress"]</th>
@@ -82,12 +81,9 @@ else
                 
                 <tr>
                     <td width="150px">
-                        @if (AddExpCompany || AddExpeditionType)
-                        {
-                            <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expCompanyid="@expCompany.ID" asp-route-expeditiontypeviewJson="@JsonConvert.SerializeObject(Model)">
-                                <img style="background:none; width:35px;height:35px;" src="~/images/menu.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
-                            </a>
-                        }
+                        <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(expCompany)" asp-route-typesJson="@JsonConvert.SerializeObject(expCompanyTypeList)">
+                            <img style="background:none; width:35px;height:35px;" src="~/images/config.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
+                        </a>
                         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpContracts" asp-route-expCompanyJson="@JsonConvert.SerializeObject(expCompany)">
                             <img style="background:none; width:35px;height:35px;" src="~/images/contract.png" title="@localizer["ExpContracts"]: @expCompany.CompanyName" />
                         </a>
@@ -98,14 +94,12 @@ else
                         </a>
                         }
                     </td>
-                    <td>
-                        @expCompany.ID
+                    <td>@expCompany.CompanyName
                         @if (expCompanyTypeList.Count() > 0)
                         {
                             <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                         }
                     </td>
-                    <td>@expCompany.CompanyName</td>
                     <td>@expCompany.CompanyCode</td>
                     <td>@expCompany.CompanyAddress</td>
                     <td>@expCompany.CompanyPostalCode</td>
@@ -116,7 +110,7 @@ else
                 {
                     <tr id="@nameValue" style="display: none">
                         <td></td>
-                        <td colspan="7">
+                        <td colspan="6">
                             <table class="table table-sm table-hover table-collapse-seperate">
                             <thead id="bootstrap-overrides" class="table-info sticky-header">
                                 <tr>

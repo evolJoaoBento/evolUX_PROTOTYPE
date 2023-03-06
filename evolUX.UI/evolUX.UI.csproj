@@ -42,6 +42,9 @@
     <EmbeddedResource Update="Resources\Areas\evolDP\Views\DocCode\ExceptionLevel.pt.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Areas\evolDP\Views\ServiceProvision\ServiceCompany.pt.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Areas\Finishing\Views\ProductionReport\ProductionReportPrinter.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -54,9 +57,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\evolDP\Views\Consumables\" />
-    <Folder Include="Areas\evolDP\Views\ServiceProvision\" />
-    <Folder Include="Resources\Areas\evolDP\Views\ServiceProvision\" />
     <Folder Include="wwwroot\expedition\" />
   </ItemGroup>
 

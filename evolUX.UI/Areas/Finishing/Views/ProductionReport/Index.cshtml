@@ -1,8 +1,10 @@
 ﻿@using Shared.Models.Areas.evolDP
-@using Shared.ViewModels.Areas.Finishing
+@using Shared.ViewModels.Areas.evolDP
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer localizer
 @model ServiceCompanyViewModel
+@{
+    bool PrintFile = false;
 
 <div class="d-flex justify-content-center" >
     <div class="spinner-border" role="status" id="myLoader" style="display:none">

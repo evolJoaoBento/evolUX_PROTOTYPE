@@ -18,6 +18,7 @@ using Shared.Models.Areas.evolDP;
 using Shared.Models.Areas.Finishing;
 using Microsoft.Extensions.Localization;
 using evolUX_dev.Areas.evolDP.Models;
+using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -42,7 +43,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
                 if (ServiceCompanies.Rows.Count > 1)
                 {
-                    ServiceCompanyViewModel result = new ServiceCompanyViewModel();
+                    ServiceCompaniesViewModel result = new ServiceCompaniesViewModel();
                     result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     List<Company> sList = new List<Company>();
                     foreach(DataRow row in ServiceCompanies.Rows)
@@ -60,7 +61,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 else
                 {
                     string scValues = ServiceCompanies.Rows[0]["ID"].ToString() + "|" + ServiceCompanies.Rows[0]["CompanyCode"].ToString() + " | " + ServiceCompanies.Rows[0]["CompanyName"].ToString();
-                    return RedirectToAction("ProductionRunReport", "ProductionReport", new { Area = "Finishing", ServiceCompanyValues = scValues });
+                    return RedirectToAction("ProductionRunReport", new { ServiceCompanyValues = scValues });
                 }
             }
             catch (FlurlHttpException ex)

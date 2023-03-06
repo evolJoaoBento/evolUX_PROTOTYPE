@@ -2,6 +2,7 @@
 using evolUX.API.Areas.evolDP.Services.Interfaces;
 using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
+using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
 using System.Data;
 
@@ -34,7 +35,7 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             ExpeditionTypeViewModel viewModel = new ExpeditionTypeViewModel();
             viewModel.Types = await _repository.ExpeditionType.GetExpeditionTypes(expeditionType);
-            if (viewModel.Types != null && expeditionType == null && expCompanyList != null)
+            if (viewModel.Types != null && expCompanyList != null)
             {
                 foreach(ExpeditionTypeElement e in viewModel.Types.ToList())
                 {
@@ -43,28 +44,19 @@ namespace evolUX.API.Areas.evolDP.Services
             }
             return viewModel;
         }
-        public async Task<ExpeditionTypeViewModel> GetExpCompanyTypes(int? expeditionType, int? expCompanyID)
+        public async Task<IEnumerable<ExpCompanyType>> GetExpCompanyTypes(int? expeditionType, int? expCompanyID)
         {
-            ExpeditionTypeViewModel viewModel = new ExpeditionTypeViewModel();
-            IEnumerable<ExpCompanyType> expCompanyTypes = await _repository.ExpeditionType.GetExpCompanyTypes(expeditionType, expCompanyID, null);
-            List<ExpeditionTypeElement> expList = new List<ExpeditionTypeElement>();
-            if (expCompanyTypes != null)
-            {
-                viewModel.Types = await _repository.ExpeditionType.GetExpeditionTypes(expeditionType);
-                foreach (ExpeditionTypeElement e in viewModel.Types.ToList())
-                {
-                    e.ExpCompanyTypesList = expCompanyTypes.Where(x => x.ExpeditionType == e.ExpeditionType);
-                }
-                
-            }
-
-            return viewModel;
+            return await _repository.ExpeditionType.GetExpCompanyTypes(expeditionType, expCompanyID, null);
         }
-        public async Task<ExpeditionTypeViewModel> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode, bool returnAll)
+
+        public async Task<Result> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode)
         {
-            await _repository.ExpeditionType.SetExpCompanyType(expeditionType, expCompanyID, registMode, separationMode, barcodeRegistMode);
-            ExpeditionTypeViewModel viewModel = await GetExpCompanyTypes(returnAll ? null : expeditionType, expCompanyID);
-            return viewModel;
+            Result results = await _repository.ExpeditionType.SetExpCompanyType(expeditionType, expCompanyID, registMode, separationMode, barcodeRegistMode);
+            if (results == null)
+            {
+
+            }
+            return results;
         }
         public async Task<ExpeditionZoneViewModel> GetExpeditionZones(int? expeditionZone, DataTable? expCompanyList)
         {
@@ -117,25 +109,32 @@ namespace evolUX.API.Areas.evolDP.Services
             await _repository.ExpeditionType.SetExpContract(expContract);
             return;
         }
-        
-        public async Task<List<dynamic>> GetExpeditionCompanyConfigs(dynamic data)
+
+        public async Task<IEnumerable<ExpCompanyConfig>> GetExpCompanyConfigs(int expCompanyID, int startDate, int expeditionType, int expeditionZone)
         {
-            var expeditionCompanyConfigsList = await _repository.ExpeditionType.GetExpeditionCompanyConfigs(data);
-            if (expeditionCompanyConfigsList == null)
+            IEnumerable<ExpCompanyConfig> result = await _repository.ExpeditionType.GetExpCompanyConfigs(expCompanyID, startDate, expeditionType, expeditionZone);
+            if (result == null)
             {
 
             }
-            return expeditionCompanyConfigsList;
+            return result;
         }
-
-        public async Task<List<dynamic>> GetExpeditionCompanyConfigCharacteristics(dynamic data)
+        public async Task SetExpCompanyConfig(ExpCompanyConfig expCompanyConfig)
         {
-            var envelopeMediaGroupList = await _repository.ExpeditionType.GetExpeditionCompanyConfigCharacteristics(data);
-            if (envelopeMediaGroupList == null)
+            await _repository.ExpeditionType.SetExpCompanyConfig(expCompanyConfig);
+        }
+        public async Task NewExpCompanyConfig(int expCompanyID, int startDate)
+        {
+            await _repository.ExpeditionType.NewExpCompanyConfig(expCompanyID, startDate);
+        }
+        public async Task<IEnumerable<ExpCompanyConfigResume>> GetExpCompanyConfigsResume(int expCompanyID)
+        {
+            IEnumerable<ExpCompanyConfigResume> result = await _repository.ExpeditionType.GetExpCompanyConfigsResume(expCompanyID);
+            if (result == null)
             {
 
             }
-            return envelopeMediaGroupList;
+            return result;
         }
     }
 }

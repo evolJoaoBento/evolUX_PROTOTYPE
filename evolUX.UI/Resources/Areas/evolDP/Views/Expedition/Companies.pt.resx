@@ -165,6 +165,9 @@
   <data name="ExpeditionType" xml:space="preserve">
     <value>Tipos de Expedição</value>
   </data>
+  <data name="ExpeditionZone" xml:space="preserve">
+    <value>Zona de Expedição</value>
+  </data>
   <data name="ExpRegistRange" xml:space="preserve">
     <value>Ver configurações de Correio Registado para a Companhia</value>
   </data>
