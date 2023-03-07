@@ -249,7 +249,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
 
-        public async Task<IActionResult> ServiceCompanyConfig(string serviceCompanyJson, int costDate, int serviceTypeID, int serviceID)
+        public async Task<IActionResult> ServiceCompanyConfig(string serviceCompanyJson, int serviceTypeID, int costDate, int serviceID)
         {
             try
             {

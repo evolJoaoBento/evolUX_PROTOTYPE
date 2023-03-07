@@ -230,26 +230,23 @@ else
                         <table class="table table-sm table-hover table-collapse-seperate">
                             <thead id="bootstrap-overrides" class="table-info sticky-header">
                                 <th width="200px"></th>
-                                <th>@localizer["CostDate"]</th>
+                                <th>@localizer["Service"]</th>
                             </thead>
                             <tbody>
-                                @foreach(var cDate in serviceTypeConfigs.Select(x => x.CostDate).Distinct().ToList())
+                                @foreach (var s in serviceTypeConfigs.Select(x => x.ServiceID).Distinct().ToList())
                                 {
-                                    List<ServiceCompanyServiceResume> costDateList = serviceTypeConfigs.Where(x => x.CostDate == cDate).ToList();
+                                    List<ServiceCompanyServiceResume> sList = serviceTypeConfigs.Where(x => x.ServiceID == s).ToList();
                                     level1++;
                                     name1Value = "detail" + level1.ToString();
                                     id1Value = "arrow" + name1Value;
-                                    DateTime costDateDT;
-                                    costDateDesc = cDate.ToString();
-                                    if (DateTime.TryParseExact(cDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out costDateDT))
-                                        costDateDesc = costDateDT.ToShortDateString();
                                     <tr>
                                         <td>
-                                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)" asp-route-costdate="@cDate" asp-route-servicetypeid="@sType">
+                                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
+                                                asp-route-servicetypeid="@sType" asp-route-serviceid="@s">
                                                 <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
                                             </a>
                                         </td>
-                                        <td>@costDateDesc
+                                        <td>@sList.First().ServiceDesc
                                             <a class="bx bxs-chevron-down" href="javascript:showDetail('@name1Value')" id="@id1Value"></a>
                                         </td>
                                     </tr>
@@ -259,19 +256,24 @@ else
                                                     <thead id="bootstrap-overrides" class="table-info sticky-header">
                                                         <tr>
                                                             <th width="280px"></th>
-                                                            <th>@localizer["Service"]</th>
+                                                            <th>@localizer["CostDate"]</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody id="bootstrap-overrides">
-                                                        @foreach (var s in costDateList.Select(x => x.ServiceID).Distinct().ToList())
+                                                        @foreach (var cDate in serviceTypeConfigs.Select(x => x.CostDate).Distinct().ToList())
                                                         {
+                                                            DateTime costDateDT;
+                                                            costDateDesc = cDate.ToString();
+                                                            if (DateTime.TryParseExact(cDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out costDateDT))
+                                                                costDateDesc = costDateDT.ToShortDateString();
                                                             <tr>
                                                                 <td>
-                                                                    <a asp-area="evolDP" asp-controller="Expedition" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)" asp-route-startdate="@sType" asp-route-servicetypeid="@cDate" asp-route-serviceid="@s">
+                                                                    <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
+                                                                        asp-route-servicetypeid="@sType" asp-route-serviceid="@s" asp-route-costdate="@cDate">
                                                                         <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
                                                                     </a>
                                                                 </td>
-                                                                <td>@costDateList.Where(x => x.ServiceID == s).First().ServiceDesc</td>
+                                                                <td>@costDateDesc</td>
                                                             </tr>
                                                         }
                                                     </tbody>
