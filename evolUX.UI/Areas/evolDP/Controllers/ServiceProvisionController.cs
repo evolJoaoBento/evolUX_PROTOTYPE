@@ -1,5 +1,6 @@
 ﻿using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using evolUX.UI.Exceptions;
+using evolUX_dev.Areas.evolDP.Models;
 using Flurl.Http;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 string serviceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
                 ServiceCompaniesViewModel result = new ServiceCompaniesViewModel();
                 result.ServiceCompanies = await _serviceProvisionService.GetServiceCompanies(serviceCompanyList);
-                result.Restrictions = await _serviceProvisionService.GetServiceCompanyRestrictions(null);
+                result.Restrictions = await _serviceProvisionService.GetServiceCompanyRestrictions(0);
                 if (result.ServiceCompanies != null && result.ServiceCompanies.Count() > 0)
                 {
                     result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
@@ -180,6 +181,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             }
 
         }
+
         public async Task<IActionResult> ChangeServiceCompanyRestriction(IFormCollection form, string serviceCompanyJson, int materialTypeID)
         {
             try
@@ -247,16 +249,20 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
 
-        public async Task<IActionResult> ServiceCompanyConfig(string serviceCompanyJson, int cotDate, int serviceTypeID, int serviceID)
+        public async Task<IActionResult> ServiceCompanyConfig(string serviceCompanyJson, int costDate, int serviceTypeID, int serviceID)
         {
             try
             {
                 Company company = JsonConvert.DeserializeObject<Company>(serviceCompanyJson);
                 ServiceCompanyConfigViewModel result = new ServiceCompanyConfigViewModel();
                 result.ServiceCompany = company;
-                result.Configs = await _serviceProvisionService.GetServiceCompanyConfigs(company.ID, cotDate, serviceTypeID, serviceID);
-                result.ServiceTypeID = serviceTypeID;
+                result.Configs = await _serviceProvisionService.GetServiceCompanyConfigs(company.ID, costDate, serviceTypeID, serviceID);
+                result.CostDate = costDate;
                 result.ServiceID = serviceID;
+                if (serviceID == 0)
+                {
+                    result.Services = await _serviceProvisionService.GetServices(serviceTypeID);
+                }
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View(result);
             }
@@ -295,6 +301,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             }
 
         }
+
         //public async Task<IActionResult> Types()
         //{
         //    try

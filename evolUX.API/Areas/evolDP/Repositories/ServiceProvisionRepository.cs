@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Data.Context;
+using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
 using Shared.Models.General;
 using System.Data;
@@ -102,7 +103,35 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return;
             }
         }
+        public async Task<IEnumerable<ServiceElement>> GetServices(int serviceTypeID)
+        {
+            string sql = @"RD_UX_GET_SERVICES";
+            var parameters = new DynamicParameters();
+            if (serviceTypeID > 0)
+                parameters.Add("ServiceTypeID", serviceTypeID, DbType.Int64);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                var servicesList = await connection.QueryAsync<ServiceElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return servicesList;
+            }
+        }
+        public async Task SetService(ServiceElement service)
+        {
+            string sql = @"RD_UX_SET_SERVICE";
+            var parameters = new DynamicParameters();
+            parameters.Add("ServiceTypeID", service.ServiceTypeID, DbType.Int64);
+            if (service.ServiceID > 0)
+                parameters.Add("ServiceID", service.ServiceID, DbType.Int64);
+            parameters.Add("ServiceCode", service.ServiceCode, DbType.Int64);
+            parameters.Add("ServiceDesc", service.ServiceDesc, DbType.Double);
+            parameters.Add("MatchCode", service.MatchCode, DbType.String);
 
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                return;
+            }
+        }
         //public async Task<IEnumerable<ServiceTypeElement>> GetServiceTypes(int? serviceTypeID)
         //{
         //    string sql = @"RD_UX_GET_SERVICE_TYPE";

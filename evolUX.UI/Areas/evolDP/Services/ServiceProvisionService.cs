@@ -19,7 +19,7 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _serviceProvisionTypeRepository.GetServiceCompanies(servicCompanyList);
             return response;
         }
-        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int? serviceCompanyID)
+        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int serviceCompanyID)
         {
             var response = await _serviceProvisionTypeRepository.GetServiceCompanyRestrictions(serviceCompanyID);
             return response;
@@ -57,7 +57,7 @@ namespace evolUX.UI.Areas.evolDP.Services
         }
         public async Task SetServiceCompanyRestrictions(int serviceCompanyID, int materialTypeID, int materialPosition, int fileSheetsCutoffLevel, bool restrictionMode)
         {
-            await _serviceProvisionTypeRepository.SetServiceCompanyRestrictions(serviceCompanyID, materialTypeID, materialPosition, fileSheetsCutoffLevel, restrictionMode);
+            await _serviceProvisionTypeRepository.SetServiceCompanyRestriction(serviceCompanyID, materialTypeID, materialPosition, fileSheetsCutoffLevel, restrictionMode);
             return;
         }
         public async Task<IEnumerable<ServiceCompanyService>> GetServiceCompanyConfigs(int serviceCompanyID, int costDate, int serviceTypeID, int serviceID)
@@ -65,6 +65,15 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _serviceProvisionTypeRepository.GetServiceCompanyConfigs(serviceCompanyID, costDate, serviceTypeID, serviceID);
             return response;
         }
-
+        public async Task SetServiceCompanyConfig(int serviceCompanyID, int costDate, int serviceTypeID, int serviceID, double serviceCost, string formula)
+        {
+            await _serviceProvisionTypeRepository.SetServiceCompanyConfig(serviceCompanyID, costDate, serviceTypeID, serviceID, serviceCost, formula);
+            return;
+        }
+        public async Task<IEnumerable<ServiceElement>> GetServices(int serviceTypeID)
+        {
+            var response = await _serviceProvisionTypeRepository.GetServices(serviceTypeID);
+            return response;
+        }
     }
 }

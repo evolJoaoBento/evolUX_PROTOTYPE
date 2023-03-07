@@ -50,7 +50,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<Company>>();
         }
-        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int? serviceCompanyID)
+        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int serviceCompanyID)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ServiceCompanyID", serviceCompanyID);
@@ -62,7 +62,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<ServiceCompanyRestriction>>();
         }
-        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int? serviceCompanyID)
+        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int serviceCompanyID)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ServiceCompanyID", serviceCompanyID);
@@ -74,7 +74,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<ServiceCompanyServiceResume>>();
         }
-        public async Task SetServiceCompanyRestrictions(int serviceCompanyID, int materialTypeID, int materialPosition, int fileSheetsCutoffLevel, bool restrictionMode)
+        public async Task SetServiceCompanyRestriction(int serviceCompanyID, int materialTypeID, int materialPosition, int fileSheetsCutoffLevel, bool restrictionMode)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ServiceCompanyID", serviceCompanyID);
@@ -93,16 +93,43 @@ namespace evolUX.UI.Areas.evolDP.Repositories
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ServiceCompanyID", serviceCompanyID);
-            dictionary.Add("serviceTypeID", serviceTypeID);
-            dictionary.Add("serviceID", serviceID);
+            dictionary.Add("ServiceTypeID", serviceTypeID);
+            dictionary.Add("ServiceID", serviceID);
             dictionary.Add("CostDate", costDate);
-            var response = await _flurlClient.Request("/API/evolDP/Expedition/GetServiceCompanyConfigs")
+            var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/GetServiceCompanyConfigs")
                  .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                  .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<ServiceCompanyService>>();
         }
+        
+        public async Task SetServiceCompanyConfig(int serviceCompanyID, int costDate, int serviceTypeID, int serviceID, double serviceCost, string formula)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ServiceCompanyID", serviceCompanyID);
+            dictionary.Add("ServiceTypeID", serviceTypeID);
+            dictionary.Add("ServiceID", serviceID);
+            dictionary.Add("CostDate", costDate);
+            dictionary.Add("ServiceCost", serviceCost);
+            dictionary.Add("Formula", formula);
+            var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/GetServiceCompanyConfigs")
+                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                 .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return;
+        }
+
+        public async Task<IEnumerable<ServiceElement>> GetServices(int serviceTypeID)
+        {
+            var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/GetServices")
+                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                 .SendJsonAsync(HttpMethod.Get, serviceTypeID);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<IEnumerable<ServiceElement>>();
+        }        
         
         //public async Task<ServiceProvisionTypeViewModel> GetServiceProvisionTypes(int? ServiceProvisionType, string expCompanyList)
         //{

@@ -51,11 +51,24 @@ namespace evolUX.API.Areas.evolDP.Services
             }
             return result;
         }
+        public async Task SetService(ServiceElement service)
+        {
+            await _repository.ServiceProvision.SetService(service);
+        }
+
+        public async Task<IEnumerable<ServiceElement>> GetServices(int serviceTypeID)
+        {
+            IEnumerable<ServiceElement> result = await _repository.ServiceProvision.GetServices(serviceTypeID);
+            if (result == null)
+            {
+
+            }
+            return result;
+        }
         public async Task SetServiceCompanyConfig(ServiceCompanyService serviceCompanyConfig)
         {
             await _repository.ServiceProvision.SetServiceCompanyConfig(serviceCompanyConfig);
-        }
-        //public async Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, DataTable? expCompanyList)
+        }       //public async Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, DataTable? expCompanyList)
         //{
         //    ExpeditionTypeViewModel viewModel = new ExpeditionTypeViewModel();
         //    viewModel.Types = await _repository.ExpeditionType.GetExpeditionTypes(expeditionType);
