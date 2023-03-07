@@ -59,6 +59,7 @@ ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANY_SERVICES_RESUME]
 AS
 BEGIN
 	SELECT DISTINCT 
+		scsc.CostDate,
 		scsc.ServiceCompanyID,
 		st.ServiceTypeID,
 		st.ServiceTypeCode,
@@ -74,7 +75,7 @@ BEGIN
 		dbo.RD_SERVICE_COMPANY_SERVICE_COST scsc WITH(NOLOCK)
 	ON	scsc.ServiceID = s.ServiceID
 	WHERE (@ServiceCompanyID is NULL OR scsc.ServiceCompanyID = @ServiceCompanyID)
-	ORDER BY scsc.ServiceCompanyID, st.ServiceTypeID, s.ServiceID
+	ORDER BY scsc.ServiceCompanyID, st.ServiceTypeID, scsc.CostDate, s.ServiceID
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_SERVICE_COMPANY_SERVICE_COSTS]') AND type in (N'P', N'PC'))

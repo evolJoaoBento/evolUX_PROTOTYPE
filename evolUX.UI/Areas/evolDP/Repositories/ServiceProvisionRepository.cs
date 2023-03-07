@@ -113,7 +113,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             dictionary.Add("CostDate", costDate);
             dictionary.Add("ServiceCost", serviceCost);
             dictionary.Add("Formula", formula);
-            var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/GetServiceCompanyConfigs")
+            var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/SetServiceCompanyConfig")
                  .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                  .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
