@@ -133,7 +133,7 @@
     <value>Impressoras de folha solta</value>
   </data>
   <data name="Formula" xml:space="preserve">
-    <value>Formula de Calculo</value>
+    <value>Fórmula de Cálculo</value>
   </data>
   <data name="ID" xml:space="preserve">
     <value>ID</value>
@@ -151,7 +151,7 @@
     <value>Serviço</value>
   </data>
   <data name="ServiceCompanyConfig" xml:space="preserve">
-    <value>Configuração de Custos de Serviços para Companhia de Serviços</value>
+    <value>Configuração de Custos de Serviços para</value>
   </data>
   <data name="ServiceCost" xml:space="preserve">
     <value>Custo</value>

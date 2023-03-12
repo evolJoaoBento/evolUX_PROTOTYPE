@@ -37,13 +37,13 @@ BEGIN
 END
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TYPES]') AND type in (N'P', N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TASKS]') AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TYPES] AS' 
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TASKS] AS' 
 END
 GO
 -- Listar Tipo Tratamento/Expedição (ExpCode) - Alterar/apagar/adiconar?
-ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TYPES]
+ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TASKS]
 AS
 BEGIN
 	SELECT e.ExpCode, --Código Tratamento/Expedição

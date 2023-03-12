@@ -1,9 +1,9 @@
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RT_UX_REGIST_FULLFILL]') AND type in (N'P', N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RT_UX_REGIST_FULFILMENT]') AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RT_UX_REGIST_FULLFILL] AS' 
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RT_UX_REGIST_FULFILMENT] AS' 
 END
 GO
-ALTER  PROCEDURE [dbo].[RT_UX_REGIST_FULLFILL] 
+ALTER  PROCEDURE [dbo].[RT_UX_REGIST_FULFILMENT] 
 	@FileBarcode varchar(20),
 	@UserName varchar(50),
 	@ServiceCompanyList IDList READONLY
@@ -118,7 +118,7 @@ AS
 	ELSE
 	BEGIN
 		ROLLBACK TRANSACTION
-		SELECT -11 ErrorID, 'FileAlreadyFullfilled' Error
+		SELECT -11 ErrorID, 'FileAlreadyFulfilled' Error
 		return -11
 	END
 	COMMIT TRANSACTION

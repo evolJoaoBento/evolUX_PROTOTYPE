@@ -58,12 +58,18 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return;
             }
         }
-        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int? serviceCompanyID)
+        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int? serviceCompanyID, int? serviceTypeID, int? serviceID, int? costDate)
         {
             string sql = @"RD_UX_GET_SERVICE_COMPANY_SERVICES_RESUME";
             var parameters = new DynamicParameters();
             if (serviceCompanyID != null && serviceCompanyID > 0)
                 parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
+            if (serviceTypeID != null && serviceTypeID > 0)
+                parameters.Add("ServiceTypeID", serviceTypeID, DbType.Int64);
+            if (serviceID != null && serviceID > 0)
+                parameters.Add("ServiceID", serviceID, DbType.Int64);
+            if (costDate != null)
+                parameters.Add("CostDate", costDate, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<ServiceCompanyServiceResume> result = await connection.QueryAsync<ServiceCompanyServiceResume>(sql, parameters, commandType: CommandType.StoredProcedure);
@@ -132,18 +138,18 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return;
             }
         }
-        //public async Task<IEnumerable<ServiceTypeElement>> GetServiceTypes(int? serviceTypeID)
-        //{
-        //    string sql = @"RD_UX_GET_SERVICE_TYPE";
-        //    var parameters = new DynamicParameters();
-        //    if (serviceTypeID != null && serviceTypeID > 0)
-        //        parameters.Add("ServiceTypeID", serviceTypeID, DbType.String);
-        //    using (var connection = _context.CreateConnectionEvolDP())
-        //    {
-        //        IEnumerable<ServiceTypeElement> result = await connection.QueryAsync<ServiceTypeElement>(sql, parameters, commandType: CommandType.StoredProcedure);
-        //        return result;
-        //    }
-        //}
+        public async Task<IEnumerable<ServiceTypeElement>> GetServiceTypes(int? serviceTypeID)
+        {
+            string sql = @"RD_UX_GET_SERVICE_TYPE";
+            var parameters = new DynamicParameters();
+            if (serviceTypeID != null && serviceTypeID > 0)
+                parameters.Add("ServiceTypeID", serviceTypeID, DbType.String);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ServiceTypeElement> result = await connection.QueryAsync<ServiceTypeElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
 
         //public async Task<IEnumerable<ExpCompanyType>> GetExpCompanyTypes(int? expeditionType, int? expCompanyID, DataTable? expCompanyList)
         //{

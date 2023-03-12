@@ -6,17 +6,17 @@ using System.Data;
 
 namespace evolUX.API.Areas.Finishing.Repositories
 {
-    public class FullfilledFilesRepository : IFullfilledFilesRepository
+    public class FulfiledFilesRepository : IFulfiledFilesRepository
     {
         private readonly DapperContext _context;
-        public FullfilledFilesRepository(DapperContext context)
+        public FulfiledFilesRepository(DapperContext context)
         {
             _context = context;
         }
 
-        public async Task<Result> RegistFullFill(string fileBarcode, string user, DataTable serviceCompanyList)
+        public async Task<Result> RegistFulFilment(string fileBarcode, string user, DataTable serviceCompanyList)
         {
-            string sql = @"RT_UX_REGIST_FULLFILL";
+            string sql = @"RT_UX_REGIST_FULFILMENT";
             var parameters = new DynamicParameters();
             parameters.Add("FileBarcode", fileBarcode, DbType.String);
             parameters.Add("UserName", user, DbType.String);

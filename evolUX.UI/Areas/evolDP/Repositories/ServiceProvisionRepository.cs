@@ -9,6 +9,7 @@ using evolUX.API.Models;
 using Shared.ViewModels.Areas.Finishing;
 using Newtonsoft.Json;
 using Shared.Models.Areas.evolDP;
+using System.Collections;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
@@ -129,8 +130,18 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<ServiceElement>>();
-        }        
-        
+        }
+        public async Task<ServiceTypeViewModel> GetServiceTypes()
+        {
+            var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/GetServiceTypes")
+                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                 .GetAsync();
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<ServiceTypeViewModel>();
+
+        }
+
         //public async Task<ServiceProvisionTypeViewModel> GetServiceProvisionTypes(int? ServiceProvisionType, string expCompanyList)
         //{
         //    Dictionary<string, object> dictionary = new Dictionary<string, object>();

@@ -36,12 +36,11 @@ namespace evolUX.API.Areas.evolDP.Services
             return;
         }
 
-        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int? serviceCompanyID)
+        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int? serviceCompanyID, int? serviceTypeID, int? serviceID, int? costDate)
         {
-            IEnumerable<ServiceCompanyServiceResume> result = await _repository.ServiceProvision.GetServiceCompanyConfigsResume(serviceCompanyID);
+            IEnumerable<ServiceCompanyServiceResume> result = await _repository.ServiceProvision.GetServiceCompanyConfigsResume(serviceCompanyID, serviceTypeID, serviceID, costDate);
             return result;
         }
-
         public async Task<IEnumerable<ServiceCompanyService>> GetServiceCompanyConfigs(int serviceCompanyID, int costDate, int serviceTypeID, int serviceID)
         {
             IEnumerable<ServiceCompanyService> result = await _repository.ServiceProvision.GetServiceCompanyConfigs(serviceCompanyID, costDate, serviceTypeID, serviceID);
@@ -68,7 +67,24 @@ namespace evolUX.API.Areas.evolDP.Services
         public async Task SetServiceCompanyConfig(ServiceCompanyService serviceCompanyConfig)
         {
             await _repository.ServiceProvision.SetServiceCompanyConfig(serviceCompanyConfig);
-        }       //public async Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, DataTable? expCompanyList)
+        }
+
+        public async Task<ServiceTypeViewModel> GetServiceTypes(int? serviceTypeID)
+        {
+            ServiceTypeViewModel viewModel = new ServiceTypeViewModel();
+            viewModel.Types = await _repository.ServiceProvision.GetServiceTypes(serviceTypeID);
+            if (viewModel.Types != null)
+            {
+                foreach(var type in viewModel.Types) 
+                {
+                    var list = await GetServices(type.ServiceTypeID);
+                    if (list != null)
+                        type.ServicesList = list.ToList();
+                }
+            }
+            return viewModel;
+        }
+        //public async Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, DataTable? expCompanyList)
         //{
         //    ExpeditionTypeViewModel viewModel = new ExpeditionTypeViewModel();
         //    viewModel.Types = await _repository.ExpeditionType.GetExpeditionTypes(expeditionType);

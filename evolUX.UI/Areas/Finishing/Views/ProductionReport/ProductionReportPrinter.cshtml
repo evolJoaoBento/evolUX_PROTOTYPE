@@ -237,20 +237,20 @@ else
                                                     }
                                                 <colgroup span="@printingSpan"></colgroup>
                                                     @{
-                                                        int envelopingSpan = 4;
+                                                        int fulfilmentSpan = 4;
                                                         if (mInfo.StationList.Length > 0)
                                                         {
-                                                            envelopingSpan += mInfo.FileList.First().StationTotals.Keys.Count;
+                                                            fulfilmentSpan += mInfo.FileList.First().StationTotals.Keys.Count;
                                                         }
                                                     }
-                                                <colgroup span="@envelopingSpan"></colgroup>
+                                                <colgroup span="@fulfilmentSpan"></colgroup>
                                                 <colgroup span="5"></colgroup>
                                                 <thead id="bootstrap-overrides" class="table-info">
                                                     <tr class="text-center">
                                                         <th class="headcol" rowspan="3" scope="col">@localizer["Files"]</th>@*FileName RegistShortFileName*@
                                                         <th rowspan="3" scope="col">@localizer["ServiceTaskCode"]</th>@*ServiceTaskCode*@
                                                         <th colspan="@printingSpan" scope="colgroup">@localizer["Printing"]</th>
-                                                        <th colspan="@envelopingSpan" scope="colgroup">@localizer["Fullfilling"]</th>
+                                                        <th colspan="@fulfilmentSpan" scope="colgroup">@localizer["Fulfilment"]</th>
                                                         <th colspan="5" scope="colgroup">@localizer["Expedition"]</th>
                                                     </tr>
                                                     <tr class="text-center">

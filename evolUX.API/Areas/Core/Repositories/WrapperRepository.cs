@@ -23,7 +23,7 @@ namespace evolUX.API.Areas.Core.Repositories
         private IRegistJobRepository _registJob;
         private ISessionRepository _session;
         private IPrintedFilesRepository _printedFiles;
-        private IFullfilledFilesRepository _fullfilledFiles;
+        private IFulfiledFilesRepository _fullfilledFiles;
         private IRecoverRepository _recover;
         private IPendingRegistRepository _pendingRegistRepository;
         private IPostalObjectRepository _postalObjectRepository;
@@ -176,13 +176,13 @@ namespace evolUX.API.Areas.Core.Repositories
                 return _printedFiles;
             }
         }
-        public IFullfilledFilesRepository FullfilledFiles
+        public IFulfiledFilesRepository FullfilledFiles
         {
             get
             {
                 if (_fullfilledFiles == null)
                 {
-                    _fullfilledFiles = new FullfilledFilesRepository(_context);
+                    _fullfilledFiles = new FulfiledFilesRepository(_context);
                 }
                 return _fullfilledFiles;
             }

@@ -50,7 +50,7 @@ else
     int level0 = 0, level1 = 0;
     string idValue = "arrow" + level0.ToString();
     string nameValue = "";
-    string headerDesc1 = serviceCompany.CompanyName + " - " + Model.Configs.First().ServiceTypeDesc;
+    string headerDesc1 = Model.Configs.First().ServiceTypeDesc;
     string headerDesc2 = "";
     string headerDesc3 = "";
     string doubleStr;
@@ -83,7 +83,7 @@ else
         }
     }
     <div id="TitlePage">
-        <h1>@localizer["ServiceCompanyConfig"]</h1>
+        <h1>@localizer["ServiceCompanyConfig"] @serviceCompany.CompanyName</h1>
         <h2>@headerDesc1</h2>
     </div>
     <div>

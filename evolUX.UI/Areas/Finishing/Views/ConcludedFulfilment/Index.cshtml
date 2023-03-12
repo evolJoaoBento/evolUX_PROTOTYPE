@@ -15,9 +15,9 @@
 else
 {
     <div id="TitlePage">
-        <h1>@localizer["ConcludedFullfill"]</h1>
+        <h1>@localizer["ConcludedFulfilment"]</h1>
     </div>
-    <form id="ConcludedFullfillFrm" class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="ConcludedFullfill" asp-action="RegistFullfill"
+    <form id="ConcludedFulfilmentFrm" class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="ConcludedFulfilment" asp-action="RegistFullfill"
           data-ajax="true"
           data-ajax-method="POST"
           data-ajax-mode="replace"
@@ -45,7 +45,7 @@ else
     {
     <script type="text/javascript">
         function clearTextBox() {
-            document.getElementById("ConcludedFullfillFrm").reset();
+            document.getElementById("ConcludedFulfilmentFrm").reset();
             document.getElementById("FileBarcode").focus();
         };
 

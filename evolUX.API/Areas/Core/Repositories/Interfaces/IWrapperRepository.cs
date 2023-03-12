@@ -29,7 +29,7 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
 
         IPrintedFilesRepository PrintedFiles { get; }
 
-        IFullfilledFilesRepository FullfilledFiles { get; }
+        IFulfiledFilesRepository FullfilledFiles { get; }
 
         IRecoverRepository Recover { get; }
 

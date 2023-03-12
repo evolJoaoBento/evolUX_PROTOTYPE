@@ -43,8 +43,8 @@ builder.Services.AddSingleton<IServiceProvisionService, ServiceProvisionService>
 builder.Services.AddSingleton<IProductionReportService, ProductionReportService>();
 builder.Services.AddSingleton<IPendingRegistService, PendingRegistService>();
 builder.Services.AddSingleton<IPrintService, PrintService>();
-builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
-builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillService>();
+builder.Services.AddSingleton<IConcludedPrintingService, ConcludedPrintingService>();
+builder.Services.AddSingleton<IConcludedFulfilmentService, ConcludedFulfilmentService>();
 builder.Services.AddSingleton<IRecoverService, RecoverService>();
 builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();
 builder.Services.AddSingleton<IPendingRecoverService, PendingRecoverService>();

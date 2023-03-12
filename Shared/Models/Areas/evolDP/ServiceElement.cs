@@ -8,5 +8,6 @@
         public int ServiceTypeID { get; set; }
         public string ServiceTypeDesc { get; set; }
         public string MatchCode { get; set; }
+        public List<int> CompanyList { get; set; } = new List<int>(); 
     }
 }

@@ -61,14 +61,14 @@ else
                         }
                         <colgroup span="@printingSpan"></colgroup>
                         @{
-                            int envelopingSpan = 4;
+                            int fulfilmentSpan = 4;
                             if (mInfo.StationList.Length > 0)
                             {
-                                envelopingSpan += mInfo.FileList.First().StationTotals.Keys.Count;
+                                fulfilmentSpan += mInfo.FileList.First().StationTotals.Keys.Count;
                             }
-                            servicespan += envelopingSpan;
+                            servicespan += fulfilmentSpan;
                         }
-                        <colgroup span="@envelopingSpan"></colgroup>
+                        <colgroup span="@fulfilmentSpan"></colgroup>
                         <colgroup span="5"></colgroup>
                         <thead id="bootstrap-overrides" class="table-info sticky-header">
                             <tr class="text-center">
@@ -78,7 +78,7 @@ else
                             </tr>
                             <tr class="text-center">
                                 <th colspan="@printingSpan" scope="colgroup">@localizer["Printing"]</th>
-                                <th colspan="@envelopingSpan" scope="colgroup">@localizer["Fullfilling"]</th>
+                                <th colspan="@fulfilmentSpan" scope="colgroup">@localizer["Fullfilling"]</th>
                             </tr>
                             <tr class="text-center">
                                 <th rowspan="2" scope="col">@localizer["PrinterOperator"]</th>@*PrinterOperator + Printer*@

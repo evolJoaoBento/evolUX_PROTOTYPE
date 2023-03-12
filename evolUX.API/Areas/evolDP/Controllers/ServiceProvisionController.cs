@@ -147,12 +147,25 @@ namespace evolUX.API.Areas.evolDP.Controllers
             try
             {
                 object obj;
-                dictionary.TryGetValue("ServiceCompanyID", out obj);
                 int value = 0;
                 int? serviceCompanyID = null;
+                int? serviceTypeID = null;
+                int? serviceID = null;
+                int? costDate = null;
+                dictionary.TryGetValue("ServiceCompanyID", out obj);
                 if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
                     serviceCompanyID = value;
-                var restrictions = await _serviceProvision.GetServiceCompanyConfigsResume(serviceCompanyID);
+                dictionary.TryGetValue("ServiceTypID", out obj);
+                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                    serviceTypeID = value;
+                dictionary.TryGetValue("ServiceID", out obj);
+                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                    serviceID = value;
+                dictionary.TryGetValue("CostDate", out obj);
+                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                    costDate = value;
+
+                var restrictions = await _serviceProvision.GetServiceCompanyConfigsResume(serviceCompanyID, serviceTypeID, serviceID, costDate);
                 _logger.LogInfo("ServiceCompany Configs Resume Get");
                 return Ok(restrictions);
             }
@@ -171,7 +184,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("GetServiceCompanyConfigs")]
-        public async Task<ActionResult<IEnumerable<ExpCompanyConfig>>> GetServiceCompanyConfigs([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<IEnumerable<ServiceCompanyService>>> GetServiceCompanyConfigs([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -287,6 +300,29 @@ namespace evolUX.API.Areas.evolDP.Controllers
             {
                 //log error
                 _logger.LogError($"Something went wrong inside SetService action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("GetServiceTypes")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<ServiceTypeViewModel>> GetServiceTypes([FromBody] int? serviceTypeID)
+        {
+            try
+            {
+                ServiceTypeViewModel viewModel = await _serviceProvision.GetServiceTypes(serviceTypeID);
+                _logger.LogInfo("GetServiceTypes Get");
+                return Ok(viewModel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetServiceTypes action: {ex.Message}");
                 return StatusCode(500, "Internal Server Erros");
             }
         }

@@ -129,17 +129,17 @@
   <data name="ActionBillingReport" xml:space="preserve">
     <value>Controlo de Facturação</value>
   </data>
-  <data name="ActionConcludedFullfill" xml:space="preserve">
+  <data name="ActionConcludedFulfilment" xml:space="preserve">
     <value>Envelopagem Concluída</value>
   </data>
-  <data name="ActionConcludedFullfill_Link" xml:space="preserve">
-    <value>/Finishing/ConcludedFullfill/Index</value>
+  <data name="ActionConcludedFulfilment_Link" xml:space="preserve">
+    <value>/Finishing/ConcludedFulfilment/Index</value>
   </data>
-  <data name="ActionConcludedPrint" xml:space="preserve">
+  <data name="ActionConcludedPrinting" xml:space="preserve">
     <value>Impressão Concluída</value>
   </data>
-  <data name="ActionConcludedPrint_Link" xml:space="preserve">
-    <value>/Finishing/ConcludedPrint/Index</value>
+  <data name="ActionConcludedPrinting_Link" xml:space="preserve">
+    <value>/Finishing/ConcludedPrinting/Index</value>
   </data>
   <data name="ActionConcludedRegist" xml:space="preserve">
     <value>Impressão/Envelopagem</value>
@@ -249,7 +249,7 @@
   <data name="ActionMaterialManagement_Link" xml:space="preserve">
     <value>/evolDP/Consumables/Management</value>
   </data>
-  <data name="ActionMaterialProductionRepor" xml:space="preserve">
+  <data name="ActionMaterialProductionReport" xml:space="preserve">
     <value>Controlo de Produção / Consumíveis</value>
   </data>
   <data name="ActionMaterialType" xml:space="preserve">
@@ -295,7 +295,7 @@
     <value>&lt;i class='li-circle circle  bx bx-revision collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuFinishing" xml:space="preserve">
-    <value>Finishing</value>
+    <value>Impessão &amp; Acabamento</value>
   </data>
   <data name="ActionMenuFinishing_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle  bx bx-printer collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>

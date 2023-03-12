@@ -5,10 +5,10 @@ using evolUX.API.Areas.Core.Repositories.Interfaces;
 
 namespace evolUX.API.Areas.Finishing.Services
 {
-    public class ConcludedPrintService : IConcludedPrintService
+    public class ConcludedPrintingService : IConcludedPrintingService
     {
         private readonly IWrapperRepository _repository;
-        public ConcludedPrintService(IWrapperRepository repository)
+        public ConcludedPrintingService(IWrapperRepository repository)
         {
             _repository = repository;
         }

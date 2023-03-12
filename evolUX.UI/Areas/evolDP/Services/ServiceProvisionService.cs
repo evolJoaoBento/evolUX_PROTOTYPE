@@ -75,5 +75,10 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _serviceProvisionTypeRepository.GetServices(serviceTypeID);
             return response;
         }
+        public async Task<ServiceTypeViewModel> GetServiceTypes()
+        {
+            var response = await _serviceProvisionTypeRepository.GetServiceTypes();
+            return response;
+        }
     }
 }
