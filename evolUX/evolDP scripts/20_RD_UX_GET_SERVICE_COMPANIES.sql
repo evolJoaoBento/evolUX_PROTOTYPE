@@ -253,17 +253,25 @@ AS
 BEGIN
 	IF (@ServiceTypeID is NULL)
 	BEGIN
-		INSERT INTO [dbo].[RD_SERVICE_TYPE](ServiceTypeID, ServiceTypeCode, ServiceTypeDescription)
-		SELECT ISNULL(MAX(ServiceID),0) + 1, @ServiceTypeCode, @ServiceTypeDesc
-		FROM [dbo].[RD_SERVICE]
-
+		IF (NOT EXISTS (SELECT TOP 1 1 FROM RD_SERVICE_TYPE WITH(NOLOCK) WHERE ServiceTypeCode = @ServiceTypeCode))
+		BEGIN
+			INSERT INTO RD_SERVICE_TYPE(ServiceTypeID, ServiceTypeCode, ServiceTypeDescription)
+			SELECT ISNULL(MAX(ServiceID),0) + 1, @ServiceTypeCode, @ServiceTypeDesc
+			FROM [dbo].[RD_SERVICE]
+		END
+		ELSE
+		BEGIN
+			UPDATE RD_SERVICE_TYPE
+			SET ServiceTypeDescription = @ServiceTypeDesc
+			WHERE ServiceTypeCode = @ServiceTypeCode
+		END
 		SELECT @ServiceTypeID = ServiceTypeID
-		FROM [dbo].[RD_SERVICE_TYPE] WITH(NOLOCK)
+		FROM RD_SERVICE_TYPE WITH(NOLOCK)
 		WHERE ServiceTypeCode = @ServiceTypeCode
 	END
 	ELSE
 	BEGIN
-		UPDATE [dbo].[RD_SERVICE_TYPE]
+		UPDATE RD_SERVICE_TYPE
 		SET ServiceTypeDescription = @ServiceTypeDesc,
 			ServiceTypeCode = @ServiceTypeCode
 		WHERE ServiceTypeID = @ServiceTypeID

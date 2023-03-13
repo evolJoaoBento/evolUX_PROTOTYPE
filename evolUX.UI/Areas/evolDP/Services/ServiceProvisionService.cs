@@ -1,6 +1,7 @@
 ﻿using evolUX.API.Models;
 using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
 using evolUX.UI.Areas.evolDP.Services.Interfaces;
+using evolUX_dev.Areas.evolDP.Models;
 using Flurl.Http;
 using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.evolDP;
@@ -80,5 +81,21 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _serviceProvisionTypeRepository.GetServiceTypes();
             return response;
         }
+        public async Task SetServiceType(int serviceTypeID, string serviceTypeCode, string serviceTypeDesc)
+        {
+            await _serviceProvisionTypeRepository.SetServiceType(serviceTypeID, serviceTypeCode, serviceTypeDesc);
+            return;
+        }
+        public async Task<IEnumerable<int>> GetServiceCompanyList(int serviceTypeID, int serviceID, int costDate)
+        {
+            var response = await _serviceProvisionTypeRepository.GetServiceCompanyList(serviceTypeID, serviceID, costDate);
+            return response;
+        }
+        public async Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID)
+        {
+            var response = await _serviceProvisionTypeRepository.GetServiceTasks(serviceTaskID);
+            return response;
+        }
+
     }
 }

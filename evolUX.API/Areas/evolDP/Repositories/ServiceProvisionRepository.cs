@@ -4,6 +4,7 @@ using evolUX.API.Data.Context;
 using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
 using Shared.Models.General;
+using System.ComponentModel.Design;
 using System.Data;
 
 namespace evolUX.API.Areas.evolDP.Repositories
@@ -19,14 +20,25 @@ namespace evolUX.API.Areas.evolDP.Repositories
         ////FOR REFERENCE https://stackoverflow.com/questions/33087629/dapper-dynamic-parameters-with-table-valued-parameters
         public async Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID)
         {
-            string sql = @"RD_UX_GET_SERVICE_TASK";
+            string sql = @"RD_UX_GET_SERVICE_TASKS";
             var parameters = new DynamicParameters();
             if (serviceTaskID != null && serviceTaskID > 0)
                 parameters.Add("ServiceTaskID", serviceTaskID, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<ServiceTask> serviceTasks = await connection.QueryAsync<ServiceTask>(sql, parameters);
+                IEnumerable<ServiceTask> serviceTasks = await connection.QueryAsync<ServiceTask>(sql, parameters, commandType: CommandType.StoredProcedure);
                 return serviceTasks;
+            }
+        }
+        public async Task<IEnumerable<ServiceTypeElement>> GetServiceTaskServiceTypes(int serviceTaskID)
+        {
+            string sql = @"RD_UX_GET_SERVICE_TASKS";
+            var parameters = new DynamicParameters();
+            parameters.Add("ServiceTaskID", serviceTaskID, DbType.Int64);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ServiceTypeElement> serviceTypes = await connection.QueryAsync<ServiceTypeElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return serviceTypes;
             }
         }
 
@@ -76,6 +88,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return result;
             }
         }
+ 
         public async Task<IEnumerable<ServiceCompanyService>> GetServiceCompanyConfigs(int serviceCompanyID, int costDate, int serviceTypeID, int serviceID)
         {
             string sql = @"RD_UX_GET_SERVICE_COMPANY_SERVICE_COSTS";
@@ -140,7 +153,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
         }
         public async Task<IEnumerable<ServiceTypeElement>> GetServiceTypes(int? serviceTypeID)
         {
-            string sql = @"RD_UX_GET_SERVICE_TYPE";
+            string sql = @"RD_UX_GET_SERVICE_TYPES";
             var parameters = new DynamicParameters();
             if (serviceTypeID != null && serviceTypeID > 0)
                 parameters.Add("ServiceTypeID", serviceTypeID, DbType.String);
@@ -151,44 +164,22 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
         }
 
-        //public async Task<IEnumerable<ExpCompanyType>> GetExpCompanyTypes(int? expeditionType, int? expCompanyID, DataTable? expCompanyList)
-        //{
-        //    string sql = @"RD_UX_GET_EXPCOMPANY_TYPE";
-        //    var parameters = new DynamicParameters();
-        //    if (expeditionType != null && expeditionType > 0)
-        //        parameters.Add("ExpeditionType", expeditionType, DbType.String);
-        //    if (expCompanyID != null)
-        //        parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
-        //    else
-        //    {
-        //        parameters.Add("ExpCompanyList", expCompanyList.AsTableValuedParameter("IDlist"));
-        //    }
-        //    using (var connection = _context.CreateConnectionEvolDP())
-        //    {
-        //        IEnumerable<ExpCompanyType> expList = await connection.QueryAsync<ExpCompanyType>(sql, parameters, commandType: CommandType.StoredProcedure);
-        //        return expList;
-        //    }
-        //}
+        public async Task SetServiceType(int serviceTypeID, string serviceTypeCode, string serviceTypeDesc)
+        {
+            string sql = @"RD_UX_SET_SERVICE_TYPE";
+            var parameters = new DynamicParameters();
+            if (serviceTypeID > 0)
+                parameters.Add("ServiceTypeID", serviceTypeID, DbType.Int64);
 
-        //public async Task<Result> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode)
-        //{
-        //    string sql = @"RD_UX_SET_EXPCOMPANY_TYPE";
-        //    var parameters = new DynamicParameters();
-        //    parameters.Add("ExpeditionType", expeditionType, DbType.String);
-        //    parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
-        //    parameters.Add("RegistMode", registMode, DbType.Boolean);
-        //    parameters.Add("SeparationMode", separationMode, DbType.Boolean);
-        //    parameters.Add("BarcodeRegistMode", barcodeRegistMode, DbType.Boolean);
+            parameters.Add("ServiceTypeCode", serviceTypeCode, DbType.String);
+            parameters.Add("ServiceTypeDesc", serviceTypeDesc, DbType.String);
 
-        //    using (var connection = _context.CreateConnectionEvolDP())
-        //    {
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
 
-        //        IEnumerable<Result> results = await connection.QueryAsync<Result>(sql, parameters,
-        //           commandType: CommandType.StoredProcedure);
-        //        return results.First();
-        //    }
-        //}
-
+                await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
         //public async Task<IEnumerable<ExpCompanyZone>> GetExpCompanyZones(int? expeditionZone, int? expCompanyID, DataTable? expCompanyList)
         //{
         //    string sql = @"RD_UX_GET_EXPCOMPANY_ZONE";

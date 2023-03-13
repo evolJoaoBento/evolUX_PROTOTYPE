@@ -1,8 +1,10 @@
 ﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
 using evolUX.API.Areas.evolDP.Services.Interfaces;
+using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
 using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
+using System.Collections;
 using System.Data;
 
 namespace evolUX.API.Areas.evolDP.Services
@@ -40,6 +42,11 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             IEnumerable<ServiceCompanyServiceResume> result = await _repository.ServiceProvision.GetServiceCompanyConfigsResume(serviceCompanyID, serviceTypeID, serviceID, costDate);
             return result;
+        }
+        public async Task<IEnumerable<int>> GetServiceCompanyList(int? serviceCompanyID, int? serviceTypeID, int? serviceID, int? costDate)
+        {
+            IEnumerable<ServiceCompanyServiceResume> result = await _repository.ServiceProvision.GetServiceCompanyConfigsResume(serviceCompanyID, serviceTypeID, serviceID, costDate);
+            return result.Select(x => x.ServiceCompanyID).Distinct().ToList();
         }
         public async Task<IEnumerable<ServiceCompanyService>> GetServiceCompanyConfigs(int serviceCompanyID, int costDate, int serviceTypeID, int serviceID)
         {
@@ -83,6 +90,22 @@ namespace evolUX.API.Areas.evolDP.Services
                 }
             }
             return viewModel;
+        }
+        public async Task SetServiceType(int serviceTypeID, string serviceTypeCode, string serviceTypeDesc)
+        {
+            await _repository.ServiceProvision.SetServiceType(serviceTypeID, serviceTypeCode, serviceTypeDesc);
+        }
+        public async Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID)
+        {
+            IEnumerable<ServiceTask> result = await _repository.ServiceProvision.GetServiceTasks(serviceTaskID);
+            if (result != null)
+            {
+                foreach(ServiceTask st in result) 
+                {
+                    st.ServiceTypes = await _repository.ServiceProvision.GetServiceTaskServiceTypes(st.ServiceTaskID);
+                }
+            }
+            return result;
         }
         //public async Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, DataTable? expCompanyList)
         //{

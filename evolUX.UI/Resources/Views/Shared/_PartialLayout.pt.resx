@@ -424,7 +424,7 @@
     <value>Tipos de Serviço</value>
   </data>
   <data name="ActionServicesProvided_Link" xml:space="preserve">
-    <value>/evolDP/ServiceProvision/Types</value>
+    <value>/evolDP/ServiceProvision/ServiceTypes</value>
   </data>
   <data name="ActionServiceWorkFlow" xml:space="preserve">
     <value>Tipos de Tratamento</value>

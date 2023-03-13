@@ -302,11 +302,10 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
 
-        public async Task<IActionResult> Types()
+        public async Task<IActionResult> ServiceTypes()
         {
             try
             {
-                string serviceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
                 ServiceTypeViewModel result = await _serviceProvisionService.GetServiceTypes();
                 if (result.Types != null && result.Types.Count() > 0)
                 {
@@ -350,18 +349,70 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             }
         }
 
-        public async Task<IActionResult> TypeDetail(string serviceTypeJson, int serviceID)
+        public async Task<IActionResult> SetServiceType(int serviceTypeID, string serviceTypeCode, string serviceTypeDesc)
+        {
+            try
+            {
+                await _serviceProvisionService.SetServiceType(serviceTypeID, serviceTypeCode, serviceTypeDesc);
+                ServiceTypeViewModel result = await _serviceProvisionService.GetServiceTypes();
+                if (result.Types != null && result.Types.Count() > 0)
+                {
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+                    return View("ServiceTypes", result);
+                }
+                return View("ServiceTypes", null);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+        }
+
+        public async Task<IActionResult> ServiceTypeDetail(string serviceTypeJson)
         {
             try
             {
                 ServiceTypeDetailViewModel result = new ServiceTypeDetailViewModel();
                 result.Type = JsonConvert.DeserializeObject<ServiceTypeElement>(serviceTypeJson);
+                foreach(ServiceElement service in result.Type.ServicesList)
+                {
+                    service.CompanyList = await _serviceProvisionService.GetServiceCompanyList(service.ServiceTypeID, service.ServiceID, 0);
+                }
 
                 string serviceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
                 result.ServiceCompanies = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
 
-                return View("TypeDetail", result);
+                return View("ServiceTypeDetail", result);
             }
             catch (FlurlHttpException ex)
             {
@@ -399,53 +450,51 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
 
+        public async Task<IActionResult> ServiceWorkFlow()
+        {
+            try
+            {
+                ServiceWorkFlowViewModel result = new ServiceWorkFlowViewModel();
+                result.ServiceTasksList = await _serviceProvisionService.GetServiceTasks(null);
+                return View(result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
 
-        //public async Task<IActionResult> ServiceTasks()
-        //{
-        //    try
-        //    {
-        //        string serviceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
-        //        ServiceTaskViewModel result = new ServiceTaskViewModel();
-        //        result.ServiceTasks = await _serviceProvisionService.GetServiceTasks(serviceCompanyList);
-        //        return View(result);
-        //    }
-        //    catch (FlurlHttpException ex)
-        //    {
-        //        // For error responses that take a known shape
-        //        //TError e = ex.GetResponseJson<TError>();
-        //        // For error responses that take an unknown shape
-        //        ErrorViewModel viewModel = new ErrorViewModel();
-        //        viewModel.RequestID = ex.Source;
-        //        viewModel.ErrorResult = new ErrorResult();
-        //        viewModel.ErrorResult.Code = (int)ex.StatusCode;
-        //        viewModel.ErrorResult.Message = ex.Message;
-        //        return View("Error", viewModel);
-        //    }
-        //    catch (HttpNotFoundException ex)
-        //    {
-        //        ErrorViewModel viewModel = new ErrorViewModel();
-        //        viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
-        //        return View("Error", viewModel);
-        //    }
-        //    catch (HttpUnauthorizedException ex)
-        //    {
-        //        if (ex.response.Headers.Contains("Token-Expired"))
-        //        {
-        //            var header = ex.response.Headers.FirstOrDefault("Token-Expired");
-        //            var returnUrl = Request.Path.Value;
-        //            //var url = Url.RouteUrl("MyAreas", )
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
 
-        //            return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
-        //        }
-        //        else
-        //        {
-        //            return RedirectToAction("Index", "Auth", new { Area = "Core" });
-        //        }
-        //    }
+        }
 
-        //}
-
-        //public async Task<IActionResult> ServiceTaskDetail(string serviceTaskJson)
+        //public async Task<IActionResult> ServiceWorkFlowDetail(string serviceTaskJson)
         //{
         //    try
         //    {

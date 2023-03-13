@@ -5,10 +5,12 @@ END
 GO
 
 ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_TASKS]
+	@ServiceTaskID int = NULL
 AS
 BEGIN
 	SELECT ServiceTaskID, ServiceTaskCode, [Description] ServiceTaskDesc
-	FROM RD_SERVICE_TASK
+	FROM RD_SERVICE_TASK WITH(NOLOCK)
+	WHERE (@ServiceTaskID is NULL OR ServiceTaskID = @ServiceTaskID)
 	ORDER BY ServiceTaskID
 END
 GO
