@@ -1,0 +1,254 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@using Shared.Models.General
+@using Shared.Models.Areas.Core
+@using Newtonsoft.Json
+@using Microsoft.AspNetCore.Http
+@using System.Globalization;
+@inject IHttpContextAccessor Accessor
+@inject IViewLocalizer localizer
+
+<div id="sidebar" class="sidebar close">
+    @{
+        IEnumerable<SideBarAction> sideBarActions = JsonConvert.DeserializeObject<IEnumerable<SideBarAction>>(Accessor.HttpContext.Session.GetString("evolUX/SideBarActions"));
+        List<dynamic> evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(Accessor.HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION"));
+
+        string cultureCode = CultureInfo.CurrentCulture.Name;
+        if (!string.IsNullOrEmpty(cultureCode))
+            cultureCode = cultureCode.Substring(0, 2); 
+            
+        int itemCount = 0;
+        string menuDesc1;
+        string menuDesc2;
+        string menuDesc3;
+        string value;
+    }
+    <ul id="nav-links-wrapper" class="nav-links">
+        @foreach(var actionLevel1 in sideBarActions)
+        {
+            menuDesc1 = localizer[actionLevel1.LocalizationKey]?.Value;
+            if (actionLevel1.LocalizationKey == "ActionMenuEvolDPConfig" && !string.IsNullOrEmpty(menuDesc1))
+            {
+                value = actionLevel1.LocalizationKey;
+                if (value.StartsWith("Action"))
+                    value = value.Substring(6);
+
+                var val = evolDP_Desc.Find(x => x.FieldName == value + "_" + cultureCode);
+                if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == value); }
+                if (val != null) { menuDesc1 = val.FieldDescription; }
+            }
+            <li style="">
+                <div class="iocn-link">
+                    <a>
+                        @if (localizer[actionLevel1.LocalizationKey + "_Icon"].IsResourceNotFound)
+                        {
+                            itemCount++;
+                            if (itemCount > 6)
+                            {
+                                <i class='li-circle circle  bx bx-add-to-queue collapse-icon' style="color:var(--evol-grey)"></i>
+                            }
+                            else
+                            {
+                                <i class='li-circle circle  bx bx-dice-@itemCount collapse-icon' style="color:var(--evol-grey)"></i>
+                            }
+                        }
+                        else
+                        {
+                            @localizer[actionLevel1.LocalizationKey + "_Icon"]
+                        }
+                        <span class="link_name">@menuDesc1</span>
+                    </a>
+                    <i class='bx bxs-chevron-down arrow' style="color:var(--evol-grey)"></i>
+                </div>
+                <ul class="sub-menu">
+                    <li><a class="link_name">@menuDesc1</a></li>
+                    @foreach(var actionLevel2 in actionLevel1.ChildActions)
+                    {
+                        menuDesc2 = localizer[actionLevel2.LocalizationKey]?.Value;
+                        if (actionLevel1.LocalizationKey == "ActionMenuEvolDPConfig" && !string.IsNullOrEmpty(menuDesc2))
+                        {
+                            value = actionLevel2.LocalizationKey;
+                            if (value.StartsWith("Action"))
+                                value = value.Substring(6);
+
+                            var val = evolDP_Desc.Find(x => x.FieldName == value + "_" + cultureCode);
+                            if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == value); }
+                            if (val != null) { menuDesc2 = val.FieldDescription; }
+                        }
+                        if (actionLevel2.ChildActions.Count > 0)
+                        {
+                            <li>
+                                <div class="sub-sub-menu-title">
+                                    <a href="#">
+                                        <span class="link_name">@menuDesc2</span>
+                                    </a>
+                                    <i class='bx bxs-chevron-down arrow' style="color:var(--evol-grey)"></i>
+                                </div>
+                                <ul class="sub-sub-menu">
+                                    <li><a class="link_name" href="#">@menuDesc2</a></li>
+                                    @foreach(var actionLevel3 in actionLevel2.ChildActions)
+                                    {
+                                        menuDesc3 = localizer[actionLevel3.LocalizationKey]?.Value;
+                                        if (actionLevel1.LocalizationKey == "ActionMenuEvolDPConfig" && !string.IsNullOrEmpty(menuDesc3))
+                                        {
+                                            value = actionLevel3.LocalizationKey;
+                                            if (value.StartsWith("Action"))
+                                                value = value.Substring(6);
+
+                                            var val = evolDP_Desc.Find(x => x.FieldName == value + "_" + cultureCode);
+                                            if (val == null) { val = evolDP_Desc.Find(x => x.FieldName == value); }
+                                            if (val != null) { menuDesc3 = val.FieldDescription; }
+                                        }
+                                        <li><a href="@localizer[actionLevel3.LocalizationKey  + "_Link"]">@menuDesc3</a></li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                @if (localizer[actionLevel2.LocalizationKey + "_Link"].IsResourceNotFound)
+                                {
+                                    if (!string.IsNullOrEmpty(actionLevel2.URL))
+                                    {
+                                        <a href="@actionLevel2.URL">@menuDesc2</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="#">@menuDesc2</a>
+                                    }
+                                }
+                                else
+                                {
+                                    <a href="@localizer[actionLevel2.LocalizationKey  + "_Link"]">@menuDesc2</a>
+                                }
+                            </li >
+                        }
+                    }
+                </ul>
+
+            </li>
+        }
+        <li class="collapse-arrow">
+            <a>
+                <i id="colapse" class='li-circle circle  bx bxs-chevron-left collapse-icon' style="color:var(--evol-grey)"></i>
+            </a>
+        </li>
+@*        <li>
+            <div class="iocn-link">
+                <a>
+                    <i class='li-circle circle  bx bxs-wrench' style="color:rgb(90 205 239);;"></i>
+                    <span class="link_name">evolFlow</span>
+                </a>
+                <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name">evolFlow</a></li>
+                <li><a href="#">Registo Automático</a></li>
+                <li><a href="#">Fluxos Configurados</a></li>
+                <li><a href="#">Modelo de Dados Ativos</a></li>
+                <li><a href="#">Recursos</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="iocn-link">
+                <a>
+                    <i class='li-circle circle  bx bx-revision'></i>
+                    <span class="link_name">Processamento</span>
+                </a>
+                <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name">Processamento</a></li>
+                <li><a href="#">Controlo de Jobs</a></li>
+                <li>
+                    <div class="sub-sub-menu-title">
+                        <a href="#">
+                            <span class="link_name">Executar Fluxos</span>
+                        </a>
+                        <i class='bx bxs-chevron-down arrow'></i>
+                    </div>
+                    <ul class="sub-sub-menu">
+                        <li><a class="link_name" href="#">Executar Fluxos</a></li>
+                        <li><a href="#">Produção</a></li>
+                        <li><a href="#">Backups</a></li>
+                        <li><a href="#">Expurgos</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#">Tarefas de Utilizador</a></li>
+                <li><a href="#">Pedidos Online</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="iocn-link">
+                <a>
+                    <i class='li-circle circle bx bx-book-alt' style="color:rgb(245 126 72)"></i>
+                    <span class="link_name">evolDP</span>
+                </a>
+                <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name">evolDP</a></li>
+                <li><a asp-area="EvolDP" asp-controller="DocCode" asp-action="DocCodeIndex">Tipos de Documentos</a></li>
+                <li><a href="#">Gama de Envelopes</a></li>
+                <li><a href="#">Materiais</a></li>
+                <li><a href="#">Companhias de Serviços</a></li>
+                <li><a href="#">Serviços por Companhias</a></li>
+                <li><a href="#">Companhias de Expedição</a></li>
+                <li><a href="#">Códigos Tratamento/Expedição</a></li>
+                <li><a href="#">Versões de Projectos</a></li>
+                <li><a href="#">Parametros Expurgos</a></li>
+                <li><a asp-area="EvolDP" asp-controller="ExpeditionType" asp-action="ExpeditionType">Tipos de Expedição</a></li>
+                <li><a href="#">Zonas de Expedição</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="iocn-link">
+                <a>
+                    <i class='li-circle circle bx bx-pie-chart-alt-2'></i>
+                    <span class="link_name">Relatórios</span>
+                </a>
+                <i class='bx bxs-chevron-down arrow'></i>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name">Relatórios</a></li>
+                <li><a href="#">Integrações</a></li>
+                <li><a href="#">Controlo de Back-End</a></li>
+                <li><a href="#">Retenções</a></li>
+                <li><a href="#">Produção Pendente</a></li>
+                <li><a href="#">Produção</a></li>
+                <li><a href="#">Recuperações</a></li>
+                <li><a href="#">Controlo de Produção</a></li>
+                <li><a href="#">Controlo de Facturação</a></li>
+                <li><a href="#">Expedição</a></li>
+            </ul>
+        </li>
+        <li>
+            <div class="iocn-link">
+            <a>
+                <i class='li-circle circle  bx bx-line-chart'></i>
+                <span class="link_name">Finishing</span>
+            </a>
+            <i class='bx bxs-chevron-down arrow'></i>
+
+            </div>
+            <ul class="sub-menu">
+                <li><a class="link_name">Finishing</a></li>
+                <li><a asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionRunReport">Estado de Produção</a></li>
+                <li><a href="#">Registos Pendentes</a></li>
+                <li><a href="#">Objecto Postal</a></li>
+                <li><a asp-area="Finishing" asp-controller="ConcludedPrint" asp-action="Index">Impressão Concluida</a></li>
+                <li><a asp-area="Finishing" asp-controller="ConcludedFullfill" asp-action="Index">Envelopagem Concluida</a></li>
+                <li><a href="#">Recuperações Totais</a></li>
+                <li><a href="#">Recuperações Totais</a></li>
+                <li><a href="#">Recuperações: Detalhes</a></li>
+                <li><a href="#">Guias de Expedição</a></li>
+            </ul>
+        </li>
+        <li>
+            <a>
+                <i id="colapse" class='li-circle circle  bx bxs-chevron-left'></i>
+            </a>
+        </li>*@
+    </ul>
+</div>

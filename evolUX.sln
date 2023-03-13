@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "evolUX", "evolUX\evolUX.csproj", "{2F2317ED-717C-4B01-8433-EBF54A868F7E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "evolUX.API", "evolUX.API\evolUX.API.csproj", "{C3421770-156C-472A-8264-4BACAF6D45DB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "evolUX.UI", "evolUX.UI\evolUX.UI.csproj", "{E3C600FC-CA9A-46B9-B53E-9247ADBC4764}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{D415B058-C77D-4F4D-8B05-C878FCA37192}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "evolDP", "evolDP", "{799F0BAB-7517-4EB3-A59C-AE59AFF78656}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eSExpedition", "..\..\evolDP\PROCESSES\eSExpedition\eSExpedition_V2.0.1.1\eSExpedition\eSExpedition.csproj", "{8D09817E-0AA8-43DA-B404-97B0CAC69D91}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F2317ED-717C-4B01-8433-EBF54A868F7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F2317ED-717C-4B01-8433-EBF54A868F7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F2317ED-717C-4B01-8433-EBF54A868F7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F2317ED-717C-4B01-8433-EBF54A868F7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3421770-156C-472A-8264-4BACAF6D45DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3421770-156C-472A-8264-4BACAF6D45DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3421770-156C-472A-8264-4BACAF6D45DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3421770-156C-472A-8264-4BACAF6D45DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3C600FC-CA9A-46B9-B53E-9247ADBC4764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3C600FC-CA9A-46B9-B53E-9247ADBC4764}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3C600FC-CA9A-46B9-B53E-9247ADBC4764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3C600FC-CA9A-46B9-B53E-9247ADBC4764}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D415B058-C77D-4F4D-8B05-C878FCA37192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D415B058-C77D-4F4D-8B05-C878FCA37192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D415B058-C77D-4F4D-8B05-C878FCA37192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D415B058-C77D-4F4D-8B05-C878FCA37192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D09817E-0AA8-43DA-B404-97B0CAC69D91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D09817E-0AA8-43DA-B404-97B0CAC69D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D09817E-0AA8-43DA-B404-97B0CAC69D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D09817E-0AA8-43DA-B404-97B0CAC69D91}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8D09817E-0AA8-43DA-B404-97B0CAC69D91} = {799F0BAB-7517-4EB3-A59C-AE59AFF78656}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AEB371E7-04BF-450B-ABB5-1D83E49DD05E}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,89 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model ExpeditionZoneViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+}
+<div id="TitlePage">
+    <h1>@localizer["ExpeditionZone"]</h1>
+</div>
+
+@if (Model == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string value = "";
+    string docTypeDesc = "";
+    string Level0Name = "level";
+
+    int level = 0;
+    string idValue = "arrow" + level.ToString();
+    string nameValue = "";
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th width="120px">@localizer["Zone"]</th>
+                <th>@localizer["Description"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+                @foreach (var z in Model.Zones)
+                {
+                    level++;
+                    nameValue = Level0Name + level.ToString();
+                    idValue = "arrow" + nameValue;
+                    <tr>
+                        <td>@z.ExpeditionZone</td>
+                        <td>
+                            @z.Description
+                            @if (z.ExpCompanyZonesList.Count() > 0)
+                            {
+                                <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            }
+                        </td>
+                    </tr>
+                    @if (z.ExpCompanyZonesList.Count() > 0)
+                    {
+                    <tr id="@nameValue" style="display: none">
+                        <td colspan="2">
+                            <table class="table table-sm table-hover table-collapse-seperate">
+                            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                    <tr>
+                                        <th></th>
+                                        <th>@localizer["ExpCompany"]</th>
+                                        <th>@localizer["ExpCenterCode"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bootstrap-overrides">
+                                    @foreach (var c in z.ExpCompanyZonesList.Select(item => new { item.ExpCompanyID, item.ExpCenterCode })
+                                                        .DistinctBy(item => new { item.ExpCompanyID, item.ExpCenterCode })
+                                                        .ToList())
+                                    {
+                                            ExpeditionZoneElement newExpZone = new ExpeditionZoneElement();
+                                            newExpZone.ExpeditionZone = z.ExpeditionZone;
+                                            newExpZone.Description = z.Description;
+                                            newExpZone.ExpCompanyZonesList = z.ExpCompanyZonesList.Where(x => x.ExpCompanyID == c.ExpCompanyID && x.ExpCenterCode == c.ExpCenterCode).ToList();
+                                        <tr>
+                                                <td><a asp-area="evolDP" asp-controller="Expedition" asp-action="ZoneDetail" asp-route-expeditionzoneJson="@JsonConvert.SerializeObject(newExpZone)">
+                                                        <img style="background:none; width:25px;height:25px;" src="~/images/list.png" title="@localizer["List"]: @value" />
+                                                    </a></td>
+                                                <td>@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName</td>
+                                                <td>@c.ExpCenterCode</td>
+                                            </tr>
+                                        }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    }
+                }
+        </tbody>
+    </table>
+}

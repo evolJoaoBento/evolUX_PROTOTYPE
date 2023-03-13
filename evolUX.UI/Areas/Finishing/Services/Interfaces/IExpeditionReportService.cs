@@ -1,0 +1,15 @@
+﻿using Shared.ViewModels.Areas.Finishing;
+using Shared.ViewModels.Areas.evolDP;
+using Shared.Models.Areas.Finishing;
+using Shared.Models.General;
+
+namespace evolUX.UI.Areas.Finishing.Services.Interfaces
+{
+    public interface IExpeditionReportService
+    {
+        public Task<BusinessViewModel> GetCompanyBusiness(string CompanyBusinessList);
+        public Task<ExpeditionListViewModel> GetPendingExpeditionFiles(int BusinessID, string ServiceCompanyList);
+        public Task<Result> RegistExpeditionReport(List<RegistExpReportElement> expFiles, string username, int userID);
+        public Task<ExpeditionListViewModel> GetExpeditionReportList(int BusinessID, string ServiceCompanyList);
+    }
+}

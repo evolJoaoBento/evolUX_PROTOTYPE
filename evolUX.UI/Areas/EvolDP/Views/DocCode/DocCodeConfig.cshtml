@@ -1,0 +1,219 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model DocCodeConfigViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+}
+@if (Model == null || Model.DocCode == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string headerDesc = "DocCodeConfig";
+    if (!string.IsNullOrEmpty(TempData["Source"]?.ToString()))
+        headerDesc = TempData["Source"].ToString();
+    string value;
+    int suportType = 0;
+    GenericOptionValue OptionValue;
+    string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel1IDLabel))
+        ExceptionLevel1IDLabel = localizer["ExceptionLevel1ID"].Value;
+    string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel2IDLabel))
+        ExceptionLevel2IDLabel = localizer["ExceptionLevel2ID"].Value;
+    string ExceptionLevel3IDLabel = TempData["ExceptionLevel3ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel3IDLabel))
+        ExceptionLevel3IDLabel = localizer["ExceptionLeve3ID"].Value;
+
+    foreach (GenericOptionValue option in Model.SuportTypeList.List)
+    {
+        if (string.IsNullOrEmpty(TempData[option.Code]?.ToString()))
+            TempData[option.Code] = localizer[option.Code].Value;
+    }    
+    foreach (GenericOptionValue option in Model.SuportTypeList.OptionList)
+    {
+        if (string.IsNullOrEmpty(TempData[option.GroupCode]?.ToString()))
+            TempData[option.GroupCode] = localizer[option.GroupCode].Value;
+    }
+    DocCode docCode = Model.DocCode;
+    DocCodeConfig dConfig = null;
+    if (docCode.DocCodeConfigs != null && docCode.DocCodeConfigs.Count() > 0)
+        dConfig = docCode.DocCodeConfigs[0];
+    string emptyFieldDesc = localizer["EmptyField"].Value;
+    <div id="TitlePage">
+        <h1>@localizer[headerDesc]</h1>
+    </div>
+    <div>
+        @if (headerDesc == "AddDoc" || headerDesc == "AddDocCode")
+        {
+            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+            </a>
+        }
+        else if (headerDesc == "AddDocCodeConfig" || headerDesc == "DocCodeChange"
+            || headerDesc == "DocCodeConfigChange" || headerDesc == "DocCodeConfig")
+        {
+            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+            </a>
+        }
+    </div>
+ 
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <tbody id="bootstrap-overrides">
+            <tr>
+                <th>@localizer["DocCodeID"]</th>
+                <td>@docCode.DocCodeID</td>
+            </tr>
+            <tr>
+                <th>@localizer["DocLayout"]</th>
+                <td>@docCode.DocLayout</td>
+            </tr>
+            <tr>
+                <th>@localizer["DocType"]</th>
+                <td>@docCode.DocType</td>
+            </tr>
+            <tr>
+                <th>@ExceptionLevel1IDLabel</th>
+                <td>
+                @if (docCode.ExceptionLevel1 == null || string.IsNullOrEmpty(docCode.ExceptionLevel1.ExceptionDescription))
+                {
+                    @emptyFieldDesc
+                }
+                else
+                {
+                    @docCode.ExceptionLevel1.ExceptionDescription
+                }
+                </td>
+            </tr>
+            <tr>
+                <th>@ExceptionLevel2IDLabel</th>
+                <td>
+                @if (docCode.ExceptionLevel2 == null || string.IsNullOrEmpty(docCode.ExceptionLevel2.ExceptionDescription))
+                {
+                    @emptyFieldDesc
+                }
+                else
+                {
+                    @docCode.ExceptionLevel2.ExceptionDescription
+                }
+                </td>
+            </tr>
+            <tr>
+                <th>@ExceptionLevel3IDLabel</th>
+                <td>
+                @if (docCode.ExceptionLevel3 == null || string.IsNullOrEmpty(docCode.ExceptionLevel3.ExceptionDescription))
+                {
+                    @emptyFieldDesc
+                }
+                else
+                {
+                    @docCode.ExceptionLevel3.ExceptionDescription
+                }
+                </td>
+            </tr>
+            <tr>
+                <th>@localizer["DocDescription"]</th>
+                <td>@docCode.DocDescription</td>
+            </tr>
+            <tr>
+                <th>@localizer["PrintMatchCode"]</th>
+                @if (!string.IsNullOrEmpty(docCode.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                {
+                    value = docCode.PrintMatchCode;
+                }
+                <td>@value</td>
+            </tr>
+            @if (dConfig == null)
+            {
+                <tr>
+                    <td colspan="2">
+                        <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="AddDocCodeConfig">
+                            <img style="background:none; width:50px;height:50px;" src="~/images/config_doc.png" title="@localizer["AddDocCodeConfig"]" />
+                        </a>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>@localizer["StartDate"]</th>
+                    <td>@DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToShortDateString()</td>
+                </tr>
+                <tr>
+                    <th>@localizer["EnvMedia"]</th>
+                    <td>@dConfig.EnvMediaDesc</td>
+                </tr>
+                <tr>
+                    <th>@localizer["AggrCompatibility"]</th>
+                    @{value = "AggCompatibility" + dConfig.AggrCompatibility.ToString();}
+                    <td>@localizer[value]</td>
+                </tr>
+                <tr>
+                    <th>@localizer["Priority"]</th>
+                    <td>@dConfig.Priority</td>
+                </tr>
+                <tr>
+                    <th>@localizer["ProdMaxSheets"]</th>
+                    @if (dConfig != null && dConfig?.ProdMaxSheets > 0)
+                    {
+                        value = dConfig.ProdMaxSheets.ToString();
+                    }
+                    else
+                    {
+                        value = "";
+                    }
+                    <td>@value</td>
+                </tr>
+                <tr>
+                    <th>@localizer["ExpCompany"]</th>
+                    <td>@dConfig.ExpCompanyName</td>
+                </tr>
+                <tr>
+                    <th>@localizer["ExpeditionType"]</th>
+                    @{value = "ExpeditionType" + dConfig.ExpeditionType.ToString();}
+                    <td>@localizer[value]</td>
+                </tr>
+                <tr>
+                    <th>@localizer["ServiceTask"]</th>
+                    <td>@dConfig.ServiceTaskDesc</td>
+                </tr>
+                <tr>
+                    <th>@localizer["MaxProdDate"]</th>
+                    <td>@dConfig.MaxProdDate</td>
+                </tr>
+                suportType = dConfig.SuportType;
+                @foreach(GenericOptionValue option in Model.SuportTypeList.OptionList)
+                {
+                    <tr>
+                        <th>@TempData[option.GroupCode].ToString()</th>
+                        @{
+                            OptionValue = Model.SuportTypeList.List.OrderByDescending(x => x.ID).First(x => x.GroupCode == option.GroupCode && (x.ID & suportType) == x.ID);
+                            suportType = suportType - OptionValue.ID;
+                        }
+                        <td>@TempData[OptionValue.Code]</td>
+                    </tr>
+                }
+                <tr>
+                    <th>@localizer["ArchCaducityDate"]</th>
+                    <td>@dConfig.ArchCaducityDate</td>
+                </tr>
+                <tr>
+                    <th>@localizer["CaducityDate"]</th>
+                    <td>@dConfig.CaducityDate</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot id="bootstrap-overrides">
+        </tfoot>
+    </table>
+}
+@section Scripts
+{
+    <script type="text/javascript">
+    </script>
+}

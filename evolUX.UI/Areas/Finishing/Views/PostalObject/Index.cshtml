@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+@if (!ViewBag.hasServiceCompanies)
+{
+    <div id="ResultPage">
+        <h3 class="display-4 text-center">@localizer["NoModelData"]</h3>
+    </div>
+}
+else
+{
+    <div id="TitlePage">
+        <h1>@localizer["PostalObject"]</h1>
+    </div>
+    <form id="PostObjBarcodeFrm" class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="PostalObject" asp-action="GetPostalObjectInfo"
+          data-ajax="true" 
+          data-ajax-method="POST"
+          data-ajax-mode="replace" 
+          data-ajax-update="#response"
+          data-ajax-complete="clearTextBox"
+          data-ajax-loading  ="myLoader">
+         <table class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
+              <tr>
+                <td><h4 class="text-center" style="color: var(--darkestgrey)">@localizer["PostObjBarcode"]</h4> </td>
+              </tr>
+            <tr>
+                <td>@Html.TextBox("PostObjBarcode","",htmlAttributes:new { @class="form-control", id="PostObjBarcode", type="password"})</td>
+            </tr>
+            <tr>
+                <td class="d-flex justify-content-center m-4">
+                    <input type="submit" value="@localizer["Submit"]" name="Submit" class="btn btn-block btn-outline-info" />
+                </td>
+            </tr>
+          </table>
+        <br/>
+        
+    </form>
+    <div id="response" class="d-flex justify-content-center m-5"></div>
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+        function clearTextBox() {
+            document.getElementById("PostObjBarcodeFrm").reset();
+            document.getElementById("PostObjBarcode").focus();
+        };
+
+        window.onload = (event) => {
+            document.getElementById("PostObjBarcode").focus();
+        };
+    </script>
+    
+}
+
+

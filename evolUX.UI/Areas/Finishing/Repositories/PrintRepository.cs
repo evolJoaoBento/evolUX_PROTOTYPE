@@ -1,0 +1,60 @@
+﻿using Dapper;
+using evolUX.API.Extensions;
+using evolUX.UI.Exceptions;
+using Flurl.Http;
+using Flurl.Http.Configuration;
+using Newtonsoft.Json;
+using System.Data;
+using System.Net;
+using Shared.ViewModels.General;
+using Shared.Models.General;
+using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
+using evolUX.UI.Repositories;
+using Shared.ViewModels.Areas.Core;
+using Shared.ViewModels.Areas.Finishing;
+using Shared.Models.Areas.Finishing;
+
+namespace evolUX.UI.Areas.Finishing.Repositories
+{
+    public class PrintRepository : RepositoryBase, IPrintRepository
+    {
+        public PrintRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
+        {
+        }
+
+        public async Task<PrinterViewModel> GetPrinters(string profileList, string filesSpecs, bool ignoreProfiles)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ProfileList", profileList);
+            dictionary.Add("FileSpecs", filesSpecs);
+            dictionary.Add("IgnoreProfiles", ignoreProfiles);
+            var response = await _flurlClient.Request("/API/Finishing/Print/GetPrinters")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<PrinterViewModel>();
+        }
+
+        public async Task<Result> Print(string printer, string serviceCompanyCode, string username, int userID, List<PrintFileInfo> prodFiles)
+        {
+            string prodFilesJSON = JsonConvert.SerializeObject(prodFiles);
+
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("Username", username);
+            dictionary.Add("UserID", userID);
+             dictionary.Add("Printer", printer);
+            dictionary.Add("ServiceCompanyCode", serviceCompanyCode);
+            dictionary.Add("ProdFiles", prodFilesJSON);
+
+            var response = await _flurlClient.Request("/API/Finishing/Print/Print")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<Result>();
+        }
+
+
+    }
+}

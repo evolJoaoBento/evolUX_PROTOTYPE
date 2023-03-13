@@ -1,0 +1,5 @@
+﻿10/2/2022
+	- Eventually the Models will need to be shared through a dll or something of the sort to be the same on the API and UI
+	without needing to be in the same machine and solution;
+	- Need to look into claims because of session consistency;
+

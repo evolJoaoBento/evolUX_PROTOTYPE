@@ -1,0 +1,68 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model ExpeditionZoneViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+}
+@if (Model == null || Model.Zones == null || Model.Zones.Count() == 0)
+{    
+    <div>@localizer["NoModelData"]</div>
+}
+else
+{
+    string expCompanyName = Model.ExpCompanies.Where(x => x.ID == Model.Zones.First().ExpCompanyZonesList.First().ExpCompanyID).First().CompanyName;
+    if (1 == 1)
+    {
+        <div id="TitlePage">
+            <h1>@localizer["ExpCompanyZone"]</h1>
+        </div>
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Zones">
+        </a>
+    }
+    string expCenterCode = Model.Zones.First().ExpCompanyZonesList.First().ExpCenterCode;
+    string value;
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+           <tr>
+                <th>@localizer["Zone"]</th>
+                <th>@localizer["ExpCompany"]</th>
+                <th>@localizer["ExpCenterCode"]</th>
+             </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            <tr>
+                <td>@Model.Zones.First().Description</td>
+                <td>@expCompanyName</td>
+                <td>@expCenterCode</td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <table class="table table-sm table-hover table-collapse-seperate">
+                        <thead id="bootstrap-overrides" class="table-info sticky-header">
+                            <tr>
+                                <th>@localizer["ServiceCompany"]</th>
+                                <th>@localizer["ServiceTask"]</th>
+                                <th>@localizer["Priority"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(ExpCompanyZone c in Model.Zones.First().ExpCompanyZonesList)
+                            {
+                            <tr>
+                                <td>@c.ServiceCompanyName</td>
+                                <td>@c.ServiceTaskDesc</td>
+                                <td>@c.Priority</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

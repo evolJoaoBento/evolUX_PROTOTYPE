@@ -1,0 +1,120 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model DocCodeViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddDocCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddDocCode") != null) { AddDocCode = true; }
+}
+@if (Model == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string value = "";
+    string docTypeDesc = "";
+    string eLevel1Desc = "";
+    string eLevel2Desc = "";
+    string eLevel3Desc = "";
+
+    string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel1IDLabel))
+        ExceptionLevel1IDLabel = localizer["ExceptionLevel1ID"].Value;
+    string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel2IDLabel))
+        ExceptionLevel2IDLabel = localizer["ExceptionLevel2ID"].Value;
+    string ExceptionLevel3IDLabel = TempData["ExceptionLevel3ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel3IDLabel))
+        ExceptionLevel3IDLabel = localizer["ExceptionLeve3ID"].Value;
+
+    DocCode docCode = Model.DocCodeList?.First();
+    if (string.IsNullOrEmpty(docCode.DocType))
+    {
+        docTypeDesc = localizer["EmptyField"].Value;
+    }
+    else
+    {
+        docTypeDesc = docCode.DocType;
+    }
+    <div id="TitlePage">
+        <h1>@localizer["DocLayoutDocTypeDetail"]: @docCode.DocLayout/@docTypeDesc</h1>
+    </div>
+    TempData["Source"] = "DocCode";
+    <div>
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="Index">
+        </a>
+        <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="AddDocCode">
+            <img style="background:none; width:50px;height:50px;" src="~/images/add_doc.png" title="@localizer["AddDocCode"]" />
+        </a>
+    </div>
+   
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th></th>
+                <th>@localizer["DocLayout"]</th>
+                <th>@localizer["DocType"]</th>
+                <th>@ExceptionLevel1IDLabel</th>
+                <th>@ExceptionLevel2IDLabel</th>
+                <th>@ExceptionLevel3IDLabel</th>
+                <th>@localizer["DocDescription"]</th>
+                <th>@localizer["PrintMatchCode"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @foreach (var p in Model.DocCodeList)
+            {
+                @if (p.ExceptionLevel1 == null || string.IsNullOrEmpty(p.ExceptionLevel1.ExceptionDescription))
+                {
+                    eLevel1Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel1Desc = p.ExceptionLevel1.ExceptionDescription;
+                }
+                @if (p.ExceptionLevel2 == null || string.IsNullOrEmpty(p.ExceptionLevel2.ExceptionDescription))
+                {
+                    eLevel2Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel2Desc = p.ExceptionLevel2.ExceptionDescription;
+                }
+                @if (p.ExceptionLevel3 == null || string.IsNullOrEmpty(p.ExceptionLevel3.ExceptionDescription))
+                {
+                    eLevel3Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel3Desc = p.ExceptionLevel3.ExceptionDescription;
+                }
+                value = p.DocLayout + "/" + docTypeDesc + "/" + eLevel1Desc + "/" + eLevel2Desc + "/" + eLevel3Desc;
+                <tr>
+                    <td>
+                        <a asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(p)">
+                            <img style="background:none; width:25px;height:25px;" src="~/images/config_doc.png" title="@localizer["DocCodeConfigDetail"]: @value" />
+                        </a>
+                    </td>
+                    <td>@p.DocLayout</td>
+                    <td>@docTypeDesc</td>
+                    <td>@eLevel1Desc</td>
+                    <td>@eLevel2Desc</td>
+                    <td>@eLevel3Desc</td>
+                    <td>@p.DocDescription</td>
+                    @if (!string.IsNullOrEmpty(p.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                    {
+                        value = p.PrintMatchCode;
+                    }
+                    <td>@value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

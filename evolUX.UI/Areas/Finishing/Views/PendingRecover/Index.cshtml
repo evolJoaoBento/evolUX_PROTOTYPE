@@ -1,0 +1,50 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@model ServiceCompaniesViewModel
+
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+ 
+@if (Model == null)
+{
+    <div id="ResultPage">
+        <h3 class="display-4 text-center">@localizer["NoModelData"]</h3>
+    </div>
+}
+else
+{
+    <div id="TitlePage">
+        <h1>@localizer["PendingRecover"]</h1>
+    </div>
+    <form id="ServiceCompaniesFrm" class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="PendingRecover" asp-action="PendingRecoverDetail">
+        <table class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
+            <tr>
+                <td><h4 class="text-center" style="color: var(--darkestgrey)">@localizer["ServiceCompany"]</h4> </td>
+            </tr>
+            <tr>
+                <td>
+                    <select name="ServiceCompanyValues">
+                        @foreach (Company c in Model.ServiceCompanies)
+                        {
+                            <option value="@(c.ID + "|" + c.CompanyCode + "|" + c.CompanyName)">@c.CompanyName</option>
+                        }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="d-flex justify-content-center m-4">
+                    <input type="submit" value="@localizer["Submit"]" name="Submit" class="btn btn-block btn-outline-info" />
+                </td>
+            </tr>
+        </table>
+        <br />
+    </form>
+}
+    
+
+

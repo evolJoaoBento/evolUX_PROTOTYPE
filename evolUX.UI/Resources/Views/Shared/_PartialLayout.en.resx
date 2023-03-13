@@ -1,0 +1,450 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ActionActiveDataModel" xml:space="preserve">
+    <value>Active Data Model</value>
+  </data>
+  <data name="ActionAddUser" xml:space="preserve">
+    <value>Add User</value>
+  </data>
+  <data name="ActionBackupFlows" xml:space="preserve">
+    <value>Backups</value>
+  </data>
+  <data name="ActionBillingReport" xml:space="preserve">
+    <value>Billing Control</value>
+  </data>
+  <data name="ActionConcludedFullfill" xml:space="preserve">
+    <value>Enveloping Completed</value>
+  </data>
+  <data name="ActionConcludedFullfill_Link" xml:space="preserve">
+    <value>/Finishing/ConcludedFullfill/Index</value>
+  </data>
+  <data name="ActionConcludedPrint" xml:space="preserve">
+    <value>Printing Completed</value>
+  </data>
+  <data name="ActionConcludedPrint_Link" xml:space="preserve">
+    <value>/Finishing/ConcludedPrint/Index</value>
+  </data>
+  <data name="ActionConcludedRegist" xml:space="preserve">
+    <value>Printing/Enveloping</value>
+  </data>
+  <data name="ActionConfiguredFlows" xml:space="preserve">
+    <value>Configured Flows</value>
+  </data>
+  <data name="ActionConsumables" xml:space="preserve">
+    <value>Consumables</value>
+  </data>
+  <data name="ActionDeleteUser" xml:space="preserve">
+    <value>Delete User</value>
+  </data>
+  <data name="ActionDocCode" xml:space="preserve">
+    <value>Layouts / Types</value>
+  </data>
+  <data name="ActionDocCode_Link" xml:space="preserve">
+    <value>/evolDP/DocCode/Index</value>
+  </data>
+  <data name="ActionDocumentTypification" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="ActionEnvelopeRange" xml:space="preserve">
+    <value>Envelope Range Configuration</value>
+  </data>
+  <data name="ActionEnvelopeRange_Link" xml:space="preserve">
+    <value>/evolDP/Consumables/EnvelopeMedia</value>
+  </data>
+  <data name="ActionErrorManagement" xml:space="preserve">
+    <value>Error Management</value>
+  </data>
+  <data name="ActionExceptionLevel1ID" xml:space="preserve">
+    <value>Exception Level 1</value>
+  </data>
+  <data name="ActionExceptionLevel2ID" xml:space="preserve">
+    <value>Exception Level 2</value>
+  </data>
+  <data name="ActionExceptionLevel3ID" xml:space="preserve">
+    <value>Exception Level 3</value>
+  </data>
+  <data name="ActionExpCodes" xml:space="preserve">
+    <value>Service/Expedition Codes</value>
+  </data>
+  <data name="ActionExpedition" xml:space="preserve">
+    <value>Guias de Expedição</value>
+  </data>
+  <data name="ActionExpeditionCompanies" xml:space="preserve">
+    <value>Companies</value>
+  </data>
+  <data name="ActionExpeditionCompanies_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Companies</value>
+  </data>
+  <data name="ActionExpeditionConfig" xml:space="preserve">
+    <value>Expedition</value>
+  </data>
+  <data name="ActionExpeditionReport" xml:space="preserve">
+    <value>Relatórios de Expedição</value>
+  </data>
+  <data name="ActionExpeditionReportList" xml:space="preserve">
+    <value>Guias Geradas</value>
+  </data>
+  <data name="ActionExpeditionReportList_Link" xml:space="preserve">
+    <value>/Finishing/Expedition/ReportList</value>
+  </data>
+  <data name="ActionExpeditionTypes" xml:space="preserve">
+    <value>Types</value>
+  </data>
+  <data name="ActionExpeditionTypes_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Types</value>
+  </data>
+  <data name="ActionExpeditionZones" xml:space="preserve">
+    <value>Zones</value>
+  </data>
+  <data name="ActionExpeditionZones_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Zones</value>
+  </data>
+  <data name="ActionFlowsSchedulerRules" xml:space="preserve">
+    <value>Automatic Job Registration</value>
+  </data>
+  <data name="ActionHelpPages" xml:space="preserve">
+    <value>Help Pages</value>
+  </data>
+  <data name="ActionIntegrationReport" xml:space="preserve">
+    <value>Integration</value>
+  </data>
+  <data name="ActionJobControl" xml:space="preserve">
+    <value>Job Control</value>
+  </data>
+  <data name="ActionMarkDocumentsinError" xml:space="preserve">
+    <value>Mark Documents in Error</value>
+  </data>
+  <data name="ActionMarkDocumentsRangeinError" xml:space="preserve">
+    <value>Mark Documents range in Error</value>
+  </data>
+  <data name="ActionMarkFilesinError" xml:space="preserve">
+    <value>Mark Files in Error</value>
+  </data>
+  <data name="ActionMaterialManagement" xml:space="preserve">
+    <value>Porfolio</value>
+  </data>
+  <data name="ActionMaterialManagement_Link" xml:space="preserve">
+    <value>/evolDP/Consumables/Management</value>
+  </data>
+  <data name="ActionMaterialProductionRepor" xml:space="preserve">
+    <value>Production Control / Materials</value>
+  </data>
+  <data name="ActionMaterialType" xml:space="preserve">
+    <value>Types</value>
+  </data>
+  <data name="ActionMaterialType_Link" xml:space="preserve">
+    <value>/evolDP/Consumables/Types</value>
+  </data>
+  <data name="ActionMenuClientPages" xml:space="preserve">
+    <value>Custom Pages</value>
+  </data>
+  <data name="ActionMenuClientPages_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle bx bx-book-alt collapse-icon' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionMenuClientReporting" xml:space="preserve">
+    <value>Custom Reports</value>
+  </data>
+  <data name="ActionMenuClientReporting_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle bx bx-pie-chart collapse-icon' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionMenuError" xml:space="preserve">
+    <value>evolDP - Error Handling</value>
+  </data>
+  <data name="ActionMenuError_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle  bx bx-error collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionMenuEvolDPConfig" xml:space="preserve">
+    <value>evolDP - Configurations</value>
+  </data>
+  <data name="ActionMenuEvolDPConfig_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle bx bx-cog collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionMenuEvolFlowConfig" xml:space="preserve">
+    <value>evolFlow - Configurations</value>
+  </data>
+  <data name="ActionMenuEvolFlowConfig_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle  bx bx-cog collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionMenuExecution" xml:space="preserve">
+    <value>Execution</value>
+  </data>
+  <data name="ActionMenuExecution_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle  bx bx-revision collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionMenuFinishing" xml:space="preserve">
+    <value>Finishing</value>
+  </data>
+  <data name="ActionMenuFinishing_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle  bx bx-printer collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionMenuReporting" xml:space="preserve">
+    <value>Reports</value>
+  </data>
+  <data name="ActionMenuReporting_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle bx bx-pie-chart-alt-2 collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionMenuSupport" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="ActionMenuSupport_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle  bx bxs-wrench collapse-icon' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionMenuUserSettings" xml:space="preserve">
+    <value>User Options</value>
+  </data>
+  <data name="ActionMenuUserSettings_Icon" xml:space="preserve">
+    <value>&lt;i class='li-circle circle bx bx-user collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
+  </data>
+  <data name="ActionPartialRecover" xml:space="preserve">
+    <value>Partial</value>
+  </data>
+  <data name="ActionPartialRecover_Link" xml:space="preserve">
+    <value>/Finishing/Recover/RegistPartialRecover</value>
+  </data>
+  <data name="ActionPendingExpeditionFiles" xml:space="preserve">
+    <value>Expedição Pendente</value>
+  </data>
+  <data name="ActionPendingExpeditionFiles_Link" xml:space="preserve">
+    <value>/Finishing/Expedition/Index</value>
+  </data>
+  <data name="ActionPendingProductionReport" xml:space="preserve">
+    <value>Pending Production</value>
+  </data>
+  <data name="ActionPendingRecover" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="ActionPendingRecover_Link" xml:space="preserve">
+    <value>/Finishing/PendingRecover/Index</value>
+  </data>
+  <data name="ActionPendingRegist" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="ActionPendingRegist_Link" xml:space="preserve">
+    <value>/Finishing/PendingRegist/PendingRegist</value>
+  </data>
+  <data name="ActionPermissions" xml:space="preserve">
+    <value>Page Access Permissions</value>
+  </data>
+  <data name="ActionPostalObject" xml:space="preserve">
+    <value>Postal Object</value>
+  </data>
+  <data name="ActionPostalObject_Link" xml:space="preserve">
+    <value>/Finishing/PostalObject/Index</value>
+  </data>
+  <data name="ActionProcessResources" xml:space="preserve">
+    <value>Process Resources</value>
+  </data>
+  <data name="ActionProductionFlows" xml:space="preserve">
+    <value>Production</value>
+  </data>
+  <data name="ActionProductionReport" xml:space="preserve">
+    <value>Production</value>
+  </data>
+  <data name="ActionProductionStatus" xml:space="preserve">
+    <value>Production Status / Print Files</value>
+  </data>
+  <data name="ActionProductionStatus_Link" xml:space="preserve">
+    <value>/Finishing/ProductionReport/Index</value>
+  </data>
+  <data name="ActionProfiles" xml:space="preserve">
+    <value>Profiles</value>
+  </data>
+  <data name="ActionProfilesList" xml:space="preserve">
+    <value>List</value>
+  </data>
+  <data name="ActionProjectVersions" xml:space="preserve">
+    <value>Formatting Projects</value>
+  </data>
+  <data name="ActionProjectVersions_Link" xml:space="preserve">
+    <value>/evolDP/Project/Projects</value>
+  </data>
+  <data name="ActionPurgeFlows" xml:space="preserve">
+    <value>Purges</value>
+  </data>
+  <data name="ActionPurgeParameters" xml:space="preserve">
+    <value>Purge Parameters</value>
+  </data>
+  <data name="ActionRecoverReport" xml:space="preserve">
+    <value>Recoveries Report</value>
+  </data>
+  <data name="ActionRecovers" xml:space="preserve">
+    <value>Recoveries</value>
+  </data>
+  <data name="ActionRegistDetailRecover" xml:space="preserve">
+    <value>Receipt Notices</value>
+  </data>
+  <data name="ActionRegistDetailRecover_Link" xml:space="preserve">
+    <value>/Finishing/Recover/RegistDetailRecover</value>
+  </data>
+  <data name="ActionRegistJob" xml:space="preserve">
+    <value>Regist Jobs</value>
+  </data>
+  <data name="ActionResources" xml:space="preserve">
+    <value>Resources</value>
+  </data>
+  <data name="ActionRetentionReport" xml:space="preserve">
+    <value>Retentions</value>
+  </data>
+  <data name="ActionServiceCompanies" xml:space="preserve">
+    <value>Companies</value>
+  </data>
+  <data name="ActionServiceCompanies_Link" xml:space="preserve">
+    <value>/evolDP/ServiceProvision/Companies</value>
+  </data>
+  <data name="ActionServiceProvision" xml:space="preserve">
+    <value>Service Provision</value>
+  </data>
+  <data name="ActionServicesProvided" xml:space="preserve">
+    <value>Service Types</value>
+  </data>
+  <data name="ActionServicesProvided_Link" xml:space="preserve">
+    <value>/evolDP/ServiceProvision/Types</value>
+  </data>
+  <data name="ActionServiceWorkFlow" xml:space="preserve">
+    <value>Service WorkFlow</value>
+  </data>
+  <data name="ActionServiceWorkFlow_Link" xml:space="preserve">
+    <value>/evolDP/ServiceProvision/ServiceWorkFlow</value>
+  </data>
+  <data name="ActionSupportInformation" xml:space="preserve">
+    <value>Suport Information</value>
+  </data>
+  <data name="ActionTotalRecover" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="ActionTotalRecover_Link" xml:space="preserve">
+    <value>/Finishing/Recover/RegistTotalRecover</value>
+  </data>
+  <data name="ActionUserAprovals" xml:space="preserve">
+    <value>Aprovals</value>
+  </data>
+  <data name="ActionUserChangePassword" xml:space="preserve">
+    <value>Change Password</value>
+  </data>
+  <data name="ActionUserProfiles" xml:space="preserve">
+    <value>My Profile</value>
+  </data>
+  <data name="ActionUsers" xml:space="preserve">
+    <value>Users</value>
+  </data>
+  <data name="ActionUserTasks" xml:space="preserve">
+    <value>User Tasks</value>
+  </data>
+</root>

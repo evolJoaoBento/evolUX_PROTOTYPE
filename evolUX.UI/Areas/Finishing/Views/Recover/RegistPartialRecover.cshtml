@@ -1,0 +1,67 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+@if (!ViewBag.hasServiceCompanies)
+{
+    <div id="ResultPage">
+        <h3 class="display-4 text-center">@localizer["NoModelData"]</h3>
+    </div>
+}
+else
+{
+    <div id="TitlePage">
+        <h1>@localizer["RegistPartialRecover"]</h1>
+    </div>
+
+    <form id="RegistPartialRecoverFrm" class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="Recover" asp-action="RegistPartialRecover"
+          data-ajax="true" 
+          data-ajax-method="POST"
+          data-ajax-mode="replace"
+          data-ajax-update="#response"
+          data-ajax-complete="clearTextBox"
+          data-ajax-loading  ="myLoader">
+          <table class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
+            <tr>
+                    <td><h4 class="text-center" style="color: var(--darkestgrey)">@localizer["StartBarcode"]</h4> </td>
+            </tr>
+            <tr>
+                    <td>@Html.TextBox("StartBarcode","",htmlAttributes:new { @class="form-control", id="StartBarcode", type="password"})</td>
+            </tr>
+             <tr>
+                    <td><h4 class="text-center" style="color: var(--darkestgrey)">@localizer["EndBarcode"]</h4> </td>
+            </tr>
+            <tr>
+                    <td>@Html.TextBox("EndBarcode","",htmlAttributes:new { @class="form-control", id="EndBarcode", type="password"})</td>
+            </tr>
+            <tr>
+               <td class="d-flex justify-content-center m-4">
+                    <input type="submit" value="@localizer["Submit"]" name="Submit" class="btn btn-block btn-outline-info" />
+                </td>
+            </tr>
+          </table>
+        <br/>
+    
+    </form>
+    <div id="response" class="d-flex justify-content-center m-5"></div>
+}
+
+@section Scripts
+    {
+        <script type="text/javascript">
+            function clearTextBox() {
+                document.getElementById("RegistPartialRecoverFrm").reset();
+                document.getElementById("StartBarcode").focus();
+            };
+
+            window.onload = (event) => {
+                document.getElementById("StartBarcode").focus();
+            };
+        </script>
+
+}
+

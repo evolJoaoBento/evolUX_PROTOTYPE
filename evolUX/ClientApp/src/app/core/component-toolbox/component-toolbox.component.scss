@@ -1,0 +1,43 @@
+.toolbox-wrapper {
+  background-color: #f8f8f8;
+  display: flex;
+  padding: 0px 12px;
+  height: 40px;
+}
+.navigation-col {
+  width: 40%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.navigation-wrapper {
+  padding-left: 8px;
+}
+.navigation-seperator {
+  display: inline-block;
+  color: #9b9b9b;
+  padding: 0px 5px;
+}
+.navigation-link {
+  display: inline-block;
+  font-size: 13px;
+}
+.navigation-link:hover {
+  cursor: pointer;
+}
+.toolbox-col {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.temp-inter {
+  background-color: transparent;
+  border: 3px solid #cbcbcb;
+  box-shadow: 0px 0px 0px 0px;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}

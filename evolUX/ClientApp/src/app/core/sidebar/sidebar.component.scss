@@ -1,0 +1,26 @@
+.sidebar-wrapper {
+  height: 100%;
+  float: left;
+  display: flex;
+}
+
+.sidebar-circle {
+  width: 60px;
+  height: 60px;
+  margin: 20px auto;
+  padding: 15px;
+}
+.sidebar-circle:hover {
+  box-shadow: 0px 0px 6px 1px #9a9a9a;
+}
+.sidebar-circle-selected {
+  border: 2px solid rgba(233,60,82,1);
+}
+.navigation-col {
+  width: 100px;
+  background-color: #f7f7f7;
+  overflow-y: auto;
+}
+.inner-col {
+  background-color: white;
+}

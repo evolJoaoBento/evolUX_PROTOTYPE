@@ -1,0 +1,12 @@
+<table class="table table-bordered table-sm table-striped" *ngIf="envelopeMedia">
+  <thead>
+    <tr><th>Nome da Gama</th><th>Descrição</th></tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let d of envelopeMedia">
+      <td>{{d.name}}</td>
+      <td>{{d.description}}</td>
+      <td><a>Mais</a></td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,410 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model ExpCompanyViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddExpCompany = false;
+    bool AddExpeditionContract = false;
+    bool DeleteExpeditionContract = false;
+    bool ExportExpeditionContract = false;
+    bool AddExpeditionType = false;
+    bool AddExpRegistRange = false;
+    bool ExportExpRegistRange = false;
+
+    if (Model.Permissions.Find(x => x == "AddExpeditionType") != null) { AddExpeditionType = true; }
+    if (Model.Permissions.Find(x => x == "AddExpCompany") != null) { AddExpCompany = true; }
+    if (Model.Permissions.Find(x => x == "AddExpeditionContract") != null) { AddExpeditionContract = true; }
+    if (Model.Permissions.Find(x => x == "DeleteExpeditionContract") != null) { DeleteExpeditionContract = true; }
+    if (Model.Permissions.Find(x => x == "ExportExpeditionContract") != null) { ExportExpeditionContract = true; }
+    if (Model.Permissions.Find(x => x == "AddExpRegistRange") != null) { AddExpRegistRange = true; }
+    if (Model.Permissions.Find(x => x == "ExportExpRegistRange") != null) { ExportExpRegistRange = true; }
+}
+@if (Model == null || Model.ExpCompany == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    Company expCompany = Model.ExpCompany;
+    List<ExpCompanyType> expCompanyTypes = new List<ExpCompanyType>();
+    if (Model.ExpTypes != null)
+        expCompanyTypes = Model.ExpTypes.ToList();
+    List<ExpeditionTypeElement> expCompanyTypesNotIn = Model.Types.Where(x => Model.Types.Where(y => y.ExpeditionType == x.ExpeditionType).Count() == 0).ToList();
+
+    string value;
+    int level0 = 0, level1 = 0;
+    string id0Value = "arrow" + level0.ToString();
+    string name0Value = "level0|" + level0.ToString();
+    string id1Value = "arrow" + level1.ToString();
+    string name1Value = "level1|" + level1.ToString();
+    string startDateDesc;
+    List<ExpCompanyConfigResume> startDateConfigs;
+    <div id="TitlePage">
+        <h1>@localizer["ExpCompany"]</h1>
+    </div>
+    <div>
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Companies">
+        </a>
+        <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpContracts" asp-route-expcompanyJson="@JsonConvert.SerializeObject(expCompany)">
+            <img style="background:none; width:50px;height:50px;" src="~/images/contract2.png" title="@localizer["ExpContracts"]" />
+        </a>
+        @if (expCompanyTypes.Where(x => x.RegistMode).Count() > 0)
+        {
+        <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpRegistRange" asp-route-expcompanyJson="@JsonConvert.SerializeObject(expCompany)">
+            <img style="background:none; width:50px;height:50px;" src="~/images/RegistredMail2.png" title="@localizer["ExpRegistRange"]" />
+        </a>
+        }
+    </div>
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+           <tr>
+                @if(AddExpCompany)
+                {
+                <th></th>
+                }
+                <th>@localizer["CompanyCode"]</th>
+                <th>@localizer["CompanyName"]</th>
+                <th>@localizer["CompanyAddress"]</th>
+                <th>@localizer["CompanyPostalCode"]</th>
+                <th>@localizer["CompanyPostalCodeDescription"]</th>
+                <th>@localizer["CompanyCountry"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            <tr id="Show|ExpCompany">
+                @if(AddExpCompany)
+                {
+                <td>
+                    <img onclick="EditRow('ExpCompany')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ExpCompanyChange"]" />
+                </td>
+                }
+                <td>@expCompany.CompanyCode</td>
+                <td>@expCompany.CompanyName</td>
+                <td>@expCompany.CompanyAddress</td>
+                <td>@expCompany.CompanyPostalCode</td>
+                <td>@expCompany.CompanyPostalCodeDescription</td>
+                <td>@expCompany.CompanyCountry</td>
+            </tr>
+            @if (AddExpCompany)
+            {
+                <tr id="Hide|ExpCompany" style="display: none">
+                    <form id="AddFrm|ExpCompany" class="d-flex justify-content-center m-5" asp-controller="Expedition" asp-action="ChangeExpCompany" asp-route-expeditiontypeviewJson="@JsonConvert.SerializeObject(Model)">
+                    <td style="align-items:center; display:flex">
+                        <img onclick="CancelRow('ExpCompany')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
+                    </td>
+                    <td>@expCompany.CompanyCode</td>
+                    <input style="display: none" id=ExpCompanyID name=ExpCompanyID value="@expCompany.ID" />
+                    <td><input id=CompanyName name=CompanyName type="text" maxlength="256" style="width: 100%" value="@expCompany.CompanyName" /></td>
+                    <td><input id=CompanyAddress name=CompanyAddress type="text" maxlength="256" style="width: 100%" value="@expCompany.CompanyAddress" /></td>
+                    <td><input id=CompanyPostalCode name=CompanyPostalCode type="text" maxlength="256" style="width: 100%" value="@expCompany.CompanyPostalCode" /></td>
+                    <td><input id=CompanyPostalCodeDescription name=CompanyPostalCodeDescription type="text" maxlength="256" style="width: 100%" value="@expCompany.CompanyPostalCodeDescription" /></td>
+                    <td><input id=CompanyCountry name=CompanyCountry type="text" maxlength="256" style="width: 100%" value="@expCompany.CompanyCountry" /></td>
+                    </form>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                @if (AddExpeditionType)
+                {
+                <th rowspan="2">@localizer["Action"]
+                    @if (expCompanyTypesNotIn.Count() > 0)
+                    {
+                    <img onclick="EditRow('Type')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddExpeditionType"]" />
+                    }
+                </th>
+                }
+                <th rowspan="2">@localizer["ExpeditionType"]</th>
+                <th rowspan="2" title="@localizer["RegistModeTip"]">@localizer["RegistMode"]</th>
+                <th rowspan="2" title="@localizer["SeparationModeTip"]">@localizer["SeparationMode"]</th>
+                <th rowspan="2" title="@localizer["BarcodeRegistModeTip"]">@localizer["BarcodeRegistMode"]</th>
+                <th rowspan="2" title="@localizer["GenerateDetailRegistTip"]">@localizer["GenerateDetailRegist"]</th>
+                <th colspan="3">@localizer["DRFlags"]</th>
+            </tr>
+            <tr>
+                <th>@localizer["DRFlagRegistado"]</th>
+                <th>@localizer["DRFlagEncomenda"]</th>
+                <th>@localizer["DRFlagPessoal"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (ExpCompanyType e in expCompanyTypes)
+            {
+                ExpeditionTypeElement expeditionType = Model.Types.First(x => x.ExpeditionType == e.ExpeditionType);
+                e.ExpCompanyID = expCompany.ID;
+                List<ExpCompanyType> eList = new List<ExpCompanyType>();
+                eList.Add(e);
+                expeditionType.ExpCompanyTypesList = eList; 
+                @if (AddExpeditionType && expCompanyTypesNotIn.Count() > 0)
+                {
+                    <tr id="Hide|Type" style="display: none">
+                        <form id="AddFrm|Type" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyType"
+                  asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(expeditionType)" asp-route-source="ExpCompany">
+                        <td style="align-items:center; display:flex">
+                            <img onclick="CancelRow('Type')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
+                        </td>
+                        <td>
+                            <select id="ExpeditionType" name="ExpeditionType">
+                                    @foreach (ExpeditionTypeElement x in expCompanyTypesNotIn)
+                                    {
+                                    <option value="@x.ExpeditionType">@x.Description</option>
+                                    }
+                            </select>
+                        </td>
+                        <td><input onchange="RegistModeChange()" type="checkbox" id="RegistMode" name="RegistMode" /></td>
+                        <td><input type="checkbox" id="SeparationMode" name="SeparationMode"/></td>
+                        <td><input type="number" min="0" max="1" id="BarcodeRegistMode" name="BarcodeRegistMode" value="0" /></td>
+                        <td><input type="checkbox" id="DRFlagGenerateDetailRegist" disabled /></td>
+                        <td><input type="checkbox" id="DRFlagRegistado" disabled /></td>
+                        <td><input type="checkbox" id="DRFlagEncomenda" disabled /></td>
+                        <td><input type="checkbox" id="DRFlagPessoal" disabled /></td>
+                        </form>
+                    </tr>
+                }
+                value = e.ExpeditionType.ToString();
+                <tr id="Show|@value">
+                    @if (AddExpeditionType)
+                    {
+                        <td>
+                            <img onclick="EditRow('@value')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
+                            @* <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyviewmodelJson="@JsonConvert.SerializeObject(Model)" asp-route-expeditiontype="@c.ExpeditionType">
+                                <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
+                            </a>*@
+                        </td>
+                    }
+                    <td>@e.ExpeditionTypeDesc</td>
+                    @{
+                        value = e.RegistMode ? "checked" : "";
+                    }
+                    <td><input type="checkbox" id="RegistMode" @value disabled /></td>
+                    @{
+                        value = e.SeparationMode ? "checked" : "";
+                    }
+                    <td><input type="checkbox" id="SeparationMode" @value disabled /></td>
+                    @{
+                        value = e.BarcodeRegistMode != null ? ((bool)e.BarcodeRegistMode ? "1" : "0") : "0";
+                    }
+                    <td>@value</td>
+                    @{
+                        value = e.GenerateDetailRegist ? "checked" : "";
+                    }
+                    <td><input type="checkbox" id="GenerateDetailRegist" @value disabled /></td>
+                    @{
+                        value = e.DRFlagRegistado ? "checked" : "";
+                    }
+                    <td><input type="checkbox" id="DRFlagRegistado" @value disabled /></td>
+                    @{
+                        value = e.DRFlagEncomenda ? "checked" : "";
+                    }
+                    <td><input type="checkbox" id="DRFlagEncomenda" @value disabled /></td>
+                    @{
+                        value = e.DRFlagPessoal ? "checked" : "";
+                    }
+                    <td><input type="checkbox" id="DRFlagPessoal" @value disabled /></td>
+                </tr>
+                @if (AddExpeditionType)
+                {
+                    value = e.ExpeditionType.ToString();
+                    <tr id="Hide|@value" style="display: none">
+                        <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyType"
+                  asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(expeditionType)" asp-route-source="ExpCompany">
+                        <td style="align-items:center; display:flex">
+                            <img onclick="CancelRow('@value')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
+                        </td>
+                            <td>@e.ExpeditionTypeDesc</td>
+                            @{
+                                value = e.RegistMode ? "checked" : "";
+                            }
+                        <td><input onchange="RegistModeChange()" type="checkbox" id="RegistMode" name="RegistMode" @value /></td>
+                            @{
+                                value = e.SeparationMode ? "checked" : "";
+                            }
+                        <td><input type="checkbox" id="SeparationMode" name="SeparationMode" @value /></td>
+                            @{
+                                value = e.BarcodeRegistMode != null ? ((bool)e.BarcodeRegistMode ? "1" : "0") : "0";
+                            }
+                        <td><input type="number" min="0" max="1" id="BarcodeRegistMode" name="BarcodeRegistMode" value="@value" /></td>
+                            @{
+                                value = e.GenerateDetailRegist ? "checked" : "";
+                                name0Value = value + "DRFlagGenerateDetailRegist";
+                            }
+                        <td><input type="checkbox" id="@name0Value" @value disabled /></td>
+                            @{
+                                value = e.DRFlagRegistado ? "checked" : "";
+                                name0Value = value + "DRFlagRegistado";
+                            }
+                        <td><input type="checkbox" id="@name0Value" @value disabled /></td>
+                            @{
+                                value = e.DRFlagEncomenda ? "checked" : "";
+                                name0Value = value + "DRFlagEncomenda";
+                            }
+                        <td><input type="checkbox" id="@name0Value" @value disabled /></td>
+                            @{
+                                value = e.DRFlagPessoal ? "checked" : "";
+                                name0Value = value + "DRFlagPessoal";
+                            }
+                        <td><input type="checkbox" id="@name0Value" @value disabled /></td>
+
+                        </form>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    if (Model.Configs.Count() > 0)
+    {
+        <div id="TitlePage">
+            <h3>@localizer["ExpCompanyConfig"]</h3>
+        </div>
+        <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th width="120px">
+                    @localizer["Action"]
+                    @if (AddExpeditionType)
+                    {
+                        <img onclick="EditRow('ExpCompanyConfig')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["ExpCompanyConfigAdd"]" />
+                    }
+                </th>
+                <th>@localizer["StartDate"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @if (AddExpeditionType)
+            {
+                <tr id="Hide|ExpCompanyConfig" style="display: none">
+                    <form id="AddFrm|ExpCompanyConfig" class="d-flex justify-content-center m-5" asp-area="evolDP"
+                        asp-controller="Expedition" asp-action="AddExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)">
+                        <td style ="align-items:center; display:flex">
+                           <img onclick="CancelRow('ExpCompanyConfig')" type="image"style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
+                           <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png"/>
+                        </td>
+                        <td>
+                            <input id="StartDate" name="StartDate" type="date" value="@DateTime.Now.ToShortDateString" />
+                        </td>
+                    </form>
+                </tr>
+            }
+            @foreach (var sDate in Model.Configs.Select(x => x.StartDate).Distinct().ToList())
+            {
+                level0++;
+                name0Value = "level" + level0.ToString();
+                id0Value = "arrow" + name0Value;
+                DateTime startDateDT;
+                startDateDesc = sDate.ToString();
+                startDateConfigs = Model.Configs.Where(x => x.StartDate == sDate).ToList();
+                if (DateTime.TryParseExact(sDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out startDateDT))
+                    startDateDesc = startDateDT.ToShortDateString();
+                <tr>
+                    <td>
+                    <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-expcompanyConfigsJson="@JsonConvert.SerializeObject(startDateConfigs)" asp-route-startdate="@sDate">
+                        <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
+                    </a>
+                    </td>
+                        <td colspan="2">
+                            @startDateDesc<a class="bx bxs-chevron-down" href="javascript:showDetail('@name0Value')" id="@id0Value"></a>
+                    </td>
+                </tr>
+                <tr id="@name0Value" style="display: none">
+                    <td colspan="2">
+                        <table class="table table-sm table-hover table-collapse-seperate">
+                            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                <th width="200px"></th>
+                                <th>@localizer["ExpeditionType"]</th>
+                            </thead>
+                            <tbody>
+                                @foreach(var tType in Model.Configs.Where(x => x.StartDate == sDate).Select(x=> x.ExpeditionType).Distinct().ToList())
+                                {
+                                    List<ExpCompanyConfigResume> typeList = Model.Configs.Where(x => x.StartDate == sDate && x.ExpeditionType == tType).ToList();
+                                    level1++;
+                                    name1Value = "detail" + level1.ToString();
+                                    id1Value = "arrow" + name1Value;
+                                    <tr>
+                                        <td>
+                                            <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType">
+                                                <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
+                                            </a>
+                                        </td>
+                                        <td>@typeList.First().ExpeditionTypeDesc
+                                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@name1Value')" id="@id1Value"></a>
+                                        </td>
+                                    </tr>
+                                    <tr id="@name1Value" style="display: none">
+                                        <td colspan="2">
+                                                <table class="table table-sm table-hover table-collapse-seperate">
+                                                    <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                                        <tr>
+                                                            <th width="280px"></th>
+                                                            <th>@localizer["ExpeditionZone"]</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="bootstrap-overrides">
+                                                        @foreach (var zZone in typeList.Select(x => x.ExpeditionZone).Distinct().ToList())
+                                                        {
+                                                            <tr>
+                                                                <td>
+                                                                    <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType" asp-route-expeditionzone="@zZone">
+                                                                        <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
+                                                                    </a>
+                                                                </td>
+                                                                <td>@typeList.Where(x => x.ExpeditionZone == zZone).First().ExpeditionZoneDesc</td>
+                                                            </tr>
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                    </tr>
+                                }
+                             </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    }
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+        function RegistModeChange() {
+            var checkbox = document.getElementById("RegistMode");
+            chkElements = document.querySelectorAll('input[id^="checkedDRFlag"]');
+            chkElements.forEach(tElement => {
+                tElement.checked = checkbox.checked;
+            });
+        }
+        function CancelRow(value) {
+            eShide('Hide|' + value);
+            eSshow('Show|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = true;
+            return false;
+        }
+        function EditRow(value) {
+            eShide('Show|' + value);
+            eSshow('Hide|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = false;
+
+            let str = 'Hide|' + value;
+            trElements = document.querySelectorAll('tr[id^="Hide|"]');
+            trElements.forEach(tElement => {
+                if (tElement.id != str) {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                }
+            });
+        }
+    </script>
+}

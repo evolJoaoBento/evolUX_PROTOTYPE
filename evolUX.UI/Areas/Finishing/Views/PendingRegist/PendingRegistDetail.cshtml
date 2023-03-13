@@ -1,0 +1,158 @@
+﻿@using Shared.Models.Areas.Finishing
+@using Shared.ViewModels.Areas.Finishing
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+@model PendingRegistDetailViewModel;
+@*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
+
+<style>
+    .hideextra {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+<div id="TitlePage">
+    <h1>@localizer["PendingRegistDetail"]</h1>
+    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="Finishing" asp-controller="PendingRegist" asp-action="PendingRegist">
+    </a>    
+    <h2>@ViewBag.RunName</h2>
+</div>
+@if (Model.PendingRegistDetail.ToRegistPrintFiles.Count > 0)
+{
+    int cols = 9;
+    <div class="my-3 table-div">
+        <table class="table table-sm table-hover table-collapse-seperate">
+            @if (ViewBag.hasMultipleServiceCompanies)
+            {
+                cols += 1;
+            <col>
+            }
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                <tr><td colspan="@cols" class="text-center">@localizer["FilesLeftToRegistPrint"]</td></tr>
+                <tr class="text-center">
+                    @if (ViewBag.hasMultipleServiceCompanies)
+                    {
+                    <th>@localizer["ServiceCompanyCode"]</th>
+                    }
+                    <th>@localizer["FileName"]</th>
+                    <th>@localizer["RunID"]</th>
+                    <th>@localizer["FileID"]</th>
+                    <th>@localizer["SentToPrinterTimeStamp"]</th>
+                    <th>@localizer["Operator"]</th>
+                    <th>@localizer["Printer"]</th>
+                    <th>@localizer["TotalPrint"]</th>
+                    <th>@localizer["TotalPostObjs"]</th>
+                    <th>@localizer["FullFillMaterialCode"]</th>
+                </tr>
+            </thead>
+            <tbody id="bootstrap-overrides">
+                @if (Model == null)
+                {
+                    <tr><td colspan="@cols" class="text-center">No Model Data</td></tr>
+                }
+                else
+                {
+                    @foreach (PendingRegistElement p in Model.PendingRegistDetail.ToRegistPrintFiles)
+                    {
+                        <tr>
+                            @if (ViewBag.hasMultipleServiceCompanies)
+                            {
+                            <td>@p.ServiceCompanyCode</td>
+                            }
+                            <td>@p.FileName</td>
+                            <td>@p.RunID</td>
+                            <td>@p.FileID</td>
+                            <td>@p.TimeStamp</td>
+                            <td>@p.Operator</td>
+                            <td>@p.Machine</td>
+                            <td>@p.TotalPrint</td>
+                            <td>@p.TotalPostObjs</td>
+                            <td>@p.FullFillMaterialCode</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="d-flex justify-content-center m-5">@localizer["NoneToRegistPrintFiles"]</div>
+}
+@if (Model.PendingRegistDetail.ToRegistFullfillFiles.Count > 0)
+{
+    int cols = 8;
+    <div class="my-3 table-div">
+         <table class="table table-sm table-hover table-collapse-seperate">
+            @if (ViewBag.hasMultipleServiceCompanies)
+            {
+                cols += 1;
+                <col>
+            }
+            <col>
+            <col>
+            <col>
+            <col>
+            <col>
+            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                <tr><td colspan="@cols" class="text-center">@localizer["FilesLeftToRegistFullfill"]</td></tr>
+                <tr class="text-center">
+                    @if (ViewBag.hasMultipleServiceCompanies)
+                    {
+                    <th>@localizer["ServiceCompanyCode"]</th>
+                    }
+                    <th>@localizer["FileName"]</th>
+                    <th>@localizer["RunID"]</th>
+                    <th>@localizer["FileID"]</th>
+                    <th>@localizer["PrintedTimeStamp"]</th>
+                    <th>@localizer["Operator"]</th>
+                    <th>@localizer["TotalPrint"]</th>
+                    <th>@localizer["TotalPostObjs"]</th>
+                    <th>@localizer["FullFillMaterialCode"]</th>
+                </tr>
+            </thead>
+            <tbody id="bootstrap-overrides">
+                @if (Model == null)
+                {
+                    <tr><td colspan="@cols" class="text-center">No Model Data</td></tr>
+                }
+                else
+                {
+                    @foreach (PendingRegistElement p in Model.PendingRegistDetail.ToRegistFullfillFiles)
+                    {
+                        <tr>
+                            @if (ViewBag.hasMultipleServiceCompanies)
+                            {
+                                <td>@p.ServiceCompanyCode</td>
+                            }
+                            <td class="headcol" style="background: var(--lightestgrey)">@p.FileName</td>
+                            <td>@p.RunID</td>
+                            <td>@p.FileID</td>
+                            <td>@p.TimeStamp</td>
+                            <td>@p.Operator</td>
+                            <td>@p.TotalPrint</td>
+                            <td>@p.TotalPostObjs</td>
+                            <td>@p.FullFillMaterialCode</td>
+                       </tr>
+                    }
+                }
+            </tbody>
+          </table>
+    </div>
+}
+else
+{
+    <div class="d-flex justify-content-center m-5">@localizer["NoneToRegistFullfillFiles"]</div>
+}    
+
+
+

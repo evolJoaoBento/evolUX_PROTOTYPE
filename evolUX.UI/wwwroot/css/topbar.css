@@ -1,0 +1,84 @@
+﻿header {
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    top: 0;
+}
+.topbar-wrapper {
+    width: 100%;
+    height: 80px;
+    flex: 0 1 50px;
+    display: flex;
+    background-color: white;
+}
+
+.topbar-gradient {
+    height: 2px;
+    width: 100%;
+}
+
+.es-circle {
+    width: 50px;
+    height: 50px;
+    margin-left: 15px;
+    padding-top: 3px;
+    overflow: hidden;
+}
+
+.settings-circle {
+    width: 40px;
+    height: 40px;
+    display: inline-block;
+}
+
+    .settings-circle:hover {
+        box-shadow: 0px 0px 6px 1px #9a9a9a;
+    }
+
+.mid-circle {
+    margin: 0px 15px;
+}
+
+.col {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.es-col {
+    background-image: url('../images/left-top-es.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.settings-col {
+    justify-content: right;
+    background-image: url('../images/right-top-es.png');
+    background-repeat: no-repeat;
+    background-position-y: bottom;
+    background-position-x: right;
+    background-size: cover;
+}
+    
+
+.title-col {
+    flex: 0;
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.es-title {
+    padding: 0;
+    margin: 0;
+    font-size: 35px;
+    color: lightgrey;
+    position:center;
+}
+
+    
+
+.logo-topbar{
+    display: block;
+    width: 50px;
+}

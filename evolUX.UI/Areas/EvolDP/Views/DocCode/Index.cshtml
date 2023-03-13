@@ -1,0 +1,96 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model DocCodeGroupViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddDocCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddDocCode") != null) { AddDocCode = true; }
+}
+<div id="TitlePage">
+    <h1>@localizer["DocCodeList"]</h1>
+</div>
+<a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-source="AddDoc">
+    <img style="background:none; width:50px;height:50px;" src="~/images/add_doc.png" title="@localizer["AddDocCode"]" />
+</a>
+@if (Model == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string value = "";
+    string docTypeDesc = "";
+    string Level0Name = "level";
+
+    int level = 0;
+    string idValue = "arrow" + level.ToString();
+    string nameValue = "";
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th colspan="3">@localizer["DocCode"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+                @foreach (var dg in Model.DocCodeList)
+                {
+                    level++;
+                    nameValue = Level0Name + level.ToString();
+                    idValue = "arrow" + nameValue;
+                    <tr>
+                        <td>
+                            @dg.DocLayout<a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <table id="@nameValue" class="table table-sm table-hover table-collapse-seperate" style="display: none">
+                                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                    <tr>
+                                        <th></th>
+                                        <th>@localizer["DocLayout"]</th>
+                                        <th>@localizer["DocType"]</th>
+                                        <th>@localizer["DocDescription"]</th>
+                                        <th>@localizer["PrintMatchCode"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bootstrap-overrides">
+                                        @foreach (DocCode d in dg.DocCodes)
+                                        {
+                                        <tr>
+                                            <td>
+                                            @if (string.IsNullOrEmpty(d.DocType))
+                                            {
+                                                docTypeDesc = localizer["EmptyField"].Value;
+                                            }
+                                            else
+                                            {
+                                                docTypeDesc = d.DocType;
+                                            }
+                                            @{
+                                                value = d.DocLayout + "/" + docTypeDesc;
+                                            }
+                                            <a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(d)">
+                                                <img style="background:none; width:25px;height:25px;" src="~/images/list.png" title="@localizer["List"]: @value" />
+                                                </a>
+                                            </td>
+                                            <td>@d.DocLayout</td>
+                                            <td>@docTypeDesc</td>
+                                            <td>@d.DocDescription</td>
+                                            @if (!string.IsNullOrEmpty(d.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                                            {
+                                                value = d.PrintMatchCode;
+                                            }
+                                            <td>@value</td>
+                                        </tr>
+                                        }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+        </tbody>
+    </table>
+}

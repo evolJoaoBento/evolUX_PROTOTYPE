@@ -1,0 +1,483 @@
+﻿@using Shared.Models.Areas.Finishing
+@using Shared.ViewModels.Areas.Finishing
+@using Shared.Models.General
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+
+@model ProductionReportViewModel;
+@*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
+
+@{
+    bool PrintFile = false;
+    bool IgnoreFilePrinterSpecs = false;
+    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+    if (Model.Permissions.Find(x => x == "IgnoreFilePrinterSpecs") != null) { IgnoreFilePrinterSpecs = true; }
+
+    IList<ProductionDetailInfo> filters = Model.filters.ToList();
+    TempData["filters"] = JsonConvert.SerializeObject(filters);
+    Dictionary<int, string> stations = new Dictionary<int, string>();
+    Dictionary<int, string> papers = new Dictionary<int, string>();
+    Dictionary<int, CodeName> companies = new Dictionary<int, CodeName>();
+    Dictionary<int, CodeName> serviceTypes = new Dictionary<int, CodeName>();
+    Dictionary<int, string> expeditionType = new Dictionary<int, string>();
+    foreach (ProductionDetailInfo filter in filters)
+    {
+        if (!stations.ContainsKey(filter.StationMediaID) && !string.IsNullOrEmpty(filter.StationMaterialList))
+        {
+            stations.Add(filter.StationMediaID, filter.StationMaterialList);
+        }
+        if (!papers.ContainsKey(filter.PaperMediaID))
+        {
+            papers.Add(filter.PaperMediaID, filter.PaperMaterialList);
+        }
+        if (!expeditionType.ContainsKey(filter.ExpeditionType))
+        {
+            expeditionType.Add(filter.ExpeditionType, filter.ExpeditionTypeDesc);
+        }
+        if (!companies.ContainsKey(filter.ExpCompanyID))
+        {
+            companies.Add(filter.ExpCompanyID, new CodeName(filter.ExpCompanyCode, filter.ExpCompanyName));
+        }
+        if (!serviceTypes.ContainsKey(filter.ServiceTaskID))
+        {
+            serviceTypes.Add(filter.ServiceTaskID, new CodeName(filter.ServiceTaskCode, filter.ServiceTaskDesc));
+        }
+    };
+}
+
+<style>
+    .hideextra {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+<div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+<div id="TitlePage">
+    <h1>@localizer["PrintStatus"]</h1>
+    <h2>@ViewBag.RunName</h2>
+</div>
+<div class="filter-div">
+    <form id="filter-form" style="height: 100%; margin:5px;">
+        <h5 class="">@localizer["Papers"]</h5>
+        <select name="yourSelectIdpaper">
+            <option value="">@localizer["Please select an option"]</option>
+            @foreach (var option in papers)
+            {
+                <option value="@option.Key">@option.Value</option>
+            }
+        </select>
+        <h5 class="">@localizer["Stations"]</h5>
+        <select name="yourSelectIdstation">
+            <option value="">@localizer["Please select an option"]</option>
+            @foreach (var option in stations)
+            {
+                <option value="@option.Key">@option.Value</option>
+            }
+        </select>
+        <h5 class="">@localizer["ExpeditionType"]</h5>
+        <select name="yourSelectIdexpedition">
+            <option value="">@localizer["Please select an option"]</option>
+            @foreach (var option in expeditionType)
+            {
+                <option value="@option.Key">@option.Value</option>
+            }
+        </select>
+        <h5 class="">@localizer["ExpCompany"]</h5>
+        <select name="yourSelectIdcompanies">
+            <option value="">@localizer["Please select an option"]</option>
+            @foreach (var option in companies)
+            {
+                <option value="@option.Key">@option.Value.Name</option>
+            }
+            @*<option value="not an option">Nothing</option>*@
+        </select>
+        <h5 class="">@localizer["ServiceType"]</h5>
+        <select name="yourSelectIdservicetypes">
+            <option value="">@localizer["Please select an option"]</option>
+            @foreach (var option in serviceTypes)
+            {
+                <option value="@option.Key">@option.Value.Name</option>
+            }
+        </select>
+        <div id="color-buttons">
+            <label>
+                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_bw.png" title="@localizer["PrintBlackWhite"]">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="0">
+                <img />
+
+            </label>
+            <label>
+                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_color.png" title="@localizer["PrintColor"]">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="1">
+                <img />
+            </label>
+        </div>
+        <!--        <div id="text-buttons">
+            <label class="btn btn-outline-dark">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="1">Simplex
+            </label>
+            <label class="btn btn-outline-dark">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="0">Duplex
+            </label>
+        </div> -->
+        <div id="color-buttons">
+            <label>
+                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_simplex.png" title="@localizer["PrintSimplex"]">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="SPLEX">
+                <img />
+
+            </label>
+            <label>
+                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_duplex.png" title="@localizer["PrintDuplex"]">
+                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="DPLEX">
+                <img />
+            </label>
+        </div>
+        <div style="display: flex; position:absolute; right: 10px; bottom: 10px;">
+            <input class="btn btn-outline-info btn-evoldp m-2" type="submit">
+        </div>
+        <div style="margin-top:10px">
+            @if (IgnoreFilePrinterSpecs)
+            {
+                <label class="checkbox"> @Html.CheckBox("checkAll", false) @localizer["AllFiles"]</label>
+            }
+        </div>
+
+
+    </form>
+
+</div>
+@if (Model == null)
+{
+    <tr><td colspan="5" class="text-center">No Model Data</td></tr>
+}
+else
+{
+    <div id="response" class="d-flex justify-content-center">
+    </div>
+    <div class=" my-1 d-flex justify-content-lg-start">
+        <form id="all" asp-area="Finishing" asp-controller="Print" asp-action="Print"
+              data-ajax="true"
+              data-ajax-method="POST"
+              data-ajax-mode="replace"
+              data-ajax-update="#response"
+              data-ajax-loading="myLoader"
+              class="evol-max-width-plus">
+            <div class="print-filter print-filter-open">
+                @*<h5 class="">@localizer["Printer"]</h5>*@
+                <img id="print-options" class="button-icon" style="width:30px;height:30px" src="~/images/printer-solid-24.png">
+                <div>
+                    <select id="Printer" name="Printer" style="position:relative; top: -7px;">
+                        @foreach (PrinterInfo printer in Model.Printers)
+                        {
+                            string resValue = printer.PlexFeature.ToString() + "|" + printer.ColorFeature.ToString() + "|" + printer.ResValue;
+                            <option value="@resValue">@printer.Description</option>
+                        }
+                    </select>
+
+                    @if (PrintFile)
+                    {
+                        <input type="submit" name="Submit" class="btn btn-block btn-outline-info btn-evoldp" style="position:relative; top: -8px;" />
+                    }
+                </div>
+            </div>
+            @{
+                string Level1Name = "detail";
+                int count = 0;
+                string idValue = "";
+                string nameValue = "";
+                string cValue = "";
+            }
+            <table id="table-form" class="table table-striped">
+                <thead>
+                </thead>
+                <tbody>
+                    @foreach (ProdExpeditionElement eInfo in Model.ProductionReport)
+                    {
+
+                        @foreach (ProdServiceElement sInfo in eInfo.ServiceList)
+                        {
+
+                            @foreach (ProdMaterialElement mInfo in sInfo.MediaMaterialList)
+                            {
+                                int PrintTotal = 0;
+                                int PostObjsTotal = 0;
+                                Dictionary<string, int> PaperTotal = new Dictionary<string, int>();
+                                Dictionary<string, int> StationTotal = new Dictionary<string, int>();
+                                <tr>
+                                    <td style="width:400px">@eInfo.ExpCompanyName - @eInfo.ExpeditionTypeDesc</td>
+                                    <td style="width:400px">@sInfo.ServiceTaskDesc</td>
+                                    <td>
+                                        @localizer["Papers"] [@mInfo.PaperMaterialList]
+                                        @if (!string.IsNullOrEmpty(mInfo.StationMaterialList))
+                                        {
+                                            <p />
+                                            @localizer["AdditionalInserts"]
+                                            @(" [" + mInfo.StationMaterialList + "]")
+                                        }
+                                    </td>
+                                    <td></td>
+                                    <input type="hidden" class="filter-value" name="yourSelectIdpaper" value="@mInfo.PaperMediaID">
+                                    <input type="hidden" class="filter-value" name="yourSelectIdcompanies" value="@eInfo.ExpCompanyID">
+                                    <input type="hidden" class="filter-value" name="yourSelectIdservicetypes" value="@sInfo.ServiceTaskID">
+                                    <input type="hidden" class="filter-value" name="yourSelectIdexpedition" value="@eInfo.ExpeditionType">
+                                    <input type="hidden" class="filter-value" name="yourSelectIdstation" value="@mInfo.StationMediaID">
+
+                                </tr>
+                                <tr>
+                                    <input type="hidden" class="filter-value" name="yourSelectIdpaper" value="@mInfo.PaperMediaID">
+                                    <input type="hidden" class="filter-value" name="yourSelectIdcompanies" value="@eInfo.ExpCompanyID">
+                                    <input type="hidden" class="filter-value" name="yourSelectIdservicetypes" value="@sInfo.ServiceTaskID">
+                                    <input type="hidden" class="filter-value" name="yourSelectIdexpedition" value="@eInfo.ExpeditionType">
+                                    <input type="hidden" class="filter-value" name="yourSelectIdstation" value="@mInfo.StationMediaID">
+                                    <td colspan="4">
+                                        <b class="btn collapsible justify-content-center"></b>
+                                        <div class="content">
+
+                                            <table class="table table-sm table-hover table-collapse-seperate table-form-2">
+                                                <col>
+                                                <col>
+                                                <col>
+                                                @{
+                                                    int printingSpan = 5 + mInfo.FileList.First().PaperTotals.Keys.Count;
+                                                }
+                                                <colgroup span="@printingSpan"></colgroup>
+                                                @{
+                                                    int envelopingSpan = 4;
+                                                    if (mInfo.StationList.Length > 0)
+                                                    {
+                                                        envelopingSpan += mInfo.FileList.First().StationTotals.Keys.Count;
+                                                    }
+                                                }
+                                                <colgroup span="@envelopingSpan"></colgroup>
+                                                <colgroup span="5"></colgroup>
+                                                <thead id="bootstrap-overrides" class="table-info">
+                                                    <tr class="text-center">
+                                                        <th class="headcol" rowspan="3" scope="col">@localizer["Files"]</th>@*FileName RegistShortFileName*@
+                                                        <th rowspan="3" scope="col">@localizer["ServiceTaskCode"]</th>@*ServiceTaskCode*@
+                                                        <th colspan="@printingSpan" scope="colgroup">@localizer["Printing"]</th>
+                                                        <th colspan="@envelopingSpan" scope="colgroup">@localizer["Fullfilling"]</th>
+                                                        <th colspan="5" scope="colgroup">@localizer["Expedition"]</th>
+                                                    </tr>
+                                                    <tr class="text-center">
+                                                        <th rowspan="2" scope="col">@localizer["PrinterOperator"]</th>@*PrinterOperator + Printer*@
+                                                        <th rowspan="2" scope="col">@localizer["PlexCode"]</th>@*PlexCode*@
+                                                        <th rowspan="2" scope="col">@localizer["TotalPrint"]</th>@*TotalPrint*@
+                                                        <th colspan="2" scope="colgroup" class="hideextra">@localizer["SequenceNumber"]</th>
+                                                        <th colspan="@mInfo.FileList.First().PaperTotals.Keys.Count" scope="colgroup">@localizer["Materials"]</th>
+                                                        <th colspan="2" scope="colgroup">@localizer["Envelope"]</th>
+                                                        <th rowspan="2" scope="col">@localizer["TotalPostObjs"]</th> @*TotalPostObjs*@
+                                                        <th rowspan="2" scope="col">@localizer["ExpLevel"]</th>@*ExpLevel*@
+                                                        @if (mInfo.StationList.Length > 0)
+                                                        {
+                                                            <th colspan="@mInfo.FileList.First().StationTotals.Keys.Count" scope="colgroup">@localizer["Stations"]</th>
+                                                        }
+                                                        <th rowspan="2" scope="col">@localizer["ExpCompanyCode"]</th>@*ExpCompanyCode*@
+                                                        <th rowspan="2" scope="col">@localizer["ExpCenterCode"]</th>@*ExpCenterCode*@
+                                                        <th rowspan="2" scope="col">@localizer["ExpeditionZone"]</th>@*ExpeditionZone*@
+                                                        <th rowspan="2" scope="rowgroup">@localizer["ExpeditionType"]</th>@*ExpeditionType*@
+                                                        <th rowspan="2" scope="rowgroup">@localizer["ExpeditionLevel"]</th>@*ExpeditionLevel*@
+                                                    </tr>
+                                                    <tr class="text-center">
+                                                        <th scope="col">@localizer["StartSeqNum"]</th>@*StartSeqNum*@
+                                                        <th scope="col">@localizer["EndSeqNum"]</th>@*EndSeqNum*@
+                                                        @foreach (string paper in mInfo.FileList.First().PaperTotals.Keys)
+                                                        {
+                                                            <th scope="row">@paper</th>
+                                                            PaperTotal.Add(paper, 0);
+                                                        }
+                                                        <th scope="col">@localizer["FullFillMaterialCode"]</th>@*FullFillMaterialCode*@
+                                                        <th scope="col">@localizer["FullFillMaterialRef"]</th>@*FullFillMaterialRef*@
+                                                        @if (mInfo.StationList.Length > 0)
+                                                        {
+                                                            @foreach (string station in mInfo.FileList.First().StationTotals.Keys)
+                                                            {
+                                                                <th scope="row">@station</th>
+                                                                StationTotal.Add(station, 0);
+                                                            }
+                                                        }
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="bootstrap-overrides">
+                                                    @foreach (ProdFileInfo p in mInfo.FileList)
+                                                    {
+                                                        <tr>
+                                                            @*<input type="hidden" class="filter-value" name="checkboxBW" value="@mInfo.PaperMediaID">*@
+                                                            <input type="hidden" class="filter-value" name="checkboxS" value="@p.PlexCode">
+                                                            <td class="headcol">
+                                                                @if (!p.FilePrintedFlag)
+                                                                {
+                                                                    string fJSON = JsonConvert.SerializeObject(p);
+                                                                    <div class='bx bx-printer' style="color:var(--evol-grey)">
+                                                                        <input type="checkbox" name="FileCheck" id="@p.FilePlexType|@p.FileColor" value="@fJSON">
+                                                                    </div>
+                                                                    <label>@p.FileName</label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="disabled">@p.FileName</div>
+                                                                }
+
+                                                                @if (p.RegistDetailFileName != "")
+                                                                {
+                                                                    @if (!p.RegistDetailFilePrintedFlag)
+                                                                    {
+                                                                        ProdFileInfo pregist = p;
+                                                                        pregist.FileName = p.RegistDetailFileName;
+                                                                        pregist.ShortFileName = p.RegistDetailShortFileName;
+                                                                        pregist.FilePrinterSpecs = p.RegistDetailFilePrinterSpecs;
+                                                                        pregist.PrintRecNumber = p.RegistDetailFileRecNumber;
+                                                                        string fJSON = JsonConvert.SerializeObject(pregist);
+                                                                        <p />
+                                                                        <div class='bx bx-printer' style="color:var(--evol-grey)">
+                                                                            <input type="checkbox" name="FileCheck" id="@p.RegistDetailFilePlexType|@p.RegistDetailFileColor" value="@fJSON">
+                                                                        </div>
+                                                                        <label>@pregist.FileName</label>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <div class="disabled">@p.RegistDetailFileName</div>
+                                                                    }
+                                                                }
+                                                            </td>
+                                                            <td>@sInfo.ServiceTaskCode</td>
+                                                            <td>
+                                                                @if (p.PrinterOperator != null)
+                                                                {
+                                                                    <div>@p.PrinterOperator [@p.Printer]</div>
+                                                                }
+                                                            </td>
+                                                            <td>@p.PlexCode</td>
+                                                            <td>@p.TotalPrint</td>
+                                                            @{
+                                                                PrintTotal += p.TotalPrint;
+                                                            }
+                                                            <td>@p.StartSeqNum</td>
+                                                            <td>@p.EndSeqNum</td>
+                                                            @foreach (string paper in p.PaperTotals.Keys)
+                                                            {
+                                                                <td scope="row">@p.PaperTotals[paper]</td>
+                                                                PaperTotal[paper] += p.PaperTotals[paper];
+                                                            }
+                                                            <td>@p.FullFillMaterialCode</td>
+                                                            <td>@p.EnvMaterialRef</td>
+                                                            <td>@p.TotalPostObjs</td>
+                                                            @{
+                                                                PostObjsTotal += p.TotalPostObjs;
+                                                            }
+                                                            @if (mInfo.StationList.Length > 0)
+                                                            {
+                                                                @foreach (string station in p.StationTotals.Keys)
+                                                                {
+                                                                    <td scope="row">@p.StationTotals[station]</td>
+                                                                    StationTotal[station] += p.StationTotals[station];
+                                                                }
+
+                                                            }
+                                                            <td>@p.ExpLevel</td>
+                                                            <td>@eInfo.ExpCompanyCode</td>
+                                                            <td class="hideextra">@p.ExpCenterCode</td>
+                                                            <td class="hideextra">@p.ExpeditionZone</td>
+                                                            <td class="hideextra">@eInfo.ExpeditionType</td>
+                                                            <td class="hideextra">@p.ExpeditionLevel</td>
+                                                        </tr>
+                                                    }
+                                                    <tr class="table-end">
+                                                        <b>
+                                                        <td class="table-end-data headcol">@localizer["Totals"]</td></b>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td class="table-end-data">@PrintTotal</td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        @foreach (string paper in PaperTotal.Keys)
+                                                        {
+                                                            <td scope="row" class="table-end-data">@PaperTotal[paper]</td>
+                                                        }
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td class="table-end-data">@PostObjsTotal</td>
+                                                        @if (StationTotal.Count != 0)
+                                                        {
+                                                            @foreach (string station in StationTotal.Keys)
+                                                            {
+                                                                <td scope="row" class="table-end-data">@StationTotal[station]</td>
+                                                            }
+                                                        }
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        @*<td><a asp-area="EvolDP" asp-controller="DocCode" asp-action="DocCodeLevel1" asp-route-doclayout="@p.DocLayout" asp-route-docsubtype="@p.DocType">Mais</a></td>*@
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+
+        </form>
+    </div>
+}
+
+@section Scripts
+    {
+    <script type="text/javascript">
+        const form = document.getElementById('filter-form');
+        const table = document.getElementById('table-form');
+        const elements = ['yourSelectIdpaper', 'yourSelectIdcompanies', 'yourSelectIdservicetypes', 'yourSelectIdexpedition', 'yourSelectIdstation']; // form element names
+        filterTableRows(form, table, elements);
+        const table2 = document.getElementsByClassName('table-form-2');
+        const elements2 = [/*'checkboxBW', */'checkboxS']; // form element names
+        for (let i = 0; i < table2.length; i++) {
+            filterCheckBoxTableRows(form, table2[i], elements2);
+        }
+        
+        $(function () {
+            $("#checkAll").click(function () {
+                if ($(this).is(':checked')) {
+                    $("#all").show();
+                    $("#some").hide();
+                } else {
+                    $("#all").hide();
+                    $("#some").show();
+                }
+            });
+        });
+        $("#Printer").change(function () {
+            const prt = $(this).val().split("|").map(value => parseInt(value, 10));
+            const elements = document.getElementsByName("FileCheck");
+            for (let i = 0; i < elements.length; i++) {
+                const element = elements[i];
+                const values = element.id.split("|").map(value => parseInt(value, 10));
+                if ((values[0] & prt[0]) > 0 && (values[1] & prt[1]) > 0) {
+                    element.disabled = false;
+                    //element.style.display = "";
+                }
+                else {
+                    element.disabled = true;
+                    //element.style.display = "none";
+                    //element.checked = false;
+                }
+            }
+        });
+
+    </script>
+
+}
+
+

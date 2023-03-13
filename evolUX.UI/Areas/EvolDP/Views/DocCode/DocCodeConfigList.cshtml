@@ -1,0 +1,275 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model DocCodeConfigViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddDocCode = false;
+    bool DeleteDocCode = false;
+    bool ExportDocCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddDocCode") != null) { AddDocCode = true; }
+    if (Model.Permissions.Find(x => x == "DeleteDocCode") != null) { DeleteDocCode = true; }
+    if (Model.Permissions.Find(x => x == "ExportDocCode") != null) { ExportDocCode = true; }
+}
+<script>
+    const deleteMsgDocCodeConfig = '@localizer["deleteMsgDocCodeConfig"]';
+    const deleteMsgDocCode = '@localizer["deleteMsgDocCode"]';
+</script>
+@if (Model == null || Model.DocCode == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string value;
+    int suportType = 0;
+
+    string docTypeDesc = "";
+    string eLevel1Desc = "";
+    string eLevel2Desc = "";
+    string eLevel3Desc = "";
+    string startDateDesc = "";
+
+    string errorMessage = TempData["Message"]?.ToString();
+    TempData["Message"] = "";
+    GenericOptionValue OptionValue;
+   string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel1IDLabel))
+        ExceptionLevel1IDLabel = localizer["ExceptionLevel1ID"].Value;
+    string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel2IDLabel))
+        ExceptionLevel2IDLabel = localizer["ExceptionLevel2ID"].Value;
+    string ExceptionLevel3IDLabel = TempData["ExceptionLevel3ID"]?.ToString();
+    if (string.IsNullOrEmpty(ExceptionLevel3IDLabel))
+        ExceptionLevel3IDLabel = localizer["ExceptionLeve3ID"].Value;
+
+    foreach (GenericOptionValue option in Model.SuportTypeList.List)
+    {
+        if (string.IsNullOrEmpty(TempData[option.Code]?.ToString()))
+            TempData[option.Code] = localizer[option.Code].Value;
+    }    
+    foreach (GenericOptionValue option in Model.SuportTypeList.OptionList)
+    {
+        if (string.IsNullOrEmpty(TempData[option.GroupCode]?.ToString()))
+            TempData[option.GroupCode] = localizer[option.GroupCode].Value;
+    }
+    DocCode docCode = Model.DocCode;
+    DocCode newDocCode;
+    bool aggConditional = false;
+    if (docCode.DocCodeConfigs.Where(x => x.AggrCompatibility == 2).ToList().Count > 0)
+        aggConditional = true;
+
+    <div id="TitlePage">
+        <h1>@localizer["DocCodeConfigList"]</h1>
+    </div>
+    <div>
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+        </a>
+        @if (!(docCode.DocCodeConfigs == null || docCode.DocCodeConfigs.Count == 0))
+        {
+            if (AddDocCode)
+            {
+                <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="DocCodeChange">
+                    <img style="background:none; width:50px;height:50px;" src="~/images/edit_doc.png" title="@localizer["ChangeDocCode"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
+                </a>
+                <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="AddDocCodeConfig">
+                    <img style="background:none; width:50px;height:50px;" src="~/images/config_doc.png" title="@localizer["DocCodeConfigAdd"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
+                </a>
+            }
+            if (aggConditional)
+            {
+                <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddAggCompatibility" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+                    <img style="background:none; width:50px;height:50px;" src="~/images/link_doc.png" title="@localizer["AggCompatibilityAdd"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
+                </a>
+            }
+        }
+    </div>
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+           <tr>
+                <th>@localizer["DocCodeID"]</th>
+                <th>@localizer["DocLayout"]</th>
+                <th>@localizer["DocType"]</th>
+                <th>@ExceptionLevel1IDLabel</th>
+                <th>@ExceptionLevel2IDLabel</th>
+                <th>@ExceptionLevel3IDLabel</th>
+                <th>@localizer["DocDescription"]</th>
+                <th>@localizer["PrintMatchCode"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            <tr>
+                @if (string.IsNullOrEmpty(docCode.DocType))
+                {
+                    docTypeDesc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    docTypeDesc = docCode.DocType;
+                }
+                @if (docCode.ExceptionLevel1 == null || string.IsNullOrEmpty(docCode.ExceptionLevel1.ExceptionDescription))
+                {
+                    eLevel1Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel1Desc = docCode.ExceptionLevel1.ExceptionDescription;
+                }
+                @if (docCode.ExceptionLevel2 == null || string.IsNullOrEmpty(docCode.ExceptionLevel2.ExceptionDescription))
+                {
+                    eLevel2Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel2Desc = docCode.ExceptionLevel2.ExceptionDescription;
+                }
+                @if (docCode.ExceptionLevel3 == null || string.IsNullOrEmpty(docCode.ExceptionLevel3.ExceptionDescription))
+                {
+                    eLevel3Desc = localizer["EmptyField"].Value;
+                }
+                else
+                {
+                    eLevel3Desc = docCode.ExceptionLevel3.ExceptionDescription;
+                }
+                <td>@docCode.DocCodeID</td>
+                <td>@docCode.DocLayout</td>
+                <td>@docTypeDesc</td>
+                <td>@eLevel1Desc</td>
+                <td>@eLevel2Desc</td>
+                <td>@eLevel3Desc</td>
+                <td>@docCode.DocDescription</td>
+                @if (!string.IsNullOrEmpty(docCode.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                {
+                    value = docCode.PrintMatchCode;
+                }
+                <td>@value</td>
+            </tr>
+            @if(!string.IsNullOrEmpty(errorMessage))
+            {
+                <tr><td colspan="8">@localizer[errorMessage]</td></tr>
+            }
+            @if (docCode.DocCodeConfigs == null || docCode.DocCodeConfigs.Count == 0)
+            {
+                @if (AddDocCode)
+                {
+                    <tr>
+                        <td colspan="8">
+                        <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="DocCodeConfigAdd">
+                            <img style="background:none; width:50px;height:50px;" src="~/images/config_doc.png" title="@localizer["DocCodeConfigAdd"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
+                        </a>
+                        @if (DeleteDocCode)
+                        {
+                            <a asp-area="evolDP" asp-controller="DocCode" asp-action="DeleteDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+                                <img onclick="return confirmDocCodeDelete()" style="background:none; width:50px;height:50px;" src="~/images/delete_doc.png" title="@localizer["DeleteDocCode"] @localizer["DocCodeID"] = @docCode.DocCodeID" />
+                            </a>
+                        }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+            <tr>
+                <td colspan="8">
+                    <table class="table table-sm table-hover table-collapse-seperate">
+                    <thead id="bootstrap-overrides" class="table-info sticky-header">
+                        <tr>
+                            <th>@localizer["Action"]</th>
+                            <th>@localizer["StartDate"]</th>
+                            <th>@localizer["AggrCompatibility"]</th>
+                            <th>@localizer["Priority"]</th>
+                            <th>@localizer["ExpCompany"]</th>
+                            <th>@localizer["ExpeditionType"]</th>
+                            <th>@localizer["ServiceTask"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(DocCodeConfig dConfig in docCode.DocCodeConfigs)
+                        {
+                        <tr>
+                            <td>
+                                @{
+                                    startDateDesc = DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToShortDateString();
+                                    newDocCode = new DocCode();
+                                    newDocCode.DocCodeID = docCode.DocCodeID;
+                                    newDocCode.DocLayout = docCode.DocLayout;
+                                    newDocCode.DocType = docCode.DocType;
+                                    newDocCode.DocDescription = docCode.DocDescription;
+                                    newDocCode.PrintMatchCode = docCode.PrintMatchCode;
+                                    newDocCode.ExceptionLevel1 = docCode.ExceptionLevel1;
+                                    newDocCode.ExceptionLevel2 = docCode.ExceptionLevel2;
+                                    newDocCode.ExceptionLevel3 = docCode.ExceptionLevel3;
+                                    newDocCode.DocCodeConfigs = new List<DocCodeConfig>();
+                                    newDocCode.DocCodeConfigs.Add(dConfig);
+                                }
+                                <a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(newDocCode)">
+                                    <img style="background:none; width:25px;height:25px;" src="~/images/list.png" title="@localizer["Detail"] @localizer["Date"] = @startDateDesc"/>
+                                </a>
+                                @if(AddDocCode)
+                                {
+                                    @if(dConfig.StartDate >= Int32.Parse(DateTime.Now.ToString("yyyyMMdd")))
+                                    {
+                                    <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="DocCodeConfigChange">
+                                        <img style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["DocCodeConfigChange"] @localizer["Date"] = @startDateDesc" />
+                                    </a>
+                                    }
+                                    @if(DeleteDocCode)
+                                    {
+                                    <a asp-area="evolDP" asp-controller="DocCode" asp-action="DeleteDocCodeConfig" asp-route-doccodeid="@docCode.DocCodeID" asp-route-startdate="@dConfig.StartDate" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+                                        <img onclickif="return confirmDocCodeConfigDelete()" style="background:none; width:25px;height:25px;" src="~/images/delete.png" title="@localizer["DeleteDocCodeConfig"] @localizer["Date"] = @startDateDesc" />
+                                    </a>
+                                    }
+                                    @if(ExportDocCode)
+                                    {
+                                    <a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCodeData4Script" asp-route-doccodeid="@docCode.DocCodeID" asp-route-startdate="@dConfig.StartDate" >
+                                        <img style="background:none; width:25px;height:25px;" src="~/images/export.png" title="@localizer["Export"] @localizer["Date"] = @startDateDesc"/>
+                                    </a>
+                                    }                                
+                                }
+                            </td>
+                            <td>@startDateDesc</td>
+                            @{value = "AggCompatibility" + dConfig.AggrCompatibility.ToString();}
+                            <td>@localizer[value]</td>
+                            <td>@dConfig.Priority</td>
+                            <td>@dConfig.ExpCompanyName</td>
+                            @{value = "ExpeditionType" + dConfig.ExpeditionType.ToString();}
+                            <td>@localizer[value]</td>
+                            <td>@dConfig.ServiceTaskDesc</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+@section Scripts
+{
+    <script type="text/javascript">
+      function confirmDocCodeConfigDelete() {
+        if (confirm(deleteMsgDocCodeConfig)) {
+          // User clicked "OK", handle the deletion
+          return true;
+        } else {
+          // User clicked "Cancel", do nothing
+          return false;
+        }
+      }
+       function confirmDocCodeDelete() {
+        if (confirm(deleteMsgDocCode)) {
+          // User clicked "OK", handle the deletion
+          return true;
+        } else {
+          // User clicked "Cancel", do nothing
+          return false;
+        }
+      }
+      </script>
+}

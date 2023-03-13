@@ -1,0 +1,27 @@
+<div class="inner-wrapper" [ngClass]="{'inner-expanded': !expanded}">
+  <div class="inner-title-wrapper {{innerContent.theme}}" *ngIf="expanded">
+    <p class="inner-title-text">{{ innerContent.title }}</p>
+  </div>
+  <div class="inner-link-wrapper">
+    <div class="inner-link" *ngFor="let link of innerContent.links" [routerLink]=[link.routerLink]>
+      <div class="circle inner-link-circle"
+           [routerLinkActive]=[innerContent.theme]
+           [routerLinkActiveOptions]="{ exact: true }"
+           matTooltip="{{ link.text }}"
+           matTooltipDisabled="{{ expanded }}"
+           matTooltipShowDelay="150"
+           matTooltipPosition="right"></div>
+      <a class="inner-link-text"
+         [routerLinkActive]=[innerContent.linkTheme]
+         [routerLinkActiveOptions]="{ exact: true }"
+         *ngIf="expanded">{{ link.text }}</a>
+    </div>
+  </div>
+  <div class="minimizer-wrapper">
+    <div class="circle inner-link-circle inner-link minimizer-circle temp-inter"
+         matTooltip="expand/collapse"
+         matTooltipShowDelay="250"
+         matTooltipPosition="right"
+         (click)="expand()"></div>
+  </div>
+</div>
