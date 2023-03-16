@@ -21,7 +21,7 @@ else
     string value;
     int suportType = 0;
     GenericOptionValue OptionValue;
-   string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
+    string ExceptionLevel1IDLabel = TempData["ExceptionLevel1ID"]?.ToString();
     if (string.IsNullOrEmpty(ExceptionLevel1IDLabel))
         ExceptionLevel1IDLabel = localizer["ExceptionLevel1ID"].Value;
     string ExceptionLevel2IDLabel = TempData["ExceptionLevel2ID"]?.ToString();
@@ -45,6 +45,10 @@ else
     DocCodeConfig dConfig = null;
     if (docCode.DocCodeConfigs != null && docCode.DocCodeConfigs.Count() > 0)
         dConfig = docCode.DocCodeConfigs[0];
+    string emptyFieldDesc = localizer["EmptyField"].Value;
+    <div id="TitlePage">
+        <h1>@localizer[headerDesc]</h1>
+    </div>
     <div>
         @if (headerDesc == "AddDoc" || headerDesc == "AddDocCode")
         {
@@ -52,16 +56,14 @@ else
             </a>
         }
         else if (headerDesc == "AddDocCodeConfig" || headerDesc == "DocCodeChange"
-            || headerDesc == "DocCodeConfigChange")
+            || headerDesc == "DocCodeConfigChange" || headerDesc == "DocCodeConfig")
         {
             <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
             </a>
         }
     </div>
+ 
     <table class="table table-sm table-hover table-collapse-seperate">
-        <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr><td colspan="2">@localizer[headerDesc]</td></tr>
-        </thead>
         <tbody id="bootstrap-overrides">
             <tr>
                 <th>@localizer["DocCodeID"]</th>
@@ -80,7 +82,7 @@ else
                 <td>
                 @if (docCode.ExceptionLevel1 == null || string.IsNullOrEmpty(docCode.ExceptionLevel1.ExceptionDescription))
                 {
-                    @localizer["EmptyField"]
+                    @emptyFieldDesc
                 }
                 else
                 {
@@ -93,7 +95,7 @@ else
                 <td>
                 @if (docCode.ExceptionLevel2 == null || string.IsNullOrEmpty(docCode.ExceptionLevel2.ExceptionDescription))
                 {
-                    @localizer["EmptyField"]
+                    @emptyFieldDesc
                 }
                 else
                 {
@@ -106,7 +108,7 @@ else
                 <td>
                 @if (docCode.ExceptionLevel3 == null || string.IsNullOrEmpty(docCode.ExceptionLevel3.ExceptionDescription))
                 {
-                    @localizer["EmptyField"]
+                    @emptyFieldDesc
                 }
                 else
                 {
@@ -120,14 +122,18 @@ else
             </tr>
             <tr>
                 <th>@localizer["PrintMatchCode"]</th>
-                <td>@docCode.PrintMatchCode</td>
+                @if (!string.IsNullOrEmpty(docCode.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                {
+                    value = docCode.PrintMatchCode;
+                }
+                <td>@value</td>
             </tr>
             @if (dConfig == null)
             {
                 <tr>
                     <td colspan="2">
                         <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="AddDocCodeConfig">
-                            <img style="background:none; width:50px;height:50px;" src="@siteURL/images/config_doc.png" title="@localizer["AddDocCodeConfig"]" />
+                            <img style="background:none; width:50px;height:50px;" src="~/images/config_doc.png" title="@localizer["AddDocCodeConfig"]" />
                         </a>
                     </td>
                 </tr>

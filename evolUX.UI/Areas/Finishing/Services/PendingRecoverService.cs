@@ -8,6 +8,7 @@ using evolUX.UI.Areas.Finishing.Repositories;
 using evolUX.UI.Exceptions;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
+using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
@@ -18,7 +19,7 @@ namespace evolUX.UI.Areas.Finishing.Services
         {
             _pendingRecoverRepository = pendingRecoverRepository;
         }
-        public async Task<ServiceCompanyViewModel> GetServiceCompanies(string ServiceCompanyList)
+        public async Task<ServiceCompaniesViewModel> GetServiceCompanies(string ServiceCompanyList)
         {
             try
             {

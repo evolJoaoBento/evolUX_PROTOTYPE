@@ -1,15 +1,13 @@
 ﻿@using Shared.Models.Areas.evolDP
-@using Shared.ViewModels.Areas.Finishing
+@using Shared.ViewModels.Areas.evolDP
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer localizer
-@model ServiceCompanyViewModel
-
+@model ServiceCompaniesViewModel
 <div class="d-flex justify-content-center" >
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
       <span class="sr-only">Loading...</span>
     </div>
 </div>
- 
 @if (Model == null)
 {
     <div id="ResultPage">
@@ -18,6 +16,9 @@
 }
 else
 {
+    bool printFilePermission = false;
+
+    if (Model.Permissions.Find(x => x == "PrintFile") != null) { printFilePermission = true; }
     <div id="TitlePage">
         <h1>@localizer["ProductionRunStatus"]</h1>
     </div>

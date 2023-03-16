@@ -1,6 +1,6 @@
 ﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
-using evolUX.API.Areas.EvolDP.Repositories;
-using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
+using evolUX.API.Areas.evolDP.Repositories;
+using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Areas.Finishing.Repositories;
 using evolUX.API.Areas.Finishing.Repositories.Interfaces;
 using evolUX.API.Data.Context;
@@ -10,77 +10,30 @@ namespace evolUX.API.Areas.Core.Repositories
     public class WrapperRepository : IWrapperRepository
     {
         private readonly DapperContext _context;
-        private IEnvelopeMediaRepository _envelopeMedia;
-        private IExpeditionCompaniesRepository _expeditionCompanies;
-        private IExpeditionTypeRepository _expeditionType;
-        private IExpeditionZoneRepository _expeditionZone;
         private IFinishingRepository _finishing;
         private IUserRepository _user;
         private ISidebarRepository _sidebar;
         private IDocCodeRepository _docCode;
+        private IGenericRepository _generic;
+        private IExpeditionRepository _expeditionType;
+        private IConsumablesRepository _consumables;
+        private IServiceProvisionRepository _serviceProvision;
+
         private IProductionReportRepository _productionReport;
         private IRegistJobRepository _registJob;
         private ISessionRepository _session;
         private IPrintedFilesRepository _printedFiles;
-        private IFullfilledFilesRepository _fullfilledFiles;
+        private IFulfiledFilesRepository _fullfilledFiles;
         private IRecoverRepository _recover;
         private IPendingRegistRepository _pendingRegistRepository;
         private IPostalObjectRepository _postalObjectRepository;
         private IPendingRecoverRepository _pendingRecoverRepository;
-        private IExpeditionRepository _expeditionRepository;
+        private IExpeditionReportRepository _expeditionReportRepository;
 
 
         public WrapperRepository(DapperContext context)
         {
             _context = context;
-        }
-
-
-        public IEnvelopeMediaRepository EnvelopeMedia
-        {
-            get
-            {
-                if (_envelopeMedia == null)
-                {
-                    _envelopeMedia = new EnvelopeMediaRepository(_context);
-                }
-                return _envelopeMedia;
-            }
-        }
-        public IExpeditionCompaniesRepository ExpeditionCompanies
-        {
-            get
-            {
-                if (_expeditionCompanies == null)
-                {
-                    _expeditionCompanies = new ExpeditionCompaniesRepository(_context);
-                }
-                return _expeditionCompanies;
-            }
-        }
-
-        public IExpeditionTypeRepository ExpeditionType
-        {
-            get
-            {
-                if (_expeditionType == null)
-                {
-                    _expeditionType = new ExpeditionTypeRepository(_context);
-                }
-                return _expeditionType;
-            }
-        }
-
-        public IExpeditionZoneRepository ExpeditionZone
-        {
-            get
-            {
-                if (_expeditionZone == null)
-                {
-                    _expeditionZone = new ExpeditionZoneRepository(_context);
-                }
-                return _expeditionZone;
-            }
         }
 
         public IFinishingRepository Finishing
@@ -130,7 +83,52 @@ namespace evolUX.API.Areas.Core.Repositories
                 return _docCode;
             }
         }
+        public IGenericRepository Generic
+        {
+            get
+            {
+                if (_generic == null)
+                {
+                    _generic = new GenericRepository(_context);
+                }
+                return _generic;
+            }
+        }
 
+        public IConsumablesRepository Consumables
+        {
+            get
+            {
+                if (_consumables == null)
+                {
+                    _consumables = new ConsumablesRepository(_context);
+                }
+                return _consumables;
+            }
+        }
+        public IExpeditionRepository ExpeditionType
+        {
+            get
+            {
+                if (_expeditionType == null)
+                {
+                    _expeditionType = new ExpeditionRepository(_context);
+                }
+                return _expeditionType;
+            }
+        }
+       
+        public IServiceProvisionRepository ServiceProvision
+        {
+            get
+            {
+                if (_serviceProvision == null)
+                {
+                    _serviceProvision = new ServiceProvisionRepository(_context);
+                }
+                return _serviceProvision;
+            }
+        }
         public IProductionReportRepository ProductionReport
         {
             get
@@ -178,13 +176,13 @@ namespace evolUX.API.Areas.Core.Repositories
                 return _printedFiles;
             }
         }
-        public IFullfilledFilesRepository FullfilledFiles
+        public IFulfiledFilesRepository FullfilledFiles
         {
             get
             {
                 if (_fullfilledFiles == null)
                 {
-                    _fullfilledFiles = new FullfilledFilesRepository(_context);
+                    _fullfilledFiles = new FulfiledFilesRepository(_context);
                 }
                 return _fullfilledFiles;
             }
@@ -235,15 +233,15 @@ namespace evolUX.API.Areas.Core.Repositories
             }
         }
 
-        public IExpeditionRepository Expedition
+        public IExpeditionReportRepository ExpeditionReport
         {
             get
             {
-                if (_expeditionRepository == null)
+                if (_expeditionReportRepository == null)
                 {
-                    _expeditionRepository = new ExpeditionRepository(_context);
+                    _expeditionReportRepository = new ExpeditionReportRepository(_context);
                 }
-                return _expeditionRepository;
+                return _expeditionReportRepository;
             }
         }
     }

@@ -129,23 +129,26 @@
   <data name="ActionBillingReport" xml:space="preserve">
     <value>Controlo de Facturação</value>
   </data>
-  <data name="ActionConcludedFullfill" xml:space="preserve">
+  <data name="ActionConcludedFulfilment" xml:space="preserve">
     <value>Envelopagem Concluída</value>
   </data>
-  <data name="ActionConcludedFullfill_Link" xml:space="preserve">
-    <value>/Finishing/ConcludedFullfill/Index</value>
+  <data name="ActionConcludedFulfilment_Link" xml:space="preserve">
+    <value>/Finishing/ConcludedFulfilment/Index</value>
   </data>
-  <data name="ActionConcludedPrint" xml:space="preserve">
+  <data name="ActionConcludedPrinting" xml:space="preserve">
     <value>Impressão Concluída</value>
   </data>
-  <data name="ActionConcludedPrint_Link" xml:space="preserve">
-    <value>/Finishing/ConcludedPrint/Index</value>
+  <data name="ActionConcludedPrinting_Link" xml:space="preserve">
+    <value>/Finishing/ConcludedPrinting/Index</value>
   </data>
   <data name="ActionConcludedRegist" xml:space="preserve">
     <value>Impressão/Envelopagem</value>
   </data>
   <data name="ActionConfiguredFlows" xml:space="preserve">
     <value>Fluxos Configurados</value>
+  </data>
+  <data name="ActionConsumables" xml:space="preserve">
+    <value>Consumíveis</value>
   </data>
   <data name="ActionDeleteUser" xml:space="preserve">
     <value>Apagar</value>
@@ -161,6 +164,9 @@
   </data>
   <data name="ActionEnvelopeRange" xml:space="preserve">
     <value>Gamas de Envelopes</value>
+  </data>
+  <data name="ActionEnvelopeRange_Link" xml:space="preserve">
+    <value>/evolDP/Consumables/EnvelopeMedia</value>
   </data>
   <data name="ActionErrorManagement" xml:space="preserve">
     <value>Gestão de Erros</value>
@@ -190,22 +196,31 @@
     <value>Guias de Expedição</value>
   </data>
   <data name="ActionExpeditionCompanies" xml:space="preserve">
-    <value>Companhias de Expedição</value>
+    <value>Companhias</value>
   </data>
-  <data name="ActionExpeditionReport" xml:space="preserve">
-    <value>Relatórios de Expedição</value>
+  <data name="ActionExpeditionCompanies_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Companies</value>
+  </data>
+  <data name="ActionExpeditionConfig" xml:space="preserve">
+    <value>Expedição</value>
   </data>
   <data name="ActionExpeditionReportList" xml:space="preserve">
     <value>Guias Geradas</value>
   </data>
   <data name="ActionExpeditionReportList_Link" xml:space="preserve">
-    <value>/Finishing/Expedition/Index</value>
+    <value>/Finishing/ExpeditionReport/Index</value>
   </data>
   <data name="ActionExpeditionTypes" xml:space="preserve">
-    <value>Tipos de Expedição</value>
+    <value>Tipos</value>
+  </data>
+  <data name="ActionExpeditionTypes_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Types</value>
   </data>
   <data name="ActionExpeditionZones" xml:space="preserve">
-    <value>Zonas de Expedição</value>
+    <value>Zonas</value>
+  </data>
+  <data name="ActionExpeditionZones_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Zones</value>
   </data>
   <data name="ActionFlowsSchedulerRules" xml:space="preserve">
     <value>Registo Automático de Jobs</value>
@@ -228,11 +243,20 @@
   <data name="ActionMarkFilesinError" xml:space="preserve">
     <value>Marcar Ficheiros em Erro</value>
   </data>
-  <data name="ActionMaterialProductionRepor" xml:space="preserve">
+  <data name="ActionMaterialManagement" xml:space="preserve">
+    <value>Porfólio</value>
+  </data>
+  <data name="ActionMaterialManagement_Link" xml:space="preserve">
+    <value>/evolDP/Consumables/Management</value>
+  </data>
+  <data name="ActionMaterialProductionReport" xml:space="preserve">
     <value>Controlo de Produção / Consumíveis</value>
   </data>
-  <data name="ActionMaterials" xml:space="preserve">
-    <value>Materiais</value>
+  <data name="ActionMaterialType" xml:space="preserve">
+    <value>Tipos</value>
+  </data>
+  <data name="ActionMaterialType_Link" xml:space="preserve">
+    <value>/evolDP/Consumables/Types</value>
   </data>
   <data name="ActionMenuClientPages" xml:space="preserve">
     <value>Páginas Costumizadas</value>
@@ -247,19 +271,19 @@
     <value>&lt;i class='li-circle circle bx bx-pie-chart collapse-icon' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuError" xml:space="preserve">
-    <value>evolDP  Tratamento Erros</value>
+    <value>evolDP - Tratamento Erros</value>
   </data>
   <data name="ActionMenuError_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle  bx bx-error collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuEvolDPConfig" xml:space="preserve">
-    <value>evolDP  Configurações</value>
+    <value>evolDP - Configurações</value>
   </data>
   <data name="ActionMenuEvolDPConfig_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle bx bx-cog collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuEvolFlowConfig" xml:space="preserve">
-    <value>evolFlow Configurações</value>
+    <value>evolFlow - Configurações</value>
   </data>
   <data name="ActionMenuEvolFlowConfig_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle  bx bx-cog collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
@@ -271,7 +295,7 @@
     <value>&lt;i class='li-circle circle  bx bx-revision collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuFinishing" xml:space="preserve">
-    <value>Finishing</value>
+    <value>Impessão &amp; Acabamento</value>
   </data>
   <data name="ActionMenuFinishing_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle  bx bx-printer collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
@@ -304,7 +328,7 @@
     <value>Expedição Pendente</value>
   </data>
   <data name="ActionPendingExpeditionFiles_Link" xml:space="preserve">
-    <value>/Finishing/Expedition/PendingExpedition</value>
+    <value>/Finishing/ExpeditionReport/PendingExpedition</value>
   </data>
   <data name="ActionPendingProductionReport" xml:space="preserve">
     <value>Produção Pendente</value>
@@ -352,13 +376,19 @@
     <value>Listar</value>
   </data>
   <data name="ActionProjectVersions" xml:space="preserve">
-    <value>Versões de Projectos</value>
+    <value>Projectos de Formatação</value>
+  </data>
+  <data name="ActionProjectVersions_Link" xml:space="preserve">
+    <value>/evolDP/Generic/Projects</value>
   </data>
   <data name="ActionPurgeFlows" xml:space="preserve">
     <value>Expurgos</value>
   </data>
   <data name="ActionPurgeParameters" xml:space="preserve">
     <value>Parâmetros Expurgos</value>
+  </data>
+  <data name="ActionPurgeParameters_Link" xml:space="preserve">
+    <value>/evolDP/Generic/ConstantParameter</value>
   </data>
   <data name="ActionRecoverReport" xml:space="preserve">
     <value>Recuperações</value>
@@ -382,10 +412,25 @@
     <value>Retenções</value>
   </data>
   <data name="ActionServiceCompanies" xml:space="preserve">
-    <value>Companhias de Serviços</value>
+    <value>Companhias</value>
   </data>
-  <data name="ActionServiceCompanyServices" xml:space="preserve">
-    <value>Serviços por Companhia</value>
+  <data name="ActionServiceCompanies_Link" xml:space="preserve">
+    <value>/evolDP/ServiceProvision/Companies</value>
+  </data>
+  <data name="ActionServiceProvision" xml:space="preserve">
+    <value>Prestação de Serviços</value>
+  </data>
+  <data name="ActionServicesProvided" xml:space="preserve">
+    <value>Tipos de Serviço</value>
+  </data>
+  <data name="ActionServicesProvided_Link" xml:space="preserve">
+    <value>/evolDP/ServiceProvision/ServiceTypes</value>
+  </data>
+  <data name="ActionServiceWorkFlow" xml:space="preserve">
+    <value>Tipos de Tratamento</value>
+  </data>
+  <data name="ActionServiceWorkFlow_Link" xml:space="preserve">
+    <value>/evolDP/ServiceProvision/ServiceWorkFlow</value>
   </data>
   <data name="ActionSupportInformation" xml:space="preserve">
     <value>Informação de Suporte</value>

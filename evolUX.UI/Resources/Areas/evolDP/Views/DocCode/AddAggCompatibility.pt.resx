@@ -130,7 +130,7 @@
     <value>Tipo de Documento</value>
   </data>
   <data name="DocCodeAggCompatibility" xml:space="preserve">
-    <value>Configurar Compatibilidades de Agregação para Tipo de Documento</value>
+    <value>Compatibilidades de Agregação para Tipo de Documento</value>
   </data>
   <data name="DocCodeSelection" xml:space="preserve">
     <value>Selecionar Tipos de Dcumentos Compatíveis</value>
@@ -142,7 +142,7 @@
     <value>Layout</value>
   </data>
   <data name="DocType" xml:space="preserve">
-    <value>Subtipo</value>
+    <value>Tipo</value>
   </data>
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>

@@ -1,11 +1,12 @@
+
 using evolUX.UI.Areas.Core.Repositories;
 using evolUX.UI.Areas.Core.Repositories.Interfaces;
 using evolUX.UI.Areas.Core.Services;
 using evolUX.UI.Areas.Core.Services.Interfaces;
-using evolUX.UI.Areas.EvolDP.Repositories;
-using evolUX.UI.Areas.EvolDP.Repositories.Interfaces;
-using evolUX.UI.Areas.EvolDP.Services;
-using evolUX.UI.Areas.EvolDP.Services.Interfaces;
+using evolUX.UI.Areas.evolDP.Repositories;
+using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
+using evolUX.UI.Areas.evolDP.Services;
+using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using evolUX.UI.Areas.Finishing.Repositories;
 using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using evolUX.UI.Areas.Finishing.Services;
@@ -14,8 +15,6 @@ using evolUX.UI.Filters;
 using Flurl.Http.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Negotiate;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Options;
 using System.Globalization;
@@ -54,18 +53,25 @@ builder.Services.AddSingleton<IUserRepository, UserRepository>();
 //evolDP
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IDocCodeRepository, DocCodeRepository>();
-builder.Services.AddSingleton<IExpeditionTypeRepository, ExpeditionTypeRepository>();
-builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
+builder.Services.AddSingleton<IGenericService, GenericService>();
+builder.Services.AddSingleton<IGenericRepository, GenericRepository>();
+builder.Services.AddSingleton<IExpeditionRepository, ExpeditionRepository>();
+builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
+builder.Services.AddSingleton<IConsumablesRepository, ConsumablesRepository>();
+builder.Services.AddSingleton<IConsumablesService, ConsumablesService>();
+builder.Services.AddSingleton<IServiceProvisionRepository, ServiceProvisionRepository>();
+builder.Services.AddSingleton<IServiceProvisionService, ServiceProvisionService>();
+
 
 //Finishing
 builder.Services.AddSingleton<IProductionReportService, ProductionReportService>();
 builder.Services.AddSingleton<IProductionReportRepository, ProductionReportRepository>();
 builder.Services.AddSingleton<IPrintRepository, PrintRepository>();
 builder.Services.AddSingleton<IPrintService, PrintService>();
-builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
-builder.Services.AddSingleton<IConcludedPrintRepository, ConcludedPrintRepository>();
-builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillService>();
-builder.Services.AddSingleton<IConcludedFullfillRepository, ConcludedFullfillRepository>();
+builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintingService>();
+builder.Services.AddSingleton<IConcludedPrintRepository, ConcludedPrintingRepository>();
+builder.Services.AddSingleton<IConcludedFulfilmentService, ConcludedFulfilmentService>();
+builder.Services.AddSingleton<IConcludedFulfilmentRepository, ConcludedFulfilmentRepository>();
 builder.Services.AddSingleton<IRecoverService, RecoverService>();
 builder.Services.AddSingleton<IRecoverRepository, RecoverRepository>();
 builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();
@@ -74,8 +80,8 @@ builder.Services.AddSingleton<IPendingRegistService, PendingRegistService>();
 builder.Services.AddSingleton<IPendingRegistRepository, PendingRegistRepository>();
 builder.Services.AddSingleton<IPendingRecoverService, PendingRecoverService>();
 builder.Services.AddSingleton<IPendingRecoverRepository, PendingRecoverRepository>();
-builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
-builder.Services.AddSingleton<IExpeditionRepository, ExpeditionRepository>();
+builder.Services.AddSingleton<IExpeditionReportService, ExpeditionReportService>();
+builder.Services.AddSingleton<IExpeditionReportRepository, ExpeditionReportRepository>();
 
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

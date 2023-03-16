@@ -5,7 +5,11 @@
 
 @model PrinterViewModel
 @*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
+@{
+    bool PrintFile = false;
 
+    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+}
 <div class="d-flex justify-content-center" >
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
       <span class="sr-only">Loading...</span>

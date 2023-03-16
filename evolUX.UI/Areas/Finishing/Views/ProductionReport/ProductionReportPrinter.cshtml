@@ -9,6 +9,11 @@
 @*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
 
 @{
+    bool PrintFile = false;
+    bool IgnoreFilePrinterSpecs = false;
+    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+    if (Model.Permissions.Find(x => x == "IgnoreFilePrinterSpecs") != null) { IgnoreFilePrinterSpecs = true; }
+
     IList<ProductionDetailInfo> filters = Model.filters.ToList();
     TempData["filters"] = JsonConvert.SerializeObject(filters);
     Dictionary<int, string> stations = new Dictionary<int, string>();
@@ -160,8 +165,10 @@ else
                         }
                     </select>
 
-                   
-                    <input type="submit" name="Submit" class="btn btn-block btn-outline-info btn-evoldp" style="position:relative; top: -8px;"/>
+                    @if (PrintFile)
+                    {
+                        <input type="submit" name="Submit" class="btn btn-block btn-outline-info btn-evoldp" style="position:relative; top: -8px;"/>
+                    }
                 </div>
             </div>
             

@@ -1,18 +1,10 @@
-﻿using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
+﻿using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Areas.Finishing.Repositories.Interfaces;
 
 namespace evolUX.API.Areas.Core.Repositories.Interfaces
 {
     public interface IWrapperRepository
     {
-        IEnvelopeMediaRepository EnvelopeMedia { get; }
-
-        IExpeditionCompaniesRepository ExpeditionCompanies { get; }
-
-        IExpeditionTypeRepository ExpeditionType { get; }
-
-        IExpeditionZoneRepository ExpeditionZone { get; }
-
         IFinishingRepository Finishing { get; }
 
         IUserRepository User { get; }
@@ -20,6 +12,14 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
         ISidebarRepository Sidebar { get; }
 
         IDocCodeRepository DocCode { get; }
+
+        IGenericRepository Generic { get; }
+
+        IExpeditionRepository ExpeditionType { get; }
+
+        IConsumablesRepository Consumables { get; }
+
+        IServiceProvisionRepository ServiceProvision { get; }
 
         IProductionReportRepository ProductionReport { get; }
 
@@ -29,7 +29,7 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
 
         IPrintedFilesRepository PrintedFiles { get; }
 
-        IFullfilledFilesRepository FullfilledFiles { get; }
+        IFulfiledFilesRepository FullfilledFiles { get; }
 
         IRecoverRepository Recover { get; }
 
@@ -39,6 +39,6 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
 
         IPendingRecoverRepository PendingRecover { get; }
 
-        IExpeditionRepository Expedition { get; }
+        IExpeditionReportRepository ExpeditionReport { get; }
     }
 }

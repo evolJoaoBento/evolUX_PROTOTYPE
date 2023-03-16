@@ -141,8 +141,11 @@
   <data name="DocLayout" xml:space="preserve">
     <value>Layout</value>
   </data>
+  <data name="DocLayoutDocTypeDetail" xml:space="preserve">
+    <value>Detalhe para Layout/Tipo:</value>
+  </data>
   <data name="DocType" xml:space="preserve">
-    <value>Subtipo</value>
+    <value>Tipo</value>
   </data>
   <data name="Electronic" xml:space="preserve">
     <value>Gerar outros formatos</value>
@@ -176,5 +179,8 @@
   </data>
   <data name="PrintMatchCode" xml:space="preserve">
     <value>Grupo de Serviços de Impressão</value>
+  </data>
+  <data name="PrintMatchCodeEmpty" xml:space="preserve">
+    <value>Documentos Genéricos</value>
   </data>
 </root>

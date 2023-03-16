@@ -2,7 +2,7 @@
 
 namespace Shared.ViewModels.Areas.Core
 {
-    public class ResoursesViewModel
+    public class ResoursesViewModel: ItemPermissions
     {
         public IEnumerable<ResourceInfo> Resources { get; set; }
     }

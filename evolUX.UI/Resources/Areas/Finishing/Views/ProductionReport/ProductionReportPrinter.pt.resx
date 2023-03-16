@@ -132,6 +132,9 @@
   <data name="ExpCenterCode" xml:space="preserve">
     <value>Centro de Expedição</value>
   </data>
+  <data name="ExpCompany" xml:space="preserve">
+    <value>Companhia de Expedição</value>
+  </data>
   <data name="ExpCompanyCode" xml:space="preserve">
     <value>Companhia </value>
   </data>
@@ -153,7 +156,7 @@
   <data name="Files" xml:space="preserve">
     <value>Ficheiros</value>
   </data>
-  <data name="Fullfilling" xml:space="preserve">
+  <data name="Fulfilment" xml:space="preserve">
     <value>Envelopagem</value>
   </data>
   <data name="FullFillMaterialCode" xml:space="preserve">
@@ -174,8 +177,20 @@
   <data name="Papers" xml:space="preserve">
     <value>Papeis</value>
   </data>
+  <data name="Please select an option" xml:space="preserve">
+    <value>Por favor selecione uma opção</value>
+  </data>
   <data name="PlexCode" xml:space="preserve">
     <value>Tipo</value>
+  </data>
+  <data name="PrintBlackWhite" xml:space="preserve">
+    <value>Impressão Preto/Branco</value>
+  </data>
+  <data name="PrintColor" xml:space="preserve">
+    <value>Impressão Cores</value>
+  </data>
+  <data name="PrintDuplex" xml:space="preserve">
+    <value>Impressão Duplex</value>
   </data>
   <data name="PrinterOperator" xml:space="preserve">
     <value>Operador [Impressora]</value>
@@ -183,11 +198,17 @@
   <data name="Printing" xml:space="preserve">
     <value>Impressão</value>
   </data>
+  <data name="PrintSimplex" xml:space="preserve">
+    <value>Impressão Simplex</value>
+  </data>
   <data name="PrintStatus" xml:space="preserve">
     <value>Ficheiros para Impressão</value>
   </data>
   <data name="SequenceNumber" xml:space="preserve">
     <value>Nº Sequência</value>
+  </data>
+  <data name="ServiceTask" xml:space="preserve">
+    <value>Tipo de Tratamento</value>
   </data>
   <data name="ServiceTaskCode" xml:space="preserve">
     <value>Tratamento</value>

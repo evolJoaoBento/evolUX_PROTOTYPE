@@ -66,8 +66,8 @@ namespace evolUX.API.Areas.Core.Repositories
 
             using (var connection = _context.CreateConnectionEvolFlow())
             {
-                IEnumerable<string> servers = await connection.QueryAsync<string>(sql);
-                return servers;
+                IEnumerable<string> permissions = await connection.QueryAsync<string>(sql);
+                return permissions;
             }
         }
 
@@ -97,7 +97,7 @@ namespace evolUX.API.Areas.Core.Repositories
             }
         }
 
-        public async Task<DataTable> GetCompanyBusinness(IEnumerable<string> servers, string CompanyType)
+        public async Task<DataTable> GetCompanyBusiness(IEnumerable<string> servers, string CompanyType)
         {
             string serversStr = servers.toCommaSeperatedFormatedString();
 

@@ -32,13 +32,13 @@ namespace evolUX.API.Areas.Finishing.Controllers
         //THE SERVICECOMPANYLIST SHOULD USE A SESSION VARIABLE IN THE UI LAYER
         [HttpGet]
         [ActionName("GetServiceCompanies")]
-        public async Task<ActionResult<ServiceCompanyViewModel>> GetServiceCompanies([FromBody] string ServiceCompanyListJSON)
+        public async Task<ActionResult<ServiceCompaniesViewModel>> GetServiceCompanies([FromBody] string ServiceCompanyListJSON)
         {
             DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
             DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
             try
             {
-                ServiceCompanyViewModel viewmodel = new ServiceCompanyViewModel();
+                ServiceCompaniesViewModel viewmodel = new ServiceCompaniesViewModel();
                 viewmodel.ServiceCompanies = await _pendingRecoverService.GetServiceCompanies(ServiceCompanyList);
                 _logger.LogInfo("GetServiceCompanies Get");
                 return Ok(viewmodel);

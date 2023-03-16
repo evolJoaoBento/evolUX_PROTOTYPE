@@ -3,7 +3,7 @@ using Shared.ViewModels.Areas.evolDP;
 using Shared.ViewModels.General;
 using System.Data;
 
-namespace evolUX.UI.Areas.EvolDP.Repositories.Interfaces
+namespace evolUX.UI.Areas.evolDP.Repositories.Interfaces
 {
     public interface IDocCodeRepository
     {
@@ -20,5 +20,6 @@ namespace evolUX.UI.Areas.EvolDP.Repositories.Interfaces
         public Task<ResultsViewModel> DeleteDocCode(DocCode docCode);
         public Task<DocCodeCompatibilityViewModel> GetCompatibility(int docCodeID);
         public Task<DocCodeCompatibilityViewModel> ChangeCompatibility(int docCodeID, List<string> docCodeList);
+        public Task<DocCodeData4ScriptViewModel> DocCodeData4Script(int docCodeID, int startDate);
     }
 }

@@ -16,6 +16,8 @@
 </style>
 <div id="TitlePage">
     <h1>@localizer["PendingRegistDetail"]</h1>
+    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="Finishing" asp-controller="PendingRegist" asp-action="PendingRegist">
+    </a>    
     <h2>@ViewBag.RunName</h2>
 </div>
 @if (Model.PendingRegistDetail.ToRegistPrintFiles.Count > 0)

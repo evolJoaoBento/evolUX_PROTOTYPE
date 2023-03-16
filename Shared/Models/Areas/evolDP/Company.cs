@@ -9,6 +9,7 @@
         public string CompanyPostalCode { get; set; }
         public string CompanyPostalCodeDescription { get; set; }
         public string CompanyCountry { get; set; }
+        public string CompanyServer { get ; set; }
         public Company()
         {
             ID = 0;
@@ -18,6 +19,7 @@
             CompanyPostalCode = string.Empty;
             CompanyPostalCodeDescription = string.Empty;
             CompanyCountry = string.Empty;
+            CompanyServer = string.Empty;
         }
     }
 }

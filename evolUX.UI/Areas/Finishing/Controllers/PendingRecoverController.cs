@@ -1,21 +1,16 @@
 ﻿using Shared.ViewModels.Areas.Finishing;
-using evolUX.API.Areas.Core.ViewModels;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using System.Net;
 using System.Data;
 using Flurl.Http;
 using evolUX.UI.Exceptions;
 using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
-using static Microsoft.AspNetCore.Razor.Language.TagHelperMetadata;
-using Shared.Models.Areas.Finishing;
 using Shared.Models.General;
 using System.Security.Claims;
 using Shared.Models.Areas.evolDP;
+using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -38,7 +33,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
                 if (ServiceCompanies.Rows.Count > 1)
                 {
-                    ServiceCompanyViewModel result = new ServiceCompanyViewModel();
+                    ServiceCompaniesViewModel result = new ServiceCompaniesViewModel();
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     List<Company> sList = new List<Company>();
                     foreach (DataRow row in ServiceCompanies.Rows)
                     {
@@ -55,7 +51,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 else
                 {
                     string scValues = ServiceCompanies.Rows[0]["ID"].ToString() + "|" + ServiceCompanies.Rows[0]["CompanyCode"].ToString() + " | " + ServiceCompanies.Rows[0]["CompanyName"].ToString();
-                    return RedirectToAction("PendingRecoverDetail", new { ServiceCompanyValues = scValues });
+                    return RedirectToAction("PendingRecoverDetail", "PendingRecover", new { Area = "Finishing", ServiceCompanyValues = scValues });
                 }
             }
             catch (FlurlHttpException ex)
@@ -108,6 +104,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 TempData["ServiceCompanyName"] = ServiceCompanyName;
 
                 PendingRecoverDetailViewModel result = await _pendingRecoverService.GetPendingRecoveries(ServiceCompanyID, ServiceCompanyCode);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 ViewBag.ServiceCompanyID = ServiceCompanyID;
                 ViewBag.ServiceCompanyCode = ServiceCompanyCode;
 
@@ -173,7 +170,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 if (result != null && result.Error.ToUpper() == "SUCCESS")
                 {
                     string scValues = ServiceCompanyID.ToString() + "|" + ServiceCompanyCode + "|" + ServiceCompanyName;
-                    return RedirectToAction("PendingRecoverDetail", "PendingRecover", new { ServiceCompanyValues = scValues });
+                    return RedirectToAction("PendingRecoverDetail", "PendingRecover", new { Area = "Finishing", ServiceCompanyValues = scValues });
                 }
                 return View("MessageView", new MessageViewModel(result.ErrorID.ToString(), "", result.Error));
             }

@@ -3,7 +3,12 @@
 @inject IViewLocalizer localizer
 @model PendingRecoverDetailViewModel
 
-<div class="d-flex justify-content-center" >
+@{
+    bool PrintFile = false;
+
+    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+}
+<div class="d-flex justify-content-center">
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
       <span class="sr-only">Loading...</span>
     </div>
@@ -19,7 +24,8 @@ else
 {
     <div id="TitlePage">
         <h1>@localizer["PendingRecover"] @ViewBag.ServiceCompanyName</h1>
-    </div> 
+    </div>
+    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="Finishing" asp-controller="PendingRecover" asp-action="Index"></a>   
     @if (Model.PendingRecoverDetail.PendingRecoverFiles.Count == 0 && Model.PendingRecoverDetail.PendingRecoverRegistDetailFiles.Count == 0)
     {
          <h4 class="display-4 text-center">@localizer["EmptyResult"]</h4>       

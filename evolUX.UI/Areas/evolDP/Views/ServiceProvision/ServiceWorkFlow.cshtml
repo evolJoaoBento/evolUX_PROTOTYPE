@@ -1,0 +1,189 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model ServiceWorkFlowViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddServiceCompany = false;
+    bool AddServiceTask = false;
+    bool DeleteServiceTask = false;
+    bool ExportServiceTask = false;
+    bool AddServiceCompanyExpCodes = false;
+    bool AddExpCode = false;
+    bool DeleteExpCode = false;
+    bool ExportExpCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddServiceCompanyExpCodes") != null) { AddServiceCompanyExpCodes = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceCompany") != null) { AddServiceCompany = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceTask") != null) { AddServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "DeleteServiceTask") != null) { DeleteServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "ExportServiceTask") != null) { ExportServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "AddExpCode") != null) { AddExpCode = true; }
+    if (Model.Permissions.Find(x => x == "DeleteExpCode") != null) { DeleteExpCode = true; }
+    if (Model.Permissions.Find(x => x == "ExportExpCode") != null) { ExportExpCode = true; }
+}
+<div id="TitlePage">
+    <h1>@localizer["ServiceTask"]</h1>
+</div>
+@if (Model == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string localValue;
+    string value = "";
+    string Level0Name = "level";
+
+    int level = 0;
+    string idValue = "arrow" + level.ToString();
+    string nameValue = "";
+    @if (AddServiceTask && Model.ServiceTasksList.Count() > 0)
+    {
+        <table id="Hide|" class="table table-sm table-hover table-collapse-seperate">
+            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                <tr>
+                    <th>@localizer["ServiceTaskCode"]</th>
+                    <th>@localizer["ServiceTaskDesc"]</th>
+                    <th>@localizer["ServiceTaskRef"]</th>
+                </tr>
+            </thead>
+        <tbody id="bootstrap-overrides">
+                <tr>
+                    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceType">
+                        <td style="align-items:center; display:flex">
+                            <img onclick="CancelRow('')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
+                            <input style="display: none" id=ServiceTypeID name=ServiceTypeID type="number" value="0" />
+                        </td>
+                        <td><input id=ServiceTypeDesc name=ServiceTypeDesc type="text" maxlength="256" style="width: 100%" /></td>
+                        <td><input id=ServiceTypeCode name=ServiceTypeCode type="text" maxlength="15" style="width: 100%" /></td>
+                        <td>
+                            <select id=RefServiceTypeID name=RefServiceTypeID>
+                                @foreach(ServiceTask st in Model.ServiceTasksList)
+                                {
+                                    <option value="@st.ServiceTaskID">@st.ServiceTaskDesc</option>
+                                }
+                            </select>
+                        </td>
+                    </form>
+                </tr>
+        </tbody>
+    </table>
+    }
+    <table id="Show|@value" class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                
+                <th rowspan="2" width="120px" style="text-align: center">
+                    @if (AddServiceTask && Model.ServiceTasksList.Count() > 0)
+                    {
+                        <img onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddServiceTask"]" />
+                    }
+                </th>
+                <th rowspan="2">@localizer["ServiceTaskCode"]</th>
+                <th rowspan="2">@localizer["ServiceTaskDesc"]</th>
+                <th colspan="3">@localizer["ServiceTaskConfigs"]</th>
+            </tr>
+            <tr>
+                <th title="@localizer["ComplementServiceTaskTip"]">@localizer["ComplementServiceTask"]</th>
+                <th title="@localizer["ExternalExpeditionModeTip"]">@localizer["ExternalExpeditionMode"]</th>
+                <th title="@localizer["StationExceededDescTip"]">@localizer["StationExceededDesc"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @foreach (var st in Model.ServiceTasksList)
+            {
+                level++;
+                nameValue = Level0Name + level.ToString();
+                idValue = "arrow" + nameValue;
+                value = st.ServiceTaskID.ToString();
+                <tr>
+                    <td>
+                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskJson="@JsonConvert.SerializeObject(st)">
+                            <img style="background:none; width:25px;height:25px;" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
+                        </a>
+                        @if (AddServiceTask)
+                        {
+                            <img onclick="EditRow('@value')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
+                        }
+                    </td>
+                    <td>@st.ServiceTaskCode
+                        @if (st.ServiceTypes.Count() > 0)
+                        {
+                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                        }
+                    </td>
+                    <td>
+                        @st.ServiceTaskDesc
+                    </td>
+                    <td>
+                        @Model.ServiceTasksList.FirstOrDefault(x => x.ServiceTaskID == st.ComplementServiceTaskID)?.ServiceTaskDesc
+                    </td>
+                    <td>
+                        @{
+                            localValue = "ExternalExpeditionMode" + st.ExternalExpeditionMode;
+                        }
+                        @localizer[localValue]
+                    </td>
+                    <td>@st.StationExceededDesc</td>
+                </tr>
+                @if (st.ServiceTypes.Count() > 0)
+                {
+                <tr id="@nameValue" style="display: none">
+                    <td colspan="4">
+                        <table class="table table-sm table-hover table-collapse-seperate">
+                            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                <tr>
+                                    <th>@localizer["ServiceTypeDesc"]</th>
+                                    <th>@localizer["ServiceTypeCode"]</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bootstrap-overrides">
+                                    @foreach (ServiceTypeElement s in st.ServiceTypes)
+                                    {
+                                        <tr>
+                                            <td>@s.ServiceTypeDesc</td>
+                                            <td>@s.ServiceTypeCode</td>
+                                        </tr>
+                                    }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+        function CancelRow(value) {
+            eShide('Hide|' + value);
+            eSshow('Show|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = true;
+            return false;
+        }
+        function EditRow(value) {
+            eShide('Show|' + value);
+            eSshow('Hide|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = false;
+
+            let str = 'Hide|' + value;
+            trElements = document.querySelectorAll('tr[id^="Hide|"]');
+            trElements.forEach(tElement => {
+                if (tElement.id != str) {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                }
+            });
+        }
+    </script>
+}

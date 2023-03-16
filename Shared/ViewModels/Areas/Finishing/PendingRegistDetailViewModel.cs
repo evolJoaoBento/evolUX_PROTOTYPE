@@ -1,8 +1,9 @@
-﻿using Shared.Models.Areas.Finishing;
+﻿using Shared.Models.Areas.Core;
+using Shared.Models.Areas.Finishing;
 
 namespace Shared.ViewModels.Areas.Finishing
 {
-    public class PendingRegistDetailViewModel
+    public class PendingRegistDetailViewModel: ItemPermissions
     {
         public PendingRegistDetailInfo PendingRegistDetail { get; set; }
         public PendingRegistDetailViewModel()

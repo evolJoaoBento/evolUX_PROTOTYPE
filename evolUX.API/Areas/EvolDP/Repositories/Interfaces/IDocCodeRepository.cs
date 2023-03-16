@@ -3,7 +3,7 @@ using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
 using System.Data;
 
-namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
+namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
 {
     public interface IDocCodeRepository
     {
@@ -19,11 +19,8 @@ namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
         public Task<IEnumerable<ExceptionLevel>> SetExceptionLevel(int level, int exceptionID, string exceptionCode, string exceptionDescription);
         public Task<IEnumerable<ExceptionLevel>> DeleteExceptionLevel(int level, int exceptionID);
 
-        public Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMediaGroups(int? envMediaGroupID);
         public Task<IEnumerable<int>> GetAggregationList();
-        public Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(int? expeditionType);
-        public Task<IEnumerable<ExpCompanyServiceTask>> GetExpCompanyServiceTask(string expCode);
-        public Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID);
+        public Task<IEnumerable<string>> GetPrintMatchCode();
         public Task<GenericOptionList> GetSuporTypeOptionList();
 
         public Task<Result> DeleteDocCodeConfig(int docCodeID, int startDate);
@@ -31,5 +28,7 @@ namespace evolUX.API.Areas.EvolDP.Repositories.Interfaces
 
         public Task<IEnumerable<AggregateDocCode>> GetCompatibility(int docCodeID);
         public Task<IEnumerable<AggregateDocCode>> ChangeCompatibility(int docCodeID, DataTable docCodeList);
+        public Task<DocCodeData4ScriptViewModel> DocCodeData4Script(int docCodeID, int startDate);
+        
     }
 }

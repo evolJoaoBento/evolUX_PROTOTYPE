@@ -169,7 +169,7 @@
     <value>Layout</value>
   </data>
   <data name="DocType" xml:space="preserve">
-    <value>Subtipo</value>
+    <value>Tipo</value>
   </data>
   <data name="Electronic" xml:space="preserve">
     <value>Gerar outros formatos</value>
@@ -244,7 +244,7 @@
     <value>Sim</value>
   </data>
   <data name="AddDoc" xml:space="preserve">
-    <value>Adicionar Tipo de Documento</value>
+    <value>Adicionar Layout / Tipo de Documento</value>
   </data>
   <data name="InvalidDate" xml:space="preserve">
     <value>Configuração de Data Inválida</value>
@@ -284,5 +284,8 @@
   </data>
   <data name="DocCodeChange" xml:space="preserve">
     <value>Editar Tipo de Documento</value>
+  </data>
+  <data name="PrintMatchCodeEmpty" xml:space="preserve">
+    <value>Documentos Genéricos</value>
   </data>
 </root>

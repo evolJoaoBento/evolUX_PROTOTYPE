@@ -8,17 +8,16 @@
 @model DocCodeGroupViewModel;
 @{
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddDocCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddDocCode") != null) { AddDocCode = true; }
 }
-
+<div id="TitlePage">
+    <h1>@localizer["DocCodeList"]</h1>
+</div>
 <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-source="AddDoc">
-    <img style="background:none; width:50px;height:50px;" src="@siteURL/images/add_doc.png" title="@localizer["AddDocCode"]" />
+    <img style="background:none; width:50px;height:50px;" src="~/images/add_doc.png" title="@localizer["AddDocCode"]" />
 </a>
-
-<!--<div>
-    <a class="btn btn-primary" asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevel1">Configurar Companhia</a>
-    <a class="btn btn-primary" asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevel2">Configurar Rede/Canal</a>
-    <a class="btn btn-primary" asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevel3">Configurar Segmento de Cliente</a>
-</div>-->
 @if (Model == null)
 {
     <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
@@ -74,13 +73,17 @@ else
                                                 value = d.DocLayout + "/" + docTypeDesc;
                                             }
                                             <a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(d)">
-                                                <img style="background:none; width:25px;height:25px;" src="@siteURL/images/list.png" title="@localizer["List"]: @value" />
+                                                <img style="background:none; width:25px;height:25px;" src="~/images/list.png" title="@localizer["List"]: @value" />
                                                 </a>
                                             </td>
                                             <td>@d.DocLayout</td>
                                             <td>@docTypeDesc</td>
                                             <td>@d.DocDescription</td>
-                                            <td>@d.PrintMatchCode</td>
+                                            @if (!string.IsNullOrEmpty(d.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                                            {
+                                                value = d.PrintMatchCode;
+                                            }
+                                            <td>@value</td>
                                         </tr>
                                         }
                                 </tbody>

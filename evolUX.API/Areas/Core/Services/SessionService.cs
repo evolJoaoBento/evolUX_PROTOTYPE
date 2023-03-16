@@ -60,7 +60,7 @@ namespace evolUX.API.Areas.Core.Services
                 result.Add("evolDP/ServiceCompanies", JsonConvert.SerializeObject(serviceCompanies));
                 DataTable expeditionCompanies = await _repository.Session.GetCompanies(servers, "EXPEDITION");
                 result.Add("evolDP/ExpeditionCompanies", JsonConvert.SerializeObject(expeditionCompanies));
-                DataTable companyBusiness = await _repository.Session.GetCompanyBusinness(servers, "SERVICE");
+                DataTable companyBusiness = await _repository.Session.GetCompanyBusiness(servers, "SERVICE");
                 result.Add("evolDP/CompanyBusiness", JsonConvert.SerializeObject(companyBusiness));
 
                 GenericOptionList SuportTypeList = await _repository.DocCode.GetSuporTypeOptionList();

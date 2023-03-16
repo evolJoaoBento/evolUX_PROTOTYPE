@@ -169,7 +169,7 @@
     <value>Layout</value>
   </data>
   <data name="DocType" xml:space="preserve">
-    <value>Subtipo</value>
+    <value>Tipo</value>
   </data>
   <data name="Electronic" xml:space="preserve">
     <value>Gerar outros formatos</value>
@@ -274,7 +274,7 @@
     <value>Tipo de Tratamento</value>
   </data>
   <data name="StartDate" xml:space="preserve">
-    <value>Data Efetiva das Configurações</value>
+    <value>Data Início das configurações</value>
   </data>
   <data name="Action" xml:space="preserve">
     <value>Ações</value>
@@ -302,5 +302,14 @@
   </data>
   <data name="AggCompatibilityAdd" xml:space="preserve">
     <value>Adicionar Compatibilidades de Agregação</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Gerar script SQL</value>
+  </data>
+  <data name="DocCodeConfigList" xml:space="preserve">
+    <value>Detalhe do Tipo de Documento</value>
+  </data>
+  <data name="PrintMatchCodeEmpty" xml:space="preserve">
+    <value>Documentos Genéricos</value>
   </data>
 </root>

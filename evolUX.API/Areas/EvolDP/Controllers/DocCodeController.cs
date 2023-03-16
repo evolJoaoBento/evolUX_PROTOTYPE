@@ -1,5 +1,5 @@
 ﻿using evolUX.API.Areas.Core.Services.Interfaces;
-using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using evolUX.API.Areas.evolDP.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +18,7 @@ using Dapper;
 using System.Data;
 using System;
 
-namespace evolUX.Areas.EvolDP.Controllers
+namespace evolUX.Areas.evolDP.Controllers
 {
     [Route("api/evoldp/doccode/[action]")]
 
@@ -112,7 +112,7 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Get DocCodeLevel2 action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get DocCodeConfig action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }
@@ -293,7 +293,7 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Get RegistDocCodeConfig action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get ChangeDocCode action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
@@ -324,7 +324,7 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get DeleteDocCodeConfig action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
@@ -354,7 +354,7 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get DeleteDocCode action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
@@ -383,7 +383,7 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get GetCompatibility action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }
@@ -423,11 +423,40 @@ namespace evolUX.Areas.EvolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside Get ExceptoionDocCodeOptions action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Get ChangeCompatibility action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
         }
 
+        [HttpGet]
+        [ActionName("DocCodeData4Script")]
+        public async Task<ActionResult<DocCodeData4ScriptViewModel>> DocCodeData4Script([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("DocCodeID", out obj);
+                int docCodeID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("StartDate", out obj);
+                int startDate = Convert.ToInt32(obj.ToString());
+
+                DocCodeData4ScriptViewModel viewmodel = await _docCodeService.DocCodeData4Script(docCodeID, startDate);
+                _logger.LogInfo("DocCodeData4Script");
+                return Ok(viewmodel);
+
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get DocCodeData4Script action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+
+        }
     }
 }

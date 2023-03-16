@@ -66,68 +66,6 @@ BEGIN
 	ORDER BY d.ExceptionLevel1ID, d.ExceptionLevel2ID, d.ExceptionLevel3ID
 END
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_ENVELOPE_MEDIA_GROUP]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_ENVELOPE_MEDIA_GROUP] AS' 
-END
-GO
-ALTER  PROCEDURE [dbo].[RD_UX_GET_ENVELOPE_MEDIA_GROUP]
-	@EnvMediaGroupID int = NULL
-AS
-BEGIN
-	SET NOCOUNT ON
-	SELECT  EnvMediaGroupID, [Description], [DefaultEnvMediaID]
-	FROM RD_ENVELOPE_MEDIA_GROUP WITH(NOLOCK)
-	WHERE @EnvMediaGroupID is NULL OR EnvMediaGroupID = @EnvMediaGroupID
-	ORDER BY [Description]
-END
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPEDITION_TYPE]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_EXPEDITION_TYPE] AS' 
-END
-GO
-ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPEDITION_TYPE]
-	@ExpeditionType int = NULL
-AS
-BEGIN
-	SET NOCOUNT ON
-	SELECT ExpeditionType, [Priority], [Description]
-	FROM RD_EXPEDITION_TYPE WITH(NOLOCK)
-	WHERE @ExpeditionType is NULL OR ExpeditionType = @ExpeditionType
-	ORDER BY [Priority]
-END
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_SERVICE_TASK]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_SERVICE_TASK] AS' 
-END
-GO
-ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_TASK]
-	@ServiceTaskID int = NULL
-AS
-BEGIN
-	SELECT ServiceTaskID, ServiceTaskCode, [Description] ServiceTaskDesc, StationExceededDesc, ComplementServiceTaskID, ExternalExpeditionMode
-	FROM RD_SERVICE_TASK
-	WHERE @ServiceTaskID is NULL OR ServiceTaskID = @ServiceTaskID
-	ORDER BY ServiceTaskID
-END
-GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TASK]') AND type in (N'P', N'PC'))
-BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TASK] AS' 
-END
-GO
-ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TASK]
-	@ExpCode varchar(10) = NULL
-AS
-BEGIN
-	SELECT ExpCode, ExpCompanyID, ServiceTaskID
-	FROM RD_EXPCOMPANY_SERVICE_TASK
-	WHERE @ExpCode is NULL OR ExpCode = @ExpCode
-	ORDER BY ExpCode
-END
-GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RDC_UX_GET_SUPORT_TYPE_CONFIG]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RDC_UX_GET_SUPORT_TYPE_CONFIG] AS' 

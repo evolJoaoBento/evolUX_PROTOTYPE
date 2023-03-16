@@ -1,0 +1,206 @@
+﻿@using Shared.ViewModels.Areas.Finishing
+@using Shared.ViewModels.Areas.evolDP
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Shared.Models.Areas.Finishing
+@inject IViewLocalizer localizer
+@model ExpeditionListViewModel
+@inject IConfiguration configuration
+@section Scripts
+{
+    <script type="text/javascript">
+        function refreshPage() {
+            window.location.reload();
+        };
+        function MessageBox(msg) {
+            alert(msg);
+        }
+    </script>
+}
+@{
+    bool PrintFile = false;
+
+    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+}
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+@if (Model == null)
+{
+    <div id="ResultPage">
+        <h3 class="display-4 text-center">@localizer["NoModelData"]</h3>
+    </div>
+}
+else
+{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+
+    <div id="TitlePage">
+        <h1>@localizer["PendingExpedition"] @ViewBag.BusinessDescription</h1>
+    </div>
+    @if (Model.ExpeditionList.Count() == 0)
+    {
+        <h4 class="display-4 text-center">@localizer["EmptyResult"]</h4>
+    }
+    else
+    {
+        string Level0Name = "level";
+        string Level1Name = "detail";
+
+        int count = 0;
+        int level = 0;
+        string idValue = "arrow" + count.ToString();
+        string nameValue = "";
+        string cValue = "";
+        <form id="ExpeditionFilesFrm" asp-area="Finishing" asp-controller="Expedition" asp-action="RegistExpeditionReport"
+                data-ajax="true"
+                data-ajax-method="POST"
+                data-ajax-mode="replace"
+                data-ajax-update="#response"
+                data-ajax-complete="refreshPage"
+                data-ajax-loading="myLoader">
+            @foreach (ExpServiceCompanyFileElement s in Model.ExpeditionList)
+            {
+                level++;
+                nameValue = Level0Name + level.ToString();
+                idValue = "arrow" + nameValue;
+                <table class="table table-bordered table-sm">
+                <thead>
+                    @if (!ViewBag.hasMultipleServiceCompanies)
+                    {
+                        <tr><th>@localizer["PendingExpeditionFiles"]</th></tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <th>@localizer["PendingExpeditionFiles"] [@s.ServiceCompanyName]
+                                @if (Model.ExpeditionList.Count() > 0)
+                                {
+                                    <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
+                                }
+                            </th>
+                        </tr>
+                    }
+                </thead>
+                <tbody id="@nameValue">
+                @foreach (ExpCompanyFileElement c in s.ExpCompanyList)
+                {
+                @foreach (ExpBusinessFileElement b in c.BusinessList)
+                {
+                @foreach (ExpRunFileElement r in b.RunList)
+                {
+                    <tr><td>
+                    <table class="table table-bordered table-sm table-striped">
+                    @{
+                        count++;
+                        nameValue = Level1Name + count.ToString();
+                        idValue = "arrow" + nameValue;
+                    }
+                    <thead>
+                        @if (ViewBag.hasMultipleCompanyBusiness)
+                        {
+                            <tr>
+                                <th colspan="5">
+                                    @c.ExpCompanyCode / @b.BusinessDescription [@r.RunDate (@r.RunSequence)]
+                                    <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
+                                </th>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <th colspan="5">
+                                    @c.ExpCompanyCode / @r.RunDate (@r.RunSequence)
+                                    <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue">
+                                    </a>
+                               </th>
+                             </tr>
+                        }
+                    </thead>
+                    <tbody id="@nameValue">
+                        <tr>
+                            <th style="background:none;width:50px;height:50px;"></th>
+                            <th>@localizer["FileName"]</th>
+                            <th>@localizer["ClientName"]</th>
+                            <th>@localizer["ContractNr"]</th>
+                            <th>@localizer["ClientNr"]</th>
+                        </tr>
+                    @foreach(ExpContractFileElement cc in r.ContractList)
+                    {
+                    @foreach (FileBase f in cc.FileList)
+                    {
+                        cValue = "Checked" + s.ServiceCompanyCode.ToString()+ "|" + c.ExpCompanyID.ToString() + "|" + r.RunID.ToString();
+                        <tr>
+                            <td align="center">
+                                <input value="@s.ServiceCompanyCode|@c.ExpCompanyID|@f.RunID|@f.FileID" name="CheckedFileList" type="checkbox" id="@cValue">
+                            </td>
+                            <td>@f.FileName</td>
+                            <td>@cc.ClientName</td>
+                            <td>@cc.ContractNr</td>
+                            <td>@cc.ClientNr</td>
+                        </tr>
+                    }
+                    }
+                        @{cValue = s.ServiceCompanyCode.ToString()+ "|" + c.ExpCompanyID.ToString() + "|" + r.RunID.ToString();}
+                        <tr>
+                            <td colspan="5">
+                                <button style="background:none;width:20px;height:20px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
+                                    <img style="background:none; width:20px;height:20px;" src="~/images/select-multiple.png" />
+                                </button>
+                                <button style="background:none;width:20px;height:20px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '@cValue')">
+                                    <img style="background:none; width:20px;height:20px;" src="~/images/unselect-multiple.png" />
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+                    </td>
+                    </tr>
+                }
+                }
+                }
+                <tr>
+                    @{cValue = s.ServiceCompanyCode.ToString();}
+                    <td>
+                        <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
+                            <img style="background:none; width:30px;height:30px;" src="~/images/select-multiple.png" />
+                        </button>
+                        <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '@cValue')">
+                            <img style="background:none; width:30px;height:30px;" src="~/images/unselect-multiple.png" />
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                        @{
+                            cValue = localizer["ExistsExpeditionReportsJobs"].Value
+                                    .Replace("@#Jobs#@", s.ExpeditionReportsJobs.Count.ToString())
+                                    .Replace("@#ServiceCompany#@", s.ServiceCompanyName);
+                            if (s.ExpeditionReportsJobs.Count > 0)
+                            {
+                                cValue += ". " + localizer["LastRegistedExpeditionReportsJob"].Value
+                                    .Replace("@#RegistTimeStamp#@", s.ExpeditionReportsJobs[0].RegistrationTimeStamp.ToString());
+                            }
+                        }
+                        <tr><th colspan="5">@cValue</th></tr>
+                </tfoot>
+                </table>
+            }
+            @if (level > 1)
+            {
+                <p class="my-3 d-flex justify-content-left" class="btn btn-block btn-primary">
+                    <input type="button" name="cmdselect" value='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '')">
+                    <input type="button" name="cmdunselect" value="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '')">
+                </p>
+            }
+            <p class="my-3 d-flex justify-content-center">
+                <input value="@localizer["Submit"]" type="submit" name="Submit" class="btn btn-block btn-primary" />
+            </p>
+        </form>
+        <div id="response" class="d-flex justify-content-center m-5"></div>
+    }
+}
+
+

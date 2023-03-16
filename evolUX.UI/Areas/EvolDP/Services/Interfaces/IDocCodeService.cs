@@ -4,7 +4,7 @@ using Shared.ViewModels.General;
 using System;
 using System.Data;
 
-namespace evolUX.UI.Areas.EvolDP.Services.Interfaces
+namespace evolUX.UI.Areas.evolDP.Services.Interfaces
 {
     public interface IDocCodeService
     {
@@ -22,5 +22,7 @@ namespace evolUX.UI.Areas.EvolDP.Services.Interfaces
         public Task<ResultsViewModel> DeleteDocCode(DocCode docCode);
         public Task<DocCodeCompatibilityViewModel> GetCompatibility(int docCodeID);
         public Task<DocCodeCompatibilityViewModel> ChangeCompatibility(int docCodeID, List<string> docCodeList);
-   }
+
+        public Task<List<string>> DocCodeData4Script(int docCodeID, int startDate);
+    }
 }

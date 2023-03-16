@@ -3,14 +3,14 @@ using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.evolDP;
 using evolUX.API.Data.Context;
 using System.Data;
-using evolUX.API.Areas.EvolDP.Repositories.Interfaces;
+using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using Shared.Models.Areas.Finishing;
 using evolUX.API.Models;
 using System.Data.SqlClient;
 using Shared.Models.General;
 using Shared.Models.Areas.Core;
 
-namespace evolUX.API.Areas.EvolDP.Repositories
+namespace evolUX.API.Areas.evolDP.Repositories
 {
     public class DocCodeRepository : IDocCodeRepository
     {
@@ -180,65 +180,20 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             }
 
         }
-        
-        
-        public async Task<IEnumerable<ExpCompanyServiceTask>> GetExpCompanyServiceTask(string expCode)
-        {
-            string sql = @"RD_UX_GET_EXPCOMPANY_SERVICE_TASK";
-            var parameters = new DynamicParameters();
-            if (!string.IsNullOrEmpty(expCode))
-                parameters.Add("ExpCode", expCode, DbType.Int64);
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                IEnumerable<ExpCompanyServiceTask> expCodes = await connection.QueryAsync<ExpCompanyServiceTask>(sql,
-                    parameters);
-                return expCodes;
-            }
-        }
-        
-        public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMediaGroups(int? envMediaGroupID)
-        {
-            string sql = @"RD_UX_GET_ENVELOPE_MEDIA_GROUP";
-            var parameters = new DynamicParameters();
-            if (envMediaGroupID != null && envMediaGroupID > 0) 
-                parameters.Add("EnvMediaGroupID", envMediaGroupID, DbType.Int64);
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                IEnumerable<EnvelopeMedia> envMedia = await connection.QueryAsync<EnvelopeMedia>(sql,
-                    parameters);
-                return envMedia;
-            }
-        }
-
+                       
         public async Task<IEnumerable<int>> GetAggregationList()
         {
             List<int> ilist = new List<int> { 0, 1, 2, 3 };
             return ilist;
         }
 
-        public async Task<IEnumerable<ExpeditionsType>> GetExpeditionTypes(int? expeditionType)
+        public async Task<IEnumerable<string>> GetPrintMatchCode()
         {
-            string sql = @"RD_UX_GET_EXPEDITION_TYPE";
-            var parameters = new DynamicParameters();
-            if (expeditionType != null && expeditionType > 0)
-                parameters.Add("ExpeditionType", expeditionType, DbType.String);
+            string sql = @"SELECT LTRIM(RTRIM(PrintMatchCode)) FROM RDC_PRINTMATCHCODE";
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<ExpeditionsType> expeditionCompanies = await connection.QueryAsync<ExpeditionsType>(sql, parameters);
-                return expeditionCompanies;
-            }
-        }
-
-        public async Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID)
-        {
-            string sql = @"RD_UX_GET_SERVICE_TASK";
-            var parameters = new DynamicParameters();
-            if (serviceTaskID != null && serviceTaskID > 0)
-                parameters.Add("ServiceTaskID", serviceTaskID, DbType.String);
-            using (var connection = _context.CreateConnectionEvolDP())
-            {
-                IEnumerable<ServiceTask> serviceTasks = await connection.QueryAsync<ServiceTask>(sql, parameters);
-                return serviceTasks;
+                IEnumerable<string> results = await connection.QueryAsync<string>(sql);
+                return results;
             }
         }
         
@@ -414,6 +369,33 @@ namespace evolUX.API.Areas.EvolDP.Repositories
             {
                 await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
                 return await GetCompatibility(docCodeID);
+            }
+        }
+        
+        public async Task<DocCodeData4ScriptViewModel> DocCodeData4Script(int docCodeID, int startDate)
+        {
+            string sql = @"RD_UX_GET_DOCCODE_DATA_FOR_SCRIPT";
+            var parameters = new DynamicParameters();
+            parameters.Add("DocCodeID", docCodeID, DbType.Int64);
+            parameters.Add("StartDate", startDate, DbType.Int64);
+
+            DocCodeData4ScriptViewModel result = new DocCodeData4ScriptViewModel();
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                var reader = connection.QueryMultiple(sql, parameters,
+                   commandType: CommandType.StoredProcedure);
+                if (reader != null) {
+                    result.ExceptionLevelList = reader.Read<ExceptionLevelScript>().ToList();
+                    List< DocCodeConfigScript> config = reader.Read<DocCodeConfigScript>().ToList();
+                    if (config != null && config.Count > 0)
+                    {
+                        result.Doc = config.First();
+                    }
+                    result.AggDocCodeList = reader.Read<DocCodeScript>().ToList();
+
+                    reader.Dispose();
+                }
+                return result;
             }
         }
     }

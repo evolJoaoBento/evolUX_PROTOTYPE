@@ -1,5 +1,4 @@
 ﻿using Shared.ViewModels.Areas.Finishing;
-using evolUX.API.Areas.Core.ViewModels;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +17,8 @@ using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
 using Shared.Models.Areas.Finishing;
 using Microsoft.Extensions.Localization;
-using evolUX_dev.Areas.EvolDP.Models;
+using evolUX_dev.Areas.evolDP.Models;
+using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
@@ -43,7 +43,8 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
                 if (ServiceCompanies.Rows.Count > 1)
                 {
-                    ServiceCompanyViewModel result = new ServiceCompanyViewModel();
+                    ServiceCompaniesViewModel result = new ServiceCompaniesViewModel();
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     List<Company> sList = new List<Company>();
                     foreach(DataRow row in ServiceCompanies.Rows)
                     {
@@ -60,7 +61,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 else
                 {
                     string scValues = ServiceCompanies.Rows[0]["ID"].ToString() + "|" + ServiceCompanies.Rows[0]["CompanyCode"].ToString() + " | " + ServiceCompanies.Rows[0]["CompanyName"].ToString();
-                    return RedirectToAction("ProductionRunReport", new { ServiceCompanyValues = scValues });
+                    return RedirectToAction("ProductionRunReport", "ProductionReport", new { Area = "Finishing", ServiceCompanyValues = scValues }); 
                 }
             }
             catch (FlurlHttpException ex)
@@ -113,6 +114,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             {
 
                 ProductionRunReportViewModel result = await _productionReportService.GetProductionRunReport(ServiceCompanyID);
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanies"));
                 if (ServiceCompanyDT.Rows.Count > 1)
                 {
@@ -178,6 +180,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
                 if (result != null && result.ProductionReport != null && result.ProductionReport.Count() > 0)
                 {
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     //TempData["ServiceCompanyCode"] = result.ProductionReport.First().ServiceCompanyCode;
                 }
                 ViewBag.RunName = RunName;
@@ -233,6 +236,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
                 if (result != null)
                 {
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                     if (result.ProductionReport != null && result.ProductionReport.Count() > 0)
                     {
                         
@@ -247,19 +251,6 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                         p.Description = _localizer["SelectPrinter"];
                         printerInfos.Insert(0,p);
                         result.Printers = printerInfos;
-                        
-                        string permissionsJSON = HttpContext.Session.GetString("evolUX/Permissions");
-                        ViewBag.PermissionPrintFile = false;
-                        ViewBag.PermissionIgnoreFilePrinterSpecs = false;
-
-                        if (!string.IsNullOrEmpty(permissionsJSON)) 
-                        {
-                            List<string> permissions = JsonConvert.DeserializeObject<List<string>>(permissionsJSON);
-                            if (!string.IsNullOrEmpty(permissions.Find(x => x == "PrintFile")))
-                                ViewBag.PermissionPrintFile = true;
-                            if (!string.IsNullOrEmpty(permissions.Find(x => x == "IgnoreFilePrinterSpecs")))
-                                ViewBag.PermissionIgnoreFilePrinterSpecs = true;
-                        }
                     }
                 }
                 result.filters = filters;

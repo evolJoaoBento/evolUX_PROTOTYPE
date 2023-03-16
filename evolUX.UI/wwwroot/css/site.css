@@ -51,6 +51,27 @@ a {
     text-decoration: underline !important;
 }
 
+.evoldp-agg-checkbox-class {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: url('~/images/uncheck_circle.png') no-repeat;
+    background-size: contain;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+    .evoldp-agg-checkbox-class:checked::before {
+        content: "";
+        display: block;
+        width: 20px;
+        height: 20px;
+        background: url('~/images/link.png') no-repeat;
+        background-size: contain;
+    }
 
 html {
     font-size: 14px;

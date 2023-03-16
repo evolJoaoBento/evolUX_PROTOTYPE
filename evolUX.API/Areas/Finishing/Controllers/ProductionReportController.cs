@@ -14,7 +14,7 @@ using System.Data.SqlClient;
 
 namespace evolUX.API.Areas.Finishing.Controllers
 {
-    [Route("api/finishing/[controller]/[action]")]
+    [Route("api/finishing/ProductionReport/[action]")]
     [ApiController]
     public class ProductionReportController : ControllerBase
     {

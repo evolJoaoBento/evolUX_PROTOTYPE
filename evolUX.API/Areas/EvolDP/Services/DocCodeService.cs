@@ -1,5 +1,5 @@
 ﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
-using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using evolUX.API.Areas.evolDP.Services.Interfaces;
 using Shared.ViewModels.Areas.evolDP;
 using Shared.Models.Areas.evolDP;
 using System.Security.Cryptography.Xml;
@@ -9,7 +9,7 @@ using Shared.Models.General;
 using System.Data;
 using System.Diagnostics;
 
-namespace evolUX.API.Areas.EvolDP.Services
+namespace evolUX.API.Areas.evolDP.Services
 {
     public class DocCodeService : IDocCodeService
     {
@@ -83,11 +83,12 @@ namespace evolUX.API.Areas.EvolDP.Services
             viewmodel.Exceptionslevel1List = await _repository.DocCode.GetExceptionLevel(1);
             viewmodel.Exceptionslevel2List = await _repository.DocCode.GetExceptionLevel(2);
             viewmodel.Exceptionslevel3List = await _repository.DocCode.GetExceptionLevel(3);
-            viewmodel.EnvMediaGroups = await _repository.DocCode.GetEnvelopeMediaGroups(null);
+            viewmodel.EnvMediaGroups = await _repository.Consumables.GetEnvelopeMediaGroups(null);
             viewmodel.AggregationList = await _repository.DocCode.GetAggregationList();
-            viewmodel.ExpeditionTypes = await _repository.DocCode.GetExpeditionTypes(null);
-            viewmodel.ExpCodeList = await _repository.DocCode.GetExpCompanyServiceTask("");
-            viewmodel.ServiceTasks = await _repository.DocCode.GetServiceTasks(null);
+            viewmodel.PrintMatchCodeList = await _repository.DocCode.GetPrintMatchCode();
+            viewmodel.ExpeditionTypes = await _repository.ExpeditionType.GetExpeditionTypes(null);
+            viewmodel.ExpCodeList = await _repository.ExpeditionType.GetExpCompanyServiceTask("");
+            viewmodel.ServiceTasks = await _repository.ServiceProvision.GetServiceTasks(null);
             return viewmodel;
         }
 
@@ -167,6 +168,15 @@ namespace evolUX.API.Areas.EvolDP.Services
 
             }
             return aggList;
+        }
+        public async Task<DocCodeData4ScriptViewModel> DocCodeData4Script(int docCodeID, int startDate)
+        {
+            DocCodeData4ScriptViewModel results = await _repository.DocCode.DocCodeData4Script(docCodeID, startDate);
+            if (results == null)
+            {
+
+            }
+            return results;
         }
     }
 }

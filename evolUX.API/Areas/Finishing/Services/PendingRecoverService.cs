@@ -19,7 +19,7 @@ namespace evolUX.API.Areas.Finishing.Services
 
         public async Task<IEnumerable<Company>> GetServiceCompanies(DataTable ServiceCompanyList)
         {
-            IEnumerable<Company> serviceCompanies = await _repository.PendingRecover.GetServiceCompanies(ServiceCompanyList);
+            IEnumerable<Company> serviceCompanies = await _repository.Generic.GetCompanies(null,ServiceCompanyList);
             if (serviceCompanies == null)
             {
 

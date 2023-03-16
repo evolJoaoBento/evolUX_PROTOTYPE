@@ -36,7 +36,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Areas\evolDP\Views\Generic\ConstantParameter.pt.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Areas\evolDP\Views\DocCode\ExceptionLevel.pt.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Areas\evolDP\Views\ServiceProvision\ServiceCompanyConfig.pt.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Areas\evolDP\Views\ServiceProvision\ServiceCompany.pt.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Update="Resources\Areas\Finishing\Views\ProductionReport\ProductionReportPrinter.en.resx">

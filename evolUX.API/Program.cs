@@ -1,7 +1,7 @@
 using evolUX.API.Areas.Core.Services;
 using evolUX.API.Areas.Core.Services.Interfaces;
-using evolUX.API.Areas.EvolDP.Services;
-using evolUX.API.Areas.EvolDP.Services.Interfaces;
+using evolUX.API.Areas.evolDP.Services;
+using evolUX.API.Areas.evolDP.Services.Interfaces;
 using evolUX.API.Areas.Finishing.Services;
 using evolUX.API.Areas.Finishing.Services.Interfaces;
 using evolUX.API.Data.Context;
@@ -21,7 +21,7 @@ using evolUX.API.Areas.Core.Repositories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//Corw
+//Core
 builder.Services.AddMvc();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddSingleton<ILoggerService, LoggerService>();
@@ -34,20 +34,21 @@ builder.Services.AddSingleton<IWrapperRepository, WrapperRepository>();
 
 //evolDP
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
-builder.Services.AddSingleton<IExpeditionCompaniesService, ExpeditionCompaniesService>();
-builder.Services.AddSingleton<IExpeditionTypeService, ExpeditionTypeService>();
-builder.Services.AddSingleton<IExpeditionZoneService, ExpeditionZoneService>();
+builder.Services.AddSingleton<IGenericService, GenericService>();
+builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
+builder.Services.AddSingleton<IConsumablesService, ConsumablesService>();
+builder.Services.AddSingleton<IServiceProvisionService, ServiceProvisionService>();
 
 //Finishing
 builder.Services.AddSingleton<IProductionReportService, ProductionReportService>();
 builder.Services.AddSingleton<IPendingRegistService, PendingRegistService>();
 builder.Services.AddSingleton<IPrintService, PrintService>();
-builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
-builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillService>();
+builder.Services.AddSingleton<IConcludedPrintingService, ConcludedPrintingService>();
+builder.Services.AddSingleton<IConcludedFulfilmentService, ConcludedFulfilmentService>();
 builder.Services.AddSingleton<IRecoverService, RecoverService>();
 builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();
 builder.Services.AddSingleton<IPendingRecoverService, PendingRecoverService>();
-builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
+builder.Services.AddSingleton<IExpeditionReportService, ExpeditionReportService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

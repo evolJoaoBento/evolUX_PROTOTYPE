@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Dynamic;
 
-namespace evolUX.Areas.EvolDP.Controllers
+namespace evolUX.Areas.evolDP.Controllers
 {
     [Route("evoldp/doccode/[action]")]
     [ApiController]

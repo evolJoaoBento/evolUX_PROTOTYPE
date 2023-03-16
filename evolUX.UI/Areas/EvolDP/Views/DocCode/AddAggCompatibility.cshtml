@@ -8,6 +8,9 @@
 @model DocCodeCompatibilityViewModel;
 @{
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddDocCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddDocCode") != null) { AddDocCode = true; }
 }
 @if (Model == null || Model.DocCode == null)
 {
@@ -15,6 +18,10 @@
 }
 else
 {
+    string disable = "";
+    if (AddDocCode)
+        disable = "disabled";
+        
     string checkedStr = "";
     string docTypeDesc = "";
     string eLevel1Desc = "";
@@ -32,16 +39,15 @@ else
         ExceptionLevel3IDLabel = localizer["ExceptionLeve3ID"].Value;
 
     DocCode docCode = Model.DocCode;
+    <div id="TitlePage">
+        <h1>@localizer["DocCodeAggCompatibility"]</h1>
+    </div>
     <div>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCodeConfigList" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
         </a>
     </div>
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr>
-                <th colspan="8">@localizer["DocCodeAggCompatibility"]
-                </th>
-           </tr>
            <tr>
                 <th colspan="2">@localizer["DocCodeID"]</th>
                 <th>@localizer["DocLayout"]</th>
@@ -52,7 +58,7 @@ else
                 <th>@localizer["DocDescription"]</th>
             </tr>
         </thead>
-        <tbody id="bootstrap-overrides">
+        <tbody>
             <tr>
                 @if (string.IsNullOrEmpty(docCode.DocType))
                 {
@@ -99,21 +105,34 @@ else
                     <form id="AddAggCompatibilityFrm" asp-area="evolDP" asp-controller="DocCode" asp-action="ChangeCompatibility" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)"
                       data-ajax="true"
                       data-ajax-method="POST">
+                    @if (AddDocCode)
+                    {
                         <p class="my-3 d-flex justify-content-center">
                             <input value="@localizer["Submit"]" type="submit" name="Submit" class="btn btn-block btn-primary" />
                         </p>
                         <p class="my-3 d-flex justify-content-left" class="btn btn-block btn-primary">
-                            <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' title='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedDocCodeList', '')">
-                                <img style="background:none; width:30px;height:30px;" src="@siteURL/images/select-multiple.png" />
-                            </button>
-                            <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" title='@localizer["UnSelectAll"]' onclick="javascript:uncheckBoxAll('CheckedDocCodeList', '')">
-                                <img style="background:none; width:30px;height:30px;" src="@siteURL/images/unselect-multiple.png" />
-                            </button>
-                        </p>                     
-                        <table class="table table-bordered table-sm">
+                            
+                        </p> 
+                    }
+                        <table class="table table-sm table-hover table-collapse-seperate">
                         <thead>
                             <tr>
-                                <th colspan="2">@localizer["DocCodeID"]</th>
+                                <th style="display: flex;justify-content: center">
+                                @if(AddDocCode)
+                                {    
+                                    <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' title='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedDocCodeList', '')">
+                                        <img style="background:none; width:30px;height:30px;" src="~/images/link-multiple.png" />
+                                    </button>
+                                    <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" title='@localizer["UnSelectAll"]' onclick="javascript:uncheckBoxAll('CheckedDocCodeList', '')">
+                                        <img style="background:none; width:30px;height:30px;" src="~/images/unselect-multiple.png" />
+                                    </button>
+                                }
+                                else
+                                {
+                                    <img style="background:none; width:20px;height:20px;" src="~/images/link2.png" />
+                                }
+                                </th>
+                                <th>@localizer["DocCodeID"]</th>
                                 <th>@localizer["DocLayout"]</th>
                                 <th>@localizer["DocType"]</th>
                                 <th>@ExceptionLevel1IDLabel</th>
@@ -162,10 +181,21 @@ else
                                     checkedStr = "checked";
                                 else
                                     checkedStr = "";
+                                
                                 <td align="center">
+                                    @if(AddDocCode)
+                                    {
                                     <input name="CheckedDocCodeList" type="checkbox" value="@agg.DocCodeID" @checkedStr>
+                                    }
+                                    else
+                                    {
+                                        if (agg.Compatible) 
+                                        {
+                                            <img style="background:none; width:20px;height:20px;" src="~/images/link.png" />
+                                        }
+                                    }
                                 </td>
-                                <td>@agg.DocCodeID</td>                                        
+                                <td>@agg.DocCodeID</td>  
                                 <td>@agg.DocLayout</td>
                                 <td>@docTypeDesc</td>
                                 <td>@eLevel1Desc</td>

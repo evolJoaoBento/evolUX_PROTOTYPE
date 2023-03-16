@@ -129,16 +129,16 @@
   <data name="ActionBillingReport" xml:space="preserve">
     <value>Billing Control</value>
   </data>
-  <data name="ActionConcludedFullfill" xml:space="preserve">
-    <value>Enveloping Completed</value>
+  <data name="ActionConcludedFulfilment" xml:space="preserve">
+    <value>Fulfilment Completed</value>
   </data>
-  <data name="ActionConcludedFullfill_Link" xml:space="preserve">
-    <value>/Finishing/ConcludedFullfill/Index</value>
+  <data name="ActionConcludedFulfilment_Link" xml:space="preserve">
+    <value>/Finishing/ConcludedFulfilment/Index</value>
   </data>
-  <data name="ActionConcludedPrint" xml:space="preserve">
+  <data name="ActionConcludedPrinting" xml:space="preserve">
     <value>Printing Completed</value>
   </data>
-  <data name="ActionConcludedPrint_Link" xml:space="preserve">
+  <data name="ActionConcludedPrinting_Link" xml:space="preserve">
     <value>/Finishing/ConcludedPrint/Index</value>
   </data>
   <data name="ActionConcludedRegist" xml:space="preserve">
@@ -146,6 +146,9 @@
   </data>
   <data name="ActionConfiguredFlows" xml:space="preserve">
     <value>Configured Flows</value>
+  </data>
+  <data name="ActionConsumables" xml:space="preserve">
+    <value>Consumables</value>
   </data>
   <data name="ActionDeleteUser" xml:space="preserve">
     <value>Delete User</value>
@@ -162,41 +165,62 @@
   <data name="ActionEnvelopeRange" xml:space="preserve">
     <value>Envelope Range Configuration</value>
   </data>
+  <data name="ActionEnvelopeRange_Link" xml:space="preserve">
+    <value>/evolDP/Consumables/EnvelopeMedia</value>
+  </data>
   <data name="ActionErrorManagement" xml:space="preserve">
     <value>Error Management</value>
   </data>
   <data name="ActionExceptionLevel1ID" xml:space="preserve">
     <value>Exception Level 1</value>
   </data>
+  <data name="ActionExceptionLevel1ID_Link" xml:space="preserve">
+    <value>/evolDP/DocCode/ExceptionLevel?Level=1</value>
+  </data>
   <data name="ActionExceptionLevel2ID" xml:space="preserve">
     <value>Exception Level 2</value>
   </data>
+  <data name="ActionExceptionLevel2ID_Link" xml:space="preserve">
+    <value>/evolDP/DocCode/ExceptionLevel?Level=2</value>
+  </data>
   <data name="ActionExceptionLevel3ID" xml:space="preserve">
     <value>Exception Level 3</value>
+  </data>
+  <data name="ActionExceptionLevel3ID_Link" xml:space="preserve">
+    <value>/evolDP/DocCode/ExceptionLevel?Level=3</value>
   </data>
   <data name="ActionExpCodes" xml:space="preserve">
     <value>Service/Expedition Codes</value>
   </data>
   <data name="ActionExpedition" xml:space="preserve">
-    <value>Guias de Expedição</value>
+    <value>Bills of Landing</value>
   </data>
   <data name="ActionExpeditionCompanies" xml:space="preserve">
-    <value>Expedition Companies</value>
+    <value>Companies</value>
   </data>
-  <data name="ActionExpeditionReport" xml:space="preserve">
-    <value>Relatórios de Expedição</value>
+  <data name="ActionExpeditionCompanies_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Companies</value>
+  </data>
+  <data name="ActionExpeditionConfig" xml:space="preserve">
+    <value>Shipping</value>
   </data>
   <data name="ActionExpeditionReportList" xml:space="preserve">
-    <value>Guias Geradas</value>
+    <value>Bills of Landing Generated</value>
   </data>
   <data name="ActionExpeditionReportList_Link" xml:space="preserve">
     <value>/Finishing/Expedition/ReportList</value>
   </data>
   <data name="ActionExpeditionTypes" xml:space="preserve">
-    <value>Expedition Types</value>
+    <value>Types</value>
+  </data>
+  <data name="ActionExpeditionTypes_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Types</value>
   </data>
   <data name="ActionExpeditionZones" xml:space="preserve">
-    <value>Expedition Zones</value>
+    <value>Zones</value>
+  </data>
+  <data name="ActionExpeditionZones_Link" xml:space="preserve">
+    <value>/evolDP/Expedition/Zones</value>
   </data>
   <data name="ActionFlowsSchedulerRules" xml:space="preserve">
     <value>Automatic Job Registration</value>
@@ -219,11 +243,20 @@
   <data name="ActionMarkFilesinError" xml:space="preserve">
     <value>Mark Files in Error</value>
   </data>
-  <data name="ActionMaterialProductionRepor" xml:space="preserve">
-    <value>Production Control / Materials</value>
+  <data name="ActionMaterialManagement" xml:space="preserve">
+    <value>Porfolio</value>
   </data>
-  <data name="ActionMaterials" xml:space="preserve">
-    <value>Materials</value>
+  <data name="ActionMaterialManagement_Link" xml:space="preserve">
+    <value>/evolDP/Consumables/Management</value>
+  </data>
+  <data name="ActionMaterialProductionReport" xml:space="preserve">
+    <value>Production / Consumables Control</value>
+  </data>
+  <data name="ActionMaterialType" xml:space="preserve">
+    <value>Types</value>
+  </data>
+  <data name="ActionMaterialType_Link" xml:space="preserve">
+    <value>/evolDP/Consumables/Types</value>
   </data>
   <data name="ActionMenuClientPages" xml:space="preserve">
     <value>Custom Pages</value>
@@ -238,31 +271,31 @@
     <value>&lt;i class='li-circle circle bx bx-pie-chart collapse-icon' style="color:rgb(105 105 105)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuError" xml:space="preserve">
-    <value>evolDP  Error Handling</value>
+    <value>evolDP - Error Handling</value>
   </data>
   <data name="ActionMenuError_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle  bx bx-error collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuEvolDPConfig" xml:space="preserve">
-    <value>evolDP  Configurations</value>
+    <value>evolDP - Settings</value>
   </data>
   <data name="ActionMenuEvolDPConfig_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle bx bx-cog collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuEvolFlowConfig" xml:space="preserve">
-    <value>evolFow  Configurations</value>
+    <value>evolFlow - Settings</value>
   </data>
   <data name="ActionMenuEvolFlowConfig_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle  bx bx-cog collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuExecution" xml:space="preserve">
-    <value>Execution</value>
+    <value>Processing</value>
   </data>
   <data name="ActionMenuExecution_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle  bx bx-revision collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuFinishing" xml:space="preserve">
-    <value>Finishing</value>
+    <value>Printing &amp; Finishing</value>
   </data>
   <data name="ActionMenuFinishing_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle  bx bx-printer collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>
@@ -292,7 +325,7 @@
     <value>/Finishing/Recover/RegistPartialRecover</value>
   </data>
   <data name="ActionPendingExpeditionFiles" xml:space="preserve">
-    <value>Expedição Pendente</value>
+    <value>Pending Shipment</value>
   </data>
   <data name="ActionPendingExpeditionFiles_Link" xml:space="preserve">
     <value>/Finishing/Expedition/Index</value>
@@ -343,13 +376,19 @@
     <value>List</value>
   </data>
   <data name="ActionProjectVersions" xml:space="preserve">
-    <value>Project Versions</value>
+    <value>Formatting Projects</value>
+  </data>
+  <data name="ActionProjectVersions_Link" xml:space="preserve">
+    <value>/evolDP/Generic/Projects</value>
   </data>
   <data name="ActionPurgeFlows" xml:space="preserve">
     <value>Purges</value>
   </data>
   <data name="ActionPurgeParameters" xml:space="preserve">
     <value>Purge Parameters</value>
+  </data>
+  <data name="ActionPurgeParameters_Link" xml:space="preserve">
+    <value>/evolDP/Generic/ConstantParameter</value>
   </data>
   <data name="ActionRecoverReport" xml:space="preserve">
     <value>Recoveries Report</value>
@@ -373,10 +412,25 @@
     <value>Retentions</value>
   </data>
   <data name="ActionServiceCompanies" xml:space="preserve">
-    <value>Service Companies</value>
+    <value>Companies</value>
   </data>
-  <data name="ActionServiceCompanyServices" xml:space="preserve">
-    <value>Service Company Services</value>
+  <data name="ActionServiceCompanies_Link" xml:space="preserve">
+    <value>/evolDP/ServiceProvision/Companies</value>
+  </data>
+  <data name="ActionServiceProvision" xml:space="preserve">
+    <value>Service Provision</value>
+  </data>
+  <data name="ActionServicesProvided" xml:space="preserve">
+    <value>Service Types</value>
+  </data>
+  <data name="ActionServicesProvided_Link" xml:space="preserve">
+    <value>/evolDP/ServiceProvision/Types</value>
+  </data>
+  <data name="ActionServiceWorkFlow" xml:space="preserve">
+    <value>Service WorkFlow</value>
+  </data>
+  <data name="ActionServiceWorkFlow_Link" xml:space="preserve">
+    <value>/evolDP/ServiceProvision/ServiceWorkFlow</value>
   </data>
   <data name="ActionSupportInformation" xml:space="preserve">
     <value>Suport Information</value>

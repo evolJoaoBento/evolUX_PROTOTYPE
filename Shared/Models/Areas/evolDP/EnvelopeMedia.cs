@@ -2,8 +2,8 @@
 {
     public class EnvelopeMedia
     {
-        public int EnvMediaGroupID { get; set; }
-        public string Description { get; set; }    
-        public int DefaultEnvMediaID { get; set; }
+        public int EnvMediaID { get; set; }
+        public string EnvMediaName { get; set; }
+        public string Description { get; set; }
     }
 }

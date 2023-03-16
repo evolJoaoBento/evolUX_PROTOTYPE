@@ -1,0 +1,132 @@
+﻿@using Shared.ViewModels.Areas.evolDP
+@using Shared.Models.Areas.evolDP
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@model ProjectListViewModel
+@inject IConfiguration configuration
+@section Scripts
+{
+    <script type="text/javascript">
+        function refreshPage() {
+            window.location.reload();
+        };
+        function MessageBox(msg) {
+            alert(msg);
+        }
+    </script>
+}
+
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+@if (Model == null)
+{
+    <div id="ResultPage">
+        <h3 class="display-4 text-center">@localizer["NoModelData"]</h3>
+    </div>
+}
+else
+{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+
+    <div id="TitlePage">
+        <h1>@localizer["Projects"] @ViewBag.BusinessDescription</h1>
+    </div>
+    @if (Model.Projects.Count() == 0)
+    {
+        <h4 class="display-4 text-center">@localizer["EmptyResult"]</h4>
+    }
+    else
+    {
+        string startStyle = "none";
+        string Level0Name = "level";
+        string Level1Name = "detail";
+
+        int count = 0;
+        int level = 0;
+        string idValue = "arrow" + count.ToString();
+        string nameValue = "";
+        string cValue = "";
+        @foreach (ProjectElement b in Model.Projects)
+        {
+        <table class="table table-bordered table-sm table-striped">
+            @{
+                count++;
+                nameValue = Level0Name + count.ToString();
+                idValue = "arrow" + nameValue;
+            }
+            <thead>
+                @if (ViewBag.hasMultipleCompanyBusiness)
+                {
+                    <tr>
+                        <th colspan="5">
+                            @b.BusinessDescription [@b.Type]
+                            @if(ViewBag.OnlyOneSelected)
+                            {
+                                startStyle="";
+                                <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"> </a>       
+                            }
+                            else
+                            {
+                                <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            }
+                        </th>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <th colspan="5">
+                            @b.Type
+                            <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
+                        </th>
+                    </tr>
+                }
+            </thead>
+            <tbody id="@nameValue" style="display: @startStyle">
+                @foreach (Project p in b.ProjectList)
+                {
+                    level++;
+                    nameValue = Level1Name + level.ToString();
+                    idValue = "arrow" + nameValue;
+                    <tr>
+                        <th>@localizer["ProjectCode"]: @p.ProjectCode
+                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue">
+                        </th>
+                    </tr>
+                    <tr id="@nameValue" style="display: none">
+                        <td>
+                            <table class="table table-bordered table-sm table-striped">
+                                <thead>
+                                    <th>@localizer["Version"]</th>
+                                    <th>@localizer["StartTimeStamp"]</th>
+                                    <th>@localizer["Description"]</th>
+                                </thead>
+                                <tbody>
+                                @foreach (VersionElement v in p.VersionList)
+                                {
+                                    <tr>
+                                        <td>@string.Format("{0:00}_{1:00}_{2:00}_{3:00}",v.Major, v.Minor, v.Revision, v.Patch)</td>
+                                        @{
+                                            idValue = string.Format("{0:00000000}{1:000000}", v.StartDate, v.StartTime);
+                                                    nameValue = string.Format("{3:00}/{4:00}/{5:0000} {0:00}:{1:00}:{2:00}", Int32.Parse(idValue.Substring(8, 2)), Int32.Parse(idValue.Substring(10, 2)), Int32.Parse(idValue.Substring(12, 2)), Int32.Parse(idValue.Substring(6, 2)), Int32.Parse(idValue.Substring(4, 2)), Int32.Parse(idValue.Substring(0, 4)));
+                                        }
+                                        <td>@nameValue</td>
+                                        <td>@v.Description</td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        }
+    }
+}
+
+
