@@ -61,7 +61,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 else
                 {
                     string scValues = ServiceCompanies.Rows[0]["ID"].ToString() + "|" + ServiceCompanies.Rows[0]["CompanyCode"].ToString() + " | " + ServiceCompanies.Rows[0]["CompanyName"].ToString();
-                    return RedirectToAction("ProductionRunReport", new { ServiceCompanyValues = scValues });
+                    return RedirectToAction("ProductionRunReport", "ProductionReport", new { Area = "Finishing", ServiceCompanyValues = scValues });
                 }
             }
             catch (FlurlHttpException ex)
