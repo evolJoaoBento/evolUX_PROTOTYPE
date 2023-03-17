@@ -217,7 +217,7 @@
     <value>Alterar dados da Companhia</value>
   </data>
   <data name="ServiceCompanyConfig" xml:space="preserve">
-    <value>Configuração de Custos de Serviços para Companhia de Serviços</value>
+    <value>Configuração de Custos de Serviços</value>
   </data>
   <data name="ServiceCompanyExpCodes" xml:space="preserve">
     <value>Ver configurações de Escalões de Envelopagem</value>

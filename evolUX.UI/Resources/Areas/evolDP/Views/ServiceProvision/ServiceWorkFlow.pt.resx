@@ -117,16 +117,70 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConcludedPrint" xml:space="preserve">
-    <value>Impressão Concluída</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
-  <data name="FileBarcode" xml:space="preserve">
-    <value>Código de Barras do Ficheiro</value>
+  <data name="ChangeServiceTask" xml:space="preserve">
+    <value>Alterar Tipo de Tratamento</value>
+  </data>
+  <data name="ComplementServiceTask" xml:space="preserve">
+    <value>Tipo Complementar</value>
+  </data>
+  <data name="ComplementServiceTaskTip" xml:space="preserve">
+    <value>Tipo de Tratamento a escolher se a Cor da Impressão mudar. Preto/Branco para Cores ou vice-versa</value>
+  </data>
+  <data name="EmptyField" xml:space="preserve">
+    <value>&lt;vazio&gt;</value>
+  </data>
+  <data name="ExternalExpeditionMode" xml:space="preserve">
+    <value>Modo de alteração de Companhia de Expedição</value>
+  </data>
+  <data name="ExternalExpeditionMode0" xml:space="preserve">
+    <value>Não mudar de Companhia</value>
+  </data>
+  <data name="ExternalExpeditionMode1" xml:space="preserve">
+    <value>Muda de Companhia por Código Postal</value>
+  </data>
+  <data name="ExternalExpeditionMode2" xml:space="preserve">
+    <value>Muda de Companhia por intervalos de Códigos Postais</value>
+  </data>
+  <data name="ExternalExpeditionModeTip" xml:space="preserve">
+    <value>Se o doumento não tiver especificado o Modo de alteração de Companhia de Expedição, prevalece o modo associado ao Tipo de Tratamento</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Ver configurações do Tipo de Tratamento</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Registar</value>
+  <data name="ServiceTask" xml:space="preserve">
+    <value>Tipo de Tratamento</value>
+  </data>
+  <data name="ServiceTaskCode" xml:space="preserve">
+    <value>Código</value>
+  </data>
+  <data name="ServiceTaskConfigs" xml:space="preserve">
+    <value>Configurações</value>
+  </data>
+  <data name="ServiceTaskDesc" xml:space="preserve">
+    <value>Descrição</value>
+  </data>
+  <data name="ServiceTaskRef" xml:space="preserve">
+    <value>Tipo de tratamento de referência para cópia</value>
+  </data>
+  <data name="ServiceType" xml:space="preserve">
+    <value>Tipos de Serviços</value>
+  </data>
+  <data name="StationExceededDesc" xml:space="preserve">
+    <value>Descrição para Excesso de Adicionais</value>
+  </data>
+  <data name="StationExceededDescTip" xml:space="preserve">
+    <value>Descrição a colocar nas Banners dos ficheiros de produção em caso de ser excedido o n.º de Adicionais de Envelopagem</value>
+  </data>
+  <data name="SubmitAdd" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="SubmitChange" xml:space="preserve">
+    <value>Alterar</value>
   </data>
 </root>

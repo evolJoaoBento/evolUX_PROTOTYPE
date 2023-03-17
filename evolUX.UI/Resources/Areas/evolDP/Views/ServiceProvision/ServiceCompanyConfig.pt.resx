@@ -117,16 +117,52 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ConcludedFullfill" xml:space="preserve">
-    <value>Envelopagem Concluída</value>
+  <data name="Action" xml:space="preserve">
+    <value>Ação</value>
   </data>
-  <data name="FileBarcode" xml:space="preserve">
-    <value>Código de Barras do Ficheiro</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="CostDate" xml:space="preserve">
+    <value>Data Início</value>
+  </data>
+  <data name="EmptyField" xml:space="preserve">
+    <value>&lt;vazio&gt;</value>
+  </data>
+  <data name="FeedPaper" xml:space="preserve">
+    <value>Impressoras de folha solta</value>
+  </data>
+  <data name="Formula" xml:space="preserve">
+    <value>Fórmula de Cálculo</value>
+  </data>
+  <data name="ID" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="MatchCode" xml:space="preserve">
+    <value>Código de Seleção</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
-    <value>Sem Companhias d</value>
+    <value>Sem Dados</value>
   </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Registar</value>
+  <data name="RollPaper" xml:space="preserve">
+    <value>Impressoras de papel contínuo</value>
+  </data>
+  <data name="Service" xml:space="preserve">
+    <value>Serviço</value>
+  </data>
+  <data name="ServiceCompanyConfig" xml:space="preserve">
+    <value>Configuração de Custos de Serviços para</value>
+  </data>
+  <data name="ServiceCost" xml:space="preserve">
+    <value>Custo</value>
+  </data>
+  <data name="ServiceType" xml:space="preserve">
+    <value>Tipo de Serviços</value>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Envelopadoras</value>
+  </data>
+  <data name="SubmitChange" xml:space="preserve">
+    <value>Alterar</value>
   </data>
 </root>

@@ -65,7 +65,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
                 dictionary.Add("ParameterRef", parameterRef);
                 dictionary.Add("ParameterValue", parameterValue);
                 dictionary.Add("ParameterDescription", parameterDescription);
-                var response = await _flurlClient.Request("/API/evolDP/Client/SetParameter")
+                var response = await _flurlClient.Request("/API/evolDP/Generic/SetParameter")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .SendJsonAsync(HttpMethod.Get, dictionary);
                 if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
@@ -89,7 +89,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
                 dictionary.Add("ParameterID", parameterID);
-                var response = await _flurlClient.Request("/API/evolDP/Client/DeleteParameter")
+                var response = await _flurlClient.Request("/API/evolDP/Generic/DeleteParameter")
                     .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                     .SendJsonAsync(HttpMethod.Get, dictionary);
                 if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);

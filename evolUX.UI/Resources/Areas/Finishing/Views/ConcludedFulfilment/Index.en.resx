@@ -117,31 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Files" xml:space="preserve">
-    <value>Files</value>
+  <data name="ConcludedFulfilment" xml:space="preserve">
+    <value>Fulfilment Finished</value>
   </data>
-  <data name="FilesLeftToPrint" xml:space="preserve">
-    <value>To Print</value>
-  </data>
-  <data name="FilesLeftToRegistFullFill" xml:space="preserve">
-    <value>Fulfilment to Completed</value>
-  </data>
-  <data name="FilesLeftToRegistPrint" xml:space="preserve">
-    <value>Printing to Completed</value>
+  <data name="FileBarcode" xml:space="preserve">
+    <value>File Barcode</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
-    <value>Sem Dados</value>
+    <value>No Data Available</value>
   </data>
-  <data name="PendingRegist" xml:space="preserve">
-    <value>Pending Fulfilment/Printing</value>
-  </data>
-  <data name="RunDescription" xml:space="preserve">
-    <value>Run Description</value>
-  </data>
-  <data name="TotalProcessed" xml:space="preserve">
-    <value>Processed</value>
-  </data>
-  <data name="Totals" xml:space="preserve">
-    <value>Totals</value>
+  <data name="Submit" xml:space="preserve">
+    <value>Submit</value>
   </data>
 </root>

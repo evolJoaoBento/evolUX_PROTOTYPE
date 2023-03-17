@@ -1,6 +1,7 @@
 ﻿using evolUX.API.Models;
 using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
 using evolUX.UI.Areas.evolDP.Services.Interfaces;
+using evolUX_dev.Areas.evolDP.Models;
 using Flurl.Http;
 using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.evolDP;
@@ -19,7 +20,7 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _serviceProvisionTypeRepository.GetServiceCompanies(servicCompanyList);
             return response;
         }
-        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int? serviceCompanyID)
+        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int serviceCompanyID)
         {
             var response = await _serviceProvisionTypeRepository.GetServiceCompanyRestrictions(serviceCompanyID);
             return response;
@@ -57,12 +58,42 @@ namespace evolUX.UI.Areas.evolDP.Services
         }
         public async Task SetServiceCompanyRestrictions(int serviceCompanyID, int materialTypeID, int materialPosition, int fileSheetsCutoffLevel, bool restrictionMode)
         {
-            await _serviceProvisionTypeRepository.SetServiceCompanyRestrictions(serviceCompanyID, materialTypeID, materialPosition, fileSheetsCutoffLevel, restrictionMode);
+            await _serviceProvisionTypeRepository.SetServiceCompanyRestriction(serviceCompanyID, materialTypeID, materialPosition, fileSheetsCutoffLevel, restrictionMode);
             return;
         }
         public async Task<IEnumerable<ServiceCompanyService>> GetServiceCompanyConfigs(int serviceCompanyID, int costDate, int serviceTypeID, int serviceID)
         {
             var response = await _serviceProvisionTypeRepository.GetServiceCompanyConfigs(serviceCompanyID, costDate, serviceTypeID, serviceID);
+            return response;
+        }
+        public async Task SetServiceCompanyConfig(int serviceCompanyID, int costDate, int serviceTypeID, int serviceID, double serviceCost, string formula)
+        {
+            await _serviceProvisionTypeRepository.SetServiceCompanyConfig(serviceCompanyID, costDate, serviceTypeID, serviceID, serviceCost, formula);
+            return;
+        }
+        public async Task<IEnumerable<ServiceElement>> GetServices(int serviceTypeID)
+        {
+            var response = await _serviceProvisionTypeRepository.GetServices(serviceTypeID);
+            return response;
+        }
+        public async Task<ServiceTypeViewModel> GetServiceTypes()
+        {
+            var response = await _serviceProvisionTypeRepository.GetServiceTypes();
+            return response;
+        }
+        public async Task SetServiceType(int serviceTypeID, string serviceTypeCode, string serviceTypeDesc)
+        {
+            await _serviceProvisionTypeRepository.SetServiceType(serviceTypeID, serviceTypeCode, serviceTypeDesc);
+            return;
+        }
+        public async Task<IEnumerable<int>> GetServiceCompanyList(int serviceTypeID, int serviceID, int costDate)
+        {
+            var response = await _serviceProvisionTypeRepository.GetServiceCompanyList(serviceTypeID, serviceID, costDate);
+            return response;
+        }
+        public async Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID)
+        {
+            var response = await _serviceProvisionTypeRepository.GetServiceTasks(serviceTaskID);
             return response;
         }
 

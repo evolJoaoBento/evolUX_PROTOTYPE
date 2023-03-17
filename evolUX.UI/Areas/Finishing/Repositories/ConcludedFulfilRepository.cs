@@ -11,9 +11,9 @@ using System.Net;
 
 namespace evolUX.UI.Areas.Finishing.Repositories
 {
-    public class ConcludedFullfillRepository : RepositoryBase, IConcludedFullfillRepository
+    public class ConcludedFulfilmentRepository : RepositoryBase, IConcludedFulfilmentRepository
     {
-        public ConcludedFullfillRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
+        public ConcludedFulfilmentRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
 

@@ -63,6 +63,7 @@
     <h2>@ViewBag.RunName</h2>
 </div>
 <div class="filter-div">
+     <div class="scrollbar" style="height: 100%">
     <form id="filter-form" style="height: 100%; margin:5px;">
         <h5 class="">@localizer["Papers"]</h5>
         <select name="yourSelectIdpaper">
@@ -153,6 +154,7 @@
     </form>
 
 </div>
+    </div>
 @if (Model == null)
 {
     <tr><td colspan="5" class="text-center">No Model Data</td></tr>

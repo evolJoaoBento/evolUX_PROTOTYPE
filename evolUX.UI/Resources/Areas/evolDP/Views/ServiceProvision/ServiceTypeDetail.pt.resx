@@ -117,31 +117,46 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Files" xml:space="preserve">
-    <value>Files</value>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
   </data>
-  <data name="FilesLeftToPrint" xml:space="preserve">
-    <value>To Print</value>
+  <data name="ChangeService" xml:space="preserve">
+    <value>Alterar Serviço</value>
   </data>
-  <data name="FilesLeftToRegistFullFill" xml:space="preserve">
-    <value>Fulfilment to Completed</value>
+  <data name="EmptyField" xml:space="preserve">
+    <value>&lt;vazio&gt;</value>
   </data>
-  <data name="FilesLeftToRegistPrint" xml:space="preserve">
-    <value>Printing to Completed</value>
+  <data name="MatchCode" xml:space="preserve">
+    <value>Código de Seleção</value>
+  </data>
+  <data name="MatchCodeTip" xml:space="preserve">
+    <value>Código usado para selecionar o tipo de faturação a aplicar</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
-  <data name="PendingRegist" xml:space="preserve">
-    <value>Pending Fulfilment/Printing</value>
+  <data name="ServiceCode" xml:space="preserve">
+    <value>Código do Serviço</value>
   </data>
-  <data name="RunDescription" xml:space="preserve">
-    <value>Run Description</value>
+  <data name="ServiceCompany" xml:space="preserve">
+    <value>Companhias Prestadoras do Serviço</value>
   </data>
-  <data name="TotalProcessed" xml:space="preserve">
-    <value>Processed</value>
+  <data name="ServiceDesc" xml:space="preserve">
+    <value>Serviço</value>
   </data>
-  <data name="Totals" xml:space="preserve">
-    <value>Totals</value>
+  <data name="ServiceType" xml:space="preserve">
+    <value>Tipos de Serviços</value>
+  </data>
+  <data name="ServiceTypeDetail" xml:space="preserve">
+    <value>Detalhe do Tipo Serviço</value>
+  </data>
+  <data name="SubmitAdd" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="SubmitChange" xml:space="preserve">
+    <value>Alterar</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
   </data>
 </root>

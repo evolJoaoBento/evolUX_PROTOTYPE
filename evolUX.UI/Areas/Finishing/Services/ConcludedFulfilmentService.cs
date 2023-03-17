@@ -1,6 +1,7 @@
 ﻿using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
 using evolUX.UI.Exceptions;
+using evolUX.UI.Repositories;
 using Flurl.Http;
 using Shared.Exceptions;
 using Shared.Models.Areas.Core;
@@ -10,18 +11,18 @@ using System.Data;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
-    public class ConcludedPrintService : IConcludedPrintService
+    public class ConcludedFulfilmentService : IConcludedFulfilmentService
     {
-        private readonly IConcludedPrintRepository _concludedPrintRepository;
-        public ConcludedPrintService(IConcludedPrintRepository concludedPrintRepository)
+        private readonly IConcludedFulfilmentRepository _ConcludedFulfilmentRepository;
+        public ConcludedFulfilmentService(IConcludedFulfilmentRepository ConcludedFulfilmentRepository)
         {
-            _concludedPrintRepository = concludedPrintRepository;
+            _ConcludedFulfilmentRepository = ConcludedFulfilmentRepository;
         }
-        public async Task<ResultsViewModel> RegistPrint(string FileBarcode, string user, string ServiceCompanyList)
+        public async Task<ResultsViewModel> RegistFullFill(string FileBarcode, string user, string ServiceCompanyList)
         {
             try
             {
-                ResultsViewModel viewModel = await _concludedPrintRepository.RegistPrint(FileBarcode, user, ServiceCompanyList);
+                ResultsViewModel viewModel = await _ConcludedFulfilmentRepository.RegistFullFill(FileBarcode, user, ServiceCompanyList);
                 if (viewModel != null && viewModel.Results != null && viewModel.Results.Error.ToUpper() != "SUCCESS" && viewModel.Results.Error.ToUpper() != "NOTSUCCESS")
                 {
                     throw new ControledErrorException(viewModel.Results.Error.ToString());

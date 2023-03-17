@@ -51,7 +51,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 else
                 {
                     string scValues = ServiceCompanies.Rows[0]["ID"].ToString() + "|" + ServiceCompanies.Rows[0]["CompanyCode"].ToString() + " | " + ServiceCompanies.Rows[0]["CompanyName"].ToString();
-                    return RedirectToAction("PendingRecoverDetail", new { ServiceCompanyValues = scValues });
+                    return RedirectToAction("PendingRecoverDetail", "PendingRecover", new { Area = "Finishing", ServiceCompanyValues = scValues });
                 }
             }
             catch (FlurlHttpException ex)
@@ -170,7 +170,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 if (result != null && result.Error.ToUpper() == "SUCCESS")
                 {
                     string scValues = ServiceCompanyID.ToString() + "|" + ServiceCompanyCode + "|" + ServiceCompanyName;
-                    return RedirectToAction("PendingRecoverDetail", "PendingRecover", new { ServiceCompanyValues = scValues });
+                    return RedirectToAction("PendingRecoverDetail", "PendingRecover", new { Area = "Finishing", ServiceCompanyValues = scValues });
                 }
                 return View("MessageView", new MessageViewModel(result.ErrorID.ToString(), "", result.Error));
             }

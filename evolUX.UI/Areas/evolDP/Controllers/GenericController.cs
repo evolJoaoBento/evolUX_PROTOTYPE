@@ -60,7 +60,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                     else
                     {
                         string scValues = result.CompanyBusiness.First().BusinessID + "|" + result.CompanyBusiness.First().BusinessCode + "|" + result.CompanyBusiness.First().Description;
-                        return RedirectToAction("ProjectList", new { CompanyBusinessValues = scValues });
+                        return RedirectToAction("ProjectList", "Generic", new { Area = "evolDP", CompanyBusinessValues = scValues });
                     }
                 }
                 else

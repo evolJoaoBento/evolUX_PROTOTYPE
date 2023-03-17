@@ -55,11 +55,15 @@ END
 GO
 -- Tipos de serviços prestados pela companhia
 ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANY_SERVICES_RESUME]
-	@ServiceCompanyID int = NULL
+	@ServiceCompanyID int = NULL,
+	@ServiceTypeID int = NULL,
+	@ServiceID int = NULL,
+	@CostDate int = NULL
 AS
 BEGIN
 	SELECT DISTINCT 
 		scsc.ServiceCompanyID,
+		ISNULL(@CostDate,scsc.CostDate) CostDate,
 		st.ServiceTypeID,
 		st.ServiceTypeCode,
 		st.ServiceTypeDescription ServiceTypeDesc,
@@ -74,7 +78,11 @@ BEGIN
 		dbo.RD_SERVICE_COMPANY_SERVICE_COST scsc WITH(NOLOCK)
 	ON	scsc.ServiceID = s.ServiceID
 	WHERE (@ServiceCompanyID is NULL OR scsc.ServiceCompanyID = @ServiceCompanyID)
-	ORDER BY scsc.ServiceCompanyID, st.ServiceTypeID, s.ServiceID
+		AND
+		(@ServiceTypeID is NULL OR st.ServiceTypeID = @ServiceTypeID)
+		AND 
+		(@ServiceID is NULL OR s.ServiceID = @ServiceID)
+	ORDER BY scsc.ServiceCompanyID, st.ServiceTypeID, s.ServiceID, ISNULL(@CostDate,scsc.CostDate) DESC
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_SERVICE_COMPANY_SERVICE_COSTS]') AND type in (N'P', N'PC'))
@@ -148,5 +156,126 @@ BEGIN
 			AND ServiceID = @ServiceID
 			AND CostDate = @CostDate
 	END
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_SERVICES]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_SERVICES] AS' 
+END
+GO
+--Configuração de restrições (listar/alterar)
+ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICES]
+	@ServiceTypeID int = NULL
+AS
+BEGIN
+	SELECT
+		s.ServiceTypeID, 
+		st.ServiceTypeDescription ServiceTypeDesc,
+		s.ServiceID, 
+		s.ServiceCode, 
+		s.ServiceDescription ServiceDesc, 
+		s.MatchCode
+	FROM
+		RD_SERVICE s WITH(NOLOCK)
+	INNER JOIN
+		RD_SERVICE_TYPE st WITH(NOLOCK)
+	ON	st.ServiceTypeID = s.ServiceTypeID
+	WHERE (@ServiceTypeID is NULL OR s.ServiceTypeID = @ServiceTypeID)
+	ORDER BY s.ServiceTypeID, s.ServiceID
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_SERVICE]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_SERVICE] AS' 
+END
+GO
+--Configuração de restrições (listar/alterar)
+ALTER  PROCEDURE [dbo].[RD_UX_SET_SERVICE]
+	@ServiceID int = NULL,
+	@ServiceCode varchar(25) = NULL,
+	@ServiceTypeID int = NULL,
+	@ServiceDesc varchar(256),
+	@MatchCode varchar(50)
+AS
+BEGIN
+	IF (@ServiceID is NULL OR 
+		NOT EXISTS (SELECT TOP 1 1 
+					FROM [dbo].[RD_SERVICE] WITH(NOLOCK)
+					WHERE ServiceTypeID = @ServiceTypeID AND ServiceCode = @ServiceCode))
+	BEGIN
+		INSERT INTO [dbo].[RD_SERVICE](ServiceID, ServiceCode, ServiceTypeID, ServiceDescription, MatchCode)
+		SELECT ISNULL(MAX(ServiceID),0) + 1, @ServiceCode, @ServiceTypeID, @ServiceDesc, @MatchCode
+		FROM [dbo].[RD_SERVICE]
+
+		SELECT @ServiceID = ServiceID
+		FROM [dbo].[RD_SERVICE] WITH(NOLOCK)
+		WHERE ServiceTypeID = @ServiceTypeID AND ServiceCode = @ServiceCode
+	END
+	ELSE
+	BEGIN
+		UPDATE [dbo].[RD_SERVICE]
+		SET [ServiceDescription] = @ServiceDesc,
+			[MatchCode] = @MatchCode
+		WHERE ServiceID = @ServiceID
+	END
+	RETURN @ServiceID
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_SERVICE_TYPES]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_SERVICE_TYPES] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_TYPES]
+	@ServiceTypeID int = NULL
+AS
+BEGIN
+	SELECT
+		st.ServiceTypeID, 
+		st.ServiceTypeCode, 
+		st.ServiceTypeDescription ServiceTypeDesc
+	FROM RD_SERVICE_TYPE st WITH(NOLOCK)
+	WHERE (@ServiceTypeID is NULL OR st.ServiceTypeID = @ServiceTypeID)
+	ORDER BY st.ServiceTypeID
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_SERVICE_TYPE]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_SERVICE_TYPE] AS' 
+END
+GO
+--Configuração de restrições (listar/alterar)
+ALTER  PROCEDURE [dbo].[RD_UX_SET_SERVICE_TYPE]
+	@ServiceTypeID int = NULL,
+	@ServiceTypeCode varchar(15),
+	@ServiceTypeDesc varchar(256)
+AS
+BEGIN
+	IF (@ServiceTypeID is NULL)
+	BEGIN
+		IF (NOT EXISTS (SELECT TOP 1 1 FROM RD_SERVICE_TYPE WITH(NOLOCK) WHERE ServiceTypeCode = @ServiceTypeCode))
+		BEGIN
+			INSERT INTO RD_SERVICE_TYPE(ServiceTypeID, ServiceTypeCode, ServiceTypeDescription)
+			SELECT ISNULL(MAX(ServiceID),0) + 1, @ServiceTypeCode, @ServiceTypeDesc
+			FROM [dbo].[RD_SERVICE]
+		END
+		ELSE
+		BEGIN
+			UPDATE RD_SERVICE_TYPE
+			SET ServiceTypeDescription = @ServiceTypeDesc
+			WHERE ServiceTypeCode = @ServiceTypeCode
+		END
+		SELECT @ServiceTypeID = ServiceTypeID
+		FROM RD_SERVICE_TYPE WITH(NOLOCK)
+		WHERE ServiceTypeCode = @ServiceTypeCode
+	END
+	ELSE
+	BEGIN
+		UPDATE RD_SERVICE_TYPE
+		SET ServiceTypeDescription = @ServiceTypeDesc,
+			ServiceTypeCode = @ServiceTypeCode
+		WHERE ServiceTypeID = @ServiceTypeID
+	END
+	RETURN @ServiceTypeID
 END
 GO

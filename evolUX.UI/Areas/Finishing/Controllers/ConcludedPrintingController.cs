@@ -13,17 +13,18 @@ using Microsoft.Extensions.Localization;
 using evolUX.UI.Exceptions;
 using Shared.Exceptions;
 using Newtonsoft.Json;
+using evolUX.API.Models;
 
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
     [Area("Finishing")]
-    public class ConcludedFullfillController : Controller
+    public class ConcludedPrintingController : Controller
     {
-        private readonly IConcludedFullfillService _concludedFullfillService;
-        private readonly IStringLocalizer<ConcludedFullfillController> _localizer;
-        public ConcludedFullfillController(IConcludedFullfillService concludedFullfillService, IStringLocalizer<ConcludedFullfillController> localizer)
+        private readonly IConcludedPrintService _concludedPrintService;
+        private readonly IStringLocalizer<ConcludedPrintingController> _localizer;
+        public ConcludedPrintingController(IConcludedPrintService concludedPrintService, IStringLocalizer<ConcludedPrintingController> localizer)
         {
-            _concludedFullfillService = concludedFullfillService;
+            _concludedPrintService = concludedPrintService;
             _localizer = localizer;
         }
 
@@ -43,14 +44,14 @@ namespace evolUX.UI.Areas.Finishing.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RegistFullFill(string FileBarcode)
+        public async Task<IActionResult> RegistPrint(string FileBarcode)
         {
             string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             string user = HttpContext.Session.Get<AuthenticateResponse>("UserInfo").Username;
 
             try
             {
-                ResultsViewModel result = await _concludedFullfillService.RegistFullFill(FileBarcode, user, ServiceCompanyList);
+                ResultsViewModel result = await _concludedPrintService.RegistPrint(FileBarcode, user, ServiceCompanyList);
                 return PartialView("MessageView", new MessageViewModel("0", "", _localizer[result.Results.Error]));
             }
             catch (ControledErrorException ex)
@@ -76,7 +77,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                     return RedirectToAction("Index", "Auth", new { Area = "Core" });
                 }
             }
-        }  
+        }
 
     }
 }

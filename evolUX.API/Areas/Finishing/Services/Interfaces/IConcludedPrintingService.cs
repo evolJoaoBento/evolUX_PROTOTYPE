@@ -4,7 +4,7 @@ using System.Data;
 
 namespace evolUX.API.Areas.Finishing.Services.Interfaces
 {
-    public interface IConcludedPrintService
+    public interface IConcludedPrintingService
     {
         public Task<Result> RegistPrint(string fileBarcode, string user, DataTable serviceCompanyList);
     }

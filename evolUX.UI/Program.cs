@@ -68,10 +68,10 @@ builder.Services.AddSingleton<IProductionReportService, ProductionReportService>
 builder.Services.AddSingleton<IProductionReportRepository, ProductionReportRepository>();
 builder.Services.AddSingleton<IPrintRepository, PrintRepository>();
 builder.Services.AddSingleton<IPrintService, PrintService>();
-builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
-builder.Services.AddSingleton<IConcludedPrintRepository, ConcludedPrintRepository>();
-builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillService>();
-builder.Services.AddSingleton<IConcludedFullfillRepository, ConcludedFullfillRepository>();
+builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintingService>();
+builder.Services.AddSingleton<IConcludedPrintRepository, ConcludedPrintingRepository>();
+builder.Services.AddSingleton<IConcludedFulfilmentService, ConcludedFulfilmentService>();
+builder.Services.AddSingleton<IConcludedFulfilmentRepository, ConcludedFulfilmentRepository>();
 builder.Services.AddSingleton<IRecoverService, RecoverService>();
 builder.Services.AddSingleton<IRecoverRepository, RecoverRepository>();
 builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();

@@ -356,8 +356,8 @@ SET LocalizationKey = 'Action' + CASE RTRIM(LTRIM([Description]))
 	WHEN 'Estado de Produção / Imprimir' THEN 'ProductionStatus'
 	WHEN 'Registos Pendentes' THEN 'PendingRegist'
 	WHEN 'Objecto Postal' THEN 'PostalObject'
-	WHEN 'Impressão Concluída' THEN 'ConcludedPrint'
-	WHEN 'Envelopagem Concluída' THEN 'ConcludedFullfill'
+	WHEN 'Impressão Concluída' THEN 'ConcludedPrinting'
+	WHEN 'Envelopagem Concluída' THEN 'ConcludedFulfilment'
 	WHEN 'Recuperações Parciais' THEN 'PartialRecover'
 	WHEN 'Recuperações Totais' THEN 'TotalRecover'
 	WHEN 'Recuperações Pendentes' THEN 'PendingRecover'
@@ -1680,12 +1680,12 @@ FROM ACTIONS
 WHERE  [Description] like 'Apagar%Tipo de Tratamento%'
 
 INSERT INTO #ChildActions
-SELECT 'AddServiceCompany', 0, 'Adicionar/Alterar Companhia de Serviços', ActionID
+SELECT 'AddServiceCompany', 0, 'Adicionar/Alterar Companhia de Prestação de Serviços', ActionID
 FROM ACTIONS
 WHERE [Description] like 'Alterar Limites da Companhia de Servi_os'
 
 INSERT INTO #ChildActions
-SELECT 'AddServiceCompanyExpCodes', 0, 'Adicionar/Alterar escalões de envelopagem da Companhia de Serviços', ActionID
+SELECT 'AddServiceCompanyExpCodes', 0, 'Adicionar/Alterar escalões de envelopagem da Companhia de Prestação de Serviços', ActionID
 FROM ACTIONS
 WHERE [Description] like 'Alterar custos dos Servi_os para Companhia de Servi_os'
 
@@ -1909,13 +1909,13 @@ DECLARE @ActionID int,
 CREATE TABLE #ChildActions(LocalizationKey varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS, DefaultOrder int)
 
 INSERT INTO #ChildActions
-SELECT 'ActionConcludedFullfill', 30
+SELECT 'ActionConcludedFulfilment', 30
 INSERT INTO #ChildActions
-SELECT 'ActionConcludedPrint', 20
+SELECT 'ActionConcludedPrinting', 20
 INSERT INTO #ChildActions
 SELECT 'ActionPendingRegist', 10
 
-SELECT @NewLocalizationKey = 'ActionConcludedRegist', @NewDescription = 'Envelopagem/Impressão', @ParentLocalizationKey = 'ActionMenuFinishing'
+SELECT @NewLocalizationKey = 'ActionConcludedRegist', @NewDescription = 'Impressão/Envelopagem', @ParentLocalizationKey = 'ActionMenuFinishing'
 
 SELECT @ParentActionID = ActionID
 FROM evolUX_ACTIONS
