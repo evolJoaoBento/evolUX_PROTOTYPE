@@ -205,6 +205,53 @@ function uncheckBoxAll(elementName, elementId) {
     }
 }
 
+function filterTableRows(form, table, elements) {
+    form.addEventListener('submit', function (event) {
+        event.preventDefault(); // prevent form from submitting
+
+        const rows = table.getElementsByTagName('tr'); // get all table rows
+        for (let i = 0; i < rows.length; i++) {
+            let showRow = true;
+            for (let j = 0; j < elements.length; j++) {
+                const element = form.elements[elements[j]]; // get form element by name
+                const cell = rows[i].children[elements[j]]; // get table cell in corresponding column
+                if (element !== null && cell !== null && element !== undefined && cell !== undefined && element.value !== '')
+                if ( cell.value !== element.value) {
+                    showRow = false; // don't show row if it doesn't match
+                    break;
+                }
+            }
+            rows[i].style.display = showRow ? '' : 'none'; // show/hide row based on matching
+        }
+    });
+}
+
+function filterCheckBoxTableRows(form, table, elements) {
+    form.addEventListener('submit', function (event) {
+        event.preventDefault(); // prevent form from submitting
+
+        const rows = table.getElementsByTagName('tr'); // get all table rows
+        for (let i = 0; i < rows.length; i++) {
+            let showRow = true;
+            for (let j = 0; j < elements.length; j++) {
+                const element = form.getElementsByName(elements[j]); // get form element by name
+                const cell = rows[i].children[elements[j]]; // get table cell in corresponding column
+                let value = '';
+                for (let k = 0; k < element.length; k++) {
+                    if (element[k].checked) {
+                        value = value + element[k].value;
+                    }
+                }
+                if (element !== null && cell !== null && element !== undefined && cell !== undefined && value !== '')
+                    if (cell.value !== value) {
+                        showRow = false; // don't show row if it doesn't match
+                        break;
+                    }
+            }
+            rows[i].style.display = showRow ? '' : 'none'; // show/hide row based on matching
+        }
+    });
+}
 const boxes = document.querySelectorAll('.alt-toggle-box');
 
 boxes.forEach(box => {
@@ -240,7 +287,7 @@ var i;
 for (i = 0; i < coll.length; i++) {
     coll[i].addEventListener("click", function () {
         this.classList.toggle("active");
-        var content = this.nextElementSibling;
+        var content = this.nextElementSibling.querySelector('td').querySelector('div');
         if (content.style.height) {
             content.style.height = null;
             content.style.opacity = "0";
@@ -250,3 +297,9 @@ for (i = 0; i < coll.length; i++) {
         } 
     });
 }
+var scrollbar = document.querySelector('.scrollbar');
+scrollbar.addEventListener('scroll', function () {
+    var thumb = scrollbar.querySelector('::after');
+    var percentage = scrollbar.scrollTop / (scrollbar.scrollHeight - scrollbar.clientHeight) * 100;
+    thumb.style.top = percentage + '%';
+});

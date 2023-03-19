@@ -73,6 +73,7 @@ namespace evolUX.API.Areas.Finishing.Services
                         ServiceList = new ProdServiceElement();
                         ExpeditionList.ServiceList.Add(ServiceList);
                         ServiceList.ServiceTaskCode = pdi.ServiceTaskCode;
+                        ServiceList.ServiceTaskID = pdi.ServiceTaskID;
                         ServiceList.ServiceTaskDesc = pdi.ServiceTaskDesc;
                         ServiceList.MediaMaterialList = new List<ProdMaterialElement>();
                         lastServiceTaskCode = pdi.ServiceTaskCode;
