@@ -65,11 +65,11 @@ else
                     @if (AddConstantParameter)
                     {
                         <td style="align-items:center; display:flex" width="60px">
-                            <img onclick="EditRow('@c.ParameterID')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
+                            <img onclick="EditRow('@c.ParameterID')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
                             @if (DeleteConstantParameter)
                             {
                                 <a asp-area="evolDP" asp-controller="Client" asp-action="DeleteParameter" asp-route-exceptionID="@c.ParameterID">
-                                    <img onclick="return confirmParameterDelete()" style="background:none; width:25px;height:25px;" src="~/images/delete.png" title="@localizer["DeleteParameter"] @localizer["ParameterRef"] = @c.ParameterRef"  />
+                                    <img onclick="return confirmParameterDelete()" class="evol-image" src="~/images/delete.png" title="@localizer["DeleteParameter"] @localizer["ParameterRef"] = @c.ParameterRef"  />
                                 </a>
                             }
                         </td>
@@ -83,8 +83,8 @@ else
                     <tr id="Hide|@c.ParameterID" style="display: none">
                         <form id="AddParameterFrm|@c.ParameterID" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Generic" asp-action="ConfigParameter" asp-route-source="Edit">
                             <td style ="align-items:center; display:flex" width="60px" >
-                                <img onclick="CancelRow('@c.ParameterID')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                                <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
+                                <img onclick="CancelRow('@c.ParameterID')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                                <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                                 <input style="visibility:hidden" id=ParameterID name=ParameterID value="@c.ParameterID" />
                             </td>
                             <td><input id=ParameterRef name=ParameterRef type="text" maxlength="20" style="width: 100%" value="@c.ParameterRef" /></td>

@@ -75,7 +75,7 @@ else
                     @if (AddExpeditionType)
                     {
                         <td>
-                            <img onclick="EditRow('@value')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
+                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
                         </td>
                     }
                     @if (expeditionType.ExpCompanyTypesList.Count() > 1)
@@ -106,8 +106,8 @@ else
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyType"
                              asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(expeditionType)" asp-route-source="@source">
                         <td style ="align-items:center; display:flex">
-                            <img onclick="CancelRow('@value')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
+                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                         </td>
                         @if (expeditionType.ExpCompanyTypesList.Count() > 1)
                         {

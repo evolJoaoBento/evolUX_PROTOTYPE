@@ -72,7 +72,7 @@ else
                                             newExpZone.ExpCompanyZonesList = z.ExpCompanyZonesList.Where(x => x.ExpCompanyID == c.ExpCompanyID && x.ExpCenterCode == c.ExpCenterCode).ToList();
                                         <tr>
                                                 <td><a asp-area="evolDP" asp-controller="Expedition" asp-action="ZoneDetail" asp-route-expeditionzoneJson="@JsonConvert.SerializeObject(newExpZone)">
-                                                        <img style="background:none; width:25px;height:25px;" src="~/images/detail.png" title="@localizer["List"]: @value" />
+                                                        <img class="evol-image" src="~/images/detail.png" title="@localizer["List"]: @value" />
                                                     </a></td>
                                                 <td>@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName</td>
                                                 <td>@c.ExpCenterCode</td>
