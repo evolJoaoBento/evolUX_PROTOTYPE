@@ -702,9 +702,26 @@ label {
     background-color: var(--evoldp-color);
     color: white;
 }
+
 .collapsible.active:hover {
     background-color: var(--evolflow-color);
     color: white;
 }
-
-
+.evol-arrow {
+    color: var(--evol-grey);
+    height: 25px;
+    width: 25px;
+    transition: all 0.3s;
+    padding: 5px;
+}
+.evol-arrow show {
+    transform: rotate(180);
+}
+.evol-buttons-column {
+    width: calc(var(--nButton) * 30px);
+}
+.evol-image {
+    color: var(--evol-grey);
+    height: 25px;
+    width: 25px;
+}

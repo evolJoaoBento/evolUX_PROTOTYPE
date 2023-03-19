@@ -78,7 +78,7 @@ else
                         <th>@localizer["ExpeditionReportList"] [@s.ServiceCompanyName]
                             @if (Model.ExpeditionList.Count() > 0)
                             {
-                                <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
+                                <a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
                             }
                         </th>
                     </tr>
@@ -102,7 +102,7 @@ else
                         <tr>
                             <th colspan="7">
                                 @c.ExpCompanyCode / @b.BusinessDescription
-                                <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
+                                <a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
                             </th>
                         </tr>
                     }
@@ -111,7 +111,7 @@ else
                         <tr>
                             <th colspan="7">
                                 @c.ExpCompanyCode
-                                <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue">
+                                <a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue">
                                 </a>
                             </th>
                             </tr>
@@ -170,7 +170,7 @@ else
                                 nameValue = Level2Name + level2.ToString();
                                 idValue = "arrow" + nameValue;
                                 sum = 0;
-                                <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue">
+                                <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue">
                                 </a>                     
                                 <table id="@nameValue"  class="table table-bordered table-sm table-striped" style="display: none">
                                     <thead>
@@ -191,7 +191,7 @@ else
                                                         level3++;
                                                         nameValue = Level3Name + level3.ToString();
                                                         idValue = "arrow" + nameValue;
-                                                        <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue">
+                                                        <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue">
                                                         </a>
                                                         <table id="@nameValue"  class="table table-bordered table-sm table-striped" style="display: none">
                                                             <thead>

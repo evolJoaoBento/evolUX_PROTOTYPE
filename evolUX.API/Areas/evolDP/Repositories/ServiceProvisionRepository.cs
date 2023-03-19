@@ -32,7 +32,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
         }
         public async Task<IEnumerable<ServiceTypeElement>> GetServiceTaskServiceTypes(int serviceTaskID)
         {
-            string sql = @"RD_UX_GET_SERVICE_TASKS";
+            string sql = @"RD_UX_GET_SERVICE_TASK_SERVICE_TYPES";
             var parameters = new DynamicParameters();
             parameters.Add("ServiceTaskID", serviceTaskID, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())

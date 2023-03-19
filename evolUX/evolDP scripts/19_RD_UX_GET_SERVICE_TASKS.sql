@@ -8,14 +8,13 @@ ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_TASKS]
 	@ServiceTaskID int = NULL
 AS
 BEGIN
-	SELECT ServiceTaskID, ServiceTaskCode, [Description] ServiceTaskDesc
+	SELECT ServiceTaskID, ServiceTaskCode, [Description] ServiceTaskDesc, StationExceededDesc, ComplementServiceTaskID, ExternalExpeditionMode
 	FROM RD_SERVICE_TASK WITH(NOLOCK)
 	WHERE (@ServiceTaskID is NULL OR ServiceTaskID = @ServiceTaskID)
 	ORDER BY ServiceTaskID
 END
 GO
 --ALTERAR, APAGAR e ALTERAR (Adicionando novos tipos de serviços)
-
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_SERVICE_TASK_SERVICE_TYPES]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_SERVICE_TASK_SERVICE_TYPES] AS' 
@@ -28,14 +27,14 @@ AS
 BEGIN
 	SELECT st.ServiceTypeID,
 		st.ServiceTypeCode, --Código de Tipo de Serviço
-		st.ServiceTypeDescription --Descrição do Tipo de Serviço
+		st.ServiceTypeDescription ServiceTypeDesc --Descrição do Tipo de Serviço
 	FROM
 		RD_SERVICE_TASK_SERVICE_TYPE stst WITH(NOLOCK)
 	INNER JOIN
 		RD_SERVICE_TYPE st
 	ON	st.ServiceTypeID = stst.ServiceTypeID
 	WHERE stst.ServiceTaskID = @ServiceTaskID
-	ORDER BY st.ServiceTypeCode
+	ORDER BY st.ServiceTypeID
 END
 GO
 

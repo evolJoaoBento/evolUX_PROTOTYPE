@@ -75,6 +75,11 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             await _repository.ServiceProvision.SetServiceCompanyConfig(serviceCompanyConfig);
         }
+        
+        public async Task<IEnumerable<ServiceTypeElement>> GetAvailableServiceTypes()
+        {
+            return await _repository.ServiceProvision.GetServiceTypes(null);
+        }
 
         public async Task<ServiceTypeViewModel> GetServiceTypes(int? serviceTypeID)
         {
@@ -82,7 +87,7 @@ namespace evolUX.API.Areas.evolDP.Services
             viewModel.Types = await _repository.ServiceProvision.GetServiceTypes(serviceTypeID);
             if (viewModel.Types != null)
             {
-                foreach(var type in viewModel.Types) 
+                foreach (var type in viewModel.Types)
                 {
                     var list = await GetServices(type.ServiceTypeID);
                     if (list != null)

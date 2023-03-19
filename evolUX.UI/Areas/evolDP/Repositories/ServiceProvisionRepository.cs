@@ -132,6 +132,16 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<ServiceElement>>();
         }
+        public async Task<IEnumerable<ServiceTypeElement>> GetAvailableServiceTypes()
+        {
+            var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/GetAvailableServiceTypes")
+                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                 .GetAsync();
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<IEnumerable<ServiceTypeElement>>();
+
+        }
         public async Task<ServiceTypeViewModel> GetServiceTypes()
         {
             var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/GetServiceTypes")

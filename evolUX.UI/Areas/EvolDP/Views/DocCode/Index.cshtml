@@ -34,6 +34,7 @@ else
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
+                <th width="30px"></th>
                 <th colspan="3">@localizer["DocCode"]</th>
             </tr>
         </thead>
@@ -44,9 +45,12 @@ else
                     nameValue = Level0Name + level.ToString();
                     idValue = "arrow" + nameValue;
                     <tr>
-                        <td>
-                            @dg.DocLayout<a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
-                            <table id="@nameValue" class="table table-sm table-hover table-collapse-seperate" style="display: none">
+                        <td><a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a></td>
+                        <td>@dg.DocLayout</td>
+                    </tr>
+                    <tr id="@nameValue"  style="display: none">
+                        <td colspan="2">
+                            <table class="table table-sm table-hover table-collapse-seperate">
                                 <thead id="bootstrap-overrides" class="table-info sticky-header">
                                     <tr>
                                         <th></th>
@@ -57,23 +61,23 @@ else
                                     </tr>
                                 </thead>
                                 <tbody id="bootstrap-overrides">
-                                        @foreach (DocCode d in dg.DocCodes)
-                                        {
+                                    @foreach (DocCode d in dg.DocCodes)
+                                    {
                                         <tr>
-                                            <td>
-                                            @if (string.IsNullOrEmpty(d.DocType))
-                                            {
-                                                docTypeDesc = localizer["EmptyField"].Value;
-                                            }
-                                            else
-                                            {
-                                                docTypeDesc = d.DocType;
-                                            }
-                                            @{
-                                                value = d.DocLayout + "/" + docTypeDesc;
-                                            }
-                                            <a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(d)">
-                                                <img style="background:none; width:25px;height:25px;" src="~/images/list.png" title="@localizer["List"]: @value" />
+                                            <td width="30px">
+                                                @if (string.IsNullOrEmpty(d.DocType))
+                                                {
+                                                    docTypeDesc = localizer["EmptyField"].Value;
+                                                }
+                                                else
+                                                {
+                                                    docTypeDesc = d.DocType;
+                                                }
+                                                @{
+                                                    value = d.DocLayout + "/" + docTypeDesc;
+                                                }
+                                                <a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(d)">
+                                                    <img class="evol-image" src="~/images/list.png" title="@localizer["List"]: @value" />
                                                 </a>
                                             </td>
                                             <td>@d.DocLayout</td>
@@ -85,7 +89,7 @@ else
                                             }
                                             <td>@value</td>
                                         </tr>
-                                        }
+                                    }
                                 </tbody>
                             </table>
                         </td>
