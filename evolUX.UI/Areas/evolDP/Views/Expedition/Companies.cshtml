@@ -47,7 +47,7 @@ else
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
            <tr>
-                <th>@localizer["Action"]</th>
+                <th class ="evol-fitcontent-column"></th>
                 <th>@localizer["CompanyName"]</th>
                 <th>@localizer["CompanyCode"]</th>
                 <th>@localizer["CompanyAddress"]</th>
@@ -80,7 +80,7 @@ else
                 value = expCompany.ID.ToString();
                 
                 <tr>
-                    <td width="150px">
+                    <td class="evol-fitcontent-column">
                         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(expCompany)" asp-route-typesJson="@JsonConvert.SerializeObject(expCompanyTypeList)">
                             <img style="background:none; width:35px;height:35px;" src="~/images/config.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
                         </a>

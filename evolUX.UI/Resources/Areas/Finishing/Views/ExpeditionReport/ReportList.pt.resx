@@ -127,10 +127,10 @@
     <value>Cliente Expedidor</value>
   </data>
   <data name="ClientNr" xml:space="preserve">
-    <value>Nº Cliente</value>
+    <value>N.º Cliente</value>
   </data>
   <data name="ContractNr" xml:space="preserve">
-    <value>Nº Contrato</value>
+    <value>N.º Contrato</value>
   </data>
   <data name="EmptyResult" xml:space="preserve">
     <value>Não existem Guias de Expedição com menos de um ano</value>
@@ -157,13 +157,13 @@
     <value>Sem Dados</value>
   </data>
   <data name="PostalObjects" xml:space="preserve">
-    <value>Nº de Objectos Postais</value>
+    <value>Objectos Postais</value>
   </data>
   <data name="Registred" xml:space="preserve">
     <value>Guia de Registos</value>
   </data>
   <data name="ReportNr" xml:space="preserve">
-    <value>Nº Guia</value>
+    <value>N.º Guia</value>
   </data>
   <data name="ReportTimeStamp" xml:space="preserve">
     <value>Data/Hora</value>
@@ -175,6 +175,6 @@
     <value>Total</value>
   </data>
   <data name="TotalPostalObjects" xml:space="preserve">
-    <value>Objectos Postais</value>
+    <value>Total de Objectos Postais</value>
   </data>
 </root>

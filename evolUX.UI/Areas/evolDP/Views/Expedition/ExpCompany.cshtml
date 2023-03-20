@@ -65,7 +65,7 @@ else
            <tr>
                 @if(AddExpCompany)
                 {
-                <th></th>
+                    <th class="evol-fitcontent-column"></th>
                 }
                 <th>@localizer["CompanyCode"]</th>
                 <th>@localizer["CompanyName"]</th>
@@ -79,7 +79,7 @@ else
             <tr id="Show|ExpCompany">
                 @if(AddExpCompany)
                 {
-                <td>
+                <td style="text-align: center">
                     <img onclick="EditRow('ExpCompany')" class="evol-image" src="~/images/edit.png" title="@localizer["ExpCompanyChange"]" />
                 </td>
                 }
@@ -115,7 +115,7 @@ else
             <tr>
                 @if (AddExpeditionType)
                 {
-                <th rowspan="2">@localizer["Action"]
+                <th rowspan="2">
                     @if (expCompanyTypesNotIn.Count() > 0)
                     {
                     <img onclick="EditRow('Type')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddExpeditionType"]" />
@@ -135,7 +135,7 @@ else
                 <th>@localizer["DRFlagPessoal"]</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="bootstrap-overrides">
             @foreach (ExpCompanyType e in expCompanyTypes)
             {
                 ExpeditionTypeElement expeditionType = Model.Types.First(x => x.ExpeditionType == e.ExpeditionType);
@@ -269,11 +269,10 @@ else
         <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th width="120px">
-                    @localizer["Action"]
+                <th class ="evol-fitcontent-column" style="text-align: center">
                     @if (AddExpeditionType)
                     {
-                        <img onclick="EditRow('ExpCompanyConfig')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["ExpCompanyConfigAdd"]" />
+                        <img onclick="EditRow('ExpCompanyConfig')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["ExpCompanyConfigAdd"]" />
                     }
                 </th>
                 <th>@localizer["StartDate"]</th>
@@ -306,23 +305,22 @@ else
                 if (DateTime.TryParseExact(sDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out startDateDT))
                     startDateDesc = startDateDT.ToShortDateString();
                 <tr>
-                    <td>
+                    <td style="align-items:center; display:flex">
                     <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-expcompanyConfigsJson="@JsonConvert.SerializeObject(startDateConfigs)" asp-route-startdate="@sDate">
                         <img class="evol-image" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
                     </a>
+                    <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@name0Value')" id="@id0Value"></a>
                     </td>
-                        <td colspan="2">
-                            @startDateDesc<a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@name0Value')" id="@id0Value"></a>
-                    </td>
+                    <td colspan="2">@startDateDesc</td>
                 </tr>
                 <tr id="@name0Value" style="display: none">
                     <td colspan="2">
                         <table class="table table-sm table-hover table-collapse-seperate">
                             <thead id="bootstrap-overrides" class="table-info sticky-header">
-                                <th width="200px"></th>
+                                <th class="evol-fitcontent-column"></th>
                                 <th>@localizer["ExpeditionType"]</th>
                             </thead>
-                            <tbody>
+                            <tbody id="bootstrap-overrides">
                                 @foreach(var tType in Model.Configs.Where(x => x.StartDate == sDate).Select(x=> x.ExpeditionType).Distinct().ToList())
                                 {
                                     List<ExpCompanyConfigResume> typeList = Model.Configs.Where(x => x.StartDate == sDate && x.ExpeditionType == tType).ToList();
@@ -330,39 +328,38 @@ else
                                     name1Value = "detail" + level1.ToString();
                                     id1Value = "arrow" + name1Value;
                                     <tr>
-                                        <td>
+                                        <td style="align-items:center; display:flex;margin-left: 30px">
                                             <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType">
                                                 <img class="evol-image" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
                                             </a>
-                                        </td>
-                                        <td>@typeList.First().ExpeditionTypeDesc
                                             <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@name1Value')" id="@id1Value"></a>
                                         </td>
+                                        <td>@typeList.First().ExpeditionTypeDesc</td>
                                     </tr>
                                     <tr id="@name1Value" style="display: none">
                                         <td colspan="2">
-                                                <table class="table table-sm table-hover table-collapse-seperate">
-                                                    <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                            <table class="table table-sm table-hover table-collapse-seperate">
+                                                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                                    <tr>
+                                                        <th class="evol-fitcontent-column">
+                                                        <th>@localizer["ExpeditionZone"]</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="bootstrap-overrides">
+                                                    @foreach (var zZone in typeList.Select(x => x.ExpeditionZone).Distinct().ToList())
+                                                    {
                                                         <tr>
-                                                            <th width="280px"></th>
-                                                            <th>@localizer["ExpeditionZone"]</th>
+                                                            <td style="align-items:center; display:flex;margin-left: 80px">
+                                                                <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType" asp-route-expeditionzone="@zZone">
+                                                                    <img class="evol-image" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
+                                                                </a>
+                                                            </td>
+                                                            <td>@typeList.Where(x => x.ExpeditionZone == zZone).First().ExpeditionZoneDesc</td>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody id="bootstrap-overrides">
-                                                        @foreach (var zZone in typeList.Select(x => x.ExpeditionZone).Distinct().ToList())
-                                                        {
-                                                            <tr>
-                                                                <td>
-                                                                    <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType" asp-route-expeditionzone="@zZone">
-                                                                        <img class="evol-image" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
-                                                                    </a>
-                                                                </td>
-                                                                <td>@typeList.Where(x => x.ExpeditionZone == zZone).First().ExpeditionZoneDesc</td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </td>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </td>
                                     </tr>
                                 }
                              </tbody>

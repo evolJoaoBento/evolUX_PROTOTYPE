@@ -117,19 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="All" xml:space="preserve">
-    <value>Todas</value>
-  </data>
-  <data name="BusinessCode" xml:space="preserve">
+  <data name="Business" xml:space="preserve">
     <value>Área de Negócio</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
   <data name="PendingExpedition" xml:space="preserve">
-    <value>Guias de Expedição</value>
+    <value>Expedição Pendente</value>
   </data>
-  <data name="Submit" xml:space="preserve">
+  <data name="PendingExpeditionTip" xml:space="preserve">
     <value>Ver Expedição Pendente</value>
   </data>
 </root>

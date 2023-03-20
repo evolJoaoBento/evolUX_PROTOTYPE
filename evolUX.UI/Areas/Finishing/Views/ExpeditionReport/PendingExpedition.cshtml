@@ -29,29 +29,31 @@ else
     <div id="TitlePage">
         <h1>@localizer["PendingExpedition"]</h1>
     </div>
-    <form id="ServiceCompaniesFrm" class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="ExpeditionReport" asp-action="PendingExpeditionFiles">
-        <table class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <td><h4 class="text-center" style="color: var(--darkestgrey)">@BusinessCodeLabel</h4> </td>
+                <th class="evol-fitcontent-column" style="text-align:center">
+                    <a asp-area="Finishing" asp-controller="ExpeditionReport" asp-action="PendingExpeditionFiles" asp-route-CompanyBusinessValues="0|ALL|">
+                        <img class="evol-image" style="width:50px;height:50px" src="~/images/pending_expedition.png" title="@localizer["PendingExpeditionTip"]" />
+                    </a>
+                </th>
+                <th style="vertical-align:middle">@localizer["Business"]</th>
             </tr>
-            <tr>
-                <td>
-                    <select name="CompanyBusinessValues">
-                        @foreach (Business c in Model.CompanyBusiness)
-                        {
-                            <option value="@(c.BusinessID + "|" + c.BusinessCode + "|" + c.Description)">@c.Description</option>
-                        }
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td class="d-flex justify-content-center m-4">
-                    <input type="submit" value="@localizer["Submit"]" name="Submit" class="btn btn-block btn-outline-info" />
-                </td>
-            </tr>
-        </table>
-        <br />
-    </form>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @foreach (Business c in Model.CompanyBusiness)
+            {
+                <tr>
+                    <td style="text-align:center">
+                        <a asp-area="Finishing" asp-controller="ExpeditionReport" asp-action="PendingExpeditionFiles" asp-route-CompanyBusinessValues="@(c.BusinessID + "|" + c.BusinessCode + "|" + c.Description)">
+                            <img class="evol-image" src="~/images/clock.png" title="@localizer["PendingExpeditionTip"]: @c.Description" />
+                        </a>
+                    </td>
+                    <td>@c.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
     
 

@@ -37,7 +37,7 @@ else
            <tr>
                 @if (AddConstantParameter)
                 {
-                    <th width="60px" style="text-align: center"><img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddParameter"]" /></th>
+                    <th class="evol-fitcontent-column" style="text-align: center"><img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddParameter"]" /></th>
                 }
                 <th>@localizer["ParameterRef"]</th>
                 <th>@localizer["ParameterValue"]</th>
@@ -49,7 +49,7 @@ else
             {
                 <tr id="Hide|" style="display: none">
                     <form id="AddParameterFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Generic" asp-action="ConfigParameter" asp-route-source="Add">
-                        <td style ="align-items:center; display:flex" width="60px" >
+                        <td style ="align-items:center; display:flex">
                            <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png"/>
                         </td>
@@ -64,7 +64,7 @@ else
                 <tr id="Parameter|@c.ParameterID">
                     @if (AddConstantParameter)
                     {
-                        <td style="align-items:center; display:flex" width="60px">
+                        <td style="align-items:center; display:flex">
                             <img onclick="EditRow('@c.ParameterID')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
                             @if (DeleteConstantParameter)
                             {
@@ -82,7 +82,7 @@ else
                 {
                     <tr id="Hide|@c.ParameterID" style="display: none">
                         <form id="AddParameterFrm|@c.ParameterID" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Generic" asp-action="ConfigParameter" asp-route-source="Edit">
-                            <td style ="align-items:center; display:flex" width="60px" >
+                            <td style ="align-items:center; display:flex">
                                 <img onclick="CancelRow('@c.ParameterID')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                                 <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                                 <input style="visibility:hidden" id=ParameterID name=ParameterID value="@c.ParameterID" />

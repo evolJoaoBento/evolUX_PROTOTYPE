@@ -18,11 +18,11 @@ using evolUX.API.Models;
 namespace evolUX.UI.Areas.Finishing.Controllers
 {
     [Area("Finishing")]
-    public class ConcludedPrintingController : Controller
+    public class ConcludedPrintController : Controller
     {
         private readonly IConcludedPrintService _concludedPrintService;
-        private readonly IStringLocalizer<ConcludedPrintingController> _localizer;
-        public ConcludedPrintingController(IConcludedPrintService concludedPrintService, IStringLocalizer<ConcludedPrintingController> localizer)
+        private readonly IStringLocalizer<ConcludedPrintController> _localizer;
+        public ConcludedPrintController(IConcludedPrintService concludedPrintService, IStringLocalizer<ConcludedPrintController> localizer)
         {
             _concludedPrintService = concludedPrintService;
             _localizer = localizer;

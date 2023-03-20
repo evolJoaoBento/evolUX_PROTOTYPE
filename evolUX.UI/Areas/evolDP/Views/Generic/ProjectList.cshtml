@@ -11,7 +11,6 @@
 
     if (Model.Permissions.Find(x => x == "AddConstantParameter") != null) { AddConstantParameter = true; }
     if (Model.Permissions.Find(x => x == "DeleteConstantParameter") != null) { DeleteConstantParameter = true; }
-
 }
 @section Scripts
 {
@@ -42,6 +41,13 @@ else
     <div id="TitlePage">
         <h1>@localizer["Projects"] @ViewBag.BusinessDescription</h1>
     </div>
+    @if (ViewBag.hasMultipleCompanyBusiness)
+    {
+    <div>
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Generic" asp-action="Projects">
+        </a>
+    </div>
+    }
     @if (Model.Projects.Count() == 0)
     {
         <h4 class="display-4 text-center">@localizer["EmptyResult"]</h4>
@@ -69,7 +75,7 @@ else
                 @if (ViewBag.hasMultipleCompanyBusiness)
                 {
                     <tr>
-                        <th width="30px">
+                        <th class ="evol-fitcontent-column">
                             @if (ViewBag.OnlyOneSelected)
                             {
                                 startStyle = "";

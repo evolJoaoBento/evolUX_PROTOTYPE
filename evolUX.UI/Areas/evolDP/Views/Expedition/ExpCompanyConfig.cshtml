@@ -102,7 +102,7 @@ else
             <table id="Hide|@value" style="display: none" class="table table-sm table-hover table-collapse-seperate">
                 <thead id="bootstrap-overrides" class="table-info sticky-header">
                     <tr>
-                        <th width="120px">@localizer["Action"]</th>
+                        <th class ="evol-fitcontent-column"></th>
                         <th>@localizer["ExpeditionType"]</th>
                         <th>@localizer["ExpeditionZone"]</th>
                         <th>@localizer["ExpCompanyLevel"]</th>
@@ -168,7 +168,7 @@ else
             <tr>
                 @if(AddExpeditionType)
                 {
-                <th width="120px"></th>
+                <th class ="evol-fitcontent-column"></th>
                 }
                 <th>@localizer["ExpeditionType"]</th>
                 <th>@localizer["ExpeditionZone"]</th>
@@ -189,7 +189,7 @@ else
             <tr id="Show|@value">
                 @if (AddExpeditionType)
                 {
-                                <td width="120px">
+                    <td class ="evol-fitcontent-column">
                         <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCompanyConfig"]"/>
                     </td>
                 }

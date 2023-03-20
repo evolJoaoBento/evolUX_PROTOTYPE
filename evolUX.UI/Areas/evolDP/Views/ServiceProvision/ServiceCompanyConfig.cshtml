@@ -112,7 +112,7 @@ else
         <table id="Hide|@value" style="display: none" class="table table-sm table-hover table-collapse-seperate">
             <thead id="bootstrap-overrides" class="table-info sticky-header">
                 <tr>
-                    <th width="120px">@localizer["Action"]</th>
+                    <th class="evol-fitcontent-column"></th>
                     <th>@localizer["Service"]</th>
                     <th>@localizer["CostDate"]</th>
                     <th>@localizer["ServiceCost"]</th>
@@ -175,7 +175,7 @@ else
         <table id="Hide|@value" style="display: none" class="table table-sm table-hover table-collapse-seperate">
             <thead id="bootstrap-overrides" class="table-info sticky-header">
                 <tr>
-                    <th width="120px">@localizer["Action"]</th>
+                    <th class ="evol-fitcontent-column"></th>
                     <th>@localizer["Service"]</th>
                     <th>@localizer["CostDate"]</th>
                     <th>@localizer["ServiceCost"]</th>
@@ -208,7 +208,7 @@ else
             <tr>
                 @if(AddServiceCompany)
                 {
-                <th width="120px"></th>
+                <th class ="evol-fitcontent-column"></th>
                 }
                 <th>@localizer["CostDate"]</th>
                 <th>@localizer["ServiceCost"]</th>
@@ -226,7 +226,7 @@ else
             <tr id="Show|@value">
                 @if (AddServiceCompany)
                 {
-                    <td width="120px">
+                    <td class ="evol-fitcontent-column">
                         <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyConfig"]"/>
                     </td>
                 }

@@ -58,7 +58,7 @@ else
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th width="30px"></th>
+                <th class="evol-fitcontent-column"></th>
                 <th>@localizer["DocLayout"]</th>
                 <th>@localizer["DocType"]</th>
                 <th>@ExceptionLevel1IDLabel</th>
@@ -99,7 +99,7 @@ else
                 <tr>
                     <td style="align-items:center; display:flex">
                         <a asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(p)">
-                            <img class="evol-image" src="~/images/config_doc.png" title="@localizer["DocCodeConfigDetail"]: @value" />
+                            <img class="evol-image" src="~/images/config.png" title="@localizer["DocCodeConfigDetail"]: @value" />
                         </a>
                     </td>
                     <td>@p.DocLayout</td>

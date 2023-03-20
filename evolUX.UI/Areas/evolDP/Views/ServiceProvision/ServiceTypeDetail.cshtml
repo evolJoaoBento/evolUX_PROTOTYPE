@@ -64,7 +64,7 @@ else
                 @if (colWidth > 0)
                 {
                     colspan++;
-                    <th width="@colWidth px" style="text-align: center">
+                    <th class="evol-fitcontent-column" style="text-align: center">
                     @if (AddServiceTask)
                     {
                            <img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["ChangeServiceType"]" />
@@ -102,7 +102,7 @@ else
                 <tr id="Show|@value">
                     @if (colWidth > 0)
                     {
-                    <td width="@colWidth px" style="align-items:center; display:flex">
+                    <td class="evol-fitcontent-column" style="align-items:center; display:flex">
                         @if (AddServiceTask)
                         {
                         <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeService"]" />

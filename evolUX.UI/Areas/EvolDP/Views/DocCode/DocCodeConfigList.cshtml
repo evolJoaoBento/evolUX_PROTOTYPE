@@ -7,7 +7,6 @@
 
 @model DocCodeConfigViewModel;
 @{
-    int colWidth;
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
     bool AddDocCode = false;
     bool DeleteDocCode = false;
@@ -180,20 +179,7 @@ else
                     <table class="table table-sm table-hover table-collapse-seperate">
                     <thead id="bootstrap-overrides" class="table-info sticky-header">
                         <tr>
-                            @{
-                                colWidth = 1;
-                                if (AddDocCode)
-                                {
-                                    if (docCode.DocCodeConfigs.Where(x => x.StartDate >= Int32.Parse(DateTime.Now.ToString("yyyyMMdd"))).ToList().Count() > 0)
-                                        colWidth++;
-                                    if (DeleteDocCode)
-                                        colWidth++;
-                                    if (ExportDocCode)
-                                        colWidth++;
-                                }
-                                colWidth = 30 * colWidth;
-                            }
-                            <th width="@colWidth px">@localizer["Action"]</th>
+                            <th class ="evol-fitcontent-column"></th>
                             <th>@localizer["StartDate"]</th>
                             <th>@localizer["AggrCompatibility"]</th>
                             <th>@localizer["Priority"]</th>
@@ -206,7 +192,7 @@ else
                         @foreach(DocCodeConfig dConfig in docCode.DocCodeConfigs)
                         {
                         <tr>
-                            <td style ="align-items:center; display:flex">
+                            <td class ="evol-fitcontent-column"style ="align-items:center; display:flex">
                                 @{
                                     startDateDesc = DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToShortDateString();
                                     newDocCode = new DocCode();
@@ -222,7 +208,7 @@ else
                                     newDocCode.DocCodeConfigs.Add(dConfig);
                                 }
                                 <a asp-area="evolDP" asp-controller="DocCode" asp-action="DocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(newDocCode)">
-                                    <img class="evol-image" src="~/images/list.png" title="@localizer["Detail"] @localizer["Date"] = @startDateDesc" />
+                                    <img class="evol-image" src="~/images/detail.png" title="@localizer["Detail"] @localizer["Date"] = @startDateDesc" />
                                 </a>
                                 @if(AddDocCode)
                                 {

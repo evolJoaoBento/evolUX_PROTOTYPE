@@ -32,10 +32,10 @@ else
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th width="50px">
+                <th class="evol-fitcontent-column">
                 </th>
-                <th width="120px">@localizer["Type"]</th>
-                <th width="120px">@localizer["Priority"]</th>
+                <th class="evol-fitcontent-column">@localizer["Type"]</th>
+                <th class="evol-fitcontent-column">@localizer["Priority"]</th>
                 <th>@localizer["Description"]</th>
             </tr>
         </thead>
@@ -52,8 +52,8 @@ else
                             <img class="evol-image" src="~/images/list.png" title="@localizer["List"]: @value" />
                         </a>
                     </td>
-                    <td>@t.ExpeditionType</td>
-                    <td>@t.Priority</td>
+                    <td style="text-align:center">@t.ExpeditionType</td>
+                    <td style="text-align:center">@t.Priority</td>
                     <td>@t.Description
                         @if (t.ExpCompanyTypesList.Count() > 0)
                         {

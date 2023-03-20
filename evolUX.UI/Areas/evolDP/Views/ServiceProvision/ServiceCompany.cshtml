@@ -62,7 +62,7 @@ else
            <tr>
                 @if(AddServiceCompany)
                 {
-                <th width="30px"></th>
+                    <th class="evol-fitcontent-column"></th>
                 }
                 <th>@localizer["CompanyCode"]</th>
                 <th>@localizer["CompanyName"]</th>
@@ -76,8 +76,8 @@ else
             <tr id="Show|ServiceCompany">
                 @if(AddServiceCompany)
                 {
-                <td>
-                        <img onclick="EditRow('ServiceCompany')" class="evol-image" src="~/images/edit.png" title="@localizer["ServiceCompanyChange"]" />
+                <td style="text-align: center">
+                    <img onclick="EditRow('ServiceCompany')" class="evol-image" src="~/images/edit.png" title="@localizer["ServiceCompanyChange"]" />
                 </td>
                 }
                 <td>@serviceCompany.CompanyCode</td>
@@ -112,7 +112,7 @@ else
             <tr>
                 @if (AddServiceCompany)
                 {
-                <th width="30px">@localizer["Action"]</th>
+                <th class ="evol-fitcontent-column"></th>
                 }
                 <th>@localizer["MaterialType"]</th>
                 <th title="@localizer["MaterialPositionTip"]">@localizer["MaterialPosition"]</th>
@@ -120,7 +120,7 @@ else
                 <th title="@localizer["RestrictionModeTip"]">@localizer["RestrictionMode"]</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="bootstrap-overrides">
             @foreach (ServiceCompanyRestriction r in serviceCompanyRestrictions)
             {
                 value = r.MaterialTypeID.ToString();
@@ -202,9 +202,7 @@ else
         <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th width="60px">
-                    @localizer["Action"]
-                </th>
+                <th class ="evol-fitcontent-column" style="text-align: center"></th>
                 <th>@localizer["ServiceType"]</th>
             </tr>
         </thead>
@@ -229,7 +227,7 @@ else
                     <td colspan="2">
                         <table class="table table-sm table-hover table-collapse-seperate">
                             <thead id="bootstrap-overrides" class="table-info sticky-header">
-                                <th width="90px"></th>
+                                <th class="evol-fitcontent-column"></th>
                                 <th>@localizer["Service"]</th>
                             </thead>
                             <tbody>
@@ -251,33 +249,33 @@ else
                                     </tr>
                                     <tr id="@name1Value" style="display: none">
                                         <td colspan="2">
-                                                <table class="table table-sm table-hover table-collapse-seperate">
-                                                    <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                            <table class="table table-sm table-hover table-collapse-seperate">
+                                                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                                    <tr>
+                                                        <th class ="evol-fitcontent-column">
+                                                        <th>@localizer["CostDate"]</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="bootstrap-overrides">
+                                                    @foreach (var cDate in serviceTypeConfigs.Select(x => x.CostDate).Distinct().ToList())
+                                                    {
+                                                        DateTime costDateDT;
+                                                        costDateDesc = cDate.ToString();
+                                                        if (DateTime.TryParseExact(cDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out costDateDT))
+                                                            costDateDesc = costDateDT.ToShortDateString();
                                                         <tr>
-                                                            <th width="30px">
-                                                            <th>@localizer["CostDate"]</th>
+                                                            <td style="align-items:center; display:flex;margin-left: 80px">
+                                                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
+                                                                    asp-route-servicetypeid="@sType" asp-route-serviceid="@s" asp-route-costdate="@cDate">
+                                                                    <img class="evol-image" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
+                                                                </a>
+                                                            </td>
+                                                            <td>@costDateDesc</td>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody id="bootstrap-overrides">
-                                                        @foreach (var cDate in serviceTypeConfigs.Select(x => x.CostDate).Distinct().ToList())
-                                                        {
-                                                            DateTime costDateDT;
-                                                            costDateDesc = cDate.ToString();
-                                                            if (DateTime.TryParseExact(cDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out costDateDT))
-                                                                costDateDesc = costDateDT.ToShortDateString();
-                                                            <tr>
-                                                                <td style="align-items:center; display:flex;margin-left: 80px">
-                                                                    <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
-                                                                        asp-route-servicetypeid="@sType" asp-route-serviceid="@s" asp-route-costdate="@cDate">
-                                                                        <img class="evol-image" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
-                                                                    </a>
-                                                                </td>
-                                                                <td>@costDateDesc</td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </td>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </td>
                                     </tr>
                                 }
                              </tbody>

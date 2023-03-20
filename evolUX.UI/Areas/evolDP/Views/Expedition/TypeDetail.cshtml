@@ -49,7 +49,7 @@ else
             <tr>
                 @if (AddExpeditionType)
                 {
-                <th rowspan="2"></th>
+                    <th rowspan="2" class="evol-fitcontent-column"></th>
                 }
                 @if (expeditionType.ExpCompanyTypesList.Count() > 1)
                 {
@@ -67,14 +67,14 @@ else
                 <th>@localizer["DRFlagPessoal"]</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="bootstrap-overrides">
             @foreach(ExpCompanyType c in expeditionType.ExpCompanyTypesList)
             {
                 value = expeditionType.ExpeditionType.ToString();
                 <tr id="Show|@value">
                     @if (AddExpeditionType)
                     {
-                        <td>
+                        <td style="text-align: center">
                             <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
                         </td>
                     }

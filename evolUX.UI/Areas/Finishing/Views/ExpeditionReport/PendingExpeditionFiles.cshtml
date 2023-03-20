@@ -40,6 +40,13 @@ else
     <div id="TitlePage">
         <h1>@localizer["PendingExpedition"] @ViewBag.BusinessDescription</h1>
     </div>
+    @if (ViewBag.hasMultipleCompanyBusiness)
+    {
+        <div>
+            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="Finishing" asp-controller="ExpeditionReport" asp-action="PendingExpedition">
+            </a>
+        </div>
+    }
     @if (Model.ExpeditionList.Count() == 0)
     {
         <h4 class="display-4 text-center">@localizer["EmptyResult"]</h4>
@@ -54,6 +61,8 @@ else
         string idValue = "arrow" + count.ToString();
         string nameValue = "";
         string cValue = "";
+
+        
         <form id="ExpeditionFilesFrm" asp-area="Finishing" asp-controller="Expedition" asp-action="RegistExpeditionReport"
                 data-ajax="true"
                 data-ajax-method="POST"
@@ -66,32 +75,22 @@ else
                 level++;
                 nameValue = Level0Name + level.ToString();
                 idValue = "arrow" + nameValue;
-                <table class="table table-bordered table-sm">
-                <thead>
-                    @if (!ViewBag.hasMultipleServiceCompanies)
-                    {
-                        <tr><th>@localizer["PendingExpeditionFiles"]</th></tr>
-                    }
-                    else
-                    {
-                        <tr>
-                            <th>@localizer["PendingExpeditionFiles"] [@s.ServiceCompanyName]
-                                @if (Model.ExpeditionList.Count() > 0)
-                                {
-                                    <a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
-                                }
-                            </th>
-                        </tr>
-                    }
-                </thead>
-                <tbody id="@nameValue">
+                @if (ViewBag.hasMultipleServiceCompanies)
+                {
+                    <div id="TitlePage">
+                        <h3>
+                            <a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
+                            @localizer["PendingExpeditionFiles"] [@s.ServiceCompanyName]
+                        </h3>
+                    </div>
+                }
+                <div id="@nameValue">
                 @foreach (ExpCompanyFileElement c in s.ExpCompanyList)
                 {
                 @foreach (ExpBusinessFileElement b in c.BusinessList)
                 {
                 @foreach (ExpRunFileElement r in b.RunList)
                 {
-                    <tr><td>
                     <table class="table table-bordered table-sm table-striped">
                     @{
                         count++;
@@ -102,20 +101,19 @@ else
                         @if (ViewBag.hasMultipleCompanyBusiness)
                         {
                             <tr>
-                                <th colspan="5">
-                                    @c.ExpCompanyCode / @b.BusinessDescription [@r.RunDate (@r.RunSequence)]
-                                    <a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
+                                <th class="evol-fitcontent-column" style="text-align:center">
+                                    <a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"/>
                                 </th>
+                                <th colspan="5">@c.ExpCompanyCode / @b.BusinessDescription [@r.RunDate (@r.RunSequence)]</th>
                             </tr>
                         }
                         else
                         {
                             <tr>
-                                <th colspan="5">
-                                    @c.ExpCompanyCode / @r.RunDate (@r.RunSequence)
-                                    <a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue">
-                                    </a>
-                               </th>
+                                <th class="evol-fitcontent-column" style="text-align:center">
+                                    <a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"/>
+                                </th>
+                                <th colspan="5">@c.ExpCompanyCode / @r.RunDate (@r.RunSequence)</th>
                              </tr>
                         }
                     </thead>
@@ -145,7 +143,7 @@ else
                     }
                         @{cValue = s.ServiceCompanyCode.ToString()+ "|" + c.ExpCompanyID.ToString() + "|" + r.RunID.ToString();}
                         <tr>
-                            <td colspan="5">
+                            <td style="align-items:center; display:flex">
                                 <button style="background:none;width:20px;height:20px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
                                     <img style="background:none; width:20px;height:20px;" src="~/images/select-multiple.png" />
                                 </button>
@@ -153,27 +151,25 @@ else
                                     <img style="background:none; width:20px;height:20px;" src="~/images/unselect-multiple.png" />
                                 </button>
                             </td>
+                            <td colspan="5"></td>
                         </tr>
                     </tbody>
                     </table>
-                    </td>
-                    </tr>
                 }
                 }
                 }
-                <tr>
+                <div>
                     @{cValue = s.ServiceCompanyCode.ToString();}
-                    <td>
-                        <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
-                            <img style="background:none; width:30px;height:30px;" src="~/images/select-multiple.png" />
-                        </button>
-                        <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '@cValue')">
-                            <img style="background:none; width:30px;height:30px;" src="~/images/unselect-multiple.png" />
-                        </button>
-                    </td>
-                </tr>
-                </tbody>
-                <tfoot>
+                    <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdselect" alt='@localizer["SelectAll"]' onclick="javascript:checkBoxAll('CheckedFileList', '@cValue')">
+                        <img style="background:none; width:30px;height:30px;" src="~/images/select-multiple.png" />
+                    </button>
+                    <button style="background:none;width:30px;height:30px;padding: 0 0px" type="button" name="cmdunselect" alt="@localizer["UnSelectAll"]" onclick="javascript:uncheckBoxAll('CheckedFileList', '@cValue')">
+                        <img style="background:none; width:30px;height:30px;" src="~/images/unselect-multiple.png" />
+                    </button>
+                </div>
+                <div>
+                    <br>
+                    <b>
                         @{
                             cValue = localizer["ExistsExpeditionReportsJobs"].Value
                                     .Replace("@#Jobs#@", s.ExpeditionReportsJobs.Count.ToString())
@@ -184,9 +180,10 @@ else
                                     .Replace("@#RegistTimeStamp#@", s.ExpeditionReportsJobs[0].RegistrationTimeStamp.ToString());
                             }
                         }
-                        <tr><th colspan="5">@cValue</th></tr>
-                </tfoot>
-                </table>
+                        @cValue
+                     </b>
+                </div>
+                </div>
             }
             @if (level > 1)
             {

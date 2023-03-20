@@ -42,9 +42,8 @@ else
             <tr>
                 @if (AddExpeditionContract)
                 {
-                    <th rowspan="2" style="text-align: center"><img onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["ExpContractAdd"]" /></th>
+                    <th rowspan="2" class ="evol-fitcontent-column" style="text-align: center"><img onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["ExpContractAdd"]" /></th>
                 }
-                <th rowspan="2">@localizer["ContractID"]</th>
                 <th rowspan ="2">@localizer["ContractNr"]</th>
                 <th colspan="8">@localizer["Client"]</th>
             </tr>
@@ -68,7 +67,7 @@ else
                         <img onclick="CancelRow('')" type="image"class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
                         <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png"/>
                     </td>
-                    <td><input style="display: none" id=ExpCompanyID name=ExpCompanyID value="@Model.Company.ID" /></td>
+                    <input style="display: none" id=ExpCompanyID name=ExpCompanyID value="@Model.Company.ID" />
                     <td><input id=ContractNr name=ContractNr type="number" min="0" max="2147483647" style="width: 100%" value="0" /></td>
                     <td><input id=ClientNr name=ClientNr type="number" min="0" max="2147483647" style="width: 100%" value="0" /></td>
                     <td><input id=ClientName name=ClientName type="text" maxlength="90" style="width: 100%"  /></td>
@@ -87,11 +86,10 @@ else
                 <tr id="Show|@value">
                     @if (AddExpeditionContract)
                     {
-                        <td>
+                        <td class="evol-fitcontent-column" style="text-align: center">
                             <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ExpContractChange"]" />
                         </td>
                     }
-                    <td>@c.ContractID</td>
                     <td>@c.ContractNr</td>
                     <td>@c.ClientNr</td>
                     <td>@c.ClientName</td>
@@ -110,9 +108,8 @@ else
                             <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                             <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                             </td>
-                            <td>@c.ContractID
                             <input style="display: none" id=ExpCompanyID name=ExpCompanyID value="@c.ExpCompanyID" />
-                            <input style="display: none" id=ContractID name=ContractID value="@c.ContractID" /></td>
+                            <input style="display: none" id=ContractID name=ContractID value="@c.ContractID" />
                             <td><input id=ContractNr name=ContractNr type="number" min="0" max="2147483647" style="width: 100%" value="@c.ContractNr" /></td>
                             <td><input id=ClientNr name=ClientNr type="number" min="0" max="2147483647" style="width: 100%" value="@c.ClientNr" /></td>
                             <td><input id=ClientName name=ClientName type="text" maxlength="90" style="width: 100%" value="@c.ClientName" /></td>

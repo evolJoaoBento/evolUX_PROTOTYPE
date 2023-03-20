@@ -135,11 +135,11 @@
   <data name="ActionConcludedFulfilment_Link" xml:space="preserve">
     <value>/Finishing/ConcludedFulfilment/Index</value>
   </data>
-  <data name="ActionConcludedPrinting" xml:space="preserve">
+  <data name="ActionConcludedPrint" xml:space="preserve">
     <value>Impressão Concluída</value>
   </data>
-  <data name="ActionConcludedPrinting_Link" xml:space="preserve">
-    <value>/Finishing/ConcludedPrinting/Index</value>
+  <data name="ActionConcludedPrint_Link" xml:space="preserve">
+    <value>/Finishing/ConcludedPrint/Index</value>
   </data>
   <data name="ActionConcludedRegist" xml:space="preserve">
     <value>Impressão/Envelopagem</value>
@@ -295,7 +295,7 @@
     <value>&lt;i class='li-circle circle  bx bx-revision collapse-icon' style="color:rgb(90 205 239);;"&gt;&lt;/i&gt;</value>
   </data>
   <data name="ActionMenuFinishing" xml:space="preserve">
-    <value>Impessão &amp; Acabamento</value>
+    <value>Impressão &amp; Acabamento</value>
   </data>
   <data name="ActionMenuFinishing_Icon" xml:space="preserve">
     <value>&lt;i class='li-circle circle  bx bx-printer collapse-icon' style="color:rgb(245 126 72)"&gt;&lt;/i&gt;</value>

@@ -120,11 +120,14 @@
   <data name="All" xml:space="preserve">
     <value>Todas</value>
   </data>
-  <data name="BusinessCode" xml:space="preserve">
+  <data name="Business" xml:space="preserve">
     <value>Área de Negócio</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
+  </data>
+  <data name="ProjectDetailTip" xml:space="preserve">
+    <value>Ver lista de Projetos de Formatação</value>
   </data>
   <data name="Projects" xml:space="preserve">
     <value>Projectos de Formatação</value>
