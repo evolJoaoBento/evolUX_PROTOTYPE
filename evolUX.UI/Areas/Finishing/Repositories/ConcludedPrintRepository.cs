@@ -10,9 +10,9 @@ using System.Net;
 
 namespace evolUX.UI.Areas.Finishing.Repositories
 {
-    public class ConcludedPrintingRepository : RepositoryBase, IConcludedPrintRepository
+    public class ConcludedPrintRepository : RepositoryBase, IConcludedPrintRepository
     {
-        public ConcludedPrintingRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
+        public ConcludedPrintRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
 

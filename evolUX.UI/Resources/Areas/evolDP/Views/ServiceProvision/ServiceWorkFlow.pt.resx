@@ -171,6 +171,12 @@
   <data name="ServiceType" xml:space="preserve">
     <value>Tipos de Serviços</value>
   </data>
+  <data name="ServiceTypeCode" xml:space="preserve">
+    <value>Código do Tipo Serviço</value>
+  </data>
+  <data name="ServiceTypeDesc" xml:space="preserve">
+    <value>Tipo de Serviço</value>
+  </data>
   <data name="StationExceededDesc" xml:space="preserve">
     <value>Descrição para Excesso de Adicionais</value>
   </data>

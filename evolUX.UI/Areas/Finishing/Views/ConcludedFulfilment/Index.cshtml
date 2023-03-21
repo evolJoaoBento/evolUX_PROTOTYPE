@@ -17,29 +17,29 @@ else
     <div id="TitlePage">
         <h1>@localizer["ConcludedFulfilment"]</h1>
     </div>
-    <form id="ConcludedFulfilmentFrm" class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="ConcludedFulfilment" asp-action="RegistFullfill"
+    <form id="ConcludedFulfilmentFrm" class="d-flex" asp-area="Finishing" asp-controller="ConcludedFulfilment" asp-action="RegistFullfill"
           data-ajax="true"
           data-ajax-method="POST"
           data-ajax-mode="replace"
           data-ajax-update="#response"
           data-ajax-complete="clearTextBox"
           data-ajax-loading="myLoader">
-        <table class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
+        <table class="form-group d-flex" >
             <tr>
-                <td><h4 class="text-center" style="color: var(--darkestgrey)">@localizer["FileBarcode"]</h4> </td>
+                <td><h4 style="color: var(--darkestgrey);padding-top:10px">@localizer["FileBarcode"]</h4> </td>
             </tr>
             <tr>
                 <td>@Html.TextBox("FileBarcode","",htmlAttributes:new { @class="form-control", id="FileBarcode", type="password"})</td>
             </tr>
             <tr>
-                <td class="d-flex justify-content-center m-4">
+                <td class="d-flex" style="padding-top:10px">
                     <input type="submit" value="@localizer["Submit"]" name="Submit" class="btn btn-block btn-outline-info" />
                 </td>
             </tr>
         </table>
         <br />
     </form>
-    <div id="response" class="d-flex justify-content-center m-5"></div>
+    <div id="response" class="d-flex" style="padding-top:10px"></div>
 }
 @section Scripts
     {

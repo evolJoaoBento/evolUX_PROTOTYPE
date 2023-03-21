@@ -347,6 +347,29 @@ namespace evolUX.API.Areas.evolDP.Controllers
         }
 
         [HttpGet]
+        [ActionName("GetAvailableServiceTypes")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<IEnumerable<ServiceTypeElement>>> GetAvailableServiceTypes()
+        {
+            try
+            {
+                IEnumerable<ServiceTypeElement> result = await _serviceProvision.GetAvailableServiceTypes();
+                _logger.LogInfo("GetAvailableServiceTypes Get");
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetAvailableServiceTypes action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+
+        [HttpGet]
         [ActionName("GetServiceTypes")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<ServiceTypeViewModel>> GetServiceTypes()

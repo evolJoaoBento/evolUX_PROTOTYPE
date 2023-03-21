@@ -707,7 +707,7 @@ label {
     background-color: var(--evoldp-color);
     color: white;
 }
-.collapsible.active:hover::before{
+.collapsible.active:hover {
     background-color: var(--evolflow-color);
     color: white;
 }
@@ -716,21 +716,48 @@ label {
     overflow-x: hidden;
 }
 
-    /* Hide default scrollbar */
-    .scrollbar::-webkit-scrollbar {
-        width: 6px;
+/* Hide default scrollbar */
+.scrollbar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    background-color: lightgrey;
+    border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--evol-lightergrey);
+    border-radius: 10px;
+}
+
+.evol-arrow {
+    color: var(--evol-grey);
+    height: 25px;
+    width: 25px;
+    transition: all 0.3s;
+    padding: 5px;
+}
+
+    .evol-arrow show {
+        transform: rotate(180);
     }
 
-    .scrollbar::-webkit-scrollbar-thumb {
-        background-color: lightgrey;
-        border-radius: 10px;
-    }
+.evol-buttons-column {
+    width: calc(var(--nButton) * 30px);
+}
 
-        .scrollbar::-webkit-scrollbar-thumb:hover {
-            background-color: var(--evol-lightergrey);
-            border-radius: 10px;
-        }
-
+.evol-image {
+    color: var(--evol-grey);
+    height: 25px;
+    width: 25px;
+}
+.evol-fitcontent-column {
+    width: 1%;
+    white-space: nowrap;
+    padding: 10px;
+    box-sizing: border-box;
+}
 
 
 

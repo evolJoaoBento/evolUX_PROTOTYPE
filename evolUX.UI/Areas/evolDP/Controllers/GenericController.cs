@@ -50,13 +50,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 if (result != null && result.CompanyBusiness.Count() > 0)
                 {
                     if (result.CompanyBusiness.Count() > 1)
-                    { 
-                        List<Business> cList = result.CompanyBusiness.ToList();
-                        string AllDesc = _localizer["All"];
-                        cList.Add(new Business { BusinessID = 0, BusinessCode = "", Description = AllDesc });
-                        result.CompanyBusiness = cList.OrderBy(x => x.BusinessID);
                         return View(result);
-                    }
                     else
                     {
                         string scValues = result.CompanyBusiness.First().BusinessID + "|" + result.CompanyBusiness.First().BusinessCode + "|" + result.CompanyBusiness.First().Description;

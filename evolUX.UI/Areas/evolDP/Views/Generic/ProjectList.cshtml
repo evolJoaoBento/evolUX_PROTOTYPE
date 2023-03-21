@@ -4,6 +4,14 @@
 @inject IViewLocalizer localizer
 @model ProjectListViewModel
 @inject IConfiguration configuration
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddConstantParameter = false;
+    bool DeleteConstantParameter = false;
+
+    if (Model.Permissions.Find(x => x == "AddConstantParameter") != null) { AddConstantParameter = true; }
+    if (Model.Permissions.Find(x => x == "DeleteConstantParameter") != null) { DeleteConstantParameter = true; }
+}
 @section Scripts
 {
     <script type="text/javascript">
@@ -30,11 +38,16 @@
 }
 else
 {
-    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
-
     <div id="TitlePage">
         <h1>@localizer["Projects"] @ViewBag.BusinessDescription</h1>
     </div>
+    @if (ViewBag.hasMultipleCompanyBusiness)
+    {
+    <div>
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Generic" asp-action="Projects">
+        </a>
+    </div>
+    }
     @if (Model.Projects.Count() == 0)
     {
         <h4 class="display-4 text-center">@localizer["EmptyResult"]</h4>
@@ -62,27 +75,27 @@ else
                 @if (ViewBag.hasMultipleCompanyBusiness)
                 {
                     <tr>
-                        <th colspan="5">
-                            @b.BusinessDescription [@b.Type]
-                            @if(ViewBag.OnlyOneSelected)
+                        <th class ="evol-fitcontent-column">
+                            @if (ViewBag.OnlyOneSelected)
                             {
-                                startStyle="";
-                                <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"> </a>       
+                                startStyle = "";
+                                <a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"> </a>
                             }
                             else
                             {
-                                <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                                <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                             }
+                        </th>
+                        <th colspan="5">
+                            @b.BusinessDescription [@b.Type]
                         </th>
                     </tr>
                 }
                 else
                 {
                     <tr>
-                        <th colspan="5">
-                            @b.Type
-                            <a class="bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a>
-                        </th>
+                        <th><a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a></th>
+                        <th colspan="5">@b.Type</th>
                     </tr>
                 }
             </thead>
@@ -93,12 +106,11 @@ else
                     nameValue = Level1Name + level.ToString();
                     idValue = "arrow" + nameValue;
                     <tr>
-                        <th>@localizer["ProjectCode"]: @p.ProjectCode
-                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue">
-                        </th>
+                        <th><a class="evol-arrow bx bxs-chevrons-down" href="javascript:showDetails('@nameValue')" id="@idValue"></th>
+                        <th>@localizer["ProjectCode"]: @p.ProjectCode</th>
                     </tr>
                     <tr id="@nameValue" style="display: none">
-                        <td>
+                        <td colspan="2">
                             <table class="table table-bordered table-sm table-striped">
                                 <thead>
                                     <th>@localizer["Version"]</th>
@@ -106,6 +118,20 @@ else
                                     <th>@localizer["Description"]</th>
                                 </thead>
                                 <tbody>
+                                @if (AddConstantParameter)
+                                {
+                                    <tr id="Hide|" style="display: none">
+                                        <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Generic" asp-action="ConfigProject">
+                                        <td style="align-items:center; display:flex">
+                                            <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                                        </td>
+                                        <td></td>
+                                        <td><input id=StartDateTime name=StartDateTime type="datetime" style="width: 100%"/></td>
+                                        <td><input id=ProjectDescription name=ProjectDescription type="text" maxlength="256" style="width: 100%" /></td>
+                                        </form>
+                                    </tr>
+                                }                                
                                 @foreach (VersionElement v in p.VersionList)
                                 {
                                     <tr>

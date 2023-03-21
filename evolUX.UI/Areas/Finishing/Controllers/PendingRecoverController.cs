@@ -51,7 +51,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 else
                 {
                     string scValues = ServiceCompanies.Rows[0]["ID"].ToString() + "|" + ServiceCompanies.Rows[0]["CompanyCode"].ToString() + " | " + ServiceCompanies.Rows[0]["CompanyName"].ToString();
-                    return RedirectToAction("PendingRecoverDetail", "PendingRecover", new { Area = "Finishing", ServiceCompanyValues = scValues });
+                    return RedirectToAction("PendingRecoverDetail", "PendingRecover", new { Area = "Finishing", serviceCompanyValues = scValues, source = "" });
                 }
             }
             catch (FlurlHttpException ex)
@@ -90,11 +90,11 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             
         }
 
-        public async Task<IActionResult> PendingRecoverDetail(string ServiceCompanyValues)
+        public async Task<IActionResult> PendingRecoverDetail(string serviceCompanyValues, string source)
         {
             try
             {
-                string[] serviceCompanyValue = ServiceCompanyValues.Split('|');
+                string[] serviceCompanyValue = serviceCompanyValues.Split('|');
                 int ServiceCompanyID = Convert.ToInt32(serviceCompanyValue[0]);
                 string ServiceCompanyCode = serviceCompanyValue.Length > 1 ? serviceCompanyValue[1] : "";
                 string ServiceCompanyName = serviceCompanyValue.Length > 2 ? serviceCompanyValue[2] : "";
@@ -109,6 +109,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 ViewBag.ServiceCompanyCode = ServiceCompanyCode;
 
                 DataTable ServiceCompanyDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanies"));
+                ViewBag.Source = source;
                 if (ServiceCompanyDT.Rows.Count>1)
                 {
                     ViewBag.hasMultipleServiceCompanies = true;

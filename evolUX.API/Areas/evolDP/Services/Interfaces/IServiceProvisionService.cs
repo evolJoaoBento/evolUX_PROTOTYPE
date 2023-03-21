@@ -16,6 +16,7 @@ namespace evolUX.API.Areas.evolDP.Services.Interfaces
         public Task SetServiceCompanyConfig(ServiceCompanyService serviceCompanyConfig);
         public Task<IEnumerable<ServiceElement>> GetServices(int serviceTypeID);
         public Task SetService(ServiceElement service);
+        public Task<IEnumerable<ServiceTypeElement>> GetAvailableServiceTypes();
         public Task<ServiceTypeViewModel> GetServiceTypes(int? serviceTypeID);
         public Task SetServiceType(int serviceTypeID, string serviceTypeCode, string serviceTypeDesc);
         public Task<IEnumerable<int>> GetServiceCompanyList(int? serviceCompanyID, int? serviceTypeID, int? serviceID, int? costDate);

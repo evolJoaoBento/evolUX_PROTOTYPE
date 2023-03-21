@@ -356,7 +356,7 @@ SET LocalizationKey = 'Action' + CASE RTRIM(LTRIM([Description]))
 	WHEN 'Estado de Produção / Imprimir' THEN 'ProductionStatus'
 	WHEN 'Registos Pendentes' THEN 'PendingRegist'
 	WHEN 'Objecto Postal' THEN 'PostalObject'
-	WHEN 'Impressão Concluída' THEN 'ConcludedPrinting'
+	WHEN 'Impressão Concluída' THEN 'ConcludedPrint'
 	WHEN 'Envelopagem Concluída' THEN 'ConcludedFulfilment'
 	WHEN 'Recuperações Parciais' THEN 'PartialRecover'
 	WHEN 'Recuperações Totais' THEN 'TotalRecover'
@@ -1911,7 +1911,7 @@ CREATE TABLE #ChildActions(LocalizationKey varchar(50) COLLATE SQL_Latin1_Genera
 INSERT INTO #ChildActions
 SELECT 'ActionConcludedFulfilment', 30
 INSERT INTO #ChildActions
-SELECT 'ActionConcludedPrinting', 20
+SELECT 'ActionConcludedPrint', 20
 INSERT INTO #ChildActions
 SELECT 'ActionPendingRegist', 10
 

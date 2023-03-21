@@ -58,7 +58,7 @@ else
                 <th>@localizer["DocDescription"]</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="bootstrap-overrides">
             <tr>
                 @if (string.IsNullOrEmpty(docCode.DocType))
                 {
@@ -115,7 +115,7 @@ else
                         </p> 
                     }
                         <table class="table table-sm table-hover table-collapse-seperate">
-                        <thead>
+                        <thead id="bootstrap-overrides" class="table-info sticky-header">
                             <tr>
                                 <th style="display: flex;justify-content: center">
                                 @if(AddDocCode)
@@ -141,7 +141,7 @@ else
                                 <th>@localizer["DocDescription"]</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody  id="bootstrap-overrides">
                         @foreach (AggregateDocCode agg in Model.AggDocCodeList.OrderByDescending(x => x.Compatible))
                         {
                             <tr>

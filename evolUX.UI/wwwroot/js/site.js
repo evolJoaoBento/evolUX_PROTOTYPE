@@ -75,7 +75,6 @@ function changeClass(elementName, oldClassValue, newClassValue) {
     document.getElementById(elementName).classList.remove(oldClassValue);
     document.getElementById(elementName).classList.add(newClassValue);
 }
-
 /*************************************************************
 Hide field with specific id
     elementName: name id of field to hide
@@ -151,6 +150,25 @@ function hideDetail(startName) {
     eShide(startName);
     changeClass('arrow' + startName, 'bxs-chevron-up', 'bxs-chevron-down');
     document.getElementById('arrow' + startName).href = "javascript:showDetail('" + startName + "');";
+}
+/*******************************************************************************
+Function that shows the detail by selecting the respective button
+    startName: Element Start Name
+********************************************************************************/
+function showDetails(startName) {
+    eSshow(startName);
+    changeClass('arrow' + startName, 'bxs-chevrons-down', 'bxs-chevrons-up');
+    document.getElementById('arrow' + startName).href = "javascript:hideDetails('" + startName + "');";
+}
+
+/*******************************************************************************
+Function that hides the detail by selecting the respective button
+    startName: Element Start Name
+********************************************************************************/
+function hideDetails(startName) {
+    eShide(startName);
+    changeClass('arrow' + startName, 'bxs-chevrons-up', 'bxs-chevrons-down');
+    document.getElementById('arrow' + startName).href = "javascript:showDetails('" + startName + "');";
 }
 /*******************************************************************************
 Function that check all checkbox with specific elemnent name 

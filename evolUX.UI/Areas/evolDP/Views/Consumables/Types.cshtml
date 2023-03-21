@@ -32,10 +32,10 @@ else
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th width="50px">
+                <th class="evol-fitcontent-column">
                 </th>
-                <th width="120px">@localizer["Type"]</th>
-                <th width="120px">@localizer["Priority"]</th>
+                <th class="evol-fitcontent-column">@localizer["Type"]</th>
+                <th class="evol-fitcontent-column">@localizer["Priority"]</th>
                 <th>@localizer["Description"]</th>
             </tr>
         </thead>
@@ -49,15 +49,15 @@ else
                 <tr>
                     <td>
                         <a asp-area="evolDP" asp-controller="Expedition" asp-action="TypeDetail" asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(t)">
-                            <img style="background:none; width:25px;height:25px;" src="~/images/list.png" title="@localizer["List"]: @value" />
+                            <img class="evol-image" src="~/images/list.png" title="@localizer["List"]: @value" />
                         </a>
                     </td>
-                    <td>@t.ExpeditionType</td>
-                    <td>@t.Priority</td>
+                    <td style="text-align:center">@t.ExpeditionType</td>
+                    <td style="text-align:center">@t.Priority</td>
                     <td>@t.Description
                         @if (t.ExpCompanyTypesList.Count() > 0)
                         {
-                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                         }
                     </td>
                 </tr>
@@ -88,7 +88,7 @@ else
                                         value = t.Description + " / " + @Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName;
                                         <tr>
                                             <td><a asp-area="evolDP" asp-controller="Expedition" asp-action="TypeDetail" asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(newExpType)">
-                                                    <img style="background:none; width:25px;height:25px;" src="~/images/list.png" title="@localizer["List"]: @value" />
+                                                    <img class="evol-image" src="~/images/list.png" title="@localizer["List"]: @value" />
                                                 </a></td>
                                             <td>@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName</td>
                                             @{value = c.RegistMode ? "checked": "";}

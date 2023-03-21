@@ -35,8 +35,7 @@ else
     }
     else
     {
-        <div class="my-3">
-        <table class="table table-sm table-hover table-collapse-seperate">
+         <table class="table table-sm table-hover table-collapse-seperate">
             <thead id="bootstrap-overrides" class="sticky-header">
                 <tr>
                     <th colspan="3">@localizer["Run"]</th>
@@ -57,9 +56,20 @@ else
                 {
                     <tr>
                         @{
-                            string RunName = p.BusinessDesc + "(" + p.RunDate + "[" + p.RunSequence + "])";
+                            DateTime rDate;
+                            string runDate = p.RunDate.ToString();
+                            if (DateTime.TryParseExact(p.RunDate.ToString(), "yyyyMMdd",
+                            System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
+                                runDate = rDate.ToShortDateString();
+                            string RunName = runDate + " [" + p.RunSequence + "]";
                         }
-                        <td class="headcol" style="background:var(--lightestgrey);"><a class="btn btn-link link-info" asp-area="Finishing" asp-controller="PendingRegist" asp-action="PendingRegistDetail" asp-route-runid="@p.RunID" asp-route-runname=@RunName>@RunName</a></td>
+                        <td style="background:var(--lightestgrey);">
+                            <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="PendingRegist" asp-action="PendingRegistDetail" asp-route-runid="@p.RunID" asp-route-runname="@p.BusinessDesc - @RunName">
+                                @p.BusinessDesc
+                                <br>
+                                @RunName
+                            </a>
+                        </td>
                         <td>@p.TotalPrint</td>
                         @{
                             TotalPrint += p.TotalPrint;
@@ -87,17 +97,15 @@ else
                     </tr>
                 }
                 <tr style="background:var(--lightestgrey); border: var(--orange)">
-                    <td class="headcol" style="background:var(--lightergrey);"><b>@localizer["Totals"]</b></td>
-                    <td class="headcol" style="background:var(--lightergrey);"><b>@TotalPrint</b></td>
-                    <td class="headcol" style="background:var(--lightergrey);"><b>@TotalPostObjs</b></td>
-                    <td class="headcol" style="background:var(--lightergrey);"><b>@ProcessedTotal</b></td>
-                    <td class="headcol" style="background:var(--lightergrey);"><b>@ToPrintTotal</b></td>
-                    <td class="headcol" style="background:var(--lightergrey);"><b>@ToRegistPrintTotal</b></td>
-                    <td class="headcol" style="background:var(--lightergrey);"><b>@ToRegistFullFillTotal</b></td>
+                    <td style="background:var(--lightergrey);"><b>@localizer["Totals"]</b></td>
+                    <td style="background:var(--lightergrey);"><b>@TotalPrint</b></td>
+                    <td style="background:var(--lightergrey);"><b>@TotalPostObjs</b></td>
+                    <td style="background:var(--lightergrey);"><b>@ProcessedTotal</b></td>
+                    <td style="background:var(--lightergrey);"><b>@ToPrintTotal</b></td>
+                    <td style="background:var(--lightergrey);"><b>@ToRegistPrintTotal</b></td>
+                    <td style="background:var(--lightergrey);"><b>@ToRegistFullFillTotal</b></td>
                </tr>
             </tbody>
         </table>
-
-    </div>
     }
 }

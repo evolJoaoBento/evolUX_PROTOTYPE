@@ -136,10 +136,10 @@
     <value>Sem Dados</value>
   </data>
   <data name="PendingRegist" xml:space="preserve">
-    <value>Envelopagem/Impressão Pendentes</value>
+    <value>Impressão/Envelopagem Pendentes</value>
   </data>
   <data name="Run" xml:space="preserve">
-    <value>Run de Produção</value>
+    <value>Produção</value>
   </data>
   <data name="RunDescription" xml:space="preserve">
     <value>Descrição</value>

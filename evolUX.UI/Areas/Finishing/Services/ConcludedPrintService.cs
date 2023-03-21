@@ -10,10 +10,10 @@ using System.Data;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
-    public class ConcludedPrintingService : IConcludedPrintService
+    public class ConcludedPrintService : IConcludedPrintService
     {
         private readonly IConcludedPrintRepository _concludedPrintRepository;
-        public ConcludedPrintingService(IConcludedPrintRepository concludedPrintRepository)
+        public ConcludedPrintService(IConcludedPrintRepository concludedPrintRepository)
         {
             _concludedPrintRepository = concludedPrintRepository;
         }

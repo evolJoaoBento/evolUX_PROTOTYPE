@@ -20,10 +20,10 @@ namespace evolUX.API.Areas.Finishing.Controllers
     {
         private readonly ILoggerService _logger;
         private readonly IPendingRegistService _pendingRegistService;
-        private readonly IConcludedPrintingService _concludedPrintService;
+        private readonly IConcludedPrintService _concludedPrintService;
         private readonly IConcludedFulfilmentService _ConcludedFulfilmentService;
         private readonly IRecoverService _recoverService;
-        public PendingRegistController(IWrapperRepository repository, ILoggerService logger, IPendingRegistService pendingRegistService, IConcludedPrintingService concludedPrintService, IConcludedFulfilmentService ConcludedFulfilmentService, IRecoverService recoverService)
+        public PendingRegistController(IWrapperRepository repository, ILoggerService logger, IPendingRegistService pendingRegistService, IConcludedPrintService concludedPrintService, IConcludedFulfilmentService ConcludedFulfilmentService, IRecoverService recoverService)
         {
             _logger = logger;
             _pendingRegistService = pendingRegistService;

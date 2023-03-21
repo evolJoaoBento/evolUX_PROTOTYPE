@@ -450,12 +450,60 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         }
 
+        public async Task<IActionResult> ServiceCompanyExpCodes(string serviceCompanyJson)
+        {
+            try
+            {
+                Company company = JsonConvert.DeserializeObject<Company>(serviceCompanyJson);
+
+                ServiceCompanyExpCodesViewModel result = new ServiceCompanyExpCodesViewModel();
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+                return View("ExpCompanyConfig", result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+
         public async Task<IActionResult> ServiceWorkFlow()
         {
             try
             {
                 ServiceWorkFlowViewModel result = new ServiceWorkFlowViewModel();
                 result.ServiceTasksList = await _serviceProvisionService.GetServiceTasks(null);
+                result.ServiceTypesList = await _serviceProvisionService.GetAvailableServiceTypes();
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View(result);
             }
             catch (FlurlHttpException ex)
@@ -552,130 +600,6 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
         //}
 
-
-
-        //public async Task<IActionResult> ChangeExpCompanyConfig(IFormCollection form, string expCompanyJson, int startDate, int pageExpeditionType, int pageExpeditionZone)
-        //{
-        //    try
-        //    {
-        //        Company company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
-        //        int value = 0;
-        //        string str;
-        //        ExpCompanyConfig expCompanyConfig = new ExpCompanyConfig();
-        //        expCompanyConfig.ExpCompanyID = 0;
-        //        str = form["ExpCompanyID"].ToString();
-        //        if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
-        //            expCompanyConfig.ExpCompanyID = value;
-
-        //        expCompanyConfig.ExpeditionType = 0;
-        //        str = form["ExpeditionType"].ToString();
-        //        if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
-        //            expCompanyConfig.ExpeditionType = value;
-
-        //        expCompanyConfig.ExpeditionZone = 0;
-        //        str = form["ExpeditionZone"].ToString();
-        //        if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
-        //            expCompanyConfig.ExpeditionZone = value;
-
-        //        expCompanyConfig.ExpCompanyLevel = 0;
-        //        str = form["ExpCompanyLevel"].ToString();
-        //        if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
-        //            expCompanyConfig.ExpCompanyLevel = value;
-
-        //        if (startDate == 0)
-        //        {
-        //            DateTime startDateDT = DateTime.Now;
-        //            expCompanyConfig.StartDate = 0;
-        //            str = form["StartDate"].ToString();
-        //            if (!string.IsNullOrEmpty(str) && DateTime.TryParse(str, out startDateDT))
-        //                startDate = Int32.Parse(((DateTime)startDateDT).ToString("yyyyMMdd"));
-        //        }
-        //        expCompanyConfig.StartDate = startDate;
-
-        //        expCompanyConfig.MaxWeight = 0;
-        //        str = form["MaxWeight"].ToString();
-        //        if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
-        //            expCompanyConfig.MaxWeight = value;
-
-        //        double valDouble = 0;
-        //        expCompanyConfig.UnitCost = 0;
-        //        str = form["UnitCost"].ToString();
-        //        if (!string.IsNullOrEmpty(str) && double.TryParse(str, out valDouble))
-        //        {
-        //            if (valDouble.ToString("F2") != str)
-        //            {
-        //                if (double.TryParse(str.Replace(".", ","), out valDouble))
-        //                    expCompanyConfig.UnitCost = valDouble;
-        //            }
-        //            else
-        //                expCompanyConfig.UnitCost = valDouble;
-        //        }
-        //        str = form["ExpColumnA"].ToString();
-        //        if (!string.IsNullOrEmpty(str))
-        //            expCompanyConfig.ExpColumnA = str;
-
-        //        str = form["ExpColumnB"].ToString();
-        //        if (!string.IsNullOrEmpty(str))
-        //            expCompanyConfig.ExpColumnB = str;
-
-        //        str = form["ExpColumnE"].ToString();
-        //        if (!string.IsNullOrEmpty(str))
-        //            expCompanyConfig.ExpColumnE = str;
-
-        //        str = form["ExpColumnI"].ToString();
-        //        if (!string.IsNullOrEmpty(str))
-        //            expCompanyConfig.ExpColumnI = str;
-
-        //        str = form["ExpColumnF"].ToString();
-        //        if (!string.IsNullOrEmpty(str))
-        //            expCompanyConfig.ExpColumnF = str;
-
-
-        //        Company Company = JsonConvert.DeserializeObject<Company>(expCompanyJson);
-        //        ExpCompanyConfigViewModel result = new ExpCompanyConfigViewModel();
-        //        await _serviceProvisionService.SetExpCompanyConfig(expCompanyConfig);
-        //        result.Configs = await _serviceProvisionService.GetExpCompanyConfigs(expCompanyConfig.ExpCompanyID, startDate, pageExpeditionType, pageExpeditionZone);
-        //        result.ExpCompany = company;
-        //        result.ExpeditionZone = pageExpeditionZone;
-        //        result.ExpeditionType = pageExpeditionType;
-        //        result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
-        //        return View("ExpCompanyConfig", result);
-        //    }
-        //    catch (FlurlHttpException ex)
-        //    {
-        //        // For error responses that take a known shape
-        //        //TError e = ex.GetResponseJson<TError>();
-        //        // For error responses that take an unknown shape
-        //        ErrorViewModel viewModel = new ErrorViewModel();
-        //        viewModel.RequestID = ex.Source;
-        //        viewModel.ErrorResult = new ErrorResult();
-        //        viewModel.ErrorResult.Code = (int)ex.StatusCode;
-        //        viewModel.ErrorResult.Message = ex.Message;
-        //        return View("Error", viewModel);
-        //    }
-        //    catch (HttpNotFoundException ex)
-        //    {
-        //        ErrorViewModel viewModel = new ErrorViewModel();
-        //        viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
-        //        return View("Error", viewModel);
-        //    }
-        //    catch (HttpUnauthorizedException ex)
-        //    {
-        //        if (ex.response.Headers.Contains("Token-Expired"))
-        //        {
-        //            var header = ex.response.Headers.FirstOrDefault("Token-Expired");
-        //            var returnUrl = Request.Path.Value;
-        //            //var url = Url.RouteUrl("MyAreas", )
-
-        //            return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
-        //        }
-        //        else
-        //        {
-        //            return RedirectToAction("Index", "Auth", new { Area = "Core" });
-        //        }
-        //    }
-
-        //}
 
         //public async Task<IActionResult> AddExpCompanyConfig(IFormCollection form, string expCompanyJson)
         //{
