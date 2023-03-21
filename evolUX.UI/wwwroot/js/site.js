@@ -211,12 +211,11 @@ function filterTableRows(form, table, elements) {
 function filterCheckBoxTableRows(form, table, elements) {
     form.addEventListener('submit', function (event) {
         event.preventDefault(); // prevent form from submitting
-
         const rows = table.getElementsByTagName('tr'); // get all table rows
         for (let i = 0; i < rows.length; i++) {
             let showRow = true;
             for (let j = 0; j < elements.length; j++) {
-                const element = form.getElementsByName(elements[j]); // get form element by name
+                const element = document.getElementsByName(elements[j]); // get form element by name
                 const cell = rows[i].children[elements[j]]; // get table cell in corresponding column
                 let value = '';
                 for (let k = 0; k < element.length; k++) {

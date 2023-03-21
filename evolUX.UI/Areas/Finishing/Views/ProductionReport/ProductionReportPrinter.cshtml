@@ -63,98 +63,96 @@
     <h2>@ViewBag.RunName</h2>
 </div>
 <div class="filter-div">
-     <div class="scrollbar" style="height: 100%">
-    <form id="filter-form" style="height: 100%; margin:5px;">
-        <h5 class="">@localizer["Papers"]</h5>
-        <select name="yourSelectIdpaper">
-            <option value="">@localizer["Please select an option"]</option>
-            @foreach (var option in papers)
-            {
-                <option value="@option.Key">@option.Value</option>
-            }
-        </select>
-        <h5 class="">@localizer["Stations"]</h5>
-        <select name="yourSelectIdstation">
-            <option value="">@localizer["Please select an option"]</option>
-            @foreach (var option in stations)
-            {
-                <option value="@option.Key">@option.Value</option>
-            }
-        </select>
-        <h5 class="">@localizer["ExpeditionType"]</h5>
-        <select name="yourSelectIdexpedition">
-            <option value="">@localizer["Please select an option"]</option>
-            @foreach (var option in expeditionType)
-            {
-                <option value="@option.Key">@option.Value</option>
-            }
-        </select>
-        <h5 class="">@localizer["ExpCompany"]</h5>
-        <select name="yourSelectIdcompanies">
-            <option value="">@localizer["Please select an option"]</option>
-            @foreach (var option in companies)
-            {
-                <option value="@option.Key">@option.Value.Name</option>
-            }
-            @*<option value="not an option">Nothing</option>*@
-        </select>
-        <h5 class="">@localizer["ServiceType"]</h5>
-        <select name="yourSelectIdservicetypes">
-            <option value="">@localizer["Please select an option"]</option>
-            @foreach (var option in serviceTypes)
-            {
-                <option value="@option.Key">@option.Value.Name</option>
-            }
-        </select>
-        <div id="color-buttons">
-            <label>
-                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_bw.png" title="@localizer["PrintBlackWhite"]">
-                <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="0">
-                <img />
+    <div class="scrollbar" style="height: 100%">
+        <form id="filter-form" style="height: 100%; margin:5px;">
+            <h5 class="">@localizer["Papers"]</h5>
+            <select name="yourSelectIdpaper">
+                <option value="">@localizer["Please select an option"]</option>
+                @foreach (var option in papers)
+                {
+                    <option value="@option.Key">@option.Value</option>
+                }
+            </select>
+            <h5 class="">@localizer["Stations"]</h5>
+            <select name="yourSelectIdstation">
+                <option value="">@localizer["Please select an option"]</option>
+                @foreach (var option in stations)
+                {
+                    <option value="@option.Key">@option.Value</option>
+                }
+            </select>
+            <h5 class="">@localizer["ExpeditionType"]</h5>
+            <select name="yourSelectIdexpedition">
+                <option value="">@localizer["Please select an option"]</option>
+                @foreach (var option in expeditionType)
+                {
+                    <option value="@option.Key">@option.Value</option>
+                }
+            </select>
+            <h5 class="">@localizer["ExpCompany"]</h5>
+            <select name="yourSelectIdcompanies">
+                <option value="">@localizer["Please select an option"]</option>
+                @foreach (var option in companies)
+                {
+                    <option value="@option.Key">@option.Value.Name</option>
+                }
+                @*<option value="not an option">Nothing</option>*@
+            </select>
+            <h5 class="">@localizer["ServiceType"]</h5>
+            <select name="yourSelectIdservicetypes">
+                <option value="">@localizer["Please select an option"]</option>
+                @foreach (var option in serviceTypes)
+                {
+                    <option value="@option.Key">@option.Value.Name</option>
+                }
+            </select>
+            <div id="color-buttons">
+                <label>
+                    <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_bw.png" title="@localizer["PrintBlackWhite"]">
+                    <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="3">
+                    <img />
 
-            </label>
-            <label>
-                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_color.png" title="@localizer["PrintColor"]">
-                <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="1">
-                <img />
-            </label>
-        </div>
-        <!--        <div id="text-buttons">
-            <label class="btn btn-outline-dark">
-                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="1">Simplex
-            </label>
-            <label class="btn btn-outline-dark">
-                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="0">Duplex
-            </label>
-        </div> -->
-        <div id="color-buttons">
-            <label>
-                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_simplex.png" title="@localizer["PrintSimplex"]">
-                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="SPLEX">
-                <img />
+                </label>
+                <label>
+                    <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_color.png" title="@localizer["PrintColor"]">
+                    <input class="alt-toggle-box" type="checkbox" name="checkboxBW" value="1">
+                    <img />
+                </label>
+            </div>
+            <!--        <div id="text-buttons">
+                <label class="btn btn-outline-dark">
+                    <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="1">Simplex
+                </label>
+                <label class="btn btn-outline-dark">
+                    <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="0">Duplex
+                </label>
+            </div> -->
+            <div id="color-buttons">
+                <label>
+                    <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_simplex.png" title="@localizer["PrintSimplex"]">
+                    <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="SPLEX">
+                    <img />
 
-            </label>
-            <label>
-                <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_duplex.png" title="@localizer["PrintDuplex"]">
-                <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="DPLEX">
-                <img />
-            </label>
-        </div>
-        <div style="display: flex; position:absolute; right: 10px; bottom: 10px;">
-            <input class="btn btn-outline-info btn-evoldp m-2" type="submit">
-        </div>
-        <div style="margin-top:10px">
-            @if (IgnoreFilePrinterSpecs)
-            {
-                <label class="checkbox"> @Html.CheckBox("checkAll", false) @localizer["AllFiles"]</label>
-            }
-        </div>
+                </label>
+                <label>
+                    <img class="settings-circle circle button-icon" style="background:white;" src="~/images/printer_duplex.png" title="@localizer["PrintDuplex"]">
+                    <input class="alt-toggle-box" type="checkbox" name="checkboxS" value="DPLEX">
+                    <img />
+                </label>
+            </div>
+            <div style="display: flex; position:absolute; right: 10px; bottom: 10px;">
+                <input class="btn btn-outline-info btn-evoldp m-2" type="submit">
+            </div>
+            <div style="margin-top:10px">
+                @if (IgnoreFilePrinterSpecs)
+                {
+                    <label class="checkbox"> @Html.CheckBox("checkAll", false) @localizer["AllFiles"]</label>
+                }
+            </div>
+        </form>
 
-
-    </form>
-
-</div>
     </div>
+</div>
 @if (Model == null)
 {
     <tr><td colspan="5" class="text-center">No Model Data</td></tr>
@@ -196,7 +194,7 @@ else
                 string nameValue = "";
                 string cValue = "";
             }
-            <table id="table-form" class="table table-striped">
+            <table id="table-form" class="table">
                 <thead>
                 </thead>
                 <tbody>
@@ -212,7 +210,7 @@ else
                                 int PostObjsTotal = 0;
                                 Dictionary<string, int> PaperTotal = new Dictionary<string, int>();
                                 Dictionary<string, int> StationTotal = new Dictionary<string, int>();
-                                <tr>
+                                <tr class="collapsible">
                                     <td style="width:400px">@eInfo.ExpCompanyName - @eInfo.ExpeditionTypeDesc</td>
                                     <td style="width:400px">@sInfo.ServiceTaskDesc</td>
                                     <td>
@@ -239,10 +237,10 @@ else
                                     <input type="hidden" class="filter-value" name="yourSelectIdexpedition" value="@eInfo.ExpeditionType">
                                     <input type="hidden" class="filter-value" name="yourSelectIdstation" value="@mInfo.StationMediaID">
                                     <td colspan="4">
-                                        <b class="btn collapsible justify-content-center"></b>
+                                        @*<b class="btn collapsible justify-content-center"></b>*@
                                         <div class="content">
 
-                                            <table id="table-form-2" class="table table-sm table-hover table-collapse-seperate">
+                                            <table name="table-form-2" class="table table-sm table-hover table-collapse-seperate">
                                                 <col>
                                                 <col>
                                                 <col>
@@ -312,6 +310,7 @@ else
                                                         <tr>
                                                             @*<input type="hidden" class="filter-value" name="checkboxBW" value="@mInfo.PaperMediaID">*@
                                                             <input type="hidden" class="filter-value" name="checkboxS" value="@p.PlexCode">
+                                                            <input type="hidden" class="filter-value" name="checkboxBW" value="@p.FileColor">
                                                             <td class="headcol">
                                                                 @if (!p.FilePrintedFlag)
                                                                 {
@@ -443,9 +442,13 @@ else
         const table = document.getElementById('table-form');
         const elements = ['yourSelectIdpaper', 'yourSelectIdcompanies', 'yourSelectIdservicetypes', 'yourSelectIdexpedition', 'yourSelectIdstation']; // form element names
         filterTableRows(form, table, elements);
-        const table2 = document.getElementById('table-form-2');
-        const elements2 = [/*'checkboxBW', */'checkboxS']; // form element names
-        filterTableRows(form, table2, elements2);
+        const tables = document.getElementsByName('table-form-2');
+        const elements2 = ['checkboxBW', 'checkboxS']; // form element names
+        
+        for (let i = 0; i < tables.length; i++) {
+            filterCheckBoxTableRows(form, tables[i], elements2);
+        }
+       
         $(function () {
             $("#checkAll").click(function () {
                 if ($(this).is(':checked')) {
