@@ -15,7 +15,7 @@ namespace Shared.ViewModels.Areas.evolDP
         public IEnumerable<ExpCompanyServiceTask> ExpCodeList { get; set; }
         public IEnumerable<Company> ExpCompanies { get; set; }
         public IEnumerable<ExpeditionTypeElement> ExpeditionTypes{ get; set; }
-        public IEnumerable<ServiceTask> ServiceTasks{ get; set; }
+        public IEnumerable<ServiceTaskElement> ServiceTasks{ get; set; }
          public GenericOptionList SuportTypeList{ get; set; }
     }
 }

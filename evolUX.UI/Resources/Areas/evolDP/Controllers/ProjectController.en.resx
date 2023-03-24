@@ -118,18 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="All" xml:space="preserve">
-    <value>Todas</value>
+    <value>All</value>
   </data>
   <data name="Business" xml:space="preserve">
-    <value>Área de Negócio</value>
+    <value>Business Sector</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
-    <value>Sem Dados</value>
+    <value>No Data</value>
   </data>
   <data name="Projects" xml:space="preserve">
-    <value>Projectos de Formatação</value>
+    <value>Formatting Projects</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Registar</value>
+    <value>Submit</value>
   </data>
 </root>

@@ -752,12 +752,20 @@ label {
     height: 25px;
     width: 25px;
 }
+
 .evol-fitcontent-column {
     width: 1%;
     white-space: nowrap;
     padding: 10px;
     box-sizing: border-box;
 }
-
+.evol-fitcontent-column-one {
+    width: 1%;
+    white-space: nowrap;
+    padding: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
 
 

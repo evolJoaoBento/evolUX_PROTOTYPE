@@ -117,19 +117,55 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="All" xml:space="preserve">
-    <value>Todas</value>
+  <data name="AddDocCode" xml:space="preserve">
+    <value>Add Document Type</value>
   </data>
-  <data name="Business" xml:space="preserve">
-    <value>Área de Negócio</value>
+  <data name="Archive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="DocCode" xml:space="preserve">
+    <value>Document Type</value>
+  </data>
+  <data name="DocCodeAggCompatibility" xml:space="preserve">
+    <value>Aggregation Compatibilities for Document Type</value>
+  </data>
+  <data name="DocCodeSelection" xml:space="preserve">
+    <value>Select Compatible Document Types</value>
+  </data>
+  <data name="DocDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="DocLayout" xml:space="preserve">
+    <value>Layout</value>
+  </data>
+  <data name="DocType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="EmptyField" xml:space="preserve">
+    <value>&lt;vazio&gt;</value>
+  </data>
+  <data name="ExceptionLevel1ID" xml:space="preserve">
+    <value>Exception Level 1</value>
+  </data>
+  <data name="ExceptionLevel2ID" xml:space="preserve">
+    <value>Exception Level 2</value>
+  </data>
+  <data name="ExceptionLevel3ID" xml:space="preserve">
+    <value>Exception Level 3</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
-    <value>Sem Dados</value>
+    <value>No Data</value>
   </data>
-  <data name="Projects" xml:space="preserve">
-    <value>Projectos de Formatação</value>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Select All</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Registar</value>
+    <value>Submit Aggregation Compatibilities</value>
+  </data>
+  <data name="UnSelectAll" xml:space="preserve">
+    <value>Unselect All</value>
   </data>
 </root>

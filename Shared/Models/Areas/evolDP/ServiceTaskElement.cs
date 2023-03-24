@@ -1,6 +1,6 @@
 ﻿namespace Shared.Models.Areas.evolDP
 {
-    public class ServiceTask
+    public class ServiceTaskElement
     {
         public int ServiceTaskID { get; set; }
         public string ServiceTaskCode { get; set; }

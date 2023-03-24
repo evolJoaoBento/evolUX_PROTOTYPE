@@ -5,7 +5,7 @@ namespace Shared.ViewModels.Areas.evolDP
 {
     public class ServiceWorkFlowViewModel : ItemPermissions
     {
-        public IEnumerable<ServiceTask> ServiceTasksList { get; set; }
+        public IEnumerable<ServiceTaskElement> ServiceTasksList { get; set; }
         public IEnumerable<ServiceTypeElement> ServiceTypesList { get; set; }
     }
 }

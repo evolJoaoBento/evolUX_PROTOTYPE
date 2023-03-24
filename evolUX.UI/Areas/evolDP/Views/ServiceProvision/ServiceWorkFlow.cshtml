@@ -42,11 +42,12 @@ else
     int level = 0;
     string idValue = "arrow" + level.ToString();
     string nameValue = "";
-    @if (AddServiceTask && Model.ServiceTasksList.Count() > 0)
+    @if (AddExpCode && Model.ServiceTasksList.Count() > 0)
     {
         <table style="display: none" id="Hide|" class="table table-sm table-hover table-collapse-seperate">
             <thead id="bootstrap-overrides" class="table-info sticky-header">
                 <tr>
+                    <th class="evol-fitcontent-column" style="border:none;background-color:transparent"></th>
                     <th>@localizer["ServiceTaskCode"]</th>
                     <th>@localizer["ServiceTaskDesc"]</th>
                     <th>@localizer["ServiceTaskRef"]</th>
@@ -54,17 +55,17 @@ else
             </thead>
         <tbody id="bootstrap-overrides">
                 <tr>
-                    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask">
-                        <td style="align-items:center; display:flex">
+                    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlow">
+                        <td style="align-items:center; display:flex;border: none;background-color: transparent;">
                             <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                             <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                             <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="0" />
                         </td>
-                        <td><input id=ServiceTaskDesc name=ServiceTaskDesc type="text" maxlength="256" style="width: 100%" /></td>
                         <td><input id=ServiceTaskCode name=ServiceTaskCode type="text" maxlength="15" style="width: 100%" /></td>
+                        <td><input id=ServiceTaskDesc name=ServiceTaskDesc type="text" maxlength="256" style="width: 100%" /></td>
                         <td>
                             <select id=RefServiceTaskID name=RefServiceTaskID>
-                                @foreach(ServiceTask st in Model.ServiceTasksList)
+                                @foreach(ServiceTaskElement st in Model.ServiceTasksList)
                                 {
                                     <option value="@st.ServiceTaskID">@st.ServiceTaskDesc</option>
                                 }
@@ -79,32 +80,32 @@ else
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
 
-                <th rowspan="2" class="evol-fitcontent-column" style="text-align: center">
-                    @if (AddServiceTask && Model.ServiceTasksList.Count() > 0)
+                <th rowspan="2" class="evol-fitcontent-column" style="text-align:center;border: none;background-color: transparent;vertical-align:middle">
+                    @if (AddExpCode && Model.ServiceTasksList.Count() > 0)
                     {
                         <img onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddServiceTask"]" />
                     }
                 </th>
-                <th rowspan="2">@localizer["ServiceTaskCode"]</th>
-                <th rowspan="2">@localizer["ServiceTaskDesc"]</th>
-                <th colspan="3">@localizer["ServiceTaskConfigs"]</th>
+                <th style="vertical-align:middle" rowspan="2">@localizer["ServiceTaskCode"]</th>
+                <th style="vertical-align:middle" rowspan="2">@localizer["ServiceTaskDesc"]</th>
+                <th style="vertical-align:middle" colspan="3">@localizer["ServiceTaskConfigs"]</th>
             </tr>
             <tr>
-                <th title="@localizer["ComplementServiceTaskTip"]">@localizer["ComplementServiceTask"]</th>
-                <th title="@localizer["ExternalExpeditionModeTip"]">@localizer["ExternalExpeditionMode"]</th>
-                <th title="@localizer["StationExceededDescTip"]">@localizer["StationExceededDesc"]</th>
+                <th style="vertical-align:middle" title="@localizer["ComplementServiceTaskTip"]">@localizer["ComplementServiceTask"]</th>
+                <th style="vertical-align:middle" title="@localizer["ExternalExpeditionModeTip"]">@localizer["ExternalExpeditionMode"]</th>
+                <th style="vertical-align:middle" title="@localizer["StationExceededDescTip"]">@localizer["StationExceededDesc"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
-            @foreach (var st in Model.ServiceTasksList)
+            @foreach (ServiceTaskElement st in Model.ServiceTasksList)
             {
                 level++;
                 nameValue = Level0Name + level.ToString();
                 idValue = "arrow" + nameValue;
                 value = st.ServiceTaskID.ToString();
                 <tr id="Hide|@value" style="display: none">
-                    <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask">
-                        <td style="align-items:center; display:flex">
+                    <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlow">
+                        <td style="align-items:center; display:flex;border: none;background-color: transparent;">
                             <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                             <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                             <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="@st.ServiceTaskID" />
@@ -133,7 +134,7 @@ else
                                     }
                                 }
                             <select id=ComplementServiceTaskID name=ComplementServiceTaskID>
-                                @foreach (ServiceTask s in Model.ServiceTasksList.Where(x => complementList.All(b => x.ServiceTypes.Any(a => a.ServiceTypeCode == b.ServiceTypeCode))).ToList())
+                                @foreach (ServiceTaskElement s in Model.ServiceTasksList.Where(x => complementList.All(b => x.ServiceTypes.Any(a => a.ServiceTypeCode == b.ServiceTypeCode))).ToList())
                                 {
                                     <option value="@s.ServiceTaskID">[@s.ServiceTaskCode] @s.ServiceTaskDesc</option>
                                 }
@@ -169,8 +170,8 @@ else
                     </form>
                 </tr>
                 <tr id="Show|@value">
-                    <td>
-                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskJson="@JsonConvert.SerializeObject(st)">
+                    <td style="align-items:center; display:flex;border: none;background-color: transparent;">
+                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@JsonConvert.SerializeObject(st.ServiceTaskID)">
                             <img class="evol-image" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
                         </a>
                         @if (AddServiceTask)
@@ -200,7 +201,8 @@ else
                 @if (st.ServiceTypes.Count() > 0)
                 {
                 <tr id="@nameValue" style="display: none">
-                        <td colspan="4">
+                        <td style="border:none;background-color:transparent"></td>
+                        <td colspan="3">
                             <table class="table table-sm table-hover table-collapse-seperate">
                                 <thead id="bootstrap-overrides" class="table-info sticky-header">
                                     <tr>

@@ -1,11 +1,13 @@
 ﻿using Shared.Models.Areas.Core;
 using Shared.Models.Areas.evolDP;
+using System.Data.SqlTypes;
 
 namespace Shared.ViewModels.Areas.evolDP
 {
-    public class ServiceTaskViewModel : ItemPermissions
+    public class ServiceTaskViewModel : ServiceWorkFlowViewModel
     {
-        public IEnumerable<ServiceTask> ServiceTasks { get; set; }
-        public IEnumerable<ServiceElement> Services { get; set; }
+        public int ServiceTaskID { get; set; }
+        public IEnumerable<ExpCodeElement> ExpCodes { get; set; }
+        public IEnumerable<Company> ExpCompanies { get; set; } = new List<Company>();
     }
 }

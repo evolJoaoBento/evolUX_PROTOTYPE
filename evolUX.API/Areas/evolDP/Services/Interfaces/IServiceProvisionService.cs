@@ -20,16 +20,11 @@ namespace evolUX.API.Areas.evolDP.Services.Interfaces
         public Task<ServiceTypeViewModel> GetServiceTypes(int? serviceTypeID);
         public Task SetServiceType(int serviceTypeID, string serviceTypeCode, string serviceTypeDesc);
         public Task<IEnumerable<int>> GetServiceCompanyList(int? serviceCompanyID, int? serviceTypeID, int? serviceID, int? costDate);
-        public Task<IEnumerable<ServiceTask>> GetServiceTasks(int? serviceTaskID);
-        //public Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, DataTable? expCompanyList);
-        //public Task<IEnumerable<ExpCompanyType>> GetExpCompanyTypes(int? expeditionType, int? expCompanyID);
-        //public Task<Result> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode);
-        //public Task<IEnumerable<Company>> GetExpeditionCompanies(int? expCompanyID, DataTable? expCompanyList);
-        //public Task<IEnumerable<ExpeditionRegistElement>> GetExpeditionRegistIDs(int expCompanyID);
-        //public Task SetExpeditionRegistID(ExpeditionRegistElement expRegist);
-        //public Task<IEnumerable<ExpContractElement>> GetExpContracts(int expCompanyID);
-        //public Task SetExpContract(ExpContractElement expContract);
-        //public Task<IEnumerable<ExpCompanyConfigResume>> GetExpCompanyConfigsResume(int expCompanyID);
-        //public Task NewExpCompanyConfig(int expCompanyID, int startDate);
+        public Task<IEnumerable<ServiceTaskElement>> GetServiceTasks(int? serviceTaskID);
+        public Task SetServiceTask(int serviceTaskID, string serviceTaskCode, string serviceTaskDesc, int refServiceTaskID, int complementServiceTaskID, int externalExpeditionMode, string stationExceededDesc);
+        public Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode);
+        public Task DeleteServiceType(int serviceTaskID, int serviceTypeID);
+        public Task AddServiceType(int serviceTaskID, int serviceTypeID);
+        public Task<IEnumerable<ExpCenterElement>> GetExpCenters(string expCode, DataTable serviceCompanyList);
     }
 }
