@@ -9,6 +9,7 @@ using Shared.Models.Areas.evolDP;
 using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
 using System.Net;
+using System.Reflection.Emit;
 
 namespace evolUX.UI.Areas.evolDP.Services
 {
@@ -115,6 +116,12 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _serviceProvisionRepository.GetExpCodes(serviceTaskID, expCompanyID, expCode);
             return response;
         }
+        public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(string expCompanyList)
+        {
+            var response = await _serviceProvisionRepository.GetExpCodes(expCompanyList);
+            return response;
+
+        }
         public async Task DeleteServiceType(int serviceTaskID, int serviceTypeID)
         {
             await _serviceProvisionRepository.DeleteServiceType(serviceTaskID, serviceTypeID);
@@ -128,6 +135,11 @@ namespace evolUX.UI.Areas.evolDP.Services
         public async Task<IEnumerable<ExpCenterElement>> GetExpCenters(string expCode, string serviceCompanyList)
         {
             var response = await _serviceProvisionRepository.GetExpCenters(expCode, serviceCompanyList);
+            return response;
+        }
+        public async Task<IEnumerable<ServiceCompanyExpCodeElement>> GetServiceCompanyExpCodes(int serviceCompanyID, string expCompanyList)
+        {
+            var response = await _serviceProvisionRepository.GetServiceCompanyExpCodes(serviceCompanyID, expCompanyList);
             return response;
         }
         public async Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones(int expCompanyID)

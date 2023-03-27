@@ -5,6 +5,8 @@ namespace Shared.ViewModels.Areas.evolDP
 {
     public class ServiceCompanyExpCodesViewModel : ItemPermissions
     {
-        public IEnumerable<ServiceTaskElement> ServiceTasksList { get; set; }
+        public Company ServiceCompany { get; set; }
+        public IEnumerable<ServiceCompanyExpCodeElement> ServiceCompanyExpCodes { get; set; }
+        public IEnumerable<ExpCodeElement> ExpCodes { get; set; }
     }
 }

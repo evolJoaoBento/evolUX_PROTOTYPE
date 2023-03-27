@@ -22,10 +22,11 @@ namespace evolUX.API.Areas.evolDP.Services.Interfaces
         public Task<IEnumerable<int>> GetServiceCompanyList(int? serviceCompanyID, int? serviceTypeID, int? serviceID, int? costDate);
         public Task<IEnumerable<ServiceTaskElement>> GetServiceTasks(int? serviceTaskID);
         public Task SetServiceTask(int serviceTaskID, string serviceTaskCode, string serviceTaskDesc, int refServiceTaskID, int complementServiceTaskID, int externalExpeditionMode, string stationExceededDesc);
-        public Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode);
+        public Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode, DataTable expCompanyList);
         public Task DeleteServiceType(int serviceTaskID, int serviceTypeID);
         public Task AddServiceType(int serviceTaskID, int serviceTypeID);
         public Task<IEnumerable<ExpCenterElement>> GetExpCenters(string expCode, DataTable serviceCompanyList);
+        public Task<IEnumerable<ServiceCompanyExpCodeElement>> GetServiceCompanyExpCodes(int serviceCompanyID, DataTable expCompanyList);
         public Task SetExpCenter(string expCode, string expCenterCode, string description1, string description2, string description3, int serviceCompanyID, string expeditionZone);
         public Task<IEnumerable<ServiceCompanyExpCodeConfig>> GetServiceCompanyExpCodeConfigs(string expCode, int serviceCompanyID, string expCenterCode);
         public Task SetServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel, string fullFillMaterialCode, int docMaxSheets, string barcode);

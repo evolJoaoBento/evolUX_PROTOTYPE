@@ -46,36 +46,71 @@ GO
 ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPCODES]
 	@ServiceTaskID int = NULL,
 	@ExpCompanyID int = NULL,
-	@ExpCode varchar(10) = NULL
+	@ExpCode varchar(10) = NULL,
+	@ExpCompanyList IDList READONLY
 AS
 BEGIN
-	SELECT e.ExpCode, --Código Tratamento/Expedição
-		e.[Description] ExpCodeDesc,
-		est.ExpCompanyID,
-		c.CompanyCode ExpCompanyCode, --Companhia de Expedição
-		est.ServiceTaskID,
-		st.ServiceTaskCode,
-		st.[Description] ServiceTaskDesc,
-		e.[DefaultExpCenterCode],
-		e.[DefaultExpCompanyZone],
-		e.[Priority],
-		e.CheckExpCompanySepCodes, --Validação Integral do Código de Separação ==> 0 = 'Desativada' ELSE 'Ativada'
-		e.PostalCodeStart --Posição inicial do CP4, no Código de Separação ==> NULL, não aplicável
-	FROM
-		RD_EXPCOMPANY_SERVICE_TASK est WITH(NOLOCK)
-	INNER JOIN
-		RD_COMPANY c WITH(NOLOCK)
-	ON	est.ExpCompanyID = c.CompanyID
-	INNER JOIN
-		RD_SERVICE_TASK st WITH(NOLOCK)
-	ON	est.ServiceTaskID = st.ServiceTaskID
-	INNER JOIN
-		RD_EXPCODE e
-	ON	e.ExpCode = est.ExpCode
-	WHERE (@ServiceTaskID is NULL OR est.ServiceTaskID = @ServiceTaskID)
-		AND (@ExpCompanyID is NULL OR est.ExpCompanyID = @ExpCompanyID)
-		AND (@ExpCode is NULL OR est.ExpCode = @ExpCode)
-	ORDER BY est.ExpCompanyID, e.[Priority] DESC
+	IF (@ExpCompanyID is NULL AND @ExpCode is NULL)
+	BEGIN
+		SELECT e.ExpCode, --Código Tratamento/Expedição
+			e.[Description] ExpCodeDesc,
+			est.ExpCompanyID,
+			c.CompanyCode ExpCompanyCode, --Companhia de Expedição
+			est.ServiceTaskID,
+			st.ServiceTaskCode,
+			st.[Description] ServiceTaskDesc,
+			e.[DefaultExpCenterCode],
+			e.[DefaultExpCompanyZone],
+			e.[Priority],
+			e.CheckExpCompanySepCodes, --Validação Integral do Código de Separação ==> 0 = 'Desativada' ELSE 'Ativada'
+			e.PostalCodeStart --Posição inicial do CP4, no Código de Separação ==> NULL, não aplicável
+		FROM
+			RD_EXPCOMPANY_SERVICE_TASK est WITH(NOLOCK)
+		INNER JOIN
+			@ExpCompanyList ec
+		ON ec.ID = est.ExpCompanyID
+		INNER JOIN
+			RD_COMPANY c WITH(NOLOCK)
+		ON	est.ExpCompanyID = c.CompanyID
+		INNER JOIN
+			RD_SERVICE_TASK st WITH(NOLOCK)
+		ON	est.ServiceTaskID = st.ServiceTaskID
+		INNER JOIN
+			RD_EXPCODE e
+		ON	e.ExpCode = est.ExpCode
+		WHERE (@ServiceTaskID is NULL OR est.ServiceTaskID = @ServiceTaskID)
+		ORDER BY est.ExpCompanyID, e.[Priority] DESC
+	END
+	ELSE
+	BEGIN
+		SELECT e.ExpCode, --Código Tratamento/Expedição
+			e.[Description] ExpCodeDesc,
+			est.ExpCompanyID,
+			c.CompanyCode ExpCompanyCode, --Companhia de Expedição
+			est.ServiceTaskID,
+			st.ServiceTaskCode,
+			st.[Description] ServiceTaskDesc,
+			e.[DefaultExpCenterCode],
+			e.[DefaultExpCompanyZone],
+			e.[Priority],
+			e.CheckExpCompanySepCodes, --Validação Integral do Código de Separação ==> 0 = 'Desativada' ELSE 'Ativada'
+			e.PostalCodeStart --Posição inicial do CP4, no Código de Separação ==> NULL, não aplicável
+		FROM
+			RD_EXPCOMPANY_SERVICE_TASK est WITH(NOLOCK)
+		INNER JOIN
+			RD_COMPANY c WITH(NOLOCK)
+		ON	est.ExpCompanyID = c.CompanyID
+		INNER JOIN
+			RD_SERVICE_TASK st WITH(NOLOCK)
+		ON	est.ServiceTaskID = st.ServiceTaskID
+		INNER JOIN
+			RD_EXPCODE e
+		ON	e.ExpCode = est.ExpCode
+		WHERE (@ServiceTaskID is NULL OR est.ServiceTaskID = @ServiceTaskID)
+			AND (@ExpCompanyID is NULL OR est.ExpCompanyID = @ExpCompanyID)
+			AND (@ExpCode is NULL OR est.ExpCode = @ExpCode)
+		ORDER BY est.ExpCompanyID, e.[Priority] DESC
+	END
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCODE_EXPCENTER_SELECTIONS]') AND type in (N'P', N'PC'))
@@ -368,6 +403,51 @@ BEGIN
 	DELETE RD_SERVICE_TASK_SERVICE_TYPE
 	WHERE ServiceTaskID = @ServiceTaskID
 		AND ServiceTypeID = @ServiceTypeID
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_SERVICE_COMPANY_EXPCODES]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANY_EXPCODES] AS' 
+END
+GO
+--Carateristicas do Tipo Tratamento/expedição
+ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANY_EXPCODES]
+	@ServiceCompanyID int,
+	@ExpCompanyList IDList READONLY
+AS
+BEGIN
+	SELECT 
+		eee.ExpCode,
+		est.ExpCompanyID,
+		c.CompanyName ExpCompanyName,
+		est.ServiceTaskID,
+		st.[Description] ServiceTaskDesc,
+		eee.ExpCenterCode,
+		eee.ServiceCompanyID,
+		eee.ExpeditionZone,
+		ez.[Description] ExpeditionZoneDesc,
+		eee.Description1,
+		eee.Description2,
+		eee.Description3
+	FROM
+		RD_EXPEDITION_EXPCENTER_EXPZONE eee WITH(NOLOCK)
+	INNER JOIN
+		RD_EXPEDITION_ZONE ez WITH(NOLOCK)
+	ON	eee.ExpeditionZone = ez.ExpeditionZone
+	INNER JOIN
+		RD_EXPCOMPANY_SERVICE_TASK est WITH(NOLOCK)
+	ON eee.ExpCode = est.ExpCode
+	INNER JOIN
+		@ExpCompanyList e
+	ON	est.ExpCompanyID = e.ID
+	INNER JOIN
+		RD_COMPANY c WITH(NOLOCK)
+	ON c.CompanyID = est.ExpCompanyID
+	INNER JOIN
+		RD_SERVICE_TASK st WITH(NOLOCK)
+	ON st.ServiceTaskID = est.ServiceTaskID
+	WHERE eee.ServiceCompanyID = @ServiceCompanyID
+	ORDER BY eee.ExpCenterCode
 END
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_SERVICE_COMPANY_EXPCODE_CONFIG]') AND type in (N'P', N'PC'))

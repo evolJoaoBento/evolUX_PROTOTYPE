@@ -521,11 +521,20 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 dictionary.TryGetValue("ExpCompanyID", out obj);
                 if (obj != null)
                     expCompanyID = Int32.Parse(Convert.ToString(obj));
+                
                 dictionary.TryGetValue("ExpCode", out obj);
                 if (obj != null)
                     expCode = Convert.ToString(obj);
 
-                var result = await _serviceProvision.GetExpCodes(serviceTaskID, expCompanyID, expCode);
+                DataTable expCompanyList = null;
+                dictionary.TryGetValue("ExpCompanyList", out obj);
+                if (obj != null)
+                {
+                    string expCompanyListJSON = Convert.ToString(obj);
+                    expCompanyList = JsonConvert.DeserializeObject<DataTable>(expCompanyListJSON).DefaultView.ToTable(false, "ID");
+                }
+
+                var result = await _serviceProvision.GetExpCodes(serviceTaskID, expCompanyID, expCode, expCompanyList);
                 _logger.LogInfo("Expedition Company Configs Resume Get");
                 return Ok(result);
             }
@@ -631,6 +640,36 @@ namespace evolUX.API.Areas.evolDP.Controllers
             }
         }
 
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("GetServiceCompanyExpCodes")]
+        public async Task<ActionResult<IEnumerable<ServiceCompanyExpCodeElement>>> GetServiceCompanyExpCodes([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("ServiceCompanyID", out obj);
+                int serviceCompanyID = Int32.Parse(Convert.ToString(obj));
+                dictionary.TryGetValue("ExpCompanyList", out obj);
+                string expCompanyListJSON = Convert.ToString(obj);
+                DataTable expCompanyList = JsonConvert.DeserializeObject<DataTable>(expCompanyListJSON).DefaultView.ToTable(false, "ID");
+
+                var result = await _serviceProvision.GetServiceCompanyExpCodes(serviceCompanyID, expCompanyList);
+
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside ServiceCompanyExpCodes action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+        
         [HttpGet]
         [ActionName("SetExpCenter")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

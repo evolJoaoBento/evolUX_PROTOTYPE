@@ -2,6 +2,7 @@
 using Shared.Models.Areas.evolDP;
 using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
+using System.Data;
 
 namespace evolUX.UI.Areas.evolDP.Services.Interfaces
 {
@@ -23,6 +24,7 @@ namespace evolUX.UI.Areas.evolDP.Services.Interfaces
         public Task<IEnumerable<ServiceTaskElement>> GetServiceTasks(int? serviceTaskID);
         public Task SetServiceTask(int serviceTaskID, string serviceTaskCode, string serviceTaskDesc, int refServiceTaskID, int complementServiceTaskID, int externalExpeditionMode, string stationExceededDesc);
         public Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode);
+        public Task<IEnumerable<ExpCodeElement>> GetExpCodes(string expCompanyList);
         public Task DeleteServiceType(int serviceTaskID, int serviceTypeID);
         public Task AddServiceType(int serviceTaskID, int serviceTypeID);
         public Task<IEnumerable<ExpCenterElement>> GetExpCenters(string expCode, string serviceCompanyList);
@@ -32,5 +34,6 @@ namespace evolUX.UI.Areas.evolDP.Services.Interfaces
         public Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes();
         public Task SetServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel, string fullFillMaterialCode, int docMaxSheets, string barcode);
         public Task DeleteServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel);
+        public Task<IEnumerable<ServiceCompanyExpCodeElement>> GetServiceCompanyExpCodes(int serviceCompanyID, string expCompanyList);
     }
 }

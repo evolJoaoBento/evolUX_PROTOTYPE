@@ -117,53 +117,56 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Action" xml:space="preserve">
-    <value>Ação</value>
-  </data>
   <data name="Cancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
-  <data name="CostDate" xml:space="preserve">
-    <value>Data Início</value>
+  <data name="ConfigServiceCompanyExpCode" xml:space="preserve">
+    <value>Alterar escalões de envelopagem</value>
+  </data>
+  <data name="Description1" xml:space="preserve">
+    <value>Descrição 1 [Nome]</value>
+  </data>
+  <data name="Description2" xml:space="preserve">
+    <value>Descrição 2 [Morada]</value>
+  </data>
+  <data name="Description3" xml:space="preserve">
+    <value>Descrição 3 [Localidade]</value>
   </data>
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
   </data>
+  <data name="ExpCenter" xml:space="preserve">
+    <value>Centro de Expedição</value>
+  </data>
+  <data name="ExpCenterCode" xml:space="preserve">
+    <value>Código</value>
+  </data>
+  <data name="ExpCode" xml:space="preserve">
+    <value>Código Tratamento/Expedição</value>
+  </data>
+  <data name="ExpCodeConfig" xml:space="preserve">
+    <value>Configurações de Código Tratamento/Expedição</value>
+  </data>
+  <data name="ExpCompany" xml:space="preserve">
+    <value>Companhia de Expedição</value>
+  </data>
   <data name="ExpCompanyZone" xml:space="preserve">
     <value>Zona de Expedição</value>
-  </data>
-  <data name="FeedPaper" xml:space="preserve">
-    <value>Impressoras de folha solta</value>
-  </data>
-  <data name="Formula" xml:space="preserve">
-    <value>Fórmula de Cálculo</value>
-  </data>
-  <data name="ID" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="MatchCode" xml:space="preserve">
-    <value>Código de Seleção</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
-  <data name="RollPaper" xml:space="preserve">
-    <value>Impressoras de papel contínuo</value>
+  <data name="Priority" xml:space="preserve">
+    <value>Prioridade</value>
   </data>
-  <data name="Service" xml:space="preserve">
-    <value>Serviço</value>
+  <data name="ServiceCompany" xml:space="preserve">
+    <value>Companhia de Prestação de Serviços</value>
   </data>
-  <data name="ServiceCompanyConfig" xml:space="preserve">
-    <value>Configuração de Custos de Serviços para</value>
+  <data name="ServiceCompanyExpCodes" xml:space="preserve">
+    <value>Código Tratamento/Expedição para Companhia de Prestação de Serviços</value>
   </data>
-  <data name="ServiceCost" xml:space="preserve">
-    <value>Custo</value>
-  </data>
-  <data name="ServiceType" xml:space="preserve">
-    <value>Tipo de Serviços</value>
-  </data>
-  <data name="Station" xml:space="preserve">
-    <value>Envelopadoras</value>
+  <data name="SubmitAdd" xml:space="preserve">
+    <value>Adicionar</value>
   </data>
   <data name="SubmitChange" xml:space="preserve">
     <value>Alterar</value>

@@ -28,21 +28,41 @@
     if (Model.Permissions.Find(x => x == "AddExpCode") != null) { AddExpCode = true; }
     if (Model.Permissions.Find(x => x == "DeleteExpCode") != null) { DeleteExpCode = true; }
     if (Model.Permissions.Find(x => x == "ExportExpCode") != null) { ExportExpCode = true; }
-}
-<div id="TitlePage">
-    <h1>@localizer["ExpCodeConfig"]</h1>
-    <h2>@TempData["ServiceTaskDesc"] / @TempData["ExpCompanyName"]</h2>
-    @if (Model != null)
+    if (source == "ServiceWorkFlowDetail")
     {
-        <h2>
-            @Model.ServiceCompany.CompanyName / @localizer["ExpCenter"] [@Model.ExpCenterCode]
-        </h2>
+        <div id="TitlePage">
+            <h1>@localizer["ExpCodeConfig"]</h1>
+            <h2><b>@TempData["ServiceTaskDesc"] / @TempData["ExpCompanyName"]</b></h2>
+            @if (Model != null)
+            {
+                <h2>
+                    @Model.ServiceCompany.CompanyName / @localizer["ExpCenter"] [@Model.ExpCenterCode]
+                </h2>
+            }
+            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
+               asp-route-expcodejson="@JsonConvert.SerializeObject(Model.ExpCode)" asp-route-expcentercode="@Model.ExpCenterCode"
+               asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
+            </a>
+        </div>
     }
-    <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCodeConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
-       asp-route-expcodejson="@JsonConvert.SerializeObject(Model.ExpCode)" asp-route-expcentercode="@Model.ExpCenterCode"
-       asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
-    </a>
-</div>
+    else
+    {
+        <div id="TitlePage">
+            <h1>@localizer["ExpCodeConfig"]</h1>
+            @if (Model != null)
+            {
+                <h2>
+                    <b>
+                        @Model.ServiceCompany.CompanyName
+                    </b>
+                </h2>
+            }
+            <h2>@TempData["ServiceTaskDesc"] / @TempData["ExpCompanyName"] / @localizer["ExpCenter"] [@Model.ExpCenterCode]</h2>
+            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyExpCodes" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)">
+            </a>
+        </div>
+    }
+}
 @if (Model == null)
 {
     <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
@@ -68,8 +88,8 @@ else
             <tr>
                 @if (AddServiceCompanyExpCodes)
                 {
-                    <th style="text-align: center;border:none;background-color:transparent">
-                        <img onclick="EditRow('')" class="evol-image" src="~/images/add.png" title="@localizer["AddServiceCompanyExpLevel"]" />
+                    <th class="evol-fitcontent-column-one" style="text-align:center;border:none;background-color:transparent">
+                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image" src="~/images/add.png" title="@localizer["AddServiceCompanyExpLevel"]" />
                     </th>
                 }
                 <th>@localizer["ExpLevel"]</th>
@@ -111,7 +131,7 @@ else
                 <tr id="Show|@value">
                     @if (AddServiceCompanyExpCodes)
                     {
-                        <td style="text-align: center;border:none;background-color:transparent">
+                        <td style="align-items:center; display:flex;border:none;background-color:transparent">
                             <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyExpLevel"]" />
                             @if (DeleteServiceCompanyExpCodes)
                             {
@@ -120,7 +140,7 @@ else
                                 asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
                                 asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
                                 asp-route-explevel="@config.ExpLevel">
-                                    <img onclick="return confirmServiceCompanyExpLevelDelete()" style="width:30px;height:30px" class="evol-image" src="~/images/delete.png" title="@localizer["DeleteServiceCompanyExpLevel"] = @config.ExpLevel" />
+                                    <img onclick="return confirmServiceCompanyExpLevelDelete()" class="evol-image" src="~/images/delete.png" title="@localizer["DeleteServiceCompanyExpLevel"] = @config.ExpLevel" />
                             </a>
                             }                        
                         </td>

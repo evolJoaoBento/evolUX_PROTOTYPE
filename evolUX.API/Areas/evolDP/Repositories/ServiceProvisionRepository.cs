@@ -206,7 +206,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
         }
  
-        public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode)
+        public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode, DataTable expCompanyList)
         {
             string sql = @"RD_UX_GET_EXPCODES";
             var parameters = new DynamicParameters();
@@ -216,12 +216,16 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
             if (!string.IsNullOrEmpty(expCode))
                 parameters.Add("ExpCode", expCode, DbType.String);
+            if (expCompanyID == 0 && string.IsNullOrEmpty(expCode))
+                parameters.Add("ExpCompanyList", expCompanyList.AsTableValuedParameter("IDlist"));
+
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<ExpCodeElement> result = await connection.QueryAsync<ExpCodeElement>(sql, parameters, commandType: CommandType.StoredProcedure);
                 return result;
             }
         }
+        
         public async Task DeleteServiceType(int serviceTaskID, int serviceTypeID)
         {
             string sql = @"RD_UX_DELETE_SERVICE_TASK_SERVICE_TYPE";
@@ -260,6 +264,19 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return result;
             }
         }
+        public async Task<IEnumerable<ServiceCompanyExpCodeElement>> GetServiceCompanyExpCodes(int serviceCompanyID, DataTable expCompanyList)
+        {
+            string sql = @"RD_UX_GET_SERVICE_COMPANY_EXPCODES";
+            var parameters = new DynamicParameters();
+            parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
+            parameters.Add("ExpCompanyList", expCompanyList.AsTableValuedParameter("IDlist"));
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ServiceCompanyExpCodeElement> result = await connection.QueryAsync<ServiceCompanyExpCodeElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+        
         public async Task SetExpCenter(string expCode, string expCenterCode, string description1, string description2, string description3, int serviceCompanyID, string expeditionZone)
         {
             string sql = @"RD_UX_SET_EXPEDITION_EXPCENTER_EXPZONE";

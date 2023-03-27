@@ -767,5 +767,11 @@ label {
     padding-right: 15px;
     box-sizing: border-box;
 }
+.evol-normal-row {
+    font-weight: normal;
+}
+.evol-highlight-row {
+    font-weight: bold;
+}
 
 

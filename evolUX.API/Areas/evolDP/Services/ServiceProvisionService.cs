@@ -7,6 +7,7 @@ using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
 using System.Collections;
 using System.Data;
+using System.Reflection.Emit;
 
 namespace evolUX.API.Areas.evolDP.Services
 {
@@ -119,9 +120,9 @@ namespace evolUX.API.Areas.evolDP.Services
             return;
         }
 
-        public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode)
+        public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode, DataTable expCompanyList)
         {
-            IEnumerable<ExpCodeElement> result = await _repository.ServiceProvision.GetExpCodes(serviceTaskID, expCompanyID, expCode);
+            IEnumerable<ExpCodeElement> result = await _repository.ServiceProvision.GetExpCodes(serviceTaskID, expCompanyID, expCode, expCompanyList);
             if (result == null)
             {
 
@@ -143,6 +144,15 @@ namespace evolUX.API.Areas.evolDP.Services
         public async Task<IEnumerable<ExpCenterElement>> GetExpCenters(string expCode, DataTable serviceCompanyList)
         {
             IEnumerable<ExpCenterElement> result = await _repository.ServiceProvision.GetExpCenters(expCode, serviceCompanyList);
+            if (result == null)
+            {
+
+            }
+            return result;
+        }
+        public async Task<IEnumerable<ServiceCompanyExpCodeElement>> GetServiceCompanyExpCodes(int serviceCompanyID, DataTable expCompanyList)
+        {
+            IEnumerable<ServiceCompanyExpCodeElement> result = await _repository.ServiceProvision.GetServiceCompanyExpCodes(serviceCompanyID, expCompanyList);
             if (result == null)
             {
 
