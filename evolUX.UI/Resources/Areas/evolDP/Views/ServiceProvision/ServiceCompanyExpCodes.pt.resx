@@ -163,7 +163,10 @@
     <value>Companhia de Prestação de Serviços</value>
   </data>
   <data name="ServiceCompanyExpCodes" xml:space="preserve">
-    <value>Código Tratamento/Expedição para Companhia de Prestação de Serviços</value>
+    <value>Escalões de Envelopagem por Tratamento/Expedição</value>
+  </data>
+  <data name="ServiceTask" xml:space="preserve">
+    <value>Tipo de Tratamento</value>
   </data>
   <data name="SubmitAdd" xml:space="preserve">
     <value>Adicionar</value>
