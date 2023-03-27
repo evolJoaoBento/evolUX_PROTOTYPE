@@ -146,7 +146,11 @@
             <div style="margin-top:10px">
                 @if (IgnoreFilePrinterSpecs)
                 {
-                    <label class="checkbox"> @Html.CheckBox("checkAll", false) @localizer["AllFiles"]</label>
+                    <label class="checkbox" style="display: flex; position:absolute; left: 20px; bottom: 20px;">
+                        <img class="settings-circle circle button-icon" style="background:white;padding:4px" src="~/images/allFiles.png" title="@localizer["PrintSimplex"]">
+                        <input id="allFiles" type="checkbox" class="alt-toggle-box" >
+                        <img />
+                    </label>
                 }
             </div>
         </form>
@@ -450,30 +454,49 @@ else
         }
        
         $(function () {
-            $("#checkAll").click(function () {
+            $("#allFiles").click(function () {
+                const elements = document.getElementsByName("FileCheck");
+                const prt = $("#Printer").val().split("|").map(value => parseInt(value, 10));
                 if ($(this).is(':checked')) {
-                    $("#all").show();
-                    $("#some").hide();
+                    for (let i = 0; i < elements.length; i++) {
+                        const element = elements[i];
+                        element.disabled = false;
+                    }
                 } else {
-                    $("#all").hide();
-                    $("#some").show();
+                    for (let i = 0; i < elements.length; i++) {
+                        const element = elements[i];
+                        const values = element.id.split("|").map(value => parseInt(value, 10));
+                        if ((values[0] & prt[0]) > 0 && (values[1] & prt[1]) > 0) {
+                            element.disabled = false;
+                            //element.style.display = "";
+                        }
+                        else {
+                            element.disabled = true;
+                            //element.style.display = "none";
+                            //element.checked = false;
+                        }
+                    }
                 }
             });
         });
         $("#Printer").change(function () {
             const prt = $(this).val().split("|").map(value => parseInt(value, 10));
             const elements = document.getElementsByName("FileCheck");
-            for (let i = 0; i < elements.length; i++) {
-                const element = elements[i];
-                const values = element.id.split("|").map(value => parseInt(value, 10));
-                if ((values[0] & prt[0]) > 0 && (values[1] & prt[1]) > 0) {
-                    element.disabled = false;
-                    //element.style.display = "";
-                }
-                else {
-                    element.disabled = true;
-                    //element.style.display = "none";
-                    //element.checked = false;
+            if ($("#allFiles").is(':checked')) {
+               
+            } else {
+                for (let i = 0; i < elements.length; i++) {
+                    const element = elements[i];
+                    const values = element.id.split("|").map(value => parseInt(value, 10));
+                    if ((values[0] & prt[0]) > 0 && (values[1] & prt[1]) > 0) {
+                        element.disabled = false;
+                        //element.style.display = "";
+                    }
+                    else {
+                        element.disabled = true;
+                        //element.style.display = "none";
+                        //element.checked = false;
+                    }
                 }
             }
         });
