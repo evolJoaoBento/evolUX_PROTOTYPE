@@ -6,6 +6,7 @@ using Shared.Models.Areas.evolDP;
 using Shared.Models.General;
 using System.ComponentModel.Design;
 using System.Data;
+using System.Reflection.Emit;
 
 namespace evolUX.API.Areas.evolDP.Repositories
 {
@@ -207,7 +208,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
  
         public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode)
         {
-            string sql = @"RD_UX_GET_EXPCOMPANY_SERVICE_TASKS";
+            string sql = @"RD_UX_GET_EXPCODES";
             var parameters = new DynamicParameters();
             if (serviceTaskID > 0)
                 parameters.Add("ServiceTaskID", serviceTaskID, DbType.Int64);
@@ -259,6 +260,71 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return result;
             }
         }
+        public async Task SetExpCenter(string expCode, string expCenterCode, string description1, string description2, string description3, int serviceCompanyID, string expeditionZone)
+        {
+            string sql = @"RD_UX_SET_EXPEDITION_EXPCENTER_EXPZONE";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExpCode", expCode, DbType.String);
+            parameters.Add("ExpCenterCode", expCenterCode, DbType.String);
+            parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
+            parameters.Add("ExpeditionZone", expeditionZone, DbType.String);
+            parameters.Add("Description1", description1, DbType.String);
+            parameters.Add("Description2", description2, DbType.String);
+            parameters.Add("Description3", description3, DbType.String);
 
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+
+                await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+        public async Task<IEnumerable<ServiceCompanyExpCodeConfig>> GetServiceCompanyExpCodeConfigs(string expCode, int serviceCompanyID, string expCenterCode)
+        {
+            string sql = @"RD_UX_GET_SERVICE_COMPANY_EXPCODE_CONFIG";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExpCode", expCode, DbType.String);
+            parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
+            parameters.Add("ExpCenterCode", expCenterCode, DbType.String);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<ServiceCompanyExpCodeConfig> result = await connection.QueryAsync<ServiceCompanyExpCodeConfig>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+        public async Task SetServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel, string fullFillMaterialCode, int docMaxSheets, string barcode)
+        {
+            string sql = @"RD_UX_SET_SERVICE_COMPANY_EXPCODE_CONFIG";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExpCode", expCode, DbType.String);
+            parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
+            parameters.Add("ExpCenterCode", expCenterCode, DbType.String);
+            if (expLevel >= 0)
+                parameters.Add("ExpLevel", expLevel, DbType.Int64);
+            parameters.Add("FullFillMaterialCode", fullFillMaterialCode, DbType.String);
+            if (docMaxSheets > 0)
+                parameters.Add("DocMaxSheets", docMaxSheets, DbType.Int64);
+            if (!string.IsNullOrEmpty(barcode))
+                parameters.Add("Barcode", barcode, DbType.String);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                await connection.QueryAsync<ServiceCompanyExpCodeConfig>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return;
+            }
+        }
+        public async Task DeleteServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel)
+        {
+            string sql = @"RD_UX_DELETE_SERVICE_COMPANY_EXPCODE_CONFIG";
+            var parameters = new DynamicParameters();
+            parameters.Add("ExpCode", expCode, DbType.String);
+            parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
+            parameters.Add("ExpCenterCode", expCenterCode, DbType.String);
+            parameters.Add("ExpLevel", expLevel, DbType.Int64);
+
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                await connection.QueryAsync<ServiceCompanyExpCodeConfig>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return;
+            }
+        }
     }
 }

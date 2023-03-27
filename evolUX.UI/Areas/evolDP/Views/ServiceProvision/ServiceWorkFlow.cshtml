@@ -171,7 +171,7 @@ else
                 </tr>
                 <tr id="Show|@value">
                     <td style="align-items:center; display:flex;border: none;background-color: transparent;">
-                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@JsonConvert.SerializeObject(st.ServiceTaskID)">
+                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
                             <img class="evol-image" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
                         </a>
                         @if (AddServiceTask)

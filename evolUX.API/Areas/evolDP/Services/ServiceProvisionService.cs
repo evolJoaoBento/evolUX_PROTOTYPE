@@ -149,5 +149,25 @@ namespace evolUX.API.Areas.evolDP.Services
             }
             return result;
         }
+        public async Task SetExpCenter(string expCode, string expCenterCode, string description1, string description2, string description3, int serviceCompanyID, string expeditionZone)
+        {
+            await _repository.ServiceProvision.SetExpCenter(expCode, expCenterCode, description1, description2, description3, serviceCompanyID, expeditionZone);
+            return;
+        }
+        public async Task<IEnumerable<ServiceCompanyExpCodeConfig>> GetServiceCompanyExpCodeConfigs(string expCode, int serviceCompanyID, string expCenterCode)
+        {
+            var response = await _repository.ServiceProvision.GetServiceCompanyExpCodeConfigs(expCode, serviceCompanyID, expCenterCode);
+            return response;
+        }
+        public async Task DeleteServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel)
+        {
+            await _repository.ServiceProvision.DeleteServiceCompanyExpCodeConfig(expCode, serviceCompanyID, expCenterCode, expLevel);
+            return;
+        }
+        public async Task SetServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel, string fullFillMaterialCode, int docMaxSheets, string barcode)
+        {
+            await _repository.ServiceProvision.SetServiceCompanyExpCodeConfig(expCode, serviceCompanyID, expCenterCode, expLevel, fullFillMaterialCode, docMaxSheets, barcode);
+            return;
+        }
     }
 }

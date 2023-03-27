@@ -14,6 +14,19 @@ namespace evolUX.API.Areas.evolDP.Repositories
             _context = context;
         }
 
+        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes(string fullFillMaterialCode)
+        {
+            string sql = @"RD_UX_GET_FULLFILL_MATERIALCODE";
+            var parameters = new DynamicParameters();
+            if (!string.IsNullOrEmpty(fullFillMaterialCode))
+                parameters.Add("FullFillMaterialCode", fullFillMaterialCode, DbType.String);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<FulfillMaterialCode> result = await connection.QueryAsync<FulfillMaterialCode>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+        
         public async Task<IEnumerable<EnvelopeMediaGroup>> GetEnvelopeMediaGroups(int? envMediaGroupID)
         {
             string sql = @"RD_UX_GET_ENVELOPE_MEDIA_GROUP";

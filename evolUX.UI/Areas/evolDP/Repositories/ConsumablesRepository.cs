@@ -7,6 +7,7 @@ using evolUX.UI.Exceptions;
 using Shared.ViewModels.Areas.evolDP;
 using evolUX.API.Models;
 using Shared.ViewModels.Areas.Finishing;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
@@ -14,6 +15,16 @@ namespace evolUX.UI.Areas.evolDP.Repositories
     {
         public ConsumablesRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
+        }
+        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes()
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            var response = await _flurlClient.Request("/API/evolDP/Consumables/GetFulfillMaterialCodes")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<IEnumerable<FulfillMaterialCode>>();
         }
 
         //public async Task<ConsumablesTypeViewModel> GetConsumablesTypes(int? ConsumablesType, string expCompanyList)

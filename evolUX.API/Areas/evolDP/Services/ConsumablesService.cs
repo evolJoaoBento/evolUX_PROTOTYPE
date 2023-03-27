@@ -1,6 +1,7 @@
 ﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
 using evolUX.API.Areas.evolDP.Services.Interfaces;
 using Shared.Models.Areas.evolDP;
+using System.Data;
 
 namespace evolUX.API.Areas.evolDP.Services
 {
@@ -12,7 +13,11 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             _repository = repository;
         }
-
+        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes(string fullFillMaterialCode)
+        {
+            IEnumerable<FulfillMaterialCode> result = await _repository.Consumables.GetFulfillMaterialCodes(fullFillMaterialCode);
+            return result;
+        }
         public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMedia(int? envMediaID)
         {
             var envelopeMediaList = await _repository.Consumables.GetEnvelopeMedia(envMediaID);

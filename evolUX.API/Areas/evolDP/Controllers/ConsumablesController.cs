@@ -4,10 +4,12 @@ using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Areas.Core.Services.Interfaces;
 using evolUX.API.Areas.evolDP.Services.Interfaces;
 using System.Data.SqlClient;
+using evolUX.API.Areas.evolDP.Services;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
-    [Route("api/evoldp/envelopemedia/[action]")]
+    [Route("api/evoldp/consumables/[action]")]
     [ApiController]
     public class ConsumablesController : Controller
     {
@@ -19,6 +21,34 @@ namespace evolUX.API.Areas.evolDP.Controllers
             _logger = logger;
             _consumables = consumables;
         }
+        
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("GetFulfillMaterialCodes")]
+        public async Task<ActionResult<IEnumerable<FulfillMaterialCode>>> GetFulfillMaterialCodes([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("FullFillMaterialCode", out obj);
+                string fullFillMaterialCode = Convert.ToString(obj).ToString();
+
+                var result = await _consumables.GetFulfillMaterialCodes(fullFillMaterialCode);
+                _logger.LogInfo("Expedition Company Configs Get");
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetExpeditionCompanyConfigs action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]

@@ -37,13 +37,13 @@ BEGIN
 	ORDER BY st.ServiceTypeID
 END
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TASKS]') AND type in (N'P', N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_EXPCODES]') AND type in (N'P', N'PC'))
 BEGIN
-EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TASKS] AS' 
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_EXPCODES] AS' 
 END
 GO
 -- Listar Tipo Tratamento/Expedição (ExpCode) - Alterar/apagar/adiconar?
-ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPCOMPANY_SERVICE_TASKS]
+ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPCODES]
 	@ServiceTaskID int = NULL,
 	@ExpCompanyID int = NULL,
 	@ExpCode varchar(10) = NULL
@@ -368,5 +368,170 @@ BEGIN
 	DELETE RD_SERVICE_TASK_SERVICE_TYPE
 	WHERE ServiceTaskID = @ServiceTaskID
 		AND ServiceTypeID = @ServiceTypeID
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_SERVICE_COMPANY_EXPCODE_CONFIG]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANY_EXPCODE_CONFIG] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANY_EXPCODE_CONFIG]
+	@ServiceCompanyID int,
+	@ExpCode varchar(10),
+	@ExpCenterCode varchar(5) = NULL
+AS
+BEGIN
+	SELECT scec.ServiceCompanyID,
+		scec.ExpCode, 
+		scec.ExpCenterCode,
+		scec.ExpLevel,
+		scec.FullFillMaterialCode,
+		scec.DocMaxSheets,
+		scec.Barcode
+	FROM
+		RD_SERVICE_COMPANY_EXPCODE_CONFIG scec WITH(NOLOCK)
+	WHERE scec.ServiceCompanyID = @ServiceCompanyID
+		AND scec.ExpCode = @ExpCode
+		AND (@ExpCenterCode is NULL OR scec.ExpCenterCode = @ExpCenterCode)
+	ORDER BY scec.ServiceCompanyID, scec.ExpCode, scec.ExpCenterCode, scec.ExpLevel
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_SERVICE_COMPANY_EXPCODE_CONFIG]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_SERVICE_COMPANY_EXPCODE_CONFIG] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_SET_SERVICE_COMPANY_EXPCODE_CONFIG]
+	@ServiceCompanyID int,
+	@ExpCode varchar(10),
+	@ExpCenterCode varchar(5),
+	@ExpLevel int = NULL,
+	@FullFillMaterialCode varchar(10),
+	@DocMaxSheets int = NULL,
+	@Barcode varchar(256) = NULL
+AS
+BEGIN
+	IF (@Barcode is NULL)
+	BEGIN
+		SELECT TOP 1 @Barcode = [Barcode]
+		FROM RD_SERVICE_COMPANY_EXPCODE_CONFIG WITH(NOLOCK)
+		WHERE ServiceCompanyID = @ServiceCompanyID
+		AND ExpCode = @ExpCode
+		AND FullFillMaterialCode = @FullFillMaterialCode
+		AND ISNULL(DocMaxSheets,2147483647) = ISNULL(@DocMaxSheets,2147483647)
+
+		IF (@Barcode is NULL)
+		BEGIN
+			SELECT @Barcode = '00010101'
+		END
+	END
+	IF (@ExpLevel is NULL)
+	BEGIN
+		DECLARE @MinExpLevel int,
+				@MaxExpLevel int
+		SELECT @MaxExpLevel = ISNULL(MAX(ExpLevel),-1)
+		FROM RD_SERVICE_COMPANY_EXPCODE_CONFIG WITH(NOLOCK)
+		WHERE ServiceCompanyID = @ServiceCompanyID
+			AND ExpCode = @ExpCode
+			AND ExpCenterCode = @ExpCenterCode
+			AND ISNULL(DocMaxSheets,2147483647) < ISNULL(@DocMaxSheets,2147483647)
+
+		SELECT @MinExpLevel = ISNULL(MIN(ExpLevel),@MaxExpLevel)
+		FROM RD_SERVICE_COMPANY_EXPCODE_CONFIG WITH(NOLOCK)
+		WHERE ServiceCompanyID = @ServiceCompanyID
+			AND ExpCode = @ExpCode
+			AND ExpCenterCode = @ExpCenterCode
+			AND ISNULL(DocMaxSheets,2147483647) > ISNULL(@DocMaxSheets,2147483647)
+
+		IF (@MaxExpLevel = @MinExpLevel)
+		BEGIN
+			SELECT @ExpLevel = ISNULL(MAX(ExpLevel),-10) + 10
+			FROM RD_SERVICE_COMPANY_EXPCODE_CONFIG WITH(NOLOCK)
+			WHERE ServiceCompanyID = @ServiceCompanyID
+				AND ExpCode = @ExpCode
+				AND ExpCenterCode = @ExpCenterCode
+		END
+		ELSE
+		BEGIN
+			IF (@MaxExpLevel < 0)
+			BEGIN
+				SET @ExpLevel = 0
+			END
+			ELSE
+			BEGIN
+				SELECT @ExpLevel = @MaxExpLevel + (@MinExpLevel - @MaxExpLevel) / 2
+			END
+		END
+		BEGIN TRANSACTION
+		WHILE EXISTS(SELECT TOP 1 1 
+				FROM RD_SERVICE_COMPANY_EXPCODE_CONFIG WITH(NOLOCK)
+				WHERE ServiceCompanyID = @ServiceCompanyID
+					AND ExpCode = @ExpCode
+					AND ExpCenterCode = @ExpCenterCode
+					AND expLevel = @ExpLevel)
+		BEGIN
+			SELECT @ExpLevel = @ExpLevel + 1
+		END
+
+		INSERT INTO RD_SERVICE_COMPANY_EXPCODE_CONFIG(ServiceCompanyID, ExpCode, ExpCenterCode, ExpLevel, FullFillMaterialCode, DocMaxSheets, Barcode)
+		SELECT @ServiceCompanyID, @ExpCode, @ExpCenterCode, @ExpLevel, @FullFillMaterialCode, @DocMaxSheets, @Barcode
+	END
+	ELSE
+	BEGIN
+		UPDATE RD_SERVICE_COMPANY_EXPCODE_CONFIG
+		SET FullFillMaterialCode = @FullFillMaterialCode,
+			DocMaxSheets = @DocMaxSheets,
+			Barcode = @Barcode
+		WHERE ServiceCompanyID = @ServiceCompanyID
+			AND ExpCode = @ExpCode
+			AND ExpCenterCode = @ExpCenterCode
+			AND ExpLevel = @ExpLevel
+	END
+	RETURN @ExpLevel
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_DELETE_SERVICE_COMPANY_EXPCODE_CONFIG]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_DELETE_SERVICE_COMPANY_EXPCODE_CONFIG] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_DELETE_SERVICE_COMPANY_EXPCODE_CONFIG]
+	@ServiceCompanyID int,
+	@ExpCode varchar(10),
+	@ExpCenterCode varchar(5),
+	@ExpLevel int
+AS
+BEGIN
+	DELETE RD_SERVICE_COMPANY_EXPCODE_CONFIG
+	WHERE ServiceCompanyID = @ServiceCompanyID
+		AND ExpCode = @ExpCode
+		AND ExpCenterCode = @ExpCenterCode
+		AND ExpLevel = @ExpLevel
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_EXPEDITION_EXPCENTER_EXPZONE]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_EXPEDITION_EXPCENTER_EXPZONE] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_SET_EXPEDITION_EXPCENTER_EXPZONE]
+	@ExpCode varchar(10),
+	@ExpCenterCode varchar(5),
+	@ServiceCompanyID int,
+	@ExpeditionZone int,
+	@Description1 varchar(256) = NULL,
+	@Description2 varchar(256) = NULL,
+	@Description3 varchar(256) = NULL
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	UPDATE RD_EXPEDITION_EXPCENTER_EXPZONE
+	SET ServiceCompanyID = @ServiceCompanyID,
+		ExpeditionZone = @ExpeditionZone,
+		Description1 = @Description1,
+		Description2 = @Description2,
+		Description3 = @Description3
+	WHERE ExpCode = @ExpCode AND ExpCenterCode = @ExpCenterCode
 END
 GO

@@ -6,6 +6,7 @@ using evolUX_dev.Areas.evolDP.Models;
 using Flurl.Http;
 using NuGet.Protocol;
 using Shared.Models.Areas.evolDP;
+using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
 using System.Net;
 
@@ -27,7 +28,7 @@ namespace evolUX.UI.Areas.evolDP.Services
         {
             var response = await _serviceProvisionRepository.GetServiceCompanyRestrictions(serviceCompanyID);
             return response;
-        }        
+        }
 
         public async Task<ServiceCompanyViewModel> GetServiceCompanyViewModel(Company serviceCompany, List<ServiceCompanyRestriction> restrictions)
         {
@@ -47,7 +48,7 @@ namespace evolUX.UI.Areas.evolDP.Services
         {
             ServiceCompanyViewModel response = new ServiceCompanyViewModel();
             var companies = await _serviceProvisionRepository.GetServiceCompany(serviceCompanyID);
-            if (companies  != null && companies.Count() > 0)
+            if (companies != null && companies.Count() > 0)
             {
                 return await GetServiceCompanyViewModel(companies.First(), restrictions);
             }
@@ -129,10 +130,35 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _serviceProvisionRepository.GetExpCenters(expCode, serviceCompanyList);
             return response;
         }
-        public async Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones()
+        public async Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones(int expCompanyID)
         {
-            var response = await _serviceProvisionRepository.GetExpeditionZones();
+            var response = await _serviceProvisionRepository.GetExpeditionZones(expCompanyID);
             return response.Zones;
+        }
+        public async Task SetExpCenter(string expCode, string expCenterCode, string description1, string description2, string description3, int serviceCompanyID, string expeditionZone)
+        {
+            await SetExpCenter(expCode, expCenterCode, description1, description2, description3, serviceCompanyID, expeditionZone);
+            return;
+        }
+        public async Task<IEnumerable<ServiceCompanyExpCodeConfig>> GetServiceCompanyExpCodeConfigs(string expCode, int serviceCompanyID, string expCenterCode)
+        {
+            var response = await _serviceProvisionRepository.GetServiceCompanyExpCodeConfigs(expCode, serviceCompanyID, expCenterCode);
+            return response;
+        }
+        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes()
+        {
+            var response = await _serviceProvisionRepository.GetFulfillMaterialCodes();
+            return response;
+        }
+        public async Task DeleteServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel)
+        {
+            await _serviceProvisionRepository.DeleteServiceCompanyExpCodeConfig(expCode, serviceCompanyID, expCenterCode, expLevel);
+            return;
+        }
+        public async Task SetServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel, string fullFillMaterialCode, int docMaxSheets, string barcode)
+        {
+            await _serviceProvisionRepository.SetServiceCompanyExpCodeConfig(expCode, serviceCompanyID, expCenterCode, expLevel, fullFillMaterialCode, docMaxSheets, barcode);
+            return;
         }
     }
 }

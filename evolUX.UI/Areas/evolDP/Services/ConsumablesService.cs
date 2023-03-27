@@ -1,6 +1,7 @@
 ﻿using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
 using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using Flurl.Http;
+using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.UI.Areas.evolDP.Services
@@ -12,6 +13,12 @@ namespace evolUX.UI.Areas.evolDP.Services
         {
             _ConsumablesTypeRepository = ConsumablesTypeRepository;
         }
+        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes()
+        {
+            var response = await _ConsumablesTypeRepository.GetFulfillMaterialCodes();
+            return response;
+        }
+
         //public async Task<ConsumablesTypeViewModel> GetConsumablesTypes(int? ConsumablesType, string expCompanyList)
         //{
         //    var response = await _ConsumablesTypeRepository.GetConsumablesTypes(ConsumablesType, expCompanyList);

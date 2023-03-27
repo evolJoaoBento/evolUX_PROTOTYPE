@@ -48,7 +48,7 @@ else
                             }
                         </td>
                         <td  style="text-align: center">@z.ExpeditionZone</td>
-                        <td>@z.Description</td>
+                        <td>@z.ExpeditionZoneDesc</td>
                     </tr>
                     @if (z.ExpCompanyZonesList.Count() > 0)
                     {
@@ -69,7 +69,7 @@ else
                                     {
                                             ExpeditionZoneElement newExpZone = new ExpeditionZoneElement();
                                             newExpZone.ExpeditionZone = z.ExpeditionZone;
-                                            newExpZone.Description = z.Description;
+                                            newExpZone.ExpeditionZoneDesc = z.ExpeditionZoneDesc;
                                             newExpZone.ExpCompanyZonesList = z.ExpCompanyZonesList.Where(x => x.ExpCompanyID == c.ExpCompanyID && x.ExpCenterCode == c.ExpCenterCode).ToList();
                                         <tr>
                                                 <td><a asp-area="evolDP" asp-controller="Expedition" asp-action="ZoneDetail" asp-route-expeditionzoneJson="@JsonConvert.SerializeObject(newExpZone)">

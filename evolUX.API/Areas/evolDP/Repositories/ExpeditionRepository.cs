@@ -71,12 +71,14 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
         }
 
-        public async Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones(int? expeditionZone)
+        public async Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones(int? expeditionZone, int expCompanyID)
         {
             string sql = @"RD_UX_GET_EXPEDITION_ZONE";
             var parameters = new DynamicParameters();
             if (expeditionZone != null && expeditionZone > 0)
-                parameters.Add("ExpeditionZone", expeditionZone, DbType.String);
+                parameters.Add("ExpeditionZone", expeditionZone, DbType.Int64);
+            if (expCompanyID > 0)
+                parameters.Add("ExpCompanyID", expCompanyID, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<ExpeditionZoneElement> expList = await connection.QueryAsync<ExpeditionZoneElement>(sql, parameters, commandType: CommandType.StoredProcedure);

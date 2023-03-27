@@ -828,23 +828,253 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 if (!string.IsNullOrEmpty(serviceCompanyList))
                 {
                     DataTable serviceCompanies = JsonConvert.DeserializeObject<DataTable>(serviceCompanyList);
-                    List<Company> eList = new List<Company>();
+                    List<Company> sList = new List<Company>();
                     foreach (DataRow row in serviceCompanies.Rows)
                     {
-                        eList.Add(new Company
+                        sList.Add(new Company
                         {
                             ID = Int32.Parse(row["ID"].ToString()),
                             CompanyCode = (string)row["CompanyCode"],
                             CompanyName = (string)row["CompanyName"]
                         });
                     }
-                    result.ServiceCompanies = eList;
+                    result.ServiceCompanies = sList;
                     result.ExpCenters = await _serviceProvisionService.GetExpCenters(result.ExpCode.ExpCode, serviceCompanyList);
-                    result.Zones = await _serviceProvisionService.GetExpeditionZones();
+                    result.Zones = await _serviceProvisionService.GetExpeditionZones(result.ExpCode.ExpCompanyID);
                 }
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
 
                 return View("ExpCode", result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+        }
+
+        public async Task<IActionResult> ChangeExpCenter(string expCodeJson, string expCenterCode, string source, string serviceTaskDesc, string expCompanyName,
+            string description1, string description2, string description3, int serviceCompanyID, string expeditionZone)
+        {
+            try
+            {
+                TempData["ServiceTaskDesc"] = serviceTaskDesc;
+                TempData["ExpCompanyName"] = expCompanyName;
+                TempData["Source"] = source;
+                ExpCodeViewModel result = new ExpCodeViewModel();
+                result.ExpCode = JsonConvert.DeserializeObject<ExpCodeElement>(expCodeJson);
+                await _serviceProvisionService.SetExpCenter(result.ExpCode.ExpCode, expCenterCode, description1, description2, description3, serviceCompanyID, expeditionZone);
+                
+                string serviceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+                if (!string.IsNullOrEmpty(serviceCompanyList))
+                {
+                    DataTable serviceCompanies = JsonConvert.DeserializeObject<DataTable>(serviceCompanyList);
+                    List<Company> sList = new List<Company>();
+                    foreach (DataRow row in serviceCompanies.Rows)
+                    {
+                        sList.Add(new Company
+                        {
+                            ID = Int32.Parse(row["ID"].ToString()),
+                            CompanyCode = (string)row["CompanyCode"],
+                            CompanyName = (string)row["CompanyName"]
+                        });
+                    }
+                    result.ServiceCompanies = sList;
+                    result.ExpCenters = await _serviceProvisionService.GetExpCenters(result.ExpCode.ExpCode, serviceCompanyList);
+                    result.Zones = await _serviceProvisionService.GetExpeditionZones(result.ExpCode.ExpCompanyID);
+                }
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+
+                return View("ExpCode", result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+        }
+
+        public async Task<IActionResult> ExpCodeConfig(string serviceCompanyJson, string expCodeJson, string expCenterCode, string source, string serviceTaskDesc, string expCompanyName)
+        {
+            try
+            {
+                TempData["ServiceTaskDesc"] = serviceTaskDesc;
+                TempData["ExpCompanyName"] = expCompanyName;
+                TempData["Source"] = source;
+                ServiceCompanyExpCodeConfigViewModel result = new ServiceCompanyExpCodeConfigViewModel();
+                result.ServiceCompany = JsonConvert.DeserializeObject<Company>(serviceCompanyJson);
+                result.ExpCode = JsonConvert.DeserializeObject<ExpCodeElement>(expCodeJson);
+                result.ExpCenterCode = expCenterCode;
+                result.Configs = await _serviceProvisionService.GetServiceCompanyExpCodeConfigs(result.ExpCode.ExpCode, result.ServiceCompany.ID, result.ExpCenterCode);
+                result.FulfillMaterialCodes = await _serviceProvisionService.GetFulfillMaterialCodes();
+
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+
+                return View("ExpCodeConfig", result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+        }
+
+        public async Task<IActionResult> DeleteServiceCompanyExpLevel(string serviceCompanyJson, string expCodeJson, string expCenterCode, string source, string serviceTaskDesc, string expCompanyName, int expLevel)
+        {
+            try
+            {
+                TempData["ServiceTaskDesc"] = serviceTaskDesc;
+                TempData["ExpCompanyName"] = expCompanyName;
+                TempData["Source"] = source;
+                ServiceCompanyExpCodeConfigViewModel result = new ServiceCompanyExpCodeConfigViewModel();
+                result.ServiceCompany = JsonConvert.DeserializeObject<Company>(serviceCompanyJson);
+                result.ExpCode = JsonConvert.DeserializeObject<ExpCodeElement>(expCodeJson);
+                result.ExpCenterCode = expCenterCode;
+                await _serviceProvisionService.DeleteServiceCompanyExpCodeConfig(result.ExpCode.ExpCode, result.ServiceCompany.ID, expCenterCode, expLevel);
+                result.Configs = await _serviceProvisionService.GetServiceCompanyExpCodeConfigs(result.ExpCode.ExpCode, result.ServiceCompany.ID, result.ExpCenterCode);
+                result.FulfillMaterialCodes = await _serviceProvisionService.GetFulfillMaterialCodes();
+
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+
+                return View("ExpCodeConfig", result);
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+        }
+
+        public async Task<IActionResult> ChangeServiceCompanyExpLevel(string serviceCompanyJson, string expCodeJson, string expCenterCode, string source, string serviceTaskDesc, string expCompanyName, int expLevel, string fullFillMaterialCode, int docMaxSheets, string barcode)
+        {
+            try
+            {
+                TempData["ServiceTaskDesc"] = serviceTaskDesc;
+                TempData["ExpCompanyName"] = expCompanyName;
+                TempData["Source"] = source;
+                ServiceCompanyExpCodeConfigViewModel result = new ServiceCompanyExpCodeConfigViewModel();
+                result.ServiceCompany = JsonConvert.DeserializeObject<Company>(serviceCompanyJson);
+                result.ExpCode = JsonConvert.DeserializeObject<ExpCodeElement>(expCodeJson);
+                result.ExpCenterCode = expCenterCode;
+                await _serviceProvisionService.SetServiceCompanyExpCodeConfig(result.ExpCode.ExpCode, result.ServiceCompany.ID, expCenterCode, expLevel, fullFillMaterialCode, docMaxSheets, barcode);
+                result.Configs = await _serviceProvisionService.GetServiceCompanyExpCodeConfigs(result.ExpCode.ExpCode, result.ServiceCompany.ID, result.ExpCenterCode);
+                result.FulfillMaterialCodes = await _serviceProvisionService.GetFulfillMaterialCodes();
+
+                result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+
+                return View("ExpCodeConfig", result);
             }
             catch (FlurlHttpException ex)
             {

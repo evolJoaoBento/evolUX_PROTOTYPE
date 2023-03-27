@@ -1,5 +1,6 @@
 ﻿using Flurl.Http;
 using Shared.Models.Areas.evolDP;
+using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
 
 namespace evolUX.UI.Areas.evolDP.Services.Interfaces
@@ -25,6 +26,11 @@ namespace evolUX.UI.Areas.evolDP.Services.Interfaces
         public Task DeleteServiceType(int serviceTaskID, int serviceTypeID);
         public Task AddServiceType(int serviceTaskID, int serviceTypeID);
         public Task<IEnumerable<ExpCenterElement>> GetExpCenters(string expCode, string serviceCompanyList);
-        public Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones();
+        public Task<IEnumerable<ExpeditionZoneElement>> GetExpeditionZones(int expCompanyID);
+        public Task SetExpCenter(string expCode, string expCenterCode, string description1, string description2, string description3, int serviceCompanyID, string expeditionZone);
+        public Task<IEnumerable<ServiceCompanyExpCodeConfig>> GetServiceCompanyExpCodeConfigs(string expCode, int serviceCompanyID, string expCenterCode);
+        public Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes();
+        public Task SetServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel, string fullFillMaterialCode, int docMaxSheets, string barcode);
+        public Task DeleteServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel);
     }
 }

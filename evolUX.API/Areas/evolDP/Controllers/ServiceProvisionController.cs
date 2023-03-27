@@ -604,11 +604,10 @@ namespace evolUX.API.Areas.evolDP.Controllers
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("GetExpCenters")]
-        public async Task<ActionResult<ExpeditionTypeViewModel>> GetExpCenters([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<IEnumerable<ExpCenterElement>>> GetExpCenters([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
-                ExpeditionTypeViewModel expeditionTypeList = new ExpeditionTypeViewModel();
                 object obj;
                 dictionary.TryGetValue("ExpCode", out obj);
                 string expCode = Convert.ToString(obj);
@@ -618,7 +617,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
 
                 var result = await _serviceProvision.GetExpCenters(expCode, serviceCompanyList);
 
-                return Ok(expeditionTypeList);
+                return Ok(result);
             }
             catch (SqlException ex)
             {
@@ -632,5 +631,153 @@ namespace evolUX.API.Areas.evolDP.Controllers
             }
         }
 
+        [HttpGet]
+        [ActionName("SetExpCenter")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> SetExpCenter([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                int value = 0;
+                dictionary.TryGetValue("ExpCode", out obj);
+                string expCode = Convert.ToString(obj);
+                dictionary.TryGetValue("ExpCenterCode", out obj);
+                string expCenterCode = Convert.ToString(obj);
+                dictionary.TryGetValue("ServiceCompanyID", out obj);
+                int serviceCompanyID = Int32.Parse(Convert.ToString(obj));
+                dictionary.TryGetValue("ExpeditionZone", out obj);
+                string expeditionZone = Convert.ToString(obj);
+                dictionary.TryGetValue("Description1", out obj);
+                string description1 = Convert.ToString(obj);
+                dictionary.TryGetValue("Description2", out obj);
+                string description2 = Convert.ToString(obj);
+                dictionary.TryGetValue("Description3", out obj);
+                string description3 = Convert.ToString(obj);
+
+                await _serviceProvision.SetExpCenter(expCode, expCenterCode, description1, description2, description3, serviceCompanyID, expeditionZone);
+                _logger.LogInfo("SetExpCenter Set");
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside SetExpCenter action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+        [HttpGet]
+        [ActionName("GetServiceCompanyExpCodeConfigs")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult<IEnumerable<ServiceCompanyExpCodeConfig>>> GetServiceCompanyExpCodeConfigs([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                int value = 0;
+                dictionary.TryGetValue("ExpCode", out obj);
+                string expCode = Convert.ToString(obj);
+                dictionary.TryGetValue("ExpCenterCode", out obj);
+                string expCenterCode = Convert.ToString(obj);
+                dictionary.TryGetValue("ServiceCompanyID", out obj);
+                int serviceCompanyID = Int32.Parse(Convert.ToString(obj));
+
+                var result = await _serviceProvision.GetServiceCompanyExpCodeConfigs(expCode, serviceCompanyID, expCenterCode);
+                _logger.LogInfo("GetServiceCompanyExpCodeConfigsGet");
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetServiceCompanyExpCodeConfigs action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+        [HttpGet]
+        [ActionName("DeleteServiceCompanyExpCodeConfig")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> DeleteServiceCompanyExpCodeConfig([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                int value = 0;
+                dictionary.TryGetValue("ExpCode", out obj);
+                string expCode = Convert.ToString(obj);
+                dictionary.TryGetValue("ExpCenterCode", out obj);
+                string expCenterCode = Convert.ToString(obj);
+                dictionary.TryGetValue("ServiceCompanyID", out obj);
+                int serviceCompanyID = Int32.Parse(Convert.ToString(obj));
+                dictionary.TryGetValue("ExpLevel", out obj);
+                int expLevel = Int32.Parse(Convert.ToString(obj));
+
+                await _serviceProvision.DeleteServiceCompanyExpCodeConfig(expCode, serviceCompanyID, expCenterCode, expLevel);
+                _logger.LogInfo("SetServiceCompanyExpCodeConfig");
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside SetServiceCompanyExpCodeConfig action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
+        [HttpGet]
+        [ActionName("SetServiceCompanyExpCodeConfig")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> SetServiceCompanyExpCodeConfig([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                int value = 0;
+                dictionary.TryGetValue("ExpCode", out obj);
+                string expCode = Convert.ToString(obj);
+                dictionary.TryGetValue("ExpCenterCode", out obj);
+                string expCenterCode = Convert.ToString(obj);
+                dictionary.TryGetValue("ServiceCompanyID", out obj);
+                int serviceCompanyID = Int32.Parse(Convert.ToString(obj));
+                dictionary.TryGetValue("ExpLevel", out obj);
+                int expLevel = Int32.Parse(Convert.ToString(obj));
+                string fullFillMaterialCode = Convert.ToString(obj);
+                dictionary.TryGetValue("FullFillMaterialCode", out obj);
+
+                int docMaxSheets = 0;
+                dictionary.TryGetValue("DocMaxSheets", out obj);
+                if (obj != null)
+                    docMaxSheets = Int32.Parse(Convert.ToString(obj));
+
+                string barcode = "";
+                dictionary.TryGetValue("Barcode", out obj);
+                if (obj != null)
+                    barcode = Convert.ToString(obj);
+
+                await _serviceProvision.SetServiceCompanyExpCodeConfig(expCode, serviceCompanyID, expCenterCode, expLevel, fullFillMaterialCode, docMaxSheets, barcode);
+                _logger.LogInfo("SetServiceCompanyExpCodeConfig");
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside SetServiceCompanyExpCodeConfig action: {ex.Message}");
+                return StatusCode(500, "Internal Server Erros");
+            }
+        }
     }
 }
