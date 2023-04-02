@@ -20,6 +20,11 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _genericRepository.GetCompanyBusiness(CompanyBusinessList);
             return response;
         }
+        public async Task<BusinessViewModel> GetCompanyBusiness(int CompanyID)
+        {
+            var response = await _genericRepository.GetCompanyBusiness(CompanyID);
+            return response;
+        }
         public async Task<ProjectListViewModel> GetProjects(string CompanyBusinessList)
         {
             var response = await _genericRepository.GetProjects(CompanyBusinessList);

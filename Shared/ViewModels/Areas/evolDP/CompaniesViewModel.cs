@@ -3,9 +3,10 @@ using Shared.Models.Areas.evolDP;
 
 namespace Shared.ViewModels.Areas.evolDP
 {
-    public class BusinessViewModel: ItemPermissions
+    public class CompaniesViewModel : ItemPermissions
     {
-        public Company Company { get; set; }
+        public IEnumerable<ExpeditionTypeElement> Types { get; set; }
+        public IEnumerable<Company> Companies { get; set; }
         public IEnumerable<Business> CompanyBusiness { get; set; }
     }
 }

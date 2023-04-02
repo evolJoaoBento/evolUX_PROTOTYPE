@@ -512,8 +512,8 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                     if (source == "ServiceWorkFlowDetail")
                     {
                         result.ServiceTaskID = serviceTaskID;
-                        result.ExpCodes = await _serviceProvisionService.GetExpCodes(result.ServiceTaskID, 0, "");
                         string expCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
+                        result.ExpCodes = await _serviceProvisionService.GetExpCodes(result.ServiceTaskID, expCompanyList, "");
                         if (!string.IsNullOrEmpty(expCompanyList))
                         {
                             DataTable expCompanies = JsonConvert.DeserializeObject<DataTable>(expCompanyList);
@@ -579,8 +579,8 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 result.ServiceTaskID = serviceTaskID;
                 result.ServiceTasksList = await _serviceProvisionService.GetServiceTasks(null);
                 result.ServiceTypesList = await _serviceProvisionService.GetAvailableServiceTypes();
-                result.ExpCodes = await _serviceProvisionService.GetExpCodes(result.ServiceTaskID, 0, "");
                 string expCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
+                result.ExpCodes = await _serviceProvisionService.GetExpCodes(result.ServiceTaskID, expCompanyList, "");
                 if (!string.IsNullOrEmpty(expCompanyList))
                 {
                     DataTable expCompanies = JsonConvert.DeserializeObject<DataTable>(expCompanyList);
@@ -646,8 +646,8 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 result.ServiceTaskID = serviceTaskID;
                 result.ServiceTasksList = await _serviceProvisionService.GetServiceTasks(null);
                 result.ServiceTypesList = await _serviceProvisionService.GetAvailableServiceTypes();
-                result.ExpCodes = await _serviceProvisionService.GetExpCodes(result.ServiceTaskID, 0, "");
                 string expCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
+                result.ExpCodes = await _serviceProvisionService.GetExpCodes(result.ServiceTaskID, expCompanyList, "");
                 if (!string.IsNullOrEmpty(expCompanyList))
                 {
                     DataTable expCompanies = JsonConvert.DeserializeObject<DataTable>(expCompanyList);
@@ -712,8 +712,8 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 result.ServiceTaskID = serviceTaskID;
                 result.ServiceTasksList = await _serviceProvisionService.GetServiceTasks(null);
                 result.ServiceTypesList = await _serviceProvisionService.GetAvailableServiceTypes();
-                result.ExpCodes = await _serviceProvisionService.GetExpCodes(result.ServiceTaskID, 0, "");
                 string expCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
+                result.ExpCodes = await _serviceProvisionService.GetExpCodes(result.ServiceTaskID, expCompanyList, "");
                 if (!string.IsNullOrEmpty(expCompanyList))
                 {
                     DataTable expCompanies = JsonConvert.DeserializeObject<DataTable>(expCompanyList);

@@ -123,6 +123,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
+  <data name="ChangeCompany" xml:space="preserve">
+    <value>Alterar dados da Companhia</value>
+  </data>
   <data name="ChangeServiceCompanyRestriction" xml:space="preserve">
     <value>Alterar configurações dos Equipamentos </value>
   </data>
@@ -212,9 +215,6 @@
   </data>
   <data name="ServiceCompany" xml:space="preserve">
     <value>Companhia de Prestação de Serviços</value>
-  </data>
-  <data name="ServiceCompanyChange" xml:space="preserve">
-    <value>Alterar dados da Companhia</value>
   </data>
   <data name="ServiceCompanyConfig" xml:space="preserve">
     <value>Configuração de Custos de Serviços</value>

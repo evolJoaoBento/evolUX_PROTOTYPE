@@ -51,7 +51,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                     if (b != null) { TempData["BusinessCode"] = b.FieldDescription; }
                 }
             }
-            string CompanyBusinessList = HttpContext.Session.GetString("evolDP/CompanyBusiness");
+            string CompanyBusinessList = HttpContext.Session.GetString("evolDP/ServiceCompanyBusiness");
             try
             {
                 if (string.IsNullOrEmpty(CompanyBusinessList))
@@ -128,7 +128,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 ViewBag.BusinessID = BusinessID;
                 ViewBag.BusinessCode = BusinessCode;
 
-                DataTable CompanyBusinessDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/CompanyBusiness"));
+                DataTable CompanyBusinessDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanyBusiness"));
                 if (CompanyBusinessDT.Rows.Count > 1)
                 {
                     ViewBag.hasMultipleCompanyBusiness = true;
@@ -260,7 +260,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                     if (b != null) { TempData["BusinessCode"] = b.FieldDescription; }
                 }
             }
-            string CompanyBusinessList = HttpContext.Session.GetString("evolDP/CompanyBusiness");
+            string CompanyBusinessList = HttpContext.Session.GetString("evolDP/ServiceCompanyBusiness");
             try
             {
                 if (string.IsNullOrEmpty(CompanyBusinessList))
@@ -343,7 +343,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 ViewBag.BusinessID = BusinessID;
                 ViewBag.BusinessCode = BusinessCode;
 
-                DataTable CompanyBusinessDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/CompanyBusiness"));
+                DataTable CompanyBusinessDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanyBusiness"));
                 if (CompanyBusinessDT.Rows.Count > 1)
                 {
                     ViewBag.hasMultipleCompanyBusiness = true;

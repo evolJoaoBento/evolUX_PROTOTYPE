@@ -470,12 +470,10 @@ DECLARE @ActionID int,
 
 SELECT @ParentLocalizationKey = 'ActionDocumentTypification'
 
-
 UPDATE evolUX_Actions
 SET DefaultOrder = 10
 FROM evolUX_ACTIONS
 WHERE LocalizationKey = @ParentLocalizationKey
-
 
 SELECT @ParentActionID = ActionID
 FROM evolUX_ACTIONS
@@ -489,22 +487,27 @@ FROM evolUX_ACTIONS
 WHERE LocalizationKey = @ParentLocalizationKey
 
 INSERT INTO #ChildActions
-SELECT 'ActionExceptionLevel1ID', 20, 'Configurar Exceção Nível 1', ActionID
+SELECT 'ActionDocCompanies', 20, 'Configurar Companhias de Documentos', evolGUI_ActionID
+FROM evolUX_ACTIONS
+WHERE LocalizationKey = @ParentLocalizationKey
+
+INSERT INTO #ChildActions
+SELECT 'ActionExceptionLevel1ID', 30, 'Configurar Exceção Nível 1', ActionID
 FROM ACTIONS
 WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
 
 INSERT INTO #ChildActions
-SELECT 'ActionExceptionLevel2ID', 30, 'Configurar Exceção Nível 2', ActionID
+SELECT 'ActionExceptionLevel2ID', 40, 'Configurar Exceção Nível 2', ActionID
 FROM ACTIONS
 WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
 
 INSERT INTO #ChildActions
-SELECT 'ActionExceptionLevel3ID', 40, 'Configurar Exceção Nível 3', ActionID
+SELECT 'ActionExceptionLevel3ID', 50, 'Configurar Exceção Nível 3', ActionID
 FROM ACTIONS
 WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
 
 INSERT INTO #ChildActions
-SELECT 'ActionProjectVersions', 50, 'Versões de Projectos', ActionID
+SELECT 'ActionProjectVersions', 60, 'Versões de Projectos', ActionID
 FROM ACTIONS
 WHERE  [Description] like 'Vers_es de Projectos'
 

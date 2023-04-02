@@ -19,16 +19,7 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             _repository = repository;
         }
-        public async Task<IEnumerable<Company>> GetServiceCompanies(DataTable serviceCompanyList)
-        {
-            IEnumerable<Company> result = await _repository.Generic.GetCompanies(null, serviceCompanyList);
-            return result;
-        }
-        public async Task<IEnumerable<Company>> GetServiceCompanies(int serviceCompanyID)
-        {
-            IEnumerable<Company> result = await _repository.Generic.GetCompanies(serviceCompanyID, null);
-            return result;
-        }
+
         public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int? serviceCompanyID)
         {
             IEnumerable<ServiceCompanyRestriction> result = await _repository.ServiceProvision.GetServiceCompanyRestrictions(serviceCompanyID);
@@ -114,7 +105,7 @@ namespace evolUX.API.Areas.evolDP.Services
             }
             return result;
         }
-        public async Task SetServiceTask(int serviceTaskID, string serviceTaskCode, string serviceTaskDesc, int refServiceTaskID, int complementServiceTaskID, int externalExpeditionMode, string stationExceededDesc)
+        public async Task SetServiceTask(int serviceTaskID, string serviceTaskCode, string serviceTaskDesc, int refServiceTaskID, int complementServiceTaskID, int? externalExpeditionMode, string stationExceededDesc)
         {
             await _repository.ServiceProvision.SetServiceTask(serviceTaskID, serviceTaskCode, serviceTaskDesc, refServiceTaskID, complementServiceTaskID, externalExpeditionMode, stationExceededDesc);
             return;

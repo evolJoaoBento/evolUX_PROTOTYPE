@@ -103,17 +103,24 @@ else
                         </select>
                     </td>
                     <td class="evol-fitcontent-column">
-                            @{
+                        @{
                                 List<int> eModeList = new List<int>();
                                 eModeList.Add(0);
                                 eModeList.Add(1);
                                 eModeList.Add(2);
-                                eModeList.Remove(serviceTask.ExternalExpeditionMode);
+                                if (serviceTask.ExternalExpeditionMode != null)
+                                {
+                                    eModeList.Remove((int)serviceTask.ExternalExpeditionMode);
+                                    eModeList.Add(-1);
+                                }
                             }
                         <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
-                            <option value="@serviceTask.ExternalExpeditionMode">
+                            @{
+                                localValue = serviceTask.ExternalExpeditionMode == null ? "-1" : serviceTask.ExternalExpeditionMode.ToString();
+                            }
+                             <option value="@localValue">
                                     @{
-                                        localValue = "ExternalExpeditionMode" + serviceTask.ExternalExpeditionMode.ToString();
+                                    localValue = "ExternalExpeditionMode" + localValue;
                                     }
                                     @localizer[localValue]
                             </option>
@@ -126,7 +133,7 @@ else
                                     @localizer[localValue]
                                 </option>
                             }
-                            </select>
+                        </select>
                     </td>
                     <td><input id=StationExceededDesc name=StationExceededDesc type="text" maxlength="50" style="width: 100%" value="@serviceTask.StationExceededDesc"/></td>
                 </form>
@@ -147,7 +154,7 @@ else
                 </td>
                 <td>
                     @{
-                        localValue = "ExternalExpeditionMode" + serviceTask.ExternalExpeditionMode;
+                        localValue = "ExternalExpeditionMode" + (serviceTask.ExternalExpeditionMode == null ? "-1" : serviceTask.ExternalExpeditionMode.ToString());
                     }
                     @localizer[localValue]
                 </td>

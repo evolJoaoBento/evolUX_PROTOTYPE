@@ -117,136 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddExpCode" xml:space="preserve">
-    <value>Adicionar Companhia de Expedição</value>
+  <data name="Action" xml:space="preserve">
+    <value>Ação</value>
   </data>
-  <data name="AddServiceType" xml:space="preserve">
-    <value>Adicionar Tipo de Serviço</value>
+  <data name="BusinessCode" xml:space="preserve">
+    <value>Código</value>
   </data>
-  <data name="Cancel" xml:space="preserve">
-    <value>Cancelar</value>
+  <data name="BusinessDescription" xml:space="preserve">
+    <value>Área de Negócio</value>
   </data>
-  <data name="ChangeServiceTask" xml:space="preserve">
-    <value>Alterar Tipo de Tratamento</value>
+  <data name="CompanyAddress" xml:space="preserve">
+    <value>Morada</value>
   </data>
-  <data name="CheckExpCompanySepCodes" xml:space="preserve">
-    <value>Validação integral de código postal</value>
+  <data name="CompanyCode" xml:space="preserve">
+    <value>Código</value>
   </data>
-  <data name="CheckExpCompanySepCodesTip" xml:space="preserve">
-    <value>Indica se o código postal deve ser validado contra a lista detalhada de códigos postais válidos da Companhia de Expedição</value>
+  <data name="CompanyCountry" xml:space="preserve">
+    <value>País</value>
   </data>
-  <data name="ComplementServiceTask" xml:space="preserve">
-    <value>Tipo Complementar</value>
+  <data name="CompanyDetail" xml:space="preserve">
+    <value>Ver configurações para Companhia / Área de Negócio</value>
   </data>
-  <data name="ComplementServiceTaskTip" xml:space="preserve">
-    <value>Tipo de Tratamento a escolher se a Cor da Impressão mudar. Preto/Branco para Cores ou vice-versa</value>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Nome</value>
   </data>
-  <data name="DefaultExpCenterCode" xml:space="preserve">
-    <value>Centro de Expedição (Default)</value>
+  <data name="CompanyPostalCode" xml:space="preserve">
+    <value>Código Postal</value>
   </data>
-  <data name="DefaultExpCenterCodeTip" xml:space="preserve">
-    <value>Centro de Expedição de Default (caso não exista redirecionamento de Companhia de Expedição)</value>
+  <data name="CompanyPostalCodeDescription" xml:space="preserve">
+    <value>Localidade</value>
   </data>
-  <data name="DefaultExpCompanyZone" xml:space="preserve">
-    <value>Zona de Expedição (Default)</value>
+  <data name="Description" xml:space="preserve">
+    <value>Descrição</value>
   </data>
-  <data name="DefaultExpCompanyZoneTip" xml:space="preserve">
-    <value>Zona de Expedição de Default (caso não exista redirecionamento de Companhia de Expedição)</value>
-  </data>
-  <data name="deleteMsgServiceType" xml:space="preserve">
-    <value>Tem a certeza que quer remover o tipo de serviço @#ServiceTypeCode#@ para o tipo de tratamento</value>
-  </data>
-  <data name="DeleteServiceType" xml:space="preserve">
-    <value>Remover Tipo de Serviço</value>
+  <data name="DocCompanies" xml:space="preserve">
+    <value>Companhias / Áreas de Negócio</value>
   </data>
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
   </data>
-  <data name="ExpCode" xml:space="preserve">
-    <value>Código Tratamento/Expedição</value>
-  </data>
-  <data name="ExpCodeConfig" xml:space="preserve">
-    <value>Configurações de Código Tratamento/Expedição</value>
-  </data>
-  <data name="ExpCodeDesc" xml:space="preserve">
-    <value>Descrição</value>
-  </data>
-  <data name="ExpCompany" xml:space="preserve">
-    <value>Companhia de Expedição</value>
-  </data>
-  <data name="ExternalExpeditionMode" xml:space="preserve">
-    <value>Modo de alteração de Companhia de Expedição</value>
-  </data>
-  <data name="ExternalExpeditionMode-1" xml:space="preserve">
-    <value>Respeitar configuração ao nível da Área de Negócio</value>
-  </data>
-  <data name="ExternalExpeditionMode0" xml:space="preserve">
-    <value>Não mudar de Companhia</value>
-  </data>
-  <data name="ExternalExpeditionMode1" xml:space="preserve">
-    <value>Muda de Companhia por Código Postal</value>
-  </data>
-  <data name="ExternalExpeditionMode2" xml:space="preserve">
-    <value>Muda de Companhia por intervalos de Códigos Postais</value>
-  </data>
-  <data name="ExternalExpeditionModeTip" xml:space="preserve">
-    <value>Se o documento não tiver especificado o Modo de alteração de Companhia de Expedição, prevalece o modo associado ao Tipo de Tratamento</value>
-  </data>
-  <data name="List" xml:space="preserve">
-    <value>Ver configurações do Tipo de Tratamento</value>
+  <data name="ID" xml:space="preserve">
+    <value>ID</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
-  </data>
-  <data name="PostalCodeStart" xml:space="preserve">
-    <value>Início do código postal no código de separação de expedição</value>
-  </data>
-  <data name="PostalCodeStartTip" xml:space="preserve">
-    <value>Valor da posição, dentro do código de separação de expedição, onde o código postal se inicia, esta posição é contabilizada do dígito (-) significativo para o (+) significativo</value>
-  </data>
-  <data name="Priority" xml:space="preserve">
-    <value>Prioridade</value>
-  </data>
-  <data name="SelectExpCompanyRef" xml:space="preserve">
-    <value>Selecionar Companhia de Expedição de referência</value>
-  </data>
-  <data name="SelectServiceTask" xml:space="preserve">
-    <value>Selecionar novo Tipo de Serviço</value>
-  </data>
-  <data name="ServiceTask" xml:space="preserve">
-    <value>Tipo de Tratamento</value>
-  </data>
-  <data name="ServiceTaskCode" xml:space="preserve">
-    <value>Código</value>
-  </data>
-  <data name="ServiceTaskConfigs" xml:space="preserve">
-    <value>Configurações</value>
-  </data>
-  <data name="ServiceTaskDesc" xml:space="preserve">
-    <value>Descrição</value>
-  </data>
-  <data name="ServiceTaskRef" xml:space="preserve">
-    <value>Tipo de tratamento de referência para cópia</value>
-  </data>
-  <data name="ServiceType" xml:space="preserve">
-    <value>Tipos de Serviços</value>
-  </data>
-  <data name="ServiceTypeCode" xml:space="preserve">
-    <value>Código do Tipo Serviço</value>
-  </data>
-  <data name="ServiceTypeDesc" xml:space="preserve">
-    <value>Tipo de Serviço</value>
-  </data>
-  <data name="StationExceededDesc" xml:space="preserve">
-    <value>Descrição para Excesso de Adicionais</value>
-  </data>
-  <data name="StationExceededDescTip" xml:space="preserve">
-    <value>Descrição a colocar nas Banners dos ficheiros de produção em caso de ser excedido o n.º de Adicionais de Envelopagem</value>
-  </data>
-  <data name="SubmitAdd" xml:space="preserve">
-    <value>Adicionar</value>
-  </data>
-  <data name="SubmitChange" xml:space="preserve">
-    <value>Alterar</value>
   </data>
 </root>

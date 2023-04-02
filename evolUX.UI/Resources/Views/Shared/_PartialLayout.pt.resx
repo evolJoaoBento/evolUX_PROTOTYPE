@@ -159,6 +159,12 @@
   <data name="ActionDocCode_Link" xml:space="preserve">
     <value>/evolDP/DocCode/Index</value>
   </data>
+  <data name="ActionDocCompanies" xml:space="preserve">
+    <value>Companhias / Áreas de Negócio</value>
+  </data>
+  <data name="ActionDocCompanies_Link" xml:space="preserve">
+    <value>/evolDP/Generic/Companies</value>
+  </data>
   <data name="ActionDocumentTypification" xml:space="preserve">
     <value>Documentos</value>
   </data>

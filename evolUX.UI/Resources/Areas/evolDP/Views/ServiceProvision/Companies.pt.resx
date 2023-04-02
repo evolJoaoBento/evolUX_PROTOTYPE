@@ -120,9 +120,6 @@
   <data name="Action" xml:space="preserve">
     <value>Ação</value>
   </data>
-  <data name="ChangeExpCompany" xml:space="preserve">
-    <value>Alterar dados da Companhia</value>
-  </data>
   <data name="CompanyAddress" xml:space="preserve">
     <value>Morada</value>
   </data>

@@ -5,6 +5,9 @@ using System.Net;
 using evolUX.UI.Repositories;
 using Shared.ViewModels.Areas.evolDP;
 using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
+using Microsoft.AspNetCore.Components;
+using System.Reflection.Metadata;
+using System.Collections.Generic;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
@@ -14,21 +17,34 @@ namespace evolUX.UI.Areas.evolDP.Repositories
         {
         }
 
-        public async Task<BusinessViewModel> GetCompanyBusiness(string CompanyBusinessList)
+        public async Task<BusinessViewModel> GetCompanyBusiness(string companyBusinessList)
         {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("CompanyBusinessList", companyBusinessList);
             var response = await _flurlClient.Request("/API/evolDP/Generic/GetCompanyBusiness")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                .SendJsonAsync(HttpMethod.Get, CompanyBusinessList);
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<BusinessViewModel>();
+        }
+        public async Task<BusinessViewModel> GetCompanyBusiness(int companyID)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("CompanyID", companyID);
+            var response = await _flurlClient.Request("/API/evolDP/Generic/GetCompanyBusiness")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<BusinessViewModel>();
 
         }
-        public async Task<ProjectListViewModel> GetProjects(string CompanyBusinessList)
+        public async Task<ProjectListViewModel> GetProjects(string companyBusinessList)
         {
             var response = await _flurlClient.Request("/API/evolDP/Generic/GetProjects")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                .SendJsonAsync(HttpMethod.Get, CompanyBusinessList);
+                .SendJsonAsync(HttpMethod.Get, companyBusinessList);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<ProjectListViewModel>();

@@ -5,6 +5,7 @@ END
 GO
 ALTER  PROCEDURE [dbo].[RD_UX_GET_BUSINESS_INFO]
 	@BusinessID int = NULL,
+	@CompanyID int = NULL,
 	@CompanyBusinessList IDList READONLY
 AS
 BEGIN
@@ -17,7 +18,7 @@ BEGIN
 			b.CompanyID, 
 			b.[Description], 
 			b.FileSheetsCutoffLevel, 
-			b.InternalExpeditionMode, 
+			ISNULL(b.InternalExpeditionMode, 2) InternalExpeditionMode, 
 			b.InternalCodeStart, 
 			b.InternalCodeLen, 
 			b.ExternalExpeditionMode, 
@@ -30,23 +31,44 @@ BEGIN
 	END
 	ELSE
 	BEGIN
-		SELECT b.BusinessID, 
-			b.BusinessCode,
-			b.CompanyID, 
-			b.[Description], 
-			b.FileSheetsCutoffLevel, 
-			b.InternalExpeditionMode, 
-			b.InternalCodeStart, 
-			b.InternalCodeLen, 
-			b.ExternalExpeditionMode, 
-			b.TotalBannerPages, 
-			b.PostObjOrderMode
-		FROM
-			@CompanyBusinessList bl
-		INNER JOIN
-			RD_BUSINESS b WITH(NOLOCK) 
-		ON	bl.ID = b.BusinessID
-		ORDER BY b.BusinessID
+		IF (@CompanyID is NOT NULL)
+		BEGIN
+			SELECT b.BusinessID, 
+				b.BusinessCode,
+				b.CompanyID, 
+				b.[Description], 
+				b.FileSheetsCutoffLevel, 
+				ISNULL(b.InternalExpeditionMode, 2) InternalExpeditionMode, 
+				b.InternalCodeStart, 
+				b.InternalCodeLen, 
+				b.ExternalExpeditionMode, 
+				b.TotalBannerPages, 
+				b.PostObjOrderMode
+			FROM
+				RD_BUSINESS b WITH(NOLOCK) 
+			WHERE b.CompanyID = @CompanyID
+			ORDER BY b.BusinessID
+		END
+		ELSE
+		BEGIN
+			SELECT b.BusinessID, 
+				b.BusinessCode,
+				b.CompanyID, 
+				b.[Description], 
+				b.FileSheetsCutoffLevel, 
+				ISNULL(b.InternalExpeditionMode, 2) InternalExpeditionMode, 
+				b.InternalCodeStart, 
+				b.InternalCodeLen, 
+				b.ExternalExpeditionMode, 
+				b.TotalBannerPages, 
+				b.PostObjOrderMode
+			FROM
+				@CompanyBusinessList bl
+			INNER JOIN
+				RD_BUSINESS b WITH(NOLOCK) 
+			ON	bl.ID = b.BusinessID
+			ORDER BY b.BusinessID
+		END
 	END
 END
 GO

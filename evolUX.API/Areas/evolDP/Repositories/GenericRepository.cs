@@ -60,11 +60,14 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
 
         }
-        public async Task<IEnumerable<Business>> GetCompanyBusiness(DataTable CompanyBusinessList)
+        public async Task<IEnumerable<Business>> GetCompanyBusiness(int companyID, DataTable CompanyBusinessList)
         {
             string sql = @"RD_UX_GET_BUSINESS_INFO";
             var parameters = new DynamicParameters();
-            parameters.Add("CompanyBusinessList", CompanyBusinessList.AsTableValuedParameter("IDlist"));
+            if (companyID > 0)
+                parameters.Add("CompanyID", companyID, DbType.Int64);
+            if(CompanyBusinessList != null)
+                parameters.Add("CompanyBusinessList", CompanyBusinessList.AsTableValuedParameter("IDlist"));
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
