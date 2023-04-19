@@ -166,7 +166,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         {
             try
             {
-                DataTable CompanyBusinessList = JsonConvert.DeserializeObject<DataTable>(CompanyBusinessListJSON);
+                DataTable CompanyBusinessList = JsonConvert.DeserializeObject<DataTable>(CompanyBusinessListJSON).DefaultView.ToTable(false, "ID"); ;
                 ProjectListViewModel viewmodel = await _genericService.GetProjects(CompanyBusinessList);
                 _logger.LogInfo("GetProjects Get");
                 return Ok(viewmodel);
