@@ -102,20 +102,20 @@ namespace evolUX.API.Areas.evolDP.Controllers
             if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
                 companyID = value;
 
-            DataTable CompanyBusinessList = null;
+            DataTable CompanyList = null;
             dictionary.TryGetValue("CompanyList", out obj);
             if (obj != null)
             {
-                string CompanyBusinessListJSON = Convert.ToString(obj);
-                if (!string.IsNullOrEmpty(CompanyBusinessListJSON))
+                string companyListJSON = Convert.ToString(obj);
+                if (!string.IsNullOrEmpty(companyListJSON))
                 {
-                    CompanyBusinessList = JsonConvert.DeserializeObject<DataTable>(CompanyBusinessListJSON);
+                    CompanyList = JsonConvert.DeserializeObject<DataTable>(companyListJSON).DefaultView.ToTable(false, "ID");
                 }
             }
             try
             {
                 BusinessViewModel viewmodel = new BusinessViewModel();
-                viewmodel.CompanyBusiness = await _genericService.GetCompanyBusiness(companyID, CompanyBusinessList);
+                viewmodel.CompanyBusiness = await _genericService.GetCompanyBusiness(companyID, CompanyList);
                 if (companyID > 0)
                 {
                     viewmodel.Company = (await _genericService.GetCompanies(companyID)).First();
@@ -132,6 +132,30 @@ namespace evolUX.API.Areas.evolDP.Controllers
             {
                 //log error
                 _logger.LogError($"Something went wrong inside Get DocCode action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        [ActionName("SetBusiness")]
+        public async Task<ActionResult> SetBusiness([FromBody] string BusinessJSON)
+        {
+            Business business = JsonConvert.DeserializeObject<Business>(BusinessJSON);
+            try
+            {
+
+                await _genericService.SetBusiness(business);
+                _logger.LogInfo("SetBusiness Get");
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get SetBusiness action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }

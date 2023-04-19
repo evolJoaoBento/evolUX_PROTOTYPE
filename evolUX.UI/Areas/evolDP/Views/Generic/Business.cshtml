@@ -33,13 +33,15 @@ else
     string value;
     string localValue;
     Company company = Model.Company;
-    string BusinessCodeLabel = TempData["BusinessCode"]?.ToString();
-    if (string.IsNullOrEmpty(BusinessCodeLabel))
-        BusinessCodeLabel = localizer["BusinessCode"].Value;
     string check1, check2, check4;
     <div id="TitlePage">
         <h1>@localizer["Company"] / @localizer["Business"]</h1>
     </div>
+    @if (!string.IsNullOrEmpty(TempData["Source"]?.ToString()))
+    {
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Generic" asp-action="Companies">
+        </a>
+    }
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
@@ -73,7 +75,7 @@ else
             @if (AddDocCode)
             {
                 <tr id="Hide|Company" style="display: none">
-                    <form id="AddFrm|Company" class="d-flex justify-content-center m-5" asp-controller="Generic" asp-action="ChangeCompany">
+                    <form id="AddFrm|Company" class="d-flex justify-content-center m-5" asp-area="evolDP"  asp-controller="Generic" asp-action="ChangeCompany">
                     <td style="align-items:center; display:flex">
                         <img onclick="CancelRow('Company')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                         <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
@@ -118,7 +120,7 @@ else
                 @if (AddDocCode)
                 {
                     <tr id="Hide|@value" style="display: none">
-                        <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-controller="Generic" asp-action="ChangeBusiness">
+                        <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Generic" asp-action="ChangeBusiness" asp-route-companyid="@company.ID">
                         <td style="align-items:center; display:flex">
                             <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                             <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
@@ -144,15 +146,18 @@ else
                             {
                                 check4 = "checked";
                             }
-                            <label for="InternalExpeditionMode1">@localizer["InternalExpeditionMode1"]</label>
-                            <input type="checkbox" id="InternalExpeditionMode1" name="InternalExpeditionMode" value="1" @check1>
-                            <br>
-                            <label for="InternalExpeditionMode2">@localizer["InternalExpeditionMode2"]</label>
-                            <input type="checkbox" id="InternalExpeditionMode2" name="InternalExpeditionMode" value="2" @check2>
-                            <br>
-                            <label for="InternalExpeditionMode4">@localizer["InternalExpeditionMode4"]</label>
-                            <input type="checkbox" id="InternalExpeditionMode4" name="InternalExpeditionMode" value="4" @check4>
-                                
+                            <div style="display: inline-block;">
+                            <input type="checkbox" title="@localizer["InternalExpeditionMode1Tip"]" style="display: inline-block; margin-left: 10px;" id="InternalExpeditionMode1" name="InternalExpeditionMode" value="1" @check1>
+                            <label for="InternalExpeditionMode1" title="@localizer["InternalExpeditionMode1Tip"]" style="display: inline-block;">@localizer["InternalExpeditionMode1"]</label>
+                            </div>
+                            <div style="display: inline-block;">
+                            <input type="checkbox" title="@localizer["InternalExpeditionMode2Tip"]" style="display: inline-block; margin-left: 10px;"id="InternalExpeditionMode2" name="InternalExpeditionMode" value="2" @check2>
+                            <label for="InternalExpeditionMode2" title="@localizer["InternalExpeditionMode2Tip"]" style="display: inline-block;">@localizer["InternalExpeditionMode2"]</label>
+                            </div>
+                            <div style="display: inline-block;">
+                            <input type="checkbox" title="@localizer["InternalExpeditionMode4Tip"]" style="display: inline-block; margin-left: 10px;"id="InternalExpeditionMode4" name="InternalExpeditionMode" value="4" @check4>
+                            <label for="InternalExpeditionMode4" title="@localizer["InternalExpeditionMode4Tip"]" style="display: inline-block;">@localizer["InternalExpeditionMode4"]</label>
+                            </div>
                         </td>
                         <td><input type="number" min="0" max="10" id=InternalCodeStart name=InternalCodeStart style="width: 100%" value="@b.InternalCodeStart" /></td>
                         <td><input type="number" min="0" max="10" id=InternalCodeLen name=InternalCodeLen style="width: 100%" value="@b.InternalCodeLen" /></td>
@@ -190,7 +195,18 @@ else
                             </select>
                         </td>
                         <td><input type="number" min="0" max="20" id="TotalBannerPages" name="TotalBannerPages" value="@b.TotalBannerPages" /></td>
-                        <td><input id=PostObjOrderMode name=PostObjOrderMode type="text" maxlength="256" style="width: 100%" value="@b.PostObjOrderMode" /></td>
+                        <td>
+                            <select id="PostObjOrderMode" name="PostObjOrderMode">
+                            @{
+                                localValue = "PostObjOrderMode" + b.PostObjOrderMode.ToString();
+                            }
+                                <option value="@b.PostObjOrderMode" title="@localizer[localValue + "Tip"]">@localizer[localValue]</option>
+                            @{
+                                localValue = "PostObjOrderMode" + (1 - b.PostObjOrderMode).ToString();
+                            }
+                                <option value="@(1 - b.PostObjOrderMode)" title="@localizer[localValue + "Tip"]">@localizer[localValue]</option>
+                            </select>
+                        </td>
                         </form>
                     </tr>
                 }
@@ -226,14 +242,18 @@ else
                         {
                             check4 = "checked";
                         }
-                        <label for="InternalExpeditionMode1">@localizer["InternalExpeditionMode1"]</label>
-                        <input disabled type="checkbox" id="InternalExpeditionMode1" name="InternalExpeditionMode" value="1" @check1>
-                        <br>
-                        <label for="InternalExpeditionMode2">@localizer["InternalExpeditionMode2"]</label>
-                        <input disabled type="checkbox" id="InternalExpeditionMode2" name="InternalExpeditionMode" value="2" @check2>
-                        <br>
-                        <label for="InternalExpeditionMode4">@localizer["InternalExpeditionMode4"]</label>
-                        <input disabled type="checkbox" id="InternalExpeditionMode4" name="InternalExpeditionMode" value="4" @check4>
+                        <div style="display: inline-block;">
+                        <input disabled type="checkbox" title="@localizer["InternalExpeditionMode1Tip"]" style="display: inline-block; margin-left: 10px;" id="InternalExpeditionMode1" name="InternalExpeditionMode" value="1" @check1>
+                        <label for="InternalExpeditionMode1" title="@localizer["InternalExpeditionMode1Tip"]" style="display: inline-block;">@localizer["InternalExpeditionMode1"]</label>
+                        </div>
+                        <div style="display: inline-block;">
+                        <input disabled type="checkbox" title="@localizer["InternalExpeditionMode2Tip"]" style="display: inline-block; margin-left: 10px;"id="InternalExpeditionMode2" name="InternalExpeditionMode" value="2" @check2>
+                        <label for="InternalExpeditionMode2" title="@localizer["InternalExpeditionMode2Tip"]" style="display: inline-block;">@localizer["InternalExpeditionMode2"]</label>
+                        </div>
+                        <div style="display: inline-block;">
+                        <input disabled type="checkbox" title="@localizer["InternalExpeditionMode4Tip"]" style="display: inline-block; margin-left: 10px;"id="InternalExpeditionMode4" name="InternalExpeditionMode" value="4" @check4>
+                        <label for="InternalExpeditionMode4" title="@localizer["InternalExpeditionMode4Tip"]" style="display: inline-block;">@localizer["InternalExpeditionMode4"]</label>
+                        </div>
                     </td>
                     <td>@b.InternalCodeStart</td>
                     <td>@b.InternalCodeLen</td>
@@ -244,7 +264,10 @@ else
                         @localizer[localValue]
                     </td>
                     <td>@b.TotalBannerPages</td>
-                    <td>@b.PostObjOrderMode</td>
+                    @{
+                        localValue = "PostObjOrderMode" + b.PostObjOrderMode.ToString();
+                    }
+                    <td title="@localizer[localValue + "Tip"]">@localizer[localValue]</td>
                 </tr>
         }
         </tbody>

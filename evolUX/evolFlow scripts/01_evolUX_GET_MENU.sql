@@ -482,29 +482,17 @@ WHERE LocalizationKey = @ParentLocalizationKey
 CREATE TABLE #ChildActions(LocalizationKey varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS, DefaultOrder int, [Description] varchar(255), evolGUIActionID int)
 
 INSERT INTO #ChildActions
-SELECT 'ActionDocCode', 10, 'Configurar Tipos de Documentos', evolGUI_ActionID
+SELECT 'ActionDocCompanies', 10, 'Configurar Companhias de Documentos', evolGUI_ActionID
 FROM evolUX_ACTIONS
 WHERE LocalizationKey = @ParentLocalizationKey
 
 INSERT INTO #ChildActions
-SELECT 'ActionDocCompanies', 20, 'Configurar Companhias de Documentos', evolGUI_ActionID
+SELECT 'ActionDocCode', 20, 'Configurar Tipos de Documentos', evolGUI_ActionID
 FROM evolUX_ACTIONS
 WHERE LocalizationKey = @ParentLocalizationKey
 
 INSERT INTO #ChildActions
-SELECT 'ActionExceptionLevel1ID', 30, 'Configurar Exceção Nível 1', ActionID
-FROM ACTIONS
-WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
-
-INSERT INTO #ChildActions
-SELECT 'ActionExceptionLevel2ID', 40, 'Configurar Exceção Nível 2', ActionID
-FROM ACTIONS
-WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
-
-INSERT INTO #ChildActions
-SELECT 'ActionExceptionLevel3ID', 50, 'Configurar Exceção Nível 3', ActionID
-FROM ACTIONS
-WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+SELECT 'ActionExceptionLevels', 30, 'Configurar Exceções', NULL
 
 INSERT INTO #ChildActions
 SELECT 'ActionProjectVersions', 60, 'Versões de Projectos', ActionID
@@ -570,6 +558,81 @@ CLOSE tCursor
 DEALLOCATE tCursor
 
 DELETE #ChildActions
+-----
+SELECT @ParentActionID = ActionID
+FROM evolUX_ACTIONS
+WHERE LocalizationKey = 'ActionExceptionLevels'
+
+INSERT INTO #ChildActions
+SELECT 'ActionExceptionLevel1ID', 10, 'Configurar Exceção Nível 1', ActionID
+FROM ACTIONS
+WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+
+INSERT INTO #ChildActions
+SELECT 'ActionExceptionLevel2ID', 20, 'Configurar Exceção Nível 2', ActionID
+FROM ACTIONS
+WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+
+INSERT INTO #ChildActions
+SELECT 'ActionExceptionLevel3ID', 30, 'Configurar Exceção Nível 3', ActionID
+FROM ACTIONS
+WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+
+DECLARE tCursor CURSOR LOCAL FOR
+SELECT LocalizationKey, DefaultOrder, [Description]
+FROM #ChildActions
+ORDER BY DefaultOrder ASC
+
+OPEN tCursor
+FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SET @ActionID = NULL
+	SELECT @ActionID = ActionID
+	FROM evolUX_ACTIONS
+	WHERE LocalizationKey = @NewLocalizationKey
+
+	IF (@ActionID is NULL)
+	BEGIN
+		SELECT @ActionID = (MAX(ActionID) / 100)*100 + 10
+		FROM ACTIONS
+		WHERE ActionID < 10000
+
+		WHILE (EXISTS(SELECT TOP 1 1 FROM ACTIONS WHERE ActionID = @ActionID)
+			OR EXISTS(SELECT TOP 1 1 FROM evolUX_ACTIONS WHERE ActionID = @ActionID))
+		BEGIN
+			SET @ActionID = @ActionID + 10
+		END
+
+		INSERT INTO [evolUX_ACTIONS](ActionID, ActionTypeID, LocalizationKey, [Description], ParentActionID, DefaultOrder, HistoryFlag, evolGUI_ActionID, evolGUI_TypeID)
+		SELECT @ActionID, 1, @NewLocalizationKey, @NewDescription, @ParentActionID, @DefaultOrder, 0, NULL, 0
+	END
+	ELSE
+	BEGIN
+		UPDATE [evolUX_ACTIONS]
+		SET ActionTypeID = 1, [Description] = @NewDescription, ParentActionID = @ParentActionID, DefaultOrder = @DefaultOrder
+		WHERE ActionID = @ActionID
+	END
+
+	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
+	SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+	FROM #ChildActions c
+	INNER JOIN
+		[PERMISSIONS] p
+	ON	c.evolGUIActionID = p.ActionID
+	INNER JOIN
+		[evolUX_ACTIONS] u
+	ON u.LocalizationKey = c.LocalizationKey
+	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+
+	FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+END
+CLOSE tCursor
+DEALLOCATE tCursor
+
+DELETE #ChildActions
+----
 
 INSERT INTO #ChildActions
 SELECT 'AddExceptionLevel', 0, 'Adicionar/Alterar Exceção', ActionID

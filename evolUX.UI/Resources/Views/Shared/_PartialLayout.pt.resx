@@ -195,6 +195,12 @@
   <data name="ActionExceptionLevel3ID_Link" xml:space="preserve">
     <value>/evolDP/DocCode/ExceptionLevel?Level=3</value>
   </data>
+  <data name="ActionExceptionLevels" xml:space="preserve">
+    <value>Exceções</value>
+  </data>
+  <data name="ActionExceptionLevels_Link" xml:space="preserve">
+    <value>/evolDP/DocCode/ExceptionLevels</value>
+  </data>
   <data name="ActionExpCodes" xml:space="preserve">
     <value>Códigos Tratamento/Expedição</value>
   </data>

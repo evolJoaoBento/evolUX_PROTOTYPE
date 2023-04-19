@@ -60,19 +60,48 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
 
         }
-        public async Task<IEnumerable<Business>> GetCompanyBusiness(int companyID, DataTable CompanyBusinessList)
+
+        public async Task<IEnumerable<Business>> GetCompanyBusiness(int companyID, DataTable CompanyList)
         {
             string sql = @"RD_UX_GET_BUSINESS_INFO";
             var parameters = new DynamicParameters();
             if (companyID > 0)
                 parameters.Add("CompanyID", companyID, DbType.Int64);
-            if(CompanyBusinessList != null)
-                parameters.Add("CompanyBusinessList", CompanyBusinessList.AsTableValuedParameter("IDlist"));
+            if(CompanyList != null)
+                parameters.Add("CompanyList", CompanyList.AsTableValuedParameter("IDlist"));
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<Business> companyBusiness = await connection.QueryAsync<Business>(sql, parameters, commandType: CommandType.StoredProcedure);
                 return companyBusiness;
+            }
+
+        }
+
+        public async Task SetBusiness(Business business)
+        {
+            string sql = @"RD_UX_SET_BUSINESS_INFO";
+            var parameters = new DynamicParameters();
+            if (business.BusinessID > 0)
+                parameters.Add("BusinessID", business.BusinessID, DbType.Int64);
+            parameters.Add("CompanyID", business.CompanyID, DbType.Int64);
+            parameters.Add("BusinessCode", business.BusinessCode, DbType.String);
+            parameters.Add("Description", business.Description, DbType.String);
+            if (business.FileSheetsCutoffLevel > 0)
+                parameters.Add("FileSheetsCutoffLevel", business.FileSheetsCutoffLevel, DbType.Int64);
+            parameters.Add("InternalExpeditionMode", business.InternalExpeditionMode, DbType.Int32);
+            parameters.Add("InternalCodeStart", business.InternalCodeStart, DbType.Int32);
+            parameters.Add("InternalCodeLen", business.InternalCodeLen, DbType.Int32);
+            parameters.Add("ExternalExpeditionMode", business.ExternalExpeditionMode, DbType.Int32);
+            parameters.Add("TotalBannerPages", business.TotalBannerPages, DbType.Int32);
+            parameters.Add("PostObjOrderMode", business.PostObjOrderMode, DbType.Int32);
+
+            parameters.Add("@ReturnID", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                int BusinessID = parameters.Get<int>("@ReturnID");
+                return;
             }
 
         }

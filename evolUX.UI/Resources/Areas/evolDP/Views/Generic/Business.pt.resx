@@ -211,13 +211,22 @@
     <value>Método</value>
   </data>
   <data name="InternalExpeditionMode1" xml:space="preserve">
+    <value>Um objeto postal por código</value>
+  </data>
+  <data name="InternalExpeditionMode1Tip" xml:space="preserve">
     <value>Um único Objeto postal por cada código de separação de expedição
 diferente, gerando uma banner que pertence ao objeto postal</value>
   </data>
   <data name="InternalExpeditionMode2" xml:space="preserve">
+    <value>Impressão de Banners separadoras</value>
+  </data>
+  <data name="InternalExpeditionMode2Tip" xml:space="preserve">
     <value>Impressão de Banners separadoras, por cada alteração significativa no código de separação de expedição</value>
   </data>
   <data name="InternalExpeditionMode4" xml:space="preserve">
+    <value>Shift na envelopadora</value>
+  </data>
+  <data name="InternalExpeditionMode4Tip" xml:space="preserve">
     <value>Shift na envelopadora por cada alteração significativa no código de separação de expedição</value>
   </data>
   <data name="InternalExpeditionModeTip" xml:space="preserve">
@@ -228,6 +237,18 @@ diferente, gerando uma banner que pertence ao objeto postal</value>
   </data>
   <data name="PostObjOrderMode" xml:space="preserve">
     <value>Método de ordenação num objeto postal</value>
+  </data>
+  <data name="PostObjOrderMode0" xml:space="preserve">
+    <value>Retenção e Prioridade</value>
+  </data>
+  <data name="PostObjOrderMode0Tip" xml:space="preserve">
+    <value>Primeiro os documentos que esgotaram o tempo de retenção e depois por prioridade associada ao tipo de documento</value>
+  </data>
+  <data name="PostObjOrderMode1" xml:space="preserve">
+    <value>Antiguidade</value>
+  </data>
+  <data name="PostObjOrderMode1Tip" xml:space="preserve">
+    <value>Por ordem de registo na base de dados (mais antigos primeiro)</value>
   </data>
   <data name="PostObjOrderModeTip" xml:space="preserve">
     <value>Indica a forma de ordenação dos documentos dentro de um objeto postal</value>

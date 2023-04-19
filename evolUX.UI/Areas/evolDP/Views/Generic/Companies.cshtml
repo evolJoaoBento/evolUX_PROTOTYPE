@@ -53,7 +53,7 @@ else
                 businessList = Model.CompanyBusiness.Where(x => x.CompanyID == company.ID);
                 <tr>
                     <td class="evol-fitcontent-column">
-                        <a asp-area="evolDP" asp-controller="Generic" asp-action="Business" asp-route-companyid="@company.ID">
+                        <a asp-area="evolDP" asp-controller="Generic" asp-action="Business" asp-route-companyid="@company.ID" asp-route-source="Companies">
                             <img style="background:none; width:35px;height:35px;" src="~/images/config.png" title="@localizer["CompanyDetail"]: @company.CompanyName" />
                         </a>
                         @if (businessList.Count() > 0)

@@ -8,7 +8,8 @@ namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
     {
         public Task<IEnumerable<Company>> GetCompanies(int? companyID, DataTable? CompanyList);
         public Task<int> SetCompany(Company company);
-        public Task<IEnumerable<Business>> GetCompanyBusiness(int companyID, DataTable CompanyBusinessList);
+        public Task<IEnumerable<Business>> GetCompanyBusiness(int companyID, DataTable CompanyList);
+        public Task SetBusiness(Business business);
         public Task<IEnumerable<ProjectElement>> GetProjects(DataTable CompanyBusinessList);
         public Task<IEnumerable<ConstantParameter>> GetParameters();
         public Task<IEnumerable<ConstantParameter>> SetParameter(int parameterID, string parameterRef, int parameterValue, string parameterDescription);

@@ -39,15 +39,20 @@ namespace evolUX.API.Areas.evolDP.Services
             return list.First();
         }
 
-        public async Task<IEnumerable<Business>> GetCompanyBusiness(int companyID, DataTable CompanyBusinessList)
+        public async Task<IEnumerable<Business>> GetCompanyBusiness(int companyID, DataTable CompanyList)
         {
-            IEnumerable<Business> companyBusiness = await _repository.Generic.GetCompanyBusiness(companyID, CompanyBusinessList);
+            IEnumerable<Business> companyBusiness = await _repository.Generic.GetCompanyBusiness(companyID, CompanyList);
             if (companyBusiness == null)
             {
 
             }
 
             return companyBusiness;
+        }
+        public async Task SetBusiness(Business business)
+        {
+            await _repository.Generic.SetBusiness(business);
+            return;
         }
         public async Task<ProjectListViewModel> GetProjects(DataTable CompanyBusinessList)
         {
