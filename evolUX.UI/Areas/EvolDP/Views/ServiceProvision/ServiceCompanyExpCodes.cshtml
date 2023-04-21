@@ -1,0 +1,204 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model ServiceCompanyExpCodesViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    string source = TempData["Source"].ToString();
+    bool AddServiceCompany = false;
+    bool AddServiceTask = false;
+    bool DeleteServiceTask = false;
+    bool ExportServiceTask = false;
+    bool AddServiceCompanyExpCodes = false;
+    bool AddExpCode = false;
+    bool DeleteExpCode = false;
+    bool ExportExpCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddServiceCompanyExpCodes") != null) { AddServiceCompanyExpCodes = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceCompany") != null) { AddServiceCompany = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceTask") != null) { AddServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "DeleteServiceTask") != null) { DeleteServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "ExportServiceTask") != null) { ExportServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "AddExpCode") != null) { AddExpCode = true; }
+    if (Model.Permissions.Find(x => x == "DeleteExpCode") != null) { DeleteExpCode = true; }
+    if (Model.Permissions.Find(x => x == "ExportExpCode") != null) { ExportExpCode = true; }
+}
+<div id="TitlePage">
+    <h1>@localizer["ServiceCompanyExpCodes"]</h1>
+    <h2>@Model.ServiceCompany.CompanyName</h2>
+    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)">
+    </a>
+</div>
+@if (Model == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    Company serviceCompany = Model.ServiceCompany;
+    ExpCodeElement expCode;
+    IEnumerable<int> expCompanyList = Model.ExpCodes.Select(x => x.ExpCompanyID).Intersect(Model.ServiceCompanyExpCodes.Select(x => x.ExpCompanyID));
+
+    string localValue;
+    string value = "";
+    string Level0Name = "level";
+    int level0 = 0;
+    string idValue0 = "arrow" + level0.ToString();
+    string nameValue0 = "";
+
+    string Level1Name = "detail";
+    int level1 = 0;
+    string idValue1 = "arrow" + level1.ToString();
+    string nameValue1 = "";
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th style="border:none;background-color:transparent"></th>
+                <th>@localizer["ExpCompany"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @foreach (int expCompanyID in expCompanyList)
+            {
+                ServiceCompanyExpCodeElement sElement = Model.ServiceCompanyExpCodes.FirstOrDefault(x => x.ExpCompanyID == expCompanyID);
+                level0++;
+                nameValue0 = Level0Name + level0.ToString();
+                idValue0 = "arrow" + nameValue0;
+                <tr>
+                    <td class="evol-fitcontent-column"  style="text-align:center; border:none;background-color:transparent">
+                        <a class="evol-arrow bx bxs-chevron-down arrow" href="javascript:showDetail('@nameValue0')" id="@idValue0"></a>
+                    </td>
+                    <td id="row|@nameValue0" class="evol-normal-row">@sElement.ExpCompanyName</td>
+                </tr>
+                <tr id="@nameValue0" style="display: none">
+                    <td colspan="2" style="border:none;background-color:transparent">
+                        <table class="table table-sm table-hover table-collapse-seperate">
+                            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                <tr>
+                                    <th style="border:none;background-color:transparent"></th>
+                                    <th>@localizer["ServiceTask"]</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bootstrap-overrides">
+                                @foreach (int sTaskID in Model.ServiceCompanyExpCodes.Where(x => x.ExpCompanyID == sElement.ExpCompanyID).Select(x => x.ServiceTaskID).Distinct())
+                                {
+                                    sElement = Model.ServiceCompanyExpCodes.FirstOrDefault(x => x.ExpCompanyID == expCompanyID && x.ServiceTaskID == sTaskID);
+                                    level1++;
+                                    nameValue1 = Level1Name + level1.ToString();
+                                    idValue1 = "arrow" + nameValue1;
+                                    <tr>
+                                        <td class="evol-fitcontent-column"  style="text-align:center; border:none;background-color:transparent">
+                                            <a class="evol-arrow bx bxs-chevron-down arrow" href="javascript:showDetail('@nameValue1')" id="@idValue1"></a>
+                                        </td>
+                                        <td id="row|@nameValue1" class="evol-normal-row">@sElement.ServiceTaskDesc</td>
+                                    </tr>
+                                    <tr id="@nameValue1" style="display: none">
+                                        <td colspan="2" style="border:none;background-color:transparent">
+                                            <table class="table table-sm table-hover table-collapse-seperate">
+                                                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                                    <tr>
+                                                        <th rowspan="2" class="evol-fitcontent-column" style="border:none;background-color:transparent"></th>
+                                                        <th colspan="4">@localizer["ExpCenter"]</th>
+                                                        <th rowspan="2">@localizer["ExpeditionZone"]</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>@localizer["ExpCenterCode"]</th>
+                                                        <th>@localizer["Description1"]</th>
+                                                        <th>@localizer["Description2"]</th>
+                                                        <th>@localizer["Description3"]</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="bootstrap-overrides">
+                                                    @foreach (ServiceCompanyExpCodeElement sExpCode in Model.ServiceCompanyExpCodes.Where(x => x.ExpCompanyID == expCompanyID && x.ServiceTaskID == sTaskID))
+                                                    {
+                                                        expCode = Model.ExpCodes.FirstOrDefault(x => x.ExpCode == sExpCode.ExpCode);
+                                                        value = sExpCode.ExpCenterCode.ToString();
+                                                        <tr>
+                                                            @if (AddExpCode)
+                                                            {
+                                                                <td class="evol-fitcontent-column" style="text-align:center;border:none;background-color:transparent">
+                                                                    <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCodeConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
+                                                   asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@sExpCode.ExpCenterCode"
+                                                   asp-route-source="@source" asp-route-servicetaskdesc="@sExpCode.ServiceTaskDesc" asp-route-expcompanyname="@sExpCode.ExpCompanyName">
+                                                                        <img style="background:none; width:30px;height:30px;" src="~/images/envelopes.png" title="@localizer["ConfigServiceCompanyExpCode"]" />
+                                                                    </a>
+                                                                </td>
+                                                            }
+                                                            <td>@sExpCode.ExpCenterCode</td>
+                                                            @if (string.IsNullOrEmpty(sExpCode.Description1))
+                                                            {
+                                                                localValue = localizer["EmptyField"].Value;
+                                                            }
+                                                            else
+                                                            {
+                                                                localValue = sExpCode.Description1;
+                                                            }
+                                                            <td>@localValue</td>
+                                                            @if (string.IsNullOrEmpty(sExpCode.Description2))
+                                                            {
+                                                                localValue = localizer["EmptyField"].Value;
+                                                            }
+                                                            else
+                                                            {
+                                                                localValue = sExpCode.Description2;
+                                                            }
+                                                            <td>@localValue</td>
+                                                            @if (string.IsNullOrEmpty(sExpCode.Description3))
+                                                            {
+                                                                localValue = localizer["EmptyField"].Value;
+                                                            }
+                                                            else
+                                                            {
+                                                                localValue = sExpCode.Description3;
+                                                            }
+                                                            <td>@localValue</td>
+                                                            <td>@sExpCode.ExpeditionZoneDesc</td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+        function CancelRow(value) {
+            eShide('Hide|' + value);
+            eSshow('Show|' + value);
+
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = true;
+            return false;
+        }
+        function EditRow(value) {
+            eShide('Show|' + value);
+            eSshow('Hide|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = false;
+
+            let str = 'Hide|' + value;
+            trElements = document.querySelectorAll('tr[id^="Hide|"]');
+            trElements.forEach(tElement => {
+                if (tElement.id != str) {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                }
+            });
+        }
+    </script>
+}

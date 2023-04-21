@@ -123,9 +123,6 @@
   <data name="Business" xml:space="preserve">
     <value>Área de Negócio</value>
   </data>
-  <data name="ExpeditionReport" xml:space="preserve">
-    <value>Guias de Expedição</value>
-  </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>

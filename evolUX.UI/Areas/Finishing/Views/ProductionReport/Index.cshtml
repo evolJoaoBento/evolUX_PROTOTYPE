@@ -3,13 +3,11 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer localizer
 @model ServiceCompaniesViewModel
-
 <div class="d-flex justify-content-center" >
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
       <span class="sr-only">Loading...</span>
     </div>
 </div>
- 
 @if (Model == null)
 {
     <div id="ResultPage">
@@ -18,35 +16,34 @@
 }
 else
 {
-    bool PrintFile = false;
+    bool printFilePermission = false;
 
-    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+    if (Model.Permissions.Find(x => x == "PrintFile") != null) { printFilePermission = true; }
     <div id="TitlePage">
         <h1>@localizer["ProductionRunStatus"]</h1>
     </div>
-    <form id="ServiceCompaniesFrm" class="d-flex justify-content-center m-5" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionRunReport">
-        <table class="form-group d-flex justify-content-center" style="width: 50vw;position: relative; right: 40px;">
+
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <td><h4 class="text-center" style="color: var(--darkestgrey)">@localizer["ServiceCompany"]</h4> </td>
+                <th class="evol-fitcontent-column" style="text-align:center"><img class="evol-image" style="width:40px;height:40px" src="~/images/status_print_provider.png" title="@localizer["ServiceCompanyTip"]"/></th>
+                <th style="vertical-align:middle">@localizer["ServiceCompany"]</th>
             </tr>
-            <tr>
-                <td>
-                    <select name="ServiceCompanyValues">
-                        @foreach (Company c in Model.ServiceCompanies)
-                        {
-                            <option value="@(c.ID + "|" + c.CompanyCode + "|" + c.CompanyName)">@c.CompanyName</option>
-                        }
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td class="d-flex justify-content-center m-4">
-                    <input type="submit" value="@localizer["Submit"]" name="Submit" class="btn btn-block btn-outline-info" />
-                </td>
-            </tr>
-        </table>
-        <br />
-    </form>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @foreach (Company c in Model.ServiceCompanies)
+            {
+                <tr>
+                    <td style="text-align:center">
+                        <a asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionRunReport" asp-route-ServiceCompanyValues="@(c.ID + "|" + c.CompanyCode + "|" + c.CompanyName)" asp-route-source="Index">
+                            <img class="evol-image" src="~/images/report.png" title="@localizer["ServiceCompanyTip"]: @c.CompanyName" />
+                        </a>
+                    </td>
+                    <td>@c.CompanyName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
     
 

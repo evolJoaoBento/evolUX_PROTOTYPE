@@ -12,6 +12,7 @@ namespace evolUX.API.Areas.evolDP.Services.Interfaces
         public Task<IEnumerable<ExpCompanyType>> GetExpCompanyTypes(int? expeditionType, int? expCompanyID);
         public Task<Result> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode);
         public Task<ExpeditionZoneViewModel> GetExpeditionZones(int? expeditionZone, DataTable? expCompanyList);
+        public Task<ExpeditionZoneViewModel> GetExpeditionZones(int? expeditionZone, int expCompanyID);
         public Task<IEnumerable<Company>> GetExpeditionCompanies(int? expCompanyID, DataTable? expCompanyList);
         public Task<IEnumerable<ExpeditionRegistElement>> GetExpeditionRegistIDs(int expCompanyID);
         public Task SetExpeditionRegistID(ExpeditionRegistElement expRegist);

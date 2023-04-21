@@ -118,15 +118,15 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NoModelData" xml:space="preserve">
-    <value>Sem Dados</value>
+    <value>No Data</value>
   </data>
   <data name="PendingRecover" xml:space="preserve">
-    <value>Pending Recovers</value>
+    <value>Pending Recoveries</value>
   </data>
   <data name="ServiceCompany" xml:space="preserve">
     <value>Finishing Provider</value>
   </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Select</value>
+  <data name="ServiceCompanyTip" xml:space="preserve">
+    <value>View Pending Recoveries</value>
   </data>
 </root>

@@ -75,7 +75,17 @@ namespace evolUX.API.Areas.Core.Repositories
         {
             string serversStr = servers.toCommaSeperatedFormatedString();
 
-            string sql = string.Format(@"SELECT DISTINCT c.CompanyID [ID], c.CompanyCode, c.CompanyName
+            string sql;
+            if (string.IsNullOrEmpty(CompanyType))
+            {
+                sql = string.Format(@"SELECT DISTINCT c.CompanyID [ID], c.CompanyCode, c.CompanyName
+                        FROM
+                            RD_COMPANY c WITH(NOLOCK)
+                        WHERE c.CompanyServer in ({0})", serversStr);
+            }
+            else
+            {
+                sql = string.Format(@"SELECT DISTINCT c.CompanyID [ID], c.CompanyCode, c.CompanyName
                         FROM
                             RD_COMPANY c WITH(NOLOCK)
                         INNER JOIN
@@ -87,7 +97,7 @@ namespace evolUX.API.Areas.Core.Repositories
                                     FROM RD_COMPANY WITH(NOLOCK)
                                     WHERE CompanyServer in ({0})
                                         AND CompanyID = cc.CompanyID))", serversStr, CompanyType);
-
+            }
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 connection.Open();
@@ -101,7 +111,20 @@ namespace evolUX.API.Areas.Core.Repositories
         {
             string serversStr = servers.toCommaSeperatedFormatedString();
 
-            string sql = string.Format(@"SELECT DISTINCT b.BusinessID [ID]
+            string sql;
+            if (string.IsNullOrEmpty(CompanyType))
+            {
+                sql = string.Format(@"SELECT DISTINCT b.BusinessID [ID], b.BusinessCode, b.CompanyID, b.Description
+                        FROM
+                            RD_BUSINESS b WITH(NOLOCK)
+                        INNER JOIN
+	                        RD_COMPANY c WITH(NOLOCK)
+                        ON b.CompanyID = c.CompanyID
+                        WHERE c.CompanyServer in ({0})", serversStr);
+            }
+            else
+            {
+                sql = string.Format(@"SELECT DISTINCT b.BusinessID [ID], b.BusinessCode, b.CompanyID, b.Description
                         FROM
                             RD_BUSINESS b WITH(NOLOCK)
                         INNER JOIN
@@ -116,6 +139,7 @@ namespace evolUX.API.Areas.Core.Repositories
                                     FROM RD_COMPANY WITH(NOLOCK)
                                     WHERE CompanyServer in ({0})
                                         AND CompanyID = cc.RelationCompanyID)", serversStr, CompanyType);
+            }
 
             using (var connection = _context.CreateConnectionEvolDP())
             {

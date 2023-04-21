@@ -126,9 +126,6 @@
   <data name="BarcodeRegistModeTip" xml:space="preserve">
     <value>Controla o 1º digito da chave enviada para Motor de Pós Composição. A chave permite que o Motor tome decisões sobre que códigos de barras colocar e onde colocar.</value>
   </data>
-  <data name="ChangeExpCompany" xml:space="preserve">
-    <value>Alterar dados da Companhia</value>
-  </data>
   <data name="CompanyAddress" xml:space="preserve">
     <value>Morada</value>
   </data>

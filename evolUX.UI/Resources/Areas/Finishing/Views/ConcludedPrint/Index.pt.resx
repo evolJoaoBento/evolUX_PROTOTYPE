@@ -124,7 +124,7 @@
     <value>Código de Barras do Ficheiro</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
-    <value>Sem Dados</value>
+    <value>Sem Dados Disponíveis</value>
   </data>
   <data name="Submit" xml:space="preserve">
     <value>Registar</value>

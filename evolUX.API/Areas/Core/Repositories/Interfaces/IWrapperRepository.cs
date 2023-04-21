@@ -17,7 +17,7 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
 
         IExpeditionRepository ExpeditionType { get; }
 
-        IConsumablesRepository Consumables { get; }
+        IMaterialsRepository Materials { get; }
 
         IServiceProvisionRepository ServiceProvision { get; }
 
@@ -29,7 +29,7 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
 
         IPrintedFilesRepository PrintedFiles { get; }
 
-        IFullfilledFilesRepository FullfilledFiles { get; }
+        IFulfiledFilesRepository FullfilledFiles { get; }
 
         IRecoverRepository Recover { get; }
 

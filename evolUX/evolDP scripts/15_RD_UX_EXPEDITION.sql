@@ -134,14 +134,16 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_EXPEDITI
 END
 GO
 ALTER  PROCEDURE [dbo].[RD_UX_GET_EXPEDITION_ZONE]
-	@ExpeditionZone int = NULL
+	@ExpeditionZone int = NULL,
+	@ExpCompanyID int = NULL
 AS
 	SET NOCOUNT ON
 
-	SELECT ExpeditionZone, [Description]
-	FROM RD_EXPEDITION_ZONE WITH(NOLOCK)
-	WHERE @ExpeditionZone is NULL
-		OR @ExpeditionZone = ExpeditionZone
+	SELECT ExpeditionZone, [Description] ExpeditionZoneDesc
+	FROM RD_EXPEDITION_ZONE z WITH(NOLOCK)
+	WHERE (@ExpeditionZone is NULL
+		OR @ExpeditionZone = z.ExpeditionZone)
+		AND (@ExpCompanyID is NULL OR EXISTS(SELECT TOP 1 1 FROM RD_EXPCOMPANY_CONFIG WHERE ExpCompanyID = @ExpCompanyID AND ExpeditionZone = z.ExpeditionZone))
 	ORDER BY ExpeditionZone ASC
 RETURN
 GO
@@ -182,18 +184,18 @@ AS
 		RD_EXPCOMPANY_SERVICE_TASK est WITH(NOLOCK)
 	ON est.ExpCompanyID = ec.ExpCompanyID
 	INNER JOIN
-		RD_EXPEDITION_EXPCENTER_EXPZONE eee WITH(NOLOCK)
-	ON eee.ExpeditionZone = ez.ExpeditionZone
-		AND eee.ExpCode = est.ExpCode
-	INNER JOIN
 		RD_SERVICE_TASK s WITH(NOLOCK)
 	ON s.ServiceTaskID = est.ServiceTaskID
 	INNER JOIN
+		RD_EXPCODE e WITH(NOLOCK)
+	ON e.ExpCode = est.ExpCode
+	LEFT OUTER JOIN
+		RD_EXPEDITION_EXPCENTER_EXPZONE eee WITH(NOLOCK)
+	ON eee.ExpeditionZone = ez.ExpeditionZone
+		AND eee.ExpCode = est.ExpCode
+	LEFT OUTER JOIN
 		RD_COMPANY cs WITH(NOLOCK)
 	ON cs.CompanyID = eee.ServiceCompanyID
-	INNER JOIN
-		RD_EXPCODE e WITH(NOLOCK)
-	ON e.ExpCode = eee.ExpCode
 	WHERE (@ExpeditionZone is NULL OR @ExpeditionZone = ez.ExpeditionZone)
 		AND
 			(ec.ExpCompanyID = @ExpCompanyID
