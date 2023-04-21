@@ -57,8 +57,8 @@ builder.Services.AddSingleton<IGenericService, GenericService>();
 builder.Services.AddSingleton<IGenericRepository, GenericRepository>();
 builder.Services.AddSingleton<IExpeditionRepository, ExpeditionRepository>();
 builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
-builder.Services.AddSingleton<IConsumablesRepository, ConsumablesRepository>();
-builder.Services.AddSingleton<IConsumablesService, ConsumablesService>();
+builder.Services.AddSingleton<IMaterialsRepository, MaterialsRepository>();
+builder.Services.AddSingleton<IMaterialsService, MaterialsService>();
 builder.Services.AddSingleton<IServiceProvisionRepository, ServiceProvisionRepository>();
 builder.Services.AddSingleton<IServiceProvisionService, ServiceProvisionService>();
 

@@ -120,11 +120,23 @@
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
   </data>
+  <data name="ENVELOPE" xml:space="preserve">
+    <value>envelope.png</value>
+  </data>
+  <data name="FEEDPAPER" xml:space="preserve">
+    <value>paper.png</value>
+  </data>
   <data name="MaterialType" xml:space="preserve">
-    <value>Tipos de Materiais</value>
+    <value>Tipos de Material</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
+  </data>
+  <data name="ROOLPAPER" xml:space="preserve">
+    <value>paper.png</value>
+  </data>
+  <data name="STATION" xml:space="preserve">
+    <value>newspaper.png</value>
   </data>
   <data name="Submit" xml:space="preserve">
     <value>Listar Materiais</value>

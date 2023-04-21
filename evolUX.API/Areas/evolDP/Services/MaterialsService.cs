@@ -5,22 +5,27 @@ using System.Data;
 
 namespace evolUX.API.Areas.evolDP.Services
 {
-    public class ConsumablesService : IConsumablesService
+    public class MaterialsService : IMaterialsService
     {
         private readonly IWrapperRepository _repository;
 
-        public ConsumablesService(IWrapperRepository repository)
+        public MaterialsService(IWrapperRepository repository)
         {
             _repository = repository;
         }
         public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes(string fullFillMaterialCode)
         {
-            IEnumerable<FulfillMaterialCode> result = await _repository.Consumables.GetFulfillMaterialCodes(fullFillMaterialCode);
+            IEnumerable<FulfillMaterialCode> result = await _repository.Materials.GetFulfillMaterialCodes(fullFillMaterialCode);
+            return result;
+        }
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes()
+        {
+            IEnumerable<MaterialType> result = await _repository.Materials.GetMaterialTypes();
             return result;
         }
         public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMedia(int? envMediaID)
         {
-            var envelopeMediaList = await _repository.Consumables.GetEnvelopeMedia(envMediaID);
+            var envelopeMediaList = await _repository.Materials.GetEnvelopeMedia(envMediaID);
             if (envelopeMediaList == null)
             {
 
@@ -29,7 +34,7 @@ namespace evolUX.API.Areas.evolDP.Services
         }        
         public async Task<IEnumerable<EnvelopeMediaGroup>> GetEnvelopeMediaGroups(int? envMediaGroupID)
         {
-            var envelopeMediaGroupList = await _repository.Consumables.GetEnvelopeMediaGroups(envMediaGroupID);
+            var envelopeMediaGroupList = await _repository.Materials.GetEnvelopeMediaGroups(envMediaGroupID);
             if (envelopeMediaGroupList == null)
             {
 

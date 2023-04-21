@@ -16,7 +16,7 @@ namespace evolUX.API.Areas.Core.Repositories
         private IDocCodeRepository _docCode;
         private IGenericRepository _generic;
         private IExpeditionRepository _expeditionType;
-        private IConsumablesRepository _consumables;
+        private IMaterialsRepository _materials;
         private IServiceProvisionRepository _serviceProvision;
 
         private IProductionReportRepository _productionReport;
@@ -95,15 +95,15 @@ namespace evolUX.API.Areas.Core.Repositories
             }
         }
 
-        public IConsumablesRepository Consumables
+        public IMaterialsRepository Materials
         {
             get
             {
-                if (_consumables == null)
+                if (_materials == null)
                 {
-                    _consumables = new ConsumablesRepository(_context);
+                    _materials = new MaterialsRepository(_context);
                 }
-                return _consumables;
+                return _materials;
             }
         }
         public IExpeditionRepository ExpeditionType

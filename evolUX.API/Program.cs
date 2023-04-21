@@ -36,7 +36,7 @@ builder.Services.AddSingleton<IWrapperRepository, WrapperRepository>();
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IGenericService, GenericService>();
 builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
-builder.Services.AddSingleton<IConsumablesService, ConsumablesService>();
+builder.Services.AddSingleton<IMaterialsService, MaterialsService>();
 builder.Services.AddSingleton<IServiceProvisionService, ServiceProvisionService>();
 
 //Finishing

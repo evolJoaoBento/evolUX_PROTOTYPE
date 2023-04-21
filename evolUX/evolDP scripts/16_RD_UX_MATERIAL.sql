@@ -14,6 +14,21 @@ AS
 	ORDER BY FullFillCapacity ASC
 RETURN
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_MATERIAL_TYPE]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_MATERIAL_TYPE] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_GET_MATERIAL_TYPE]
+AS
+	SET NOCOUNT ON
+	SELECT MaterialTypeID, MaterialTypeCode, MaterialTypeDescription
+	FROM RD_MATERIAL_TYPE WITH(NOLOCK)
+	WHERE MaterialTypeCode not like 'RollPaper'
+	ORDER BY MaterialTypeID ASC
+RETURN
+GO
+
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_ENVELOPE_MEDIA_GROUP]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_ENVELOPE_MEDIA_GROUP] AS' 

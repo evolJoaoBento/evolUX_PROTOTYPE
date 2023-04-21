@@ -147,8 +147,8 @@
   <data name="ActionConfiguredFlows" xml:space="preserve">
     <value>Configured Flows</value>
   </data>
-  <data name="ActionConsumables" xml:space="preserve">
-    <value>Consumables</value>
+  <data name="ActionMaterials" xml:space="preserve">
+    <value>Materials</value>
   </data>
   <data name="ActionDeleteUser" xml:space="preserve">
     <value>Delete User</value>
@@ -166,7 +166,7 @@
     <value>Envelope Range Configuration</value>
   </data>
   <data name="ActionEnvelopeRange_Link" xml:space="preserve">
-    <value>/evolDP/Consumables/EnvelopeMedia</value>
+    <value>/evolDP/Materials/EnvelopeMedia</value>
   </data>
   <data name="ActionErrorManagement" xml:space="preserve">
     <value>Error Management</value>
@@ -244,19 +244,13 @@
     <value>Mark Files in Error</value>
   </data>
   <data name="ActionMaterialManagement" xml:space="preserve">
-    <value>Porfolio</value>
+    <value>Catalog</value>
   </data>
   <data name="ActionMaterialManagement_Link" xml:space="preserve">
-    <value>/evolDP/Consumables/Management</value>
+    <value>/evolDP/Materials/Management</value>
   </data>
   <data name="ActionMaterialProductionReport" xml:space="preserve">
-    <value>Production / Consumables Control</value>
-  </data>
-  <data name="ActionMaterialType" xml:space="preserve">
-    <value>Types</value>
-  </data>
-  <data name="ActionMaterialType_Link" xml:space="preserve">
-    <value>/evolDP/Consumables/Types</value>
+    <value>Production / Materials Control</value>
   </data>
   <data name="ActionMenuClientPages" xml:space="preserve">
     <value>Custom Pages</value>

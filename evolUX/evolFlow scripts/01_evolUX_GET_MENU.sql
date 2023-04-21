@@ -336,7 +336,7 @@ SET LocalizationKey = 'Action' + CASE RTRIM(LTRIM([Description]))
 	WHEN 'Marcar Intervalos de Documentos em Erro' THEN 'MarkDocumentsRangeinError'
 	WHEN 'Tipos de Documento' THEN 'DocumentTypification'
 	WHEN 'Gamas de Envelopes' THEN 'EnvelopeRange'
-	WHEN 'Materiais' THEN 'Consumables'
+	WHEN 'Materiais' THEN 'Materials'
 	WHEN 'Companhias de Serviços' THEN 'ServiceCompanies'
 	WHEN 'Serviços por Companhia' THEN 'ServicesProvided'
 	WHEN 'Companhias de Expedição' THEN 'ExpeditionCompanies'
@@ -886,7 +886,7 @@ DECLARE @ActionID int,
 	@ParentActionID int,
 	@DefaultOrder int
 
-SELECT @ParentLocalizationKey = 'ActionConsumables'
+SELECT @ParentLocalizationKey = 'ActionMaterials'
 
 UPDATE evolUX_Actions
 SET DefaultOrder = 20
@@ -900,17 +900,12 @@ WHERE LocalizationKey = @ParentLocalizationKey
 CREATE TABLE #ChildActions(LocalizationKey varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS, DefaultOrder int, [Description] varchar(255), evolGUIActionID int)
 
 INSERT INTO #ChildActions
-SELECT 'ActionMaterialType', 10, 'Configurar Tipos de Materiais', ActionID
+SELECT 'ActionMaterialManagement', 10, 'Configurar Materiais', ActionID
 FROM ACTIONS
-WHERE  [Description] like 'Adicionar Material'
+WHERE  [Description] in ('Lista de Materiais','Materiais','Adicionar Material')
 
 INSERT INTO #ChildActions
-SELECT 'ActionMaterialManagement', 20, 'Configurar Materiais', ActionID
-FROM ACTIONS
-WHERE  [Description] in ('Lista de Materiais','Materiais')
-
-INSERT INTO #ChildActions
-SELECT 'ActionEnvelopeRange', 30, 'Configurar Gamas de Envelopes', ActionID
+SELECT 'ActionEnvelopeRange', 20, 'Configurar Gamas de Envelopes', ActionID
 FROM ACTIONS
 WHERE  [Description] in ('Gamas de Envelopes','Grupos de Gamas de Envelopes')
 

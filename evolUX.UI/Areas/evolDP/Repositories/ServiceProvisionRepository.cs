@@ -317,7 +317,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
         public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes()
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            var response = await _flurlClient.Request("/API/evolDP/Consumables/GetFulfillMaterialCodes")
+            var response = await _flurlClient.Request("/API/evolDP/Materials/GetFulfillMaterialCodes")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);

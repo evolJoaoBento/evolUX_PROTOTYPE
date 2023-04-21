@@ -9,17 +9,17 @@ using Shared.Models.Areas.evolDP;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
-    [Route("api/evoldp/consumables/[action]")]
+    [Route("api/evoldp/materials/[action]")]
     [ApiController]
-    public class ConsumablesController : Controller
+    public class MaterialsController : Controller
     {
         private readonly ILoggerService _logger;
-        private readonly IConsumablesService _consumables;
+        private readonly IMaterialsService _materials;
 
-        public ConsumablesController(ILoggerService logger, IConsumablesService consumables)
+        public MaterialsController(ILoggerService logger, IMaterialsService materials)
         {
             _logger = logger;
-            _consumables = consumables;
+            _materials = materials;
         }
         
         [HttpGet]
@@ -33,8 +33,8 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 dictionary.TryGetValue("FullFillMaterialCode", out obj);
                 string fullFillMaterialCode = Convert.ToString(obj).ToString();
 
-                var result = await _consumables.GetFulfillMaterialCodes(fullFillMaterialCode);
-                _logger.LogInfo("Expedition Company Configs Get");
+                var result = await _materials.GetFulfillMaterialCodes(fullFillMaterialCode);
+                _logger.LogInfo("GetFulfillMaterialCodes Get");
                 return Ok(result);
             }
             catch (SqlException ex)
@@ -44,11 +44,33 @@ namespace evolUX.API.Areas.evolDP.Controllers
             catch (Exception ex)
             {
                 //log error
-                _logger.LogError($"Something went wrong inside GetExpeditionCompanyConfigs action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside GetFulfillMaterialCodes action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }
 
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("GetMaterialTypes")]
+        public async Task<ActionResult<IEnumerable<MaterialType>>> GetMaterialTypes([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                var result = await _materials.GetMaterialTypes();
+                _logger.LogInfo("GetMaterialTypes Get");
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetMaterialTypes action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]
@@ -58,7 +80,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
             try
             {
                 //var envelopeMediaList = await _repository.EnvelopeMedia.GetEnvelopeMedia();
-                var envelopeMediaList = await _consumables.GetEnvelopeMedia(null);
+                var envelopeMediaList = await _materials.GetEnvelopeMedia(null);
                 _logger.LogInfo("Envelope Media Get");
                 return Ok(envelopeMediaList);
             }
@@ -81,7 +103,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         {
             try
             {
-                var envelopeMediaGroupList = await _consumables.GetEnvelopeMediaGroups(null);
+                var envelopeMediaGroupList = await _materials.GetEnvelopeMediaGroups(null);
                 _logger.LogInfo("Return envelope media group list from database");
                 return Ok(envelopeMediaGroupList);
             }
