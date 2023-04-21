@@ -51,7 +51,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                     if (b != null) { TempData["BusinessCode"] = b.FieldDescription; }
                 }
             }
-            string CompanyBusinessList = HttpContext.Session.GetString("evolDP/CompanyBusiness");
+            string CompanyBusinessList = HttpContext.Session.GetString("evolDP/ServiceCompanyBusiness");
             try
             {
                 if (string.IsNullOrEmpty(CompanyBusinessList))
@@ -128,7 +128,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 ViewBag.BusinessID = BusinessID;
                 ViewBag.BusinessCode = BusinessCode;
 
-                DataTable CompanyBusinessDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/CompanyBusiness"));
+                DataTable CompanyBusinessDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanyBusiness"));
                 if (CompanyBusinessDT.Rows.Count > 1)
                 {
                     ViewBag.hasMultipleCompanyBusiness = true;
@@ -248,19 +248,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
         public async Task<IActionResult> Index()
         {
             string cultureCode = CultureInfo.CurrentCulture.Name;
-            string evolDP_DescriptionJSON = HttpContext.Session.GetString("evolDP/evolDP_DESCRIPTION");
-            TempData["BusinessCode"] = "";
-            if (!string.IsNullOrEmpty(evolDP_DescriptionJSON))
-            {
-                var evolDP_Desc = JsonConvert.DeserializeObject<List<dynamic>>(evolDP_DescriptionJSON);
-                if (evolDP_Desc != null)
-                {
-                    var b = evolDP_Desc.Find(x => x.FieldName == "BusinessCode" + "_" + cultureCode);
-                    if (b == null) { b = evolDP_Desc.Find(x => x.FieldName == "BusinessCode" + "_" + cultureCode); }
-                    if (b != null) { TempData["BusinessCode"] = b.FieldDescription; }
-                }
-            }
-            string CompanyBusinessList = HttpContext.Session.GetString("evolDP/CompanyBusiness");
+            string CompanyBusinessList = HttpContext.Session.GetString("evolDP/ServiceCompanyBusiness");
             try
             {
                 if (string.IsNullOrEmpty(CompanyBusinessList))
@@ -343,7 +331,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 ViewBag.BusinessID = BusinessID;
                 ViewBag.BusinessCode = BusinessCode;
 
-                DataTable CompanyBusinessDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/CompanyBusiness"));
+                DataTable CompanyBusinessDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/ServiceCompanyBusiness"));
                 if (CompanyBusinessDT.Rows.Count > 1)
                 {
                     ViewBag.hasMultipleCompanyBusiness = true;

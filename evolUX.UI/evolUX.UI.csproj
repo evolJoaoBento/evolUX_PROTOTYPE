@@ -36,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Areas\evolDP\Views\DocCode\ExceptionLevels.pt.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Areas\evolDP\Views\Generic\ConstantParameter.pt.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>

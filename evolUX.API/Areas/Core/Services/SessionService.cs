@@ -56,12 +56,19 @@ namespace evolUX.API.Areas.Core.Services
 
                 DataTable evolDP_DESCRIPTION = await _repository.Session.evolDP_DESCRIPTION();
                 result.Add("evolDP/evolDP_DESCRIPTION", JsonConvert.SerializeObject(evolDP_DESCRIPTION));
+                DataTable companies= await _repository.Session.GetCompanies(servers, "");
+                result.Add("evolDP/Companies", JsonConvert.SerializeObject(companies));
+                DataTable companyBusiness = await _repository.Session.GetCompanyBusiness(servers, "");
+                result.Add("evolDP/CompanyBusiness", JsonConvert.SerializeObject(companyBusiness));
+
+
                 DataTable serviceCompanies = await _repository.Session.GetCompanies(servers, "SERVICE");
                 result.Add("evolDP/ServiceCompanies", JsonConvert.SerializeObject(serviceCompanies));
+                DataTable serviceCompanyBusiness = await _repository.Session.GetCompanyBusiness(servers, "SERVICE");
+                result.Add("evolDP/ServiceCompanyBusiness", JsonConvert.SerializeObject(serviceCompanyBusiness));
+
                 DataTable expeditionCompanies = await _repository.Session.GetCompanies(servers, "EXPEDITION");
                 result.Add("evolDP/ExpeditionCompanies", JsonConvert.SerializeObject(expeditionCompanies));
-                DataTable companyBusiness = await _repository.Session.GetCompanyBusiness(servers, "SERVICE");
-                result.Add("evolDP/CompanyBusiness", JsonConvert.SerializeObject(companyBusiness));
 
                 GenericOptionList SuportTypeList = await _repository.DocCode.GetSuporTypeOptionList();
                 if (SuportTypeList != null)

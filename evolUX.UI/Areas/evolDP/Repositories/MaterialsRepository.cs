@@ -11,45 +11,54 @@ using Shared.Models.Areas.evolDP;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
-    public class ConsumablesRepository : RepositoryBase, IConsumablesRepository
+    public class MaterialsRepository : RepositoryBase, IMaterialsRepository
     {
-        public ConsumablesRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
+        public MaterialsRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
         public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes()
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            var response = await _flurlClient.Request("/API/evolDP/Consumables/GetFulfillMaterialCodes")
+            var response = await _flurlClient.Request("/API/evolDP/Materials/GetFulfillMaterialCodes")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<FulfillMaterialCode>>();
         }
-
-        //public async Task<ConsumablesTypeViewModel> GetConsumablesTypes(int? ConsumablesType, string expCompanyList)
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes()
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            var response = await _flurlClient.Request("/API/evolDP/Materials/GetMaterialTypes")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<IEnumerable<MaterialType>>();
+        }
+        //public async Task<MaterialsTypeViewModel> GetMaterialsTypes(int? MaterialsType, string expCompanyList)
         //{
         //    Dictionary<string, object> dictionary = new Dictionary<string, object>();
-        //    dictionary.Add("ConsumablesType", ConsumablesType);
+        //    dictionary.Add("MaterialsType", MaterialsType);
         //    dictionary.Add("ExpCompanyList", expCompanyList);
-        //    var response = await _flurlClient.Request("/API/evolDP/Consumables/GetConsumablesTypes")
+        //    var response = await _flurlClient.Request("/API/evolDP/Materials/GetMaterialsTypes")
         //        .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
         //        .SendJsonAsync(HttpMethod.Get, dictionary);
         //    if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
         //    if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-        //    return await response.GetJsonAsync<ConsumablesTypeViewModel>();
+        //    return await response.GetJsonAsync<MaterialsTypeViewModel>();
         //}
-        //public async Task<ConsumablesZoneViewModel> GetConsumablesZones(int? ConsumablesZone, string expCompanyList)
+        //public async Task<MaterialsZoneViewModel> GetMaterialsZones(int? MaterialsZone, string expCompanyList)
         //{
         //    Dictionary<string, object> dictionary = new Dictionary<string, object>();
-        //    dictionary.Add("ConsumablesZone", ConsumablesZone);
+        //    dictionary.Add("MaterialsZone", MaterialsZone);
         //    dictionary.Add("ExpCompanyList", expCompanyList);
-        //    var response = await _flurlClient.Request("/API/evolDP/Consumables/GetConsumablesZones")
+        //    var response = await _flurlClient.Request("/API/evolDP/Materials/GetMaterialsZones")
         //        .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
         //        .SendJsonAsync(HttpMethod.Get, dictionary);
         //    if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
         //    if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-        //    return await response.GetJsonAsync<ConsumablesZoneViewModel>();
+        //    return await response.GetJsonAsync<MaterialsZoneViewModel>();
         //}
     }
 }

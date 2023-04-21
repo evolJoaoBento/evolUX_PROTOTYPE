@@ -111,9 +111,9 @@ namespace evolUX.UI.Areas.evolDP.Services
             await _serviceProvisionRepository.SetServiceTask(serviceTaskID, serviceTaskCode, serviceTaskDesc, refServiceTaskID, complementServiceTaskID, externalExpeditionMode, stationExceededDesc);
             return;
         }
-        public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode)
+        public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, string expCompanyList, string expCode)
         {
-            var response = await _serviceProvisionRepository.GetExpCodes(serviceTaskID, expCompanyID, expCode);
+            var response = await _serviceProvisionRepository.GetExpCodes(serviceTaskID, expCompanyList, expCode);
             return response;
         }
         public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(string expCompanyList)

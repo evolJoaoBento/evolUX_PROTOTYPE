@@ -17,7 +17,7 @@ namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
         public Task SetService(ServiceElement service);
         public Task<IEnumerable<ServiceTypeElement>> GetServiceTypes(int? serviceTypeID);
         public Task SetServiceType(int serviceTypeID, string serviceTypeCode, string serviceTypeDesc);
-        public Task SetServiceTask(int serviceTaskID, string serviceTaskCode, string serviceTaskDesc, int refServiceTaskID, int complementServiceTaskID, int externalExpeditionMode, string stationExceededDesc);
+        public Task SetServiceTask(int serviceTaskID, string serviceTaskCode, string serviceTaskDesc, int refServiceTaskID, int complementServiceTaskID, int? externalExpeditionMode, string stationExceededDesc);
         public Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode, DataTable expCompanyList);
         public Task DeleteServiceType(int serviceTaskID, int serviceTypeID);
         public Task AddServiceType(int serviceTaskID, int serviceTypeID);

@@ -17,7 +17,7 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
 
         IExpeditionRepository ExpeditionType { get; }
 
-        IConsumablesRepository Consumables { get; }
+        IMaterialsRepository Materials { get; }
 
         IServiceProvisionRepository ServiceProvision { get; }
 

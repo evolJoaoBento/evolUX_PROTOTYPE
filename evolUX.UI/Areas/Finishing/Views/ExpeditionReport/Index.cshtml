@@ -23,9 +23,7 @@
 }
 else
 {
-    string BusinessCodeLabel = TempData["BusinessCode"]?.ToString();
-    if (string.IsNullOrEmpty(BusinessCodeLabel))
-        BusinessCodeLabel = localizer["BusinessCode"].Value;
+    string BusinessCodeLabel = localizer["BusinessCode"].Value;
     <div id="TitlePage">
         <h1>@localizer["ExpeditionReport"]</h1>
     </div>

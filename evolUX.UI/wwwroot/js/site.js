@@ -138,9 +138,9 @@ Function that shows the detail by selecting the respective button
 ********************************************************************************/
 function showDetail(startName) {
     eSshow(startName);
-    changeClass('row|' + startName, 'evol-normal-row', 'evol-highlight-row');
     changeClass('arrow' + startName, 'bxs-chevron-down', 'bxs-chevron-up');
     document.getElementById('arrow' + startName).href = "javascript:hideDetail('" + startName + "');";
+    changeClass('row|' + startName, 'evol-normal-row', 'evol-highlight-row');
 }
 
 /*******************************************************************************
@@ -149,9 +149,9 @@ Function that hides the detail by selecting the respective button
 ********************************************************************************/
 function hideDetail(startName) {
     eShide(startName);
-    changeClass('row|' + startName, 'evol-highlight-row', 'evol-normal-row');
-   changeClass('arrow' + startName, 'bxs-chevron-up', 'bxs-chevron-down');
+    changeClass('arrow' + startName, 'bxs-chevron-up', 'bxs-chevron-down');
     document.getElementById('arrow' + startName).href = "javascript:showDetail('" + startName + "');";
+    changeClass('row|' + startName, 'evol-highlight-row', 'evol-normal-row');
 }
 /*******************************************************************************
 Function that shows the detail by selecting the respective button

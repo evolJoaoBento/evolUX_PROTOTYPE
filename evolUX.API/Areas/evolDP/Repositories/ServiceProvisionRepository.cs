@@ -181,7 +181,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
             }
         }
-        public async Task SetServiceTask(int serviceTaskID, string serviceTaskCode, string serviceTaskDesc, int refServiceTaskID, int complementServiceTaskID, int externalExpeditionMode, string stationExceededDesc)
+        public async Task SetServiceTask(int serviceTaskID, string serviceTaskCode, string serviceTaskDesc, int refServiceTaskID, int complementServiceTaskID, int? externalExpeditionMode, string stationExceededDesc)
         {
             string sql = @"RD_UX_SET_SERVICE_TASK";
             var parameters = new DynamicParameters();
@@ -196,7 +196,8 @@ namespace evolUX.API.Areas.evolDP.Repositories
             else
             {
                 parameters.Add("ComplementServiceTaskID", complementServiceTaskID, DbType.Int64);
-                parameters.Add("ExternalExpeditionMode", externalExpeditionMode, DbType.Int16);
+                if (externalExpeditionMode != null)
+                    parameters.Add("ExternalExpeditionMode", externalExpeditionMode, DbType.Int16);
                 parameters.Add("StationExceededDesc", stationExceededDesc, DbType.String);
             }
             using (var connection = _context.CreateConnectionEvolDP())

@@ -33,8 +33,8 @@ namespace evolUX.UI.Areas.evolDP.Repositories
         public async Task<IEnumerable<Company>> GetServiceCompanies(string serviceCompanyList)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            dictionary.Add("ServiceCompanyList", serviceCompanyList);
-            var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/GetServiceCompanies")
+            dictionary.Add("CompanyList", serviceCompanyList);
+            var response = await _flurlClient.Request("/API/evolDP/Generic/GetCompanies")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
@@ -45,8 +45,8 @@ namespace evolUX.UI.Areas.evolDP.Repositories
         public async Task<IEnumerable<Company>> GetServiceCompany(int serviceCompanyID)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            dictionary.Add("ServiceCompanyID", serviceCompanyID);
-            var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/GetServiceCompanies")
+            dictionary.Add("CompanyID", serviceCompanyID);
+            var response = await _flurlClient.Request("/API/evolDP/Generic/GetCompanies")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
@@ -199,7 +199,8 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             dictionary.Add("ServiceTaskDesc", serviceTaskDesc);
             dictionary.Add("RefServiceTaskID", refServiceTaskID);
             dictionary.Add("ComplementServiceTaskID", complementServiceTaskID);
-            dictionary.Add("ExternalExpeditionMode", externalExpeditionMode);
+            if (externalExpeditionMode >= 0)
+                dictionary.Add("ExternalExpeditionMode", externalExpeditionMode);
             dictionary.Add("StationExceededDesc", stationExceededDesc);
             var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/SetServiceTask")
                  .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
@@ -208,13 +209,13 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return;
         }
-        public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode)
+        public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, string expCompanyList, string expCode)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             if (serviceTaskID != 0)
                 dictionary.Add("ServiceTaskID", serviceTaskID);
-            if (serviceTaskID != 0)
-                dictionary.Add("ExpCompanyID", expCompanyID);
+            if (!string.IsNullOrEmpty(expCompanyList))
+                dictionary.Add("ExpCompanyList", expCompanyList);
             if (!string.IsNullOrEmpty(expCode))
                 dictionary.Add("ExpCode", expCode);
             var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/GetExpCodes")
@@ -316,7 +317,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
         public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes()
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            var response = await _flurlClient.Request("/API/evolDP/Consumables/GetFulfillMaterialCodes")
+            var response = await _flurlClient.Request("/API/evolDP/Materials/GetFulfillMaterialCodes")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);

@@ -30,48 +30,6 @@ namespace evolUX.API.Areas.evolDP.Controllers
         }
 
         [HttpGet]
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
-        [ActionName("GetServiceCompanies")]
-        public async Task<ActionResult<IEnumerable<Company>>> GetServiceCompanies([FromBody] Dictionary<string, object> dictionary)
-        {
-            try
-            {
-                IEnumerable<Company> serviceCompanies = new List<Company>();
-                object obj;
-                dictionary.TryGetValue("ServiceCompanyID", out obj);
-                int value = 0;
-                int? serviceCompanyID = null;
-                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
-                    serviceCompanyID = value;
-                DataTable serviceCompanyList = new DataTable();
-                if (serviceCompanyID == null)
-                {
-                    dictionary.TryGetValue("ServiceCompanyList", out obj);
-                    string serviceCompanyListJSON = Convert.ToString(obj);
-                    serviceCompanyList = JsonConvert.DeserializeObject<DataTable>(serviceCompanyListJSON).DefaultView.ToTable(false, "ID");
-                    serviceCompanies = await _serviceProvision.GetServiceCompanies(serviceCompanyList);
-                }
-                else
-                {
-                    serviceCompanies = await _serviceProvision.GetServiceCompanies((int)serviceCompanyID);
-                }
-
-                _logger.LogInfo("Service Companies Get");
-                return Ok(serviceCompanies);
-            }
-            catch (SqlException ex)
-            {
-                return StatusCode(503, "Internal Server Error");
-            }
-            catch (Exception ex)
-            {
-                //log error
-                _logger.LogError($"Something went wrong inside GetExpeditionCompanies action: {ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
-        [HttpGet]
         [ActionName("GetServiceCompanyRestrictions")]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<ActionResult<IEnumerable<ServiceCompanyRestriction>>> GetServiceCompanyRestrictions([FromBody] Dictionary<string, object> dictionary)
@@ -477,14 +435,15 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 int refServiceTaskID = Int32.Parse(Convert.ToString(obj));
 
                 int complementServiceTaskID = 0;
-                int externalExpeditionMode = 0;
+                int? externalExpeditionMode = null;
                 string stationExceededDesc = "";
                 if (refServiceTaskID == 0)
                 {
                     dictionary.TryGetValue("ComplementServiceTaskID", out obj);
                     complementServiceTaskID = Int32.Parse(Convert.ToString(obj));
                     dictionary.TryGetValue("ExternalExpeditionMode", out obj);
-                    externalExpeditionMode = Int32.Parse(Convert.ToString(obj));
+                    if (obj != null)
+                        externalExpeditionMode = Int32.Parse(Convert.ToString(obj));
                     dictionary.TryGetValue("StationExceededDesc", out obj);
                     stationExceededDesc = Convert.ToString(obj);
                 }

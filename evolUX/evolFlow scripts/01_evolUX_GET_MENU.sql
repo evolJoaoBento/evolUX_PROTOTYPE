@@ -336,7 +336,7 @@ SET LocalizationKey = 'Action' + CASE RTRIM(LTRIM([Description]))
 	WHEN 'Marcar Intervalos de Documentos em Erro' THEN 'MarkDocumentsRangeinError'
 	WHEN 'Tipos de Documento' THEN 'DocumentTypification'
 	WHEN 'Gamas de Envelopes' THEN 'EnvelopeRange'
-	WHEN 'Materiais' THEN 'Consumables'
+	WHEN 'Materiais' THEN 'Materials'
 	WHEN 'Companhias de Serviços' THEN 'ServiceCompanies'
 	WHEN 'Serviços por Companhia' THEN 'ServicesProvided'
 	WHEN 'Companhias de Expedição' THEN 'ExpeditionCompanies'
@@ -470,12 +470,10 @@ DECLARE @ActionID int,
 
 SELECT @ParentLocalizationKey = 'ActionDocumentTypification'
 
-
 UPDATE evolUX_Actions
 SET DefaultOrder = 10
 FROM evolUX_ACTIONS
 WHERE LocalizationKey = @ParentLocalizationKey
-
 
 SELECT @ParentActionID = ActionID
 FROM evolUX_ACTIONS
@@ -484,27 +482,20 @@ WHERE LocalizationKey = @ParentLocalizationKey
 CREATE TABLE #ChildActions(LocalizationKey varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS, DefaultOrder int, [Description] varchar(255), evolGUIActionID int)
 
 INSERT INTO #ChildActions
-SELECT 'ActionDocCode', 10, 'Configurar Tipos de Documentos', evolGUI_ActionID
+SELECT 'ActionDocCompanies', 10, 'Configurar Companhias de Documentos', evolGUI_ActionID
 FROM evolUX_ACTIONS
 WHERE LocalizationKey = @ParentLocalizationKey
 
 INSERT INTO #ChildActions
-SELECT 'ActionExceptionLevel1ID', 20, 'Configurar Exceção Nível 1', ActionID
-FROM ACTIONS
-WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+SELECT 'ActionDocCode', 20, 'Configurar Tipos de Documentos', evolGUI_ActionID
+FROM evolUX_ACTIONS
+WHERE LocalizationKey = @ParentLocalizationKey
 
 INSERT INTO #ChildActions
-SELECT 'ActionExceptionLevel2ID', 30, 'Configurar Exceção Nível 2', ActionID
-FROM ACTIONS
-WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+SELECT 'ActionExceptionLevels', 30, 'Configurar Exceções', NULL
 
 INSERT INTO #ChildActions
-SELECT 'ActionExceptionLevel3ID', 40, 'Configurar Exceção Nível 3', ActionID
-FROM ACTIONS
-WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
-
-INSERT INTO #ChildActions
-SELECT 'ActionProjectVersions', 50, 'Versões de Projectos', ActionID
+SELECT 'ActionProjectVersions', 60, 'Versões de Projectos', ActionID
 FROM ACTIONS
 WHERE  [Description] like 'Vers_es de Projectos'
 
@@ -567,6 +558,81 @@ CLOSE tCursor
 DEALLOCATE tCursor
 
 DELETE #ChildActions
+-----
+SELECT @ParentActionID = ActionID
+FROM evolUX_ACTIONS
+WHERE LocalizationKey = 'ActionExceptionLevels'
+
+INSERT INTO #ChildActions
+SELECT 'ActionExceptionLevel1ID', 10, 'Configurar Exceção Nível 1', ActionID
+FROM ACTIONS
+WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+
+INSERT INTO #ChildActions
+SELECT 'ActionExceptionLevel2ID', 20, 'Configurar Exceção Nível 2', ActionID
+FROM ACTIONS
+WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+
+INSERT INTO #ChildActions
+SELECT 'ActionExceptionLevel3ID', 30, 'Configurar Exceção Nível 3', ActionID
+FROM ACTIONS
+WHERE  [Description] like 'Configurar @PARAMETERS/ACTION/EXCEPTION/%'
+
+DECLARE tCursor CURSOR LOCAL FOR
+SELECT LocalizationKey, DefaultOrder, [Description]
+FROM #ChildActions
+ORDER BY DefaultOrder ASC
+
+OPEN tCursor
+FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	SET @ActionID = NULL
+	SELECT @ActionID = ActionID
+	FROM evolUX_ACTIONS
+	WHERE LocalizationKey = @NewLocalizationKey
+
+	IF (@ActionID is NULL)
+	BEGIN
+		SELECT @ActionID = (MAX(ActionID) / 100)*100 + 10
+		FROM ACTIONS
+		WHERE ActionID < 10000
+
+		WHILE (EXISTS(SELECT TOP 1 1 FROM ACTIONS WHERE ActionID = @ActionID)
+			OR EXISTS(SELECT TOP 1 1 FROM evolUX_ACTIONS WHERE ActionID = @ActionID))
+		BEGIN
+			SET @ActionID = @ActionID + 10
+		END
+
+		INSERT INTO [evolUX_ACTIONS](ActionID, ActionTypeID, LocalizationKey, [Description], ParentActionID, DefaultOrder, HistoryFlag, evolGUI_ActionID, evolGUI_TypeID)
+		SELECT @ActionID, 1, @NewLocalizationKey, @NewDescription, @ParentActionID, @DefaultOrder, 0, NULL, 0
+	END
+	ELSE
+	BEGIN
+		UPDATE [evolUX_ACTIONS]
+		SET ActionTypeID = 1, [Description] = @NewDescription, ParentActionID = @ParentActionID, DefaultOrder = @DefaultOrder
+		WHERE ActionID = @ActionID
+	END
+
+	INSERT INTO [dbo].[evolUX_PERMISSIONS](ActionID, ProfileID, PermissionID, FlowID, TaskID, ActionOrder, FlowType)
+	SELECT DISTINCT @ActionID, p.ProfileID, 1, NULL, NULL, NULL, 0
+	FROM #ChildActions c
+	INNER JOIN
+		[PERMISSIONS] p
+	ON	c.evolGUIActionID = p.ActionID
+	INNER JOIN
+		[evolUX_ACTIONS] u
+	ON u.LocalizationKey = c.LocalizationKey
+	WHERE NOT EXISTS (SELECT TOP 1 1 FROM [evolUX_PERMISSIONS] WHERE ActionID = @ActionID AND ProfileID = p.ProfileID)
+
+	FETCH NEXT FROM tCursor INTO @NewLocalizationKey, @DefaultOrder, @NewDescription
+END
+CLOSE tCursor
+DEALLOCATE tCursor
+
+DELETE #ChildActions
+----
 
 INSERT INTO #ChildActions
 SELECT 'AddExceptionLevel', 0, 'Adicionar/Alterar Exceção', ActionID
@@ -820,7 +886,7 @@ DECLARE @ActionID int,
 	@ParentActionID int,
 	@DefaultOrder int
 
-SELECT @ParentLocalizationKey = 'ActionConsumables'
+SELECT @ParentLocalizationKey = 'ActionMaterials'
 
 UPDATE evolUX_Actions
 SET DefaultOrder = 20
@@ -834,17 +900,12 @@ WHERE LocalizationKey = @ParentLocalizationKey
 CREATE TABLE #ChildActions(LocalizationKey varchar(50) COLLATE SQL_Latin1_General_CP1_CI_AS, DefaultOrder int, [Description] varchar(255), evolGUIActionID int)
 
 INSERT INTO #ChildActions
-SELECT 'ActionMaterialType', 10, 'Configurar Tipos de Materiais', ActionID
+SELECT 'ActionMaterialManagement', 10, 'Configurar Materiais', ActionID
 FROM ACTIONS
-WHERE  [Description] like 'Adicionar Material'
+WHERE  [Description] in ('Lista de Materiais','Materiais','Adicionar Material')
 
 INSERT INTO #ChildActions
-SELECT 'ActionMaterialManagement', 20, 'Configurar Materiais', ActionID
-FROM ACTIONS
-WHERE  [Description] in ('Lista de Materiais','Materiais')
-
-INSERT INTO #ChildActions
-SELECT 'ActionEnvelopeRange', 30, 'Configurar Gamas de Envelopes', ActionID
+SELECT 'ActionEnvelopeRange', 20, 'Configurar Gamas de Envelopes', ActionID
 FROM ACTIONS
 WHERE  [Description] in ('Gamas de Envelopes','Grupos de Gamas de Envelopes')
 

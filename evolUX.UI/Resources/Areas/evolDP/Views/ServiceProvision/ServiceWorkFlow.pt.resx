@@ -135,6 +135,9 @@
   <data name="ExternalExpeditionMode" xml:space="preserve">
     <value>Modo de alteração de Companhia de Expedição</value>
   </data>
+  <data name="ExternalExpeditionMode-1" xml:space="preserve">
+    <value>Respeitar configuração ao nível da Área de Negócio</value>
+  </data>
   <data name="ExternalExpeditionMode0" xml:space="preserve">
     <value>Não mudar de Companhia</value>
   </data>
@@ -145,7 +148,7 @@
     <value>Muda de Companhia por intervalos de Códigos Postais</value>
   </data>
   <data name="ExternalExpeditionModeTip" xml:space="preserve">
-    <value>Se o doumento não tiver especificado o Modo de alteração de Companhia de Expedição, prevalece o modo associado ao Tipo de Tratamento</value>
+    <value>Se o documento não tiver especificado o Modo de alteração de Companhia de Expedição, prevalece o modo associado ao Tipo de Tratamento</value>
   </data>
   <data name="List" xml:space="preserve">
     <value>Ver configurações do Tipo de Tratamento</value>

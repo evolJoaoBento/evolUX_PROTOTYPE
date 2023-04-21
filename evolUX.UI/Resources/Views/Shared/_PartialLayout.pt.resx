@@ -147,8 +147,8 @@
   <data name="ActionConfiguredFlows" xml:space="preserve">
     <value>Fluxos Configurados</value>
   </data>
-  <data name="ActionConsumables" xml:space="preserve">
-    <value>Consumíveis</value>
+  <data name="ActionMaterials" xml:space="preserve">
+    <value>Materiais</value>
   </data>
   <data name="ActionDeleteUser" xml:space="preserve">
     <value>Apagar</value>
@@ -159,6 +159,12 @@
   <data name="ActionDocCode_Link" xml:space="preserve">
     <value>/evolDP/DocCode/Index</value>
   </data>
+  <data name="ActionDocCompanies" xml:space="preserve">
+    <value>Companhias / Áreas de Negócio</value>
+  </data>
+  <data name="ActionDocCompanies_Link" xml:space="preserve">
+    <value>/evolDP/Generic/Companies</value>
+  </data>
   <data name="ActionDocumentTypification" xml:space="preserve">
     <value>Documentos</value>
   </data>
@@ -166,7 +172,7 @@
     <value>Gamas de Envelopes</value>
   </data>
   <data name="ActionEnvelopeRange_Link" xml:space="preserve">
-    <value>/evolDP/Consumables/EnvelopeMedia</value>
+    <value>/evolDP/Materials/EnvelopeMedia</value>
   </data>
   <data name="ActionErrorManagement" xml:space="preserve">
     <value>Gestão de Erros</value>
@@ -188,6 +194,12 @@
   </data>
   <data name="ActionExceptionLevel3ID_Link" xml:space="preserve">
     <value>/evolDP/DocCode/ExceptionLevel?Level=3</value>
+  </data>
+  <data name="ActionExceptionLevels" xml:space="preserve">
+    <value>Exceções</value>
+  </data>
+  <data name="ActionExceptionLevels_Link" xml:space="preserve">
+    <value>/evolDP/DocCode/ExceptionLevels</value>
   </data>
   <data name="ActionExpCodes" xml:space="preserve">
     <value>Códigos Tratamento/Expedição</value>
@@ -244,19 +256,13 @@
     <value>Marcar Ficheiros em Erro</value>
   </data>
   <data name="ActionMaterialManagement" xml:space="preserve">
-    <value>Porfólio</value>
+    <value>Catálogo</value>
   </data>
   <data name="ActionMaterialManagement_Link" xml:space="preserve">
-    <value>/evolDP/Consumables/Management</value>
+    <value>/evolDP/Materials/Management</value>
   </data>
   <data name="ActionMaterialProductionReport" xml:space="preserve">
-    <value>Controlo de Produção / Consumíveis</value>
-  </data>
-  <data name="ActionMaterialType" xml:space="preserve">
-    <value>Tipos</value>
-  </data>
-  <data name="ActionMaterialType_Link" xml:space="preserve">
-    <value>/evolDP/Consumables/Types</value>
+    <value>Controlo de Produção / Materiais</value>
   </data>
   <data name="ActionMenuClientPages" xml:space="preserve">
     <value>Páginas Costumizadas</value>

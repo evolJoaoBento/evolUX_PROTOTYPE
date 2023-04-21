@@ -141,17 +141,24 @@ else
                             </select>
                         </td>
                         <td>
-                                @{
-                                    List<int> eModeList = new List<int>();
-                                    eModeList.Add(0);
-                                    eModeList.Add(1);
-                                    eModeList.Add(2);
-                                    eModeList.Remove(st.ExternalExpeditionMode);
+                            @{
+                                List<int> eModeList = new List<int>();
+                                eModeList.Add(0);
+                                eModeList.Add(1);
+                                eModeList.Add(2);
+                                if (st.ExternalExpeditionMode != null)
+                                {
+                                    eModeList.Remove((int)st.ExternalExpeditionMode);
+                                    eModeList.Add(-1);
                                 }
+                            }
                             <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
-                                <option value="@st.ExternalExpeditionMode">
+                                @{
+                                    localValue = st.ExternalExpeditionMode == null ? "-1" : st.ExternalExpeditionMode.ToString();
+                                }
+                                <option value="@localValue">
                                         @{
-                                            localValue = "ExternalExpeditionMode" + st.ExternalExpeditionMode.ToString();
+                                        localValue = "ExternalExpeditionMode" + localValue;
                                         }
                                         @localizer[localValue]
                                 </option>

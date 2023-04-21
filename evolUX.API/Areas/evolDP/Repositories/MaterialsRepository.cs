@@ -6,10 +6,10 @@ using System.Data;
 
 namespace evolUX.API.Areas.evolDP.Repositories
 {
-    public class ConsumablesRepository : IConsumablesRepository
+    public class MaterialsRepository : IMaterialsRepository
     {
         private readonly DapperContext _context;
-        public ConsumablesRepository(DapperContext context)
+        public MaterialsRepository(DapperContext context)
         {
             _context = context;
         }
@@ -27,6 +27,15 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
         }
         
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes()
+        {
+            string sql = @"RD_UX_GET_MATERIAL_TYPE";
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<MaterialType> result = await connection.QueryAsync<MaterialType>(sql, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
         public async Task<IEnumerable<EnvelopeMediaGroup>> GetEnvelopeMediaGroups(int? envMediaGroupID)
         {
             string sql = @"RD_UX_GET_ENVELOPE_MEDIA_GROUP";
