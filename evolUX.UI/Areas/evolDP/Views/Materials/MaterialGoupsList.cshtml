@@ -1,0 +1,100 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model MaterialViewModel;
+<div id="TitlePage">
+    <h1>@localizer["MaterialGroups"]</h1>
+</div>
+<a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Materials" asp-action="Management">
+</a>
+@if (Model == null || Model.MaterialList == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddMaterial = false;
+    bool DeleteMaterial = false;
+    bool ExportMaterial = false;
+    bool AddMaterialType = false;
+    bool DeleteMaterialType = false;
+    bool ExportMaterialType = false;
+    bool AddEnvelopeRange = false;
+    bool DeleteEnvelopeRange = false;
+    bool ExportEnvelopeRange = false;
+
+    if (Model.Permissions.Find(x => x == "AddMaterial") != null) { AddMaterial = true; }
+    if (Model.Permissions.Find(x => x == "DeleteMaterial") != null) { DeleteMaterial = true; }
+    if (Model.Permissions.Find(x => x == "ExportMaterial") != null) { ExportMaterial = true; }
+    if (Model.Permissions.Find(x => x == "AddMaterialType") != null) { AddMaterialType = true; }
+    if (Model.Permissions.Find(x => x == "DeleteMaterialType") != null) { DeleteMaterialType = true; }
+    if (Model.Permissions.Find(x => x == "ExportMaterialType") != null) { ExportMaterialType = true; }
+    if (Model.Permissions.Find(x => x == "AddEnvelopeRange") != null) { AddEnvelopeRange = true; }
+    if (Model.Permissions.Find(x => x == "DeleteEnvelopeRange") != null) { DeleteEnvelopeRange = true; }
+    if (Model.Permissions.Find(x => x == "ExportEnvelopeRange") != null) { ExportEnvelopeRange = true; }
+
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th class="evol-fitcontent-column" style="text-align: center">
+                    @if (AddMaterialType)
+                    {
+                        <img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddMaterialGroup"]" />
+                    }
+                </th>
+                <th>@localizer["GroupCode"]</th>
+                <th>@localizer["GroupDescription"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (AddMaterialType)
+            {
+                <tr id="Hide|" style="display: none">
+                    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Materials" asp-action="ChangeMaterialGroup">
+                    <td style="align-items:center; display:flex">
+                        <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <input style="display: none" id=GroupID name=GroupID type="number" value="0" />
+                    </td>
+                    <td><input id=GroupCode name=GroupCode type="text" maxlength="20" style="width: 100%" /></td>
+                    <td><input id=GroupDescription name=GroupDescription type="text" maxlength="50" style="width: 100%" /></td>
+                    </form>
+                </tr>
+            }
+            @{
+                string image = Model.MaterialTypeCode + "_Icon";
+                MaterialElement mat = new MaterialElement();
+                mat.GroupID = 0;
+            }
+            <tr>
+                <td class="evol-fitcontent-column">
+                    <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialList" asp-route-materialGroupJSON="@JsonConvert.SerializeObject(mat)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
+                        <img style="background:none; width:25px;height:25px;" src="~/images/detail.png" title="@localizer["MaterialList"]" />
+                    </a>
+                </td>
+                <td><img style="background:none; width:25px;height:25px;" src="~/images/@localizer[image]" /></td>
+                <td>@localizer["All"]</td>
+            </tr>
+            @foreach (MaterialElement m in Model.MaterialList)
+            {
+                <tr>
+                    <td class="evol-fitcontent-column">
+                        <a asp-area="evolDP" asp-controller="Materials" asp-action="ExpCompany" asp-route-materialGroupJSON="@JsonConvert.SerializeObject(m)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
+                            <img style="background:none; width:25px;height:25px;" src="~/images/config.png" title="@localizer["ConfigMaterialGroup"]" />
+                        </a>
+                        <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialList" asp-route-materialGroupJSON="@JsonConvert.SerializeObject(m)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
+                            <img style="background:none; width:25px;height:25px;" src="~/images/detail.png" title="@localizer["MaterialList"]" />
+                        </a>
+                    </td>
+                    <td>@m.GroupCode</td>
+                    <td>@m.GroupDescription</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

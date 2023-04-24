@@ -6,6 +6,7 @@ using evolUX.API.Areas.evolDP.Services.Interfaces;
 using System.Data.SqlClient;
 using evolUX.API.Areas.evolDP.Services;
 using Shared.Models.Areas.evolDP;
+using evolUX.API.Models;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
@@ -56,7 +57,16 @@ namespace evolUX.API.Areas.evolDP.Controllers
         {
             try
             {
-                var result = await _materials.GetMaterialTypes();
+                object obj;
+                bool groupCodes = false;
+                string materialTypeCode = "";
+                dictionary.TryGetValue("GroupCodes", out obj);
+                if (obj != null)
+                    groupCodes = bool.Parse(Convert.ToString(obj).ToString());
+                dictionary.TryGetValue("MaterialTypeCode", out obj);
+                if (obj!= null)
+                    materialTypeCode = Convert.ToString(obj).ToString();
+                var result = await _materials.GetMaterialTypes(groupCodes, materialTypeCode);
                 _logger.LogInfo("GetMaterialTypes Get");
                 return Ok(result);
             }
@@ -68,6 +78,104 @@ namespace evolUX.API.Areas.evolDP.Controllers
             {
                 //log error
                 _logger.LogError($"Something went wrong inside GetMaterialTypes action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("GetMaterialGroups")]
+        public async Task<ActionResult<IEnumerable<MaterialElement>>> GetMaterialGroups([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                int groupID = 0;
+                dictionary.TryGetValue("GroupID", out obj);
+                if (obj != null)
+                    groupID = Convert.ToInt32(obj.ToString());
+
+                string groupCode = "";
+                dictionary.TryGetValue("GroupCode", out obj);
+                if (obj != null)
+                    groupCode = Convert.ToString(obj).ToString();
+
+                string materialTypeCode = "";
+                dictionary.TryGetValue("MaterialTypeCode", out obj);
+                if (obj != null)
+                    materialTypeCode = Convert.ToString(obj).ToString();
+
+                int materialTypeID = 0;
+                dictionary.TryGetValue("MaterialTypeID", out obj);
+                if (obj != null)
+                    materialTypeID = Convert.ToInt32(obj.ToString());
+
+                var result = await _materials.GetMaterialGroups(groupID,groupCode,materialTypeID,materialTypeCode);
+                _logger.LogInfo("GetMaterialGroups Get");
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetMaterialGroups action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("GetMaterials")]
+        public async Task<ActionResult<IEnumerable<MaterialElement>>> GetMaterials([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                int materialID = 0;
+                dictionary.TryGetValue("MaterialID", out obj);
+                if (obj != null)
+                    materialID = Convert.ToInt32(obj.ToString());
+
+                string materialRef = "";
+                dictionary.TryGetValue("MaterialRef", out obj);
+                if (obj != null)
+                    materialRef = Convert.ToString(obj).ToString();
+
+                string materialCode = "";
+                dictionary.TryGetValue("MaterialCode", out obj);
+                if (obj != null)
+                    materialCode = Convert.ToString(obj).ToString();
+
+                int groupID = 0;
+                dictionary.TryGetValue("GroupID", out obj);
+                if (obj != null)
+                    groupID = Convert.ToInt32(obj.ToString());
+
+                string materialTypeCode = "";
+                dictionary.TryGetValue("MaterialTypeCode", out obj);
+                if (obj != null)
+                    materialTypeCode = Convert.ToString(obj).ToString();
+
+                int materialTypeID = 0;
+                dictionary.TryGetValue("MaterialTypeID", out obj);
+                if (obj != null)
+                    materialTypeID = Convert.ToInt32(obj.ToString());
+
+                var result = await _materials.GetMaterials(materialID, materialRef, materialCode, groupID, materialTypeID, materialTypeCode);
+                _logger.LogInfo("GetMaterials Get");
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetMaterials action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }

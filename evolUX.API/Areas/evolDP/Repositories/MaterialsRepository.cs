@@ -27,12 +27,55 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
         }
         
-        public async Task<IEnumerable<MaterialType>> GetMaterialTypes()
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes(bool groupCodes, string materialTypeCode)
         {
             string sql = @"RD_UX_GET_MATERIAL_TYPE";
+            var parameters = new DynamicParameters();
+            parameters.Add("GroupCodes", groupCodes, DbType.Boolean);
+            parameters.Add("MaterialTypeCode", materialTypeCode, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<MaterialType> result = await connection.QueryAsync<MaterialType>(sql, commandType: CommandType.StoredProcedure);
+                IEnumerable<MaterialType> result = await connection.QueryAsync<MaterialType>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+        public async Task<IEnumerable<MaterialElement>> GetMaterialGroups(int groupID, string groupCode, int materialTypeID, string materialTypeCode)
+        {
+            string sql = @"RD_UX_GET_MATERIAL_GROUP";
+            var parameters = new DynamicParameters();
+            if (groupID > 0)
+                parameters.Add("GroupID", groupID, DbType.Int64);
+            if (!string.IsNullOrEmpty(groupCode))
+                parameters.Add("GroupCode", groupCode, DbType.String);
+            if (materialTypeID > 0)
+                parameters.Add("MaterialTypeID", materialTypeID, DbType.Int64);
+            if (!string.IsNullOrEmpty(materialTypeCode))
+                parameters.Add("MaterialTypeCode", materialTypeCode, DbType.String);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<MaterialElement> result = await connection.QueryAsync<MaterialElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+        public async Task<IEnumerable<MaterialElement>> GetMaterials(int materialID, string materialRef, string materialCode, int groupID, int materialTypeID, string materialTypeCode)
+        {
+            string sql = @"RD_UX_GET_MATERIAL";
+            var parameters = new DynamicParameters();
+            if (materialID > 0)
+                parameters.Add("MaterialID", materialID, DbType.Int64);
+            if (!string.IsNullOrEmpty(materialRef))
+                parameters.Add("MaterialRef", materialRef, DbType.String);
+            if (!string.IsNullOrEmpty(materialCode))
+                parameters.Add("MaterialCode", materialCode, DbType.String);
+            if (groupID > 0)
+                parameters.Add("GroupID", groupID, DbType.Int64);
+            if (materialTypeID > 0)
+                parameters.Add("MaterialTypeID", materialTypeID, DbType.Int64);
+            if (!string.IsNullOrEmpty(materialTypeCode))
+                parameters.Add("MaterialTypeCode", materialTypeCode, DbType.String);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<MaterialElement> result = await connection.QueryAsync<MaterialElement>(sql, parameters, commandType: CommandType.StoredProcedure);
                 return result;
             }
         }

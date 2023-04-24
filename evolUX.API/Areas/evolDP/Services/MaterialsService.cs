@@ -18,9 +18,19 @@ namespace evolUX.API.Areas.evolDP.Services
             IEnumerable<FulfillMaterialCode> result = await _repository.Materials.GetFulfillMaterialCodes(fullFillMaterialCode);
             return result;
         }
-        public async Task<IEnumerable<MaterialType>> GetMaterialTypes()
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes(bool groupCodes, string materialTypeCode)
         {
-            IEnumerable<MaterialType> result = await _repository.Materials.GetMaterialTypes();
+            IEnumerable<MaterialType> result = await _repository.Materials.GetMaterialTypes(groupCodes, materialTypeCode);
+            return result;
+        }
+        public async Task<IEnumerable<MaterialElement>> GetMaterialGroups(int groupID, string groupCode, int materialTypeID, string materialTypeCode)
+        {
+            IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterialGroups(groupID, groupCode, materialTypeID, materialTypeCode);
+            return result;
+        }
+        public async Task<IEnumerable<MaterialElement>> GetMaterials(int materialID, string materialRef, string materialCode, int groupID, int materialTypeID, string materialTypeCode)
+        {
+            IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterials(materialID, materialRef, materialCode, groupID, materialTypeID, materialTypeCode);
             return result;
         }
         public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMedia(int? envMediaID)
