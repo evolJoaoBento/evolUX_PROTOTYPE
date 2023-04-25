@@ -8,6 +8,7 @@ using Shared.ViewModels.Areas.evolDP;
 using evolUX.API.Models;
 using Shared.ViewModels.Areas.Finishing;
 using Shared.Models.Areas.evolDP;
+using Newtonsoft.Json;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
@@ -50,7 +51,15 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int) HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<MaterialElement>>();
         }
-
+        public async Task SetMaterialGroup(MaterialElement material)
+        {
+            var response = await _flurlClient.Request("/API/evolDP/Materials/SetMaterialGroup")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, JsonConvert.SerializeObject(material));
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return;
+        }
         public async Task<IEnumerable<MaterialElement>> GetMaterials(int groupID, string materialTypeCode)
         {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
@@ -62,6 +71,15 @@ namespace evolUX.UI.Areas.evolDP.Repositories
                 if (response.StatusCode == (int) HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
                 if (response.StatusCode == (int) HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
                 return await response.GetJsonAsync<IEnumerable<MaterialElement>>();
+        }
+        public async Task SetMaterial(MaterialElement material)
+        {
+            var response = await _flurlClient.Request("/API/evolDP/Materials/SetMaterial")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, JsonConvert.SerializeObject(material));
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return;
         }
     }
 }

@@ -28,10 +28,21 @@ namespace evolUX.API.Areas.evolDP.Services
             IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterialGroups(groupID, groupCode, materialTypeID, materialTypeCode);
             return result;
         }
+        public async Task SetMaterialGroup(MaterialElement group)
+        {
+            await _repository.Materials.SetMaterialGroup(group);
+            return;
+
+        }
         public async Task<IEnumerable<MaterialElement>> GetMaterials(int materialID, string materialRef, string materialCode, int groupID, int materialTypeID, string materialTypeCode)
         {
             IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterials(materialID, materialRef, materialCode, groupID, materialTypeID, materialTypeCode);
             return result;
+        }
+        public async Task SetMaterial(MaterialElement material)
+        {
+            await _repository.Materials.SetMaterial(material);
+            return;
         }
         public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMedia(int? envMediaID)
         {

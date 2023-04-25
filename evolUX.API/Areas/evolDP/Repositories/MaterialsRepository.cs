@@ -3,6 +3,7 @@ using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Data.Context;
 using Shared.Models.Areas.evolDP;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace evolUX.API.Areas.evolDP.Repositories
 {
@@ -57,6 +58,31 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return result;
             }
         }
+        
+        public async Task SetMaterialGroup(MaterialElement group)
+        {
+            string sql = @"RD_UX_SET_MATERIAL_GROUP";
+            var parameters = new DynamicParameters();
+            if (group.GroupID > 0)
+                parameters.Add("GroupID", group.GroupID, DbType.Int64);
+            parameters.Add("GroupCode", group.GroupCode, DbType.String);
+            parameters.Add("GroupDescription", group.GroupDescription, DbType.String);
+            parameters.Add("MaterialTypeID", group.MaterialTypeID, DbType.Int64);
+            if (group.MaterialWeight >= 0)
+                parameters.Add("MaterialWeight", group.MaterialWeight, DbType.Double);
+            if (group.FullFillSheets >= 0)
+                parameters.Add("FullFillSheets", group.FullFillSheets, DbType.Int64);
+            if (!string.IsNullOrEmpty(group.FullFillMaterialCode))
+                parameters.Add("FullFillMaterialCode", group.FullFillMaterialCode, DbType.String);
+            if (group.ExpeditionMinWeight >= 0)
+                parameters.Add("ExpeditionMinWeight", group.ExpeditionMinWeight, DbType.Double);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                await connection.QueryAsync<MaterialElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return;
+            }
+        }
+
         public async Task<IEnumerable<MaterialElement>> GetMaterials(int materialID, string materialRef, string materialCode, int groupID, int materialTypeID, string materialTypeCode)
         {
             string sql = @"RD_UX_GET_MATERIAL";
@@ -79,6 +105,34 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return result;
             }
         }
+
+        public async Task SetMaterial(MaterialElement material)
+        {
+            string sql = @"RD_UX_SET_MATERIAL";
+            var parameters = new DynamicParameters();
+            if (material.MaterialID > 0)
+                parameters.Add("MaterialID", material.MaterialID, DbType.Int64);
+            parameters.Add("MaterialRef", material.MaterialRef, DbType.String);
+            parameters.Add("MaterialCode", material.MaterialCode, DbType.String);
+            parameters.Add("MaterialDescription", material.MaterialDescription, DbType.String);
+            parameters.Add("MaterialTypeID", material.MaterialTypeID, DbType.Int64);
+            if (material.MaterialWeight >= 0)
+                parameters.Add("MaterialWeight", material.MaterialWeight, DbType.Double);
+            if (material.FullFillSheets >= 0)
+                parameters.Add("FullFillSheets", material.FullFillSheets, DbType.Int64);
+            if (!string.IsNullOrEmpty(material.FullFillMaterialCode))
+                parameters.Add("FullFillMaterialCode", material.FullFillMaterialCode, DbType.String);
+            if (material.ExpeditionMinWeight >= 0)
+                parameters.Add("ExpeditionMinWeight", material.ExpeditionMinWeight, DbType.Double);
+            if (material.GroupID > 0)
+                parameters.Add("GroupID", material.GroupID, DbType.Int64);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                await connection.QueryAsync<MaterialElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return;
+            }
+        }
+
         public async Task<IEnumerable<EnvelopeMediaGroup>> GetEnvelopeMediaGroups(int? envMediaGroupID)
         {
             string sql = @"RD_UX_GET_ENVELOPE_MEDIA_GROUP";

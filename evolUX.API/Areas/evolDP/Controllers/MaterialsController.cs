@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using evolUX.API.Areas.evolDP.Services;
 using Shared.Models.Areas.evolDP;
 using evolUX.API.Models;
+using Newtonsoft.Json;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
@@ -128,6 +129,31 @@ namespace evolUX.API.Areas.evolDP.Controllers
 
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("SetMaterialGroup")]
+        public async Task<ActionResult> SetMaterialGroup([FromBody] string GroupJSON)
+        {
+            try
+            {
+                MaterialElement group = JsonConvert.DeserializeObject<MaterialElement>(GroupJSON);
+
+                await _materials.SetMaterialGroup(group);
+                _logger.LogInfo("SetMaterialGroup Get");
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside SetMaterialGroup action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("GetMaterials")]
         public async Task<ActionResult<IEnumerable<MaterialElement>>> GetMaterials([FromBody] Dictionary<string, object> dictionary)
         {
@@ -179,6 +205,32 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("SetMaterial")]
+        public async Task<ActionResult> SetMaterial([FromBody] string MaterialJSON)
+        {
+            try
+            {
+                MaterialElement material = JsonConvert.DeserializeObject<MaterialElement>(MaterialJSON);
+
+                await _materials.SetMaterial(material);
+                _logger.LogInfo("SetMaterial Get");
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside SetMaterial action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]

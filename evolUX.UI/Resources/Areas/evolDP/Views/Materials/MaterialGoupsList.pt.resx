@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddMaterialGroup" xml:space="preserve">
+    <value>Adicionar Grupo de Materiais</value>
+  </data>
   <data name="All" xml:space="preserve">
     <value>Todos os Materiais</value>
   </data>
@@ -133,10 +136,16 @@
     <value>envelope.png</value>
   </data>
   <data name="FeedPaper" xml:space="preserve">
-    <value>Papel para Impressão em folha solta</value>
+    <value>Papeis para Impressão em folha solta</value>
   </data>
   <data name="FeedPaper_Icon" xml:space="preserve">
     <value>paper.png</value>
+  </data>
+  <data name="GroupCode" xml:space="preserve">
+    <value>Código do Grupo</value>
+  </data>
+  <data name="GroupDescription" xml:space="preserve">
+    <value>Descrição</value>
   </data>
   <data name="MaterialGroups" xml:space="preserve">
     <value>Grupos de Materiais</value>
@@ -148,13 +157,13 @@
     <value>Sem Dados</value>
   </data>
   <data name="Paper" xml:space="preserve">
-    <value>Papel para impressão</value>
+    <value>Papeis para impressão</value>
   </data>
   <data name="Paper_Icon" xml:space="preserve">
     <value>paper.png</value>
   </data>
   <data name="RoolPaper" xml:space="preserve">
-    <value>Papel para impressão em papel contínuo</value>
+    <value>Papeis para impressão em papel contínuo</value>
   </data>
   <data name="RoolPaper_Icon" xml:space="preserve">
     <value>paper.png</value>

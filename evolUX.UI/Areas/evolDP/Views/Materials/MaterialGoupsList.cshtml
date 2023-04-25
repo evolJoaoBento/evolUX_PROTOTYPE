@@ -7,7 +7,7 @@
 
 @model MaterialViewModel;
 <div id="TitlePage">
-    <h1>@localizer["MaterialGroups"]</h1>
+    <h1>@localizer["MaterialGroups"] - @localizer[Model.MaterialTypeCode]</h1>
 </div>
 <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Materials" asp-action="Management">
 </a>
@@ -51,11 +51,11 @@ else
                 <th>@localizer["GroupDescription"]</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="bootstrap-overrides">
             @if (AddMaterialType)
             {
                 <tr id="Hide|" style="display: none">
-                    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Materials" asp-action="ChangeMaterialGroup">
+                    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Materials" asp-action="ChangeMaterialGroup" asp-route-materialtypecode="@Model.MaterialTypeCode">
                     <td style="align-items:center; display:flex">
                         <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                         <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
@@ -72,7 +72,7 @@ else
                 mat.GroupID = 0;
             }
             <tr>
-                <td class="evol-fitcontent-column">
+                <td class="evol-fitcontent-column" style="text-align: center">
                     <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialList" asp-route-materialGroupJSON="@JsonConvert.SerializeObject(mat)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
                         <img style="background:none; width:25px;height:25px;" src="~/images/detail.png" title="@localizer["MaterialList"]" />
                     </a>

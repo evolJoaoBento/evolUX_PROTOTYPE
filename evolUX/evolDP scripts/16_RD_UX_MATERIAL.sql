@@ -113,6 +113,79 @@ AS
 	END
 RETURN
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_MATERIAL]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_MATERIAL] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_SET_MATERIAL]
+	@MaterialID int = NULL,
+	@MaterialRef varchar(20),
+	@MaterialTypeID int,
+	@MaterialCode varchar(20),
+	@MaterialDescription varchar(50) = NULL, 
+	@MaterialWeight float = NULL,
+	@FullFillSheets int = NULL,
+	@FullFillMaterialCode varchar(10) = NULL,
+	@ExpeditionMinWeight float = NULL,
+	@GroupID int = NULL
+AS
+	SET NOCOUNT ON
+	IF (@MaterialID is NULL)
+	BEGIN
+		IF (NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[RD_MATERIAL] WHERE MaterialRef = @MaterialRef))
+		BEGIN
+			IF (NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[RD_MATERIAL] WHERE MaterialCode = @MaterialCode AND MaterialTypeID = @MaterialTypeID))
+			BEGIN
+				INSERT INTO [dbo].[RD_MATERIAL](MaterialID, MaterialRef, MaterialTypeID, MaterialCode, MaterialDescription, MaterialWeight, FullFillSheets, FullFillMaterialCode, ExpeditionMinWeight, GroupID)
+				SELECT ISNULL(MAX(MaterialID),0) + 1, @MaterialRef, @MaterialTypeID, @MaterialCode, @MaterialDescription, @MaterialWeight, @FullFillSheets, @FullFillMaterialCode, @ExpeditionMinWeight, @GroupID
+				FROM RD_MATERIAL
+
+				SELECT @MaterialID = MaterialID 
+				FROM [dbo].[RD_MATERIAL]
+				WHERE MaterialRef = @MaterialRef
+			END
+			ELSE
+			BEGIN
+				SELECT @MaterialID = MaterialID 
+				FROM [dbo].[RD_MATERIAL]
+				WHERE MaterialCode = @MaterialCode AND MaterialTypeID = @MaterialTypeID
+			END
+		END
+		ELSE
+		BEGIN
+			SELECT @MaterialID = MaterialID 
+			FROM [dbo].[RD_MATERIAL]
+			WHERE MaterialRef = @MaterialRef
+		END
+	END
+	ELSE
+	BEGIN
+		IF (NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[RD_MATERIAL] WHERE MaterialCode = @MaterialCode AND MaterialTypeID = @MaterialTypeID))
+		BEGIN
+			UPDATE [dbo].[RD_MATERIAL]
+			SET MaterialCode = @MaterialCode,
+				MaterialTypeID = @MaterialTypeID,
+				MaterialDescription = @MaterialDescription, 
+				MaterialWeight = @MaterialWeight,
+				FullFillSheets = @FullFillSheets,
+				FullFillMaterialCode = @FullFillMaterialCode, 
+				ExpeditionMinWeight = @ExpeditionMinWeight
+			WHERE MaterialID = @MaterialID
+		END
+		ELSE
+		BEGIN
+			UPDATE [dbo].[RD_MATERIAL]
+			SET MaterialDescription = @MaterialDescription, 
+				MaterialWeight = @MaterialWeight,
+				FullFillSheets = @FullFillSheets,
+				FullFillMaterialCode = @FullFillMaterialCode, 
+				ExpeditionMinWeight = @ExpeditionMinWeight
+			WHERE MaterialID = @MaterialID
+		END
+	END
+RETURN @MaterialID
+GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_MATERIAL_GROUP]') AND type in (N'P', N'PC'))
 BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_MATERIAL_GROUP] AS' 
@@ -148,6 +221,48 @@ AS
 			AND m.GroupID = ISNULL(@GroupID,m.GroupID)
 	END
 RETURN
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_MATERIAL_GROUP]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_MATERIAL_GROUP] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_SET_MATERIAL_GROUP]
+	@GroupID int = NULL,
+	@MaterialTypeID int,
+	@GroupCode varchar(20),
+	@GroupDescription varchar(50) = NULL, 
+	@MaterialWeight float = NULL,
+	@FullFillSheets int = NULL,
+	@FullFillMaterialCode varchar(10) = NULL,
+	@ExpeditionMinWeight float = NULL
+
+AS
+	SET NOCOUNT ON
+	IF (@GroupID is NULL)
+	BEGIN
+		IF (NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[RD_MATERIAL_GROUP] WHERE GroupCode = @GroupCode))
+		BEGIN
+			INSERT INTO [dbo].[RD_MATERIAL_GROUP](GroupID, MaterialTypeID, GroupCode, GroupDescription, MaterialWeight, FullFillSheets, FullFillMaterialCode, ExpeditionMinWeight)
+			SELECT ISNULL(MAX(GroupID),0) + 1, @MaterialTypeID, @GroupCode, @GroupDescription, @MaterialWeight, @FullFillSheets, @FullFillMaterialCode, @ExpeditionMinWeight
+			FROM RD_MATERIAL_GROUP
+
+			SELECT @GroupID = GroupID 
+			FROM [dbo].[RD_MATERIAL_GROUP]
+			WHERE GroupCode = @GroupCode
+		END
+	END
+	ELSE
+	BEGIN
+		UPDATE [dbo].[RD_MATERIAL_GROUP]
+		SET GroupDescription = @GroupDescription, 
+			MaterialWeight = @MaterialWeight,
+			FullFillSheets = @FullFillSheets,
+			FullFillMaterialCode = @FullFillMaterialCode, 
+			ExpeditionMinWeight = @ExpeditionMinWeight
+		WHERE GroupID = @GroupID
+	END
+RETURN @GroupID
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_ENVELOPE_MEDIA_GROUP]') AND type in (N'P', N'PC'))
 BEGIN

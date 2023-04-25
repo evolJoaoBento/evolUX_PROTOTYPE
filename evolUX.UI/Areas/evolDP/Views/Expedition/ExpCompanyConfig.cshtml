@@ -125,7 +125,7 @@ else
                             <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>
-                                @type.ExpeditionTypeDesc
+                            @type.ExpeditionTypeDesc
                             <input style="display: none" id="ExpCompanyID" name="ExpCompanyID" type="text" value="@Model.ExpCompany.ID" />
                             <input style="display: none" id="StartDate" name="StartDate" type="text" value="@startDateDesc" />
                             <input style="display: none" id="ExpeditionType" name="ExpeditionType" type="text" value="@type.ExpeditionType" />
@@ -233,16 +233,16 @@ else
                         <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td>
-                            @t.ExpeditionTypeDesc
+                        @t.ExpeditionTypeDesc
                         <input style="display: none" id="ExpCompanyID" name="ExpCompanyID" type="text" value="@t.ExpCompanyID" />
                         <input style="display: none" id="ExpeditionType" name="ExpeditionType" type="text" value="@t.ExpeditionType" />
                    </td>
                     <td>
-                            @t.ExpeditionZoneDesc
+                        @t.ExpeditionZoneDesc
                         <input style="display: none" id="ExpeditionZone" name="ExpeditionZone" type="text" value="@t.ExpeditionZone" />
                     </td>
                     <td>
-                            @t.ExpCompanyLevel
+                        @t.ExpCompanyLevel
                         <input style="display: none" id="ExpCompanyLevel" name="ExpCompanyLevel" type="text" value="@t.ExpCompanyLevel" />
                     </td>
                     <td><input type="number" min="0" max="1000000" id="MaxWeight" name="MaxWeight" value="@t.MaxWeight" /> g</td>
