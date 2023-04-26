@@ -707,4 +707,6 @@ label {
     color: white;
 }
 
-
+#bootstrap-overrides .borders{
+    border-style: none;
+}
