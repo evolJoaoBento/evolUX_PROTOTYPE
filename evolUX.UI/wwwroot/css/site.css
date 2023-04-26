@@ -774,6 +774,8 @@ label {
     font-weight: bold;
 }
 
-#bootstrap-overrides .borders{
+#bootstrap-overrides .borders {
     border-style: none;
+    text-align: center;
+    background: none;
 }
