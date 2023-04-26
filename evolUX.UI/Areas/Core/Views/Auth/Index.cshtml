@@ -33,9 +33,9 @@
             <div id="form-wrap" class="login-form">
                 <form id="credentials-form" asp-area="core" asp-controller="auth" asp-action="LoginCredentials" method="get" style="width:100%; display:none; height:100px;">
                     <label style="display: block; padding-left:10px; font-weight:bold">Username:</label>
-                    <input type="text" asp-for="Username" style="width:100%;border:none; background:rgb(230,230,230)">
+                    <input type="text" asp-for="Username" style="width:100%;border:none; background:rgb(230,230,230)" required>
                     <label style="display: block;padding-left:10px; font-weight:bold">Password:</label>
-                    <input type="password" asp-for="Password" style="width:100%; border:none;background:rgb(230,230,230)">
+                    <input type="password" asp-for="Password" style="width:100%; border:none;background:rgb(230,230,230)" required>
                     <input type="hidden" name="returnUrl" value="@returnUrl">
                     <input type="submit" name="Submit" class="btn btn-block btn-outline-success" />
                 </form>
