@@ -8,6 +8,7 @@ using Shared.ViewModels.Areas.evolDP;
 using evolUX.API.Models;
 using Shared.ViewModels.Areas.Finishing;
 using Shared.Models.Areas.evolDP;
+using Newtonsoft.Json;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
@@ -26,9 +27,12 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<FulfillMaterialCode>>();
         }
-        public async Task<IEnumerable<MaterialType>> GetMaterialTypes()
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes(bool groupCodes, string materialTypeCode)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("GroupCodes", groupCodes);
+            dictionary.Add("MaterialTypeCode", materialTypeCode);
+
             var response = await _flurlClient.Request("/API/evolDP/Materials/GetMaterialTypes")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
@@ -36,29 +40,46 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<IEnumerable<MaterialType>>();
         }
-        //public async Task<MaterialsTypeViewModel> GetMaterialsTypes(int? MaterialsType, string expCompanyList)
-        //{
-        //    Dictionary<string, object> dictionary = new Dictionary<string, object>();
-        //    dictionary.Add("MaterialsType", MaterialsType);
-        //    dictionary.Add("ExpCompanyList", expCompanyList);
-        //    var response = await _flurlClient.Request("/API/evolDP/Materials/GetMaterialsTypes")
-        //        .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-        //        .SendJsonAsync(HttpMethod.Get, dictionary);
-        //    if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
-        //    if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-        //    return await response.GetJsonAsync<MaterialsTypeViewModel>();
-        //}
-        //public async Task<MaterialsZoneViewModel> GetMaterialsZones(int? MaterialsZone, string expCompanyList)
-        //{
-        //    Dictionary<string, object> dictionary = new Dictionary<string, object>();
-        //    dictionary.Add("MaterialsZone", MaterialsZone);
-        //    dictionary.Add("ExpCompanyList", expCompanyList);
-        //    var response = await _flurlClient.Request("/API/evolDP/Materials/GetMaterialsZones")
-        //        .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-        //        .SendJsonAsync(HttpMethod.Get, dictionary);
-        //    if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
-        //    if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-        //    return await response.GetJsonAsync<MaterialsZoneViewModel>();
-        //}
+        public async Task<IEnumerable<MaterialElement>> GetMaterialGroups(string materialTypeCode)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("MaterialTypeCode", materialTypeCode);
+            var response = await _flurlClient.Request("/API/evolDP/Materials/GetMaterialGroups")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int) HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int) HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<IEnumerable<MaterialElement>>();
+        }
+        public async Task SetMaterialGroup(MaterialElement material)
+        {
+            var response = await _flurlClient.Request("/API/evolDP/Materials/SetMaterialGroup")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, JsonConvert.SerializeObject(material));
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return;
+        }
+        public async Task<IEnumerable<MaterialElement>> GetMaterials(int groupID, string materialTypeCode)
+        {
+                Dictionary<string, object> dictionary = new Dictionary<string, object>();
+                dictionary.Add("GroupID", groupID);
+                dictionary.Add("MaterialTypeCode", materialTypeCode);
+                var response = await _flurlClient.Request("/API/evolDP/Materials/GetMaterials")
+                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                    .SendJsonAsync(HttpMethod.Get, dictionary);
+                if (response.StatusCode == (int) HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+                if (response.StatusCode == (int) HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+                return await response.GetJsonAsync<IEnumerable<MaterialElement>>();
+        }
+        public async Task SetMaterial(MaterialElement material)
+        {
+            var response = await _flurlClient.Request("/API/evolDP/Materials/SetMaterial")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, JsonConvert.SerializeObject(material));
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return;
+        }
     }
 }

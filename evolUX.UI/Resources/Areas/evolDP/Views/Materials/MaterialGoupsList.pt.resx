@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddMaterialGroup" xml:space="preserve">
+    <value>Adicionar Grupo de Materiais</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Todos os Materiais</value>
+  </data>
+  <data name="ConfigMaterialGroup" xml:space="preserve">
+    <value>Configuração do Grupo de Materiais</value>
+  </data>
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
   </data>
@@ -132,8 +141,17 @@
   <data name="FeedPaper_Icon" xml:space="preserve">
     <value>paper.png</value>
   </data>
-  <data name="MaterialType" xml:space="preserve">
-    <value>Tipos de Material</value>
+  <data name="GroupCode" xml:space="preserve">
+    <value>Código do Grupo</value>
+  </data>
+  <data name="GroupDescription" xml:space="preserve">
+    <value>Descrição</value>
+  </data>
+  <data name="MaterialGroups" xml:space="preserve">
+    <value>Grupos de Materiais</value>
+  </data>
+  <data name="MaterialList" xml:space="preserve">
+    <value>Listar Materiais</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
@@ -155,8 +173,5 @@
   </data>
   <data name="Station_Icon" xml:space="preserve">
     <value>newspaper.png</value>
-  </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Listar Materiais</value>
   </data>
 </root>
