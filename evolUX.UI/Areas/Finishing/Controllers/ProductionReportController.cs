@@ -61,7 +61,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 else
                 {
                     string scValues = ServiceCompanies.Rows[0]["ID"].ToString() + "|" + ServiceCompanies.Rows[0]["CompanyCode"].ToString() + " | " + ServiceCompanies.Rows[0]["CompanyName"].ToString();
-                    return RedirectToAction("ProductionRunReport", "ProductionReport", new { Area = "Finishing", ServiceCompanyValues = scValues });
+                    return RedirectToAction("ProductionRunReport", "ProductionReport", new { Area = "Finishing", serviceCompanyValues = scValues });
                 }
             }
             catch (FlurlHttpException ex)
@@ -100,9 +100,10 @@ namespace evolUX.UI.Areas.Finishing.Controllers
 
         }
 
-        public async Task<IActionResult> ProductionRunReport(string ServiceCompanyValues)
+        public async Task<IActionResult> ProductionRunReport(string serviceCompanyValues, string source)
         {
-            string[] serviceCompanyValue = ServiceCompanyValues.Split('|');
+            ViewBag.Source = source;
+            string[] serviceCompanyValue = serviceCompanyValues.Split('|');
             int ServiceCompanyID = Convert.ToInt32(serviceCompanyValue[0]);
             string ServiceCompanyCode = serviceCompanyValue.Length > 1 ? serviceCompanyValue[1] : "";
             string ServiceCompanyName = serviceCompanyValue.Length > 2 ? serviceCompanyValue[2] : "";

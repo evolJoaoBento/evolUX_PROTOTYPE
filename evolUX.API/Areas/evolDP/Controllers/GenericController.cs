@@ -26,6 +26,48 @@ namespace evolUX.API.Areas.evolDP.Controllers
         }
 
         [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("GetCompanies")]
+        public async Task<ActionResult<IEnumerable<Company>>> GetCompanies([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                IEnumerable<Company> companies = new List<Company>();
+                object obj;
+                dictionary.TryGetValue("CompanyID", out obj);
+                int value = 0;
+                int? companyID = null;
+                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                    companyID = value;
+                DataTable companyList = new DataTable();
+                if (companyID == null)
+                {
+                    dictionary.TryGetValue("CompanyList", out obj);
+                    string companyListJSON = Convert.ToString(obj);
+                    companyList = JsonConvert.DeserializeObject<DataTable>(companyListJSON).DefaultView.ToTable(false, "ID");
+                    companies = await _genericService.GetCompanies(companyList);
+                }
+                else
+                {
+                    companies = await _genericService.GetCompanies((int)companyID);
+                }
+
+                _logger.LogInfo("Companies Get");
+                return Ok(companies);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetCompanies action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
         [ActionName("SetCompany")]
         public async Task<ActionResult<Company>> SetCompany([FromBody] string CompanyJSON)
         {
@@ -51,13 +93,34 @@ namespace evolUX.API.Areas.evolDP.Controllers
 
         [HttpGet]
         [ActionName("GetCompanyBusiness")]
-        public async Task<ActionResult<BusinessViewModel>> GetCompanyBusiness([FromBody] string CompanyBusinessListJSON)
+        public async Task<ActionResult<BusinessViewModel>> GetCompanyBusiness([FromBody] Dictionary<string, object> dictionary)
         {
-            DataTable CompanyBusinessList = JsonConvert.DeserializeObject<DataTable>(CompanyBusinessListJSON);
+            object obj;
+            dictionary.TryGetValue("CompanyID", out obj);
+            int value = 0;
+            int companyID = 0;
+            if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                companyID = value;
+
+            DataTable CompanyList = null;
+            dictionary.TryGetValue("CompanyList", out obj);
+            if (obj != null)
+            {
+                string companyListJSON = Convert.ToString(obj);
+                if (!string.IsNullOrEmpty(companyListJSON))
+                {
+                    CompanyList = JsonConvert.DeserializeObject<DataTable>(companyListJSON).DefaultView.ToTable(false, "ID");
+                }
+            }
             try
             {
                 BusinessViewModel viewmodel = new BusinessViewModel();
-                viewmodel.CompanyBusiness = await _genericService.GetCompanyBusiness(CompanyBusinessList);
+                viewmodel.CompanyBusiness = await _genericService.GetCompanyBusiness(companyID, CompanyList);
+                if (companyID > 0)
+                {
+                    viewmodel.Company = (await _genericService.GetCompanies(companyID)).First();
+
+                }
                 _logger.LogInfo("GetCompanyBusiness Get");
                 return Ok(viewmodel);
             }
@@ -74,12 +137,36 @@ namespace evolUX.API.Areas.evolDP.Controllers
         }
 
         [HttpGet]
+        [ActionName("SetBusiness")]
+        public async Task<ActionResult> SetBusiness([FromBody] string BusinessJSON)
+        {
+            Business business = JsonConvert.DeserializeObject<Business>(BusinessJSON);
+            try
+            {
+
+                await _genericService.SetBusiness(business);
+                _logger.LogInfo("SetBusiness Get");
+                return Ok();
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get SetBusiness action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
+        [HttpGet]
         [ActionName("GetProjects")]
         public async Task<ActionResult<ProjectListViewModel>> GetProjects([FromBody] string CompanyBusinessListJSON)
         {
             try
             {
-                DataTable CompanyBusinessList = JsonConvert.DeserializeObject<DataTable>(CompanyBusinessListJSON);
+                DataTable CompanyBusinessList = JsonConvert.DeserializeObject<DataTable>(CompanyBusinessListJSON).DefaultView.ToTable(false, "ID"); ;
                 ProjectListViewModel viewmodel = await _genericService.GetProjects(CompanyBusinessList);
                 _logger.LogInfo("GetProjects Get");
                 return Ok(viewmodel);

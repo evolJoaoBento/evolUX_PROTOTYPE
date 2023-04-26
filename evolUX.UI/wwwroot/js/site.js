@@ -75,7 +75,6 @@ function changeClass(elementName, oldClassValue, newClassValue) {
     document.getElementById(elementName).classList.remove(oldClassValue);
     document.getElementById(elementName).classList.add(newClassValue);
 }
-
 /*************************************************************
 Hide field with specific id
     elementName: name id of field to hide
@@ -141,6 +140,7 @@ function showDetail(startName) {
     eSshow(startName);
     changeClass('arrow' + startName, 'bxs-chevron-down', 'bxs-chevron-up');
     document.getElementById('arrow' + startName).href = "javascript:hideDetail('" + startName + "');";
+    changeClass('row|' + startName, 'evol-normal-row', 'evol-highlight-row');
 }
 
 /*******************************************************************************
@@ -151,6 +151,26 @@ function hideDetail(startName) {
     eShide(startName);
     changeClass('arrow' + startName, 'bxs-chevron-up', 'bxs-chevron-down');
     document.getElementById('arrow' + startName).href = "javascript:showDetail('" + startName + "');";
+    changeClass('row|' + startName, 'evol-highlight-row', 'evol-normal-row');
+}
+/*******************************************************************************
+Function that shows the detail by selecting the respective button
+    startName: Element Start Name
+********************************************************************************/
+function showDetails(startName) {
+    eSshow(startName);
+    changeClass('arrow' + startName, 'bxs-chevrons-down', 'bxs-chevrons-up');
+    document.getElementById('arrow' + startName).href = "javascript:hideDetails('" + startName + "');";
+}
+
+/*******************************************************************************
+Function that hides the detail by selecting the respective button
+    startName: Element Start Name
+********************************************************************************/
+function hideDetails(startName) {
+    eShide(startName);
+    changeClass('arrow' + startName, 'bxs-chevrons-up', 'bxs-chevrons-down');
+    document.getElementById('arrow' + startName).href = "javascript:showDetails('" + startName + "');";
 }
 /*******************************************************************************
 Function that check all checkbox with specific elemnent name 
@@ -211,12 +231,11 @@ function filterTableRows(form, table, elements) {
 function filterCheckBoxTableRows(form, table, elements) {
     form.addEventListener('submit', function (event) {
         event.preventDefault(); // prevent form from submitting
-
         const rows = table.getElementsByTagName('tr'); // get all table rows
         for (let i = 0; i < rows.length; i++) {
             let showRow = true;
             for (let j = 0; j < elements.length; j++) {
-                const element = form.getElementsByName(elements[j]); // get form element by name
+                const element = document.getElementsByName(elements[j]); // get form element by name
                 const cell = rows[i].children[elements[j]]; // get table cell in corresponding column
                 let value = '';
                 for (let k = 0; k < element.length; k++) {
@@ -269,7 +288,7 @@ var i;
 for (i = 0; i < coll.length; i++) {
     coll[i].addEventListener("click", function () {
         this.classList.toggle("active");
-        var content = this.nextElementSibling;
+        var content = this.nextElementSibling.querySelector('td').querySelector('div');
         if (content.style.height) {
             content.style.height = null;
             content.style.opacity = "0";
@@ -279,3 +298,9 @@ for (i = 0; i < coll.length; i++) {
         } 
     });
 }
+var scrollbar = document.querySelector('.scrollbar');
+scrollbar.addEventListener('scroll', function () {
+    var thumb = scrollbar.querySelector('::after');
+    var percentage = scrollbar.scrollTop / (scrollbar.scrollHeight - scrollbar.clientHeight) * 100;
+    thumb.style.top = percentage + '%';
+});

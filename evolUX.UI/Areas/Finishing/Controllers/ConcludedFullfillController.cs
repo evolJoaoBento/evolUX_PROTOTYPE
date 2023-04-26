@@ -19,9 +19,9 @@ namespace evolUX.UI.Areas.Finishing.Controllers
     [Area("Finishing")]
     public class ConcludedFullfillController : Controller
     {
-        private readonly IConcludedFullfillService _concludedFullfillService;
+        private readonly IConcludedFulfilmentService _concludedFullfillService;
         private readonly IStringLocalizer<ConcludedFullfillController> _localizer;
-        public ConcludedFullfillController(IConcludedFullfillService concludedFullfillService, IStringLocalizer<ConcludedFullfillController> localizer)
+        public ConcludedFullfillController(IConcludedFulfilmentService concludedFullfillService, IStringLocalizer<ConcludedFullfillController> localizer)
         {
             _concludedFullfillService = concludedFullfillService;
             _localizer = localizer;

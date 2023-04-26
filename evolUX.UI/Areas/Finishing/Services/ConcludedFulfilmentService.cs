@@ -11,18 +11,18 @@ using System.Data;
 
 namespace evolUX.UI.Areas.Finishing.Services
 {
-    public class ConcludedFullfillService : IConcludedFullfillService
+    public class ConcludedFulfilmentService : IConcludedFulfilmentService
     {
-        private readonly IConcludedFullfillRepository _concludedFullfillRepository;
-        public ConcludedFullfillService(IConcludedFullfillRepository concludedFullfillRepository)
+        private readonly IConcludedFulfilmentRepository _ConcludedFulfilmentRepository;
+        public ConcludedFulfilmentService(IConcludedFulfilmentRepository ConcludedFulfilmentRepository)
         {
-            _concludedFullfillRepository = concludedFullfillRepository;
+            _ConcludedFulfilmentRepository = ConcludedFulfilmentRepository;
         }
         public async Task<ResultsViewModel> RegistFullFill(string FileBarcode, string user, string ServiceCompanyList)
         {
             try
             {
-                ResultsViewModel viewModel = await _concludedFullfillRepository.RegistFullFill(FileBarcode, user, ServiceCompanyList);
+                ResultsViewModel viewModel = await _ConcludedFulfilmentRepository.RegistFullFill(FileBarcode, user, ServiceCompanyList);
                 if (viewModel != null && viewModel.Results != null && viewModel.Results.Error.ToUpper() != "SUCCESS" && viewModel.Results.Error.ToUpper() != "NOTSUCCESS")
                 {
                     throw new ControledErrorException(viewModel.Results.Error.ToString());

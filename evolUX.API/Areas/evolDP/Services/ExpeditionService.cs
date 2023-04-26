@@ -61,7 +61,7 @@ namespace evolUX.API.Areas.evolDP.Services
         public async Task<ExpeditionZoneViewModel> GetExpeditionZones(int? expeditionZone, DataTable? expCompanyList)
         {
             ExpeditionZoneViewModel viewModel = new ExpeditionZoneViewModel();
-            viewModel.Zones = await _repository.ExpeditionType.GetExpeditionZones(expeditionZone);
+            viewModel.Zones = await _repository.ExpeditionType.GetExpeditionZones(expeditionZone, 0);
             if (viewModel.Zones != null && expeditionZone == null && expCompanyList != null)
             {
                 foreach (ExpeditionZoneElement e in viewModel.Zones.ToList())
@@ -71,7 +71,12 @@ namespace evolUX.API.Areas.evolDP.Services
             }
             return viewModel;
         }
-
+        public async Task<ExpeditionZoneViewModel> GetExpeditionZones(int? expeditionZone, int expCompanyID)
+        {
+            ExpeditionZoneViewModel viewModel = new ExpeditionZoneViewModel();
+            viewModel.Zones = await _repository.ExpeditionType.GetExpeditionZones(expeditionZone, expCompanyID);
+            return viewModel;
+        }
         public async Task<IEnumerable<Company>> GetExpeditionCompanies(int? expCompanyID, DataTable? expCompanyList)
         {
             var expeditionCompaniesList = await _repository.Generic.GetCompanies(expCompanyID, expCompanyList);

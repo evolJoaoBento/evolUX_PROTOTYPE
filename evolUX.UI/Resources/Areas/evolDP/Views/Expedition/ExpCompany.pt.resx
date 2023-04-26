@@ -132,6 +132,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
+  <data name="ChangeCompany" xml:space="preserve">
+    <value>Alterar dados da Companhia</value>
+  </data>
   <data name="CompanyAddress" xml:space="preserve">
     <value>Morada</value>
   </data>
@@ -170,9 +173,6 @@
   </data>
   <data name="ExpCompany" xml:space="preserve">
     <value>Companhia de Expedição</value>
-  </data>
-  <data name="ExpCompanyChange" xml:space="preserve">
-    <value>Alterar dados da Companhia</value>
   </data>
   <data name="ExpCompanyConfig" xml:space="preserve">
     <value>Configuração de Escalões e Custos para Companhia de Expedição</value>

@@ -136,7 +136,7 @@
     <value>O Ficheiro não se encontra registado na evolDP</value>
   </data>
   <data name="FileNotFoundInServiceCompany" xml:space="preserve">
-    <value>Ficheiro não encontrado para a respetiva Companhia de Serviços</value>
+    <value>Ficheiro não encontrado para a respetiva Companhia de Prestação de Serviços</value>
   </data>
   <data name="FileNotFullfilled" xml:space="preserve">
     <value>O Ficheiro ainda não foi dado como Envelopado</value>
@@ -154,7 +154,7 @@
     <value>Código de Barras (Primeiro Objecto Postal) Inválido</value>
   </data>
   <data name="FirstPostObjNotFoundInServiceCompany" xml:space="preserve">
-    <value>(Primeiro) Objecto Postal não encontrado para a respetiva Companhia de Serviços</value>
+    <value>(Primeiro) Objecto Postal não encontrado para a respetiva Companhia de Prestação de Serviços</value>
   </data>
   <data name="FirstPostObjRegistDetailNotFound" xml:space="preserve">
     <value>(Primeiro) Objecto Postal não tem associado nenhum Aviso de Receção</value>
@@ -187,7 +187,7 @@
     <value>Código de Barras (Último Objecto Postal) Inválido</value>
   </data>
   <data name="LastPostObjNotFoundInServiceCompany" xml:space="preserve">
-    <value>(Último) Objecto Postal não encontrado para a respetiva Companhia de Serviços</value>
+    <value>(Último) Objecto Postal não encontrado para a respetiva Companhia de Prestação de Serviços</value>
   </data>
   <data name="LastPostObjRegistDetailNotFound" xml:space="preserve">
     <value>(Último) Objecto Postal não tem associado nenhum Aviso de Receção</value>
@@ -205,7 +205,7 @@
     <value>Objecto Postal não se encontra registado na evolDP</value>
   </data>
   <data name="PostObjNotFoundInServiceCompany" xml:space="preserve">
-    <value>Objecto Postal não encontrado para a respetiva Companhia de Serviços</value>
+    <value>Objecto Postal não encontrado para a respetiva Companhia de Prestação de Serviços</value>
   </data>
   <data name="UserInactive" xml:space="preserve">
     <value>Utilizador Desativo</value>

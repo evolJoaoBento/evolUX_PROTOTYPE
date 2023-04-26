@@ -1,0 +1,198 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model ServiceTypeDetailViewModel;
+@{
+    int colWidth;
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddServiceCompany = false;
+    bool AddServiceTask = false;
+    bool DeleteServiceTask = false;
+    bool ExportServiceTask = false;
+    bool AddServiceCompanyExpCodes = false;
+    bool AddExpCode = false;
+    bool DeleteExpCode = false;
+    bool ExportExpCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddServiceCompanyExpCodes") != null) { AddServiceCompanyExpCodes = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceCompany") != null) { AddServiceCompany = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceTask") != null) { AddServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "DeleteServiceTask") != null) { DeleteServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "ExportServiceTask") != null) { ExportServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "AddExpCode") != null) { AddExpCode = true; }
+    if (Model.Permissions.Find(x => x == "DeleteExpCode") != null) { DeleteExpCode = true; }
+    if (Model.Permissions.Find(x => x == "ExportExpCode") != null) { ExportExpCode = true; }
+}
+@if (Model == null)
+{
+    <div id = "TitlePage" >
+        <h1>@localizer["ServiceTypeDetail"]</h1>
+    </div>
+    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceTypes">
+    </a>
+    @localizer["NoModelData"]
+}
+else
+{
+    string headerDesc = Model.Type.ServiceTypeDesc;
+
+    <div id="TitlePage">
+        <h1>@localizer["ServiceTypeDetail"]: @headerDesc</h1>
+    </div>
+    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceTypes">
+    </a>
+    string value = "";
+    string Level0Name = "level";
+
+    int level = 0;
+    string idValue = "arrow" + level.ToString();
+    string nameValue = "";
+    colWidth = 0;
+    if (AddServiceTask)
+        colWidth++;
+    if (Model.Type.ServicesList.Where(x => x.CompanyList.Count() > 0).ToList().Count() > 0)
+        colWidth++;
+    colWidth = 30 * colWidth;
+    int colspan = 3;
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                @if (colWidth > 0)
+                {
+                    colspan++;
+                    <th class="evol-fitcontent-column" style="text-align: center">
+                    @if (AddServiceTask)
+                    {
+                           <img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["ChangeServiceType"]" />
+                    }
+                    </th>
+                }
+                <th>@localizer["ServiceDesc"]</th>
+                <th>@localizer["ServiceCode"]</th>
+                <th title="@localizer["MatchCodeTip"]">@localizer["MatchCode"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (AddServiceTask)
+            {
+                <tr id="Hide|" style="display: none">
+                    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetService">
+                        <td style ="align-items:center; display:flex">
+                           <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
+                           <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png"/>
+                           <input style="display: none" id=ServiceTypeID name=ServiceTypeID type="number" value="@Model.Type.ServiceTypeID" />
+                           <input style="display: none" id=ServiceID name=ServiceID type="number" value="0" />
+                        </td>
+                    <td><input id=ServiceTypeDesc name=ServiceDesc type="text" maxlength="256" style="width: 100%" /></td>
+                    <td><input id=ServiceTypeCode name=ServiceCode type="text" maxlength="25" style="width: 100%" /></td>
+                    <td><input id="MatchCode" name=MatchCode type="text" maxlength="50" style="width: 100%" /></td>
+                    </form>
+                </tr>
+            }
+            @foreach(ServiceElement s in Model.Type.ServicesList)
+            {
+                value = s.ServiceID.ToString();
+                level++;
+                nameValue = Level0Name + level.ToString();
+                idValue = "arrow" + nameValue;
+                <tr id="Show|@value">
+                    @if (colWidth > 0)
+                    {
+                    <td class="evol-fitcontent-column" style="align-items:center; display:flex">
+                        @if (AddServiceTask)
+                        {
+                        <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeService"]" />
+                        }
+                        @if (s.CompanyList.Count() > 0)
+                        {
+                            <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                        }
+                    </td>
+                    }
+                    <td>@s.ServiceDesc
+                    </td>
+                    <td>@s.ServiceCode</td>
+                    <td>@s.MatchCode</td>
+                </tr>
+                @if (AddServiceTask)
+                {
+                    <tr id="Hide|@value" style="display: none">
+                        <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetService"
+                             asp-route-serviceJson="@JsonConvert.SerializeObject(s)">
+                        <td style="align-items:center; display:flex">
+                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                            <input style="display: none" id=ServiceTypeID name=ServiceTypeID type="number" value="@s.ServiceTypeID" />
+                            <input style="display: none" id=ServiceID name=ServiceID type="number" value="@s.ServiceID" />
+                        </td>
+                        <td><input id=ServiceDesc name=ServiceDesc type="text" maxlength="256" style="width: 100%" value="@s.ServiceDesc" /></td>
+                        <td><input id=ServiceCode name=ServiceCode type="text" maxlength="25" style="width: 100%" value="@s.ServiceCode" /></td>
+                        <td><input id=MatchCode name=MatchCode type="text" maxlength="50" style="width: 100%" value="@s.ServiceCode" /></td>
+                        </form>
+                    </tr>
+                }
+                @if (s.CompanyList.Count() > 0)
+                {
+                    <tr id="@nameValue" style="display: none">
+                        <td colspan="@colspan">
+                            <table class="table table-sm table-hover table-collapse-seperate">
+                                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                    <tr>
+                                        <th>@localizer["ServiceCompany"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bootstrap-overrides">
+                                    @foreach (int c in s.CompanyList)
+                                    {
+                                        <tr>
+                                            <td>@Model.ServiceCompanies.FirstOrDefault(x => x.ID == c).CompanyName</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+        function RegistModeChange()
+        {
+            var checkbox = document.getElementById("RegistMode");
+            chkElements = document.querySelectorAll('input[id^="checkedDRFlag"]');
+            chkElements.forEach(tElement => {
+                tElement.checked = checkbox.checked;
+            });
+        }
+        function CancelRow(value) {
+            eShide('Hide|' + value);
+            eSshow('Show|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = true;
+            return false;
+        }
+        function EditRow(value) {
+            eShide('Show|' + value);
+            eSshow('Hide|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = false;
+
+            let str = 'Hide|' + value;
+            trElements = document.querySelectorAll('tr[id^="Hide|"]');
+            trElements.forEach(tElement => {
+                if (tElement.id != str) {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                }
+            });
+        }
+    </script>
+}
