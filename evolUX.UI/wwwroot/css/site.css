@@ -777,5 +777,6 @@ label {
 #bootstrap-overrides .borders {
     border-style: none;
     text-align: center;
+    align-content: center;
     background: none;
 }
