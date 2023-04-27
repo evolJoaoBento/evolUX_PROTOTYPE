@@ -29,7 +29,7 @@ else
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th class="evol-fitcontent-column"></th>
+                <th class="evol-fitcontent-column borders"></th>
                 <th class="evol-fitcontent-column">@localizer["Zone"]</th>
                 <th>@localizer["Description"]</th>
             </tr>
@@ -41,7 +41,7 @@ else
                     nameValue = Level0Name + level.ToString();
                     idValue = "arrow" + nameValue;
                     <tr>
-                        <td>
+                        <td class="borders">
                             @if (z.ExpCompanyZonesList.Count() > 0)
                             {
                                 <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
@@ -57,7 +57,7 @@ else
                             <table class="table table-sm table-hover table-collapse-seperate">
                             <thead id="bootstrap-overrides" class="table-info sticky-header">
                                     <tr>
-                                        <th class="evol-fitcontent-column"></th>
+                                        <th class="evol-fitcontent-column borders"></th>
                                         <th>@localizer["ExpCompany"]</th>
                                         <th>@localizer["ExpCenterCode"]</th>
                                     </tr>
@@ -72,7 +72,7 @@ else
                                             newExpZone.ExpeditionZoneDesc = z.ExpeditionZoneDesc;
                                             newExpZone.ExpCompanyZonesList = z.ExpCompanyZonesList.Where(x => x.ExpCompanyID == c.ExpCompanyID && x.ExpCenterCode == c.ExpCenterCode).ToList();
                                         <tr>
-                                                <td><a asp-area="evolDP" asp-controller="Expedition" asp-action="ZoneDetail" asp-route-expeditionzoneJson="@JsonConvert.SerializeObject(newExpZone)">
+                                                <td class="borders"><a asp-area="evolDP" asp-controller="Expedition" asp-action="ZoneDetail" asp-route-expeditionzoneJson="@JsonConvert.SerializeObject(newExpZone)">
                                                         <img class="evol-image" src="~/images/detail.png" title="@localizer["List"]: @value" />
                                                     </a></td>
                                                 <td>@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName</td>

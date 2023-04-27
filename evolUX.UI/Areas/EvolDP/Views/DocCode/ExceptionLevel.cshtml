@@ -52,7 +52,7 @@ else
             <tr>
                 @if (AddExceptionLevel)
                 {
-                    <th class="evol-fitcontent-column" style="text-align:center"><img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddException"] @ExceptionLevelIDLabel" /></th>
+                    <th class="evol-fitcontent-column borders" style="text-align:center"><img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddException"] @ExceptionLevelIDLabel" /></th>
                 }
                 <th>@localizer["ExceptionID"]</th>
                 <th>@localizer["ExceptionCode"]</th>
@@ -80,7 +80,7 @@ else
                 <tr id="Exception|@value">
                     @if (AddExceptionLevel)
                     {
-                        <td style="align-items:center; display:flex">
+                        <td style="align-items:center; display:flex" class="borders">
                             <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
                             @if (DeleteExceptionLevel)
                             {
