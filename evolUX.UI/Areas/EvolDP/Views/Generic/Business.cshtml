@@ -47,7 +47,7 @@ else
             <tr>
                 @if (AddDocCode)
                 {
-                    <th class="evol-fitcontent-column"></th>
+                    <th class="evol-fitcontent-column borders"></th>
                 }
                 <th>@localizer["CompanyCode"]</th>
                 <th>@localizer["CompanyName"]</th>
@@ -61,7 +61,7 @@ else
             <tr id="Show|Company">
                 @if (AddDocCode)
                 {
-                    <td style="text-align: center">
+                    <td class="borders" style="text-align: center">
                         <img onclick="EditRow('Company')" class="evol-image" src="~/images/edit.png" title="@localizer["CompanyChange"]" />
                     </td>
                 }
@@ -97,7 +97,7 @@ else
             <tr>
                 @if (AddDocCode)
                 {
-                    <th rowspan="2" class="evol-fitcontent-column"></th>
+                    <th rowspan="2" class="evol-fitcontent-column borders"></th>
                 }
                 <th rowspan="2">@localizer["BusinessCode"]</th>
                 <th rowspan="2">@localizer["BusinessDescription"]</th>
@@ -119,7 +119,7 @@ else
                 value = b.BusinessID.ToString();
                 @if (AddDocCode)
                 {
-                    <tr id="Hide|@value" style="display: none">
+                    <tr id="Hide|@value" style="display: none" class="borders">
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Generic" asp-action="ChangeBusiness" asp-route-companyid="@company.ID">
                         <td style="align-items:center; display:flex">
                             <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
@@ -213,7 +213,7 @@ else
                 <tr id="Show|@value">
                     @if (AddDocCode)
                     {
-                        <td style="text-align: center">
+                        <td style="text-align: center" class="borders">
                             <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeBusiness"]" />
                         </td>
                     }
