@@ -214,7 +214,7 @@ else
                 id0Value = "arrow" + name0Value;
                 serviceTypeConfigs = Model.Configs.Where(x => x.ServiceTypeID == sType).ToList();
                 <tr>
-                    <td style ="align-items:center; display:flex">
+                    <td style ="align-items:center; display:flex" class="borders">
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
                                 asp-route-serviceCompanyConfigsJson="@JsonConvert.SerializeObject(serviceTypeConfigs)" asp-route-servicetypeid="@sType">
                                 <img class="evol-image" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
