@@ -52,8 +52,7 @@ namespace evolUX.UI.Areas.Core.Controllers
         }
 
 
-        // [Authorize(AuthenticationSchemes = NegotiateDefaults.AuthenticationScheme)]
-        [AllowAnonymous]
+       
         public async Task<IActionResult> LoginWindowsAuthentication(string returnUrl)
         {
             try 
@@ -109,7 +108,8 @@ namespace evolUX.UI.Areas.Core.Controllers
         //{
         //    return View();
         //}
-        [AllowAnonymous]
+        
+        [Authorize(AuthenticationSchemes = NegotiateDefaults.AuthenticationScheme)]
 
         public async Task<IActionResult> LoginADAuthentication(string returnUrl)
         {
