@@ -32,7 +32,7 @@ else
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th class="evol-fitcontent-column"></th>
+                <th class="evol-fitcontent-column borders"></th>
                 <th class="evol-fitcontent-column">@localizer["Type"]</th>
                 <th class="evol-fitcontent-column">@localizer["Priority"]</th>
                 <th>@localizer["Description"]</th>
@@ -48,7 +48,7 @@ else
                 <tr>                    
                     @if (t.ExpCompanyTypesList.Count() > 0)
                     {
-                        <td style="align-items:center; display:flex">
+                        <td style="align-items:center; display:flex" class="borders">
                             <a asp-area="evolDP" asp-controller="Expedition" asp-action="TypeDetail" asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(t)">
                                 <img class="evol-image" src="~/images/config.png" title="@localizer["List"]: @value" />
                             </a>
@@ -70,7 +70,7 @@ else
                         <table class="table table-sm table-hover table-collapse-seperate">
                             <thead id="bootstrap-overrides" class="table-info sticky-header">
                                 <tr>
-                                    <th class="evol-fitcontent-column"></th>
+                                        <th class="evol-fitcontent-column borders"></th>
                                     <th>@localizer["ExpCompany"]</th>
                                     <th title="@localizer["RegistModeTip"]">@localizer["RegistMode"]</th>
                                     <th title="@localizer["SeparationModeTip"]">@localizer["SeparationMode"]</th>
@@ -89,7 +89,8 @@ else
                                         newExpType.ExpCompanyTypesList = list;
                                         value = t.Description + " / " + @Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName;
                                         <tr>
-                                            <td><a asp-area="evolDP" asp-controller="Expedition" asp-action="TypeDetail" asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(newExpType)">
+                                            <td class="borders">
+                                                <a asp-area="evolDP" asp-controller="Expedition" asp-action="TypeDetail" asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(newExpType)">
                                                     <img class="evol-image" src="~/images/config.png" title="@localizer["List"]: @value" />
                                                 </a></td>
                                             <td>@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName</td>

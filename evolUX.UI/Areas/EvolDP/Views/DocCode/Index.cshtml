@@ -34,7 +34,7 @@ else
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th class="evol-fitcontent-column"></th>
+                <th class="evol-fitcontent-column borders"></th>
                 <th colspan="3">@localizer["DocCode"]</th>
             </tr>
         </thead>
@@ -45,15 +45,15 @@ else
                     nameValue = Level0Name + level.ToString();
                     idValue = "arrow" + nameValue;
                     <tr>
-                        <td><a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a></td>
+                        <td class="borders"><a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a></td>
                         <td>@dg.DocLayout</td>
                     </tr>
-                    <tr id="@nameValue"  style="display: none">
+                    <tr id="@nameValue"  style="display: none" class="borders">
                         <td colspan="2">
                             <table class="table table-sm table-hover table-collapse-seperate">
                                 <thead id="bootstrap-overrides" class="table-info sticky-header">
                                     <tr>
-                                        <th></th>
+                                        <th class="borders"></th>
                                         <th>@localizer["DocLayout"]</th>
                                         <th>@localizer["DocType"]</th>
                                         <th>@localizer["DocDescription"]</th>
@@ -64,7 +64,7 @@ else
                                     @foreach (DocCode d in dg.DocCodes)
                                     {
                                         <tr>
-                                            <td class ="evol-fitcontent-column">
+                                            <td class ="evol-fitcontent-column borders">
                                                 @if (string.IsNullOrEmpty(d.DocType))
                                                 {
                                                     docTypeDesc = localizer["EmptyField"].Value;

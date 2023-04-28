@@ -75,7 +75,7 @@ else
                 @if (ViewBag.hasMultipleCompanyBusiness)
                 {
                     <tr>
-                        <th class ="evol-fitcontent-column">
+                            <th class="evol-fitcontent-column borders">
                             @if (ViewBag.OnlyOneSelected)
                             {
                                 startStyle = "";
@@ -94,7 +94,7 @@ else
                 else
                 {
                     <tr>
-                        <th><a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"></a></th>
+                        <th><a class="evol-arrow bx bxs-chevron-up borders" href="javascript:hideDetail('@nameValue')" id="@idValue"></a></th>
                         <th colspan="5">@b.Type</th>
                     </tr>
                 }
@@ -106,7 +106,7 @@ else
                     nameValue = Level1Name + level.ToString();
                     idValue = "arrow" + nameValue;
                     <tr>
-                        <th><a class="evol-arrow bx bxs-chevrons-down" href="javascript:showDetails('@nameValue')" id="@idValue"></th>
+                        <th class="borders"><a class="evol-arrow bx bxs-chevrons-down" href="javascript:showDetails('@nameValue')" id="@idValue"></th>
                         <th>@localizer["ProjectCode"]: @p.ProjectCode</th>
                     </tr>
                     <tr id="@nameValue" style="display: none">
