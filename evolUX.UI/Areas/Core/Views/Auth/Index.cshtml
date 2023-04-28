@@ -44,6 +44,11 @@
                     <input type="hidden" name="returnUrl" value="@returnUrl">
                     <input type="submit" name="Submit" class="btn btn-block btn-success" />
                 </form>
+                <form id="windows-form" asp-area="core" asp-controller="auth" asp-action="LoginADAuthentication" method="get" style="justify-self:center; height:100px; ">
+                    <h4 style="margin:0">Entrar com Active Directory</h4>
+                    <input type="hidden" name="returnUrl" value="@returnUrl">
+                    <input type="submit" name="Submit" class="btn btn-block btn-success" />
+                </form>
                 <div class="auth-error">
                     @if (@errorMessage != null)
                     {
