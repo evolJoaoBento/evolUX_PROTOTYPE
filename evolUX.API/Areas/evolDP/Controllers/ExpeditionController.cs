@@ -15,6 +15,7 @@ using Shared.ViewModels.Areas.Finishing;
 using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.General;
 using System.Reflection.Emit;
+using System.Collections;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
@@ -187,19 +188,32 @@ namespace evolUX.API.Areas.evolDP.Controllers
             try
             {
                 object obj;
-                dictionary.TryGetValue("ExpeditionZone", out obj);
                 int value = 0;
+                int expCompanyID = 0;
+                dictionary.TryGetValue("ExpCompanyID", out obj);
+                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                    expCompanyID = value;
+
+                dictionary.TryGetValue("ExpeditionZone", out obj);
                 int? expeditionZone = null;
                 if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
                     expeditionZone = value;
+
                 DataTable? expCompanyList = null;
                 if (expeditionZone == null)
                 {
                     dictionary.TryGetValue("ExpCompanyList", out obj);
-                    string expCompanyListJSON = Convert.ToString(obj);
-                    expCompanyList = JsonConvert.DeserializeObject<DataTable>(expCompanyListJSON).DefaultView.ToTable(false, "ID");
+                    if (obj != null && !string.IsNullOrEmpty(Convert.ToString(obj)))
+                    {
+                        string expCompanyListJSON = Convert.ToString(obj);
+                        expCompanyList = JsonConvert.DeserializeObject<DataTable>(expCompanyListJSON).DefaultView.ToTable(false, "ID");
+                    }
                 }
-                var expeditionZoneList = await _expeditionService.GetExpeditionZones(expeditionZone, expCompanyList);
+                ExpeditionZoneViewModel expeditionZoneList;
+                if (expCompanyID == 0)
+                    expeditionZoneList = await _expeditionService.GetExpeditionZones(expeditionZone, expCompanyList);
+                else
+                    expeditionZoneList = await _expeditionService.GetExpeditionZones(expeditionZone, expCompanyID);
                 _logger.LogInfo("Expedition Zone Get");
                 return Ok(expeditionZoneList);
             }

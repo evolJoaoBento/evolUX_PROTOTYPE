@@ -5,6 +5,7 @@ using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
 using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
+using Shared.Models.Areas.evolDP;
 
 namespace evolUX.UI.Areas.evolDP.Services
 {
@@ -19,6 +20,21 @@ namespace evolUX.UI.Areas.evolDP.Services
         {
             var response = await _genericRepository.GetCompanyBusiness(CompanyBusinessList);
             return response;
+        }
+        public async Task<BusinessViewModel> GetCompanyBusiness(int CompanyID)
+        {
+            var response = await _genericRepository.GetCompanyBusiness(CompanyID);
+            return response;
+        }
+        public async Task<Company> SetCompany(Company company)
+        {
+            var response = await _genericRepository.SetCompany(company);
+            return response;
+        }
+        public async Task SetBusiness(Business business)
+        {
+            await _genericRepository.SetBusiness(business);
+            return;
         }
         public async Task<ProjectListViewModel> GetProjects(string CompanyBusinessList)
         {

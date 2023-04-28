@@ -7,6 +7,7 @@
 
 @model ServiceCompanyViewModel;
 @{
+    int colWidth;
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
     bool AddServiceCompany = false;
     bool AddServiceTask = false;
@@ -61,7 +62,7 @@ else
            <tr>
                 @if(AddServiceCompany)
                 {
-                <th></th>
+                    <th class="evol-fitcontent-column"></th>
                 }
                 <th>@localizer["CompanyCode"]</th>
                 <th>@localizer["CompanyName"]</th>
@@ -75,8 +76,8 @@ else
             <tr id="Show|ServiceCompany">
                 @if(AddServiceCompany)
                 {
-                <td>
-                        <img onclick="EditRow('ServiceCompany')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ServiceCompanyChange"]" />
+                <td style="text-align: center">
+                    <img onclick="EditRow('ServiceCompany')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeCompany"]" />
                 </td>
                 }
                 <td>@serviceCompany.CompanyCode</td>
@@ -91,8 +92,8 @@ else
                 <tr id="Hide|ServiceCompany" style="display: none">
                     <form id="AddFrm|ServiceCompany" class="d-flex justify-content-center m-5" asp-controller="ServiceProvision" asp-action="ChangeServiceCompany" asp-route-servicecompanyviewJson="@JsonConvert.SerializeObject(Model)">
                     <td style="align-items:center; display:flex">
-                        <img onclick="CancelRow('ServiceCompany')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
+                        <img onclick="CancelRow('ServiceCompany')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td>@serviceCompany.CompanyCode</td>
                     <input style="display: none" id=ServiceCompanyID name=ServiceCompanyID value="@serviceCompany.ID" />
@@ -108,10 +109,10 @@ else
     </table>
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr>
+            <tr style="border: none">
                 @if (AddServiceCompany)
                 {
-                <th>@localizer["Action"]</th>
+                <th class ="evol-fitcontent-column"></th>
                 }
                 <th>@localizer["MaterialType"]</th>
                 <th title="@localizer["MaterialPositionTip"]">@localizer["MaterialPosition"]</th>
@@ -119,7 +120,7 @@ else
                 <th title="@localizer["RestrictionModeTip"]">@localizer["RestrictionMode"]</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="bootstrap-overrides">
             @foreach (ServiceCompanyRestriction r in serviceCompanyRestrictions)
             {
                 value = r.MaterialTypeID.ToString();
@@ -127,7 +128,7 @@ else
                     @if (AddServiceCompany)
                     {
                         <td>
-                            <img onclick="EditRow('@value')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyRestriction"]" />
+                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyRestriction"]" />
                         </td>
                     }
                     @{
@@ -159,8 +160,8 @@ else
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyRestriction"
                   asp-route-serviceCompanyJson="@serviceCompany" asp-route-materialtypeid="@r.MaterialTypeID">
                         <td style="align-items:center; display:flex">
-                            <img onclick="CancelRow('@value')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
+                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                         </td>
                         @{
                             value = @localizer[r.MaterialTypeCode].Value;
@@ -201,9 +202,7 @@ else
         <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th width="120px">
-                    @localizer["Action"]
-                </th>
+                <th class ="evol-fitcontent-column" style="text-align: center"></th>
                 <th>@localizer["ServiceType"]</th>
             </tr>
         </thead>
@@ -215,68 +214,68 @@ else
                 id0Value = "arrow" + name0Value;
                 serviceTypeConfigs = Model.Configs.Where(x => x.ServiceTypeID == sType).ToList();
                 <tr>
-                    <td>
+                    <td style ="align-items:center; display:flex">
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
-                   asp-route-serviceCompanyConfigsJson="@JsonConvert.SerializeObject(serviceTypeConfigs)" asp-route-servicetypeid="@sType">
-                        <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
-                    </a>
+                                asp-route-serviceCompanyConfigsJson="@JsonConvert.SerializeObject(serviceTypeConfigs)" asp-route-servicetypeid="@sType">
+                                <img class="evol-image" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
+                            </a>
+                            <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@name0Value')" id="@id0Value"></a>
                     </td>
-                        <td colspan="2">
-                            @serviceTypeConfigs.First().ServiceTypeDesc<a class="bx bxs-chevron-down" href="javascript:showDetail('@name0Value')" id="@id0Value"></a>
-                    </td>
+                    <td colspan="2">@serviceTypeConfigs.First().ServiceTypeDesc</td>
                 </tr>
                 <tr id="@name0Value" style="display: none">
                     <td colspan="2">
                         <table class="table table-sm table-hover table-collapse-seperate">
                             <thead id="bootstrap-overrides" class="table-info sticky-header">
-                                <th width="200px"></th>
-                                <th>@localizer["CostDate"]</th>
+                                <th class="evol-fitcontent-column"></th>
+                                <th>@localizer["Service"]</th>
                             </thead>
                             <tbody>
-                                @foreach(var cDate in serviceTypeConfigs.Select(x => x.CostDate).Distinct().ToList())
+                                @foreach (var s in serviceTypeConfigs.Select(x => x.ServiceID).Distinct().ToList())
                                 {
-                                    List<ServiceCompanyServiceResume> costDateList = serviceTypeConfigs.Where(x => x.CostDate == cDate).ToList();
+                                    List<ServiceCompanyServiceResume> sList = serviceTypeConfigs.Where(x => x.ServiceID == s).ToList();
                                     level1++;
                                     name1Value = "detail" + level1.ToString();
                                     id1Value = "arrow" + name1Value;
-                                    DateTime costDateDT;
-                                    costDateDesc = cDate.ToString();
-                                    if (DateTime.TryParseExact(cDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out costDateDT))
-                                        costDateDesc = costDateDT.ToShortDateString();
                                     <tr>
-                                        <td>
-                                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)" asp-route-costdate="@cDate" asp-route-servicetypeid="@sType">
-                                                <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
+                                        <td style="align-items:center; display:flex;margin-left: 30px">
+                                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
+                                                asp-route-servicetypeid="@sType" asp-route-serviceid="@s">
+                                                <img class="evol-image" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
                                             </a>
+                                            <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@name1Value')" id="@id1Value"></a>
                                         </td>
-                                        <td>@costDateDesc
-                                            <a class="bx bxs-chevron-down" href="javascript:showDetail('@name1Value')" id="@id1Value"></a>
-                                        </td>
+                                        <td>@sList.First().ServiceDesc</td>
                                     </tr>
                                     <tr id="@name1Value" style="display: none">
                                         <td colspan="2">
-                                                <table class="table table-sm table-hover table-collapse-seperate">
-                                                    <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                            <table class="table table-sm table-hover table-collapse-seperate">
+                                                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                                    <tr>
+                                                        <th class ="evol-fitcontent-column">
+                                                        <th>@localizer["CostDate"]</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="bootstrap-overrides">
+                                                    @foreach (var cDate in serviceTypeConfigs.Select(x => x.CostDate).Distinct().ToList())
+                                                    {
+                                                        DateTime costDateDT;
+                                                        costDateDesc = cDate.ToString();
+                                                        if (DateTime.TryParseExact(cDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out costDateDT))
+                                                            costDateDesc = costDateDT.ToShortDateString();
                                                         <tr>
-                                                            <th width="280px"></th>
-                                                            <th>@localizer["Service"]</th>
+                                                            <td style="align-items:center; display:flex;margin-left: 80px">
+                                                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
+                                                                    asp-route-servicetypeid="@sType" asp-route-serviceid="@s" asp-route-costdate="@cDate">
+                                                                    <img class="evol-image" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
+                                                                </a>
+                                                            </td>
+                                                            <td>@costDateDesc</td>
                                                         </tr>
-                                                    </thead>
-                                                    <tbody id="bootstrap-overrides">
-                                                        @foreach (var s in costDateList.Select(x => x.ServiceID).Distinct().ToList())
-                                                        {
-                                                            <tr>
-                                                                <td>
-                                                                    <a asp-area="evolDP" asp-controller="Expedition" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)" asp-route-startdate="@sType" asp-route-servicetypeid="@cDate" asp-route-serviceid="@s">
-                                                                        <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
-                                                                    </a>
-                                                                </td>
-                                                                <td>@costDateList.Where(x => x.ServiceID == s).First().ServiceDesc</td>
-                                                            </tr>
-                                                        }
-                                                    </tbody>
-                                                </table>
-                                            </td>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </td>
                                     </tr>
                                 }
                              </tbody>

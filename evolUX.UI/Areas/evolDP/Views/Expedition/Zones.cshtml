@@ -29,7 +29,8 @@ else
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th width="120px">@localizer["Zone"]</th>
+                <th class="evol-fitcontent-column"></th>
+                <th class="evol-fitcontent-column">@localizer["Zone"]</th>
                 <th>@localizer["Description"]</th>
             </tr>
         </thead>
@@ -40,23 +41,23 @@ else
                     nameValue = Level0Name + level.ToString();
                     idValue = "arrow" + nameValue;
                     <tr>
-                        <td>@z.ExpeditionZone</td>
                         <td>
-                            @z.Description
                             @if (z.ExpCompanyZonesList.Count() > 0)
                             {
-                                <a class="bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                                <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                             }
                         </td>
+                        <td  style="text-align: center">@z.ExpeditionZone</td>
+                        <td>@z.ExpeditionZoneDesc</td>
                     </tr>
                     @if (z.ExpCompanyZonesList.Count() > 0)
                     {
                     <tr id="@nameValue" style="display: none">
-                        <td colspan="2">
+                        <td colspan="3">
                             <table class="table table-sm table-hover table-collapse-seperate">
                             <thead id="bootstrap-overrides" class="table-info sticky-header">
                                     <tr>
-                                        <th></th>
+                                        <th class="evol-fitcontent-column"></th>
                                         <th>@localizer["ExpCompany"]</th>
                                         <th>@localizer["ExpCenterCode"]</th>
                                     </tr>
@@ -68,11 +69,11 @@ else
                                     {
                                             ExpeditionZoneElement newExpZone = new ExpeditionZoneElement();
                                             newExpZone.ExpeditionZone = z.ExpeditionZone;
-                                            newExpZone.Description = z.Description;
+                                            newExpZone.ExpeditionZoneDesc = z.ExpeditionZoneDesc;
                                             newExpZone.ExpCompanyZonesList = z.ExpCompanyZonesList.Where(x => x.ExpCompanyID == c.ExpCompanyID && x.ExpCenterCode == c.ExpCenterCode).ToList();
                                         <tr>
                                                 <td><a asp-area="evolDP" asp-controller="Expedition" asp-action="ZoneDetail" asp-route-expeditionzoneJson="@JsonConvert.SerializeObject(newExpZone)">
-                                                        <img style="background:none; width:25px;height:25px;" src="~/images/list.png" title="@localizer["List"]: @value" />
+                                                        <img class="evol-image" src="~/images/detail.png" title="@localizer["List"]: @value" />
                                                     </a></td>
                                                 <td>@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName</td>
                                                 <td>@c.ExpCenterCode</td>

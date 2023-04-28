@@ -124,9 +124,9 @@
     <value>Recuperações Pendentes</value>
   </data>
   <data name="ServiceCompany" xml:space="preserve">
-    <value>Companhia de Serviços</value>
+    <value>Companhia de Prestação de Serviços</value>
   </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Selecionar</value>
+  <data name="ServiceCompanyTip" xml:space="preserve">
+    <value>Ver Recuperações Pendentes</value>
   </data>
 </root>

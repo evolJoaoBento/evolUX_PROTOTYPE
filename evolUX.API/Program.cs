@@ -36,7 +36,7 @@ builder.Services.AddSingleton<IWrapperRepository, WrapperRepository>();
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
 builder.Services.AddSingleton<IGenericService, GenericService>();
 builder.Services.AddSingleton<IExpeditionService, ExpeditionService>();
-builder.Services.AddSingleton<IConsumablesService, ConsumablesService>();
+builder.Services.AddSingleton<IMaterialsService, MaterialsService>();
 builder.Services.AddSingleton<IServiceProvisionService, ServiceProvisionService>();
 
 //Finishing
@@ -44,7 +44,7 @@ builder.Services.AddSingleton<IProductionReportService, ProductionReportService>
 builder.Services.AddSingleton<IPendingRegistService, PendingRegistService>();
 builder.Services.AddSingleton<IPrintService, PrintService>();
 builder.Services.AddSingleton<IConcludedPrintService, ConcludedPrintService>();
-builder.Services.AddSingleton<IConcludedFullfillService, ConcludedFullfillService>();
+builder.Services.AddSingleton<IConcludedFulfilmentService, ConcludedFulfilmentService>();
 builder.Services.AddSingleton<IRecoverService, RecoverService>();
 builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();
 builder.Services.AddSingleton<IPendingRecoverService, PendingRecoverService>();

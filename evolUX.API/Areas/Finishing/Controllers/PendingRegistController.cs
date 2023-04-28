@@ -21,14 +21,14 @@ namespace evolUX.API.Areas.Finishing.Controllers
         private readonly ILoggerService _logger;
         private readonly IPendingRegistService _pendingRegistService;
         private readonly IConcludedPrintService _concludedPrintService;
-        private readonly IConcludedFullfillService _concludedFullfillService;
+        private readonly IConcludedFulfilmentService _ConcludedFulfilmentService;
         private readonly IRecoverService _recoverService;
-        public PendingRegistController(IWrapperRepository repository, ILoggerService logger, IPendingRegistService pendingRegistService, IConcludedPrintService concludedPrintService, IConcludedFullfillService concludedFullfillService, IRecoverService recoverService)
+        public PendingRegistController(IWrapperRepository repository, ILoggerService logger, IPendingRegistService pendingRegistService, IConcludedPrintService concludedPrintService, IConcludedFulfilmentService ConcludedFulfilmentService, IRecoverService recoverService)
         {
             _logger = logger;
             _pendingRegistService = pendingRegistService;
             _concludedPrintService = concludedPrintService;
-            _concludedFullfillService = concludedFullfillService;
+            _ConcludedFulfilmentService = ConcludedFulfilmentService;
             _recoverService = recoverService;
         }
 
@@ -116,7 +116,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
                 DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(bindingModel.ServiceCompanyList);
                 DataTable ServiceCompanyList = ServiceCompanies.DefaultView.ToTable(false, "ID");
                 ResultsViewModel viewmodel = new ResultsViewModel();
-                viewmodel.Results = await _concludedFullfillService.RegistFullFill(bindingModel.FileBarcode, bindingModel.User, ServiceCompanyList);
+                viewmodel.Results = await _ConcludedFulfilmentService.RegistFullFill(bindingModel.FileBarcode, bindingModel.User, ServiceCompanyList);
                 _logger.LogInfo("RegistFullFill Get");
                 return Ok(viewmodel);
             }

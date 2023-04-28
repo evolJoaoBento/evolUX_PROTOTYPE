@@ -1,0 +1,259 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model ExpCodeViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    string source = TempData["Source"].ToString();
+    bool AddServiceCompany = false;
+    bool AddServiceTask = false;
+    bool DeleteServiceTask = false;
+    bool ExportServiceTask = false;
+    bool AddServiceCompanyExpCodes = false;
+    bool AddExpCode = false;
+    bool DeleteExpCode = false;
+    bool ExportExpCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddServiceCompanyExpCodes") != null) { AddServiceCompanyExpCodes = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceCompany") != null) { AddServiceCompany = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceTask") != null) { AddServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "DeleteServiceTask") != null) { DeleteServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "ExportServiceTask") != null) { ExportServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "AddExpCode") != null) { AddExpCode = true; }
+    if (Model.Permissions.Find(x => x == "DeleteExpCode") != null) { DeleteExpCode = true; }
+    if (Model.Permissions.Find(x => x == "ExportExpCode") != null) { ExportExpCode = true; }
+}
+<div id="TitlePage">
+    <h1>@localizer["ExpCode"]</h1>
+    <h2>@TempData["ServiceTaskDesc"] / @TempData["ExpCompanyName"]</h2>
+    @if (Model != null && Model.ExpCode != null)
+    {
+        <h2><b>@Model.ExpCode.ExpCode</b></h2>
+    }
+    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@Model.ExpCode.ServiceTaskID">
+    </a>
+</div>
+@if (Model == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    ExpCodeElement expCode = Model.ExpCode;
+    string localValue;
+    string value = "";
+    string Level0Name = "level";
+
+    int level = 0;
+    string idValue = "arrow" + level.ToString();
+    string nameValue = "";
+    Company serviceCompany;
+    ExpeditionZoneElement expZone;
+     <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
+                </th>
+                <th style="width:40%">@localizer["ExpCodeDesc"]</th>
+                <th>@localizer["Priority"]</th>
+                <th title="@localizer["DefaultExpCenterCodeTip"]">@localizer["DefaultExpCenterCode"]</th>
+                <th title="@localizer["DefaultExpCompanyZoneTip"]">@localizer["DefaultExpCompanyZone"]</th>
+                <th title="@localizer["CheckExpCompanySepCodesTip"]">@localizer["CheckExpCompanySepCodes"]</th>
+                <th title="@localizer["PostalCodeStartTip"]">@localizer["PostalCodeStart"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @if (AddExpCode)
+            {
+                <tr id="Hide|" style="display: none">
+                    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="AddExpCode" asp-route-expcode="@expCode">
+                    <td style="align-items:center; display:flex;border:none;background-color:transparent">
+                        <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                    </td>
+                    <td style="width:40%"><input id=ExpCodeDesc name=ExpCodeDesc type="text" maxlength="256" style="width: 100%" value="@expCode.ExpCodeDesc" /></td>
+                    <td class="evol-fitcontent-column-one"><input id="Priority" name="Priority" type="number" min="0" value="@expCode.Priority" /></td>
+                    <td>
+                        <select id="DefaultExpCenterCode" name="DefaultExpCenterCode">
+                            @foreach (string expCenterCode in Model.ExpCenters.Select(x => x.ExpCenterCode).Distinct())
+                            {
+                                <option value="@expCenterCode">@expCenterCode</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <select id="DefaultExpCompanyZone" name="DefaultExpCompanyZone">
+                            @foreach (ExpeditionZoneElement z in Model.Zones)
+                            {
+                                <option value="@z.ExpeditionZone">@z.ExpeditionZoneDesc</option>
+                            }
+                        </select>
+                    </td>
+                    @if(expCode.CheckExpCompanySepCodes)
+                    {
+                        value = "checked";
+                    }
+                    <td><input type="checkbox" id="CheckExpCompanySepCodes" name="CheckExpCompanySepCodes" @value/></td>
+                    <td><input type="number" min="0" max="10" id="PostalCodeStart" name="PostalCodeStart" value="@expCode.PostalCodeStart"/></td>
+                    </form>
+                </tr>
+            }
+        <tr id="Show|">
+                <td class="evol-fitcontent-column-one" style="border: none;background-color: transparent;padding-left: 15px;padding-right: 15px;">
+                @if (AddExpCode)
+                {
+                    <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCode"]" />
+                }
+            </td>
+            <td style="width:40%">@expCode.ExpCodeDesc</td>
+            <td>@expCode.Priority</td>
+            <td>@expCode.DefaultExpCenterCode</td>
+            <td>@expCode.DefaultExpCompanyZone</td>
+            @{
+                value = expCode.CheckExpCompanySepCodes ? "checked" : "";
+            }
+            <td><input type="checkbox" id="CheckExpCompanySepCodes" disabled @value /></td>
+            <td>@expCode.PostalCodeStart</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                @if (AddExpCode)
+                {
+                    <th rowspan="2" class="evol-fitcontent-column" style="border:none;background-color:transparent"></th>
+                }
+                <th colspan="4">@localizer["ExpCenter"]</th>
+                <th rowspan="2">@localizer["ServiceCompany"]</th>
+                <th rowspan="2">@localizer["ExpeditionZone"]</th>
+            </tr>
+            <tr>
+                <th>@localizer["ExpCenterCode"]</th>
+                <th>@localizer["Description1"]</th>
+                <th>@localizer["Description2"]</th>
+                <th>@localizer["Description3"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @foreach (ExpCenterElement c in Model.ExpCenters)
+            {
+                serviceCompany = Model.ServiceCompanies.FirstOrDefault(x => x.ID == c.ServiceCompanyID);
+                expZone = Model.Zones.FirstOrDefault(x => x.ExpeditionZone == c.ExpeditionZone);
+                value = c.ExpCenterCode.ToString();
+                <tr id="Show|@value">
+                    @if (AddExpCode)
+                    {
+                        <td class="evol-fitcontent-column"  style="align-items:center; display:flex;border:none;background-color:transparent">
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCodeConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
+                               asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@c.ExpCenterCode" 
+                               asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
+                                <img class="evol-image" src="~/images/config.png" title="@localizer["ConfigServiceCompanyExpCode"]" />
+                            </a>
+                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCenter"]" />
+                        </td>
+                    }
+                    <td>@c.ExpCenterCode</td>
+                    @if (string.IsNullOrEmpty(c.Description1))
+                    {
+                        localValue = localizer["EmptyField"].Value;
+                    }
+                    else
+                    {
+                        localValue = c.Description1;
+                    }
+                    <td>@localValue</td>
+                    @if (string.IsNullOrEmpty(c.Description2))
+                    {
+                        localValue = localizer["EmptyField"].Value;
+                    }
+                    else
+                    {
+                        localValue = c.Description2;
+                    }
+                    <td>@localValue</td>
+                    @if (string.IsNullOrEmpty(c.Description3))
+                    {
+                        localValue = localizer["EmptyField"].Value;
+                    }
+                    else
+                    {
+                        localValue = c.Description3;
+                    }
+                    <td>@localValue</td>
+                    <td>@serviceCompany.CompanyName</td>
+                    <td>@c.ExpeditionZoneDesc</td>
+                </tr>
+                @if (AddExpCode)
+                {
+                    <tr id="Hide|@value" style="display: none">
+                        <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeExpCenter"
+                            asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@c.ExpCenterCode" 
+                            asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
+                        <td style="align-items:center; display:flex;border:none;background-color:transparent">
+                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        </td>
+                        <td>@c.ExpCenterCode</td>
+                        <td><input type="text" id="Description1" name="Description1" maxlength="256" value="@c.Description1" /></td>
+                        <td><input type="text" id="Description2" name="Description2" maxlength="256" value="@c.Description2" /></td>
+                        <td><input type="text" id="Description3" name="Description3" maxlength="256" value="@c.Description3" /></td>
+                        <td>
+                            <select id="ServiceCompanyID" name="ServiceCompanyID">
+                                <option value="@serviceCompany.ID">@serviceCompany.CompanyName</option>
+                            @foreach(Company comp in Model.ServiceCompanies.Where(x => x.ID != c.ServiceCompanyID))
+                            {
+                                <option value="@comp.ID">@comp.CompanyName</option>
+                            }
+                            </select>
+                        </td>
+                        <td>
+                            <select id="ExpeditionZone" name="ExpeditionZone">
+                                <option value="@expZone.ExpeditionZone">@expZone.ExpeditionZoneDesc</option>
+                            @foreach (ExpeditionZoneElement z in Model.Zones.Where(x => x.ExpeditionZone != c.ExpeditionZone))
+                            {
+                                <option value="@z.ExpeditionZone">@z.ExpeditionZoneDesc</option>
+                            }
+                            </select>
+                        </td>
+                        </form>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+        function CancelRow(value) {
+            eShide('Hide|' + value);
+            eSshow('Show|' + value);
+
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = true;
+            return false;
+        }
+        function EditRow(value) {
+            eShide('Show|' + value);
+            eSshow('Hide|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = false;
+
+            let str = 'Hide|' + value;
+            trElements = document.querySelectorAll('tr[id^="Hide|"]');
+            trElements.forEach(tElement => {
+                if (tElement.id != str) {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                }
+            });
+        }
+    </script>
+}

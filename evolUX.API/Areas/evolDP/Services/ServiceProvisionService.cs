@@ -1,9 +1,13 @@
-﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
+﻿using Dapper;
+using evolUX.API.Areas.Core.Repositories.Interfaces;
 using evolUX.API.Areas.evolDP.Services.Interfaces;
+using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
 using Shared.Models.General;
 using Shared.ViewModels.Areas.evolDP;
+using System.Collections;
 using System.Data;
+using System.Reflection.Emit;
 
 namespace evolUX.API.Areas.evolDP.Services
 {
@@ -15,16 +19,7 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             _repository = repository;
         }
-        public async Task<IEnumerable<Company>> GetServiceCompanies(DataTable serviceCompanyList)
-        {
-            IEnumerable<Company> result = await _repository.Generic.GetCompanies(null, serviceCompanyList);
-            return result;
-        }
-        public async Task<IEnumerable<Company>> GetServiceCompanies(int serviceCompanyID)
-        {
-            IEnumerable<Company> result = await _repository.Generic.GetCompanies(serviceCompanyID, null);
-            return result;
-        }
+
         public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int? serviceCompanyID)
         {
             IEnumerable<ServiceCompanyRestriction> result = await _repository.ServiceProvision.GetServiceCompanyRestrictions(serviceCompanyID);
@@ -36,15 +31,33 @@ namespace evolUX.API.Areas.evolDP.Services
             return;
         }
 
-        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int? serviceCompanyID)
+        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int? serviceCompanyID, int? serviceTypeID, int? serviceID, int? costDate)
         {
-            IEnumerable<ServiceCompanyServiceResume> result = await _repository.ServiceProvision.GetServiceCompanyConfigsResume(serviceCompanyID);
+            IEnumerable<ServiceCompanyServiceResume> result = await _repository.ServiceProvision.GetServiceCompanyConfigsResume(serviceCompanyID, serviceTypeID, serviceID, costDate);
             return result;
         }
-
+        public async Task<IEnumerable<int>> GetServiceCompanyList(int? serviceCompanyID, int? serviceTypeID, int? serviceID, int? costDate)
+        {
+            IEnumerable<ServiceCompanyServiceResume> result = await _repository.ServiceProvision.GetServiceCompanyConfigsResume(serviceCompanyID, serviceTypeID, serviceID, costDate);
+            return result.Select(x => x.ServiceCompanyID).Distinct().ToList();
+        }
         public async Task<IEnumerable<ServiceCompanyService>> GetServiceCompanyConfigs(int serviceCompanyID, int costDate, int serviceTypeID, int serviceID)
         {
             IEnumerable<ServiceCompanyService> result = await _repository.ServiceProvision.GetServiceCompanyConfigs(serviceCompanyID, costDate, serviceTypeID, serviceID);
+            if (result == null)
+            {
+
+            }
+            return result;
+        }
+        public async Task SetService(ServiceElement service)
+        {
+            await _repository.ServiceProvision.SetService(service);
+        }
+
+        public async Task<IEnumerable<ServiceElement>> GetServices(int serviceTypeID)
+        {
+            IEnumerable<ServiceElement> result = await _repository.ServiceProvision.GetServices(serviceTypeID);
             if (result == null)
             {
 
@@ -55,85 +68,107 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             await _repository.ServiceProvision.SetServiceCompanyConfig(serviceCompanyConfig);
         }
-        //public async Task<ExpeditionTypeViewModel> GetExpeditionTypes(int? expeditionType, DataTable? expCompanyList)
-        //{
-        //    ExpeditionTypeViewModel viewModel = new ExpeditionTypeViewModel();
-        //    viewModel.Types = await _repository.ExpeditionType.GetExpeditionTypes(expeditionType);
-        //    if (viewModel.Types != null && expCompanyList != null)
-        //    {
-        //        foreach (ExpeditionTypeElement e in viewModel.Types.ToList())
-        //        {
-        //            e.ExpCompanyTypesList = await _repository.ExpeditionType.GetExpCompanyTypes(e.ExpeditionType, null, expCompanyList);
-        //        }
-        //    }
-        //    return viewModel;
-        //}
-        //public async Task<IEnumerable<ExpCompanyType>> GetExpCompanyTypes(int? expeditionType, int? expCompanyID)
-        //{
-        //    return await _repository.ExpeditionType.GetExpCompanyTypes(expeditionType, expCompanyID, null);
-        //}
+        
+        public async Task<IEnumerable<ServiceTypeElement>> GetAvailableServiceTypes()
+        {
+            return await _repository.ServiceProvision.GetServiceTypes(null);
+        }
 
-        //public async Task<Result> SetExpCompanyType(int expeditionType, int expCompanyID, bool registMode, bool separationMode, bool barcodeRegistMode)
-        //{
-        //    Result results = await _repository.ExpeditionType.SetExpCompanyType(expeditionType, expCompanyID, registMode, separationMode, barcodeRegistMode);
-        //    if (results == null)
-        //    {
+        public async Task<ServiceTypeViewModel> GetServiceTypes(int? serviceTypeID)
+        {
+            ServiceTypeViewModel viewModel = new ServiceTypeViewModel();
+            viewModel.Types = await _repository.ServiceProvision.GetServiceTypes(serviceTypeID);
+            if (viewModel.Types != null)
+            {
+                foreach (var type in viewModel.Types)
+                {
+                    var list = await GetServices(type.ServiceTypeID);
+                    if (list != null)
+                        type.ServicesList = list.ToList();
+                }
+            }
+            return viewModel;
+        }
+        public async Task SetServiceType(int serviceTypeID, string serviceTypeCode, string serviceTypeDesc)
+        {
+            await _repository.ServiceProvision.SetServiceType(serviceTypeID, serviceTypeCode, serviceTypeDesc);
+        }
+        public async Task<IEnumerable<ServiceTaskElement>> GetServiceTasks(int? serviceTaskID)
+        {
+            IEnumerable<ServiceTaskElement> result = await _repository.ServiceProvision.GetServiceTasks(serviceTaskID);
+            if (result != null)
+            {
+                foreach(ServiceTaskElement st in result) 
+                {
+                    st.ServiceTypes = await _repository.ServiceProvision.GetServiceTaskServiceTypes(st.ServiceTaskID);
+                }
+            }
+            return result;
+        }
+        public async Task SetServiceTask(int serviceTaskID, string serviceTaskCode, string serviceTaskDesc, int refServiceTaskID, int complementServiceTaskID, int? externalExpeditionMode, string stationExceededDesc)
+        {
+            await _repository.ServiceProvision.SetServiceTask(serviceTaskID, serviceTaskCode, serviceTaskDesc, refServiceTaskID, complementServiceTaskID, externalExpeditionMode, stationExceededDesc);
+            return;
+        }
 
-        //    }
-        //    return results;
-        //}
+        public async Task<IEnumerable<ExpCodeElement>> GetExpCodes(int serviceTaskID, int expCompanyID, string expCode, DataTable expCompanyList)
+        {
+            IEnumerable<ExpCodeElement> result = await _repository.ServiceProvision.GetExpCodes(serviceTaskID, expCompanyID, expCode, expCompanyList);
+            if (result == null)
+            {
 
+            }
+            return result;
 
-        //public async Task<IEnumerable<Company>> GetExpeditionCompanies(int? expCompanyID, DataTable? expCompanyList)
-        //{
-        //    var expeditionCompaniesList = await _repository.Generic.GetCompanies(expCompanyID, expCompanyList);
-        //    if (expeditionCompaniesList == null)
-        //    {
+        }
+        public async Task DeleteServiceType(int serviceTaskID, int serviceTypeID)
+        {
+            await _repository.ServiceProvision.DeleteServiceType(serviceTaskID, serviceTypeID);
+            return;
 
-        //    }
-        //    return expeditionCompaniesList;
-        //}
-        //public async Task<IEnumerable<ExpeditionRegistElement>> GetExpeditionRegistIDs(int expCompanyID)
-        //{
-        //    var expeditionRegistIDs = await _repository.ExpeditionType.GetExpeditionRegistIDs(expCompanyID);
-        //    if (expeditionRegistIDs == null)
-        //    {
+        }
+        public async Task AddServiceType(int serviceTaskID, int serviceTypeID)
+        {
+            await _repository.ServiceProvision.AddServiceType(serviceTaskID, serviceTypeID);
+            return;
+        }
+        public async Task<IEnumerable<ExpCenterElement>> GetExpCenters(string expCode, DataTable serviceCompanyList)
+        {
+            IEnumerable<ExpCenterElement> result = await _repository.ServiceProvision.GetExpCenters(expCode, serviceCompanyList);
+            if (result == null)
+            {
 
-        //    }
-        //    return expeditionRegistIDs;
-        //}
-        //public async Task SetExpeditionRegistID(ExpeditionRegistElement expRegist)
-        //{
-        //    await _repository.ExpeditionType.SetExpeditionRegistID(expRegist);
-        //    return;
-        //}
-        //public async Task<IEnumerable<ExpContractElement>> GetExpContracts(int expCompanyID)
-        //{
-        //    var expeditionRegistIDs = await _repository.ExpeditionType.GetExpContracts(expCompanyID);
-        //    if (expeditionRegistIDs == null)
-        //    {
+            }
+            return result;
+        }
+        public async Task<IEnumerable<ServiceCompanyExpCodeElement>> GetServiceCompanyExpCodes(int serviceCompanyID, DataTable expCompanyList)
+        {
+            IEnumerable<ServiceCompanyExpCodeElement> result = await _repository.ServiceProvision.GetServiceCompanyExpCodes(serviceCompanyID, expCompanyList);
+            if (result == null)
+            {
 
-        //    }
-        //    return expeditionRegistIDs;
-        //}
-        //public async Task SetExpContract(ExpContractElement expContract)
-        //{
-        //    await _repository.ExpeditionType.SetExpContract(expContract);
-        //    return;
-        //}
-
-        //public async Task NewExpCompanyConfig(int expCompanyID, int startDate)
-        //{
-        //    await _repository.ExpeditionType.NewExpCompanyConfig(expCompanyID, startDate);
-        //}
-        //public async Task<IEnumerable<ExpCompanyConfigResume>> GetExpCompanyConfigsResume(int expCompanyID)
-        //{
-        //    IEnumerable<ExpCompanyConfigResume> result = await _repository.ExpeditionType.GetExpCompanyConfigsResume(expCompanyID);
-        //    if (result == null)
-        //    {
-
-        //    }
-        //    return result;
-        //}
+            }
+            return result;
+        }
+        public async Task SetExpCenter(string expCode, string expCenterCode, string description1, string description2, string description3, int serviceCompanyID, string expeditionZone)
+        {
+            await _repository.ServiceProvision.SetExpCenter(expCode, expCenterCode, description1, description2, description3, serviceCompanyID, expeditionZone);
+            return;
+        }
+        public async Task<IEnumerable<ServiceCompanyExpCodeConfig>> GetServiceCompanyExpCodeConfigs(string expCode, int serviceCompanyID, string expCenterCode)
+        {
+            var response = await _repository.ServiceProvision.GetServiceCompanyExpCodeConfigs(expCode, serviceCompanyID, expCenterCode);
+            return response;
+        }
+        public async Task DeleteServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel)
+        {
+            await _repository.ServiceProvision.DeleteServiceCompanyExpCodeConfig(expCode, serviceCompanyID, expCenterCode, expLevel);
+            return;
+        }
+        public async Task SetServiceCompanyExpCodeConfig(string expCode, int serviceCompanyID, string expCenterCode, int expLevel, string fullFillMaterialCode, int docMaxSheets, string barcode)
+        {
+            await _repository.ServiceProvision.SetServiceCompanyExpCodeConfig(expCode, serviceCompanyID, expCenterCode, expLevel, fullFillMaterialCode, docMaxSheets, barcode);
+            return;
+        }
     }
 }

@@ -126,7 +126,7 @@
   <data name="ServiceCompany" xml:space="preserve">
     <value>Finishing Provider</value>
   </data>
-  <data name="Submit" xml:space="preserve">
-    <value>Select</value>
+  <data name="ServiceCompanyTip" xml:space="preserve">
+    <value>View Production Resume</value>
   </data>
 </root>
