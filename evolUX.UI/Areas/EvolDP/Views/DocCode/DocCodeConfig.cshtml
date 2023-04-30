@@ -141,7 +141,7 @@ else
             {
                 <tr>
                     <th>@localizer["StartDate"]</th>
-                    <td>@DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToShortDateString()</td>
+                    <td>@DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToString("yyyy-MM-dd")</td>
                 </tr>
                 <tr>
                     <th>@localizer["EnvMedia"]</th>

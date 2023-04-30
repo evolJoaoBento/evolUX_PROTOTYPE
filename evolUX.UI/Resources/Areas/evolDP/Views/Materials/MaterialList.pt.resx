@@ -126,8 +126,14 @@
   <data name="ChangeMaterial" xml:space="preserve">
     <value>Alterar configuração do Material</value>
   </data>
+  <data name="CostDate" xml:space="preserve">
+    <value>Data Início do Custo</value>
+  </data>
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
+  </data>
+  <data name="EmptyFullFillMaterialCode" xml:space="preserve">
+    <value>Não aplicável</value>
   </data>
   <data name="Envelope" xml:space="preserve">
     <value>Envelopes</value>
@@ -159,6 +165,12 @@
   <data name="FullFillSheets_Tip" xml:space="preserve">
     <value>Equivalência em n.º de folhas para a envelopagem (grossura)</value>
   </data>
+  <data name="MaterialBinPosition" xml:space="preserve">
+    <value>Posições Permitidas</value>
+  </data>
+  <data name="MaterialBinPosition_Tip" xml:space="preserve">
+    <value>Posições permitidas nas máquinas</value>
+  </data>
   <data name="MaterialCode" xml:space="preserve">
     <value>Código</value>
   </data>
@@ -189,8 +201,20 @@
   <data name="Paper" xml:space="preserve">
     <value>Papeis para impressão</value>
   </data>
+  <data name="PaperMaterialBinPosition" xml:space="preserve">
+    <value>Bandejas Permitidas</value>
+  </data>
   <data name="Paper_Icon" xml:space="preserve">
     <value>paper.png</value>
+  </data>
+  <data name="Provider" xml:space="preserve">
+    <value>Fornecedor</value>
+  </data>
+  <data name="ProviderCompany" xml:space="preserve">
+    <value>Fornecedor</value>
+  </data>
+  <data name="Provider_Tip" xml:space="preserve">
+    <value>Custos e características do material no fornecedor</value>
   </data>
   <data name="RoolPaper" xml:space="preserve">
     <value>Papeis para impressão em papel contínuo</value>
@@ -198,10 +222,22 @@
   <data name="RoolPaper_Icon" xml:space="preserve">
     <value>paper.png</value>
   </data>
+  <data name="ServiceCompany" xml:space="preserve">
+    <value>Companhia de Prestação de Serviços</value>
+  </data>
   <data name="Station" xml:space="preserve">
     <value>Adicionais de envelopagem</value>
   </data>
+  <data name="StationMaterialBinPosition" xml:space="preserve">
+    <value>Estações Permitidas</value>
+  </data>
   <data name="Station_Icon" xml:space="preserve">
     <value>newspaper.png</value>
+  </data>
+  <data name="SubmitAdd" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="SubmitChange" xml:space="preserve">
+    <value>Alterar</value>
   </data>
 </root>

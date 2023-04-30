@@ -11,10 +11,12 @@ namespace Shared.ViewModels.Areas.evolDP
     public class MaterialViewModel : ItemPermissions
     {
         public string MaterialTypeCode { get; set; }
-        public string GroupCode { get; set; }
+        public MaterialElement Group { get; set; }
         public IEnumerable<MaterialElement> MaterialList { get; set; }
         public IEnumerable<MaterialType> MaterialTypeList { get; set; }
-        public IEnumerable<FulfillMaterialCode> FulfillMaterialCodes { get;set; }
+        public IEnumerable<FullfillMaterialCode> FullfillMaterialCodes { get;set; }
+        public IEnumerable<Company> ServiceCompanyList { get; set; }
+        public IEnumerable<Company> CompaniesList { get; set; }
     }
 }
 

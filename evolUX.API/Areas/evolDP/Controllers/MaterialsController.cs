@@ -8,6 +8,8 @@ using evolUX.API.Areas.evolDP.Services;
 using Shared.Models.Areas.evolDP;
 using evolUX.API.Models;
 using Newtonsoft.Json;
+using System.Data;
+using System.Collections.Generic;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
@@ -27,7 +29,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("GetFulfillMaterialCodes")]
-        public async Task<ActionResult<IEnumerable<FulfillMaterialCode>>> GetFulfillMaterialCodes([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<IEnumerable<FullfillMaterialCode>>> GetFulfillMaterialCodes([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -67,6 +69,11 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 dictionary.TryGetValue("MaterialTypeCode", out obj);
                 if (obj!= null)
                     materialTypeCode = Convert.ToString(obj).ToString();
+                bool serviceCompanyRestriction = false;
+                dictionary.TryGetValue("ServiceCompanyRestriction", out obj);
+                if (obj != null)
+                    serviceCompanyRestriction = Convert.ToBoolean(obj.ToString());
+
                 var result = await _materials.GetMaterialTypes(groupCodes, materialTypeCode);
                 _logger.LogInfo("GetMaterialTypes Get");
                 return Ok(result);
@@ -111,7 +118,19 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 if (obj != null)
                     materialTypeID = Convert.ToInt32(obj.ToString());
 
-                var result = await _materials.GetMaterialGroups(groupID,groupCode,materialTypeID,materialTypeCode);
+                DataTable serviceCompanyList = new DataTable();
+                dictionary.TryGetValue("ServiceCompanyList", out obj);
+                if (obj != null)
+                {
+                    string serviceCompanyListJSON = Convert.ToString(obj);
+                    serviceCompanyList = JsonConvert.DeserializeObject<DataTable>(serviceCompanyListJSON).DefaultView.ToTable(false, "ID");
+                }
+                else
+                {
+                    serviceCompanyList.Columns.Add("ID", typeof(int));
+                }
+
+                var result = await _materials.GetMaterialGroups(groupID,groupCode,materialTypeID,materialTypeCode, serviceCompanyList);
                 _logger.LogInfo("GetMaterialGroups Get");
                 return Ok(result);
             }
@@ -127,18 +146,33 @@ namespace evolUX.API.Areas.evolDP.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPut]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("SetMaterialGroup")]
-        public async Task<ActionResult> SetMaterialGroup([FromBody] string GroupJSON)
+        public async Task<ActionResult<MaterialElement>> SetMaterialGroup([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
+                object obj;
+                dictionary.TryGetValue("GroupJSON", out obj);
+                string GroupJSON = Convert.ToString(obj).ToString();
                 MaterialElement group = JsonConvert.DeserializeObject<MaterialElement>(GroupJSON);
 
-                await _materials.SetMaterialGroup(group);
+                DataTable serviceCompanyList = new DataTable();
+                dictionary.TryGetValue("ServiceCompanyList", out obj);
+                if (obj != null)
+                {
+                    string serviceCompanyListJSON = Convert.ToString(obj);
+                    serviceCompanyList = JsonConvert.DeserializeObject<DataTable>(serviceCompanyListJSON).DefaultView.ToTable(false, "ID");
+                }
+                else
+                {
+                    serviceCompanyList.Columns.Add("ID", typeof(int));
+                }
+
+                var result = await _materials.SetMaterialGroup(group, serviceCompanyList);
                 _logger.LogInfo("SetMaterialGroup Get");
-                return Ok();
+                return Ok(result);
             }
             catch (SqlException ex)
             {
@@ -190,7 +224,19 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 if (obj != null)
                     materialTypeID = Convert.ToInt32(obj.ToString());
 
-                var result = await _materials.GetMaterials(materialID, materialRef, materialCode, groupID, materialTypeID, materialTypeCode);
+                DataTable serviceCompanyList = new DataTable();
+                dictionary.TryGetValue("ServiceCompanyList", out obj);
+                if (obj != null)
+                {
+                    string serviceCompanyListJSON = Convert.ToString(obj);
+                    serviceCompanyList = JsonConvert.DeserializeObject<DataTable>(serviceCompanyListJSON).DefaultView.ToTable(false, "ID");
+                }
+                else
+                {
+                    serviceCompanyList.Columns.Add("ID", typeof(int));
+                }
+
+                var result = await _materials.GetMaterials(materialID, materialRef, materialCode, groupID, materialTypeID, materialTypeCode, serviceCompanyList);
                 _logger.LogInfo("GetMaterials Get");
                 return Ok(result);
             }
@@ -206,18 +252,32 @@ namespace evolUX.API.Areas.evolDP.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPut]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("SetMaterial")]
-        public async Task<ActionResult> SetMaterial([FromBody] string MaterialJSON)
+        public async Task<ActionResult<MaterialElement>> SetMaterial([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
+                object obj;
+                dictionary.TryGetValue("MaterialJSON", out obj);
+                string MaterialJSON = Convert.ToString(obj).ToString();
                 MaterialElement material = JsonConvert.DeserializeObject<MaterialElement>(MaterialJSON);
 
-                await _materials.SetMaterial(material);
+                DataTable serviceCompanyList = new DataTable();
+                dictionary.TryGetValue("ServiceCompanyList", out obj);
+                if (obj != null)
+                {
+                    string serviceCompanyListJSON = Convert.ToString(obj);
+                    serviceCompanyList = JsonConvert.DeserializeObject<DataTable>(serviceCompanyListJSON).DefaultView.ToTable(false, "ID");
+                }
+                else
+                {
+                    serviceCompanyList.Columns.Add("ID", typeof(int));
+                }
+                material = await _materials.SetMaterial(material, serviceCompanyList);
                 _logger.LogInfo("SetMaterial Get");
-                return Ok();
+                return Ok(material);
             }
             catch (SqlException ex)
             {

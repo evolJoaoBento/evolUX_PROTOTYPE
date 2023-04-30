@@ -147,6 +147,12 @@
   <data name="GroupDescription" xml:space="preserve">
     <value>Descrição</value>
   </data>
+  <data name="MaterialBinPosition" xml:space="preserve">
+    <value>Posições Permitidas</value>
+  </data>
+  <data name="MaterialBinPosition_Tip" xml:space="preserve">
+    <value>Posições permitidas nas máquinas</value>
+  </data>
   <data name="MaterialGroups" xml:space="preserve">
     <value>Grupos de Materiais</value>
   </data>
@@ -159,6 +165,9 @@
   <data name="Paper" xml:space="preserve">
     <value>Papeis para impressão</value>
   </data>
+  <data name="PaperMaterialBinPosition" xml:space="preserve">
+    <value>Bandejas Permitidas</value>
+  </data>
   <data name="Paper_Icon" xml:space="preserve">
     <value>paper.png</value>
   </data>
@@ -170,6 +179,9 @@
   </data>
   <data name="Station" xml:space="preserve">
     <value>Adicionais de envelopagem</value>
+  </data>
+  <data name="StationMaterialBinPosition" xml:space="preserve">
+    <value>Estações Permitidas</value>
   </data>
   <data name="Station_Icon" xml:space="preserve">
     <value>newspaper.png</value>

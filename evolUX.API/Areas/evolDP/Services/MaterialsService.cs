@@ -1,7 +1,9 @@
 ﻿using evolUX.API.Areas.Core.Repositories.Interfaces;
 using evolUX.API.Areas.evolDP.Services.Interfaces;
+using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace evolUX.API.Areas.evolDP.Services
 {
@@ -13,9 +15,9 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             _repository = repository;
         }
-        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes(string fullFillMaterialCode)
+        public async Task<IEnumerable<FullfillMaterialCode>> GetFulfillMaterialCodes(string fullFillMaterialCode)
         {
-            IEnumerable<FulfillMaterialCode> result = await _repository.Materials.GetFulfillMaterialCodes(fullFillMaterialCode);
+            IEnumerable<FullfillMaterialCode> result = await _repository.Materials.GetFulfillMaterialCodes(fullFillMaterialCode);
             return result;
         }
         public async Task<IEnumerable<MaterialType>> GetMaterialTypes(bool groupCodes, string materialTypeCode)
@@ -23,26 +25,27 @@ namespace evolUX.API.Areas.evolDP.Services
             IEnumerable<MaterialType> result = await _repository.Materials.GetMaterialTypes(groupCodes, materialTypeCode);
             return result;
         }
-        public async Task<IEnumerable<MaterialElement>> GetMaterialGroups(int groupID, string groupCode, int materialTypeID, string materialTypeCode)
+        public async Task<IEnumerable<MaterialElement>> GetMaterialGroups(int groupID, string groupCode, int materialTypeID, string materialTypeCode, DataTable serviceCompanyList)
         {
-            IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterialGroups(groupID, groupCode, materialTypeID, materialTypeCode);
+            IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterialGroups(groupID, groupCode, materialTypeID, materialTypeCode, serviceCompanyList);
             return result;
         }
-        public async Task SetMaterialGroup(MaterialElement group)
+        public async Task<MaterialElement> SetMaterialGroup(MaterialElement group, DataTable serviceCompanyList)
         {
-            await _repository.Materials.SetMaterialGroup(group);
-            return;
-
+            int groupID = await _repository.Materials.SetMaterialGroup(group, serviceCompanyList);
+            IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterialGroups(groupID, "", 0, "", serviceCompanyList);
+            return result?.First();
         }
-        public async Task<IEnumerable<MaterialElement>> GetMaterials(int materialID, string materialRef, string materialCode, int groupID, int materialTypeID, string materialTypeCode)
+        public async Task<IEnumerable<MaterialElement>> GetMaterials(int materialID, string materialRef, string materialCode, int groupID, int materialTypeID, string materialTypeCode, DataTable serviceCompanyList)
         {
-            IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterials(materialID, materialRef, materialCode, groupID, materialTypeID, materialTypeCode);
+            IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterials(materialID, materialRef, materialCode, groupID, materialTypeID, materialTypeCode, serviceCompanyList);
             return result;
         }
-        public async Task SetMaterial(MaterialElement material)
+        public async Task<MaterialElement> SetMaterial(MaterialElement material, DataTable serviceCompanyList)
         {
-            await _repository.Materials.SetMaterial(material);
-            return;
+            int materialID = await _repository.Materials.SetMaterial(material, serviceCompanyList);
+            IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterials(materialID, "", "", 0, 0, "", serviceCompanyList);
+            return result?.First();
         }
         public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMedia(int? envMediaID)
         {

@@ -27,7 +27,7 @@ else
     bool AddEnvelopeRange = false;
     bool DeleteEnvelopeRange = false;
     bool ExportEnvelopeRange = false;
-
+    string value;
     if (Model.Permissions.Find(x => x == "AddMaterial") != null) { AddMaterial = true; }
     if (Model.Permissions.Find(x => x == "DeleteMaterial") != null) { DeleteMaterial = true; }
     if (Model.Permissions.Find(x => x == "ExportMaterial") != null) { ExportMaterial = true; }
@@ -37,14 +37,106 @@ else
     if (Model.Permissions.Find(x => x == "AddEnvelopeRange") != null) { AddEnvelopeRange = true; }
     if (Model.Permissions.Find(x => x == "DeleteEnvelopeRange") != null) { DeleteEnvelopeRange = true; }
     if (Model.Permissions.Find(x => x == "ExportEnvelopeRange") != null) { ExportEnvelopeRange = true; }
+    int MaterialTypeID = Model.MaterialTypeList.First().MaterialTypeID;
+    int serviceCompanyMaterialBinPosition = Model.MaterialTypeList.First().MaxMaterialPosition;
 
+    @if (AddMaterialType)
+    {
+        <table id="Hide|" style="display: none" class="table table-sm table-hover table-collapse-seperate">
+            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                <tr>
+                    <th class="evol-fitcontent-column" style="text-align: center">
+                    </th>
+                    <th>@localizer["GroupCode"]</th>
+                    <th>@localizer["GroupDescription"]</th>
+                </tr>
+            </thead>
+            <tbody id="bootstrap-overrides">
+                <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Materials" asp-action="ChangeMaterialGroup" asp-route-materialtypecode="@Model.MaterialTypeCode">
+                <tr>
+                    <td style="align-items:center; display:flex">
+                        <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <input style="display: none" id=GroupID name=GroupID type="number" value="0" />
+                        <input style="display: none" id=MaterialTypeID name=MaterialTypeID type="number" value="@MaterialTypeID" />
+                    </td>
+                    <td><input id=GroupCode name=GroupCode type="text" maxlength="20" style="width: 100%" /></td>
+                    <td><input id=GroupDescription name=GroupDescription type="text" maxlength="50" style="width: 100%" /></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="2">
+                        <table class="table table-sm table-collapse-seperate">
+                            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                    @{
+                                        value = localizer[Model.MaterialTypeCode + "MaterialBinPosition"].Value;
+                                        if (value == (Model.MaterialTypeCode + "MaterialBinPosition"))
+                                            value = localizer["MaterialBinPosition"].Value;
+                                    }
+                                <tr>
+                                    <th>@localizer["ProviderCompany"]</th>
+                                    <th>@localizer["ServiceCompany"]</th>
+                                    <th>@localizer["CostDate"]</th>
+                                    <th>@localizer["MaterialCost"]</th>
+                                    <th title="@localizer["MaterialBinPosition_Tip"]">@value</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bootstrap-overrides">
+                                <tr>
+                                    <td>
+                                        <select id=ProviderCompanyID name=ProviderCompanyID>
+                                                @foreach (Company c in Model.CompaniesList)
+                                                {
+                                                <option value="@c.ID">@c.CompanyName</option>
+                                                }
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select id=ServiceCompanyID name=ServiceCompanyID>
+                                                    @foreach (Company c in Model.ServiceCompanyList)
+                                                {
+                                                <option value="@c.ID">@c.CompanyName</option>
+                                                }
+                                        </select>
+                                    </td>
+                                    <td><input id="CostDate" name="CostDate" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" /></td>
+                                    <td><input id=MaterialCost name=MaterialCost type="number" maxlength="9999999" step="0.01" style="width: 100%" /></td>
+                                    <td>
+                                        <table id="groupCost" class="evol-checkbox-table">
+                                            <thead>
+                                                <tr>
+                                                    @for (int i = serviceCompanyMaterialBinPosition - 1; i >= 0; i--)
+                                                    {
+                                                        <td>@(i+1)</td>
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    @for (int i = serviceCompanyMaterialBinPosition - 1; i >= 0; i--)
+                                                    {
+                                                        <td><input id="MaterialBinPosition" name="MaterialBinPosition" type="checkbox" value="@Math.Pow(2, i)" checked /></td>
+                                                    }
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </form>
+            </tbody>
+        </table>
+    }
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th class="evol-fitcontent-column" style="text-align: center">
                     @if (AddMaterialType)
                     {
-                        <img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddMaterialGroup"]" />
+                        <img id="Show|" onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddMaterialGroup"]" />
                     }
                 </th>
                 <th>@localizer["GroupCode"]</th>
@@ -52,20 +144,6 @@ else
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
-            @if (AddMaterialType)
-            {
-                <tr id="Hide|" style="display: none">
-                    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Materials" asp-action="ChangeMaterialGroup" asp-route-materialtypecode="@Model.MaterialTypeCode">
-                    <td style="align-items:center; display:flex">
-                        <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
-                        <input style="display: none" id=GroupID name=GroupID type="number" value="0" />
-                    </td>
-                    <td><input id=GroupCode name=GroupCode type="text" maxlength="20" style="width: 100%" /></td>
-                    <td><input id=GroupDescription name=GroupDescription type="text" maxlength="50" style="width: 100%" /></td>
-                    </form>
-                </tr>
-            }
             @{
                 string image = Model.MaterialTypeCode + "_Icon";
                 MaterialElement mat = new MaterialElement();
@@ -84,11 +162,8 @@ else
             {
                 <tr>
                     <td class="evol-fitcontent-column">
-                        <a asp-area="evolDP" asp-controller="Materials" asp-action="ExpCompany" asp-route-materialGroupJSON="@JsonConvert.SerializeObject(m)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
-                            <img style="background:none; width:25px;height:25px;" src="~/images/config.png" title="@localizer["ConfigMaterialGroup"]" />
-                        </a>
                         <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialList" asp-route-materialGroupJSON="@JsonConvert.SerializeObject(m)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
-                            <img style="background:none; width:25px;height:25px;" src="~/images/detail.png" title="@localizer["MaterialList"]" />
+                            <img style="background:none; width:25px;height:25px;" src="~/images/config.png" title="@localizer["ConfigMaterialGroup"]" />
                         </a>
                     </td>
                     <td>@m.GroupCode</td>
@@ -97,4 +172,32 @@ else
             }
         </tbody>
     </table>
+}
+@section Scripts
+{
+    <script type="text/javascript">
+        function CancelRow(value) {
+            eShide('Hide|' + value);
+            eSshow('Show|' + value);
+
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = true;
+            return false;
+        }
+        function EditRow(value) {
+            eShide('Show|' + value);
+            eSshow('Hide|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = false;
+
+            let str = 'Hide|' + value;
+            trElements = document.querySelectorAll('tr[id^="Hide|"]');
+            trElements.forEach(tElement => {
+                if (tElement.id != str) {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                }
+            });
+        }
+    </script>
 }

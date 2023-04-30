@@ -247,22 +247,24 @@ else
                 {
                     <tr>
                         <th>@localizer["StartDate"]</th>
-                        <td><input @disable id="StartDate" name="StartDate" type="date" value="@DateTime.Now.ToShortDateString()" /></td>
+                            <td><input id="StartDate" name="StartDate" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" @disable /></td>
                     </tr>
                 }
                 else
                 {
                     <tr>
                         <th>@localizer["StartDate"]</th>
-                        @{starDateDesc = DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToShortDateString();}
+                            @{
+                                starDateDesc = DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToString("yyyy-MM-dd");
+                            }
                         <td>@starDateDesc</td>
-                        <td><input @disable style="display: none" id="StartDate" name="StartDate" type="date" value="@starDateDesc" /></td>
+                        <td><input style="display: none" id="StartDate" name="StartDate" type="date" value="@starDateDesc" @disable /></td>
                     </tr>
                 }
                 <tr>
                     <th>@localizer["EnvMedia"]</th>
                     <td>
-                        <select @disable name="EnvMediaID" style="width: 100%">
+                        <select name="EnvMediaID" style="width: 100%" @disable>
                         @if (dConfig != null && dConfig.EnvMediaID > 0)
                         {
                             <option value="@dConfig?.EnvMediaID">@dConfig.EnvMediaDesc</option>

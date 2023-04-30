@@ -19,11 +19,11 @@ namespace evolUX.API.Areas.evolDP.Repositories
         }
 
         ////FOR REFERENCE https://stackoverflow.com/questions/33087629/dapper-dynamic-parameters-with-table-valued-parameters
-        public async Task<IEnumerable<ServiceTaskElement>> GetServiceTasks(int? serviceTaskID)
+        public async Task<IEnumerable<ServiceTaskElement>> GetServiceTasks(int serviceTaskID)
         {
             string sql = @"RD_UX_GET_SERVICE_TASKS";
             var parameters = new DynamicParameters();
-            if (serviceTaskID != null && serviceTaskID > 0)
+            if (serviceTaskID > 0)
                 parameters.Add("ServiceTaskID", serviceTaskID, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -43,12 +43,14 @@ namespace evolUX.API.Areas.evolDP.Repositories
             }
         }
 
-        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int? serviceCompanyID)
+        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int serviceCompanyID, int materialTypeID)
         {
             string sql = @"RD_UX_GET_SERVICE_COMPANY_RESTRICTIONS";
             var parameters = new DynamicParameters();
-            if (serviceCompanyID != null && serviceCompanyID > 0)
+            if (serviceCompanyID > 0)
                 parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
+            if (materialTypeID > 0)
+                parameters.Add("MaterialTypeID", materialTypeID, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<ServiceCompanyRestriction> result = await connection.QueryAsync<ServiceCompanyRestriction>(sql, parameters, commandType: CommandType.StoredProcedure);
@@ -71,17 +73,17 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return;
             }
         }
-        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int? serviceCompanyID, int? serviceTypeID, int? serviceID, int? costDate)
+        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int serviceCompanyID, int serviceTypeID, int serviceID, int costDate)
         {
             string sql = @"RD_UX_GET_SERVICE_COMPANY_SERVICES_RESUME";
             var parameters = new DynamicParameters();
-            if (serviceCompanyID != null && serviceCompanyID > 0)
+            if (serviceCompanyID > 0)
                 parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
-            if (serviceTypeID != null && serviceTypeID > 0)
+            if (serviceTypeID > 0)
                 parameters.Add("ServiceTypeID", serviceTypeID, DbType.Int64);
-            if (serviceID != null && serviceID > 0)
+            if (serviceID > 0)
                 parameters.Add("ServiceID", serviceID, DbType.Int64);
-            if (costDate != null)
+            if (costDate >= 0)
                 parameters.Add("CostDate", costDate, DbType.Int64);
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -152,11 +154,11 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return;
             }
         }
-        public async Task<IEnumerable<ServiceTypeElement>> GetServiceTypes(int? serviceTypeID)
+        public async Task<IEnumerable<ServiceTypeElement>> GetServiceTypes(int serviceTypeID)
         {
             string sql = @"RD_UX_GET_SERVICE_TYPES";
             var parameters = new DynamicParameters();
-            if (serviceTypeID != null && serviceTypeID > 0)
+            if (serviceTypeID > 0)
                 parameters.Add("ServiceTypeID", serviceTypeID, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {

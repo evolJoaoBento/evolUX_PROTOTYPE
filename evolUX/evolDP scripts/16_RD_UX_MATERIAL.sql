@@ -26,7 +26,8 @@ AS
 	SET NOCOUNT ON
 	IF (@GroupCodes = 1)
 	BEGIN
-		SELECT mt.MaterialTypeID, x.MaterialTypeCode, mt.MaterialTypeDescription
+		SELECT mt.MaterialTypeID, x.MaterialTypeCode, mt.MaterialTypeDescription, 
+			ISNULL((SELECT MAX(MaterialPosition) FROM RD_SERVICE_COMPANY_RESTRICTION WITH(NOLOCK) WHERE MaterialTypeID = mt.MaterialTypeID),0) MaxMaterialPosition
 		FROM
 			(SELECT MIN(MaterialTypeID) MaterialTypeID, 
 				CASE WHEN MaterialTypeCode like '%Paper' THEN 'Paper'
@@ -57,10 +58,11 @@ AS
 	END
 	ELSE
 	BEGIN
-		SELECT MaterialTypeID, MaterialTypeCode, MaterialTypeDescription
-		FROM RD_MATERIAL_TYPE WITH(NOLOCK)
-		WHERE @MaterialTypeCode is NULL OR MaterialTypeCode like ('%' + @MaterialTypeCode)
-		ORDER BY MaterialTypeID ASC
+		SELECT mt.MaterialTypeID, mt.MaterialTypeCode, mt.MaterialTypeDescription, 
+			ISNULL((SELECT MAX(MaterialPosition) FROM RD_SERVICE_COMPANY_RESTRICTION WITH(NOLOCK) WHERE MaterialTypeID = mt.MaterialTypeID),0) MaxMaterialPosition
+		FROM RD_MATERIAL_TYPE mt WITH(NOLOCK)
+		WHERE @MaterialTypeCode is NULL OR mt.MaterialTypeCode like ('%' + @MaterialTypeCode)
+		ORDER BY mt.MaterialTypeID ASC
 	END
 RETURN
 GO
@@ -75,40 +77,89 @@ ALTER  PROCEDURE [dbo].[RD_UX_GET_MATERIAL]
 	@MaterialTypeID int = NULL,
 	@MaterialTypeCode varchar(10) = NULL,
 	@MaterialCode varchar(20) = NULL,
-	@GroupID int = NULL
+	@GroupID int = NULL,
+	@ServiceCompanyList IDList READONLY
 AS
 	SET NOCOUNT ON
 	IF (@MaterialID is NOT NULL OR @MaterialRef is NOT NULL)
 	BEGIN
-		SELECT m.MaterialID, m.MaterialTypeID, m.MaterialCode, m.MaterialDescription, m.MaterialWeight, m.MaterialRef, m.FullFillSheets, m.FullFillMaterialCode, m.ExpeditionMinWeight, m.GroupID
+		SELECT m.MaterialID, m.MaterialTypeID, m.MaterialCode, m.MaterialDescription, m.MaterialWeight, m.MaterialRef, m.FullFillSheets, m.FullFillMaterialCode, m.ExpeditionMinWeight, m.GroupID,
+			mcc.ServiceCompanyID, mcc.ProviderCompanyID, mcc.CostDate, mcc.MaterialCost, mcc.MaterialBinPosition, ISNULL(mcc.MaterialPosition,0) ServiceCompanyMaterialPosition
 		FROM RD_MATERIAL m WITH(NOLOCK)
+		LEFT OUTER JOIN
+			(SELECT mc.ServiceCompanyID, mc.MaterialID, mc.ProviderCompanyID, mc.CostDate, mc.MaterialCost, mc.MaterialBinPosition, scr.MaterialPosition, scr.MaterialTypeID
+			FROM RD_MATERIAL_COST mc WITH(NOLOCK)
+			INNER JOIN
+				@ServiceCompanyList s
+			ON s.ID = mc.ServiceCompanyID
+			INNER JOIN
+				RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
+			ON scr.ServiceCompanyID = mc.ServiceCompanyID
+			WHERE mc.CostDate = (SELECT MAX(CostDate)
+								FROM RD_MATERIAL_COST WITH(NOLOCK)
+								WHERE ServiceCompanyID = mc.ServiceCompanyID
+									AND MaterialID = mc.MaterialID)) mcc
+		ON mcc.MaterialID = m.MaterialID AND ISNULL(mcc.MaterialTypeID,m.MaterialTypeID) = m.MaterialTypeID
 		WHERE m.MaterialID = ISNULL(@MaterialID,m.MaterialID)
 			OR
 			m.MaterialRef = ISNULL(@MaterialRef,m.MaterialRef)
+		ORDER BY m.MaterialRef ASC, mcc.CostDate DESC, mcc.ServiceCompanyID ASC
 	END
 	ELSE
 	BEGIN
 		IF (@MaterialTypeCode is NOT NULL)
 		BEGIN
-			SELECT m.MaterialID, m.MaterialTypeID, m.MaterialCode, m.MaterialDescription, m.MaterialWeight, m.MaterialRef, m.FullFillSheets, m.FullFillMaterialCode, m.ExpeditionMinWeight, m.GroupID
+			SELECT m.MaterialID, m.MaterialTypeID, m.MaterialCode, m.MaterialDescription, m.MaterialWeight, m.MaterialRef, m.FullFillSheets, m.FullFillMaterialCode, m.ExpeditionMinWeight, m.GroupID,
+				mcc.ServiceCompanyID, mcc.ProviderCompanyID, mcc.CostDate, mcc.MaterialCost, mcc.MaterialBinPosition, ISNULL(mcc.MaterialPosition,0) ServiceCompanyMaterialPosition
 			FROM RD_MATERIAL m WITH(NOLOCK)
 			INNER JOIN
 				RD_MATERIAL_TYPE mt WITH(NOLOCK)
 			ON mt.MaterialTypeID = m.MaterialTypeID
+			LEFT OUTER JOIN
+				(SELECT mc.ServiceCompanyID, mc.MaterialID, mc.ProviderCompanyID, mc.CostDate, mc.MaterialCost, mc.MaterialBinPosition, scr.MaterialPosition, scr.MaterialTypeID
+				FROM RD_MATERIAL_COST mc WITH(NOLOCK)
+				INNER JOIN
+					@ServiceCompanyList s
+				ON s.ID = mc.ServiceCompanyID
+				INNER JOIN
+					RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
+				ON scr.ServiceCompanyID = mc.ServiceCompanyID
+				WHERE mc.CostDate = (SELECT MAX(CostDate)
+								FROM RD_MATERIAL_COST WITH(NOLOCK)
+								WHERE ServiceCompanyID = mc.ServiceCompanyID
+									AND MaterialID = mc.MaterialID)) mcc
+			ON mcc.MaterialID = m.MaterialID
 			WHERE (@MaterialCode is NULL OR m.MaterialCode = @MaterialCode)
 				AND mt.MaterialTypeCode like ('%' + @MaterialTypeCode)
 				AND (@GroupID is NULL OR GroupID = @GroupID)
+			ORDER BY m.MaterialRef ASC, mcc.CostDate DESC, mcc.ServiceCompanyID ASC
 		END
 		ELSE
 		BEGIN
-			SELECT m.MaterialID, m.MaterialTypeID, m.MaterialCode, m.MaterialDescription, m.MaterialWeight, m.MaterialRef, m.FullFillSheets, m.FullFillMaterialCode, m.ExpeditionMinWeight, m.GroupID
+			SELECT m.MaterialID, m.MaterialTypeID, m.MaterialCode, m.MaterialDescription, m.MaterialWeight, m.MaterialRef, m.FullFillSheets, m.FullFillMaterialCode, m.ExpeditionMinWeight, m.GroupID,
+				mcc.ServiceCompanyID, mcc.ProviderCompanyID, mcc.CostDate, mcc.MaterialCost, mcc.MaterialBinPosition, ISNULL(mcc.MaterialPosition,0) ServiceCompanyMaterialPosition
 			FROM RD_MATERIAL m WITH(NOLOCK)
 			INNER JOIN
 				RD_MATERIAL_TYPE mt WITH(NOLOCK)
 			ON mt.MaterialTypeID = m.MaterialTypeID
+			LEFT OUTER JOIN
+				(SELECT mc.ServiceCompanyID, mc.MaterialID, mc.ProviderCompanyID, mc.CostDate, mc.MaterialCost, mc.MaterialBinPosition, scr.MaterialPosition, scr.MaterialTypeID
+				FROM RD_MATERIAL_COST mc WITH(NOLOCK)
+				INNER JOIN
+					@ServiceCompanyList s
+				ON s.ID = mc.ServiceCompanyID
+				INNER JOIN
+					RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
+				ON scr.ServiceCompanyID = mc.ServiceCompanyID
+				WHERE mc.CostDate = (SELECT MAX(CostDate)
+								FROM RD_MATERIAL_COST WITH(NOLOCK)
+								WHERE ServiceCompanyID = mc.ServiceCompanyID
+									AND MaterialID = mc.MaterialID)) mcc
+			ON mcc.MaterialID = m.MaterialID
 			WHERE (@MaterialCode is NULL OR m.MaterialCode = @MaterialCode)
 				AND (@MaterialTypeID is NULL OR mt.MaterialTypeID = @MaterialTypeID)
 				AND (@GroupID is NULL OR GroupID = @GroupID)
+			ORDER BY m.MaterialRef ASC, mcc.CostDate DESC, mcc.ServiceCompanyID ASC
 		END
 	END
 RETURN
@@ -128,7 +179,13 @@ ALTER  PROCEDURE [dbo].[RD_UX_SET_MATERIAL]
 	@FullFillSheets int = NULL,
 	@FullFillMaterialCode varchar(10) = NULL,
 	@ExpeditionMinWeight float = NULL,
-	@GroupID int = NULL
+	@GroupID int = NULL,
+	@ProviderCompanyID int = NULL,
+	@ServiceCompanyID int = NULL,
+	@CostDate int = 0,
+	@MaterialCost float = 0,
+	@MaterialBinPosition smallint = NULL,
+	@ServiceCompanyList IDList READONLY
 AS
 	SET NOCOUNT ON
 	IF (@MaterialID is NULL)
@@ -144,6 +201,18 @@ AS
 				SELECT @MaterialID = MaterialID 
 				FROM [dbo].[RD_MATERIAL]
 				WHERE MaterialRef = @MaterialRef
+
+				IF (@ServiceCompanyID is NULL)
+				BEGIN
+					INSERT INTO RD_MATERIAL_COST(MaterialID, ServiceCompanyID, ProviderCompanyID, CostDate, MaterialCost, MaterialBinPosition)
+					SELECT @MaterialID, s.ID, @ProviderCompanyID, @CostDate, @MaterialCost, @MaterialBinPosition
+					FROM @ServiceCompanyList s
+				END
+				ELSE
+				BEGIN
+					INSERT INTO RD_MATERIAL_COST(MaterialID, ServiceCompanyID, ProviderCompanyID, CostDate, MaterialCost, MaterialBinPosition)
+					SELECT @MaterialID, @ServiceCompanyID, @ProviderCompanyID, @CostDate, @MaterialCost, @MaterialBinPosition
+				END
 			END
 			ELSE
 			BEGIN
@@ -183,6 +252,16 @@ AS
 				ExpeditionMinWeight = @ExpeditionMinWeight
 			WHERE MaterialID = @MaterialID
 		END
+		
+		IF (@ServiceCompanyID is NOT NULL)
+		BEGIN
+			UPDATE RD_MATERIAL_COST
+			SET ProviderCompanyID = @ProviderCompanyID,
+				CostDate = @CostDate,
+				MaterialCost = @MaterialCost,
+				MaterialBinPosition = @MaterialBinPosition
+			WHERE MaterialID = @MaterialID AND ServiceCompanyID = @ServiceCompanyID
+		END
 	END
 RETURN @MaterialID
 GO
@@ -195,30 +274,63 @@ ALTER  PROCEDURE [dbo].[RD_UX_GET_MATERIAL_GROUP]
 	@GroupID int = NULL,
 	@MaterialTypeID int = NULL,
 	@MaterialTypeCode varchar(10) = NULL,
-	@GroupCode varchar(20) = NULL
+	@GroupCode varchar(20) = NULL,
+	@ServiceCompanyList IDList READONLY
 AS
 	SET NOCOUNT ON
 	IF (@MaterialTypeCode is NOT NULL)
 	BEGIN
-		SELECT m.GroupID, m.MaterialTypeID, m.GroupCode, m.GroupDescription, m.MaterialWeight, m.FullFillSheets, m.FullFillMaterialCode, m.ExpeditionMinWeight
+		SELECT m.GroupID, m.MaterialTypeID, m.GroupCode, m.GroupDescription, m.MaterialWeight, m.FullFillSheets, m.FullFillMaterialCode, m.ExpeditionMinWeight,
+				mcc.ServiceCompanyID, mcc.ProviderCompanyID, mcc.CostDate, mcc.MaterialCost, mcc.MaterialBinPosition, ISNULL(mcc.MaterialPosition,0) ServiceCompanyMaterialPosition
 		FROM RD_MATERIAL_GROUP m WITH(NOLOCK)
 		INNER JOIN
 			RD_MATERIAL_TYPE mt WITH(NOLOCK)
 		ON mt.MaterialTypeID = m.MaterialTypeID
+		LEFT OUTER JOIN
+			(SELECT mc.ServiceCompanyID, mc.GroupID, mc.ProviderCompanyID, mc.CostDate, mc.MaterialCost, mc.MaterialBinPosition, scr.MaterialPosition, scr.MaterialTypeID
+			FROM RD_MATERIAL_GROUP_COST mc WITH(NOLOCK)
+			INNER JOIN
+				@ServiceCompanyList s
+			ON s.ID = mc.ServiceCompanyID
+			INNER JOIN
+				RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
+			ON scr.ServiceCompanyID = mc.ServiceCompanyID
+			WHERE mc.CostDate = (SELECT MAX(CostDate)
+								FROM RD_MATERIAL_GROUP_COST WITH(NOLOCK)
+								WHERE ServiceCompanyID = mc.ServiceCompanyID
+									AND GroupID = mc.GroupID)) mcc
+		ON mcc.GroupID = m.GroupID
 		WHERE (@GroupCode is NULL OR m.GroupCode = @GroupCode)
 			AND mt.MaterialTypeCode like ('%' + @MaterialTypeCode)
 			AND m.GroupID = ISNULL(@GroupID,m.GroupID)
+		ORDER BY m.GroupCode ASC, mcc.CostDate DESC, mcc.ServiceCompanyID ASC
 	END
 	ELSE
 	BEGIN
-		SELECT m.GroupID, m.MaterialTypeID, m.GroupCode, m.GroupDescription, m.MaterialWeight, m.FullFillSheets, m.FullFillMaterialCode, m.ExpeditionMinWeight
+		SELECT m.GroupID, m.MaterialTypeID, m.GroupCode, m.GroupDescription, m.MaterialWeight, m.FullFillSheets, m.FullFillMaterialCode, m.ExpeditionMinWeight,
+				mcc.ServiceCompanyID, mcc.ProviderCompanyID, mcc.CostDate, mcc.MaterialCost, mcc.MaterialBinPosition, ISNULL(mcc.MaterialPosition,0) ServiceCompanyMaterialPosition
 		FROM RD_MATERIAL_GROUP m WITH(NOLOCK)
 		INNER JOIN
 			RD_MATERIAL_TYPE mt WITH(NOLOCK)
 		ON mt.MaterialTypeID = m.MaterialTypeID
+		LEFT OUTER JOIN
+			(SELECT mc.ServiceCompanyID, mc.GroupID, mc.ProviderCompanyID, mc.CostDate, mc.MaterialCost, mc.MaterialBinPosition, scr.MaterialPosition, scr.MaterialTypeID
+			FROM RD_MATERIAL_GROUP_COST mc WITH(NOLOCK)
+			INNER JOIN
+				@ServiceCompanyList s
+			ON s.ID = mc.ServiceCompanyID
+			INNER JOIN
+				RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
+			ON scr.ServiceCompanyID = mc.ServiceCompanyID
+			WHERE mc.CostDate = (SELECT MAX(CostDate)
+								FROM RD_MATERIAL_GROUP_COST WITH(NOLOCK)
+								WHERE ServiceCompanyID = mc.ServiceCompanyID
+									AND GroupID = mc.GroupID)) mcc
+		ON mcc.GroupID = m.GroupID
 		WHERE (@GroupCode is NULL OR m.GroupCode = @GroupCode)
 			AND (@MaterialTypeID is NULL OR mt.MaterialTypeID = @MaterialTypeID)
 			AND m.GroupID = ISNULL(@GroupID,m.GroupID)
+		ORDER BY m.GroupCode ASC, mcc.CostDate DESC, mcc.ServiceCompanyID ASC
 	END
 RETURN
 GO
@@ -235,8 +347,13 @@ ALTER  PROCEDURE [dbo].[RD_UX_SET_MATERIAL_GROUP]
 	@MaterialWeight float = NULL,
 	@FullFillSheets int = NULL,
 	@FullFillMaterialCode varchar(10) = NULL,
-	@ExpeditionMinWeight float = NULL
-
+	@ExpeditionMinWeight float = NULL,
+	@ProviderCompanyID int = NULL,
+	@ServiceCompanyID int = NULL,
+	@CostDate int = 0,
+	@MaterialCost float = 0,
+	@MaterialBinPosition smallint = NULL,
+	@ServiceCompanyList IDList READONLY
 AS
 	SET NOCOUNT ON
 	IF (@GroupID is NULL)
@@ -250,6 +367,18 @@ AS
 			SELECT @GroupID = GroupID 
 			FROM [dbo].[RD_MATERIAL_GROUP]
 			WHERE GroupCode = @GroupCode
+
+			IF (@ServiceCompanyID is NULL)
+			BEGIN
+				INSERT INTO RD_MATERIAL_GROUP_COST(GroupID, ServiceCompanyID, ProviderCompanyID, CostDate, MaterialCost, MaterialBinPosition)
+				SELECT @GroupID, s.ID, @ProviderCompanyID, @CostDate, @MaterialCost, @MaterialBinPosition
+				FROM @ServiceCompanyList s
+			END
+			ELSE
+			BEGIN
+				INSERT INTO RD_MATERIAL_GROUP_COST(GroupID, ServiceCompanyID, ProviderCompanyID, CostDate, MaterialCost, MaterialBinPosition)
+				SELECT @GroupID, @ServiceCompanyID, @ProviderCompanyID, @CostDate, @MaterialCost, @MaterialBinPosition
+			END
 		END
 	END
 	ELSE
@@ -261,6 +390,16 @@ AS
 			FullFillMaterialCode = @FullFillMaterialCode, 
 			ExpeditionMinWeight = @ExpeditionMinWeight
 		WHERE GroupID = @GroupID
+
+		IF (@ServiceCompanyID is NOT NULL)
+		BEGIN
+			UPDATE RD_MATERIAL_GROUP_COST
+			SET ProviderCompanyID = @ProviderCompanyID,
+				CostDate = @CostDate,
+				MaterialCost = @MaterialCost,
+				MaterialBinPosition = @MaterialBinPosition
+			WHERE GroupID = @GroupID AND ServiceCompanyID = @ServiceCompanyID
+		END
 	END
 RETURN @GroupID
 GO
