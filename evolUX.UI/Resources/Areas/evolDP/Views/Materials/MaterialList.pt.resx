@@ -127,7 +127,8 @@
     <value>Alterar configuração do Material</value>
   </data>
   <data name="CostDate" xml:space="preserve">
-    <value>Data Início do Custo</value>
+    <value>Entrada em vigor</value>
+    <comment>Effective Date</comment>
   </data>
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;vazio&gt;</value>
@@ -160,7 +161,7 @@
     <value>Formato mínimo do envelope para poder conter o material</value>
   </data>
   <data name="FullFillSheets" xml:space="preserve">
-    <value>N.º de folhas</value>
+    <value>N.º Folhas</value>
   </data>
   <data name="FullFillSheets_Tip" xml:space="preserve">
     <value>Equivalência em n.º de folhas para a envelopagem (grossura)</value>
@@ -174,6 +175,9 @@
   <data name="MaterialCode" xml:space="preserve">
     <value>Código</value>
   </data>
+  <data name="MaterialCode_Tip" xml:space="preserve">
+    <value>Código de material único dentro do tipo de material</value>
+  </data>
   <data name="MaterialCost" xml:space="preserve">
     <value>Custo do material</value>
   </data>
@@ -185,6 +189,9 @@
   </data>
   <data name="MaterialRef" xml:space="preserve">
     <value>Referência</value>
+  </data>
+  <data name="MaterialRef_Tip" xml:space="preserve">
+    <value>Código de material único para todos os tipos de material</value>
   </data>
   <data name="MaterialType" xml:space="preserve">
     <value>Tipo de Material</value>
@@ -216,10 +223,10 @@
   <data name="Provider_Tip" xml:space="preserve">
     <value>Custos e características do material no fornecedor</value>
   </data>
-  <data name="RoolPaper" xml:space="preserve">
+  <data name="RollPaper" xml:space="preserve">
     <value>Papeis para impressão em papel contínuo</value>
   </data>
-  <data name="RoolPaper_Icon" xml:space="preserve">
+  <data name="RollPaper_Icon" xml:space="preserve">
     <value>paper.png</value>
   </data>
   <data name="ServiceCompany" xml:space="preserve">

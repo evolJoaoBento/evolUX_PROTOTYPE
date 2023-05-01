@@ -144,10 +144,10 @@
   <data name="Paper_Icon" xml:space="preserve">
     <value>paper.png</value>
   </data>
-  <data name="RoolPaper" xml:space="preserve">
+  <data name="RollPaper" xml:space="preserve">
     <value>Papeis para impressão em papel contínuo</value>
   </data>
-  <data name="RoolPaper_Icon" xml:space="preserve">
+  <data name="RollPaper_Icon" xml:space="preserve">
     <value>paper.png</value>
   </data>
   <data name="Station" xml:space="preserve">

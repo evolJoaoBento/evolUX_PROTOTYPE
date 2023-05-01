@@ -226,7 +226,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                             ((List<MaterialCostElement>)material.CostList).Add(costElement);
                             costElement.ServiceCompanyID = (int)r["ServiceCompanyID"];
                             costElement.CostDate = (int)r["CostDate"];
-                            costElement.MaterialBinPosition = (int)r["MaterialBinPosition"];
+                            costElement.MaterialBinPosition = int.Parse(r["MaterialBinPosition"].ToString());
                             costElement.MaterialCost = (double)r["MaterialCost"];
                             if (!r.IsNull("ProviderCompanyID"))
                                 costElement.ProviderCompanyID = (int)r["ProviderCompanyID"];

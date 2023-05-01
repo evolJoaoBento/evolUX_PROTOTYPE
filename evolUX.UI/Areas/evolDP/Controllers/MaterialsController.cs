@@ -82,9 +82,11 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 MaterialViewModel result = new MaterialViewModel();
                 result.MaterialTypeCode = materialType.MaterialTypeCode;
                 result.MaterialList = await _materialsService.GetMaterialGroups(materialType.MaterialTypeCode, serviceCompanyList);
+                result.FullfillMaterialCodes = await _materialsService.GetFulfillMaterialCodes();
                 result.ServiceCompanyList = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
                 string CompaniesList = HttpContext.Session.GetString("evolDP/Companies");
                 result.CompaniesList = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
+                ((List<Company>)result.CompaniesList).AddRange(result.ServiceCompanyList);
                 if (result.MaterialList != null && (result.MaterialTypeCode.ToUpper() == "STATION" || result.MaterialList.Count() > 0))
                 {
                     result.MaterialTypeList = await _materialsService.GetMaterialTypes(materialType.MaterialTypeCode);
@@ -210,6 +212,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 result.ServiceCompanyList = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
                 string CompaniesList = HttpContext.Session.GetString("evolDP/Companies");
                 result.CompaniesList = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
+                ((List<Company>)result.CompaniesList).AddRange(result.ServiceCompanyList);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View("MaterialList",result);
             }
