@@ -202,6 +202,9 @@
   <data name="MaterialWeight_Tip" xml:space="preserve">
     <value>Peso médio de uma unidade do material (grama)</value>
   </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>

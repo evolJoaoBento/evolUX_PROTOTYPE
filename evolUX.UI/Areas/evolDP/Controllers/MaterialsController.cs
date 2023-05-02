@@ -266,6 +266,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 result.ServiceCompanyList = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
                 string CompaniesList = HttpContext.Session.GetString("evolDP/Companies");
                 result.CompaniesList = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
+                ((List<Company>)result.CompaniesList).AddRange(result.ServiceCompanyList);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View(result);
             }
@@ -348,6 +349,35 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 if (!string.IsNullOrEmpty(str) && double.TryParse(str, out dValue))
                     material.ExpeditionMinWeight = dValue;
 
+                material.CostList = new List<MaterialCostElement>();
+                MaterialCostElement costElement = new MaterialCostElement();
+                costElement.ProviderCompanyID = 0;
+                costElement.ServiceCompanyID = 0;
+                costElement.CostDate = 0;
+                costElement.MaterialCost = 0;
+                costElement.MaterialBinPosition = 0;
+                str = form["ProviderCompanyID"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    costElement.ProviderCompanyID = value;
+                //str = form["ServiceCompanyID"].ToString();
+                //if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                //    costElement.ServiceCompanyID = value;
+                str = form["CostDate"].ToString();
+                if (!string.IsNullOrEmpty(str))
+                {
+                    DateTime sDate;
+                    if (DateTime.TryParse(str, out sDate))
+                        str = sDate.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
+                    if (!string.IsNullOrEmpty(str) && Int32.TryParse(str, out value))
+                        costElement.CostDate = value;
+                    ((List<MaterialCostElement>)material.CostList).Add(costElement);
+                }
+                str = form["MaterialBinPosition"].ToString();
+                if (!string.IsNullOrEmpty(str))
+                {
+                    string[] mPos = str.Split(new char[] { ',' });
+                    for (int i = 0; i < mPos.Length; i++) { costElement.MaterialBinPosition += Int32.Parse(mPos[i]); }
+                }
                 string serviceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
 
                 result.Group = await _materialsService.SetMaterial(material, serviceCompanyList);
@@ -357,6 +387,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 result.ServiceCompanyList = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
                 string CompaniesList = HttpContext.Session.GetString("evolDP/Companies");
                 result.CompaniesList = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
+                ((List<Company>)result.CompaniesList).AddRange(result.ServiceCompanyList);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View("MaterialList", result);
             }
