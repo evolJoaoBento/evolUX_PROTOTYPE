@@ -758,6 +758,9 @@ label {
     white-space: nowrap;
     padding: 10px;
     box-sizing: border-box;
+    border-style: none;
+    text-align: center;
+    background: none;
 }
 .evol-fitcontent-column-one {
     width: 1%;
@@ -766,6 +769,9 @@ label {
     padding-left: 15px;
     padding-right: 15px;
     box-sizing: border-box;
+    border-style: none;
+    text-align: center;
+    background: none;
 }
 .evol-normal-row {
     font-weight: normal;
@@ -780,3 +786,14 @@ label {
     align-content: center;
     background: none;
 }
+
+#bootstrap-overrides .evol-fitcontent-column {
+    width: 1%;
+    white-space: nowrap;
+    padding:10px;
+    box-sizing: border-box;
+    border-style: none;
+    text-align: center;
+    background: none;
+}
+
