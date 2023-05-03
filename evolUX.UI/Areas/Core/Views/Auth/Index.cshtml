@@ -17,13 +17,13 @@
 <div class="align-items-center">
     @if (User.Identity.IsAuthenticated)
     {
-        <h1 class="display-4 text-center" style="color: var(--evol-black)" >@localizer["Welcome"] <span class="evol-font">evolUX</span></h1>
-@*        <p>@User.Identity.Name</p>
-        foreach (var claim in User.Claims)
-        {
-            <p>@claim.Type: @claim.Value</p>
-        }
-*@    }
+        <h1 class="display-4 text-center" style="color: var(--evol-black)">@localizer["Welcome"] <span class="evol-font">evolUX</span></h1>
+        @*        <p>@User.Identity.Name</p>
+    foreach (var claim in User.Claims)
+    {
+    <p>@claim.Type: @claim.Value</p>
+    }
+    *@      }
     else
     {
         <div class="container-auth">
@@ -33,19 +33,14 @@
             <div id="form-wrap" class="login-form">
                 <form id="credentials-form" asp-area="core" asp-controller="auth" asp-action="LoginCredentials" method="get" style="width:100%; display:none; height:100px;">
                     <label style="display: block; padding-left:10px; font-weight:bold">Username:</label>
-                    <input type="text" asp-for="Username" style="width:100%;border:none; background:rgb(230,230,230)" required>
+                    <input type="text" asp-for="Username" style="width:100%;border:none; background:rgb(230,230,230)">
                     <label style="display: block;padding-left:10px; font-weight:bold">Password:</label>
-                    <input type="password" asp-for="Password" style="width:100%; border:none;background:rgb(230,230,230)" required>
+                    <input type="password" asp-for="Password" style="width:100%; border:none;background:rgb(230,230,230)">
                     <input type="hidden" name="returnUrl" value="@returnUrl">
                     <input type="submit" name="Submit" class="btn btn-block btn-outline-success" />
                 </form>
                 <form id="windows-form" asp-area="core" asp-controller="auth" asp-action="LoginWindowsAuthentication" method="get" style="justify-self:center; height:100px; ">
                     <h4 style="margin:0">Entrar com o windows autentication</h4>
-                    <input type="hidden" name="returnUrl" value="@returnUrl">
-                    <input type="submit" name="Submit" class="btn btn-block btn-success" />
-                </form>
-                 <form id="windows-form" asp-area="core" asp-controller="auth" asp-action="LoginADAuthentication" method="get" style="justify-self:center; height:100px; ">
-                    <h4 style="margin:0">Entrar com Active Directory</h4>
                     <input type="hidden" name="returnUrl" value="@returnUrl">
                     <input type="submit" name="Submit" class="btn btn-block btn-success" />
                 </form>
@@ -62,56 +57,56 @@
                 <div id="credentials-btn" class=" circle credentials"></div>
             </div>
             @*<div class="login-btn-wrap">
-                <button id="login-btn">Login</button>
-            </div>*@
+        <button id="login-btn">Login</button>
+        </div>*@
         </div>
     }
 
     @*<div class="row d-flex justify-content-center h-100">
 
-        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
 
-        @if (User.Identity.IsAuthenticated)
-        {
-        <p>@User.Identity.Name</p>
-        foreach (var claim in User.Claims)
-        {
-        <p>@claim.Type: @claim.Value</p>
-        }
+    @if (User.Identity.IsAuthenticated)
+    {
+    <p>@User.Identity.Name</p>
+    foreach (var claim in User.Claims)
+    {
+    <p>@claim.Type: @claim.Value</p>
+    }
 
-        }
-        else
-        {
-        <div class="card p-5 shadow-2-strong" style="background-color: rgb(248 248 248); border-radius:0px;">
-        <div id="loginForm" class="card-body " style="display:none;">
-        <div class="form-outline mb-4">
-        <label class="form-label text-start" for="typeEmailX-2">Email</label>
-        <input type="email" id="typeEmailX-2" class="form-control form-control-sm" />
-        </div>
+    }
+    else
+    {
+    <div class="card p-5 shadow-2-strong" style="background-color: rgb(248 248 248); border-radius:0px;">
+    <div id="loginForm" class="card-body " style="display:none;">
+    <div class="form-outline mb-4">
+    <label class="form-label text-start" for="typeEmailX-2">Email</label>
+    <input type="email" id="typeEmailX-2" class="form-control form-control-sm" />
+    </div>
 
-        <div class="form-outline mb-4">
-        <label class="form-label text-start" for="typePasswordX-2">Password</label>
-        <input type="password" id="typePasswordX-2" class="form-control form-control-sm" />
-        </div>
-        <div>
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
-        </div>
-        </div>
-        <div class="card-body align-items-center" style="margin: 0 auto;">
+    <div class="form-outline mb-4">
+    <label class="form-label text-start" for="typePasswordX-2">Password</label>
+    <input type="password" id="typePasswordX-2" class="form-control form-control-sm" />
+    </div>
+    <div>
+    <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
+    </div>
+    </div>
+    <div class="card-body align-items-center" style="margin: 0 auto;">
 
-        <a class="btn btn-primary" asp-area="core" asp-controller="auth" asp-action="LoginWindowsAuthentication">Entrar</a>
-        <div id="loginFormBtn" class="btn btn-primary">Entrar Admin</div>
+    <a class="btn btn-primary" asp-area="core" asp-controller="auth" asp-action="LoginWindowsAuthentication">Entrar</a>
+    <div id="loginFormBtn" class="btn btn-primary">Entrar Admin</div>
 
-        </div>
-        @if (@errorMessage != null)
-        {
-        <p style="color: red; padding-left:10px;">Erro @errorMessage.Code: @errorMessage.Message</p>
-        }
-        </div>
-        }
+    </div>
+    @if (@errorMessage != null)
+    {
+    <p style="color: red; padding-left:10px;">Erro @errorMessage.Code: @errorMessage.Message</p>
+    }
+    </div>
+    }
 
-        </div>
-        </div>*@
+    </div>
+    </div>*@
 
 
 </div>
