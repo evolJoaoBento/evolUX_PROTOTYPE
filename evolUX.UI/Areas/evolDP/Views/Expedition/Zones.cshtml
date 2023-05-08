@@ -30,7 +30,7 @@ else
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th class="evol-fitcontent-column borders"></th>
-                <th class="evol-fitcontent-column">@localizer["Zone"]</th>
+                <th>@localizer["Zone"]</th>
                 <th>@localizer["Description"]</th>
             </tr>
         </thead>
@@ -44,7 +44,7 @@ else
                         <td class="borders">
                             @if (z.ExpCompanyZonesList.Count() > 0)
                             {
-                                <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                             }
                         </td>
                         <td  style="text-align: center">@z.ExpeditionZone</td>
@@ -73,7 +73,7 @@ else
                                             newExpZone.ExpCompanyZonesList = z.ExpCompanyZonesList.Where(x => x.ExpCompanyID == c.ExpCompanyID && x.ExpCenterCode == c.ExpCenterCode).ToList();
                                         <tr>
                                                 <td class="borders"><a asp-area="evolDP" asp-controller="Expedition" asp-action="ZoneDetail" asp-route-expeditionzoneJson="@JsonConvert.SerializeObject(newExpZone)">
-                                                        <img class="evol-image" src="~/images/detail.png" title="@localizer["List"]: @value" />
+                                                    <img class="evol-image grow" src="~/images/detail.png" title="@localizer["List"]: @value" />
                                                     </a></td>
                                                 <td>@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName</td>
                                                 <td>@c.ExpCenterCode</td>

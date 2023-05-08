@@ -30,7 +30,7 @@
 <div id="TitlePage">
     <h1>@localizer["ServiceCompanyExpCodes"]</h1>
     <h2>@Model.ServiceCompany.CompanyName</h2>
-    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)">
+    <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)">
     </a>
 </div>
 @if (Model == null)
@@ -70,7 +70,7 @@ else
                 idValue0 = "arrow" + nameValue0;
                 <tr>
                     <td class="evol-fitcontent-column"  style="text-align:center; border:none;background-color:transparent">
-                        <a class="evol-arrow bx bxs-chevron-down arrow" href="javascript:showDetail('@nameValue0')" id="@idValue0"></a>
+                        <a class="evol-arrow bx bxs-chevron-down arrow grow" href="javascript:showDetail('@nameValue0')" id="@idValue0"></a>
                     </td>
                     <td id="row|@nameValue0" class="evol-normal-row">@sElement.ExpCompanyName</td>
                 </tr>
@@ -92,7 +92,7 @@ else
                                     idValue1 = "arrow" + nameValue1;
                                     <tr>
                                         <td class="evol-fitcontent-column"  style="text-align:center; border:none;background-color:transparent">
-                                            <a class="evol-arrow bx bxs-chevron-down arrow" href="javascript:showDetail('@nameValue1')" id="@idValue1"></a>
+                                            <a class="evol-arrow bx bxs-chevron-down arrow grow" href="javascript:showDetail('@nameValue1')" id="@idValue1"></a>
                                         </td>
                                         <td id="row|@nameValue1" class="evol-normal-row">@sElement.ServiceTaskDesc</td>
                                     </tr>
@@ -124,7 +124,7 @@ else
                                                                     <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCodeConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
                                                    asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@sExpCode.ExpCenterCode"
                                                    asp-route-source="@source" asp-route-servicetaskdesc="@sExpCode.ServiceTaskDesc" asp-route-expcompanyname="@sExpCode.ExpCompanyName">
-                                                                        <img style="background:none; width:30px;height:30px;" src="~/images/envelopes.png" title="@localizer["ConfigServiceCompanyExpCode"]" />
+                                                                        <img style="background:none; width:30px;height:30px;" class="grow" src="~/images/envelopes.png" title="@localizer["ConfigServiceCompanyExpCode"]" />
                                                                     </a>
                                                                 </td>
                                                             }

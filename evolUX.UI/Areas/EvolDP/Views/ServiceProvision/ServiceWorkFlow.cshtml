@@ -57,8 +57,8 @@ else
                 <tr>
                     <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlow">
                         <td style="align-items:center; display:flex;border: none;background-color: transparent;">
-                            <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <img onclick="CancelRow('')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                             <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="0" />
                         </td>
                         <td><input id=ServiceTaskCode name=ServiceTaskCode type="text" maxlength="15" style="width: 100%" /></td>
@@ -83,7 +83,7 @@ else
                 <th rowspan="2" class="evol-fitcontent-column" style="text-align:center;border: none;background-color: transparent;vertical-align:middle">
                     @if (AddExpCode && Model.ServiceTasksList.Count() > 0)
                     {
-                        <img onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddServiceTask"]" />
+                        <img onclick="EditRow('')" style="background:none; width:35px;height:35px;" class="grow" src="~/images/add.png" title="@localizer["AddServiceTask"]" />
                     }
                 </th>
                 <th style="vertical-align:middle" rowspan="2">@localizer["ServiceTaskCode"]</th>
@@ -106,8 +106,8 @@ else
                 <tr id="Hide|@value" style="display: none">
                     <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlow">
                         <td style="align-items:center; display:flex;border: none;background-color: transparent;">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <img onclick="CancelRow('@value')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                             <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="@st.ServiceTaskID" />
                         </td>
                         <td>@st.ServiceTaskCode<input style="display: none"  id=ServiceTaskCode name=ServiceTaskCode type="text" maxlength="15" value="@st.ServiceTaskCode"/></td>
@@ -179,15 +179,15 @@ else
                 <tr id="Show|@value">
                     <td style="align-items:center; display:flex;border: none;background-color: transparent;">
                         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
-                            <img class="evol-image" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
+                            <img class="evol-image grow" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
                         </a>
                         @if (AddServiceTask)
                         {
-                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
+                            <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
                         }
                         @if (st.ServiceTypes.Count() > 0)
                         {
-                            <a class="evol-arrow bx bxs-chevron-down arrow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <a class="evol-arrow bx bxs-chevron-down arrow grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                         }
                     </td>
                     <td>@st.ServiceTaskCode</td>

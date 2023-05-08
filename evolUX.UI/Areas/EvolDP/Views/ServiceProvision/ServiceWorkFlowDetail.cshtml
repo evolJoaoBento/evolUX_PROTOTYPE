@@ -28,7 +28,7 @@
 }
 <div id="TitlePage">
     <h1>@localizer["ServiceTask"]</h1>
-    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlow">
+    <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlow">
     </a>
 </div>
 @if (Model == null)
@@ -68,8 +68,8 @@ else
             <tr id="Hide|" style="display: none">
                 <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlowDetail">
                     <td style="align-items:center; display:flex;border: none;background-color: transparent;">
-                        <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                    <img onclick="CancelRow('')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                    <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                         <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="@serviceTask.ServiceTaskID" />
                     </td>
                     <td>@serviceTask.ServiceTaskCode<input style="display: none"  id=ServiceTaskCode name=ServiceTaskCode type="text" maxlength="15" value="@serviceTask.ServiceTaskCode"/></td>
@@ -142,7 +142,7 @@ else
                 <td class="evol-fitcontent-column-one" style="border: none;background-color: transparent;">
                     @if (AddServiceTask)
                     {
-                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
+                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
                     }
                 </td>
                 <td>@serviceTask.ServiceTaskCode</td>
@@ -166,7 +166,7 @@ else
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
-                    <img onclick="EditRow('Type')" style="width:30px;height:30px" class="evol-image" src="~/images/add.png" title="@localizer["AddServiceType"]" />
+                    <img onclick="EditRow('Type')" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddServiceType"]" />
                 </th>
                 <th>@localizer["ServiceTypeDesc"]</th>
                 <th>@localizer["ServiceTypeCode"]</th>
@@ -178,8 +178,8 @@ else
                 <tr id="Hide|Type" style="display: none">
                     <form id="AddFrm|Type" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="AddServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID">
                         <td style="align-items:center; display:flex;border:none;background-color:transparent">
-                        <img onclick="CancelRow('Type')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <img onclick="CancelRow('Type')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td colspan="2"><b>@localizer["SelectServiceTask"]: </b>
                             <select id=ServiceTypeID name=ServiceTypeID>
@@ -202,7 +202,7 @@ else
                             @if (DeleteServiceTask)
                             {
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID"  asp-route-servicetypeID="@s.ServiceTypeID">
-                                    <img onclick="return confirmServiceTypeDelete('@s.ServiceTypeCode')" style="width:30px;height:30px" class="evol-image" src="~/images/delete.png" title="@localizer["DeleteServiceType"] = @s.ServiceTypeCode" />
+                                    <img onclick="return confirmServiceTypeDelete('@s.ServiceTypeCode')" style="width:30px;height:30px" class="evol-image grow" src="~/images/delete.png" title="@localizer["DeleteServiceType"] = @s.ServiceTypeCode" />
                             </a>
                             }
                     </td>
@@ -220,7 +220,7 @@ else
                 <th class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
                     @if (AddExpCode && missingExpCompanies)
                     {
-                        <img onclick="EditRow('ExpCode')" style="width:30px;height:30px" class="evol-image" src="~/images/add.png" title="@localizer["AddExpCode"]" />
+                        <img onclick="EditRow('ExpCode')" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddExpCode"]" />
                     }
                 </th>
                 <th>@localizer["ExpCompany"]</th>
@@ -267,7 +267,7 @@ else
                     <td class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
                         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)"
                    asp-route-serviceTaskDesc="@serviceTask.ServiceTaskDesc" asp-route-expCompanyName="@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName" asp-route-source="ServiceWorkFlowDetail">
-                            <img style="width:30px;height:30px" class="evol-image" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
+                            <img style="width:30px;height:30px" class="evol-image grow" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
                         </a>
                     </td>
                     <td>@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName</td>

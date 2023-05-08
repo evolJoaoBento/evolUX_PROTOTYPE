@@ -88,7 +88,7 @@ else
         <h2>@headerDesc1</h2>
     </div>
     <div>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany"
+        <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany"
             asp-route-servicecompanyjson="@JsonConvert.SerializeObject(Model.ServiceCompany)">
         </a>
     </div>
@@ -98,7 +98,7 @@ else
         <h2>@headerDesc2
             @if (AddServiceCompany && Model.CostDate == 0 && servicesNotInList.Count() > 0)
             {
-                <img onclick="EditRow('@value')" class="evol-image" src="~/images/add.png" title="@localizer["ServiceCompanyConfigAdd"]" />
+                    <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/add.png" title="@localizer["ServiceCompanyConfigAdd"]" />
             }
         </h2>
         @if(!string.IsNullOrEmpty(headerDesc3))
@@ -125,8 +125,8 @@ else
                   asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
                   asp-route-servicecompany="@JsonConvert.SerializeObject(Model.ServiceCompany)">
                         <td style="align-items:center; display:flex">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <img onclick="CancelRow('@value')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>
                             <select id="ServiceID" name="ServiceID">
@@ -162,11 +162,11 @@ else
             <div id ="TitlePage">
                 <h2>
                 @serviceDesc
-                <img onclick="EditRow('@value')" class="evol-image" src="~/images/add.png" title="@localizer["ServiceCompanyConfigAdd"]" />
+                    <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/add.png" title="@localizer["ServiceCompanyConfigAdd"]" />
                 </h2>
                 <h3>
                     [@matchCode]
-                    <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                    <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                 </h3>
             </div>
         }
@@ -188,8 +188,8 @@ else
                             asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
                             asp-route-servicecompany="@JsonConvert.SerializeObject(Model.ServiceCompany)">
                     <td style="align-items:center; display:flex">
-                        <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                            <img onclick="CancelRow('@value')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td>@serviceDesc
                         <input style="display: none" id="ServiceID" name="ServiceID" type="text" value="@service" />
@@ -227,7 +227,7 @@ else
                 @if (AddServiceCompany)
                 {
                     <td class ="evol-fitcontent-column">
-                        <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyConfig"]"/>
+                                <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyConfig"]" />
                     </td>
                 }
                 <td>@startDateDesc</td>
@@ -240,9 +240,9 @@ else
                   <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyConfig"
                   asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
                       asp-route-serviceompany="@JsonConvert.SerializeObject(Model.ServiceCompany)">
-                    <td style="align-items:center; display:flex">
-                        <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                            <td style="align-items:center; display:flex" class="borders">
+                                <img onclick="CancelRow('@value')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                                <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <input style="display: none" id="ServiceID" name="ServiceID" type="text" value="@cDate.ServiceID" />
                     <td>

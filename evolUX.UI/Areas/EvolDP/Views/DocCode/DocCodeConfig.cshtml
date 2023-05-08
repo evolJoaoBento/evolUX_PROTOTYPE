@@ -52,12 +52,12 @@ else
     <div>
         @if (headerDesc == "AddDoc" || headerDesc == "AddDocCode")
         {
-            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+            <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
             </a>
         }
         else 
         {
-            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
+            <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)">
             </a>
         }
     </div>

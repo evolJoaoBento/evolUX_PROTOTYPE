@@ -796,3 +796,16 @@ label {
     background: none;
 }
 
+
+.grow {
+    display: inline-block;
+    transition-duration: $defaultDuration;
+    transition-property: transform;
+
+    @include hideTapHighlightColor();
+    @include hardwareAccel();
+    @include improveAntiAlias();
+    &:hover
+
+{
+    transform: scale(1.2);
