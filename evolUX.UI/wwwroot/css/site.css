@@ -784,6 +784,7 @@ label {
     border-style: none;
     text-align: center;
     background: none;
+    --bs-table-accent-bg: white;
 }
 
 #bootstrap-overrides .evol-fitcontent-column {
@@ -795,4 +796,3 @@ label {
     text-align: center;
     background: none;
 }
-

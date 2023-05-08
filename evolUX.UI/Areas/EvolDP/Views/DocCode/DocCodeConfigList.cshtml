@@ -174,7 +174,7 @@ else
             }
             else
             {
-            <tr>
+            <tr class="borders">
                 <td colspan="8">
                     <table class="table table-sm table-hover table-collapse-seperate">
                     <thead id="bootstrap-overrides" class="table-info sticky-header">
@@ -192,7 +192,7 @@ else
                         @foreach(DocCodeConfig dConfig in docCode.DocCodeConfigs)
                         {
                         <tr>
-                            <td class ="evol-fitcontent-column"style ="align-items:center; display:flex">
+                            <td class ="evol-fitcontent-column borders"style ="align-items:center; display:flex">
                                 @{
                                     startDateDesc = DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToShortDateString();
                                     newDocCode = new DocCode();
