@@ -33,8 +33,8 @@ else
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th class="evol-fitcontent-column borders"></th>
-                <th class="evol-fitcontent-column">@localizer["Type"]</th>
-                <th class="evol-fitcontent-column">@localizer["Priority"]</th>
+                <th>@localizer["Type"]</th>
+                <th>@localizer["Priority"]</th>
                 <th>@localizer["Description"]</th>
             </tr>
         </thead>
@@ -65,7 +65,7 @@ else
                 </tr>
                 @if (t.ExpCompanyTypesList.Count() > 0)
                 {
-                <tr id="@nameValue" style="display: none">
+                <tr class="borders" id="@nameValue" style="display: none">
                     <td colspan="4">
                         <table class="table table-sm table-hover table-collapse-seperate">
                             <thead id="bootstrap-overrides" class="table-info sticky-header">
