@@ -13,7 +13,7 @@ namespace evolUX.UI.Areas.evolDP.Services
         {
             _materialsRepository = materialsRepository;
         }
-        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes()
+        public async Task<IEnumerable<FullfillMaterialCode>> GetFulfillMaterialCodes()
         {
             var response = await _materialsRepository.GetFulfillMaterialCodes();
             return response;
@@ -23,26 +23,31 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _materialsRepository.GetMaterialTypes(groupCodes, materialTypeCode);
             return response;
         }
-        public async Task<IEnumerable<MaterialElement>> GetMaterialGroups(string materialTypeCode)
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes(string materialTypeCode)
         {
-            var response = await _materialsRepository.GetMaterialGroups(materialTypeCode);
+            var response = await _materialsRepository.GetMaterialTypes(false, materialTypeCode);
             return response;
         }
-        public async Task SetMaterialGroup(MaterialElement group)
+        public async Task<IEnumerable<MaterialElement>> GetMaterialGroups(string materialTypeCode, string serviceCompanyList)
         {
-            await _materialsRepository.SetMaterialGroup(group);
-            return;
+            var response = await _materialsRepository.GetMaterialGroups(materialTypeCode, serviceCompanyList);
+            return response;
+        }
+        public async Task<MaterialElement> SetMaterialGroup(MaterialElement group, string serviceCompanyList)
+        {
+            var response = await _materialsRepository.SetMaterialGroup(group, serviceCompanyList);
+            return response;
 
         }
-        public async Task<IEnumerable<MaterialElement>> GetMaterials(int groupID, string materialTypeCode)
+        public async Task<IEnumerable<MaterialElement>> GetMaterials(int groupID, string materialTypeCode, string serviceCompanyList)
         {
-            var response = await _materialsRepository.GetMaterials(groupID, materialTypeCode);
+            var response = await _materialsRepository.GetMaterials(groupID, materialTypeCode, serviceCompanyList);
             return response;
         }
-        public async Task SetMaterial(MaterialElement material)
+        public async Task<MaterialElement> SetMaterial(MaterialElement material, string serviceCompanyList)
         {
-            await _materialsRepository.SetMaterialGroup(material);
-            return;
+            var response = await _materialsRepository.SetMaterial(material, serviceCompanyList);
+            return response;
         }
     }
 }

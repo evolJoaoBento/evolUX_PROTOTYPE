@@ -289,7 +289,7 @@ else
                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png"/>
                         </td>
                         <td>
-                            <input id="StartDate" name="StartDate" type="date" value="@DateTime.Now.ToShortDateString" />
+                            <input id="StartDate" name="StartDate" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                         </td>
                     </form>
                 </tr>

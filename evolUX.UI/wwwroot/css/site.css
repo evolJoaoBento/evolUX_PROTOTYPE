@@ -773,5 +773,8 @@ label {
 .evol-highlight-row {
     font-weight: bold;
 }
-
-
+.evol-checkbox-table {
+    table-layout: auto;
+    width: 100%;
+    border-collapse: collapse;
+}

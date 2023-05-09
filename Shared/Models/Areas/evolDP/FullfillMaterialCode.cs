@@ -1,6 +1,6 @@
 ﻿namespace Shared.Models.Areas.evolDP
 {
-    public class FulfillMaterialCode
+    public class FullfillMaterialCode
     {
         public string FullFillMaterialCode { get; set; }
         public int FullFillCapacity { get; set; }

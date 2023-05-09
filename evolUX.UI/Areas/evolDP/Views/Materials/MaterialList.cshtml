@@ -13,12 +13,13 @@
     string decimalSeparator = culture.NumberFormat.NumberDecimalSeparator;
     MaterialType mt = new MaterialType();
     mt.MaterialTypeCode = Model.MaterialTypeCode;
+    MaterialElement group = Model.Group;
 }
 <div id="TitlePage">
     <h1><img style="background:none; width:40px;height:40px;" src="~/images/@localizer[image]" />@localizer[Model.MaterialTypeCode]</h1>
-    @if(!string.IsNullOrEmpty(Model.GroupCode))
+    @if (Model.MaterialTypeCode.ToUpper() == "STATION" && group.GroupID != 0)
     {
-        <h2>@localizer["MaterialGroup"]: @Model.GroupCode</h2>
+        <h2>@localizer["MaterialGroup"]: @group.GroupCode</h2>
     }
 </div>
 @if (Model.MaterialTypeCode.ToUpper() == "STATION")
@@ -31,12 +32,8 @@ else
     <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Materials" asp-action="Management">
     </a>
 }
-@if (Model == null || Model.MaterialList == null)
-{
-    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
-}
-else
-{
+@{
+    string value;
     string doubleStr;
     string siteURL = configuration.GetValue<string>("evolUXSiteURL");
     bool AddMaterial = false;
@@ -59,181 +56,433 @@ else
     if (Model.Permissions.Find(x => x == "DeleteEnvelopeRange") != null) { DeleteEnvelopeRange = true; }
     if (Model.Permissions.Find(x => x == "ExportEnvelopeRange") != null) { ExportEnvelopeRange = true; }
 
-    <table class="table table-sm table-hover table-collapse-seperate">
-        <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr>
-                <th class="evol-fitcontent-column" style="text-align: center">
-                    @if (AddMaterial)
-                    {
-                        <img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddMaterial"]" />
-                    }
-                </th>
-                <th>@localizer["MaterialRef"]</th>
-                <th>@localizer["MaterialDescription"]</th>
-                <th>@localizer["MaterialCode"]</th>
-                @if (Model.MaterialTypeList.Count() > 1)
-                {
-                    <th>@localizer["MaterialType"]</th>
-                }
-                <th title="@localizer["MaterialWeight_Tip"]">@localizer["MaterialWeight"]</th>
-                @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
-                {
+    int MaterialTypeID = group.GroupID == 0 ? Model.MaterialTypeList.First().MaterialTypeID : group.MaterialTypeID;
+    int serviceCompanyMaterialBinPosition = group.GroupID == 0 ? Model.MaterialTypeList.First().MaxMaterialPosition : Model.MaterialTypeList.Max(x => x.MaxMaterialPosition);
+    if (Model.MaterialTypeCode.ToUpper() == "STATION" && group.GroupID != 0)
+    {
+        <table class="table table-sm table-hover table-collapse-seperate">
+            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                <tr>
+                    <th class="evol-fitcontent-column" style="text-align: center">
+                    </th>
+                    <th>@localizer["GroupDescription"]</th>
+                    <th title="@localizer["MaterialWeight_Tip"]">@localizer["MaterialWeight"]</th>
                     <th title="@localizer["FullFillSheets_Tip"]">@localizer["FullFillSheets"]</th>
                     <th title="@localizer["FullFillMaterialCode_Tip"]">@localizer["FullFillMaterialCode"]</th>
-                }
-                else
-                {
-                    <th>@localizer["FullFillMaterialCode"]</th>
-                    <th title="@localizer["ExpeditionMinWeight_Tip"]">@localizer["ExpeditionMinWeight"]</th>
-                }
-            </tr>
-        </thead>
-        <tbody id="bootstrap-overrides">
-            @if (AddMaterial)
-            {
-                <tr id="Hide|" style="display: none">
-                    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Materials" asp-action="ChangeMaterial">
-                    <td style="align-items:center; display:flex">
-                        <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
-                        <input style="display: none" id=MaterialID name=MaterialID type="number" value="0" />
-                    </td>
-                    <td><input id=MaterialRef name=MaterialRef type="text" maxlength="20" style="width: 100%" /></td>
-                    <td><input id=MaterialDescription name=MaterialDescription type="text" maxlength="50" style="width: 100%" /></td>
-                    <td><input id=MaterialCode name=MaterialCode type="text" maxlength="20" style="width: 100%" /></td>
-                    @if (Model.MaterialTypeList.Count() > 1)
-                    {
-                    <td>
-                        <select id=MaterialTypeID name=MaterialTypeID>
-                            @foreach(var mt in Model.MaterialTypeList)
-                            {
-                                <option value="@mt.MaterialTypeID">@localizer[mt.MaterialTypeCode]</option>
-                            }
-                        </select>
-                    </td>
-                    }
-                    else
-                    {
-                        <input style="display: none" id=MaterialTypeID name=MaterialTypeID type="number" value="@Model.MaterialTypeList.First().MaterialTypeID"/>
-                    }
-                    <td><input id=MaterialWeight name=MaterialWeight type="number" maxlength="9999999" step="0.01" style="width: 100%" /></td>
-                    @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
-                    {
-                        <td><input id=FullFillSheets name=FullFillSheets type="number" maxlength="9999999" style="width: 100%" /></td>
-                    }
-                    else
-                    {
-                        <td><input style="display: none" id=FullFillSheets name=FullFillSheets type="number" value="0"></td>
-                    }
-                    <td>
-                        <select id=FullFillMaterialCode name=FullFillMaterialCode>
-                                @foreach (var f in Model.FulfillMaterialCodes)
-                            {
-                                <option value="@f.FullFillMaterialCode">@f.FullFillMaterialCode</option>
-                            }
-                        </select>
-                    </td>
-                    @if (Model.MaterialTypeCode.ToUpper() == "ENVELOPE")
-                    {
-                        <td><input id=ExpeditionMinWeight name=ExpeditionMinWeight type="number" maxlength="9999999" step="0.01" style="width: 100%" /></td>
-                    }
-                    </form>
+                    <th title="@localizer["Provider_Tip"]">@localizer["Provider"]</th>
                 </tr>
-            }
-            @foreach (MaterialElement m in Model.MaterialList)
-            {
-                string value = m.MaterialID.ToString();
-                <tr id="Show|@value">
+            </thead>
+            <tbody id="bootstrap-overrides">
+                <tr id="Show|Group">
                     <td class="evol-fitcontent-column">
-                    @if (AddMaterial)
-                    {
-                        <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeMaterial"]" />
-                    }
-                    <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialCost" asp-route-materialJSON="@JsonConvert.SerializeObject(m)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
-                        <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["MaterialCost"]" />
-                    </a>
+                        @if (AddMaterialType)
+                        {
+                            <img onclick="EditRow('Group')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeMaterial"]" />
+                        }
+                        <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialGroupCost" asp-route-materialgroupJSON="@JsonConvert.SerializeObject(group)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
+                            <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["MaterialCost"]" />
+                        </a>
                     </td>
-                    <td>@m.MaterialRef</td>
-                    <td>@m.MaterialDescription</td>
-                    <td>@m.MaterialCode</td>
-                    @if (Model.MaterialTypeList.Count() > 1)
+                    <td>@group.GroupDescription</td>
+                    <td>@group.MaterialWeight</td>
+                    <td>@group.FullFillSheets</td>
+                    @if (string.IsNullOrEmpty(group.FullFillMaterialCode))
                     {
-                        <td>@localizer[Model.MaterialTypeList.FirstOrDefault(x => x.MaterialTypeID == m.MaterialTypeID).MaterialTypeCode]</td>
-                    }
-                    <td>@m.MaterialWeight</td>
-                    @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
-                    {
-                        <td>@m.FullFillSheets</td>
-                        <td>@m.FullFillMaterialCode</td>
+                        value = localizer["EmptyFullFillMaterialCode"].Value;
                     }
                     else
                     {
-                        <td>@m.FullFillMaterialCode</td>
-                        <td>@m.ExpeditionMinWeight</td>
+                        value = group.FullFillMaterialCode;
                     }
-                </tr>
-                <tr id="Hide|@value" style="display: none">
-                    <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Materials" asp-action="ChangeMaterial">
-                    <td style="align-items:center; display:flex">
-                        <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
-                        <input style="display: none" id=MaterialID name=MaterialID type="number" value="@m.MaterialID" />
+                    <td>@value</td>
+                    <td>
+                        @{
+                            value = group.CostList.Count() > 0 ? Model.CompaniesList.FirstOrDefault(x => x.ID == group.CostList.First()?.ProviderCompanyID)?.CompanyName : "";
+                        }
+                        @value
                     </td>
-                    <td><input disable id=MaterialRef name=MaterialRef type="text" maxlength="20" style="width: 100%" value="@m.MaterialRef"/></td>
-                    <td><input id=MaterialDescription name=MaterialDescription type="text" maxlength="50" style="width: 100%" value="@m.MaterialDescription" /></td>
-                    <td><input id=MaterialCode name=MaterialCode type="text" maxlength="20" style="width: 100%" value="@m.MaterialCode"/></td>
-                    @if (Model.MaterialTypeList.Count() > 1)
-                    {
+                </tr>
+                <tr id="Hide|Group" style="display: none">
+                    <form id="AddFrm|Group" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Materials" asp-action="ChangeMaterialGroup" asp-route-materialtypecode="@Model.MaterialTypeCode">
+                        <td style="align-items:center; display:flex">
+                            <img onclick="CancelRow('Group')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <input style="display: none" id=GroupID name=GroupID type="number" value="@group.GroupID" />
+                        <input style="display: none" id=GroupCode name=GroupCode type="text" maxlength="20" style="width: 100%" value="@group.GroupCode" />
+                        <input style="display: none" id=MaterialTypeID name=MaterialTypeID type="number" value="@group.MaterialTypeID" />
+                        </td>
+                        <td><input id=GroupDescription name=GroupDescription type="text" maxlength="50" style="width: 100%" value="@group.GroupDescription" /></td>
+                        @{
+                            doubleStr = group.MaterialWeight.ToString("F2");
+                            if (decimalSeparator == ",")
+                                doubleStr = doubleStr.Replace(",", ".");
+                        }
+                        <td><input id=MaterialWeight name=MaterialWeight type="number" maxlength="9999999" step="0.01" style="width: 100%" value="@doubleStr" /></td>
+                        <td><input id=FullFillSheets name=FullFillSheets type="number" maxlength="9999999" style="width: 100%" value="@group.FullFillSheets"/></td>
                         <td>
-                            <select id=MaterialTypeID name=MaterialTypeID>
-                                <option value="@m.MaterialTypeID">@localizer[Model.MaterialTypeList.FirstOrDefault(x => x.MaterialTypeID == m.MaterialTypeID).MaterialTypeCode]</option>
-                                @foreach (var mt in Model.MaterialTypeList.Where(x => x.MaterialTypeID != m.MaterialTypeID))
+                            <select id=FullFillMaterialCode name=FullFillMaterialCode style="width:100%">
+                                @if (!string.IsNullOrEmpty(group.FullFillMaterialCode))
                                 {
-                                <option value="@mt.MaterialTypeID">@localizer[mt.MaterialTypeCode]</option>
+                                    <option value="@group.FullFillMaterialCode">@group.FullFillMaterialCode - @Model.FullfillMaterialCodes.FirstOrDefault(x => x.FullFillMaterialCode == group.FullFillMaterialCode).Description</option>
+                                    <option value="">@localizer["EmptyFullFillMaterialCode"]</option>
+                                }
+                                else
+                                {
+                                <option value="">@localizer["EmptyFullFillMaterialCode"]</option>
+                                }
+                                @foreach (var f in Model.FullfillMaterialCodes.Where(x => x.FullFillMaterialCode != group.FullFillMaterialCode))
+                                {
+                                   <option value="@f.FullFillMaterialCode">@f.FullFillMaterialCode - @f.Description</option>
                                 }
                             </select>
                         </td>
-                    }
-                    else
-                    {
-                    <input style="display: none" id=MaterialTypeID name=MaterialTypeID type="number" value="@Model.MaterialTypeList.First().MaterialTypeID" />
-                    }
-                    @{
-                        doubleStr = m.MaterialWeight.ToString("F2");
-                        if (decimalSeparator == ",")
-                            doubleStr = doubleStr.Replace(",", ".");
-                    }
-                    <td><input id=MaterialWeight name=MaterialWeight type="number" maxlength="9999999" step="0.01" style="width: 100%" value="@doubleStr" /></td>
-                    @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
-                    {
-                    <td><input id=FullFillSheets name=FullFillSheets type="number" maxlength="9999999" style="width: 100%" value="@m.FullFillSheets"/></td>
-                    }
-                    else
-                    {
-                    <td><input style="display: none" id=FullFillSheets name=FullFillSheets type="number" value="@m.FullFillSheets"></td>
-                    }
-                    <td>
-                    <select id=FullFillMaterialCode name=FullFillMaterialCode>
-                            <option value="@m.FullFillMaterialCode">@m.FullFillMaterialCode</option>
-                            @foreach (var f in Model.FulfillMaterialCodes.Where(x => x.FullFillMaterialCode != m.FullFillMaterialCode))
-                            {
-                            <option value="@f.FullFillMaterialCode">@f.FullFillMaterialCode</option>
+                        <td>
+                            @{
+                                value = group.CostList.Count() > 0 ? Model.CompaniesList.FirstOrDefault(x => x.ID == group.CostList.First()?.ProviderCompanyID)?.CompanyName : "";
                             }
-                    </select>
-                    </td>
-                    @if (Model.MaterialTypeCode.ToUpper() == "ENVELOPE")
-                    {
-                        doubleStr = m.ExpeditionMinWeight.ToString("F2");
-                        if (decimalSeparator == ",")
-                            doubleStr = doubleStr.Replace(",", ".");
-                        
-                        <td><input id=ExpeditionMinWeight name=ExpeditionMinWeight type="number" maxlength="9999999" step="0.01" style="width: 100%" value="@doubleStr" /></td>
-                    }
+                            @value
+                        </td>
                     </form>
                 </tr>
-            }
+            </tbody>
+        </table>
+    }
+    <br/>
+<table id="Hide|" style="display: none">
+    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Materials" asp-action="ChangeMaterial" asp-route-materialtypecode="@Model.MaterialTypeCode">
+    <thead>
+        <tr>
+            <th></th>
+            <th><h4 colspan="2" style="text-align:center;color: var(--evol-grey);">@localizer["AddMaterial"]</h4></th>
+        </tr>
+    </thead>
+        <tbody>
+            <tr>
+                <td style="align-items:center; border: none;background-color: transparent;vertical-align:middle">
+                    <div style="align-items:center; display:flex">
+                        <img onclick="CancelRow('')" style="height:30px;width:30px" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" style="height:30px;width:30px" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" title="@localizer["Submit"]" />
+                    </div>
+                </td>
+                <td style="border:outset">
+                    <table class="table table-sm table-collapse-seperate">
+                        <tbody id="bootstrap-overrides">
+                            <tr class="table-info">
+                                <input style="display: none" id=GroupID name=GroupID type="number" value="@group.GroupID" />
+                                <th rowspan="2" colspan="2" style="vertical-align:bottom;border: none;background-color: transparent" title="@localizer["MaterialRef_Tip"]">@localizer["MaterialRef"]</th>
+                                <th rowspan="2" style="vertical-align:bottom;border: none;background-color: transparent;">@localizer["MaterialDescription"]</th>
+                                <th colspan="3" style="vertical-align:bottom;border: none;background-color: transparent;text-align:center;border-bottom:groove">@localizer["ProviderCompany"]</th>
+                            </tr>
+                            <tr>
+                                <th style="vertical-align:bottom;border: none;background-color: transparent;">@localizer["Name"]</th>
+                                <th style="vertical-align:bottom;border: none;background-color: transparent;">@localizer["CostDate"]</th>
+                                <th style="vertical-align:bottom;border: none;background-color: transparent;">@localizer["MaterialCost"]</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="border: none;background-color: transparent;"><input id=MaterialRef name=MaterialRef type="text" maxlength="20" style="width: 100%" /></td>
+                                <td style="border: none;background-color: transparent;"><input id=MaterialDescription name=MaterialDescription type="text" maxlength="50" style="width: 100%" /></td>
+                                <td style="border: none;background-color: transparent;">
+                                    <select id=ProviderCompanyID name=ProviderCompanyID style="width: 100%">
+                                            @foreach (Company c in Model.CompaniesList)
+                                            {
+                                            <option value="@c.ID">@c.CompanyName</option>
+                                            }
+                                    </select>
+                                </td>
+                                <td style="border: none;background-color: transparent;">
+                                    <input id="CostDate" name="CostDate" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" style="width: 100%" />
+                                </td>
+                                <td style="border: none;background-color: transparent;">
+                                    <input id=MaterialCost name=MaterialCost type="number" maxlength="9999999" step="0.01" style="width: 100%" />
+                                </td>
+                            </tr>
+                            <tr class="table-info">
+                                <th colspan="3" style="vertical-align:bottom;border: none;background-color: transparent;text-align:left" title="@localizer["MaterialCode_Tip"]">@localizer["MaterialCode"]
+                                    <input id=MaterialCode name=MateriaCode type="text" maxlength="20" style="text-emphasis-style:none" />
+                                    @if(!Model.MaterialTypeCode.ToUpper().EndsWith("PAPER"))
+                                    {
+                                        <span style="padding-left:10px;color: var(--evol-grey);">@localizer[Model.MaterialTypeList.FirstOrDefault(x => x.MaterialTypeID == MaterialTypeID)?.MaterialTypeCode]</span>
+                                    }
+                                </th>
+                                @if (Model.MaterialTypeCode.ToUpper() == "ENVELOPE")
+                                {
+                                    value = "2";
+                                    <th style="vertical-align:bottom;border: none;background-color: transparent;"></th>
+                                }
+                                else
+                                {
+                                    value = "3";
+                                }
+                                <th colspan="@value" style="vertical-align:bottom;border: none;background-color: transparent;text-align:center;border-bottom:groove">@localizer["ServiceCompany"]</th>
+                            </tr>
+                            <tr class="table-info">
+                                @if (Model.MaterialTypeCode.ToUpper() == "ENVELOPE")
+                                {
+                                    <th colspan="2" style="vertical-align:bottom;border: none;background-color: transparent;" title="@localizer["ExpeditionMinWeight_Tip"]">@localizer["ExpeditionMinWeight"]</th>
+                                }
+                                else
+                                {
+                                    <th style="vertical-align:bottom;border: none;background-color: transparent;" title="@localizer["MaterialWeight_Tip"]">@localizer["MaterialWeight"]</th>
+                                    <th style="vertical-align:bottom;border: none;background-color: transparent;" title="@localizer["FullFillSheets_Tip"]">@localizer["FullFillSheets"]</th>
+                                }
+                                @if (Model.MaterialTypeCode.ToUpper().EndsWith("PAPER"))
+                                {
+                                    <th style="vertical-align:bottom;border: none;background-color: transparent;">@localizer["MaterialType"]</th>
+                                }
+                                else
+                                {
+                                    <th style="vertical-align:bottom;border: none;background-color: transparent;" title="@localizer["FullFillMaterialCode_Tip"]">@localizer["FullFillMaterialCode"]</th>
+                                }
+                                @if (Model.MaterialTypeCode.ToUpper() == "ENVELOPE")
+                                {
+                                    <th style="vertical-align:bottom;border: none;background-color: transparent;" title="@localizer["MaterialWeight_Tip"]">@localizer["MaterialWeight"]</th>
+                                }
+                                <th colspan="2" style="vertical-align:bottom;border: none;background-color: transparent;">@localizer["Name"]</th>
+                                @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
+                                {
+                                    value = localizer[Model.MaterialTypeCode + "MaterialBinPosition"].Value;
+                                    if (value == (Model.MaterialTypeCode + "MaterialBinPosition"))
+                                        value = localizer["MaterialBinPosition"].Value;
+                                    <th style="vertical-align:bottom;border: none;background-color: transparent;" title="@localizer["MaterialBinPosition_Tip"]">@value</th>
+                                }
+                            </tr>
+                            <tr>
+                                @if (Model.MaterialTypeCode.ToUpper() == "ENVELOPE")
+                                {
+                                    <td colspan="2" style="border: none;background-color: transparent;"><input id=ExpeditionMinWeight name=ExpeditionMinWeight type="number" maxlength="9999999" step="0.01" style="width: 100%" /></td>
+                                }
+                                else
+                                {
+                                    <td style="border: none;background-color: transparent;"><input id=MaterialWeight name=MaterialWeight type="number" maxlength="9999999" step="0.01" style="width: 100%" /></td>
+                                    <td style="border: none;background-color: transparent;"><input id=FullFillSheets name=FullFillSheets type="number" maxlength="9999999" style="width: 100%" /></td>
+                                }
+                                <td style="border: none;background-color: transparent;">
+                                @if (Model.MaterialTypeCode.ToUpper().EndsWith("PAPER"))
+                                {
+                                    if (Model.MaterialTypeList.Count() > 1 && group.GroupID == 0)
+                                    {
+                                        <select id=MaterialTypeID name=MaterialTypeID>
+                                            @foreach (MaterialType mt1 in Model.MaterialTypeList)
+                                            {
+                                            <option value="@mt1.MaterialTypeID">@localizer[mt1.MaterialTypeCode]</option>
+                                            }
+                                        </select>
+                                    }
+                                    else
+                                    {
+                                        <input style="display: none" id=MaterialTypeID name=MaterialTypeID type="number" value="@MaterialTypeID" />
+                                        @localizer[Model.MaterialTypeList.FirstOrDefault(x => x.MaterialTypeID == MaterialTypeID)?.MaterialTypeCode]
+                                    }
+                                }
+                                else
+                                {
+                                    <select id=FullFillMaterialCode name=FullFillMaterialCode>
+                                        <option value="">@localizer["EmptyFullFillMaterialCode"]</option>
+                                            @foreach (var f in Model.FullfillMaterialCodes)
+                                            {
+                                            <option value="@f.FullFillMaterialCode">@f.FullFillMaterialCode - @f.Description</option>
+                                            }
+                                    </select>
+                                }
+                                </td>
+                                @if (Model.MaterialTypeCode.ToUpper() == "ENVELOPE")
+                                {
+                                    <td style="border: none;background-color: transparent;"><input id=MaterialWeight name=MaterialWeight type="number" maxlength="9999999" step="0.01" style="width: 100%" /></td>
+                                }
+                                <td colspan="2" style="border: none;background-color: transparent;">
+                                    <select id=ServiceCompanyID name=ServiceCompanyID style="width: 100%">
+                                            @foreach (Company c in Model.ServiceCompanyList)
+                                            {
+                                            <option value="@c.ID">@c.CompanyName</option>
+                                            }
+                                    </select>
+                                </td>
+                                @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
+                                {
+                                <td style="border: none;background-color: transparent;">
+                                    <table id="groupCost" class="evol-checkbox-table">
+                                        <thead>
+                                            <tr>
+                                                    @for (int i = 0; i < serviceCompanyMaterialBinPosition; i++)
+                                                    {
+                                                    <td style="border: none;background-color: transparent;text-align:center">@(i + 1)</td>
+                                                    }
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                    @for (int i = 0; i < serviceCompanyMaterialBinPosition; i++)
+                                                    {
+                                                    <td style="border: none;background-color: transparent;text-align:center"><input id="MaterialBinPosition" name="MaterialBinPosition" type="checkbox" value="@Math.Pow(2, i)" checked /></td>
+                                                    }
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr><td><br /></td></tr>
         </tbody>
+    </form>
+</table>
+
+if (Model.MaterialList.Count() == 0)
+    {
+        @if (AddMaterial)
+        {
+            <div id="Show|">
+                <img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddMaterial"]" /> 
+                @localizer["AddMaterial"]
+            </div>
+        }
+    }
+    else
+    {
+        <table class="table table-sm table-hover table-collapse-seperate">
+            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                <tr>
+                    <th class="evol-fitcontent-column" style="text-align: center">
+                        @if (AddMaterial)
+                        {
+                            <img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddMaterial"]" />
+                        }
+                    </th>
+                    <th>@localizer["MaterialRef"]</th>
+                    <th>@localizer["MaterialDescription"]</th>
+                    <th>@localizer["MaterialCode"]</th>
+                    @if (Model.MaterialTypeList.Count() > 1 && group.GroupID == 0)
+                    {
+                        <th>@localizer["MaterialType"]</th>
+                    }
+                    <th title="@localizer["MaterialWeight_Tip"]">@localizer["MaterialWeight"]</th>
+                    @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
+                    {
+                        <th title="@localizer["FullFillSheets_Tip"]">@localizer["FullFillSheets"]</th>
+                        <th title="@localizer["FullFillMaterialCode_Tip"]">@localizer["FullFillMaterialCode"]</th>
+                    }
+                    else
+                    {
+                        <th>@localizer["FullFillMaterialCode"]</th>
+                        <th title="@localizer["ExpeditionMinWeight_Tip"]">@localizer["ExpeditionMinWeight"]</th>
+                    }
+                </tr>
+            </thead>
+            <tbody id="bootstrap-overrides">
+                @foreach (MaterialElement m in Model.MaterialList)
+                {
+                    value = m.MaterialID.ToString();
+                    <tr id="Show|@value">
+                        <td class="evol-fitcontent-column">
+                            @if (AddMaterial)
+                            {
+                                <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeMaterial"]" />
+                            }
+                            <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialCost" asp-route-materialJSON="@JsonConvert.SerializeObject(m)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
+                                <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["MaterialCost"]" />
+                            </a>
+                        </td>
+                        <td>@m.MaterialRef</td>
+                        <td>@m.MaterialDescription</td>
+                        <td>@m.MaterialCode</td>
+                        @if (Model.MaterialTypeList.Count() > 1)
+                        {
+                            <td>@localizer[Model.MaterialTypeList.FirstOrDefault(x => x.MaterialTypeID == m.MaterialTypeID).MaterialTypeCode]</td>
+                        }
+                        <td>@m.MaterialWeight</td>
+                        @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
+                        {
+                            <td>@m.FullFillSheets</td>
+                        }
+                        @if (string.IsNullOrEmpty(m.FullFillMaterialCode))
+                        {
+                            value = localizer["EmptyFullFillMaterialCode"].Value;
+                        }
+                        else
+                        {
+                            value = m.FullFillMaterialCode;
+                        }
+                        <td>@value</td>
+                        @if (Model.MaterialTypeCode.ToUpper() == "ENVELOPE")
+                        {
+                            <td>@m.ExpeditionMinWeight</td>
+                        }
+                    </tr>
+                    <tr id="Hide|@value" style="display: none">
+                        <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Materials" asp-action="ChangeMaterial" asp-route-materialtypecode="@Model.MaterialTypeCode">
+                            <td style="align-items:center; display:flex">
+                                <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                                <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                                <input style="display: none" id=MaterialID name=MaterialID type="number" value="@m.MaterialID" />
+                                <input style="display: none" id=GroupID name=GroupID type="number" value="@group.GroupID" />
+                            </td>
+                            <td><input disable id=MaterialRef name=MaterialRef type="text" maxlength="20" style="width: 100%" value="@m.MaterialRef"/></td>
+                            <td><input id=MaterialDescription name=MaterialDescription type="text" maxlength="50" style="width: 100%" value="@m.MaterialDescription" /></td>
+                            <td><input id=MaterialCode name=MaterialCode type="text" maxlength="20" style="width: 100%" value="@m.MaterialCode"/></td>
+                            @if (Model.MaterialTypeList.Count() > 1)
+                            {
+                                <td>
+                                    <select id=MaterialTypeID name=MaterialTypeID>
+                                        <option value="@m.MaterialTypeID">@localizer[Model.MaterialTypeList.FirstOrDefault(x => x.MaterialTypeID == m.MaterialTypeID).MaterialTypeCode]</option>
+                                        @foreach (MaterialType mt2 in Model.MaterialTypeList.Where(x => x.MaterialTypeID != m.MaterialTypeID))
+                                        {
+                                            <option value="@mt2.MaterialTypeID">@localizer[mt2.MaterialTypeCode]</option>
+                                        }
+                                    </select>
+                                </td>
+                            }
+                            else
+                            {
+                                <input style="display: none" id=MaterialTypeID name=MaterialTypeID type="number" value="@Model.MaterialTypeList.First().MaterialTypeID" />
+                            }
+                            @{
+                                doubleStr = m.MaterialWeight.ToString("F2");
+                                if (decimalSeparator == ",")
+                                    doubleStr = doubleStr.Replace(",", ".");
+                            }
+                            <td><input id=MaterialWeight name=MaterialWeight type="number" maxlength="9999999" step="0.01" style="width: 100%" value="@doubleStr" /></td>
+                            @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
+                            {
+                                <td><input id=FullFillSheets name=FullFillSheets type="number" maxlength="9999999" style="width: 100%" value="@m.FullFillSheets"/></td>
+                            }
+                            else
+                            {
+                                <td><input style="display: none" id=FullFillSheets name=FullFillSheets type="number" value="@m.FullFillSheets"></td>
+                            }
+                            <td>
+                                <select id=FullFillMaterialCode name=FullFillMaterialCode>
+                                    @if (!string.IsNullOrEmpty(m.FullFillMaterialCode))
+                                    {
+                                        <option value="@m.FullFillMaterialCode">@m.FullFillMaterialCode - @Model.FullfillMaterialCodes.FirstOrDefault(x => x.FullFillMaterialCode == m.FullFillMaterialCode).Description</option>
+                                        <option value="">@localizer["EmptyFullFillMaterialCode"]</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="">@localizer["EmptyFullFillMaterialCode"]</option>
+                                    }
+                                    @foreach (var f in Model.FullfillMaterialCodes.Where(x => x.FullFillMaterialCode != m.FullFillMaterialCode))
+                                    {
+                                        <option value="@f.FullFillMaterialCode">@f.FullFillMaterialCode - @f.Description</option>
+                                    }
+                                </select>
+                            </td>
+                            @if (Model.MaterialTypeCode.ToUpper() == "ENVELOPE")
+                            {
+                                doubleStr = m.ExpeditionMinWeight.ToString("F2");
+                                if (decimalSeparator == ",")
+                                    doubleStr = doubleStr.Replace(",", ".");
+
+                                <td><input id=ExpeditionMinWeight name=ExpeditionMinWeight type="number" maxlength="9999999" step="0.01" style="width: 100%" value="@doubleStr" /></td>
+                            }
+                        </form>
+                    </tr>
+                }
+            </tbody>
     </table>
+    }
 }
 @section Scripts
     {
@@ -247,6 +496,7 @@ else
             return false;
         }
         function EditRow(value) {
+            alert(value);
             eShide('Show|' + value);
             eSshow('Hide|' + value);
             var obj = document.getElementById("AddFrm|" + value);
