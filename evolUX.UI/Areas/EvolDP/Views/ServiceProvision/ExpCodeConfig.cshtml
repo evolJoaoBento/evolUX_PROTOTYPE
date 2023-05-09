@@ -78,7 +78,7 @@ else
     string idValue = "arrow" + level.ToString();
     string nameValue = "";
     Company serviceCompany = Model.ServiceCompany;
-    FulfillMaterialCode fCode;
+    FulfillMaterialCode fCode;  
     <script>
         const deleteServiceCompanyExpLevelMsg = '@localizer["deleteServiceCompanyExpLevelMsg"]"';
     </script>
@@ -101,7 +101,7 @@ else
         <tbody id="bootstrap-overrides">
             @foreach (ServiceCompanyExpCodeConfig config in Model.Configs)
             {
-                @if (AddServiceCompanyExpCodes)
+               @if (AddServiceCompanyExpCodes)
                 {
                     <tr id="Hide|" style="display: none">
                         <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyExpLevel"
@@ -116,10 +116,10 @@ else
                         <td></td>
                         <td>
                             <select id="ServiceCompanyID" name="ServiceCompanyID">
-                                    @foreach (FulfillMaterialCode f in Model.FulfillMaterialCodes)
-                                    {
-                                    <option value="@f.FullFillMaterialCode">@f.Description</option>
-                                    }
+                            @foreach (FulfillMaterialCode f in Model.FulfillMaterialCodes)
+                            {
+                                <option value="@f.FullFillMaterialCode">@f.Description</option>
+                            }
                             </select>
                         </td>
                         <td><input type="number" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="0" /></td>
@@ -165,14 +165,14 @@ else
                         <td>@config.ExpLevel</td>
                         <td>
                             <select id="ServiceCompanyID" name="ServiceCompanyID">
-                                    @{
-                                        fCode = Model.FulfillMaterialCodes.FirstOrDefault(x => x.FullFillMaterialCode == config.FullFillMaterialCode);
-                                    }
+                            @{
+                                fCode = Model.FulfillMaterialCodes.FirstOrDefault(x => x.FullFillMaterialCode == config.FullFillMaterialCode);
+                            }
                                 <option value="@fCode.FullFillMaterialCode">@fCode.Description</option>
                                     @foreach (FulfillMaterialCode f in Model.FulfillMaterialCodes.Where(x => x.FullFillMaterialCode != config.FullFillMaterialCode))
-                                    {
-                                    <option value="@f.FullFillMaterialCode">@f.Description</option>
-                                    }
+                            {
+                                <option value="@f.FullFillMaterialCode">@f.Description</option>
+                            }
                             </select>
                         </td>
                         <td><input type="number" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="@config.DocMaxSheets" /></td>

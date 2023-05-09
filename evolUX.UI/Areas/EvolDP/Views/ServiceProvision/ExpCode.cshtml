@@ -53,7 +53,7 @@ else
     string nameValue = "";
     Company serviceCompany;
     ExpeditionZoneElement expZone;
-    <table class="table table-sm table-hover table-collapse-seperate">
+     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
@@ -79,26 +79,26 @@ else
                     <td class="evol-fitcontent-column-one"><input id="Priority" name="Priority" type="number" min="0" value="@expCode.Priority" /></td>
                     <td>
                         <select id="DefaultExpCenterCode" name="DefaultExpCenterCode">
-                                @foreach (string expCenterCode in Model.ExpCenters.Select(x => x.ExpCenterCode).Distinct())
-                                {
+                            @foreach (string expCenterCode in Model.ExpCenters.Select(x => x.ExpCenterCode).Distinct())
+                            {
                                 <option value="@expCenterCode">@expCenterCode</option>
-                                }
+                            }
                         </select>
                     </td>
                     <td>
                         <select id="DefaultExpCompanyZone" name="DefaultExpCompanyZone">
-                                @foreach (ExpeditionZoneElement z in Model.Zones)
-                                {
+                            @foreach (ExpeditionZoneElement z in Model.Zones)
+                            {
                                 <option value="@z.ExpeditionZone">@z.ExpeditionZoneDesc</option>
-                                }
+                            }
                         </select>
                     </td>
-                        @if (expCode.CheckExpCompanySepCodes)
-                        {
-                            value = "checked";
-                        }
-                    <td><input type="checkbox" id="CheckExpCompanySepCodes" name="CheckExpCompanySepCodes" @value /></td>
-                    <td><input type="number" min="0" max="10" id="PostalCodeStart" name="PostalCodeStart" value="@expCode.PostalCodeStart" /></td>
+                    @if(expCode.CheckExpCompanySepCodes)
+                    {
+                        value = "checked";
+                    }
+                    <td><input type="checkbox" id="CheckExpCompanySepCodes" name="CheckExpCompanySepCodes" @value/></td>
+                    <td><input type="number" min="0" max="10" id="PostalCodeStart" name="PostalCodeStart" value="@expCode.PostalCodeStart"/></td>
                     </form>
                 </tr>
             }
@@ -149,7 +149,7 @@ else
                 <tr id="Show|@value">
                     @if (AddExpCode)
                     {
-                        <td class="evol-fitcontent-column borders" style="align-items:center; display:flex;border:none;background-color:transparent">
+                        <td class="evol-fitcontent-column"  style="align-items:center; display:flex;border:none;background-color:transparent">
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCodeConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
                                asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@c.ExpCenterCode" 
                                asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
@@ -206,19 +206,19 @@ else
                         <td>
                             <select id="ServiceCompanyID" name="ServiceCompanyID">
                                 <option value="@serviceCompany.ID">@serviceCompany.CompanyName</option>
-                                    @foreach (Company comp in Model.ServiceCompanies.Where(x => x.ID != c.ServiceCompanyID))
-                                    {
-                                    <option value="@comp.ID">@comp.CompanyName</option>
-                                    }
+                            @foreach(Company comp in Model.ServiceCompanies.Where(x => x.ID != c.ServiceCompanyID))
+                            {
+                                <option value="@comp.ID">@comp.CompanyName</option>
+                            }
                             </select>
                         </td>
                         <td>
                             <select id="ExpeditionZone" name="ExpeditionZone">
                                 <option value="@expZone.ExpeditionZone">@expZone.ExpeditionZoneDesc</option>
-                                    @foreach (ExpeditionZoneElement z in Model.Zones.Where(x => x.ExpeditionZone != c.ExpeditionZone))
-                                    {
-                                    <option value="@z.ExpeditionZone">@z.ExpeditionZoneDesc</option>
-                                    }
+                            @foreach (ExpeditionZoneElement z in Model.Zones.Where(x => x.ExpeditionZone != c.ExpeditionZone))
+                            {
+                                <option value="@z.ExpeditionZone">@z.ExpeditionZoneDesc</option>
+                            }
                             </select>
                         </td>
                         </form>

@@ -62,8 +62,8 @@ else
     </div>
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr>
-                @if (AddExpCompany)
+           <tr>
+                @if(AddExpCompany)
                 {
                     <th class="evol-fitcontent-column borders"></th>
                 }
@@ -77,7 +77,7 @@ else
         </thead>
         <tbody id="bootstrap-overrides">
             <tr id="Show|ExpCompany">
-                @if (AddExpCompany)
+                @if(AddExpCompany)
                 {
                 <td style="text-align: center" class="borders">
                         <img onclick="EditRow('ExpCompany')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeCompany"]" />
@@ -115,12 +115,12 @@ else
             <tr>
                 @if (AddExpeditionType)
                 {
-                    <th rowspan="2" class="borders">
-                        @if (expCompanyTypesNotIn.Count() > 0)
-                        {
-                            <img onclick="EditRow('Type')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddExpeditionType"]" />
-                        }
-                    </th>
+                <th rowspan="2" class="borders">
+                    @if (expCompanyTypesNotIn.Count() > 0)
+                    {
+                    <img onclick="EditRow('Type')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddExpeditionType"]" />
+                    }
+                </th>
                 }
                 <th rowspan="2">@localizer["ExpeditionType"]</th>
                 <th rowspan="2" title="@localizer["RegistModeTip"]">@localizer["RegistMode"]</th>
@@ -142,7 +142,7 @@ else
                 e.ExpCompanyID = expCompany.ID;
                 List<ExpCompanyType> eList = new List<ExpCompanyType>();
                 eList.Add(e);
-                expeditionType.ExpCompanyTypesList = eList;
+                expeditionType.ExpCompanyTypesList = eList; 
                 @if (AddExpeditionType && expCompanyTypesNotIn.Count() > 0)
                 {
                     <tr id="Hide|Type" style="display: none" class="borders">
@@ -161,7 +161,7 @@ else
                             </select>
                         </td>
                         <td><input onchange="RegistModeChange()" type="checkbox" id="RegistMode" name="RegistMode" /></td>
-                        <td><input type="checkbox" id="SeparationMode" name="SeparationMode" /></td>
+                        <td><input type="checkbox" id="SeparationMode" name="SeparationMode"/></td>
                         <td><input type="number" min="0" max="1" id="BarcodeRegistMode" name="BarcodeRegistMode" value="0" /></td>
                         <td><input type="checkbox" id="DRFlagGenerateDetailRegist" disabled /></td>
                         <td><input type="checkbox" id="DRFlagRegistado" disabled /></td>
@@ -177,8 +177,8 @@ else
                         <td class="borders">
                             <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
                             @* <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyviewmodelJson="@JsonConvert.SerializeObject(Model)" asp-route-expeditiontype="@c.ExpeditionType">
-                <img class="evol-image" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
-                </a>*@
+                                <img class="evol-image" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
+                            </a>*@
                         </td>
                     }
                     <td>@e.ExpeditionTypeDesc</td>
@@ -268,7 +268,7 @@ else
         </div>
         <table class="table table-sm table-hover table-collapse-seperate">
             <thead id="bootstrap-overrides" class="table-info sticky-header">
-                <tr>
+            <tr>
                     <th class="evol-fitcontent-column borders" style="text-align: center">
                     @if (AddExpeditionType)
                     {
@@ -319,15 +319,15 @@ else
                             <thead id="bootstrap-overrides" class="table-info sticky-header">
                                 <th class="evol-fitcontent-column borders"></th>
                                 <th>@localizer["ExpeditionType"]</th>
-                                </thead>
-                                <tbody id="bootstrap-overrides">
-                                    @foreach (var tType in Model.Configs.Where(x => x.StartDate == sDate).Select(x => x.ExpeditionType).Distinct().ToList())
-                                    {
-                                        List<ExpCompanyConfigResume> typeList = Model.Configs.Where(x => x.StartDate == sDate && x.ExpeditionType == tType).ToList();
-                                        level1++;
-                                        name1Value = "detail" + level1.ToString();
-                                        id1Value = "arrow" + name1Value;
-                                        <tr>
+                            </thead>
+                            <tbody id="bootstrap-overrides">
+                                @foreach(var tType in Model.Configs.Where(x => x.StartDate == sDate).Select(x=> x.ExpeditionType).Distinct().ToList())
+                                {
+                                    List<ExpCompanyConfigResume> typeList = Model.Configs.Where(x => x.StartDate == sDate && x.ExpeditionType == tType).ToList();
+                                    level1++;
+                                    name1Value = "detail" + level1.ToString();
+                                    id1Value = "arrow" + name1Value;
+                                    <tr>
                                             <td style="align-items:center; display:flex;margin-left: 30px" class="borders">
                                             <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType">
                                                 <img class="evol-image" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
