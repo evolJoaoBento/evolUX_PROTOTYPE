@@ -53,10 +53,10 @@ else
                     <th>@localizer["ServiceTaskRef"]</th>
                 </tr>
             </thead>
-        <tbody id="bootstrap-overrides">
+            <tbody id="bootstrap-overrides">
                 <tr>
                     <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlow">
-                        <td style="align-items:center; display:flex;border: none;background-color: transparent;">
+                        <td style="align-items:center; display:flex;border: none;background-color: transparent;"  class="borders">
                         <img onclick="CancelRow('')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                         <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                             <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="0" />
@@ -67,14 +67,14 @@ else
                             <select id=RefServiceTaskID name=RefServiceTaskID>
                                 @foreach(ServiceTaskElement st in Model.ServiceTasksList)
                                 {
-                                    <option value="@st.ServiceTaskID">@st.ServiceTaskDesc</option>
+                                <option value="@st.ServiceTaskID">@st.ServiceTaskDesc</option>
                                 }
-                            </select>
-                        </td>
+                        </select>
+                    </td>
                     </form>
                 </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
     }
     <table id="Show|" class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
@@ -105,7 +105,7 @@ else
                 value = st.ServiceTaskID.ToString();
                 <tr id="Hide|@value" style="display: none">
                     <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlow">
-                        <td style="align-items:center; display:flex;border: none;background-color: transparent;">
+                        <td style="align-items:center; display:flex;border: none;background-color: transparent;" class="borders">
                         <img onclick="CancelRow('@value')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                         <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                             <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="@st.ServiceTaskID" />
@@ -136,11 +136,11 @@ else
                             <select id=ComplementServiceTaskID name=ComplementServiceTaskID>
                                 @foreach (ServiceTaskElement s in Model.ServiceTasksList.Where(x => complementList.All(b => x.ServiceTypes.Any(a => a.ServiceTypeCode == b.ServiceTypeCode))).ToList())
                                 {
-                                    <option value="@s.ServiceTaskID">[@s.ServiceTaskCode] @s.ServiceTaskDesc</option>
+                                <option value="@s.ServiceTaskID">[@s.ServiceTaskCode] @s.ServiceTaskDesc</option>
                                 }
-                            </select>
-                        </td>
-                        <td>
+                        </select>
+                    </td>
+                    <td>
                             @{
                                 List<int> eModeList = new List<int>();
                                 eModeList.Add(0);
@@ -152,32 +152,32 @@ else
                                     eModeList.Add(-1);
                                 }
                             }
-                            <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
+                        <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
                                 @{
                                     localValue = st.ExternalExpeditionMode == null ? "-1" : st.ExternalExpeditionMode.ToString();
                                 }
-                                <option value="@localValue">
-                                        @{
+                            <option value="@localValue">
+                                    @{
                                         localValue = "ExternalExpeditionMode" + localValue;
-                                        }
-                                        @localizer[localValue]
-                                </option>
-                                @foreach(int i in eModeList)
+                                    }
+                                    @localizer[localValue]
+                            </option>
+                                @foreach (int i in eModeList)
                                 {
-                                    <option value="@i">
+                                <option value="@i">
                                         @{
                                             localValue = "ExternalExpeditionMode" + i.ToString();
                                         }
                                         @localizer[localValue]
-                                    </option>
+                                </option>
                                 }
-                             </select>
-                        </td>
-                        <td><input id=StationExceededDesc name=StationExceededDesc type="text" maxlength="50" style="width: 100%" value="@st.StationExceededDesc"/></td>
+                        </select>
+                    </td>
+                    <td><input id=StationExceededDesc name=StationExceededDesc type="text" maxlength="50" style="width: 100%" value="@st.StationExceededDesc" /></td>
                     </form>
                 </tr>
                 <tr id="Show|@value">
-                    <td style="align-items:center; display:flex;border: none;background-color: transparent;">
+                    <td style="align-items:center; display:flex;border: none;background-color: transparent;" class="borders">
                         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
                             <img class="evol-image grow" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
                         </a>
@@ -207,7 +207,7 @@ else
                 </tr>
                 @if (st.ServiceTypes.Count() > 0)
                 {
-                <tr id="@nameValue" style="display: none">
+                    <tr id="@nameValue" style="display: none" class="borders">
                         <td style="border:none;background-color:transparent"></td>
                         <td colspan="3">
                             <table class="table table-sm table-hover table-collapse-seperate">
@@ -218,13 +218,13 @@ else
                                     </tr>
                                 </thead>
                                 <tbody id="bootstrap-overrides">
-                                        @foreach (ServiceTypeElement s in st.ServiceTypes)
-                                        {
-                                            <tr>
-                                                <td>@s.ServiceTypeDesc</td>
-                                                <td>@s.ServiceTypeCode</td>
-                                            </tr>
-                                        }
+                                    @foreach (ServiceTypeElement s in st.ServiceTypes)
+                                    {
+                                        <tr>
+                                            <td>@s.ServiceTypeDesc</td>
+                                            <td>@s.ServiceTypeCode</td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </td>

@@ -98,48 +98,48 @@ else
                         <select id=ComplementServiceTaskID name=ComplementServiceTaskID>
                             @foreach (ServiceTaskElement s in Model.ServiceTasksList.Where(x => complementList.All(b => x.ServiceTypes.Any(a => a.ServiceTypeCode == b.ServiceTypeCode))).ToList())
                             {
-                                <option value="@s.ServiceTaskID">[@s.ServiceTaskCode] @s.ServiceTaskDesc</option>
+                            <option value="@s.ServiceTaskID">[@s.ServiceTaskCode] @s.ServiceTaskDesc</option>
                             }
-                        </select>
-                    </td>
-                    <td class="evol-fitcontent-column">
+                    </select>
+                </td>
+                <td class="evol-fitcontent-column">
                         @{
-                                List<int> eModeList = new List<int>();
-                                eModeList.Add(0);
-                                eModeList.Add(1);
-                                eModeList.Add(2);
-                                if (serviceTask.ExternalExpeditionMode != null)
-                                {
-                                    eModeList.Remove((int)serviceTask.ExternalExpeditionMode);
-                                    eModeList.Add(-1);
-                                }
+                            List<int> eModeList = new List<int>();
+                            eModeList.Add(0);
+                            eModeList.Add(1);
+                            eModeList.Add(2);
+                            if (serviceTask.ExternalExpeditionMode != null)
+                            {
+                                eModeList.Remove((int)serviceTask.ExternalExpeditionMode);
+                                eModeList.Add(-1);
                             }
-                        <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
+                        }
+                    <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
                             @{
                                 localValue = serviceTask.ExternalExpeditionMode == null ? "-1" : serviceTask.ExternalExpeditionMode.ToString();
                             }
-                             <option value="@localValue">
-                                    @{
+                        <option value="@localValue">
+                                @{
                                     localValue = "ExternalExpeditionMode" + localValue;
-                                    }
-                                    @localizer[localValue]
-                            </option>
-                            @foreach(int i in eModeList)
+                                }
+                                @localizer[localValue]
+                        </option>
+                            @foreach (int i in eModeList)
                             {
-                                <option value="@i">
+                            <option value="@i">
                                     @{
                                         localValue = "ExternalExpeditionMode" + i.ToString();
                                     }
                                     @localizer[localValue]
-                                </option>
+                            </option>
                             }
-                        </select>
-                    </td>
-                    <td><input id=StationExceededDesc name=StationExceededDesc type="text" maxlength="50" style="width: 100%" value="@serviceTask.StationExceededDesc"/></td>
+                    </select>
+                </td>
+                <td><input id=StationExceededDesc name=StationExceededDesc type="text" maxlength="50" style="width: 100%" value="@serviceTask.StationExceededDesc" /></td>
                 </form>
             </tr>
             <tr id="Show|">
-                <td class="evol-fitcontent-column-one" style="border: none;background-color: transparent;">
+                <td class="evol-fitcontent-column-one borders" style="border: none;background-color: transparent;">
                     @if (AddServiceTask)
                     {
                         <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
@@ -177,7 +177,7 @@ else
             {
                 <tr id="Hide|Type" style="display: none">
                     <form id="AddFrm|Type" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="AddServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID">
-                        <td style="align-items:center; display:flex;border:none;background-color:transparent">
+                        <td style="align-items:center; display:flex;border:none;background-color:transparent" class="borders">
                         <img onclick="CancelRow('Type')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                         <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                         </td>
@@ -186,9 +186,9 @@ else
                             @foreach (ServiceTypeElement st in Model.ServiceTypesList.Where(x => serviceTask.ServiceTypes.Where(y => y.ServiceTypeID == x.ServiceTypeID).ToList().Count() == 0).ToList())
                             {
                                 <option value="@st.ServiceTypeID">@st.ServiceTypeDesc [@st.ServiceTypeCode]</option>
-                            }
-                            </select>
-                        </td>
+                                }
+                        </select>
+                    </td>
                     </form>
                 </tr>
             }
@@ -198,14 +198,14 @@ else
                 <tr>
                     @if (AddServiceTask)
                     {
-                    <td class="evol-fitcontent-column-one" style="border: none;background-color: transparent;vertical-align:middle">
+                        <td class="evol-fitcontent-column-one borders" style="border: none;background-color: transparent;vertical-align:middle">
                             @if (DeleteServiceTask)
                             {
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID"  asp-route-servicetypeID="@s.ServiceTypeID">
                                     <img onclick="return confirmServiceTypeDelete('@s.ServiceTypeCode')" style="width:30px;height:30px" class="evol-image grow" src="~/images/delete.png" title="@localizer["DeleteServiceType"] = @s.ServiceTypeCode" />
                             </a>
                             }
-                    </td>
+                        </td>
                     }
                     <td>@s.ServiceTypeDesc</td>
                     <td>@s.ServiceTypeCode</td>
@@ -238,33 +238,34 @@ else
             {
                 <tr id="Hide|ExpCode" style="display: none">
                     <form id="AddFrm|ExpCode" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="AddExpCode" asp-route-servicetaskID="@serviceTask.ServiceTaskID">
-                        <td style="align-items:center; display:flex;border:none;background-color:transparent">
+                    <td style="align-items:center; display:flex;border:none;background-color:transparent" class="borders">
                         <img onclick="CancelRow('ExpCode')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                         <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
-                        </td>
-                        <td>
-                            <select id="ExpCompanyID" name="ExpCompanyID">
-                            @foreach(Company comp in Model.ExpCompanies.Where(x => Model.ExpCodes.Where(y => y.ExpCompanyID == x.ID).ToList().Count() == 0))
-                            {
+                    </td>
+                    <td>
+                        <select id="ExpCompanyID" name="ExpCompanyID">
+                                @foreach (Company comp in Model.ExpCompanies.Where(x => Model.ExpCodes.Where(y => y.ExpCompanyID == x.ID).ToList().Count() == 0))
+                                {
                                 <option value="@comp.ID">@comp.CompanyName</option>
-                            }
-                            </select>
-                        </td>
-                        <td colspan="7"><b>@localizer["SelectExpCompanyRef"]: </b>
-                            <select id="RefExpCompanyID" name="RefExpCompanyID">
-                            @foreach(Company comp in Model.ExpCompanies.Where(x => Model.ExpCodes.Where(y => y.ExpCompanyID == x.ID).ToList().Count() > 0))
-                            {
+                                }
+                        </select>
+                    </td>
+                    <td colspan="7">
+                        <b>@localizer["SelectExpCompanyRef"]: </b>
+                        <select id="RefExpCompanyID" name="RefExpCompanyID">
+                                @foreach (Company comp in Model.ExpCompanies.Where(x => Model.ExpCodes.Where(y => y.ExpCompanyID == x.ID).ToList().Count() > 0))
+                                {
                                 <option value="@comp.ID">@comp.CompanyName</option>
-                            }
-                            </select>
-                        </td>
+                                }
+                        </select>
+                    </td>
                     </form>
                 </tr>
             }
             @foreach (ExpCodeElement expCode in Model.ExpCodes)
             {
                 <tr>
-                    <td class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
+                    <td class="evol-fitcontent-column-one borders" style="border:none;background-color:transparent">
                         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)"
                    asp-route-serviceTaskDesc="@serviceTask.ServiceTaskDesc" asp-route-expCompanyName="@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName" asp-route-source="ServiceWorkFlowDetail">
                             <img style="width:30px;height:30px" class="evol-image grow" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
