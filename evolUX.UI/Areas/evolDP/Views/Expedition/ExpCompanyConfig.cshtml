@@ -76,7 +76,7 @@ else
         <h2>@headerDesc1</h2>
     </div>
     <div>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany"
+        <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany"
             asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)">
         </a>
     </div>
@@ -86,7 +86,7 @@ else
         <h2>@headerDesc2
             @if (Model.ExpeditionType != 0 && AddExpeditionType && Model.ExpeditionZone == 0)
             {
-                <img onclick="EditRow('@value')" class="evol-image" src="~/images/add.png" title="@localizer["ExpCompanyConfigAdd"]" />
+                    <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/add.png" title="@localizer["ExpCompanyConfigAdd"]" />
             }
         </h2>
     }
@@ -120,9 +120,9 @@ else
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ConfigExpCompanyConfig"
                                 asp-route-startdate="@Model.Configs.First().StartDate" asp-route-pageexpeditiontype="@Model.ExpeditionType" asp-route-pageexpeditionZone="@Model.ExpeditionZone"
                                 asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)">
-                        <td class="borders" style="align-items:center; display:flex">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <td  class="borders" style="align-items:center; display:flex">
+                                    <img onclick="CancelRow('@value')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                                    <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>
                                 @type.ExpeditionTypeDesc
@@ -159,7 +159,7 @@ else
         {
         <div id ="TitlePage">
             <h3>@type.ExpeditionTypeDesc - @zone.ExpeditionZoneDesc
-                <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                        <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
             </h3>
         </div>
         }
@@ -190,7 +190,7 @@ else
                 @if (AddExpeditionType)
                 {
                     <td class ="borders">
-                        <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCompanyConfig"]"/>
+                        <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeExpCompanyConfig"]"/>
                     </td>
                 }
                 <td>@type.ExpeditionTypeDesc</td>
@@ -228,9 +228,9 @@ else
                   <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyConfig"
                   asp-route-startdate="@Model.Configs.First().StartDate" asp-route-pageexpeditiontype="@Model.ExpeditionType" asp-route-pageexpeditionZone="@Model.ExpeditionZone"
                       asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)">
-                    <td class="borders" style="align-items:center; display:flex">
+                    <td style="align-items:center; display:flex">
                         <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                                    <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td>
                             @t.ExpeditionTypeDesc
