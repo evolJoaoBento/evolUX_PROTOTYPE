@@ -274,15 +274,16 @@ boxes.forEach(box => {
 });
 
 const printerOpt = document.getElementById('print-options');
+if (printerOpt != null) {
+    printerOpt.addEventListener('click', function () {
 
-printerOpt.addEventListener('click', function () {
-
-    if (printerOpt.parentElement.classList.contains('print-filter-open')) {
-        printerOpt.parentElement.classList.remove('print-filter-open');
-    } else {
-        printerOpt.parentElement.classList.add('print-filter-open');
-    }
-});
+        if (printerOpt.parentElement.classList.contains('print-filter-open')) {
+            printerOpt.parentElement.classList.remove('print-filter-open');
+        } else {
+            printerOpt.parentElement.classList.add('print-filter-open');
+        }
+    });
+}
 
 var coll = document.getElementsByClassName("collapsible");
 var i;

@@ -34,7 +34,7 @@ else
     <div id="TitlePage">
         <h1>@localizer["ExpContracts"]</h1>
         <h2>@Model.Company.CompanyName</h2>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.Company)">
+        <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.Company)">
         </a>
     </div>
     <table class="table table-sm table-hover table-collapse-seperate">
@@ -42,7 +42,7 @@ else
             <tr>
                 @if (AddExpeditionContract)
                 {
-                    <th rowspan="2" class ="evol-fitcontent-column borders" style="text-align: center"><img onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["ExpContractAdd"]" /></th>
+                    <th rowspan="2" class="evol-fitcontent-column borders" style="text-align: center"><img onclick="EditRow('')" style="background:none; width:35px;height:35px;" class="grow" src="~/images/add.png" title="@localizer["ExpContractAdd"]" /></th>
                 }
                 <th rowspan ="2">@localizer["ContractNr"]</th>
                 <th colspan="8">@localizer["Client"]</th>
@@ -64,8 +64,8 @@ else
                 <tr id="Hide|" style="display: none">
                     <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ConfigExpContract" asp-route-expcompanyjson="@JsonConvert.SerializeObject(Model.Company)">
                     <td style="align-items:center; display:flex" class="borders">
-                        <img onclick="CancelRow('')" type="image"class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png"/>
+                        <img onclick="CancelRow('')" type="image" class="evol-image float" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <input style="display: none" id=ExpCompanyID name=ExpCompanyID value="@Model.Company.ID"/>
                     <td><input id=ContractNr name=ContractNr type="number" min="0" max="2147483647" style="width: 100%" value="0" /></td>
@@ -83,11 +83,11 @@ else
             @foreach(ExpContractElement c in Model.ExpeditionContracts)
             {
                 value = c.ContractID.ToString();
-                <tr id="Show|@value">
+                <tr id="Show|@value" ondblclick="EditRow('@value')">
                     @if (AddExpeditionContract)
                     {
                         <td class="evol-fitcontent-column borders" style="text-align: center">
-                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ExpContractChange"]" />
+                            <img onclick="EditRow('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ExpContractChange"]" />
                         </td>
                     }
                     <td>@c.ContractNr</td>
@@ -104,9 +104,8 @@ else
                 {
                     <tr id="Hide|@value" style="display: none">
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ConfigExpContract" asp-route-expcompanyjson="@JsonConvert.SerializeObject(Model.Company)">
-                        <td style="align-items:center; display:flex" class="borders">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                             </td>
                             <input style="display: none" id=ExpCompanyID name=ExpCompanyID value="@c.ExpCompanyID" />
                             <input style="display: none" id=ContractID name=ContractID value="@c.ContractID" />
@@ -160,5 +159,25 @@ else
                 }
             });
         }
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    if (/^Hide\|\d+/.test(tElement.id)) {
+                        let val = tElement.id.substring(5);
+                        CancelRow(val);
+                    }
+                });
+            }
+        });
     </script>
 }

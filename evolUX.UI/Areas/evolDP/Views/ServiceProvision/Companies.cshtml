@@ -68,16 +68,16 @@ else
                 <tr>
                     <td class="evol-fitcontent-column borders">
                         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)" asp-route-restrictionsJson="@JsonConvert.SerializeObject(serviceCompanyRestrictionsList)">
-                            <img style="background:none; width:35px;height:35px;" src="~/images/config.png" title="@localizer["ServiceCompanyDetail"]: @serviceCompany.CompanyName" />
+                            <img style="background:none; width:35px;height:35px;" class="rotate_01" src="~/images/config.png" title="@localizer["ServiceCompanyDetail"]: @serviceCompany.CompanyName" />
                         </a>
                         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyExpCodes" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)">
-                            <img style="background:none; width:35px;height:35px;" src="~/images/envelopes.png" title="@localizer["ServiceCompanyExpCodes"]: @serviceCompany.CompanyName" />
+                            <img style="background:none; width:35px;height:35px;" class="float" src="~/images/envelopes.png" title="@localizer["ServiceCompanyExpCodes"]: @serviceCompany.CompanyName" />
                         </a>
                      </td>
                     <td>@serviceCompany.CompanyName
                         @if (serviceCompanyRestrictionsList.Count() > 0)
                         {
-                            <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                         }</td>
                     <td>@serviceCompany.CompanyCode</td>
                     <td>@serviceCompany.CompanyAddress</td>
@@ -87,8 +87,8 @@ else
                 </tr>
                 @if (serviceCompanyRestrictionsList.Count() > 0)
                 {
-                    <tr id="@nameValue" style="display: none">
-                        <td></td>
+                    <tr id="@nameValue" class="borders" style="display: none">
+                        <td class="borders"></td>
                         <td colspan="6">
                             <table class="table table-sm table-hover table-collapse-seperate">
                                 <thead id="bootstrap-overrides" class="table-info sticky-header">

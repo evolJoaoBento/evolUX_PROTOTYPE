@@ -28,7 +28,7 @@
 }
 <div id="TitlePage">
     <h1>@localizer["ServiceTask"]</h1>
-    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlow">
+    <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlow">
     </a>
 </div>
 @if (Model == null)
@@ -67,54 +67,53 @@ else
         <tbody id="bootstrap-overrides">
             <tr id="Hide|" style="display: none">
                 <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlowDetail">
-                    <td style="align-items:center; display:flex;border: none;background-color: transparent;">
-                        <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
-                        <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="@serviceTask.ServiceTaskID" />
-                    </td>
-                    <td>@serviceTask.ServiceTaskCode<input style="display: none"  id=ServiceTaskCode name=ServiceTaskCode type="text" maxlength="15" value="@serviceTask.ServiceTaskCode"/></td>
-                    <td><input id=ServiceTaskDesc name=ServiceTaskDesc type="text" maxlength="256" style="width: 100%" value="@serviceTask.ServiceTaskDesc"/></td>
-                    <td class="evol-fitcontent-column">
-                            @{
-                                List<ServiceTypeElement> complementList = new List<ServiceTypeElement>();
-                                foreach(ServiceTypeElement ste in serviceTask.ServiceTypes)
+                <td style="align-items:center; display:flex;" class="borders">
+                    <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" style="width:30px;height:30px" class="evol-image float" name="Submit" src="~/images/Ok.png" />
+                    <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="@serviceTask.ServiceTaskID" />
+                </td>
+                <td>@serviceTask.ServiceTaskCode<input style="display: none" id=ServiceTaskCode name=ServiceTaskCode type="text" maxlength="15" value="@serviceTask.ServiceTaskCode" /></td>
+                <td><input id=ServiceTaskDesc name=ServiceTaskDesc type="text" maxlength="256" style="width: 100%" value="@serviceTask.ServiceTaskDesc" /></td>
+                <td>
+                        @{
+                            List<ServiceTypeElement> complementList = new List<ServiceTypeElement>();
+                            foreach (ServiceTypeElement ste in serviceTask.ServiceTypes)
+                            {
+                                if (!ste.ServiceTypeCode.StartsWith("PRINT"))
+                                    complementList.Add(ste);
+                                else
                                 {
-                                    if (!ste.ServiceTypeCode.StartsWith("PRINT"))
-                                        complementList.Add(ste);
+                                    string color = ste.ServiceTypeCode.Substring(5);
+                                    if (color.Contains("BLACK"))
+                                        color = color.Replace("BLACK", "COLOR");
                                     else
-                                    {
-                                        string color = ste.ServiceTypeCode.Substring(5);
-                                        if (color.Contains("BLACK"))
-                                            color = color.Replace("BLACK", "COLOR");
-                                        else
-                                            color = color.Replace("COLOR", "BLACK");
-                                        color = "PRINT" + color;
-                                        ServiceTypeElement newServiceType = Model.ServiceTypesList.FirstOrDefault(x => x.ServiceTypeCode == color);
-                                        if (newServiceType != null)
-                                            complementList.Add(newServiceType);
-                                    }
+                                        color = color.Replace("COLOR", "BLACK");
+                                    color = "PRINT" + color;
+                                    ServiceTypeElement newServiceType = Model.ServiceTypesList.FirstOrDefault(x => x.ServiceTypeCode == color);
+                                    if (newServiceType != null)
+                                        complementList.Add(newServiceType);
                                 }
                             }
-                        <select id=ComplementServiceTaskID name=ComplementServiceTaskID>
+                        }
+                    <select id=ComplementServiceTaskID name=ComplementServiceTaskID style="max-width: 300px">
                             @foreach (ServiceTaskElement s in Model.ServiceTasksList.Where(x => complementList.All(b => x.ServiceTypes.Any(a => a.ServiceTypeCode == b.ServiceTypeCode))).ToList())
                             {
                                 <option value="@s.ServiceTaskID">[@s.ServiceTaskCode] @s.ServiceTaskDesc</option>
                             }
-                        </select>
-                    </td>
-                    <td class="evol-fitcontent-column">
+                    </select>
+                </td>
+                <td>
                         @{
-                                List<int> eModeList = new List<int>();
-                                eModeList.Add(0);
-                                eModeList.Add(1);
-                                eModeList.Add(2);
-                                if (serviceTask.ExternalExpeditionMode != null)
-                                {
-                                    eModeList.Remove((int)serviceTask.ExternalExpeditionMode);
-                                    eModeList.Add(-1);
-                                }
+                            List<int> eModeList = new List<int>();
+                            eModeList.Add(0);
+                            eModeList.Add(1);
+                            eModeList.Add(2);
+                            if (serviceTask.ExternalExpeditionMode != null)
+                            {
+                                eModeList.Remove((int)serviceTask.ExternalExpeditionMode);
+                                eModeList.Add(-1);
                             }
-                        <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
+                        }
+                    <select id=ExternalExpeditionMode name=ExternalExpeditionMode style="max-width: 300px">
                             @{
                                 localValue = serviceTask.ExternalExpeditionMode == null ? "-1" : serviceTask.ExternalExpeditionMode.ToString();
                             }
@@ -138,11 +137,11 @@ else
                     <td><input id=StationExceededDesc name=StationExceededDesc type="text" maxlength="50" style="width: 100%" value="@serviceTask.StationExceededDesc"/></td>
                 </form>
             </tr>
-            <tr id="Show|">
-                <td class="evol-fitcontent-column-one" style="border: none;background-color: transparent;">
+            <tr id="Show|" ondblclick="EditRow('')">
+                <td class="evol-fitcontent-column-one borders" style="border: none;background-color: transparent;">
                     @if (AddServiceTask)
                     {
-                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
+                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
                     }
                 </td>
                 <td>@serviceTask.ServiceTaskCode</td>
@@ -166,7 +165,7 @@ else
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
-                    <img onclick="EditRow('Type')" style="width:30px;height:30px" class="evol-image" src="~/images/add.png" title="@localizer["AddServiceType"]" />
+                    <img onclick="EditRow('Type')" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddServiceType"]" />
                 </th>
                 <th>@localizer["ServiceTypeDesc"]</th>
                 <th>@localizer["ServiceTypeCode"]</th>
@@ -177,14 +176,14 @@ else
             {
                 <tr id="Hide|Type" style="display: none">
                     <form id="AddFrm|Type" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="AddServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID">
-                        <td style="align-items:center; display:flex;border:none;background-color:transparent">
-                        <img onclick="CancelRow('Type')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
-                        </td>
-                        <td colspan="2"><b>@localizer["SelectServiceTask"]: </b>
-                            <select id=ServiceTypeID name=ServiceTypeID>
-                            @foreach (ServiceTypeElement st in Model.ServiceTypesList.Where(x => serviceTask.ServiceTypes.Where(y => y.ServiceTypeID == x.ServiceTypeID).ToList().Count() == 0).ToList())
-                            {
+                    <td style="align-items:center; display:flex;border:none;background-color:transparent" class="borders">
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="width:30px;height:30px" class="evol-image float" name="Submit" src="~/images/Ok.png" />
+                    </td>
+                    <td colspan="2">
+                        <b>@localizer["SelectServiceTask"]: </b>
+                        <select id=ServiceTypeID name=ServiceTypeID>
+                                @foreach (ServiceTypeElement st in Model.ServiceTypesList.Where(x => serviceTask.ServiceTypes.Where(y => y.ServiceTypeID == x.ServiceTypeID).ToList().Count() == 0).ToList())
+                                {
                                 <option value="@st.ServiceTypeID">@st.ServiceTypeDesc [@st.ServiceTypeCode]</option>
                             }
                             </select>
@@ -198,11 +197,11 @@ else
                 <tr>
                     @if (AddServiceTask)
                     {
-                    <td class="evol-fitcontent-column-one" style="border: none;background-color: transparent;vertical-align:middle">
+                    <td class="evol-fitcontent-column-one borders" style="border: none;background-color: transparent;vertical-align:middle">
                             @if (DeleteServiceTask)
                             {
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID"  asp-route-servicetypeID="@s.ServiceTypeID">
-                                    <img onclick="return confirmServiceTypeDelete('@s.ServiceTypeCode')" style="width:30px;height:30px" class="evol-image" src="~/images/delete.png" title="@localizer["DeleteServiceType"] = @s.ServiceTypeCode" />
+                                    <img onclick="return confirmServiceTypeDelete('@s.ServiceTypeCode')" style="width:30px;height:30px" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteServiceType"] = @s.ServiceTypeCode" />
                             </a>
                             }
                     </td>
@@ -220,7 +219,7 @@ else
                 <th class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
                     @if (AddExpCode && missingExpCompanies)
                     {
-                        <img onclick="EditRow('ExpCode')" style="width:30px;height:30px" class="evol-image" src="~/images/add.png" title="@localizer["AddExpCode"]" />
+                        <img onclick="EditRow('ExpCode')" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddExpCode"]" />
                     }
                 </th>
                 <th>@localizer["ExpCompany"]</th>
@@ -239,8 +238,8 @@ else
                 <tr id="Hide|ExpCode" style="display: none">
                     <form id="AddFrm|ExpCode" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="AddExpCode" asp-route-servicetaskID="@serviceTask.ServiceTaskID">
                         <td style="align-items:center; display:flex;border:none;background-color:transparent">
-                        <img onclick="CancelRow('ExpCode')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <img onclick="CancelRow('ExpCode')" type="image" class="evol-image float" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>
                             <select id="ExpCompanyID" name="ExpCompanyID">
@@ -267,7 +266,7 @@ else
                     <td class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
                         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)"
                    asp-route-serviceTaskDesc="@serviceTask.ServiceTaskDesc" asp-route-expCompanyName="@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName" asp-route-source="ServiceWorkFlowDetail">
-                            <img style="width:30px;height:30px" class="evol-image" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
+                            <img style="width:30px;height:30px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
                         </a>
                     </td>
                     <td>@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName</td>
@@ -322,5 +321,24 @@ else
                 return false;
             }
         }
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                });
+            }
+        });
     </script>
 }
