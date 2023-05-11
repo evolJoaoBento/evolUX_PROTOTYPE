@@ -21,7 +21,7 @@ else
         <div id="TitlePage">
             <h1>@localizer["ExpCompanyZone"]</h1>
         </div>
-        <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Zones">
+        <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Zones">
         </a>
     }
     string expCenterCode = Model.Zones.First().ExpCompanyZonesList.First().ExpCenterCode;
@@ -46,7 +46,7 @@ else
                 <td>@expCompanyName</td>
                 <td>@expCenterCode</td>
             </tr>
-            <tr>
+            <tr class="borders">
                 <td colspan="3">
                     <table class="table table-sm table-hover table-collapse-seperate">
                         <thead id="bootstrap-overrides" class="table-info sticky-header">

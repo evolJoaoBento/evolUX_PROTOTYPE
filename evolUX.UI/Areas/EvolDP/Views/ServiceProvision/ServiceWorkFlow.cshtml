@@ -57,8 +57,8 @@ else
                 <tr>
                     <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlow">
                         <td style="align-items:center; display:flex;border: none;background-color: transparent;"  class="borders">
-                        <img onclick="CancelRow('')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
+                        <img onclick="CancelRow('')" type="image" class="evol-image float" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                             <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="0" />
                         </td>
                         <td><input id=ServiceTaskCode name=ServiceTaskCode type="text" maxlength="15" style="width: 100%" /></td>
@@ -106,7 +106,7 @@ else
                 <tr id="Hide|@value" style="display: none">
                     <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlow">
                     <td style="align-items:center; display:flex; justify-content:center" class="borders">
-                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                         <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="@st.ServiceTaskID" />
                     </td>
                     <td>@st.ServiceTaskCode<input style="display: none" id=ServiceTaskCode name=ServiceTaskCode type="text" maxlength="15" value="@st.ServiceTaskCode" /></td>
@@ -178,11 +178,11 @@ else
                 <tr id="Show|@value" ondblclick="EditRow('@value')">
                     <td style="align-items:center; display:flex;border: none;background-color: transparent;" class="borders">
                         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
-                            <img style="margin-bottom: 1px" class="evol-image grow" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
+                            <img style="margin-bottom: 1px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
                         </a>
                         @if (AddServiceTask)
                         {
-                            <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
+                            <img onclick="EditRow('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
                         }
                         @if (st.ServiceTypes.Count() > 0)
                         {
@@ -206,7 +206,7 @@ else
                 </tr>
                 @if (st.ServiceTypes.Count() > 0)
                 {
-                <tr id="@nameValue" style="display: none">
+                <tr id="@nameValue" class="borders" style="display: none">
                         <td style="border:none;background-color:transparent"></td>
                         <td colspan="3">
                             <table class="table table-sm table-hover table-collapse-seperate">

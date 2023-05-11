@@ -1,0 +1,249 @@
+﻿body {
+    background: white;
+    font-family: 'Inter UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.page {
+    background: #e2e2e5;
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 40px);
+    position: absolute;
+    place-content: center;
+    width: calc(100% - 40px);
+}
+
+@media (max-width: 767px) {
+    .page {
+        height: auto;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+    }
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.left {
+    background: white;
+    height: calc(100% - 40px);
+    top: 20px;
+    position: relative;
+    width: 50%;
+}
+
+@media (max-width: 767px) {
+    .left {
+        height: 100%;
+        left: 20px;
+        width: calc(100% - 40px);
+        max-height: 270px;
+    }
+}
+
+.login {
+    width: 320px; /*Tamanho z*/
+    padding: 35px; /*Espaçamento dos lados*/
+    padding-top: 2px; /*Espaçamento de cima*/
+    position: absolute;
+}
+
+.login__field {
+    padding: 30px 0px; /*Espaçamento entre os elementos*/
+    position: relative;
+}
+
+.login__input {
+    border: none;
+    background: none;
+    padding: 10px;
+    padding-left: 35px;
+    font-weight: 700;
+    width: 75%;
+    transition: .2s;
+}
+
+.login__icon {
+    position: absolute;
+    top: 30px;
+    width: 33px;
+}
+
+.login__submit {
+    background: #fff;
+    font-size: 17px;
+    margin-top: 27px;
+    padding: 30px 20px;
+    border-radius: 10px;
+    border: 15px;
+    text-transform: uppercase;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    width: 90%;
+    box-shadow: 0px 2px 2px #5C5696;
+    cursor: pointer;
+    transition: .2s;
+    font-family: Courier, monospace;
+}
+
+    .login__submit:hover {
+        transition-duration: 0.1s;
+        background-color: #ededed;
+    }
+
+.social-login {
+    position: absolute;
+    height: 190px;
+    width: 350px;
+    text-align: center;
+    bottom: -40px;
+    right: 0px;
+    color: black;
+    font-family: Courier, monospace;
+}
+
+.eula {
+    color: #999;
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 40px;
+}
+
+.right {
+    background: #474A59;
+    box-shadow: 0px 0px 40px 16px rgba(0,0,0,0.22);
+    color: #F1F1F2;
+    position: relative;
+    width: 50%;
+}
+
+@media (max-width: 767px) {
+    .right {
+        flex-shrink: 0;
+        height: 100%;
+        width: 100%;
+        max-height: 350px;
+    }
+}
+
+svg {
+    position: absolute;
+    width: 360px;
+}
+
+path {
+    fill: none;
+    stroke: url(#linearGradient);
+    stroke-width: 4;
+    stroke-dasharray: 240 1386;
+}
+
+.form {
+    margin: 40px;
+    position: absolute;
+}
+
+label {
+    color: #c2c2c5;
+    display: block;
+    font-size: 14px;
+    height: 16px;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+
+input {
+    background: transparent;
+    border: 0;
+    color: #707075;
+    font-size: 20px;
+    height: 30px;
+    line-height: 30px;
+    outline: none !important;
+    width: 100%;
+}
+
+    input::-moz-focus-inner {
+        border: 0;
+    }
+
+#submitlogin {
+    color: #707075;
+    margin-top: 37px;
+    transition: color 300ms;
+}
+
+    #submit:focus {
+        color: #f2f2f2;
+    }
+
+    #submit:active {
+        color: #d0d0d2;
+    }
+
+.screen {
+    background: linear-gradient(60deg, #4bb1de,#501db4, #e5813a, #fa1212); /*Controla as cores por de trás dos objetos*/
+    position: relative; /*É o que faz com que os objetos fiquem onde estão*/
+    height: 600px; /*Tamanho y*/
+    width: 360px; /*Tamanho z*/
+    box-shadow: 0px 0px 24px #808080; /*Sombra*/
+    border-radius: 30px;
+}
+
+.screen__content {
+    z-index: 1; /*Coloca elementos para a frente*/
+    position: relative;
+    height: 100%;
+}
+
+.screen__background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    clip-path: inset(0 0 0 0);
+}
+
+.screen__background__shape {
+    position: absolute;
+}
+
+.screen__background__shape1 {
+    height: 405px;
+    width: 340px;
+    background: #FFF;
+    top: 10px;
+    right: 10px;
+    border-radius: 30px;
+}
+
+.screen__background__shape2 {
+    height: 170px;
+    width: 340px;
+    background: #FFF;
+    top: 420px;
+    right: 10px;
+    border-radius: 30px;
+}
+
+.button__icon {
+    width: 30px;
+    margin-left: 100px;
+}
+
+.logotipo {
+    width: 250px;
+}
+
+img.no-click {
+    pointer-events:none;
+}

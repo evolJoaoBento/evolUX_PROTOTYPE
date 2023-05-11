@@ -26,7 +26,94 @@
     *@      }
     else
     {
-        <div class="container-auth">
+        <div class="container" style="margin-top:-70px">
+            <div class="screen">
+                <div class="screen__content">
+                    <div>
+                        <i>
+                            <img src="~/images/evolSolutionslogin.png" class="logotipo no-click"/>
+                        </i>
+                    </div>
+                    <svg id="snake" viewBox="0 50 320 300">
+                        <defs>
+                            <linearGradient inkscape:collect="always"
+                                            id="linearGradient"
+                                            x1="23"
+                                            y1="193.49992"
+                                            x2="307"
+                                            y2="193.49992"
+                                            gradientUnits="userSpaceOnUse">
+                                <stop style="stop-color:#7bc3f3;"
+                                      offset="0"
+                                      id="stop876" />
+                                <stop style="stop-color:#6324ff;"
+                                      offset="0.3"
+                                      id="stop876" />
+                                <stop style="stop-color:#ff0000;"
+                                      offset="1"
+                                      id="stop878" />
+                            </linearGradient>
+                        </defs>
+                        <path d="m 31.7,115 242,-0.00032 c 25,5 20,0.79932 25.00016,44.7 0.008,34.20084 -25.00016,35 -20,35 h -239.99984 c 0,0 -25,4.01348 -25,68 0,20 30,40 48,38.5 c 0,0 80,0 190,0 0,0 10,0 10,-10 0,0 0,-10 0,-40 0,0 0,-10 -10,-10 0,0 -80,0 -190,0 0,0 -10,0 -10,10 0,0 0,10 0,40 0,0 0,10 10,10 0,0 0,0 80,0 190,0"/>
+                    </svg>
+                    <form id="credentials-form" asp-area="core" asp-controller="auth" asp-action="LoginCredentials" method="get" class="login">
+                        <div class="login__field">
+                            <i>
+                                <img src="~/images/man-userlogin.png" class="login__icon no-click">
+                            </i>
+                            <input type="text" asp-for="Username" id="emaillogin" class="login__input evol-font" placeholder="User name/Email">
+                        </div>
+                        <div class="login__field">
+                            <i>
+                                <img src="~/images/locklogin.png" class="login__icon no-click">
+                            </i>
+                            <input type="password" asp-for="Password" id="passwordlogin" class="login__input evol-font" placeholder="Password">
+                        </div>
+                        <input type="hidden" name="returnUrl" value="@returnUrl">
+                        <button class="login__submit button" name="Submit" style="margin-left: 30px" id="submitlogin">
+                            <span class="evol-font">Entrar</span>
+                            <i>
+                                <img src="~/images/log-in-arrowlogin.png" class="button__icon no-click" />
+                            </i>
+                        </button>
+                    </form>
+                        <form id="windows-form" asp-area="core" asp-controller="auth" asp-action="LoginWindowsAuthentication" method="get" style="justify-self:center; height:100px; display:none">
+                            <div style="margin-top:50px">
+                            <h4 style="margin:55px; font-family: FreeMono, monospace; font-size: 20px">Entrar com o windows autentication</h4>
+                                <input type="hidden" name="returnUrl" value="@returnUrl">
+                                    <div>
+                                        <button type="submit" name="Submit" class="login__submit button btn-block" style="margin-left: 30px; width: 80%">
+                                            <span class="evol-font" style="color: grey; margin-left: 70px">Autenticar</span>
+                                        </button>
+                                    </div>
+                            </div>
+                        </form>
+                        <div class="auth-error">
+                            @if (@errorMessage != null)
+                            {
+                                <p style="margin:0;">@errorMessage</p>
+                            }
+                        </div>
+                    <div class="social-login">
+                        <h3 style="font-family:FreeMono, monospace; font-size: 20px">Faça log in por:</h3>
+                        <div style="margin-top: 30px" class="pick-login">
+                            <div id="windows-btn" class="circle windows">
+                                <img src="~/images/windows_icon.png" style="margin-top:8px" />
+                            </div>
+                            <div id="credentials-btn" class="circle credentials">
+                                <img src="~/images/enter_icon.png" style="margin-top:8px; width:30px; margin-left: -3px">
+                            </div>                                          
+                        </div>
+                    </div>
+                </div>
+                <div class="screen__background">
+                    <span class="screen__background__shape screen__background__shape2"></span>
+                    <span class="screen__background__shape screen__background__shape1"></span>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="container-auth">
             <div class="tittle">
                 <h1 class="evol-font"></h1>
             </div>
@@ -58,8 +145,9 @@
             </div>
             @*<div class="login-btn-wrap">
         <button id="login-btn">Login</button>
-        </div>*@
         </div>
+        </div>*@
+        
     }
 
     @*<div class="row d-flex justify-content-center h-100">

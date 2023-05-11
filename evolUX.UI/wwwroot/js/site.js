@@ -10,6 +10,7 @@ $(function () {
     $("#credentials-btn").on("click", () => {
         activeForm = "credentials";
         $("#credentials-form").show();
+        $("#snake").show();
         $("#credentials-form").addClass("active");
         $("#windows-form").removeClass("active");
         $("#windows-form").hide();
@@ -21,6 +22,7 @@ $(function () {
         $("#windows-form").addClass("active");
         $("#credentials-form").removeClass("active");
         $("#credentials-form").hide();
+        $("#snake").hide();
     })
     $("#login-btn").on("click", () => {
         $("#" + activeForm + "-form").submit();

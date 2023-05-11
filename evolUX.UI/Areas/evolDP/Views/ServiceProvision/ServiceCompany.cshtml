@@ -50,7 +50,7 @@ else
         <h1>@localizer["ServiceCompany"]</h1>
     </div>
     <div>
-        <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="Companies">
+        <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="Companies">
         </a>
         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyExpCodes" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)">
             <img style="background:none; width:50px;height:50px;" class="grow" src="~/images/envelopes2.png" title="@localizer["ServiceCompanyExpCodes"]" />
@@ -77,7 +77,7 @@ else
                 @if(AddServiceCompany)
                 {
                 <td style="text-align: center" class="borders">
-                        <img onclick="EditRow('ServiceCompany')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeCompany"]" />
+                        <img onclick="EditRow('ServiceCompany')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeCompany"]" />
                 </td>
                 }
                 <td>@serviceCompany.CompanyCode</td>
@@ -92,7 +92,7 @@ else
                 <tr id="Hide|ServiceCompany" style="display: none">
                     <form id="AddFrm|ServiceCompany" class="d-flex justify-content-center m-5" asp-controller="ServiceProvision" asp-action="ChangeServiceCompany" asp-route-servicecompanyviewJson="@JsonConvert.SerializeObject(Model)">
                     <td style="align-items:center; display:flex" class="borders">
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td>@serviceCompany.CompanyCode</td>
                     <input style="display: none" id=ServiceCompanyID name=ServiceCompanyID value="@serviceCompany.ID" />
@@ -127,7 +127,7 @@ else
                     @if (AddServiceCompany)
                     {
                         <td class="borders">
-                            <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyRestriction"]" />
+                            <img onclick="EditRow('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyRestriction"]" />
                         </td>
                     }
                     @{
@@ -159,7 +159,7 @@ else
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyRestriction"
                   asp-route-serviceCompanyJson="@serviceCompany" asp-route-materialtypeid="@r.MaterialTypeID">
                         <td style="align-items:center; display:flex" class="borders">
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                         </td>
                         @{
                             value = @localizer[r.MaterialTypeCode].Value;
@@ -215,7 +215,7 @@ else
                         <td style="align-items:center; display:flex" class="borders">
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
                                 asp-route-serviceCompanyConfigsJson="@JsonConvert.SerializeObject(serviceTypeConfigs)" asp-route-servicetypeid="@sType">
-                                <img class="evol-image grow" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
+                                <img class="evol-image float" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
                             </a>
                             <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@name0Value')" id="@id0Value"></a>
                     </td>
@@ -239,13 +239,13 @@ else
                                             <td style="align-items:center; display:flex;margin-left: 30px" class="borders">
                                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
                                                 asp-route-servicetypeid="@sType" asp-route-serviceid="@s">
-                                                <img class="evol-image grow" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
+                                                <img class="evol-image float" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
                                             </a>
                                                 <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@name1Value')" id="@id1Value"></a>
                                         </td>
                                         <td>@sList.First().ServiceDesc</td>
                                     </tr>
-                                    <tr id="@name1Value" style="display: none">
+                                    <tr id="@name1Value" class="borders" style="display: none">
                                         <td colspan="2">
                                             <table class="table table-sm table-hover table-collapse-seperate">
                                                 <thead id="bootstrap-overrides" class="table-info sticky-header">
@@ -265,7 +265,7 @@ else
                                                                 <td style="align-items:center; display:flex;margin-left: 80px" class="borders">
                                                                 <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
                                                                     asp-route-servicetypeid="@sType" asp-route-serviceid="@s" asp-route-costdate="@cDate">
-                                                                        <img class="evol-image grow" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
+                                                                        <img class="evol-image float" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
                                                                 </a>
                                                             </td>
                                                             <td>@costDateDesc</td>

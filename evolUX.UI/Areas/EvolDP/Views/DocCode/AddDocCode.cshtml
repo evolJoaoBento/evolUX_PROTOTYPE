@@ -70,18 +70,18 @@ else
         </div>
         @if (sourceDesc == "AddDoc")
         {
-            <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="Index">
+            <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="Index">
             </a>
         }
         else if (sourceDesc == "AddDocCode")
         {
-            <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(Model.DocCodeConfig)">
+            <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(Model.DocCodeConfig)">
             </a>
         }
         else if (sourceDesc == "AddDocCodeConfig" || sourceDesc == "DocCodeChange"
         || sourceDesc == "DocCodeConfigChange")
         {
-            <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(Model.DocCodeConfig)">
+            <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(Model.DocCodeConfig)">
             </a>
         }
     </div>

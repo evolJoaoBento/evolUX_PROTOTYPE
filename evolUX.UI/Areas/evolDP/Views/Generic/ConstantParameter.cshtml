@@ -55,8 +55,8 @@ else
                 <tr id="Hide|" style="display: none">
                     <form id="AddParameterFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Client" asp-action="ConfigParameter" asp-route-source="Add">
                         <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
-                            <img class="evol-image" onclick="CancelRow('')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input class="evol-image" onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
+                            <img class="evol-image float" onclick="CancelRow('')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input class="evol-image float" onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td><input id=ParameterRef name=ParameterRef type="text" maxlength="20" style="width: 100%" /></td>
                         <td><input id=ParameterValue name=ParameterValue type="number" maxlength="10" style="width: 100%" /></td>
@@ -70,11 +70,11 @@ else
                     @if (AddConstantParameter)
                     {
                         <td style="align-items:center; display:flex; justify-content: center" class="borders">
-                            <img class="evol-image" onclick="EditRow('@c.ParameterID')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
+                            <img class="evol-image float" onclick="EditRow('@c.ParameterID')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
                             @if (DeleteConstantParameter)
                             {
                                 <a asp-area="evolDP" asp-controller="Client" asp-action="DeleteParameter" asp-route-exceptionID="@c.ParameterID">
-                                    <img onclick="return confirmParameterDelete()" class="evol-image grow" src="~/images/delete.png" title="@localizer["DeleteParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
+                                    <img onclick="return confirmParameterDelete()" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
                                 </a>
                             }
                         </td>
@@ -88,7 +88,7 @@ else
                     <tr id="Hide|@c.ParameterID" style="display: none">
                         <form id="AddParameterFrm|@c.ParameterID" class="align-content-center" asp-area="evolDP" asp-controller="Client" asp-action="ConfigParameter" asp-route-source="Edit">
                         <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
                             <input style="display:none" id=ParameterID name=ParameterID value="@c.ParameterID" />
                             </td>
                             <td><input id=ParameterRef name=ParameterRef type="text" maxlength="20" style="width: 100%" value="@c.ParameterRef" /></td>
