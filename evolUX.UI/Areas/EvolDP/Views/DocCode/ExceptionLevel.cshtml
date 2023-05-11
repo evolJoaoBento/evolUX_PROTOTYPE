@@ -52,7 +52,7 @@ else
             <tr>
                 @if (AddExceptionLevel)
                 {
-                    <th class="evol-fitcontent-column borders grow" style="text-align:center"><img onclick="EditRow('')" class="evol-image" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddException"] @ExceptionLevelIDLabel" /></th>
+                    <th class="evol-fitcontent-column borders" style="text-align:center"><img onclick="EditRow('')" class="evol-image grow" style="width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddException"] @ExceptionLevelIDLabel" /></th>
                 }
                 <th>@localizer["ExceptionID"]</th>
                 <th>@localizer["ExceptionCode"]</th>
@@ -65,7 +65,7 @@ else
                 <tr id="Hide|" style="display: none">
                     <form id="AddExceptionFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="ConfigExceptionLevel" asp-route-source="Add" asp-route-Level="@Model.Level">
                         <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
-                           <img onclick="CancelRow('')" type="image"class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
+                           <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png"/>
                         </td>
                         <td></td>
@@ -100,9 +100,9 @@ else
                         <form id="AddExceptionFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="ConfigExceptionLevel" asp-route-source="Edit" asp-route-Level="@Model.Level">
                         <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
                             <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                            <input style="display: none" id=ExceptionLevelID name=ExceptionLevelID value="@e.ExceptionLevelID" />
                             </td>
                             <td>@e.ExceptionLevelID</td>
-                            <input style="display: none" id=ExceptionLevelID name=ExceptionLevelID value="@e.ExceptionLevelID" />
                             <td><input id=ExceptionCode name=ExceptionCode type="text" maxlength="4" style="width: 100%" value="@e.ExceptionCode" /></td>
                             <td><input id=ExceptionDescription name=ExceptionDescription type="text" maxlength="256" style="width: 100%" value="@e.ExceptionDescription" /></td>
                         </form>

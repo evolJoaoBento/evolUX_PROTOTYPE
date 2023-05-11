@@ -76,7 +76,7 @@ else
                 <th title="@localizer["MatchCodeTip"]">@localizer["MatchCode"]</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="bootstrap-overrides">
             @if (AddServiceTask)
             {
                 <tr id="Hide|" style="display: none">
@@ -136,7 +136,7 @@ else
                 }
                 @if (s.CompanyList.Count() > 0)
                 {
-                    <tr id="@nameValue" style="display: none">
+                    <tr id="@nameValue" class="borders" style="display: none">
                         <td colspan="@colspan">
                             <table class="table table-sm table-hover table-collapse-seperate">
                                 <thead id="bootstrap-overrides" class="table-info sticky-header">
