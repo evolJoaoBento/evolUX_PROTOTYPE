@@ -74,7 +74,7 @@ else
                     </td>
                     <td id="row|@nameValue0" class="evol-normal-row">@sElement.ExpCompanyName</td>
                 </tr>
-                <tr id="@nameValue0" style="display: none">
+                <tr id="@nameValue0" class="borders" style="display: none">
                     <td colspan="2" style="border:none;background-color:transparent">
                         <table class="table table-sm table-hover table-collapse-seperate">
                             <thead id="bootstrap-overrides" class="table-info sticky-header">
@@ -96,7 +96,7 @@ else
                                         </td>
                                         <td id="row|@nameValue1" class="evol-normal-row">@sElement.ServiceTaskDesc</td>
                                     </tr>
-                                    <tr id="@nameValue1" style="display: none">
+                                    <tr id="@nameValue1" class="borders" style="display: none">
                                         <td colspan="2" style="border:none;background-color:transparent">
                                             <table class="table table-sm table-hover table-collapse-seperate">
                                                 <thead id="bootstrap-overrides" class="table-info sticky-header">
@@ -120,7 +120,7 @@ else
                                                         <tr>
                                                             @if (AddExpCode)
                                                             {
-                                                                <td class="evol-fitcontent-column" style="text-align:center;border:none;background-color:transparent">
+                                                                <td class="evol-fitcontent-column borders" style="text-align:center;border:none;background-color:transparent">
                                                                     <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCodeConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
                                                    asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@sExpCode.ExpCenterCode"
                                                    asp-route-source="@source" asp-route-servicetaskdesc="@sExpCode.ServiceTaskDesc" asp-route-expcompanyname="@sExpCode.ExpCompanyName">

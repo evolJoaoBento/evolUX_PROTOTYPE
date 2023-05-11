@@ -119,7 +119,7 @@ else
                     <th>@localizer["Formula"]</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="bootstrap-overrides">
                 <tr>
                     <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ConfigServiceCompanyConfig"
                   asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
@@ -182,12 +182,12 @@ else
                     <th>@localizer["Formula"]</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="bootstrap-overrides">
                 <tr>
                     <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ConfigServiceCompanyConfig"
                             asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
                             asp-route-servicecompany="@JsonConvert.SerializeObject(Model.ServiceCompany)">
-                    <td style="align-items:center; display:flex" class"borders">
+                    <td class="borders" style="align-items:center; display:flex">
                         <img onclick="CancelRow('@value')" type="image" class="evol-image float" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                         <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                     </td>
@@ -223,7 +223,7 @@ else
                 startDateDesc = startDateDT.ToShortDateString();
 
             value = "S" + cDate.ServiceID.ToString() + "|" + cDate.CostDate.ToString();
-            <tr id="Show|@value">
+            <tr id="Show|@value" ondblclick="EditRow('@value')">
                 @if (AddServiceCompany)
                 {
                     <td class ="evol-fitcontent-column borders">
@@ -240,9 +240,8 @@ else
                   <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyConfig"
                   asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
                       asp-route-serviceompany="@JsonConvert.SerializeObject(Model.ServiceCompany)">
-                            <td style="align-items:center; display:flex" class="borders">
-                                <img onclick="CancelRow('@value')" type="image" class="evol-image float" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                                <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
+                    <td style="align-items:center; display:flex; justify-content:center; margin-top: 3px" class="borders" >
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <input style="display: none" id="ServiceID" name="ServiceID" type="text" value="@cDate.ServiceID" />
                     <td>
@@ -296,5 +295,23 @@ else
                 }
             });
         }
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                });
+            }
+        });
     </script>
 }

@@ -73,7 +73,7 @@ else
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
-            <tr id="Show|ServiceCompany">
+            <tr id="Show|ServiceCompany" ondblclick="EditRow('ServiceCompany')">
                 @if(AddServiceCompany)
                 {
                 <td style="text-align: center" class="borders">
@@ -92,7 +92,6 @@ else
                 <tr id="Hide|ServiceCompany" style="display: none">
                     <form id="AddFrm|ServiceCompany" class="d-flex justify-content-center m-5" asp-controller="ServiceProvision" asp-action="ChangeServiceCompany" asp-route-servicecompanyviewJson="@JsonConvert.SerializeObject(Model)">
                     <td style="align-items:center; display:flex" class="borders">
-                        <img onclick="CancelRow('ServiceCompany')" type="image" class="evol-image float" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                         <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td>@serviceCompany.CompanyCode</td>
@@ -124,7 +123,7 @@ else
             @foreach (ServiceCompanyRestriction r in serviceCompanyRestrictions)
             {
                 value = r.MaterialTypeID.ToString();
-                <tr id="Show|@value">
+                <tr id="Show|@value" ondblclick="EditRow('@value')">
                     @if (AddServiceCompany)
                     {
                         <td class="borders">
@@ -160,7 +159,6 @@ else
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyRestriction"
                   asp-route-serviceCompanyJson="@serviceCompany" asp-route-materialtypeid="@r.MaterialTypeID">
                         <td style="align-items:center; display:flex" class="borders">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image float" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                             <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                         </td>
                         @{
@@ -247,7 +245,7 @@ else
                                         </td>
                                         <td>@sList.First().ServiceDesc</td>
                                     </tr>
-                                    <tr id="@name1Value" style="display: none">
+                                    <tr id="@name1Value" class="borders" style="display: none">
                                         <td colspan="2">
                                             <table class="table table-sm table-hover table-collapse-seperate">
                                                 <thead id="bootstrap-overrides" class="table-info sticky-header">
@@ -312,5 +310,23 @@ else
                 }
             });
         }
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                });
+            }
+        });
     </script>
 }
