@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\eolSolutions.png" />
     <Content Remove="wwwroot\images\left-top-es.jpg" />
     <Content Remove="wwwroot\images\right-top-es.jpg" />
   </ItemGroup>
