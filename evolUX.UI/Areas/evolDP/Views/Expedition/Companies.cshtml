@@ -82,7 +82,7 @@ else
                 <tr>
                     <td class="evol-fitcontent-column borders">
                         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(expCompany)" asp-route-typesJson="@JsonConvert.SerializeObject(expCompanyTypeList)">
-                            <img style="background:none; width:35px;height:35px;" class="grow" src="~/images/config.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
+                            <img style="background:none; width:35px;height:35px;" class="rotate_01" src="~/images/config.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
                         </a>
                         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpContracts" asp-route-expCompanyJson="@JsonConvert.SerializeObject(expCompany)">
                             <img style="background:none; width:35px;height:35px;" class="grow" src="~/images/contract.png" title="@localizer["ExpContracts"]: @expCompany.CompanyName" />
