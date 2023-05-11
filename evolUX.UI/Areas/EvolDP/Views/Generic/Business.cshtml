@@ -62,7 +62,7 @@ else
                 @if (AddDocCode)
                 {
                     <td class="borders" style="text-align: center">
-                        <img onclick="EditRow('Company')" class="evol-image" src="~/images/edit.png" title="@localizer["CompanyChange"]" />
+                        <img onclick="EditRow('Company')" class="evol-image grow" src="~/images/edit.png" title="@localizer["CompanyChange"]" />
                     </td>
                 }
                 <td>@company.CompanyCode</td>
@@ -77,7 +77,7 @@ else
                 <tr id="Hide|Company" style="display: none">
                     <form id="AddFrm|Company" class="d-flex justify-content-center m-5" asp-area="evolDP"  asp-controller="Generic" asp-action="ChangeCompany">
                     <td style="align-items:center; display:flex" class="borders">
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td>@company.CompanyCode</td>
                     <input style="display: none" id=CompanyID name=CompanyID value="@company.ID" />
@@ -121,7 +121,7 @@ else
                     <tr id="Hide|@value" style="display: none" class="borders">
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Generic" asp-action="ChangeBusiness" asp-route-companyid="@company.ID">
                         <td style="align-items:center; display:flex" class="borders">
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>@b.BusinessCode</td>
                         <input style="display: none" id=BusinessCode name=BusinessCode value="@b.BusinessCode" />
@@ -212,7 +212,7 @@ else
                     @if (AddDocCode)
                     {
                         <td style="text-align: center" class="borders">
-                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeBusiness"]" />
+                            <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeBusiness"]" />
                         </td>
                     }
                     <td>@b.BusinessCode</td>

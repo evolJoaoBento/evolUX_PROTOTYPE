@@ -34,7 +34,7 @@
     {
         <h2><b>@Model.ExpCode.ExpCode</b></h2>
     }
-    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@Model.ExpCode.ServiceTaskID">
+    <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@Model.ExpCode.ServiceTaskID">
     </a>
 </div>
 @if (Model == null)
@@ -53,7 +53,7 @@ else
     string nameValue = "";
     Company serviceCompany;
     ExpeditionZoneElement expZone;
-    <table class="table table-sm table-hover table-collapse-seperate">
+     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
@@ -72,32 +72,32 @@ else
                 <tr id="Hide|" style="display: none">
                     <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="AddExpCode" asp-route-expcode="@expCode">
                     <td style="align-items:center" class="borders">
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="width:30px;height:30px" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="width:30px;height:30px" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td><input id=ExpCodeDesc name=ExpCodeDesc type="text" maxlength="256" style="width: 100%" value="@expCode.ExpCodeDesc" /></td>
                     <td class="evol-fitcontent-column-one"><input style="max-width:80px" id="Priority" name="Priority" type="number" min="0" value="@expCode.Priority" /></td>
                     <td>
                         <select id="DefaultExpCenterCode" name="DefaultExpCenterCode">
-                                @foreach (string expCenterCode in Model.ExpCenters.Select(x => x.ExpCenterCode).Distinct())
-                                {
+                            @foreach (string expCenterCode in Model.ExpCenters.Select(x => x.ExpCenterCode).Distinct())
+                            {
                                 <option value="@expCenterCode">@expCenterCode</option>
-                                }
+                            }
                         </select>
                     </td>
                     <td>
                         <select id="DefaultExpCompanyZone" name="DefaultExpCompanyZone">
-                                @foreach (ExpeditionZoneElement z in Model.Zones)
-                                {
+                            @foreach (ExpeditionZoneElement z in Model.Zones)
+                            {
                                 <option value="@z.ExpeditionZone">@z.ExpeditionZoneDesc</option>
-                                }
+                            }
                         </select>
                     </td>
-                        @if (expCode.CheckExpCompanySepCodes)
-                        {
-                            value = "checked";
-                        }
-                    <td><input type="checkbox" id="CheckExpCompanySepCodes" name="CheckExpCompanySepCodes" @value /></td>
-                    <td><input type="number" min="0" max="10" id="PostalCodeStart" name="PostalCodeStart" value="@expCode.PostalCodeStart" /></td>
+                    @if(expCode.CheckExpCompanySepCodes)
+                    {
+                        value = "checked";
+                    }
+                    <td><input type="checkbox" id="CheckExpCompanySepCodes" name="CheckExpCompanySepCodes" @value/></td>
+                    <td><input type="number" min="0" max="10" id="PostalCodeStart" name="PostalCodeStart" value="@expCode.PostalCodeStart"/></td>
                     </form>
                 </tr>
             }
@@ -105,7 +105,7 @@ else
                 <td class="evol-fitcontent-column-one borders">
                     @if (AddExpCode)
                     {
-                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCode"]" />
+                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeExpCode"]" />
                     }
                 </td>
                 <td style="width:40%">@expCode.ExpCodeDesc</td>
@@ -152,9 +152,9 @@ else
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCodeConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
                    asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@c.ExpCenterCode"
                    asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
-                                <img style="margin-bottom:1px" class="evol-image" src="~/images/config.png" title="@localizer["ConfigServiceCompanyExpCode"]" />
+                                <img style="margin-bottom:1px" class="evol-image grow" src="~/images/config.png" title="@localizer["ConfigServiceCompanyExpCode"]" />
                             </a>
-                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCenter"]" />
+                            <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeExpCenter"]" />
                         </td>
                     }
                     <td>@c.ExpCenterCode</td>
@@ -195,7 +195,7 @@ else
                   asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@c.ExpCenterCode"
                   asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
                         <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>@c.ExpCenterCode</td>
                         <td><input type="text" id="Description1" name="Description1" maxlength="256" value="@c.Description1" /></td>
@@ -204,19 +204,19 @@ else
                         <td>
                             <select id="ServiceCompanyID" name="ServiceCompanyID">
                                 <option value="@serviceCompany.ID">@serviceCompany.CompanyName</option>
-                                    @foreach (Company comp in Model.ServiceCompanies.Where(x => x.ID != c.ServiceCompanyID))
-                                    {
-                                    <option value="@comp.ID">@comp.CompanyName</option>
-                                    }
+                            @foreach(Company comp in Model.ServiceCompanies.Where(x => x.ID != c.ServiceCompanyID))
+                            {
+                                <option value="@comp.ID">@comp.CompanyName</option>
+                            }
                             </select>
                         </td>
                         <td>
                             <select id="ExpeditionZone" name="ExpeditionZone">
                                 <option value="@expZone.ExpeditionZone">@expZone.ExpeditionZoneDesc</option>
-                                    @foreach (ExpeditionZoneElement z in Model.Zones.Where(x => x.ExpeditionZone != c.ExpeditionZone))
-                                    {
-                                    <option value="@z.ExpeditionZone">@z.ExpeditionZoneDesc</option>
-                                    }
+                            @foreach (ExpeditionZoneElement z in Model.Zones.Where(x => x.ExpeditionZone != c.ExpeditionZone))
+                            {
+                                <option value="@z.ExpeditionZone">@z.ExpeditionZoneDesc</option>
+                            }
                             </select>
                         </td>
                         </form>

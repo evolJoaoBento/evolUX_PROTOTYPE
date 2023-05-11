@@ -42,7 +42,7 @@ else
            <tr>
                 @if (AddConstantParameter)
                 {
-                    <th style="text-align: center" class="borders"><img class="evol-image" onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddParameter"]" /></th>
+                    <th style="text-align: center" class="borders"><img class="evol-image grow" onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddParameter"]" /></th>
                 }
                 <th>@localizer["ParameterRef"]</th>
                 <th>@localizer["ParameterValue"]</th>
@@ -74,7 +74,7 @@ else
                             @if (DeleteConstantParameter)
                             {
                                 <a asp-area="evolDP" asp-controller="Client" asp-action="DeleteParameter" asp-route-exceptionID="@c.ParameterID">
-                                    <img onclick="return confirmParameterDelete()" class="evol-image" src="~/images/delete.png" title="@localizer["DeleteParameter"] @localizer["ParameterRef"] = @c.ParameterRef"  />
+                                    <img onclick="return confirmParameterDelete()" class="evol-image grow" src="~/images/delete.png" title="@localizer["DeleteParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
                                 </a>
                             }
                         </td>

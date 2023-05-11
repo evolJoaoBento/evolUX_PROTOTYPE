@@ -21,7 +21,7 @@ else
         <div id="TitlePage">
             <h2>
                 <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialList" asp-route-materialtypejson="@JsonConvert.SerializeObject(mType)">
-                    <img style="background:none; width:35px;height:35px;" src="~/images/@localizer[mType.MaterialTypeCode.ToUpper()]" />
+                    <img style="background:none; width:35px;height:35px;" class="grow" src="~/images/@localizer[mType.MaterialTypeCode.ToUpper()]" />
                 </a>@mType.MaterialTypeDescription
             </h2>
         </div>
