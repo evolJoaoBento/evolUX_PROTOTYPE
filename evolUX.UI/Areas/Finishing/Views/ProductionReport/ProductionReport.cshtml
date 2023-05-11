@@ -1,6 +1,5 @@
 ﻿@using Shared.Models.Areas.Finishing
 @using Shared.ViewModels.Areas.Finishing
-@using Shared.Models.General
 @using Newtonsoft.Json;
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer localizer
@@ -27,223 +26,202 @@
 <div id="TitlePage">
     <h1>@localizer["ProductionStatus"]</h1>
 </div>
-
 @if (Model == null)
 {
     <tr><td colspan="5" class="text-center">No Model Data</td></tr>
 }
 else
 {
-    <table id="table-form" class="table">
-        <thead>
-        </thead>
-        <tbody>
-            @foreach (ProdExpeditionElement eInfo in Model.ProductionReport)
+    string Level1Name = "detail";
+    int count = 0;
+    string idValue = "";
+    string nameValue = "";
+    string cValue = "";
+    <div id="response" class="d-flex justify-content-center">
+    </div>
+    @foreach (ProdExpeditionElement eInfo in Model.ProductionReport)
+    {
+        @foreach (ProdServiceElement sInfo in eInfo.ServiceList)
+        {
+            @foreach (ProdMaterialElement mInfo in sInfo.MediaMaterialList)
             {
-
-                @foreach (ProdServiceElement sInfo in eInfo.ServiceList)
-                {
-
-                    @foreach (ProdMaterialElement mInfo in sInfo.MediaMaterialList)
-                    {
-                        int PrintTotal = 0;
-                        int PostObjsTotal = 0;
-                        Dictionary<string, int> PaperTotal = new Dictionary<string, int>();
-                        Dictionary<string, int> StationTotal = new Dictionary<string, int>();
-                        <tr class="collapsible">
-                            <td style="width:400px">@ViewBag.RunName</td>
-                            <td style="width:400px">@sInfo.ServiceTaskDesc</td>
-                            <td>
-                                @localizer["Papers"] [@mInfo.PaperMaterialList]
-                                @if (!string.IsNullOrEmpty(mInfo.StationMaterialList))
+                int servicespan = 0;
+                int PrintTotal = 0;
+                int PostObjsTotal = 0;
+                Dictionary<string, int> PaperTotal = new Dictionary<string, int>();
+                Dictionary<string, int> StationTotal = new Dictionary<string, int>();
+                <div class="my-3 table-div">
+                    <table class="table table-sm table-hover table-collapse-seperate">
+                        <col>
+                        <col>
+                        <col>
+                        @{
+                            int printingSpan = 4 + mInfo.FileList.First().PaperTotals.Keys.Count;
+                            servicespan += printingSpan;
+                        }
+                        <colgroup span="@printingSpan"></colgroup>
+                        @{
+                            int fulfilmentSpan = 4;
+                            if (mInfo.StationList.Length > 0)
+                            {
+                                fulfilmentSpan += mInfo.FileList.First().StationTotals.Keys.Count;
+                            }
+                            servicespan += fulfilmentSpan;
+                        }
+                        <colgroup span="@fulfilmentSpan"></colgroup>
+                        <colgroup span="5"></colgroup>
+                        <thead id="bootstrap-overrides" class="table-info sticky-header">
+                            <tr class="text-center">
+                                <th class="headcol" rowspan="4" scope="col">@ViewBag.RunName<p/>@localizer["Files"]</th>@*FileName RegistShortFileName*@
+                                <th colspan="@servicespan" scope="colgroup">@localizer[mInfo.PlexCode.ToUpper()] - @sInfo.ServiceTaskDesc</th>@*ServiceTaskCode*@
+                                <th colspan="3" rowspan="2" scope="colgroup">@localizer["Expedition"]<p />@eInfo.ExpCompanyCode - @eInfo.ExpeditionTypeDesc</th>
+                            </tr>
+                            <tr class="text-center">
+                                <th colspan="@printingSpan" scope="colgroup">@localizer["Printing"]</th>
+                                <th colspan="@fulfilmentSpan" scope="colgroup">@localizer["Fullfilling"]</th>
+                            </tr>
+                            <tr class="text-center">
+                                <th rowspan="2" scope="col">@localizer["PrinterOperator"]</th>@*PrinterOperator + Printer*@
+                                <th rowspan="2" scope="col">@localizer["TotalPrint"]</th>@*TotalPrint*@
+                                <th colspan="2" scope="colgroup" class="hideextra">@localizer["SequenceNumber"]</th>
+                                <th colspan="@mInfo.FileList.First().PaperTotals.Keys.Count" scope="colgroup">@localizer["Materials"]</th>
+                                <th colspan="2" scope="colgroup">@localizer["Envelope"]</th>
+                                <th rowspan="2" scope="col">@localizer["TotalPostObjs"]</th> @*TotalPostObjs*@
+                                <th rowspan="2" scope="col">@localizer["ExpLevel"]</th>@*ExpLevel*@
+                                @if (mInfo.StationList.Length > 0)
                                 {
-                                    <p />
-                                    @localizer["AdditionalInserts"]
-                                    @(" [" + mInfo.StationMaterialList + "]")
+                                    <th colspan="@mInfo.FileList.First().StationTotals.Keys.Count" scope="colgroup">@localizer["Stations"]</th>
                                 }
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td colspan="4">
-                                <div class="content">
-
-                                    <table name="table-form-2" class="table table-sm table-hover table-collapse-seperate">
-                                        @{
-                                            int printingSpan = 5 + mInfo.FileList.First().PaperTotals.Keys.Count;
+                                <th rowspan="2" scope="col">@localizer["ExpCenterCode"]</th>@*ExpCenterCode*@
+                                <th rowspan="2" scope="col">@localizer["ExpeditionZone"]</th>@*ExpeditionZone*@
+                                <th rowspan="2" scope="rowgroup">@localizer["ExpeditionLevel"]</th>@*ExpeditionLevel*@
+                            </tr>
+                            <tr class="text-center">
+                                <th scope="col">@localizer["StartSeqNum"]</th>@*StartSeqNum*@
+                                <th scope="col">@localizer["EndSeqNum"]</th>@*EndSeqNum*@
+                                @foreach (string paper in mInfo.FileList.First().PaperTotals.Keys)
+                                {
+                                    <th scope="row">@paper</th>
+                                    PaperTotal.Add(paper, 0);
+                                }
+                                <th scope="col">@localizer["FullFillMaterialCode"]</th>@*FullFillMaterialCode*@
+                                <th scope="col">@localizer["FullFillMaterialRef"]</th>@*FullFillMaterialRef*@
+                                @if (mInfo.StationList.Length > 0)
+                                {
+                                    @foreach (string station in mInfo.FileList.First().StationTotals.Keys)
+                                    {
+                                        <th scope="row">@station</th>
+                                        StationTotal.Add(station, 0);
+                                    }
+                                }
+                            </tr>
+                        </thead>
+                        <tbody id="bootstrap-overrides">
+                            @foreach (ProdFileInfo p in mInfo.FileList)
+                            {
+                                <tr>
+                                    <td class="headcol" style="background: var(--lightestgrey)">
+                                        @if (!p.FilePrintedFlag)
+                                        {
+                                            <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print"
+                                               asp-action="Printing" asp-route-JsonSerializedProductionInfo="@JsonConvert.SerializeObject(p)"
+                                               asp-route-FilePrinterSpecs=@p.FilePrinterSpecs>@p.FileName</a>
                                         }
-                                        <colgroup span="@printingSpan"></colgroup>
-                                        @{
-                                            int envelopingSpan = 4;
-                                            if (mInfo.StationList.Length > 0)
+                                        else
+                                        {
+                                            <div class="disabled">@p.FileName</div>
+                                        }
+
+                                        @if (p.RegistDetailFileName != "")
+                                        {
+                                            @if (!p.RegistDetailFilePrintedFlag)
                                             {
-                                                envelopingSpan += mInfo.FileList.First().StationTotals.Keys.Count;
+                                                ProdFileInfo pregist = p;
+                                                pregist.FileName = p.RegistDetailFileName;
+                                                pregist.ShortFileName = p.RegistDetailShortFileName;
+                                                pregist.FilePrinterSpecs = p.RegistDetailFilePrinterSpecs;
+                                                pregist.PrintRecNumber = p.RegistDetailFileRecNumber;
+                                                <p />
+                                                <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print"
+                                                   asp-action="Printing" asp-route-jsonserializedproductioninfo=@JsonConvert.SerializeObject(pregist)
+                                                   asp-route-fileprinterspecs=@pregist.FilePrinterSpecs>@pregist.FileName</a>
+                                            }
+                                            else
+                                            {
+                                                <div class="disabled">@p.RegistDetailFileName</div>
                                             }
                                         }
-                                        <colgroup span="@envelopingSpan"></colgroup>
-                                        <colgroup span="5"></colgroup>
-                                        <thead id="bootstrap-overrides" class="table-info">
-                                            <tr class="text-center">
-                                                <th class="headcol" rowspan="3" scope="col">@localizer["Files"]</th>@*FileName RegistShortFileName*@
-                                                <th rowspan="3" scope="col">@localizer["ServiceTaskCode"]</th>@*ServiceTaskCode*@
-                                                <th colspan="@printingSpan" scope="colgroup">@localizer["Printing"]</th>
-                                                <th colspan="@envelopingSpan" scope="colgroup">@localizer["Fullfilling"]</th>
-                                                <th colspan="5" scope="colgroup">@localizer["Expedition"]</th>
-                                            </tr>
-                                            <tr class="text-center">
-                                                <th rowspan="2" scope="col">@localizer["PrinterOperator"]</th>@*PrinterOperator + Printer*@
-                                                <th rowspan="2" scope="col">@localizer["PlexCode"]</th>@*PlexCode*@
-                                                <th rowspan="2" scope="col">@localizer["TotalPrint"]</th>@*TotalPrint*@
-                                                <th colspan="2" scope="colgroup" class="hideextra">@localizer["SequenceNumber"]</th>
-                                                <th colspan="@mInfo.FileList.First().PaperTotals.Keys.Count" scope="colgroup">@localizer["Materials"]</th>
-                                                <th colspan="2" scope="colgroup">@localizer["Envelope"]</th>
-                                                <th rowspan="2" scope="col">@localizer["TotalPostObjs"]</th> @*TotalPostObjs*@
-                                                <th rowspan="2" scope="col">@localizer["ExpLevel"]</th>@*ExpLevel*@
-                                                @if (mInfo.StationList.Length > 0)
-                                                {
-                                                    <th colspan="@mInfo.FileList.First().StationTotals.Keys.Count" scope="colgroup">@localizer["Stations"]</th>
-                                                }
-                                                <th rowspan="2" scope="col">@localizer["ExpCompanyCode"]</th>@*ExpCompanyCode*@
-                                                <th rowspan="2" scope="col">@localizer["ExpCenterCode"]</th>@*ExpCenterCode*@
-                                                <th rowspan="2" scope="col">@localizer["ExpeditionZone"]</th>@*ExpeditionZone*@
-                                                <th rowspan="2" scope="rowgroup">@localizer["ExpeditionType"]</th>@*ExpeditionType*@
-                                                <th rowspan="2" scope="rowgroup">@localizer["ExpeditionLevel"]</th>@*ExpeditionLevel*@
-                                            </tr>
-                                            <tr class="text-center">
-                                                <th scope="col">@localizer["StartSeqNum"]</th>@*StartSeqNum*@
-                                                <th scope="col">@localizer["EndSeqNum"]</th>@*EndSeqNum*@
-                                                @foreach (string paper in mInfo.FileList.First().PaperTotals.Keys)
-                                                {
-                                                    <th scope="row">@paper</th>
-                                                    PaperTotal.Add(paper, 0);
-                                                }
-                                                <th scope="col">@localizer["FullFillMaterialCode"]</th>@*FullFillMaterialCode*@
-                                                <th scope="col">@localizer["FullFillMaterialRef"]</th>@*FullFillMaterialRef*@
-                                                @if (mInfo.StationList.Length > 0)
-                                                {
-                                                    @foreach (string station in mInfo.FileList.First().StationTotals.Keys)
-                                                    {
-                                                        <th scope="row">@station</th>
-                                                        StationTotal.Add(station, 0);
-                                                    }
-                                                }
-                                            </tr>
-                                        </thead>
-                                        <tbody id="bootstrap-overrides">
-                                            @foreach (ProdFileInfo p in mInfo.FileList)
-                                            {
-                                                <tr>
-                                                    @*<input type="hidden" class="filter-value" name="checkboxBW" value="@mInfo.PaperMediaID">*@
-                                                    <td class="headcol">
-                                                        @if (!p.FilePrintedFlag)
-                                                        {
-                                                            <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print"
-                                       asp-action="Printing" asp-route-JsonSerializedProductionInfo="@JsonConvert.SerializeObject(p)"
-                                       asp-route-FilePrinterSpecs=@p.FilePrinterSpecs>@p.FileName</a>
-                                                        }
-                                                        else
-                                                        {
-                                                            <div class="disabled">@p.FileName</div>
-                                                        }
+                                    </td>
+                                    <td>
+                                        @if (p.PrinterOperator != null)
+                                        {
+                                            <div>@p.PrinterOperator [@p.Printer]</div>
+                                        }
+                                    </td>
+                                    <td>@p.TotalPrint</td>
+                                    @{
+                                        PrintTotal += p.TotalPrint;
+                                    }
+                                    <td>@p.StartSeqNum</td>
+                                    <td>@p.EndSeqNum</td>
+                                    @foreach (string paper in p.PaperTotals.Keys)
+                                    {
+                                        <td scope="row">@p.PaperTotals[paper]</td>
+                                        PaperTotal[paper] += p.PaperTotals[paper];
+                                    }
+                                    <td>@p.FullFillMaterialCode</td>
+                                    <td>@p.EnvMaterialRef</td>
+                                    <td>@p.TotalPostObjs</td>
+                                    @{
+                                        PostObjsTotal += p.TotalPostObjs;
+                                    }
+                                    @if (mInfo.StationList.Length > 0)
+                                    {
+                                        @foreach (string station in p.StationTotals.Keys)
+                                        {
+                                            <td scope="row">@p.StationTotals[station]</td>
+                                            StationTotal[station] += p.StationTotals[station];
+                                        }
 
-                                                        @if (p.RegistDetailFileName != "")
-                                                        {
-                                                            @if (!p.RegistDetailFilePrintedFlag)
-                                                            {
-                                                                ProdFileInfo pregist = p;
-                                                                pregist.FileName = p.RegistDetailFileName;
-                                                                pregist.ShortFileName = p.RegistDetailShortFileName;
-                                                                pregist.FilePrinterSpecs = p.RegistDetailFilePrinterSpecs;
-                                                                pregist.PrintRecNumber = p.RegistDetailFileRecNumber;
-                                                                <p />
-                                                                <a class="btn btn-link link-info" asp-area="Finishing" asp-controller="Print"
-                                       asp-action="Printing" asp-route-jsonserializedproductioninfo=@JsonConvert.SerializeObject(pregist)
-                                       asp-route-fileprinterspecs=@pregist.FilePrinterSpecs>@pregist.FileName</a>
-                                                            }
-                                                            else
-                                                            {
-                                                                <div class="disabled">@p.RegistDetailFileName</div>
-                                                            }
-                                                        }
-                                                    </td>
-                                                    <td>@sInfo.ServiceTaskCode</td>
-                                                    <td>
-                                                        @if (p.PrinterOperator != null)
-                                                        {
-                                                            <div>@p.PrinterOperator [@p.Printer]</div>
-                                                        }
-                                                    </td>
-                                                    <td>@p.PlexCode</td>
-                                                    <td>@p.TotalPrint</td>
-                                                    @{
-                                                        PrintTotal += p.TotalPrint;
-                                                    }
-                                                    <td>@p.StartSeqNum</td>
-                                                    <td>@p.EndSeqNum</td>
-                                                    @foreach (string paper in p.PaperTotals.Keys)
-                                                    {
-                                                        <td scope="row">@p.PaperTotals[paper]</td>
-                                                        PaperTotal[paper] += p.PaperTotals[paper];
-                                                    }
-                                                    <td>@p.FullFillMaterialCode</td>
-                                                    <td>@p.EnvMaterialRef</td>
-                                                    <td>@p.TotalPostObjs</td>
-                                                    @{
-                                                        PostObjsTotal += p.TotalPostObjs;
-                                                    }
-                                                    @if (mInfo.StationList.Length > 0)
-                                                    {
-                                                        @foreach (string station in p.StationTotals.Keys)
-                                                        {
-                                                            <td scope="row">@p.StationTotals[station]</td>
-                                                            StationTotal[station] += p.StationTotals[station];
-                                                        }
-
-                                                    }
-                                                    <td>@p.ExpLevel</td>
-                                                    <td>@eInfo.ExpCompanyCode</td>
-                                                    <td class="hideextra">@p.ExpCenterCode</td>
-                                                    <td class="hideextra">@p.ExpeditionZone</td>
-                                                    <td class="hideextra">@eInfo.ExpeditionType</td>
-                                                    <td class="hideextra">@p.ExpeditionLevel</td>
-                                                </tr>
-                                            }
-                                            <tr class="table-end">
-                                                <td class="table-end-data headcol">@localizer["Totals"]</td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td class="table-end-data">@PrintTotal</td>
-                                                <td></td>
-                                                <td></td>
-                                                @foreach (string paper in PaperTotal.Keys)
-                                                {
-                                                    <td scope="row" class="table-end-data">@PaperTotal[paper]</td>
-                                                }
-                                                <td></td>
-                                                <td></td>
-                                                <td class="table-end-data">@PostObjsTotal</td>
-                                                @if (StationTotal.Count != 0)
-                                                {
-                                                    @foreach (string station in StationTotal.Keys)
-                                                    {
-                                                        <td scope="row" class="table-end-data">@StationTotal[station]</td>
-                                                    }
-                                                }
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                @*<td><a asp-area="EvolDP" asp-controller="DocCode" asp-action="DocCodeLevel1" asp-route-doclayout="@p.DocLayout" asp-route-docsubtype="@p.DocType">Mais</a></td>*@
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                        </tr>
-                    }
-                }
+                                    }
+                                    <td>@p.ExpLevel</td>
+                                    <td class="hideextra">@p.ExpCenterCode</td>
+                                    <td class="hideextra">@p.ExpeditionZone</td>
+                                    <td class="hideextra">@p.ExpeditionLevel</td>
+                                </tr>
+                            }
+                            <tr style="background:var(--lightestgrey)">
+                                <b>
+                                <td class="headcol" style="background:var(--lightergrey);">@localizer["Totals"]</td></b>
+                                <td></td>
+                                <td style="background:var(--lightergrey);">@PrintTotal</td>
+                                <td></td>
+                                <td></td>
+                                @foreach (string paper in PaperTotal.Keys)
+                                {
+                                    <td scope="row" style="background:var(--lightergrey);">@PaperTotal[paper]</td>
+                                }
+                                <td></td>
+                                <td></td>
+                                <td style="background:var(--lightergrey);">@PostObjsTotal</td>
+                                @if (StationTotal.Count != 0)
+                                {
+                                    @foreach (string station in StationTotal.Keys)
+                                    {
+                                        <td scope="row" style="background:var(--lightergrey);">@StationTotal[station]</td>
+                                    }
+                                }
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                @*<td><a asp-area="EvolDP" asp-controller="DocCode" asp-action="DocCodeLevel1" asp-route-doclayout="@p.DocLayout" asp-route-docsubtype="@p.DocType">Mais</a></td>*@
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             }
-    </table>
+        }
+    }
 }
+

@@ -62,7 +62,7 @@ else
                                 @if (PrintFile && (totalFilesLeftToPrint > 0 || totalRecFilesLeftToPrint > 0))
                                 {
                                     <a asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runidlist="@string.Join("|", Model.ProductionRunReport.Select(x => x.RunID).ToList())" asp-route-servicecompanyid="@TempData["ServiceCompanyID"]" asp-route-runname="">
-                                        <img class="evol-image grow" style="width:35px;height:35px" src="~/images/printer-solid-24.png">
+                                        <img class="evol-image" style="width:35px;height:35px" src="~/images/printer-solid-24.png">
                                     </a>
                                 }
                             </th>
@@ -128,13 +128,13 @@ else
                                     @if (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0)
                                     {
                                         <a asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName>
-                                            <img class="evol-image grow" src="~/images/report_orange.png" />
+                                            <img class="evol-image" src="~/images/report_orange.png" />
                                         </a>
                                     }
                                     else
                                     {
                                         <a asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName>
-                                            <img class="evol-image grow" src="~/images/report.png" />
+                                            <img class="evol-image" src="~/images/report.png" />
                                         </a>
                                     }
                                     @*@if (PrintFile && (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0))

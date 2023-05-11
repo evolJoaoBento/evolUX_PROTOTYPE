@@ -48,10 +48,10 @@ else
     </div>
     TempData["Source"] = "DocCode";
     <div>
-        <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="Index">
+        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="Index">
         </a>
         <a asp-area="evolDP" asp-controller="DocCode" asp-action="AddDocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)" asp-route-source="AddDocCode">
-            <img style="background:none; width:50px;height:50px;" class="grow" src="~/images/add_doc.png" title="@localizer["AddDocCode"]" />
+            <img style="background:none; width:50px;height:50px;" src="~/images/add_doc.png" title="@localizer["AddDocCode"]" />
         </a>
     </div>
    
@@ -99,7 +99,7 @@ else
                 <tr>
                     <td style="align-items:center; display:flex" class="borders">
                         <a asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(p)">
-                            <img class="evol-image grow" src="~/images/config.png" title="@localizer["DocCodeConfigDetail"]: @value" />
+                            <img class="evol-image" src="~/images/config.png" title="@localizer["DocCodeConfigDetail"]: @value" />
                         </a>
                     </td>
                     <td>@p.DocLayout</td>

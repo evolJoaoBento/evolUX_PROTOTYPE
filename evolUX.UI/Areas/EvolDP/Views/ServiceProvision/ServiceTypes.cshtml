@@ -62,7 +62,7 @@ else
             <tr>
                 @if (AddServiceTask && Model.Types.Count() > 0)
                 {
-                    <th width="@colWidth px" style="text-align: center" class="borders evol-image"><img onclick="EditRow('')" class="grow" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddServiceType"]" /></th>
+                    <th width="@colWidth px" style="text-align: center" class="borders evol-image"><img onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddServiceType"]" /></th>
                 }
                 <th>@localizer["ServiceTypeDesc"]</th>
                 <th>@localizer["ServiceTypeCode"]</th>
@@ -74,8 +74,8 @@ else
                 <tr id="Hide|" style="display: none">
                     <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceType">
                     <td style="align-items:center; display:flex; justify-content:center; margin-top: 3px" class="borders">
-                           <img onclick="CancelRow('')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
-                           <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image grow" name="Submit" src="~/images/Ok.png"/>
+                           <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
+                           <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png"/>
                            <input style="display: none" id=ServiceTypeID name=ServiceTypeID type="number" value="0" />
                         </td>
                         <td><input id=ServiceTypeDesc name=ServiceTypeDesc type="text" maxlength="256" style="width: 100%" /></td>
@@ -92,15 +92,15 @@ else
                 <tr id="Show|@value" ondblclick="EditRow('@value')">
                     <td style="align-items:center; display:flex; justify-content:center" class="borders">
                         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceTypeDetail" asp-route-servicetypeJson="@JsonConvert.SerializeObject(t)">
-                            <img class="evol-image grow" src="~/images/config.png" title="@localizer["List"]: @t.ServiceTypeDesc" />
+                            <img class="evol-image" src="~/images/config.png" title="@localizer["List"]: @t.ServiceTypeDesc" />
                         </a>
                         @if (AddServiceTask)
                         {
-                            <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceType"]" />
+                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeServiceType"]" />
                         }
                         @if (t.ServicesList.Count() > 0)
                         {
-                            <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                         }
                     </td>
                     <td>@t.ServiceTypeDesc</td>
@@ -111,7 +111,7 @@ else
                     <tr id="Hide|@value" style="display: none" class="borders">
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceType">
                         <td style="align-items:center; display:flex; justify-content:center; margin-top: 3px" class="borders">
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                             <input style="display: none" id=ServiceTypeID name=ServiceTypeID type="number" value="@t.ServiceTypeID" />
                             </td>
                             <td><input id=ServiceTypeDesc name=ServiceTypeDesc type="text" maxlength="256" style="width: 100%" value="@t.ServiceTypeDesc" /></td>
@@ -121,7 +121,7 @@ else
                 }
                 @if (t.ServicesList.Count() > 0)
                 {
-                <tr id="@nameValue" style="display: none">
+                <tr id="@nameValue" style="display: none" class="borders">
                     <td colspan="4">
                         <table class="table table-sm table-hover table-collapse-seperate">
                             <thead id="bootstrap-overrides" class="table-info sticky-header">

@@ -32,7 +32,7 @@ else
      <div id="TitlePage">
         <h1>@ExceptionLevelIDLabel</h1>
     </div>
-    <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevels">
+    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevels">
     </a>
 
     string value;
@@ -52,7 +52,7 @@ else
             <tr>
                 @if (AddExceptionLevel)
                 {
-                    <th class="evol-fitcontent-column borders grow" style="text-align:center"><img onclick="EditRow('')" class="evol-image" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddException"] @ExceptionLevelIDLabel" /></th>
+                    <th class="evol-fitcontent-column borders" style="text-align:center"><img onclick="EditRow('')" class="evol-image" style="width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddException"] @ExceptionLevelIDLabel" /></th>
                 }
                 <th>@localizer["ExceptionID"]</th>
                 <th>@localizer["ExceptionCode"]</th>
@@ -81,11 +81,11 @@ else
                     @if (AddExceptionLevel)
                     {
                         <td style="align-items:center; display:flex" class="borders">
-                            <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
+                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
                             @if (DeleteExceptionLevel)
                             {
                                 <a asp-area="evolDP" asp-controller="DocCode" asp-action="DeleteExceptionLevel" asp-route-level="@Model.Level" asp-route-exceptionID="@e.ExceptionLevelID">
-                                    <img onclick="return confirmExceptionDelete()" class="evol-image grow" src="~/images/delete.png" title="@localizer["DeleteException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
+                                    <img onclick="return confirmExceptionDelete()" class="evol-image" src="~/images/delete.png" title="@localizer["DeleteException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
                                 </a>
                             }
                         </td>
