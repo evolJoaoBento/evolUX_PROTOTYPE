@@ -105,8 +105,7 @@ else
                 value = st.ServiceTaskID.ToString();
                 <tr id="Hide|@value" style="display: none">
                     <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlow">
-                    <td style="align-items:center; display:flex;border: none;background-color: transparent;" class="borders">
-                        <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                    <td style="align-items:center; display:flex; justify-content:center" class="borders">
                         <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                         <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="@st.ServiceTaskID" />
                     </td>
@@ -133,7 +132,7 @@ else
                                     }
                                 }
                             }
-                        <select id=ComplementServiceTaskID name=ComplementServiceTaskID>
+                        <select id=ComplementServiceTaskID name=ComplementServiceTaskID style="max-width:250px">
                                 @foreach (ServiceTaskElement s in Model.ServiceTasksList.Where(x => complementList.All(b => x.ServiceTypes.Any(a => a.ServiceTypeCode == b.ServiceTypeCode))).ToList())
                                 {
                                 <option value="@s.ServiceTaskID">[@s.ServiceTaskCode] @s.ServiceTaskDesc</option>
@@ -152,7 +151,7 @@ else
                                     eModeList.Add(-1);
                                 }
                             }
-                        <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
+                        <select id=ExternalExpeditionMode name=ExternalExpeditionMode style="max-width: 200px">
                                 @{
                                     localValue = st.ExternalExpeditionMode == null ? "-1" : st.ExternalExpeditionMode.ToString();
                                 }
@@ -173,13 +172,13 @@ else
                                 }
                         </select>
                     </td>
-                    <td><input id=StationExceededDesc name=StationExceededDesc type="text" maxlength="50" style="width: 100%" value="@st.StationExceededDesc" /></td>
+                    <td><input id=StationExceededDesc name=StationExceededDesc type="text" maxlength="50" style="max-width: 200px" value="@st.StationExceededDesc" /></td>
                     </form>
                 </tr>
-                <tr id="Show|@value">
+                <tr id="Show|@value" ondblclick="EditRow('@value')">
                     <td style="align-items:center; display:flex;border: none;background-color: transparent;" class="borders">
                         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
-                            <img class="evol-image" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
+                            <img style="margin-bottom: 1px" class="evol-image" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
                         </a>
                         @if (AddServiceTask)
                         {
@@ -260,5 +259,23 @@ else
                 }
             });
         }
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);                   
+                });
+            }
+        });
     </script>
 }

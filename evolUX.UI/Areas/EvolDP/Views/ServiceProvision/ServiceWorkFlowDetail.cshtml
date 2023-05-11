@@ -67,14 +67,13 @@ else
         <tbody id="bootstrap-overrides">
             <tr id="Hide|" style="display: none">
                 <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlowDetail">
-                <td style="align-items:center; display:flex;border: none;background-color: transparent;" class="borders">
-                    <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                    <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                <td style="align-items:center; display:flex;" class="borders">
+                    <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" style="width:30px;height:30px" class="evol-image" name="Submit" src="~/images/Ok.png" />
                     <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="@serviceTask.ServiceTaskID" />
                 </td>
                 <td>@serviceTask.ServiceTaskCode<input style="display: none" id=ServiceTaskCode name=ServiceTaskCode type="text" maxlength="15" value="@serviceTask.ServiceTaskCode" /></td>
                 <td><input id=ServiceTaskDesc name=ServiceTaskDesc type="text" maxlength="256" style="width: 100%" value="@serviceTask.ServiceTaskDesc" /></td>
-                <td class="evol-fitcontent-column">
+                <td>
                         @{
                             List<ServiceTypeElement> complementList = new List<ServiceTypeElement>();
                             foreach (ServiceTypeElement ste in serviceTask.ServiceTypes)
@@ -95,14 +94,14 @@ else
                                 }
                             }
                         }
-                    <select id=ComplementServiceTaskID name=ComplementServiceTaskID>
+                    <select id=ComplementServiceTaskID name=ComplementServiceTaskID style="max-width: 300px">
                             @foreach (ServiceTaskElement s in Model.ServiceTasksList.Where(x => complementList.All(b => x.ServiceTypes.Any(a => a.ServiceTypeCode == b.ServiceTypeCode))).ToList())
                             {
                             <option value="@s.ServiceTaskID">[@s.ServiceTaskCode] @s.ServiceTaskDesc</option>
                             }
                     </select>
                 </td>
-                <td class="evol-fitcontent-column">
+                <td>
                         @{
                             List<int> eModeList = new List<int>();
                             eModeList.Add(0);
@@ -114,7 +113,7 @@ else
                                 eModeList.Add(-1);
                             }
                         }
-                    <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
+                    <select id=ExternalExpeditionMode name=ExternalExpeditionMode style="max-width: 300px">
                             @{
                                 localValue = serviceTask.ExternalExpeditionMode == null ? "-1" : serviceTask.ExternalExpeditionMode.ToString();
                             }
@@ -138,7 +137,7 @@ else
                 <td><input id=StationExceededDesc name=StationExceededDesc type="text" maxlength="50" style="width: 100%" value="@serviceTask.StationExceededDesc" /></td>
                 </form>
             </tr>
-            <tr id="Show|">
+            <tr id="Show|" ondblclick="EditRow('')">
                 <td class="evol-fitcontent-column-one borders" style="border: none;background-color: transparent;">
                     @if (AddServiceTask)
                     {
@@ -178,8 +177,7 @@ else
                 <tr id="Hide|Type" style="display: none">
                     <form id="AddFrm|Type" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="AddServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID">
                     <td style="align-items:center; display:flex;border:none;background-color:transparent" class="borders">
-                        <img onclick="CancelRow('Type')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="width:30px;height:30px" class="evol-image" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td colspan="2">
                         <b>@localizer["SelectServiceTask"]: </b>
@@ -324,5 +322,24 @@ else
                 return false;
             }
         }
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                });
+            }
+        });
     </script>
 }

@@ -52,7 +52,7 @@ else
             <tr>
                 @if (AddExceptionLevel)
                 {
-                    <th class="evol-fitcontent-column borders" style="text-align:center"><img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddException"] @ExceptionLevelIDLabel" /></th>
+                    <th class="evol-fitcontent-column borders" style="text-align:center"><img onclick="EditRow('')" class="evol-image" style="width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddException"] @ExceptionLevelIDLabel" /></th>
                 }
                 <th>@localizer["ExceptionID"]</th>
                 <th>@localizer["ExceptionCode"]</th>
@@ -64,7 +64,7 @@ else
             {
                 <tr id="Hide|" style="display: none">
                     <form id="AddExceptionFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="ConfigExceptionLevel" asp-route-source="Add" asp-route-Level="@Model.Level">
-                        <td style ="align-items:center; display:flex" class="borders">
+                        <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
                            <img onclick="CancelRow('')" type="image"class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png"/>
                         </td>
@@ -77,7 +77,7 @@ else
             @foreach(ExceptionLevel e in Model.ExceptionslevelList)
             {
                 value = Model.Level.ToString() + "|" + e.ExceptionLevelID.ToString();
-                <tr id="Exception|@value">
+                <tr id="Exception|@value" ondblclick="EditRow('@value')">
                     @if (AddExceptionLevel)
                     {
                         <td style="align-items:center; display:flex" class="borders">
@@ -98,8 +98,7 @@ else
                 {
                     <tr id="Hide|@value" style="display: none">
                         <form id="AddExceptionFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="ConfigExceptionLevel" asp-route-source="Edit" asp-route-Level="@Model.Level">
-                        <td style="align-items:center; display:flex" class="borders">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
                             <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                             </td>
                             <td>@e.ExceptionLevelID</td>
@@ -147,5 +146,27 @@ else
                 }
             });
         }
+
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    if (/^Hide\|\d+/.test(tElement.id)) {
+                        let val = tElement.id.substring(5);
+                        CancelRow(val);
+                    }
+                });
+            }
+        });
     </script>
 }

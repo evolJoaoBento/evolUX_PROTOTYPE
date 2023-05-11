@@ -109,7 +109,7 @@ else
                   asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
                   asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
                   asp-route-explevel="-1">
-                        <td style="align-items:center; display:flex;border:none;background-color:transparent" class="borders">
+                        <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
                             <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                             <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                         </td>
@@ -128,10 +128,10 @@ else
                     </tr>
                 }
                 value = config.ExpLevel.ToString();
-                <tr id="Show|@value">
+                <tr id="Show|@value" ondblclick="EditRow('@value')">
                     @if (AddServiceCompanyExpCodes)
                     {
-                        <td style="align-items:center; display:flex;border:none;background-color:transparent" class="borders">
+                        <td style="align-items:center; display:flex" class="borders">
                             <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyExpLevel"]" />
                             @if (DeleteServiceCompanyExpCodes)
                             {
@@ -158,8 +158,7 @@ else
                   asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
                   asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
                   asp-route-explevel="@config.ExpLevel">
-                        <td style="align-items:center; display:flex;border:none;background-color:transparent" class="borders">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
                             <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>@config.ExpLevel</td>
@@ -220,5 +219,25 @@ else
                 return false;
             }
         }
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    if (/^Hide\|\d+/.test(tElement.id)) {
+                        let val = tElement.id.substring(5);
+                        CancelRow(val);
+                    }
+                });
+            }
+        });
     </script>
 }

@@ -76,7 +76,7 @@ else
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
-            <tr id="Show|ExpCompany">
+            <tr id="Show|ExpCompany" ondblclick="EditRow('ExpCompany')">
                 @if (AddExpCompany)
                 {
                     <td style="text-align: center" class="borders">
@@ -95,7 +95,6 @@ else
                 <tr id="Hide|ExpCompany" style="display: none">
                     <form id="AddFrm|ExpCompany" class="d-flex justify-content-center m-5" asp-controller="Expedition" asp-action="ChangeExpCompany" asp-route-expeditiontypeviewJson="@JsonConvert.SerializeObject(Model)">
                     <td style="align-items:center; display:flex" class="borders">
-                        <img onclick="CancelRow('ExpCompany')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                         <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td>@expCompany.CompanyCode</td>
@@ -149,7 +148,6 @@ else
                         <form id="AddFrm|Type" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyType"
                   asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(expeditionType)" asp-route-source="ExpCompany">
                         <td style="align-items:center; display:flex" class="borders">
-                            <img onclick="CancelRow('Type')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                             <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>
@@ -171,7 +169,7 @@ else
                     </tr>
                 }
                 value = e.ExpeditionType.ToString();
-                <tr id="Show|@value">
+                <tr id="Show|@value" ondblclick="EditRow('@value')">
                     @if (AddExpeditionType)
                     {
                         <td class="borders">
@@ -218,7 +216,6 @@ else
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyType"
                   asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(expeditionType)" asp-route-source="ExpCompany">
                         <td style="align-items:center; display:flex" class="borders">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                             <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>@e.ExpeditionTypeDesc</td>
@@ -403,5 +400,25 @@ else
                 }
             });
         }
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    if (/^Hide\|\d+/.test(tElement.id) || tElement.id == "Hide|ExpCompany") {
+                        let val = tElement.id.substring(5);
+                        CancelRow(val);
+                    }
+                });
+            }
+        });
     </script>
 }
