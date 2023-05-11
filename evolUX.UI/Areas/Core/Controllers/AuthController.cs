@@ -244,6 +244,7 @@ namespace evolUX.UI.Areas.Core.Controllers
         }
         private async Task SetSessionVariables(AuthenticateResponse user)
         {
+            HttpContext.Session.SetString("HasSession", "true");
             if (!string.IsNullOrEmpty(user.Language))
             {
                 Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(user.Language)),
