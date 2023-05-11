@@ -39,9 +39,9 @@
                     @Model.ServiceCompany.CompanyName / @localizer["ExpCenter"] [@Model.ExpCenterCode]
                 </h2>
             }
-            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
-       asp-route-expcodejson="@JsonConvert.SerializeObject(Model.ExpCode)" asp-route-expcentercode="@Model.ExpCenterCode"
-       asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
+            <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
+               asp-route-expcodejson="@JsonConvert.SerializeObject(Model.ExpCode)" asp-route-expcentercode="@Model.ExpCenterCode"
+               asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
             </a>
         </div>
     }
@@ -58,7 +58,7 @@
                 </h2>
             }
             <h2>@TempData["ServiceTaskDesc"] / @TempData["ExpCompanyName"] / @localizer["ExpCenter"] [@Model.ExpCenterCode]</h2>
-            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyExpCodes" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)">
+            <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyExpCodes" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)">
             </a>
         </div>
     }
@@ -78,7 +78,7 @@ else
     string idValue = "arrow" + level.ToString();
     string nameValue = "";
     Company serviceCompany = Model.ServiceCompany;
-    FulfillMaterialCode fCode;
+    FulfillMaterialCode fCode;  
     <script>
         const deleteServiceCompanyExpLevelMsg = '@localizer["deleteServiceCompanyExpLevelMsg"]"';
     </script>
@@ -89,7 +89,7 @@ else
                 @if (AddServiceCompanyExpCodes)
                 {
                     <th class="evol-fitcontent-column-one" style="text-align:center;border:none;background-color:transparent">
-                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image" src="~/images/add.png" title="@localizer["AddServiceCompanyExpLevel"]" />
+                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddServiceCompanyExpLevel"]" />
                     </th>
                 }
                 <th>@localizer["ExpLevel"]</th>
@@ -101,7 +101,7 @@ else
         <tbody id="bootstrap-overrides">
             @foreach (ServiceCompanyExpCodeConfig config in Model.Configs)
             {
-                @if (AddServiceCompanyExpCodes)
+               @if (AddServiceCompanyExpCodes)
                 {
                     <tr id="Hide|" style="display: none">
                         <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyExpLevel"
@@ -110,16 +110,16 @@ else
                   asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
                   asp-route-explevel="-1">
                         <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
-                            <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                            <img onclick="CancelRow('')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td></td>
                         <td>
                             <select id="ServiceCompanyID" name="ServiceCompanyID">
-                                    @foreach (FulfillMaterialCode f in Model.FulfillMaterialCodes)
-                                    {
-                                    <option value="@f.FullFillMaterialCode">@f.Description</option>
-                                    }
+                            @foreach (FulfillMaterialCode f in Model.FulfillMaterialCodes)
+                            {
+                                <option value="@f.FullFillMaterialCode">@f.Description</option>
+                            }
                             </select>
                         </td>
                         <td><input type="number" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="0" /></td>
@@ -132,17 +132,17 @@ else
                     @if (AddServiceCompanyExpCodes)
                     {
                         <td style="align-items:center; display:flex" class="borders">
-                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyExpLevel"]" />
+                            <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyExpLevel"]" />
                             @if (DeleteServiceCompanyExpCodes)
                             {
-                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceCompanyExpLevel"
-                   asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
-                   asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
-                   asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
-                   asp-route-explevel="@config.ExpLevel">
-                                    <img onclick="return confirmServiceCompanyExpLevelDelete()" class="evol-image" src="~/images/delete.png" title="@localizer["DeleteServiceCompanyExpLevel"] = @config.ExpLevel" />
-                                </a>
-                            }
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceCompanyExpLevel" 
+                                asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
+                                asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
+                                asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
+                                asp-route-explevel="@config.ExpLevel">
+                                    <img onclick="return confirmServiceCompanyExpLevelDelete()" class="evol-image grow" src="~/images/delete.png" title="@localizer["DeleteServiceCompanyExpLevel"] = @config.ExpLevel" />
+                            </a>
+                            }                        
                         </td>
                     }
                     <td>@config.ExpLevel</td>
@@ -159,19 +159,19 @@ else
                   asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
                   asp-route-explevel="@config.ExpLevel">
                         <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>@config.ExpLevel</td>
                         <td>
                             <select id="ServiceCompanyID" name="ServiceCompanyID">
-                                    @{
-                                        fCode = Model.FulfillMaterialCodes.FirstOrDefault(x => x.FullFillMaterialCode == config.FullFillMaterialCode);
-                                    }
+                            @{
+                                fCode = Model.FulfillMaterialCodes.FirstOrDefault(x => x.FullFillMaterialCode == config.FullFillMaterialCode);
+                            }
                                 <option value="@fCode.FullFillMaterialCode">@fCode.Description</option>
                                     @foreach (FulfillMaterialCode f in Model.FulfillMaterialCodes.Where(x => x.FullFillMaterialCode != config.FullFillMaterialCode))
-                                    {
-                                    <option value="@f.FullFillMaterialCode">@f.Description</option>
-                                    }
+                            {
+                                <option value="@f.FullFillMaterialCode">@f.Description</option>
+                            }
                             </select>
                         </td>
                         <td><input type="number" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="@config.DocMaxSheets" /></td>

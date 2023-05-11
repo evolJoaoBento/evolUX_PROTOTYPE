@@ -35,7 +35,7 @@ else
         <h1>@localizer["ExpCompanyType"]</h1>
         <h2>@headerDesc</h2>
     </div>
-    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Types">
+    <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Types">
     </a>
     string value = "";
     string Level0Name = "level";
@@ -75,7 +75,7 @@ else
                     @if (AddExpeditionType)
                     {
                         <td style="text-align: center" class="borders">
-                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
+                            <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
                         </td>
                     }
                     @if (expeditionType.ExpCompanyTypesList.Count() > 1)
@@ -106,7 +106,7 @@ else
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyType"
                              asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(expeditionType)" asp-route-source="@source">
                         <td style="align-items:center; display:flex" class="borders">
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                         </td>
                         @if (expeditionType.ExpCompanyTypesList.Count() > 1)
                         {
