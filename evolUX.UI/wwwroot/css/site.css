@@ -707,9 +707,8 @@ label {
     background-color: var(--evoldp-color);
     color: white;
 }
-.collapsible.active:hover {
-    background-color: var(--evolflow-color);
-    color: white;
+.collapsible.active:hover::before {
+    background-color: var(--evolNew-color);
 }
 .scrollbar {
     overflow-y: scroll;
