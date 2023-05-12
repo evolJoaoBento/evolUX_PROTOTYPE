@@ -54,7 +54,7 @@
                                       id="stop878" />
                             </linearGradient>
                         </defs>
-                        <path d="m 31.7,115 242,-0.00032 c 25,5 20,0.79932 25.00016,44.7 0.008,34.20084 -25.00016,35 -20,35 h -239.99984 c 0,0 -25,4.01348 -25,68 0,20 30,40 48,38.5 c 0,0 80,0 190,0 0,0 10,0 10,-10 0,0 0,-10 0,-40 0,0 0,-10 -10,-10 0,0 -80,0 -190,0 0,0 -10,0 -10,10 0,0 0,10 0,40 0,0 0,10 10,10 0,0 0,0 80,0 190,0"/>
+                        <path d="m 31.7,115 242,-0.00032 c 0,0 25,0 25,45 0,35 0,35 -20,35 h -239.99984 c 0,0 -25,0 -25,68 0,20 30,40 48,38.5 c 0,0 80,0 190,0 0,0 10,0 10,-10 0,0 0,-10 0,-40 0,0 0,-10 -10,-10 0,0 -80,0 -190,0 0,0 -10,0 -10,10 0,0 0,10 0,40 0,0 0,10 10,10 0,0 0,0 80,0 190,0"/>
                     </svg>
                     <form id="credentials-form" asp-area="core" asp-controller="auth" asp-action="LoginCredentials" method="get" class="login">
                         <div class="login__field">
@@ -67,7 +67,7 @@
                             <i>
                                 <img src="~/images/locklogin.png" class="login__icon no-click">
                             </i>
-                            <input type="password" asp-for="Password" id="passwordlogin" class="login__input evol-font" placeholder="Password">
+                            <input type="password" asp-for="Password" id="passwordlogin" class="login__input evol-font" style="display:" placeholder="Password">
                         </div>
                         <input type="hidden" name="returnUrl" value="@returnUrl">
                         <button class="login__submit button" name="Submit" style="margin-left: 30px" id="submitlogin">
@@ -95,7 +95,7 @@
                             }
                         </div>
                     <div class="social-login">
-                        <h3 style="font-family:FreeMono, monospace; font-size: 20px">Faça log in por:</h3>
+                        <h1 style="font-family:Arial, Helvetica, sans-serif, monospace; font-size: 15px; color:grey">Faça log in por:</h1>
                         <div style="margin-top: 30px" class="pick-login">
                             <div id="windows-btn" class="circle windows">
                                 <img src="~/images/windows_icon.png" style="margin-top:8px" />

@@ -63,16 +63,20 @@
     border: none;
     background: none;
     padding: 10px;
-    padding-left: 35px;
+    padding-left: 10px;
     font-weight: 700;
-    width: 75%;
+    width: 90%;
     transition: .2s;
+    position: relative;
+    left: 40px;
 }
 
 .login__icon {
     position: absolute;
     top: 30px;
-    width: 33px;
+    left: 5px;
+    width: 25px;
+    color: var(--evol-grey);
 }
 
 .login__submit {
