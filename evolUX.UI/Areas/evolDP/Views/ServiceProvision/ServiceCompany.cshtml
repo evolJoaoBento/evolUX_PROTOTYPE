@@ -109,7 +109,11 @@ else
     </table>
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
+
             <tr class="borders">
+=======
+            <tr style="border: none">
+>>>>>>> 46a36c432f9cb0e4f2e607a3098160eaacebec48
                 @if (AddServiceCompany)
                 {
                 <th class ="evol-fitcontent-column"></th>
@@ -215,6 +219,9 @@ else
                 serviceTypeConfigs = Model.Configs.Where(x => x.ServiceTypeID == sType).ToList();
                 <tr>
                     <td style ="align-items:center; display:flex" class="borders">
+=======
+                    <td style ="align-items:center; display:flex">
+>>>>>>> 46a36c432f9cb0e4f2e607a3098160eaacebec48
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
                                 asp-route-serviceCompanyConfigsJson="@JsonConvert.SerializeObject(serviceTypeConfigs)" asp-route-servicetypeid="@sType">
                                 <img class="evol-image" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
