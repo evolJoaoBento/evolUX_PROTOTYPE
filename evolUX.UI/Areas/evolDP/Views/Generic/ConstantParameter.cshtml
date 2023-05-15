@@ -70,7 +70,7 @@ else
                     @if (AddConstantParameter)
                     {
                         <td style="align-items:center; display:flex; justify-content: center" class="borders">
-                            <img class="evol-image float" onclick="EditRow('@c.ParameterID')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
+                            <img class="evol-image float wobble" onclick="EditRow('@c.ParameterID')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
                             @if (DeleteConstantParameter)
                             {
                                 <a asp-area="evolDP" asp-controller="Client" asp-action="DeleteParameter" asp-route-exceptionID="@c.ParameterID">
