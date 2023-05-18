@@ -110,7 +110,7 @@ else
     if (servicesNotInList.Count() > 0)
     {
         <table id="Hide|@value" style="display: none" class="table table-sm table-hover table-collapse-seperate">
-            <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <thead id="bootstrap-overrides" class="table-info">
                 <tr>
                     <th class="evol-fitcontent-column"></th>
                     <th>@localizer["Service"]</th>
@@ -173,7 +173,7 @@ else
         @if (AddServiceCompany && Model.CostDate == 0 && Model.ServiceID == 0)
         {
         <table id="Hide|@value" style="display: none" class="table table-sm table-hover table-collapse-seperate">
-            <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <thead id="bootstrap-overrides" class="table-info">
                 <tr>
                     <th class ="evol-fitcontent-column"></th>
                     <th>@localizer["Service"]</th>
@@ -204,7 +204,7 @@ else
         </table>
         }
         <table id="@nameValue" style="@startDisplay" class="table table-sm table-hover table-collapse-seperate">
-        <thead id="bootstrap-overrides" class="table-info sticky-header">
+        <thead id="bootstrap-overrides" class="table-info">
             <tr>
                 @if(AddServiceCompany)
                 {

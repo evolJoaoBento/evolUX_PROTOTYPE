@@ -283,8 +283,8 @@ footer div{
 
 .sticky-header {
     position: sticky;
-    top: 50px;
-    z-index: 1;
+    top: 80px;
+    z-index: 10;
 }
 
 .headcol {
