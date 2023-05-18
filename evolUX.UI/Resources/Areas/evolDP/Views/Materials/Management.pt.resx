@@ -132,8 +132,8 @@
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
-  <data name="ROOLPAPER" xml:space="preserve">
-    <value>paper.png</value>
+  <data name="ROLLPAPER" xml:space="preserve">
+    <value>presspaper.png</value>
   </data>
   <data name="STATION" xml:space="preserve">
     <value>newspaper.png</value>
