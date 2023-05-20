@@ -88,18 +88,22 @@ AS
 		FROM RD_MATERIAL m WITH(NOLOCK)
 		LEFT OUTER JOIN
 			(SELECT mc.ServiceCompanyID, mc.MaterialID, mc.ProviderCompanyID, mc.CostDate, mc.MaterialCost, mc.MaterialBinPosition, scr.MaterialPosition, scr.MaterialTypeID
-			FROM RD_MATERIAL_COST mc WITH(NOLOCK)
+			FROM RD_MATERIAL mm WITH(NOLOCK)
+			INNER JOIN
+				RD_MATERIAL_COST mc WITH(NOLOCK)
+			ON mm.MaterialID = mc.MaterialID
 			INNER JOIN
 				@ServiceCompanyList s
 			ON s.ID = mc.ServiceCompanyID
-			INNER JOIN
+			LEFT OUTER JOIN
 				RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
 			ON scr.ServiceCompanyID = mc.ServiceCompanyID
+				AND scr.MaterialTypeID = mm.MaterialTypeID
 			WHERE mc.CostDate = (SELECT MAX(CostDate)
 								FROM RD_MATERIAL_COST WITH(NOLOCK)
 								WHERE ServiceCompanyID = mc.ServiceCompanyID
 									AND MaterialID = mc.MaterialID)) mcc
-		ON mcc.MaterialID = m.MaterialID AND ISNULL(mcc.MaterialTypeID,m.MaterialTypeID) = m.MaterialTypeID
+		ON mcc.MaterialID = m.MaterialID
 		WHERE m.MaterialID = ISNULL(@MaterialID,m.MaterialID)
 			OR
 			m.MaterialRef = ISNULL(@MaterialRef,m.MaterialRef)
@@ -117,13 +121,17 @@ AS
 			ON mt.MaterialTypeID = m.MaterialTypeID
 			LEFT OUTER JOIN
 				(SELECT mc.ServiceCompanyID, mc.MaterialID, mc.ProviderCompanyID, mc.CostDate, mc.MaterialCost, mc.MaterialBinPosition, scr.MaterialPosition, scr.MaterialTypeID
-				FROM RD_MATERIAL_COST mc WITH(NOLOCK)
+				FROM RD_MATERIAL mm WITH(NOLOCK)
+				INNER JOIN
+					RD_MATERIAL_COST mc WITH(NOLOCK)
+				ON mm.MaterialID = mc.MaterialID
 				INNER JOIN
 					@ServiceCompanyList s
 				ON s.ID = mc.ServiceCompanyID
-				INNER JOIN
+				LEFT OUTER JOIN
 					RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
 				ON scr.ServiceCompanyID = mc.ServiceCompanyID
+					AND scr.MaterialTypeID = mm.MaterialTypeID
 				WHERE mc.CostDate = (SELECT MAX(CostDate)
 								FROM RD_MATERIAL_COST WITH(NOLOCK)
 								WHERE ServiceCompanyID = mc.ServiceCompanyID
@@ -144,13 +152,17 @@ AS
 			ON mt.MaterialTypeID = m.MaterialTypeID
 			LEFT OUTER JOIN
 				(SELECT mc.ServiceCompanyID, mc.MaterialID, mc.ProviderCompanyID, mc.CostDate, mc.MaterialCost, mc.MaterialBinPosition, scr.MaterialPosition, scr.MaterialTypeID
-				FROM RD_MATERIAL_COST mc WITH(NOLOCK)
+				FROM RD_MATERIAL mm WITH(NOLOCK)
+				INNER JOIN
+					RD_MATERIAL_COST mc WITH(NOLOCK)
+				ON mm.MaterialID = mc.MaterialID
 				INNER JOIN
 					@ServiceCompanyList s
 				ON s.ID = mc.ServiceCompanyID
-				INNER JOIN
+				LEFT OUTER JOIN
 					RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
 				ON scr.ServiceCompanyID = mc.ServiceCompanyID
+					AND scr.MaterialTypeID = mm.MaterialTypeID
 				WHERE mc.CostDate = (SELECT MAX(CostDate)
 								FROM RD_MATERIAL_COST WITH(NOLOCK)
 								WHERE ServiceCompanyID = mc.ServiceCompanyID
@@ -202,17 +214,9 @@ AS
 				FROM [dbo].[RD_MATERIAL]
 				WHERE MaterialRef = @MaterialRef
 
-				IF (@ServiceCompanyID is NULL)
-				BEGIN
-					INSERT INTO RD_MATERIAL_COST(MaterialID, ServiceCompanyID, ProviderCompanyID, CostDate, MaterialCost, MaterialBinPosition)
-					SELECT @MaterialID, s.ID, @ProviderCompanyID, @CostDate, @MaterialCost, @MaterialBinPosition
-					FROM @ServiceCompanyList s
-				END
-				ELSE
-				BEGIN
-					INSERT INTO RD_MATERIAL_COST(MaterialID, ServiceCompanyID, ProviderCompanyID, CostDate, MaterialCost, MaterialBinPosition)
-					SELECT @MaterialID, @ServiceCompanyID, @ProviderCompanyID, @CostDate, @MaterialCost, @MaterialBinPosition
-				END
+				INSERT INTO RD_MATERIAL_COST(MaterialID, ServiceCompanyID, ProviderCompanyID, CostDate, MaterialCost, MaterialBinPosition)
+				SELECT @MaterialID, s.ID, @ProviderCompanyID, @CostDate, @MaterialCost, @MaterialBinPosition
+				FROM @ServiceCompanyList s
 			END
 			ELSE
 			BEGIN
@@ -255,15 +259,43 @@ AS
 		
 		IF (@ServiceCompanyID is NOT NULL)
 		BEGIN
-			UPDATE RD_MATERIAL_COST
-			SET ProviderCompanyID = @ProviderCompanyID,
-				CostDate = @CostDate,
-				MaterialCost = @MaterialCost,
-				MaterialBinPosition = @MaterialBinPosition
-			WHERE MaterialID = @MaterialID AND ServiceCompanyID = @ServiceCompanyID
+			EXEC RD_UX_SET_MATERIAL_COST @MaterialID, @ServiceCompanyID, @CostDate, @MaterialCost, @ProviderCompanyID, @MaterialBinPosition
 		END
 	END
 RETURN @MaterialID
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_SET_MATERIAL_COST]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_MATERIAL_COST] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_SET_MATERIAL_COST]
+	@MaterialID int,
+	@ServiceCompanyID int,
+	@CostDate int,
+	@MaterialCost float,
+	@ProviderCompanyID int = NULL,
+	@MaterialBinPosition smallint = NULL
+AS
+	SET NOCOUNT ON
+	IF (NOT EXISTS(SELECT TOP 1 1 FROM [dbo].[RD_MATERIAL_COST]
+					WHERE MaterialID = @MaterialID 
+							AND ServiceCompanyID = @ServiceCompanyID
+							AND CostDate = @CostDate))
+	BEGIN
+		INSERT INTO [dbo].[RD_MATERIAL_COST](MaterialID, ServiceCompanyID, CostDate, ProviderCompanyID, MaterialCost, MaterialBinPosition)
+		SELECT @MaterialID, @ServiceCompanyID, @CostDate,  @ProviderCompanyID, @MaterialCost, @MaterialBinPosition
+	END
+	ELSE
+	BEGIN
+		UPDATE RD_MATERIAL_COST
+		SET ProviderCompanyID = @ProviderCompanyID,
+			CostDate = @CostDate,
+			MaterialCost = @MaterialCost,
+			MaterialBinPosition = @MaterialBinPosition
+		WHERE MaterialID = @MaterialID AND ServiceCompanyID = @ServiceCompanyID AND CostDate = @CostDate
+	END
+RETURN
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_MATERIAL_GROUP]') AND type in (N'P', N'PC'))
 BEGIN
@@ -288,13 +320,17 @@ AS
 		ON mt.MaterialTypeID = m.MaterialTypeID
 		LEFT OUTER JOIN
 			(SELECT mc.ServiceCompanyID, mc.GroupID, mc.ProviderCompanyID, mc.CostDate, mc.MaterialCost, mc.MaterialBinPosition, scr.MaterialPosition, scr.MaterialTypeID
-			FROM RD_MATERIAL_GROUP_COST mc WITH(NOLOCK)
+			FROM RD_MATERIAL_GROUP mm WITH(NOLOCK)
+			INNER JOIN
+				RD_MATERIAL_GROUP_COST mc WITH(NOLOCK)
+			ON mm.GroupID = mc.GroupID
 			INNER JOIN
 				@ServiceCompanyList s
 			ON s.ID = mc.ServiceCompanyID
 			INNER JOIN
 				RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
 			ON scr.ServiceCompanyID = mc.ServiceCompanyID
+				AND scr.MaterialTypeID = mm.MaterialTypeID
 			WHERE mc.CostDate = (SELECT MAX(CostDate)
 								FROM RD_MATERIAL_GROUP_COST WITH(NOLOCK)
 								WHERE ServiceCompanyID = mc.ServiceCompanyID
@@ -315,13 +351,17 @@ AS
 		ON mt.MaterialTypeID = m.MaterialTypeID
 		LEFT OUTER JOIN
 			(SELECT mc.ServiceCompanyID, mc.GroupID, mc.ProviderCompanyID, mc.CostDate, mc.MaterialCost, mc.MaterialBinPosition, scr.MaterialPosition, scr.MaterialTypeID
-			FROM RD_MATERIAL_GROUP_COST mc WITH(NOLOCK)
+			FROM RD_MATERIAL_GROUP mm WITH(NOLOCK)
+			INNER JOIN
+				RD_MATERIAL_GROUP_COST mc WITH(NOLOCK)
+			ON mm.GroupID = mc.GroupID
 			INNER JOIN
 				@ServiceCompanyList s
 			ON s.ID = mc.ServiceCompanyID
-			INNER JOIN
+			LEFT OUTER JOIN
 				RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
 			ON scr.ServiceCompanyID = mc.ServiceCompanyID
+				AND scr.MaterialTypeID = mm.MaterialTypeID
 			WHERE mc.CostDate = (SELECT MAX(CostDate)
 								FROM RD_MATERIAL_GROUP_COST WITH(NOLOCK)
 								WHERE ServiceCompanyID = mc.ServiceCompanyID
