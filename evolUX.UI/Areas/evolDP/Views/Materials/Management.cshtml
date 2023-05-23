@@ -1,0 +1,30 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model MaterialTypeViewModel;
+<div id="TitlePage">
+    <h1>@localizer["MaterialType"]</h1>
+</div>
+@if (Model == null || Model.MaterialTypeList == null || Model.MaterialTypeList.Count() == 0)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    //string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    foreach (var mType in Model.MaterialTypeList)
+    {
+        string image = mType.MaterialTypeCode + "_Icon";
+        <div id="TitlePage">
+            <h2>
+                <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialGoupsList" asp-route-materialtypejson="@JsonConvert.SerializeObject(mType)">
+                    <img style="background:none; width:35px;height:35px;" src="~/images/@localizer[image]" />
+                </a>@localizer[mType.MaterialTypeCode]
+            </h2>
+        </div>
+    }
+}
