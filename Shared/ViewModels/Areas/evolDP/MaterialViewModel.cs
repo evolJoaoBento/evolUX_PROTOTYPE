@@ -15,8 +15,8 @@ namespace Shared.ViewModels.Areas.evolDP
         public IEnumerable<MaterialElement> MaterialList { get; set; }
         public IEnumerable<MaterialType> MaterialTypeList { get; set; }
         public IEnumerable<FullfillMaterialCode> FullfillMaterialCodes { get;set; }
-        public IEnumerable<Company> ServiceCompanyList { get; set; }
-        public IEnumerable<Company> CompaniesList { get; set; }
+        public IEnumerable<Company> ServiceCompanies { get; set; }
+        public IEnumerable<Company> Companies { get; set; }
     }
 }
 

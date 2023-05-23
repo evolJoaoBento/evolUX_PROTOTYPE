@@ -12,7 +12,7 @@ namespace evolUX.UI.Areas.evolDP.Services.Interfaces
         public Task<IEnumerable<MaterialElement>> GetMaterialGroups(string materialTypeCode, string serviceCompanyList);
         public Task<MaterialElement> SetMaterialGroup(MaterialElement group, string serviceCompanyList);
         public Task<IEnumerable<MaterialElement>> GetMaterials(int groupID, string materialTypeCode, string serviceCompanyList);
-        public Task<MaterialElement> SetMaterial(MaterialElement material, string serviceCompanyList);
+        public Task<MaterialElement> SetMaterial(MaterialElement material, string materialTypeCode, string serviceCompanyList);
         //public Task<MaterialsTypeViewModel> GetMaterialsTypes(int? MaterialsType, string expCompanyList);
         //public Task<MaterialsZoneViewModel> GetMaterialsZones(int? MaterialsZone, string expCompanyList);
     }

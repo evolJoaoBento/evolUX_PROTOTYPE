@@ -86,13 +86,13 @@ namespace evolUX.API.Areas.evolDP.Repositories
                             if (!r.IsNull("GroupDescription"))
                                 group.GroupDescription = (string)r["GroupDescription"];
                             if (!r.IsNull("MaterialWeight"))
-                                group.MaterialWeight = (double)r["MaterialWeight"];
+                                group.MaterialWeight = double.Parse(r["MaterialWeight"].ToString());
                             if (!r.IsNull("FullFillSheets"))
                                 group.FullFillSheets = (int)r["FullFillSheets"];
                             if (!r.IsNull("FullFillMaterialCode"))
                                 group.FullFillMaterialCode = (string)r["FullFillMaterialCode"];
                             if (!r.IsNull("ExpeditionMinWeight"))
-                                group.ExpeditionMinWeight = (double)r["ExpeditionMinWeight"];
+                                group.ExpeditionMinWeight = double.Parse(r["ExpeditionMinWeight"].ToString());
 
                             lastgroupID = groupID;
                         }
@@ -103,7 +103,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                             costElement.ServiceCompanyID = (int)r["ServiceCompanyID"];
                             costElement.CostDate = (int)r["CostDate"];
                             costElement.MaterialBinPosition = int.Parse(r["MaterialBinPosition"].ToString());
-                            costElement.MaterialCost = (double)r["MaterialCost"];
+                            costElement.MaterialCost = double.Parse(r["MaterialCost"].ToString());
                             if (!r.IsNull("ProviderCompanyID"))
                                 costElement.ProviderCompanyID = (int)r["ProviderCompanyID"];
                             costElement.ServiceCompanyMaterialPosition = 0;
@@ -207,14 +207,14 @@ namespace evolUX.API.Areas.evolDP.Repositories
                             if (!r.IsNull("MaterialDescription"))
                                 material.MaterialDescription = (string)r["MaterialDescription"];
                             if (!r.IsNull("MaterialWeight"))
-                                material.MaterialWeight = (double)r["MaterialWeight"];
+                                material.MaterialWeight = double.Parse(r["MaterialWeight"].ToString());
                             material.MaterialRef = (string)r["MaterialRef"];
                             if (!r.IsNull("FullFillSheets"))
                                 material.FullFillSheets = (int)r["FullFillSheets"]; 
                             if (!r.IsNull("FullFillMaterialCode"))
                                 material.FullFillMaterialCode = (string)r["FullFillMaterialCode"];
                             if (!r.IsNull("ExpeditionMinWeight"))
-                                material.ExpeditionMinWeight = (double)r["ExpeditionMinWeight"];
+                                material.ExpeditionMinWeight = double.Parse(r["ExpeditionMinWeight"].ToString());
                             if (!r.IsNull("GroupID"))
                                 material.GroupID = (int)r["GroupID"];
 
@@ -227,7 +227,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                             costElement.ServiceCompanyID = (int)r["ServiceCompanyID"];
                             costElement.CostDate = (int)r["CostDate"];
                             costElement.MaterialBinPosition = int.Parse(r["MaterialBinPosition"].ToString());
-                            costElement.MaterialCost = (double)r["MaterialCost"];
+                            costElement.MaterialCost = double.Parse(r["MaterialCost"].ToString());
                             if (!r.IsNull("ProviderCompanyID"))
                                 costElement.ProviderCompanyID = (int)r["ProviderCompanyID"];
                             costElement.ServiceCompanyMaterialPosition = 0;
@@ -274,7 +274,12 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 if (mCost.MaterialCost >= 0)
                     parameters.Add("MaterialCost", mCost.MaterialCost, DbType.Double);
                 if (mCost.MaterialBinPosition >= 0)
-                    parameters.Add("MaterialBinPosition", mCost.MaterialBinPosition, DbType.Int32);
+                {
+                    if (mCost.ServiceCompanyID > 0 && mCost.ServiceCompanyMaterialPosition > 0)
+                        parameters.Add("MaterialBinPosition", mCost.ServiceCompanyMaterialPosition, DbType.Int32);
+                    else
+                        parameters.Add("MaterialBinPosition", mCost.MaterialBinPosition, DbType.Int32);
+                }
             }
             parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
 

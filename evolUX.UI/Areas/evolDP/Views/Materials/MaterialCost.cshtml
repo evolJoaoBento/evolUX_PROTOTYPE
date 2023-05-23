@@ -59,11 +59,6 @@ else
 
     int MaterialTypeID = group.GroupID == 0 ? Model.MaterialTypeList.First().MaterialTypeID : group.MaterialTypeID;
     int serviceCompanyMaterialBinPosition = group.GroupID == 0 ? Model.MaterialTypeList.First().MaxMaterialPosition : Model.MaterialTypeList.Max(x => x.MaxMaterialPosition);
-
-    string Level0Name = "level";
-    int level = 0;
-    string nameValue = "gLevel" + group.GroupID.ToString();
-    string idValue = "arrow" + nameValue;
     if (Model.MaterialTypeCode.ToUpper() == "STATION" && group.GroupID != 0)
     {
         <table class="table table-sm table-hover table-collapse-seperate">
@@ -86,12 +81,8 @@ else
                             <img onclick="EditRow('Group')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeMaterial"]" />
                         }
                         <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialGroupCost" asp-route-materialgroupJSON="@JsonConvert.SerializeObject(group)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
-                            <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["MaterialCostConfig"]" />
+                            <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["MaterialCost"]" />
                         </a>
-                        @if (group.CostList.Count() > 0)
-                        {
-                            <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
-                        }
                     </td>
                     <td>@group.GroupDescription</td>
                     <td>@group.MaterialWeight</td>
@@ -154,67 +145,6 @@ else
                         </td>
                     </form>
                 </tr>
-                @if (group.CostList.Count() > 0)
-                {
-                    <tr id="@nameValue" style="display: none">
-                        <td colspan="8">
-                            <table class="table table-sm table-hover table-collapse-seperate">
-                                <thead id="bootstrap-overrides" class="table-info sticky-header">
-                                    <tr><th colspan="5" style="text-align:center">@localizer["ServiceCompanyCosts"]</th></tr>
-                                    <tr>
-                                        <th style="background-color: transparent">@localizer["ServiceCompany"]</th>
-                                        <th style="background-color: transparent">@localizer["CostDate"]</th>
-                                        <th style="background-color: transparent">@localizer["MaterialCost"]</th>
-                                        <th style="background-color: transparent">@localizer["ProviderCompany"]</th>
-                                        @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
-                                        {
-                                            value = localizer[Model.MaterialTypeCode + "MaterialBinPosition"].Value;
-                                            if (value == (Model.MaterialTypeCode + "MaterialBinPosition"))
-                                                value = localizer["MaterialBinPosition"].Value;
-                                            <th style="background-color: transparent" title="@localizer["MaterialBinPosition_Tip"]">@value</th>
-                                        }
-                                    </tr>
-                                </thead>
-                                <tbody id="bootstrap-overrides">
-                                    @foreach (MaterialCostElement c in group.CostList)
-                                    {
-                                        value = DateTime.ParseExact(c.CostDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToString("yyyy-MM-dd");
-                                        <tr>
-                                            <td>@Model.ServiceCompanies.FirstOrDefault(x => x.ID == c.ServiceCompanyID).CompanyName</td>
-                                            <td>@value</td>
-                                            <td>@c.MaterialCost</td>
-                                            <td>@Model.Companies.FirstOrDefault(x => x.ID == c.ProviderCompanyID).CompanyName</td>
-                                            @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
-                                            {
-                                                <td>
-                                                    <table id="materialCost" class="evol-checkbox-table">
-                                                        <thead>
-                                                            <tr>
-                                                                @for (int i = 0; i < serviceCompanyMaterialBinPosition; i++)
-                                                                {
-                                                                    <td style="border: none;background-color: transparent;text-align:center">@(i + 1)</td>
-                                                                }
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                @for (int i = 0; i < serviceCompanyMaterialBinPosition; i++)
-                                                                {
-                                                                    value = (((int)Math.Pow(2, i)) & c.MaterialBinPosition) != 0 ? "checked" : "";
-                                                                    <td style="border: none;background-color: transparent;text-align:center"><input disabled id="MaterialBinPosition" name="MaterialBinPosition" type="checkbox" value="@Math.Pow(2, i)" @value /></td>
-                                                                }
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            }
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                }
             </tbody>
         </table>
     }
@@ -407,7 +337,7 @@ else
     {
         @if (AddMaterial)
         {
-            <div id="Show|Material">
+            <div id="Show|">
                 <img onclick="EditRow('Material')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddMaterial"]" /> 
                 @localizer["AddMaterial"]
             </div>
@@ -445,9 +375,6 @@ else
                 @foreach (MaterialElement m in Model.MaterialList)
                 {
                     eRow = m.MaterialID.ToString();
-                    level++;
-                    nameValue = Level0Name + level.ToString();
-                    idValue = "arrow" + nameValue;
                     <tr id="Show|@eRow">
                         <td class="evol-fitcontent-column">
                             @if (AddMaterial)
@@ -455,12 +382,8 @@ else
                                 <img onclick="EditRow('@eRow')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeMaterial"]" />
                             }
                             <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialCost" asp-route-materialJSON="@JsonConvert.SerializeObject(m)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
-                                <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["MaterialCostConfig"]" />
+                                <img style="background:none; width:25px;height:25px;" src="~/images/cost.png" title="@localizer["MaterialCost"]" />
                             </a>
-                            @if (m.CostList.Count() > 0)
-                            {
-                                <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
-                            }
                         </td>
                         <td>@m.MaterialRef</td>
                         <td>@m.MaterialDescription</td>
@@ -551,67 +474,6 @@ else
                             }
                         </form>
                     </tr>
-                    @if (m.CostList.Count() > 0)
-                    {
-                        <tr id="@nameValue" style="display: none">
-                            <td colspan="8">
-                                <table class="table table-sm table-hover table-collapse-seperate">
-                                    <thead id="bootstrap-overrides" class="table-info sticky-header">
-                                        <tr><th colspan="5" style="text-align:center">@localizer["ServiceCompanyCosts"]</th></tr>
-                                        <tr>
-                                            <th style="background-color: transparent">@localizer["ServiceCompany"]</th>
-                                            <th style="background-color: transparent">@localizer["CostDate"]</th>
-                                            <th style="background-color: transparent">@localizer["MaterialCost"]</th>
-                                            <th style="background-color: transparent">@localizer["ProviderCompany"]</th>
-                                            @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
-                                            {
-                                                value = localizer[Model.MaterialTypeCode + "MaterialBinPosition"].Value;
-                                                if (value == (Model.MaterialTypeCode + "MaterialBinPosition"))
-                                                    value = localizer["MaterialBinPosition"].Value;
-                                                <th  style="background-color: transparent" title="@localizer["MaterialBinPosition_Tip"]">@value</th>
-                                            }
-                                        </tr>
-                                    </thead>
-                                    <tbody id="bootstrap-overrides">
-                                        @foreach (MaterialCostElement c in m.CostList)
-                                        {
-                                            value = DateTime.ParseExact(c.CostDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToString("yyyy-MM-dd");
-                                            <tr>
-                                                <td>@Model.ServiceCompanies.FirstOrDefault(x => x.ID == c.ServiceCompanyID).CompanyName</td>
-                                                <td>@value</td>
-                                                <td>@c.MaterialCost</td>
-                                                <td>@Model.Companies.FirstOrDefault(x => x.ID == c.ProviderCompanyID).CompanyName</td>
-                                                @if (Model.MaterialTypeCode.ToUpper() != "ENVELOPE")
-                                                {
-                                                    <td>
-                                                        <table id="materialCost" class="evol-checkbox-table">
-                                                            <thead>
-                                                                <tr>
-                                                                    @for (int i = 0; i < serviceCompanyMaterialBinPosition; i++)
-                                                                    {
-                                                                        <td style="border: none;background-color: transparent;text-align:center">@(i + 1)</td>
-                                                                    }
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    @for (int i = 0; i < serviceCompanyMaterialBinPosition; i++)
-                                                                    {
-                                                                        value = (((int)Math.Pow(2, i)) & c.MaterialBinPosition) != 0 ? "checked" : "";
-                                                                        <td style="border: none;background-color: transparent;text-align:center"><input disabled id="MaterialBinPosition" name="MaterialBinPosition" type="checkbox" value="@Math.Pow(2, i)" @value /></td>
-                                                                    }
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                }
-                                            </tr>
-                                        }
-                                    </tbody>
-                                </table>
-                            </td>
-                        </tr>
-                    }
                 }
             </tbody>
     </table>

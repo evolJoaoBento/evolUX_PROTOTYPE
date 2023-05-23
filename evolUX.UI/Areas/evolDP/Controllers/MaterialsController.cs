@@ -10,6 +10,7 @@ using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.evolDP;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Globalization;
 using System.Reflection.Emit;
 using System.Text.RegularExpressions;
@@ -83,10 +84,10 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 result.MaterialTypeCode = materialType.MaterialTypeCode;
                 result.MaterialList = await _materialsService.GetMaterialGroups(materialType.MaterialTypeCode, serviceCompanyList);
                 result.FullfillMaterialCodes = await _materialsService.GetFulfillMaterialCodes();
-                result.ServiceCompanyList = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
+                result.ServiceCompanies = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
                 string CompaniesList = HttpContext.Session.GetString("evolDP/Companies");
-                result.CompaniesList = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
-                ((List<Company>)result.CompaniesList).AddRange(result.ServiceCompanyList);
+                result.Companies = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
+                ((List<Company>)result.Companies).AddRange(result.ServiceCompanies);
                 if (result.MaterialList != null && (result.MaterialTypeCode.ToUpper() == "STATION" || result.MaterialList.Count() > 0))
                 {
                     result.MaterialTypeList = await _materialsService.GetMaterialTypes(materialType.MaterialTypeCode);
@@ -159,8 +160,15 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 group.MaterialWeight = 0;
                 str = form["MaterialWeight"].ToString();
                 if (!string.IsNullOrEmpty(str) && double.TryParse(str, out dValue))
-                    group.MaterialWeight = dValue;
-
+                {
+                    if (dValue.ToString("F2") != str)
+                    {
+                        if (double.TryParse(str.Replace(".", ","), out dValue))
+                            group.MaterialWeight = dValue;
+                    }
+                    else
+                        group.MaterialWeight = dValue;
+                }
                 group.FullFillSheets = 1;
                 str = form["FullFillSheets"].ToString();
                 if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
@@ -171,8 +179,15 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 group.ExpeditionMinWeight = 0;
                 str = form["ExpeditionMinWeight"].ToString();
                 if (!string.IsNullOrEmpty(str) && double.TryParse(str, out dValue))
-                    group.ExpeditionMinWeight = dValue;
-
+                {
+                    if (dValue.ToString("F2") != str)
+                    {
+                        if (double.TryParse(str.Replace(".", ","), out dValue))
+                            group.ExpeditionMinWeight = dValue;
+                    }
+                    else
+                        group.ExpeditionMinWeight = dValue;
+                }
                 group.CostList = new List<MaterialCostElement>();
                 MaterialCostElement costElement = new MaterialCostElement();
                 costElement.ProviderCompanyID = 0;
@@ -209,10 +224,10 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 result.MaterialList = await _materialsService.GetMaterials(result.Group.GroupID, materialTypeCode, serviceCompanyList);
                 result.MaterialTypeList = await _materialsService.GetMaterialTypes(materialTypeCode);
                 result.FullfillMaterialCodes = await _materialsService.GetFulfillMaterialCodes();
-                result.ServiceCompanyList = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
+                result.ServiceCompanies = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
                 string CompaniesList = HttpContext.Session.GetString("evolDP/Companies");
-                result.CompaniesList = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
-                ((List<Company>)result.CompaniesList).AddRange(result.ServiceCompanyList);
+                result.Companies = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
+                ((List<Company>)result.Companies).AddRange(result.ServiceCompanies);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View("MaterialList",result);
             }
@@ -263,10 +278,10 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 result.MaterialList = await _materialsService.GetMaterials(result.Group.GroupID, materialTypeCode, serviceCompanyList);
                 result.MaterialTypeList = await _materialsService.GetMaterialTypes(materialTypeCode);
                 result.FullfillMaterialCodes = await _materialsService.GetFulfillMaterialCodes();
-                result.ServiceCompanyList = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
+                result.ServiceCompanies = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
                 string CompaniesList = HttpContext.Session.GetString("evolDP/Companies");
-                result.CompaniesList = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
-                ((List<Company>)result.CompaniesList).AddRange(result.ServiceCompanyList);
+                result.Companies = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
+                ((List<Company>)result.Companies).AddRange(result.ServiceCompanies);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View(result);
             }
@@ -329,14 +344,23 @@ namespace evolUX.UI.Areas.evolDP.Controllers
 
                 material.MaterialRef = form["MaterialRef"].ToString();
                 material.MaterialCode = form["MaterialCode"].ToString();
+                if (string.IsNullOrEmpty(material.MaterialCode))
+                        material.MaterialCode = material.MaterialRef;
                 material.MaterialDescription = form["MaterialDescription"].ToString();
                 material.MaterialTypeID = int.Parse(form["MaterialTypeID"].ToString());
 
                 material.MaterialWeight = 0;
                 str = form["MaterialWeight"].ToString();
                 if (!string.IsNullOrEmpty(str) && double.TryParse(str, out dValue))
-                    material.MaterialWeight = dValue;
-
+                {
+                    if (dValue.ToString("F2") != str)
+                    {
+                        if (double.TryParse(str.Replace(".", ","), out dValue))
+                            material.MaterialWeight = dValue;
+                    }
+                    else
+                        material.MaterialWeight = dValue;
+                }
                 material.FullFillSheets = 1;
                 str = form["FullFillSheets"].ToString();
                 if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
@@ -347,8 +371,15 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 material.ExpeditionMinWeight = 0;
                 str = form["ExpeditionMinWeight"].ToString();
                 if (!string.IsNullOrEmpty(str) && double.TryParse(str, out dValue))
-                    material.ExpeditionMinWeight = dValue;
-
+                {
+                    if (dValue.ToString("F2") != str)
+                    {
+                        if (double.TryParse(str.Replace(".", ","), out dValue))
+                            material.ExpeditionMinWeight = dValue;
+                    }
+                    else
+                        material.ExpeditionMinWeight = dValue;
+                }
                 material.CostList = new List<MaterialCostElement>();
                 MaterialCostElement costElement = new MaterialCostElement();
                 costElement.ProviderCompanyID = 0;
@@ -378,16 +409,31 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                     string[] mPos = str.Split(new char[] { ',' });
                     for (int i = 0; i < mPos.Length; i++) { costElement.MaterialBinPosition += Int32.Parse(mPos[i]); }
                 }
+                str = form["MaterialCost"].ToString();
+                if (!string.IsNullOrEmpty(str) && double.TryParse(str, out dValue))
+                {
+                    if (dValue.ToString("F2") != str)
+                    {
+                        if (double.TryParse(str.Replace(".", ","), out dValue))
+                            costElement.MaterialCost = dValue;
+                    }
+                    else
+                        costElement.MaterialCost = dValue;
+                }
+                str = form["ServiceCompanyID"].ToString();
+                if (!string.IsNullOrEmpty(str) && int.TryParse(str, out value))
+                    costElement.ServiceCompanyID = value;
+                material.CostList.Append(costElement);
                 string serviceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
 
-                result.Group = await _materialsService.SetMaterial(material, serviceCompanyList);
+                result.Group = await _materialsService.SetMaterial(material, materialTypeCode, serviceCompanyList);
                 result.MaterialList = await _materialsService.GetMaterials(result.Group.GroupID, materialTypeCode, serviceCompanyList);
                 result.MaterialTypeList = await _materialsService.GetMaterialTypes(materialTypeCode);
                 result.FullfillMaterialCodes = await _materialsService.GetFulfillMaterialCodes();
-                result.ServiceCompanyList = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
+                result.ServiceCompanies = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
                 string CompaniesList = HttpContext.Session.GetString("evolDP/Companies");
-                result.CompaniesList = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
-                ((List<Company>)result.CompaniesList).AddRange(result.ServiceCompanyList);
+                result.Companies = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
+                ((List<Company>)result.Companies).AddRange(result.ServiceCompanies);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 return View("MaterialList", result);
             }
