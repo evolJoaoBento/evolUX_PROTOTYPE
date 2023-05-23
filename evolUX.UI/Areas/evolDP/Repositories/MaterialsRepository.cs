@@ -77,9 +77,11 @@ namespace evolUX.UI.Areas.evolDP.Repositories
                 if (response.StatusCode == (int) HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
                 return await response.GetJsonAsync<IEnumerable<MaterialElement>>();
         }
-        public async Task<MaterialElement> SetMaterial(MaterialElement material, string serviceCompanyList)
+        public async Task<MaterialElement> SetMaterial(MaterialElement material, string materialTypeCode, string serviceCompanyList)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            if (string.IsNullOrEmpty(materialTypeCode))
+                dictionary.Add("MaterialTypeCode", materialTypeCode);
             dictionary.Add("MaterialJSON", JsonConvert.SerializeObject(material));
             dictionary.Add("ServiceCompanyList", serviceCompanyList);
             var response = await _flurlClient.Request("/API/evolDP/Materials/SetMaterial")

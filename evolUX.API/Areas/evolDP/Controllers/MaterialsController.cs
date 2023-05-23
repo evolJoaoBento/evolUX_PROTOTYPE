@@ -260,6 +260,11 @@ namespace evolUX.API.Areas.evolDP.Controllers
             try
             {
                 object obj;
+                dictionary.TryGetValue("MaterialTypeCode", out obj);
+                string materialTypeCode = "";
+                if (obj != null)
+                    materialTypeCode = Convert.ToString(obj).ToString();
+
                 dictionary.TryGetValue("MaterialJSON", out obj);
                 string MaterialJSON = Convert.ToString(obj).ToString();
                 MaterialElement material = JsonConvert.DeserializeObject<MaterialElement>(MaterialJSON);
@@ -275,7 +280,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 {
                     serviceCompanyList.Columns.Add("ID", typeof(int));
                 }
-                material = await _materials.SetMaterial(material, serviceCompanyList);
+                material = await _materials.SetMaterial(material, materialTypeCode, serviceCompanyList);
                 _logger.LogInfo("SetMaterial Get");
                 return Ok(material);
             }

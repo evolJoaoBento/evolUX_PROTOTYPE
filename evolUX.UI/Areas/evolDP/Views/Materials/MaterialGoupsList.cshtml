@@ -78,7 +78,7 @@ else
                         <td style="border: none;background-color: transparent;"><input id=GroupDescription name=GroupDescription type="text" maxlength="50" style="width: 100%" /></td>
                         <td style="border: none;background-color: transparent;">
                             <select id=ProviderCompanyID name=ProviderCompanyID style="width: 100%">
-                                    @foreach (Company c in Model.CompaniesList)
+                                    @foreach (Company c in Model.Companies)
                                     {
                                     <option value="@c.ID">@c.CompanyName</option>
                                     }
@@ -120,7 +120,7 @@ else
                         </td>
                         <td colspan="2" style="border: none;background-color: transparent;">
                             <select id=ServiceCompanyID name=ServiceCompanyID style="width: 100%">
-                                        @foreach (Company c in Model.ServiceCompanyList)
+                                        @foreach (Company c in Model.ServiceCompanies)
                                     {
                                     <option value="@c.ID">@c.CompanyName</option>
                                     }
@@ -187,7 +187,7 @@ else
             @foreach (MaterialElement m in Model.MaterialList)
             {
                 <tr>
-                    <td class="evol-fitcontent-column">
+                    <td class="evol-fitcontent-column" style="text-align: center">
                         <a asp-area="evolDP" asp-controller="Materials" asp-action="MaterialList" asp-route-materialGroupJSON="@JsonConvert.SerializeObject(m)" asp-route-materialTypeCode="@Model.MaterialTypeCode">
                             <img style="background:none; width:25px;height:25px;" src="~/images/config.png" title="@localizer["ConfigMaterialGroup"]" />
                         </a>

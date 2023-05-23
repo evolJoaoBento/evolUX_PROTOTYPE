@@ -44,9 +44,9 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _materialsRepository.GetMaterials(groupID, materialTypeCode, serviceCompanyList);
             return response;
         }
-        public async Task<MaterialElement> SetMaterial(MaterialElement material, string serviceCompanyList)
+        public async Task<MaterialElement> SetMaterial(MaterialElement material, string materialTypeCode, string serviceCompanyList)
         {
-            var response = await _materialsRepository.SetMaterial(material, serviceCompanyList);
+            var response = await _materialsRepository.SetMaterial(material, materialTypeCode, serviceCompanyList);
             return response;
         }
     }

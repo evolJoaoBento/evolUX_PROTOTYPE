@@ -181,6 +181,9 @@
   <data name="MaterialCost" xml:space="preserve">
     <value>Custo do material</value>
   </data>
+  <data name="MaterialCostConfig" xml:space="preserve">
+    <value>Configuração dos Custos do Material</value>
+  </data>
   <data name="MaterialDescription" xml:space="preserve">
     <value>Descrição</value>
   </data>
@@ -234,6 +237,9 @@
   </data>
   <data name="ServiceCompany" xml:space="preserve">
     <value>Companhia de Prestação de Serviços</value>
+  </data>
+  <data name="ServiceCompanyCosts" xml:space="preserve">
+    <value>Custo/Companhia de Prestação de Serviços</value>
   </data>
   <data name="Station" xml:space="preserve">
     <value>Adicionais de envelopagem</value>
