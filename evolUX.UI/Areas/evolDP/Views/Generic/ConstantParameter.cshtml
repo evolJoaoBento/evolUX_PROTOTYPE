@@ -42,7 +42,7 @@ else
            <tr>
                 @if (AddConstantParameter)
                 {
-                    <th style="text-align: center" class="borders"><img onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddParameter"]" /></th>
+                    <th style="text-align: center" class="borders"><img onclick="EditRow('')" style=" width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddParameter"]" /></th>
                 }
                 <th>@localizer["ParameterRef"]</th>
                 <th>@localizer["ParameterValue"]</th>
@@ -55,8 +55,8 @@ else
                 <tr id="Hide|" style="display: none">
                     <form id="AddParameterFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Client" asp-action="ConfigParameter" asp-route-source="Add">
                     <td style="align-items:center; display:flex" class="borders">
-                           <img onclick="CancelRow('')" type="image"style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
-                           <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png"/>
+                           <img onclick="CancelRow('')" type="image"; style="width:25px;height:25px";" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
+                           <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="width:25px;height:25px;" name="Submit" src="~/images/Ok.png"/>
                         </td>
                         <td><input id=ParameterRef name=ParameterRef type="text" maxlength="20" style="width: 100%" /></td>
                         <td><input id=ParameterValue name=ParameterValue type="number" maxlength="10" style="width: 100%" /></td>
@@ -70,7 +70,7 @@ else
                     @if (AddConstantParameter)
                     {
                         <td class="borders">
-                            <img onclick="EditRow('@c.ParameterID')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
+                            <img onclick="EditRow('@c.ParameterID')" style="width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
                             @if (DeleteConstantParameter)
                             {
                                 <a asp-area="evolDP" asp-controller="Client" asp-action="DeleteParameter" asp-route-exceptionID="@c.ParameterID">
@@ -88,7 +88,7 @@ else
                     <tr id="Hide|@c.ParameterID" style="display: none">
                         <form id="AddParameterFrm|@c.ParameterID" class="align-content-center" asp-area="evolDP" asp-controller="Client" asp-action="ConfigParameter" asp-route-source="Edit">
                         <td style="align-items:center; display:flex" class="borders">
-                                <img onclick="CancelRow('@c.ParameterID')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                                <img onclick="CancelRow('@c.ParameterID')" type="image" style="width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
                                 <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
                                 <input style="visibility:hidden" id=ParameterID name=ParameterID value="@c.ParameterID" />
                             </td>

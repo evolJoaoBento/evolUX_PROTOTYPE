@@ -50,7 +50,7 @@ else
         <h1>@localizer["ServiceCompany"]</h1>
     </div>
     <div>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="Companies">
+        <a class='bx bx-left-arrow' class="borders" style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="Companies">
         </a>
         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyExpCodes" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)">
             <img style="background:none; width:50px;height:50px;" src="~/images/envelopes2.png" title="@localizer["ServiceCompanyExpCodes"]" />
@@ -62,7 +62,7 @@ else
            <tr>
                 @if(AddServiceCompany)
                 {
-                    <th class="evol-fitcontent-column borders"></th>
+                    <th class="evol-fitcontent-column" class="borders"></th>
                 }
                 <th>@localizer["CompanyCode"]</th>
                 <th>@localizer["CompanyName"]</th>
@@ -76,7 +76,7 @@ else
             <tr id="Show|ServiceCompany">
                 @if(AddServiceCompany)
                 {
-                <td style="text-align: center" class="borders">
+                    <td style="text-align: center" class="borders">
                     <img onclick="EditRow('ServiceCompany')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeCompany"]" />
                 </td>
                 }
@@ -109,7 +109,11 @@ else
     </table>
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
+
+            <tr class="borders">
+=======
             <tr style="border: none">
+>>>>>>> 46a36c432f9cb0e4f2e607a3098160eaacebec48
                 @if (AddServiceCompany)
                 {
                 <th class ="evol-fitcontent-column"></th>
@@ -214,7 +218,10 @@ else
                 id0Value = "arrow" + name0Value;
                 serviceTypeConfigs = Model.Configs.Where(x => x.ServiceTypeID == sType).ToList();
                 <tr>
+                    <td style ="align-items:center; display:flex" class="borders">
+=======
                     <td style ="align-items:center; display:flex">
+>>>>>>> 46a36c432f9cb0e4f2e607a3098160eaacebec48
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
                                 asp-route-serviceCompanyConfigsJson="@JsonConvert.SerializeObject(serviceTypeConfigs)" asp-route-servicetypeid="@sType">
                                 <img class="evol-image" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
