@@ -19,7 +19,6 @@ namespace evolUX.API.Areas.Core.Services
         }
         public async Task<UserModel> LoginUserCredentials(LoginRequest model)
         {
-            _repository.Session.GetProfile(4);
             var user = await _repository.User.GetUserByUsername(model.Username);
             if(user == null)
             {
