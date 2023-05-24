@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Models.Areas.Core;
+using Shared.Models.General;
 using System.Data;
 using System.Net;
 using System.Security.Claims;
@@ -109,13 +110,13 @@ namespace evolUX.UI.Areas.Core.Controllers
         //{
         //    return View();
         //}
-        [AllowAnonymous]
 
+        [Authorize(AuthenticationSchemes="AzureAd")]
         public async Task<IActionResult> LoginADAuthentication(string returnUrl)
         {
             try
             {
-                var username = HttpContext.User.Identity.Name;
+                var username = User.Identity?.Name;
                 //chamada à api para ter o jwt e o user
                 var response = await _authService.GetTokenAndUser(username);
                 //var header = response.Headers.FirstOrDefault(h => h.Name == "").Value;

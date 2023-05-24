@@ -1,4 +1,4 @@
-﻿@using Shared.Models.Areas.Core
+@using Shared.Models.Areas.Core
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer localizer
 
@@ -39,7 +39,7 @@
                     <input type="hidden" name="returnUrl" value="@returnUrl">
                     <input type="submit" name="Submit" class="btn btn-block btn-outline-success" />
                 </form>
-                <form id="windows-form" asp-area="core" asp-controller="auth" asp-action="LoginWindowsAuthentication" method="get" style="justify-self:center; height:100px; ">
+                <form id="windows-form" asp-area="core" asp-controller="auth" asp-action="LoginADAuthentication" method="get" style="justify-self:center; height:100px; ">
                     <h4 style="margin:0">Entrar com o windows autentication</h4>
                     <input type="hidden" name="returnUrl" value="@returnUrl">
                     <input type="submit" name="Submit" class="btn btn-block btn-success" />
@@ -110,3 +110,6 @@
 
 
 </div>
+
+<div>API result</div>
+<div>@ViewData["ApiResult"]</div>

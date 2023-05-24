@@ -23,24 +23,42 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate()
-    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+builder.Services.AddAuthentication(options =>
 {
-    options.LoginPath = "/Core/Auth/Index";
-    options.LogoutPath = "/Core/Auth/Logout";
-    options.AccessDeniedPath = "/Core/Auth/AccessDenied";
-    options.Cookie.HttpOnly = true;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.None;
-    options.Cookie.SameSite = SameSiteMode.Strict;
+    options.DefaultScheme = "Cookies";
+    options.DefaultChallengeScheme = "AzureAd";
+})
+    .AddCookie(options =>
+    {
+        options.ExpireTimeSpan = TimeSpan.FromSeconds(1);
+
+    }).AddMicrosoftIdentityWebApp(options =>
+    {
+        builder.Configuration.GetSection("AzureAd").Bind(options);
+        options.NonceCookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
+    }, null, "AzureAd", null);
     
 
-});
+//builder.Services.AddAuthentication(options =>)
+//builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate()
+//    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+// Add services to the container.
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+//{
+//    options.LoginPath = "/Core/Auth/Index";
+//    options.LogoutPath = "/Core/Auth/Logout";
+//    options.AccessDeniedPath = "/Core/Auth/AccessDenied";
+//    options.Cookie.HttpOnly = true;
+//});
+
+//isto � o que chama a autentica��o para a AD  
+
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Cookie", policy =>
@@ -94,11 +112,11 @@ builder.Services.AddSingleton<IExpeditionReportRepository, ExpeditionReportRepos
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IFlurlClientFactory, PerBaseUrlFlurlClientFactory>();
-builder.Services.AddControllersWithViews(options =>
-{
-    options.Filters.Add(new AuthorizeFilter("Cookie"));
-    options.Filters.Add<BreadcrumbActionFilter>();
-});
+//builder.Services.AddControllersWithViews(options =>
+//{
+//    options.Filters.Add(new AuthorizeFilter("Cookie"));
+//    options.Filters.Add<BreadcrumbActionFilter>();
+//});
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
