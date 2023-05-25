@@ -22,11 +22,11 @@ namespace evolUX.API.Areas.Core.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;
-        //private readonly ILoggerService _logger;
+        private readonly ILoggerService _logger;
 
         public AuthController(ILoggerService logger, IAuthenticationService authenticationService)
         {
-            //_logger = logger;
+            _logger = logger;
             _authenticationService = authenticationService;
         }
         
@@ -50,7 +50,7 @@ namespace evolUX.API.Areas.Core.Controllers
                 }
 
                 //log information after login
-                //_logger.LogInfo($"User {username} logged in at {DateTime.Now}");
+                _logger.LogInfo($"User {username} logged in at {DateTime.Now}");
                 return Ok(userAndToken);
             }
             catch (SqlException ex)
@@ -60,7 +60,7 @@ namespace evolUX.API.Areas.Core.Controllers
             catch (Exception ex)
             {
                 //log error
-                //_logger.LogError($"Something went wrong inside login action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside login action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }
@@ -72,6 +72,7 @@ namespace evolUX.API.Areas.Core.Controllers
         {
             try
             {
+                
                 if (model == null)
                 {
                     return BadRequest("Invalid client request");
@@ -81,6 +82,8 @@ namespace evolUX.API.Areas.Core.Controllers
                 {
                     return NotFound(new ErrorResult { Message = $"User {model.Username} Not Found", Code = 404 });
                 }
+                //log information after login
+                _logger.LogInfo($"User {model.Username} logged in at {DateTime.Now}");
                 return Ok(userAndToken);
             }
             catch (SqlException ex)
@@ -90,7 +93,7 @@ namespace evolUX.API.Areas.Core.Controllers
             catch (Exception ex)
             {
                 //log error
-                //_logger.LogError($"Something went wrong inside Logincredentials action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside Logincredentials action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
         }
@@ -120,7 +123,7 @@ namespace evolUX.API.Areas.Core.Controllers
             catch (Exception ex)
             {
                 //log error
-                //_logger.LogError($"Something went wrong inside refresh action: {ex.Message}");
+                _logger.LogError($"Something went wrong inside refresh action: {ex.Message}");
                 return StatusCode(500, "Internal Server Error");
             }
 
