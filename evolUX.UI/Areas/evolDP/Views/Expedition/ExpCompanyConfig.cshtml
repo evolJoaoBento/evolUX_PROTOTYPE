@@ -76,7 +76,7 @@ else
         <h2>@headerDesc1</h2>
     </div>
     <div>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany"
+        <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany"
             asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)">
         </a>
     </div>
@@ -86,7 +86,7 @@ else
         <h2>@headerDesc2
             @if (Model.ExpeditionType != 0 && AddExpeditionType && Model.ExpeditionZone == 0)
             {
-                <img onclick="EditRow('@value')" class="evol-image" src="~/images/add.png" title="@localizer["ExpCompanyConfigAdd"]" />
+                    <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/add.png" title="@localizer["ExpCompanyConfigAdd"]" />
             }
         </h2>
     }
@@ -99,7 +99,7 @@ else
         {
             @if (AddExpeditionType && Model.ExpeditionZone == 0)
             {
-            <table id="Hide|@value" style="display: none" class="table table-sm table-hover table-collapse-seperate">
+            <table id="Hide|@value" style="display: none; padding-right:20px" class="table table-sm table-hover table-collapse-seperate">
                 <thead id="bootstrap-overrides" class="table-info sticky-header">
                     <tr>
                         <th class ="evol-fitcontent-column"></th>
@@ -115,17 +115,17 @@ else
                         <th>@localizer["ExpColumnF"]</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="bootstrap-overrides">
                     <tr>
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ConfigExpCompanyConfig"
                                 asp-route-startdate="@Model.Configs.First().StartDate" asp-route-pageexpeditiontype="@Model.ExpeditionType" asp-route-pageexpeditionZone="@Model.ExpeditionZone"
                                 asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)">
-                        <td style="align-items:center; display:flex">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <td  class="borders" style="align-items:center; display:flex">
+                                    <img onclick="CancelRow('@value')" type="image" class="evol-image float" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                                    <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>
-                            @type.ExpeditionTypeDesc
+                                @type.ExpeditionTypeDesc
                             <input style="display: none" id="ExpCompanyID" name="ExpCompanyID" type="text" value="@Model.ExpCompany.ID" />
                             <input style="display: none" id="StartDate" name="StartDate" type="text" value="@startDateDesc" />
                             <input style="display: none" id="ExpeditionType" name="ExpeditionType" type="text" value="@type.ExpeditionType" />
@@ -159,11 +159,11 @@ else
         {
         <div id ="TitlePage">
             <h3>@type.ExpeditionTypeDesc - @zone.ExpeditionZoneDesc
-                <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                        <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
             </h3>
         </div>
         }
-        <table id="@nameValue" style="@startDisplay" class="table table-sm table-hover table-collapse-seperate">
+        <table id="@nameValue" style="@startDisplay; padding-right:20px" class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if(AddExpeditionType)
@@ -186,11 +186,11 @@ else
         @foreach(var t in Model.Configs.Where(x=> x.ExpeditionType == type.ExpeditionType && x.ExpeditionZone == zone.ExpeditionZone))
         {
             value = t.ExpeditionType.ToString() + "|" + t.ExpeditionZone.ToString() + "|" + t.ExpCompanyLevel.ToString();
-            <tr id="Show|@value">
+            <tr id="Show|@value" ondblclick="EditRow('@value')">
                 @if (AddExpeditionType)
                 {
-                    <td class ="evol-fitcontent-column">
-                        <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCompanyConfig"]"/>
+                    <td class ="borders">
+                        <img onclick="EditRow('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeExpCompanyConfig"]"/>
                     </td>
                 }
                 <td>@type.ExpeditionTypeDesc</td>
@@ -228,21 +228,20 @@ else
                   <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyConfig"
                   asp-route-startdate="@Model.Configs.First().StartDate" asp-route-pageexpeditiontype="@Model.ExpeditionType" asp-route-pageexpeditionZone="@Model.ExpeditionZone"
                       asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)">
-                    <td style="align-items:center; display:flex">
-                        <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                    <td class="borders" style="align-items:center; display:flex">
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td>
-                        @t.ExpeditionTypeDesc
+                            @t.ExpeditionTypeDesc
                         <input style="display: none" id="ExpCompanyID" name="ExpCompanyID" type="text" value="@t.ExpCompanyID" />
                         <input style="display: none" id="ExpeditionType" name="ExpeditionType" type="text" value="@t.ExpeditionType" />
                    </td>
                     <td>
-                        @t.ExpeditionZoneDesc
+                            @t.ExpeditionZoneDesc
                         <input style="display: none" id="ExpeditionZone" name="ExpeditionZone" type="text" value="@t.ExpeditionZone" />
                     </td>
                     <td>
-                        @t.ExpCompanyLevel
+                            @t.ExpCompanyLevel
                         <input style="display: none" id="ExpCompanyLevel" name="ExpCompanyLevel" type="text" value="@t.ExpCompanyLevel" />
                     </td>
                     <td><input type="number" min="0" max="1000000" id="MaxWeight" name="MaxWeight" value="@t.MaxWeight" /> g</td>
@@ -298,5 +297,23 @@ else
                 }
             });
         }
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                });
+            }
+        });
     </script>
 }

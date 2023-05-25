@@ -40,7 +40,7 @@ AS
 						END
 					END
 				END MaterialTypeCode
-			FROM RD_MATERIAL_TYPE WITH(NOLOCK)
+	FROM RD_MATERIAL_TYPE WITH(NOLOCK)
 			GROUP BY (CASE WHEN MaterialTypeCode like '%Paper' THEN 'Paper'
 				ELSE
 					CASE WHEN MaterialTypeCode like '%Station' THEN 'Station'

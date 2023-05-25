@@ -3,6 +3,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANY_RESTRICTIONS] AS' 
 END
 GO
+--Configuração de restrições (listar/alterar)
 ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANY_RESTRICTIONS]
 	@ServiceCompanyID int = NULL,
 	@MaterialTypeID int = NULL
