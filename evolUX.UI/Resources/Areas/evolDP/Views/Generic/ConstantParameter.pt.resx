@@ -156,4 +156,10 @@
   <data name="PurgeParameters" xml:space="preserve">
     <value>Parâmetros de Expurgos</value>
   </data>
+  <data name="PopupMessageEdit" xml:space="preserve">
+    <value>Modo Edição</value>
+  </data>
+  <data name="PopupMessageAdd" xml:space="preserve">
+    <value>Adicionar Parâmetro</value>
+  </data>
 </root>

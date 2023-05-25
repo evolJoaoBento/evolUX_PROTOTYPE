@@ -135,6 +135,12 @@
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
+  <data name="PopupMessageAdd" xml:space="preserve">
+    <value>Adicionar Detalhe do Tipo Serviço</value>
+  </data>
+  <data name="PopupMessageEdit" xml:space="preserve">
+    <value>Modo Edição</value>
+  </data>
   <data name="ServiceCode" xml:space="preserve">
     <value>Código do Serviço</value>
   </data>
