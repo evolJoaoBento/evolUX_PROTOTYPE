@@ -168,6 +168,9 @@
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
+  <data name="PopupMessageEdit" xml:space="preserve">
+    <value>Modo Edição</value>
+  </data>
   <data name="Priority" xml:space="preserve">
     <value>Prioridade</value>
   </data>

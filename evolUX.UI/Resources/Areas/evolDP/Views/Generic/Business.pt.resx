@@ -235,6 +235,12 @@ diferente, gerando uma banner que pertence ao objeto postal</value>
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
+  <data name="PopupMensage" xml:space="preserve">
+    <value>Deseja editar o</value>
+  </data>
+  <data name="PopupMessageEdit" xml:space="preserve">
+    <value>Modo Edição</value>
+  </data>
   <data name="PostObjOrderMode" xml:space="preserve">
     <value>Método de ordenação num objeto postal</value>
   </data>

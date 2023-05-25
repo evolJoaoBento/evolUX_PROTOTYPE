@@ -159,4 +159,10 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancelar</value>
   </data>
+  <data name="PopupMessageEdit" xml:space="preserve">
+    <value>Modo Edição</value>
+  </data>
+  <data name="PopupMessageAdd" xml:space="preserve">
+    <value>Adicionar Exceção</value>
+  </data>
 </root>

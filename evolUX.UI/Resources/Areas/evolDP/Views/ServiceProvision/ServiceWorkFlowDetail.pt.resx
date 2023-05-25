@@ -198,6 +198,12 @@
   <data name="NoModelData" xml:space="preserve">
     <value>Sem Dados</value>
   </data>
+  <data name="PopupMessageAdd" xml:space="preserve">
+    <value>Adicionar Tipo de Serviço</value>
+  </data>
+  <data name="PopupMessageEdit" xml:space="preserve">
+    <value>Modo Edição</value>
+  </data>
   <data name="PostalCodeStart" xml:space="preserve">
     <value>Início do código postal no código de separação de expedição</value>
   </data>
