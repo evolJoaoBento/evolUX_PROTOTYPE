@@ -34,7 +34,7 @@
     {
         <h2><b>@Model.ExpCode.ExpCode</b></h2>
     }
-    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@Model.ExpCode.ServiceTaskID">
+    <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@Model.ExpCode.ServiceTaskID">
     </a>
 </div>
 @if (Model == null)
@@ -71,12 +71,11 @@ else
             {
                 <tr id="Hide|" style="display: none">
                     <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="AddExpCode" asp-route-expcode="@expCode">
-                    <td style="align-items:center; display:flex;border:none;background-color:transparent">
-                        <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                    <td style="align-items:center" class="borders">
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="width:30px;height:30px" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                     </td>
-                    <td style="width:40%"><input id=ExpCodeDesc name=ExpCodeDesc type="text" maxlength="256" style="width: 100%" value="@expCode.ExpCodeDesc" /></td>
-                    <td class="evol-fitcontent-column-one"><input id="Priority" name="Priority" type="number" min="0" value="@expCode.Priority" /></td>
+                    <td><input id=ExpCodeDesc name=ExpCodeDesc type="text" maxlength="256" style="width: 100%" value="@expCode.ExpCodeDesc" /></td>
+                    <td class="evol-fitcontent-column-one"><input style="max-width:80px" id="Priority" name="Priority" type="number" min="0" value="@expCode.Priority" /></td>
                     <td>
                         <select id="DefaultExpCenterCode" name="DefaultExpCenterCode">
                             @foreach (string expCenterCode in Model.ExpCenters.Select(x => x.ExpCenterCode).Distinct())
@@ -102,23 +101,23 @@ else
                     </form>
                 </tr>
             }
-        <tr id="Show|">
-                <td class="evol-fitcontent-column-one" style="border: none;background-color: transparent;padding-left: 15px;padding-right: 15px;">
-                @if (AddExpCode)
-                {
-                    <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCode"]" />
+            <tr id="Show|" ondblclick="EditRow('')">
+                <td class="evol-fitcontent-column-one borders">
+                    @if (AddExpCode)
+                    {
+                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeExpCode"]" />
+                    }
+                </td>
+                <td style="width:40%">@expCode.ExpCodeDesc</td>
+                <td>@expCode.Priority</td>
+                <td>@expCode.DefaultExpCenterCode</td>
+                <td>@expCode.DefaultExpCompanyZone</td>
+                @{
+                    value = expCode.CheckExpCompanySepCodes ? "checked" : "";
                 }
-            </td>
-            <td style="width:40%">@expCode.ExpCodeDesc</td>
-            <td>@expCode.Priority</td>
-            <td>@expCode.DefaultExpCenterCode</td>
-            <td>@expCode.DefaultExpCompanyZone</td>
-            @{
-                value = expCode.CheckExpCompanySepCodes ? "checked" : "";
-            }
-            <td><input type="checkbox" id="CheckExpCompanySepCodes" disabled @value /></td>
-            <td>@expCode.PostalCodeStart</td>
-        </tr>
+                <td><input type="checkbox" id="CheckExpCompanySepCodes" disabled @value /></td>
+                <td>@expCode.PostalCodeStart</td>
+            </tr>
         </tbody>
     </table>
 
@@ -146,16 +145,16 @@ else
                 serviceCompany = Model.ServiceCompanies.FirstOrDefault(x => x.ID == c.ServiceCompanyID);
                 expZone = Model.Zones.FirstOrDefault(x => x.ExpeditionZone == c.ExpeditionZone);
                 value = c.ExpCenterCode.ToString();
-                <tr id="Show|@value">
+                <tr id="Show|@value" ondblclick="EditRow('@value')">
                     @if (AddExpCode)
                     {
-                        <td class="evol-fitcontent-column"  style="align-items:center; display:flex;border:none;background-color:transparent">
+                        <td class="evol-fitcontent-column borders" style="align-items:center; display:flex">
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCodeConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
-                               asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@c.ExpCenterCode" 
-                               asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
-                                <img class="evol-image" src="~/images/config.png" title="@localizer["ConfigServiceCompanyExpCode"]" />
+                   asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@c.ExpCenterCode"
+                   asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
+                                <img style="margin-bottom:1px" class="evol-image grow" src="~/images/config.png" title="@localizer["ConfigServiceCompanyExpCode"]" />
                             </a>
-                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCenter"]" />
+                            <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeExpCenter"]" />
                         </td>
                     }
                     <td>@c.ExpCenterCode</td>
@@ -193,11 +192,10 @@ else
                 {
                     <tr id="Hide|@value" style="display: none">
                         <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeExpCenter"
-                            asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@c.ExpCenterCode" 
-                            asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
-                        <td style="align-items:center; display:flex;border:none;background-color:transparent">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                  asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@c.ExpCenterCode"
+                  asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
+                        <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>@c.ExpCenterCode</td>
                         <td><input type="text" id="Description1" name="Description1" maxlength="256" value="@c.Description1" /></td>
@@ -255,5 +253,23 @@ else
                 }
             });
         }
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                });
+            }
+        });
     </script>
 }

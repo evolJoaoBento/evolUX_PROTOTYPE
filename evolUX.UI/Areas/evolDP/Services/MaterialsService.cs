@@ -13,41 +13,26 @@ namespace evolUX.UI.Areas.evolDP.Services
         {
             _materialsRepository = materialsRepository;
         }
-        public async Task<IEnumerable<FullfillMaterialCode>> GetFulfillMaterialCodes()
+        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes()
         {
             var response = await _materialsRepository.GetFulfillMaterialCodes();
             return response;
         }
-        public async Task<IEnumerable<MaterialType>> GetMaterialTypes(bool groupCodes, string materialTypeCode)
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes()
         {
-            var response = await _materialsRepository.GetMaterialTypes(groupCodes, materialTypeCode);
+            var response = await _materialsRepository.GetMaterialTypes();
             return response;
         }
-        public async Task<IEnumerable<MaterialType>> GetMaterialTypes(string materialTypeCode)
-        {
-            var response = await _materialsRepository.GetMaterialTypes(false, materialTypeCode);
-            return response;
-        }
-        public async Task<IEnumerable<MaterialElement>> GetMaterialGroups(string materialTypeCode, string serviceCompanyList)
-        {
-            var response = await _materialsRepository.GetMaterialGroups(materialTypeCode, serviceCompanyList);
-            return response;
-        }
-        public async Task<MaterialElement> SetMaterialGroup(MaterialElement group, string serviceCompanyList)
-        {
-            var response = await _materialsRepository.SetMaterialGroup(group, serviceCompanyList);
-            return response;
+        //public async Task<MaterialsTypeViewModel> GetMaterialsTypes(int? MaterialsType, string expCompanyList)
+        //{
+        //    var response = await _MaterialsTypeRepository.GetMaterialsTypes(MaterialsType, expCompanyList);
+        //    return response;
+        //}
+        //public async Task<MaterialsZoneViewModel> GetMaterialsZones(int? MaterialsZone, string expCompanyList)
+        //{
+        //    var response = await _MaterialsTypeRepository.GetMaterialsZones(MaterialsZone, expCompanyList);
+        //    return response;
+        //}
 
-        }
-        public async Task<IEnumerable<MaterialElement>> GetMaterials(int groupID, string materialTypeCode, string serviceCompanyList)
-        {
-            var response = await _materialsRepository.GetMaterials(groupID, materialTypeCode, serviceCompanyList);
-            return response;
-        }
-        public async Task<MaterialElement> SetMaterial(MaterialElement material, string materialTypeCode, string serviceCompanyList)
-        {
-            var response = await _materialsRepository.SetMaterial(material, materialTypeCode, serviceCompanyList);
-            return response;
-        }
     }
 }
