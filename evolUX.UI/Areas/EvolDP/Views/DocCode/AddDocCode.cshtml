@@ -70,18 +70,18 @@ else
         </div>
         @if (sourceDesc == "AddDoc")
         {
-            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="Index">
+            <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="Index">
             </a>
         }
         else if (sourceDesc == "AddDocCode")
         {
-            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(Model.DocCodeConfig)">
+            <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="DocCode" asp-route-doccodeJson="@JsonConvert.SerializeObject(Model.DocCodeConfig)">
             </a>
         }
         else if (sourceDesc == "AddDocCodeConfig" || sourceDesc == "DocCodeChange"
         || sourceDesc == "DocCodeConfigChange")
         {
-            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(Model.DocCodeConfig)">
+            <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(Model.DocCodeConfig)">
             </a>
         }
     </div>
@@ -247,24 +247,22 @@ else
                 {
                     <tr>
                         <th>@localizer["StartDate"]</th>
-                            <td><input id="StartDate" name="StartDate" type="date" value="@DateTime.Now.ToString("yyyy-MM-dd")" @disable /></td>
+                        <td><input @disable id="StartDate" name="StartDate" type="date" value="@DateTime.Now.ToShortDateString()" /></td>
                     </tr>
                 }
                 else
                 {
                     <tr>
                         <th>@localizer["StartDate"]</th>
-                            @{
-                                starDateDesc = DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToString("yyyy-MM-dd");
-                            }
+                        @{starDateDesc = DateTime.ParseExact(dConfig.StartDate.ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None).ToShortDateString();}
                         <td>@starDateDesc</td>
-                        <td><input style="display: none" id="StartDate" name="StartDate" type="date" value="@starDateDesc" @disable /></td>
+                        <td><input @disable style="display: none" id="StartDate" name="StartDate" type="date" value="@starDateDesc" /></td>
                     </tr>
                 }
                 <tr>
                     <th>@localizer["EnvMedia"]</th>
                     <td>
-                        <select name="EnvMediaID" style="width: 100%" @disable>
+                        <select @disable name="EnvMediaID" style="width: 100%">
                         @if (dConfig != null && dConfig.EnvMediaID > 0)
                         {
                             <option value="@dConfig?.EnvMediaID">@dConfig.EnvMediaDesc</option>

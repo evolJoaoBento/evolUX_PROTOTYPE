@@ -58,11 +58,11 @@ else
                 <table class="table table-sm table-hover table-collapse-seperate">
                     <thead id="bootstrap-overrides" class="sticky-header">
                         <tr>
-                            <th rowspan="3" style="text-align:center;vertical-align:middle">
+                            <th class="borders" rowspan="3" style="text-align:center;vertical-align:middle">
                                 @if (PrintFile && (totalFilesLeftToPrint > 0 || totalRecFilesLeftToPrint > 0))
                                 {
                                     <a asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runidlist="@string.Join("|", Model.ProductionRunReport.Select(x => x.RunID).ToList())" asp-route-servicecompanyid="@TempData["ServiceCompanyID"]" asp-route-runname="">
-                                        <img class="evol-image" style="width:35px;height:35px" src="~/images/printer-solid-24.png">
+                                        <img class="evol-image grow" style="width:35px;height:35px" src="~/images/printer-solid-24.png">
                                     </a>
                                 }
                             </th>
@@ -124,17 +124,17 @@ else
                                         runDate = rDate.ToShortDateString();
                                     string RunName = runDate + " [" + p.RunSequence + "]";
                                 }
-                                <td style="text-align:center;vertical-align:middle">
+                                <td class="borders" style="text-align:center;vertical-align:middle">
                                     @if (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0)
                                     {
                                         <a asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName>
-                                            <img class="evol-image" src="~/images/report_orange.png" />
+                                            <img class="evol-image grow" src="~/images/report_orange.png" />
                                         </a>
                                     }
                                     else
                                     {
                                         <a asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReport" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName>
-                                            <img class="evol-image" src="~/images/report.png" />
+                                            <img class="evol-image grow" src="~/images/report.png" />
                                         </a>
                                     }
                                     @*@if (PrintFile && (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0))
@@ -232,7 +232,7 @@ else
                                 </tr>
                         }
                         <tr class="table-end">
-                            <td class="table-end-data headcol">Total</td>
+                            <td class="table-end-data headcol borders">Total</td>
                             <td class="table-end-data">@OriginalsTotal</td> @*Originals*@
                             <td class="table-end-data">@RecupTotal</td> @*Recup*@
                             <td class="table-end-data">@ProcessedTotal</td>

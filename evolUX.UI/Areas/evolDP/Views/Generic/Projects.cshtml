@@ -26,9 +26,9 @@ else
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th class="evol-fitcontent-column" style="text-align:center">
+                <th class="evol-fitcontent-column borders">
                 <a asp-area="evolDP" asp-controller="Generic" asp-action="ProjectList"  asp-route-businessID="0">
-                    <img class="evol-image" src="~/images/detail.png" title="@localizer["ProjectDetailTip"]" />
+                        <img class="evol-image grow" src="~/images/detail.png" title="@localizer["ProjectDetailTip"]" />
                 </a>
                 </th>
                 <th>@localizer["Business"]</th>
@@ -38,9 +38,9 @@ else
         @foreach (Business c in Model.CompanyBusiness)
         {
             <tr>
-                <td style="align-items:center; display:flex">
+                    <td style="justify-content:center" class="borders">
                         <a asp-area="evolDP" asp-controller="Generic" asp-action="ProjectList" asp-route-businessID="@c.BusinessID">
-                        <img class="evol-image" src="~/images/detail.png" title="@localizer["ProjectDetailTip"]: @c.Description" />
+                            <img class="evol-image grow" src="~/images/detail.png" title="@localizer["ProjectDetailTip"]: @c.Description" />
                         </a>
                 </td>
                 <td>@c.Description</td>
