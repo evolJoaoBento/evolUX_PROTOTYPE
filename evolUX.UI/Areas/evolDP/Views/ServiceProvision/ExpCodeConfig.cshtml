@@ -78,7 +78,7 @@ else
     string idValue = "arrow" + level.ToString();
     string nameValue = "";
     Company serviceCompany = Model.ServiceCompany;
-    FulfillMaterialCode fCode;  
+    FullfillMaterialCode fCode;  
     <script>
         const deleteServiceCompanyExpLevelMsg = '@localizer["deleteServiceCompanyExpLevelMsg"]"';
     </script>
@@ -116,7 +116,7 @@ else
                         <td></td>
                         <td>
                             <select id="ServiceCompanyID" name="ServiceCompanyID">
-                            @foreach (FulfillMaterialCode f in Model.FulfillMaterialCodes)
+                            @foreach (FullfillMaterialCode f in Model.FulfillMaterialCodes)
                             {
                                 <option value="@f.FullFillMaterialCode">@f.Description</option>
                             }
@@ -168,7 +168,7 @@ else
                                 fCode = Model.FulfillMaterialCodes.FirstOrDefault(x => x.FullFillMaterialCode == config.FullFillMaterialCode);
                             }
                                 <option value="@fCode.FullFillMaterialCode">@fCode.Description</option>
-                                    @foreach (FulfillMaterialCode f in Model.FulfillMaterialCodes.Where(x => x.FullFillMaterialCode != config.FullFillMaterialCode))
+                                    @foreach (FullfillMaterialCode f in Model.FulfillMaterialCodes.Where(x => x.FullFillMaterialCode != config.FullFillMaterialCode))
                             {
                                 <option value="@f.FullFillMaterialCode">@f.Description</option>
                             }

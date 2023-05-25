@@ -53,7 +53,7 @@ else
 
                     @foreach (ProdMaterialElement mInfo in sInfo.MediaMaterialList)
                     {
-                int servicespan = 0;
+                        int servicespan = 0;
                         int PrintTotal = 0;
                         int PostObjsTotal = 0;
                         Dictionary<string, int> PaperTotal = new Dictionary<string, int>();
@@ -87,7 +87,7 @@ else
                                             {
                                                 envelopingSpan += mInfo.FileList.First().StationTotals.Keys.Count;
                                             }
-                            servicespan += fulfilmentSpan;
+                                            servicespan += envelopingSpan;
                                         }
                                         <colgroup span="@envelopingSpan"></colgroup>
                                         <colgroup span="5"></colgroup>
