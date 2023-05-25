@@ -141,15 +141,14 @@
                 </label>
             </div>
             <div style="display: flex; position:absolute; right: 10px; bottom: 10px;">
-                <input class="btn btn-outline-info btn-evoldp m-2" type="submit">
+                <input class="btn btn-outline-info btn-evoldp m-2" type="submit" style="display:inline-block; position:relative; top: 8px; width: 80px;height:36px; transform: scale(0.8)">
             </div>
             <div style="margin-top:10px">
                 @if (IgnoreFilePrinterSpecs)
                 {
                     <label class="checkbox" style="display: flex; position:absolute; left: 20px; bottom: 20px;">
-                        <img class="settings-circle circle button-icon" style="background:white;padding:4px" src="~/images/allFiles.png" title="@localizer["PrintSimplex"]">
-                        <input id="allFiles" type="checkbox" class="alt-toggle-box" >
-                        <img />
+                        <img class="settings-circle circle button-icon" style="background:white;padding:4px;width:30px;height:30px" src="~/images/allFiles.png" title="@localizer["PrintSimplex"]">
+                        <input id="allFiles" type="checkbox" class="alt-toggle-box">
                     </label>
                 }
             </div>
@@ -187,7 +186,7 @@ else
 
                     @if (PrintFile)
                     {
-                        <input type="submit" name="Submit" class="btn btn-block btn-outline-info btn-evoldp" style="position:relative; top: -8px;" />
+                        <input type="submit" name="Submit" class="btn btn-block btn-outline-info btn-evoldp" style="display:inline-block; position:relative; top: -8px; width: 80px;height:36px" />
                     }
                 </div>
             </div>
@@ -320,7 +319,7 @@ else
                                                                 {
                                                                     string fJSON = JsonConvert.SerializeObject(p);
                                                                     <div class='bx bx-printer' style="color:var(--evol-grey)">
-                                                                        <input type="checkbox" name="FileCheck" id="@p.FilePlexType|@p.FileColor" value="@fJSON">
+                                                                        <input type="checkbox" style="position:relative; top:-2px" name="FileCheck" id="@p.FilePlexType|@p.FileColor" value="@fJSON">
                                                                     </div>
                                                                     <label>@p.FileName</label>
                                                                 }
@@ -341,7 +340,7 @@ else
                                                                         string fJSON = JsonConvert.SerializeObject(pregist);
                                                                         <p />
                                                                         <div class='bx bx-printer' style="color:var(--evol-grey)">
-                                                                            <input type="checkbox" name="FileCheck" id="@p.RegistDetailFilePlexType|@p.RegistDetailFileColor" value="@fJSON">
+                                                                            <input type="checkbox" style="position:relative; top:-2px" name="FileCheck" id="@p.RegistDetailFilePlexType|@p.RegistDetailFileColor" value="@fJSON">
                                                                         </div>
                                                                         <label>@pregist.FileName</label>
                                                                     }

@@ -283,8 +283,8 @@ footer div{
 
 .sticky-header {
     position: sticky;
-    top: 50px;
-    z-index: 1;
+    top: 80px;
+    z-index: 10;
 }
 
 .headcol {
@@ -428,6 +428,7 @@ tr.table-end .headcol b {
 input[type="checkbox"] {
     display: inline-block;
     vertical-align: middle;
+    width:15px;
 }
 
 label {
@@ -654,6 +655,10 @@ label {
 .btn-evoldp {
     color: var(--evolflow-color);
     border-color: var(--evolflow-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 /*
     @eInfo.ExpCompanyName - @eInfo.ExpeditionTypeDesc
