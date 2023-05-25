@@ -31,6 +31,8 @@ builder.Services.AddSingleton<ISessionService, SessionService>();
 builder.Services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddSingleton<IWrapperRepository, WrapperRepository>();
+builder.Services.AddSingleton<ILoggerService,Class>();
+
 
 //evolDP
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();

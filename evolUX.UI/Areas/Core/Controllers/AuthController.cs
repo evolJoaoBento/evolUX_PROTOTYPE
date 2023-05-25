@@ -16,6 +16,8 @@ using System.Data;
 using System.Net;
 using System.Security.Claims;
 using System.Text.Json;
+using evolUX.UI.Areas.Core.Services.Interfaces;
+
 
 namespace evolUX.UI.Areas.Core.Controllers
 {
@@ -23,9 +25,13 @@ namespace evolUX.UI.Areas.Core.Controllers
     public class AuthController : Controller
     {
         private readonly IAuthService _authService;
+        //private readonly LoggerService _logger; //Makes variable "_logger" usable
+        private readonly ILoggerServices _classService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ILoggerServices Logger)//,)//, Class classService)//,LoggerService logger)
         {
+
+            _classService = Logger;
             _authService = authService;
         }
         [AllowAnonymous]
@@ -137,13 +143,15 @@ namespace evolUX.UI.Areas.Core.Controllers
                                                     IsPersistent = false
                                                 });
 
-
+                    
                 if (!string.IsNullOrEmpty(returnUrl))
                 {
                     return Redirect(returnUrl);
                 }
                 else
                 {
+
+                    _classService.LogInfo("O utilizador "+model.Username+" fez login "+DateTime.Now); // Envia as credenciais para a classe
                     return RedirectToAction("Index", "Auth");
                 }
             }
