@@ -24,13 +24,15 @@ var builder = WebApplication.CreateBuilder(args);
 //Core
 builder.Services.AddMvc();
 builder.Services.AddTransient<IJwtService, JwtService>();
-builder.Services.AddSingleton<ILoggerService, LoggerService>();
+//builder.Services.AddSingleton<ILoggerService, LoggerService>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IAuthenticationService, AuthenticationService>();
 builder.Services.AddSingleton<ISessionService, SessionService>();
 builder.Services.AddSingleton<IPasswordHasherService, PasswordHasherService>();
 builder.Services.AddSingleton<DapperContext>();
 builder.Services.AddSingleton<IWrapperRepository, WrapperRepository>();
+builder.Services.AddSingleton<ILoggerService,Class>();
+
 
 //evolDP
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
