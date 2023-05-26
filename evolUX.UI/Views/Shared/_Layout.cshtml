@@ -92,13 +92,21 @@
         </main>
     </div>
 
+    @if(User.Identity.IsAuthenticated)
+    {
+        <footer class="border-top text-muted evol-footer">
+            <div>
+                &copy; 2023 - evolUX
+            </div>
+        </footer>
+    }else{
+        <footer class="border-top text-muted">
+            <div>
+                &copy; 2023 - evolUX
+            </div>
+        </footer>
+    }
 
-
-    <footer class="border-top text-muted evol-footer">
-        <div>
-            &copy; 2023 - evolUX
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src=~/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js></script>

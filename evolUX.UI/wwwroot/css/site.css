@@ -207,8 +207,7 @@ button {
 footer {
     position: fixed;
     bottom: 0;
-    width: calc(100% - 260px);
-    left: 260px;
+    width: 100%;    
     white-space: nowrap;
     line-height: 25px;
     background: #f7f7f7;
@@ -611,8 +610,17 @@ label {
 .table {
     margin-right: 10px;
 }
-.evol-footer{
-    z-index:1;
+.evol-footer {
+    z-index: 1;
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 260px);
+    left: 260px;
+    white-space: nowrap;
+    line-height: 25px;
+    background: #f7f7f7;
+    transition: all 0.5s ease;
+    text-align: right;
 }
 .evol-footer div{
     margin-right: 40px;
