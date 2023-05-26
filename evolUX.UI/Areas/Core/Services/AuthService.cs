@@ -112,6 +112,12 @@ namespace evolUX.UI.Areas.Core.Services
                     viewModel.ErrorResult.Message = ex.Message;
                 throw new ErrorViewModelException(viewModel);
             }
+            catch(UnauthorizedAccessException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult.Message = "The user has no profiles registered!";
+                throw new ErrorViewModelException(viewModel);
+            }
         }
     }
 }

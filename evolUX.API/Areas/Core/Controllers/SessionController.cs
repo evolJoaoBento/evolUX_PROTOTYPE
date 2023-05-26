@@ -39,6 +39,10 @@ namespace evolUX.API.Areas.Core.Controllers
                 _logger.LogInfo("SessionVariables Get");
                 return Ok(result);
             }
+            catch (UnauthorizedAccessException)
+            {
+                return StatusCode(401, "No Profiles Found");
+            }
             catch (SqlException ex)
             {
                 return StatusCode(503, "Internal Server Error");

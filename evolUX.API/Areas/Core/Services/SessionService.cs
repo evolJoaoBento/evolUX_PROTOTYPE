@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Shared.Models.Areas.Core;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
 using Shared.Models.Areas.evolDP;
+using Microsoft.IdentityModel.Tokens;
 
 namespace evolUX.API.Areas.Core.Services
 {
@@ -42,6 +43,10 @@ namespace evolUX.API.Areas.Core.Services
         {
             Dictionary<string, string> result = new Dictionary<string, string>();
             IEnumerable<int> profiles = await _repository.Session.GetProfile(User);
+            if (profiles.IsNullOrEmpty())
+            {
+                throw new UnauthorizedAccessException("No Profiles Found");
+            }
             result.Add("evolUX/Profiles", JsonConvert.SerializeObject(profiles));
             IEnumerable<string> servers = await _repository.Session.GetServers(profiles);
             IEnumerable<SideBarAction> sideBarActions = await _repository.Session.GetSideBarActions(profiles);
