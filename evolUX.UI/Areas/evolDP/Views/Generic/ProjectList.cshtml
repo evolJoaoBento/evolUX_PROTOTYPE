@@ -44,7 +44,7 @@ else
     @if (ViewBag.hasMultipleCompanyBusiness)
     {
     <div>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Generic" asp-action="Projects">
+            <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Generic" asp-action="Projects">
         </a>
     </div>
     }
@@ -75,15 +75,15 @@ else
                 @if (ViewBag.hasMultipleCompanyBusiness)
                 {
                     <tr>
-                            <th class="evol-fitcontent-column borders">
+                            <th style="border-style: solid;" class="evol-fitcontent-column borders">
                             @if (ViewBag.OnlyOneSelected)
                             {
                                 startStyle = "";
-                                <a class="evol-arrow bx bxs-chevron-up" href="javascript:hideDetail('@nameValue')" id="@idValue"> </a>
+                                    <a class="evol-arrow bx bxs-chevron-up grow" href="javascript:hideDetail('@nameValue')" id="@idValue"> </a>
                             }
                             else
                             {
-                                <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                                    <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                             }
                         </th>
                         <th colspan="5">
@@ -106,7 +106,7 @@ else
                     nameValue = Level1Name + level.ToString();
                     idValue = "arrow" + nameValue;
                     <tr>
-                        <th class="borders"><a class="evol-arrow bx bxs-chevrons-down" href="javascript:showDetails('@nameValue')" id="@idValue"></th>
+                            <th class="borders"><a class="evol-arrow bx bxs-chevrons-down grow" href="javascript:showDetails('@nameValue')" id="@idValue"></th>
                         <th>@localizer["ProjectCode"]: @p.ProjectCode</th>
                     </tr>
                     <tr id="@nameValue" style="display: none">

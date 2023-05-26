@@ -16,7 +16,7 @@
     <div id = "TitlePage" >
         <h1>@localizer["ExpCompanyTypes"]</h1>
     </div>
-    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Types">
+    <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Types">
     </a>
     @localizer["NoModelData"]
 }
@@ -35,7 +35,7 @@ else
         <h1>@localizer["ExpCompanyType"]</h1>
         <h2>@headerDesc</h2>
     </div>
-    <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Types">
+    <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Types">
     </a>
     string value = "";
     string Level0Name = "level";
@@ -71,11 +71,11 @@ else
             @foreach(ExpCompanyType c in expeditionType.ExpCompanyTypesList)
             {
                 value = expeditionType.ExpeditionType.ToString();
-                <tr id="Show|@value">
+                <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
                     @if (AddExpeditionType)
                     {
-                        <td style="text-align: center">
-                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
+                        <td style="text-align: center" class="borders">
+                            <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
                         </td>
                     }
                     @if (expeditionType.ExpCompanyTypesList.Count() > 1)
@@ -102,48 +102,66 @@ else
                 @if (AddExpeditionType)
                 {
                     value = expeditionType.ExpeditionType.ToString();
-                    <tr id="Hide|@value" style="display: none">
-                        <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyType"
-                             asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(expeditionType)" asp-route-source="@source">
-                        <td style ="align-items:center; display:flex">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
-                        </td>
-                        @if (expeditionType.ExpCompanyTypesList.Count() > 1)
-                        {
-                        <td>@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName</td>
-                        }
-                        @{
-                            value = c.RegistMode ? "checked" : "";
-                        }
-                        <td><input onchange="RegistModeChange()" type="checkbox" id="RegistMode" name="RegistMode" @value/></td>
-                        @{value = c.SeparationMode ? "checked": "";}
-                        <td><input type="checkbox" id="SeparationMode" name="SeparationMode" @value/></td>
-                        @{value = c.BarcodeRegistMode != null ? ((bool)c.BarcodeRegistMode ? "1" : "0") : "0";}
-                        <td><input type="number" min="0" max="1" id="BarcodeRegistMode" name="BarcodeRegistMode" value="@value" /></td>
-                        @{
-                            value = c.GenerateDetailRegist ? "checked": "";
-                            nameValue = value + "DRFlagGenerateDetailRegist";
-                        }
-                        <td><input type="checkbox" id="@nameValue" @value disabled /></td>
-                        @{
-                            value = c.DRFlagRegistado ? "checked": "";
-                            nameValue = value + "DRFlagRegistado";
-                        }
-                        <td><input type="checkbox" id="@nameValue" @value disabled /></td>
-                        @{
-                            value = c.DRFlagEncomenda ? "checked": "";
-                            nameValue = value + "DRFlagEncomenda";
-                        }
-                        <td><input type="checkbox" id="@nameValue" @value disabled /></td>
-                        @{
-                            value = c.DRFlagPessoal ? "checked": "";
-                            nameValue = value + "DRFlagPessoal";
-                        }
-                        <td><input type="checkbox" id="@nameValue" @value disabled /></td>
-
-                        </form>
-                    </tr>
+                    <div class="popup-container confirmPopupEdit FormEdit" id="Edit|@value" style="display: none;">
+                        <div class="bgGradient">
+                            <div class="popup">
+                                <form class="justify-content-center FormEdit" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyType"
+                                   asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(expeditionType)" asp-route-source="@source">
+                                    <h1>@localizer["PopupMessageEdit"]</h1>
+                                    <div class="form-inputs">
+                                        @if (expeditionType.ExpCompanyTypesList.Count() > 1)
+                                        {
+                                            <h6>@localizer["ExpCompany"]</h6>
+                                            <input type="text" id="Company" name="Company" value="@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName" readonly/>
+                                        }
+                                        @{
+                                            value = c.RegistMode ? "checked" : "";
+                                        }
+                                        <h6>@localizer["RegistMode"]</h6>
+                                        <input style="margin-bottom: 10px; width: 20px" onchange="RegistModeChange()" type="checkbox" id="RegistMode" name="RegistMode" @value />
+                                        @{
+                                            value = c.SeparationMode ? "checked" : "";
+                                        }
+                                        <h6>@localizer["SeparationMode"]</h6>
+                                        <input style="margin-bottom: 10px; width: 20px" type="checkbox" id="SeparationMode" name="SeparationMode" @value />
+                                        @{
+                                            value = c.BarcodeRegistMode != null ? ((bool)c.BarcodeRegistMode ? "1" : "0") : "0";
+                                        }
+                                        <h6>@localizer["BarcodeRegistMode"]</h6>
+                                        <input type="number" min="0" max="1" id="BarcodeRegistMode" name="BarcodeRegistMode" value="@value" />
+                                        @{
+                                            value = c.GenerateDetailRegist ? "checked" : "";
+                                            nameValue = value + "DRFlagGenerateDetailRegist";
+                                        }
+                                        <h6>@localizer["GenerateDetailRegist"]</h6>
+                                        <input style="margin-bottom: 10px; width: 20px" type="checkbox" id="@nameValue" @value disabled />
+                                        @{
+                                            value = c.DRFlagRegistado ? "checked" : "";
+                                            nameValue = value + "DRFlagRegistado";
+                                        }
+                                        <h6>@localizer["DRFlagRegistado"]</h6>
+                                        <input style="margin-bottom: 10px; width: 20px" type="checkbox" id="@nameValue" @value disabled />
+                                        @{
+                                            value = c.DRFlagEncomenda ? "checked" : "";
+                                            nameValue = value + "DRFlagEncomenda";
+                                        }
+                                        <h6>@localizer["DRFlagEncomenda"]</h6>
+                                        <input style="margin-bottom: 10px; width: 20px" type="checkbox" id="@nameValue" @value disabled />
+                                        @{
+                                            value = c.DRFlagPessoal ? "checked" : "";
+                                            nameValue = value + "DRFlagPessoal";
+                                        }
+                                        <h6>@localizer["DRFlagPessoal"]</h6>
+                                        <input style="width: 20px" type="checkbox" id="@nameValue" @value disabled />
+                                    </div>
+                                    <div class="popup-buttons">
+                                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
+                                        <button class="popup-button" onclick="return closePopup()">Cancelar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 }
             }
         </tbody>
@@ -160,27 +178,18 @@ else
                 tElement.checked = checkbox.checked;
             });
         }
-        function CancelRow(value) {
-            eShide('Hide|' + value);
-            eSshow('Show|' + value);
-            var obj = document.getElementById("AddFrm|" + value);
-            obj.disabled = true;
-            return false;
+        function openPopupEdit(value) {
+            document.getElementById("Edit|" + value).style.display = "flex";
         }
-        function EditRow(value) {
-            eShide('Show|' + value);
-            eSshow('Hide|' + value);
-            var obj = document.getElementById("AddFrm|" + value);
-            obj.disabled = false;
-
-            let str = 'Hide|' + value;
-            trElements = document.querySelectorAll('tr[id^="Hide|"]');
-            trElements.forEach(tElement => {
-                if (tElement.id != str) {
-                    let val = tElement.id.substring(5);
-                    CancelRow(val);
-                }
-            });
+        function confirmBtn() {
+            return true;
+        }
+        function closePopup() {
+            var elements = document.querySelectorAll(".confirmPopupEdit");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.display = "none";
+            }
+            return false;
         }
     </script>
 }

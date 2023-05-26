@@ -207,8 +207,7 @@ button {
 footer {
     position: fixed;
     bottom: 0;
-    width: calc(100% - 260px);
-    left: 260px;
+    width: 100%;    
     white-space: nowrap;
     line-height: 25px;
     background: #f7f7f7;
@@ -283,8 +282,8 @@ footer div{
 
 .sticky-header {
     position: sticky;
-    top: 50px;
-    z-index: 1;
+    top: 80px;
+    z-index: 10;
 }
 
 .headcol {
@@ -428,6 +427,7 @@ tr.table-end .headcol b {
 input[type="checkbox"] {
     display: inline-block;
     vertical-align: middle;
+    width:15px;
 }
 
 label {
@@ -610,8 +610,17 @@ label {
 .table {
     margin-right: 10px;
 }
-.evol-footer{
-    z-index:1;
+.evol-footer {
+    z-index: 1;
+    position: fixed;
+    bottom: 0;
+    width: calc(100% - 260px);
+    left: 260px;
+    white-space: nowrap;
+    line-height: 25px;
+    background: #f7f7f7;
+    transition: all 0.5s ease;
+    text-align: right;
 }
 .evol-footer div{
     margin-right: 40px;
@@ -654,6 +663,10 @@ label {
 .btn-evoldp {
     color: var(--evolflow-color);
     border-color: var(--evolflow-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
 /*
     @eInfo.ExpCompanyName - @eInfo.ExpeditionTypeDesc
@@ -707,9 +720,8 @@ label {
     background-color: var(--evoldp-color);
     color: white;
 }
-.collapsible.active:hover {
-    background-color: var(--evolflow-color);
-    color: white;
+.collapsible.active:hover::before {
+    background-color: var(--evolNew-color);
 }
 .scrollbar {
     overflow-y: scroll;
@@ -739,8 +751,8 @@ label {
     padding: 5px;
 }
 
-    .evol-arrow show {
-        transform: rotate(180);
+   .evol-arrow show {
+        transform: rotate(180deg);
     }
 
 .evol-buttons-column {
@@ -750,7 +762,7 @@ label {
 .evol-image {
     color: var(--evol-grey);
     height: 25px;
-    width: 25px;
+    width: 25px;box-decoration-break
 }
 
 .evol-fitcontent-column {
@@ -783,16 +795,16 @@ label {
 #bootstrap-overrides .borders {
     border-style: none;
     text-align: center;
-    align-content: center;
-    background: none;
+    --bs-table-accent-bg: white;
 }
 
 #bootstrap-overrides .evol-fitcontent-column {
     width: 1%;
     white-space: nowrap;
-    padding: 10px;
+    padding:10px;
     box-sizing: border-box;
     border-style: none;
     text-align: center;
     background: none;
 }
+

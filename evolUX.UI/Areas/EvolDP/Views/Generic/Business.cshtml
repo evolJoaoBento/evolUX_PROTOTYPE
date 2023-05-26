@@ -34,6 +34,34 @@ else
     string localValue;
     Company company = Model.Company;
     string check1, check2, check4;
+    <div class="popup-container" id="confirmPopupEditCompany" style="display: none;">
+        <div class="bgGradient">
+            <div class="popup">
+                <form class="justify-content-center FormEdit" asp-area="evolDP" asp-controller="Generic" asp-action="ChangeCompany">
+                    <h1>@localizer["PopupMessageEdit"]</h1>
+                    <div class="form-inputs">
+                        <input style="display: none" id=CompanyID name=CompanyID value="@company.ID" />
+                        <h6>@localizer["CompanyCode"]</h6>
+                        <input id=CompanyCode name=CompanyCode type="text" maxlength="256" style="width: 100%" value="@company.CompanyCode" readonly />
+                        <h6>@localizer["CompanyName"]</h6>
+                        <input id=CompanyName name=CompanyName type="text" maxlength="256" style="width: 100%" value="@company.CompanyName" />
+                        <h6>@localizer["CompanyAddress"]</h6>
+                        <input id=CompanyAddress name=CompanyAddress type="text" maxlength="256" style="width: 100%" value="@company.CompanyAddress" />
+                        <h6>@localizer["CompanyPostalCode"]</h6>
+                        <input id=CompanyPostalCode name=CompanyPostalCode type="text" maxlength="256" style="width: 100%" value="@company.CompanyPostalCode" />
+                        <h6>@localizer["CompanyPostalCodeDescription"]</h6>
+                        <input id=CompanyPostalCodeDescription name=CompanyPostalCodeDescription type="text" maxlength="256" style="width: 100%" value="@company.CompanyPostalCodeDescription" />
+                        <h6>@localizer["CompanyCountry"]</h6>
+                        <input id=CompanyCountry name=CompanyCountry type="text" maxlength="256" style="width: 100%" value="@company.CompanyCountry" />
+                    </div>
+                    <div class="popup-buttons">
+                        <button type="button" class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
+                        <button type="button" class="popup-button" onclick="return closePopup()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div id="TitlePage">
         <h1>@localizer["Company"] / @localizer["Business"]</h1>
     </div>
@@ -58,11 +86,11 @@ else
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
-            <tr id="Show|Company">
+            <tr id="Show|Company" ondblclick="openPopupEditCompany()">
                 @if (AddDocCode)
                 {
                     <td class="borders" style="text-align: center">
-                        <img onclick="EditRow('Company')" class="evol-image" src="~/images/edit.png" title="@localizer["CompanyChange"]" />
+                        <img onclick="openPopupEditCompany()" class="evol-image wobble" src="~/images/edit.png" title="@localizer["CompanyChange"]" />
                     </td>
                 }
                 <td>@company.CompanyCode</td>
@@ -72,24 +100,6 @@ else
                 <td>@company.CompanyPostalCodeDescription</td>
                 <td>@company.CompanyCountry</td>
             </tr>
-            @if (AddDocCode)
-            {
-                <tr id="Hide|Company" style="display: none">
-                    <form id="AddFrm|Company" class="d-flex justify-content-center m-5" asp-area="evolDP"  asp-controller="Generic" asp-action="ChangeCompany">
-                    <td style="align-items:center; display:flex" class="borders">
-                        <img onclick="CancelRow('Company')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
-                    </td>
-                    <td>@company.CompanyCode</td>
-                    <input style="display: none" id=CompanyID name=CompanyID value="@company.ID" />
-                    <td><input id=CompanyName name=CompanyName type="text" maxlength="256" style="width: 100%" value="@company.CompanyName" /></td>
-                    <td><input id=CompanyAddress name=CompanyAddress type="text" maxlength="256" style="width: 100%" value="@company.CompanyAddress" /></td>
-                    <td><input id=CompanyPostalCode name=CompanyPostalCode type="text" maxlength="256" style="width: 100%" value="@company.CompanyPostalCode" /></td>
-                    <td><input id=CompanyPostalCodeDescription name=CompanyPostalCodeDescription type="text" maxlength="256" style="width: 100%" value="@company.CompanyPostalCodeDescription" /></td>
-                    <td><input id=CompanyCountry name=CompanyCountry type="text" maxlength="256" style="width: 100%" value="@company.CompanyCountry" /></td>
-                    </form>
-                </tr>
-            }
         </tbody>
     </table>
     <table class="table table-sm table-hover table-collapse-seperate">
@@ -119,102 +129,129 @@ else
                 value = b.BusinessID.ToString();
                 @if (AddDocCode)
                 {
-                    <tr id="Hide|@value" style="display: none" class="borders">
-                        <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Generic" asp-action="ChangeBusiness" asp-route-companyid="@company.ID">
-                        <td style="align-items:center; display:flex" class="borders">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
-                        </td>
-                        <td>@b.BusinessCode</td>
-                        <input style="display: none" id=BusinessCode name=BusinessCode value="@b.BusinessCode" />
-                        <input style="display: none" id=BusinessID name=BusinessID value="@b.BusinessID" />
-                        <td><input id=Description name=Description type="text" maxlength="256" style="width: 100%" value="@b.Description" /></td>
-                        <td><input type="number" min="0" max="1000000" id=FileSheetsCutoffLevel name=FileSheetsCutoffLevel style="width: 100%" value="@b.FileSheetsCutoffLevel" /></td>
-                        <td>
-                            @{
-                                check1 = ""; check2 = ""; check4 = "";
-                            }
-                            @if ((b.InternalExpeditionMode & 1) == 1)
-                            {
-                                check1 = "checked";
-                            }
-                            @if ((b.InternalExpeditionMode & 2) == 2)
-                            {
-                                check2 = "checked";
-                            }
-                            @if ((b.InternalExpeditionMode & 4) == 4)
-                            {
-                                check4 = "checked";
-                            }
-                            <div style="display: inline-block;">
-                            <input type="checkbox" title="@localizer["InternalExpeditionMode1Tip"]" style="display: inline-block; margin-left: 10px;" id="InternalExpeditionMode1" name="InternalExpeditionMode" value="1" @check1>
-                            <label for="InternalExpeditionMode1" title="@localizer["InternalExpeditionMode1Tip"]" style="display: inline-block;">@localizer["InternalExpeditionMode1"]</label>
-                            </div>
-                            <div style="display: inline-block;">
-                            <input type="checkbox" title="@localizer["InternalExpeditionMode2Tip"]" style="display: inline-block; margin-left: 10px;"id="InternalExpeditionMode2" name="InternalExpeditionMode" value="2" @check2>
-                            <label for="InternalExpeditionMode2" title="@localizer["InternalExpeditionMode2Tip"]" style="display: inline-block;">@localizer["InternalExpeditionMode2"]</label>
-                            </div>
-                            <div style="display: inline-block;">
-                            <input type="checkbox" title="@localizer["InternalExpeditionMode4Tip"]" style="display: inline-block; margin-left: 10px;"id="InternalExpeditionMode4" name="InternalExpeditionMode" value="4" @check4>
-                            <label for="InternalExpeditionMode4" title="@localizer["InternalExpeditionMode4Tip"]" style="display: inline-block;">@localizer["InternalExpeditionMode4"]</label>
-                            </div>
-                        </td>
-                        <td><input type="number" min="0" max="10" id=InternalCodeStart name=InternalCodeStart style="width: 100%" value="@b.InternalCodeStart" /></td>
-                        <td><input type="number" min="0" max="10" id=InternalCodeLen name=InternalCodeLen style="width: 100%" value="@b.InternalCodeLen" /></td>
-                        <td class="evol-fitcontent-column">
-                                @{
-                                    List<int> eModeList = new List<int>();
-                                    eModeList.Add(0);
-                                    eModeList.Add(1);
-                                    eModeList.Add(2);
-                                    if (b.ExternalExpeditionMode != null)
-                                    {
-                                        eModeList.Remove((int)b.ExternalExpeditionMode);
-                                        eModeList.Add(-1);
-                                    }
-                                }
-                            <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
-                                    @{
-                                        localValue = b.ExternalExpeditionMode == null ? "-1" : b.ExternalExpeditionMode.ToString();
-                                    }
-                                <option value="@localValue">
-                                        @{
-                                            localValue = "ExternalExpeditionMode" + localValue;
-                                        }
-                                        @localizer[localValue]
-                                </option>
-                                    @foreach (int i in eModeList)
-                                    {
-                                    <option value="@i">
+                    <div class="popup-container confirmPopupEditBusiness FormEdit" id="Edit|@value" style="display: none;">
+                        <div class="bgGradient">
+                            <div class="popup" style="width: 1000px; max-width: 1000px">
+                                <form class="justify-content-center" asp-area="evolDP" asp-controller="Generic" asp-action="ChangeBusiness" asp-route-companyid="@company.ID">
+                                    <h1>@localizer["PopupMessageEdit"]</h1>
+                                    <div class="form-inputs">
+                                        <input style="display: none" id=BusinessID name=BusinessID value="@b.BusinessID" />
+                                        <div class="popup-div">
+                                            <h6>@localizer["BusinessCode"]</h6>
+                                            <h6>@localizer["BusinessDescription"]</h6>
+                                        </div>
+                                        <div class="popup-div">
+                                            <input id=BusinessCode name=BusinessCode type="text" maxlength="256" style="width: 100%" value="@b.BusinessCode" readonly />
+                                            <input id=Description name=Description type="text" maxlength="256" style="width: 100%" value="@b.Description" />
+                                        </div>
+                                        <div class="popup-div">
+                                            <h6>@localizer["FileSheetsCutoffLevel"]</h6>
+                                            <h6>@localizer["ExternalExpeditionMode"]</h6>
+                                        </div>
+                                        <div class="popup-div">
+                                            <input type="number" min="0" max="1000000" id=FileSheetsCutoffLevel name=FileSheetsCutoffLevel style="width: 100%" value="@b.FileSheetsCutoffLevel" />
+                                            <div style="width: 100%">
+                                                @{
+                                                    check1 = ""; check2 = ""; check4 = "";
+                                                }
+                                                @if ((b.InternalExpeditionMode & 1) == 1)
+                                                {
+                                                    check1 = "checked";
+                                                }
+                                                @if ((b.InternalExpeditionMode & 2) == 2)
+                                                {
+                                                    check2 = "checked";
+                                                }
+                                                @if ((b.InternalExpeditionMode & 4) == 4)
+                                                {
+                                                    check4 = "checked";
+                                                }
+                                                <div style="display: inline-block;">
+                                                    <input type="checkbox" title="@localizer["InternalExpeditionMode1Tip"]" style="display: inline-block" id="InternalExpeditionMode1" name="InternalExpeditionMode" value="1" @check1>
+                                                    <label for="InternalExpeditionMode1" title="@localizer["InternalExpeditionMode1Tip"]" style="display: inline-block;">@localizer["InternalExpeditionMode1"]</label>
+                                                </div>
+                                                <div style="display: inline-block;">
+                                                    <input type="checkbox" title="@localizer["InternalExpeditionMode2Tip"]" style="display: inline-block" id="InternalExpeditionMode2" name="InternalExpeditionMode" value="2" @check2>
+                                                    <label for="InternalExpeditionMode2" title="@localizer["InternalExpeditionMode2Tip"]" style="display: inline-block;">@localizer["InternalExpeditionMode2"]</label>
+                                                </div>
+                                                <div style="display: inline-block; margin-top: 20px; margin-bottom: 10px;width: 100%">
+                                                    <input type="checkbox" title="@localizer["InternalExpeditionMode4Tip"]" style="display: inline-block" id="InternalExpeditionMode4" name="InternalExpeditionMode" value="4" @check4>
+                                                    <label for="InternalExpeditionMode4" title="@localizer["InternalExpeditionMode4Tip"]" style="display: inline-block; width: 100%; text-align: center">@localizer["InternalExpeditionMode4"]</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="popup-div">
+                                            <h6>@localizer["InternalCodeStart"]</h6>
+                                            <h6>@localizer["InternalCodeLen"]</h6>
+                                        </div>
+                                        <div class="popup-div">
+                                            <input type="number" min="0" max="10" id=InternalCodeStart name=InternalCodeStart style="width: 100%" value="@b.InternalCodeStart" />
+                                            <input type="number" min="0" max="10" id=InternalCodeLen name=InternalCodeLen style="width: 100%" value="@b.InternalCodeLen" />
+                                        </div>
+                                        <div class="popup-div">
+                                            <h6>@localizer["InternalExpeditionMode"]</h6>
+                                            <h6>@localizer["TotalBannerPages"]</h6>
+                                        </div>
+                                        <div class="popup-div">
                                             @{
-                                                localValue = "ExternalExpeditionMode" + i.ToString();
+                                                List<int> eModeList = new List<int>();
+                                                eModeList.Add(0);
+                                                eModeList.Add(1);
+                                                eModeList.Add(2);
+                                                if (b.ExternalExpeditionMode != null)
+                                                {
+                                                    eModeList.Remove((int)b.ExternalExpeditionMode);
+                                                    eModeList.Add(-1);
+                                                }
                                             }
-                                            @localizer[localValue]
-                                    </option>
-                                    }
-                            </select>
-                        </td>
-                        <td><input type="number" min="0" max="20" id="TotalBannerPages" name="TotalBannerPages" value="@b.TotalBannerPages" /></td>
-                        <td>
-                            <select id="PostObjOrderMode" name="PostObjOrderMode">
-                            @{
-                                localValue = "PostObjOrderMode" + b.PostObjOrderMode.ToString();
-                            }
-                                <option value="@b.PostObjOrderMode" title="@localizer[localValue + "Tip"]">@localizer[localValue]</option>
-                            @{
-                                localValue = "PostObjOrderMode" + (1 - b.PostObjOrderMode).ToString();
-                            }
-                                <option value="@(1 - b.PostObjOrderMode)" title="@localizer[localValue + "Tip"]">@localizer[localValue]</option>
-                            </select>
-                        </td>
-                        </form>
-                    </tr>
+                                            <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
+                                                @{
+                                                    localValue = b.ExternalExpeditionMode == null ? "-1" : b.ExternalExpeditionMode.ToString();
+                                                }
+                                                <option value="@localValue">
+                                                    @{
+                                                        localValue = "ExternalExpeditionMode" + localValue;
+                                                    }
+                                                    @localizer[localValue]
+                                                </option>
+                                                @foreach (int i in eModeList)
+                                                {
+                                                    <option value="@i">
+                                                        @{
+                                                            localValue = "ExternalExpeditionMode" + i.ToString();
+                                                        }
+                                                        @localizer[localValue]
+                                                    </option>
+                                                }
+                                            </select>
+                                            <input type="number" min="0" max="20" id="TotalBannerPages" name="TotalBannerPages" value="@b.TotalBannerPages" />
+                                        </div>
+                                        <h6>@localizer["PostObjOrderMode"]</h6>
+                                        <select id="PostObjOrderMode" name="PostObjOrderMode">
+                                            @{
+                                                localValue = "PostObjOrderMode" + b.PostObjOrderMode.ToString();
+                                            }
+                                            <option value="@b.PostObjOrderMode" title="@localizer[localValue + "Tip"]">@localizer[localValue]</option>
+                                            @{
+                                                localValue = "PostObjOrderMode" + (1 - b.PostObjOrderMode).ToString();
+                                            }
+                                            <option value="@(1 - b.PostObjOrderMode)" title="@localizer[localValue + "Tip"]">@localizer[localValue]</option>
+                                        </select>
+                                    </div>
+                                    <div class="popup-buttons">
+                                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
+                                        <button class="popup-button" onclick="return closePopup()">Cancelar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 }
-                <tr id="Show|@value">
+                <tr id="Show|@value" ondblclick="openPopupEditBusiness('@value')">
                     @if (AddDocCode)
                     {
                         <td style="text-align: center" class="borders">
-                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeBusiness"]" />
+                            <img onclick="openPopupEditBusiness('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeBusiness"]" />
                         </td>
                     }
                     <td>@b.BusinessCode</td>
@@ -277,37 +314,22 @@ else
 @section Scripts
     {
     <script type="text/javascript">
-        function CancelRow(value) {
-            eShide('Hide|' + value);
-            eSshow('Show|' + value);
-
-            var obj = document.getElementById("AddFrm|" + value);
-            obj.disabled = true;
-            return false;
+        function openPopupEditCompany() {
+            document.getElementById("confirmPopupEditCompany").style.display = "flex";
         }
-        function EditRow(value) {
-            eShide('Show|' + value);
-            eSshow('Hide|' + value);
-            var obj = document.getElementById("AddFrm|" + value);
-            obj.disabled = false;
-
-            let str = 'Hide|' + value;
-            trElements = document.querySelectorAll('tr[id^="Hide|"]');
-            trElements.forEach(tElement => {
-                if (tElement.id != str) {
-                    let val = tElement.id.substring(5);
-                    CancelRow(val);
-                }
-            });
+        function openPopupEditBusiness(value) {
+            document.getElementById("Edit|" + value).style.display = "flex";
         }
-        function confirmServiceCompanyExpLevelDelete() {
-            if (confirm(deleteServiceCompanyExpLevelMsg)) {
-                // User clicked "OK", handle the deletion
-                return true;
-            } else {
-                // User clicked "Cancel", do nothing
-                return false;
+        function confirmBtn() {
+            return true;
+        }
+        function closePopup() {
+            document.getElementById("confirmPopupEditCompany").style.display = "none";
+            var elements = document.querySelectorAll(".confirmPopupEditBusiness");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.display = "none";
             }
+            return false;
         }
     </script>
 }

@@ -1,4 +1,3 @@
-
 using evolUX.UI.Areas.Core.Repositories;
 using evolUX.UI.Areas.Core.Repositories.Interfaces;
 using evolUX.UI.Areas.Core.Services;
@@ -75,6 +74,7 @@ builder.Services.AddSingleton<IAuthService, AuthService>();
 builder.Services.AddSingleton<IAuthRepository, AuthRepository>();
 builder.Services.AddSingleton<IUserService, UserService>();
 builder.Services.AddSingleton<IUserRepository, UserRepository>();
+builder.Services.AddSingleton<ILoggerServices, Class>();
 
 //evolDP
 builder.Services.AddSingleton<IDocCodeService, DocCodeService>();
@@ -112,11 +112,12 @@ builder.Services.AddSingleton<IExpeditionReportRepository, ExpeditionReportRepos
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IFlurlClientFactory, PerBaseUrlFlurlClientFactory>();
-//builder.Services.AddControllersWithViews(options =>
-//{
-//    options.Filters.Add(new AuthorizeFilter("Cookie"));
-//    options.Filters.Add<BreadcrumbActionFilter>();
-//});
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add(new AuthorizeFilter("Cookie"));
+    options.Filters.Add<BreadcrumbActionFilter>();
+    options.Filters.Add<SessionActionFilter>();
+});
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();

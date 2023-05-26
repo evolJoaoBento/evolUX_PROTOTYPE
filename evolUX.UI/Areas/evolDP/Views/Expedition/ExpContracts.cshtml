@@ -31,10 +31,57 @@
 else
 {
     string value = "";
+    <div class="popup-container" id="confirmPopupAdd" style="display: none;">
+        <div class="bgGradient">
+            <div class="popup" style="width: 1000px; max-width: 1000px">
+                <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="Expedition" asp-action="ConfigExpContract" asp-route-expcompanyjson="@JsonConvert.SerializeObject(Model.Company)">
+                    <h1>@localizer["PopupMessageAdd"]</h1>
+                    <div class="form-inputs">
+                        <input style="display: none" id=ExpCompanyID name=ExpCompanyID value="@Model.Company.ID" />
+                        <h6>@localizer["ContractNr"]</h6>
+                        <input id=ContractNr name=ContractNr type="number" min="0" max="2147483647" style="width: 100%" value="0" />
+                        <div class="popup-div">
+                            <h6>(@localizer["Client"]) @localizer["ClientNr"]</h6>
+                            <h6>(@localizer["Client"]) @localizer["ClientName"]</h6>
+                        </div>
+                        <div class="popup-div">
+                            <input id=ClientNr name=ClientNr type="number" min="0" max="2147483647" style="width: 100%" value="0" />
+                            <input id=ClientName name=ClientName type="text" maxlength="90" style="width: 100%" value="" />
+                        </div>
+                        <div class="popup-div">
+                            <h6>(@localizer["Client"]) @localizer["ClientNIF"]</h6>
+                            <h6>(@localizer["Client"]) @localizer["ClientAddress"]</h6>
+                        </div>
+                        <div class="popup-div">
+                            <input id=ClientNIF name=ClientNIF type="text" maxlength="9" style="width: 100%" value="" />
+                            <input id=ClientAddress name=ClientAddress type="text" maxlength="100" style="width: 100%" value="" />
+                        </div>
+                        <div class="popup-div">
+
+                            <h6>(@localizer["Client"]) @localizer["ClientPostalCode"]</h6>
+                            <h6>(@localizer["Client"]) @localizer["ClientPostalCodeDescription"]</h6>
+                        </div>
+                        <div class="popup-div">
+                            <input id=ClientPostalCode name=ClientPostalCode type="text" maxlength="10" style="width: 100%" value="" />
+                            <input id=ClientPostalCodeDescription name=ClientPostalCodeDescription type="text" maxlength="50" style="width: 100%" value="" />
+                        </div>
+                        <h6>@localizer["CompanyExpeditionCode"]</h6>
+                        <input id=CompanyExpeditionCode name=CompanyExpeditionCode type="text" maxlength="2" style="width: 100%" value=""/>
+                        <h6>@localizer["PurchaseOrderNr"]</h6>
+                        <input id=PurchaseOrderNr name=PurchaseOrderNr type="number" min="0" max="999999999999999999" style="width: 100%" value=""/>
+                    </div>
+                    <div class="popup-buttons">
+                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
+                        <button class="popup-button" onclick="return closePopup()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <div id="TitlePage">
         <h1>@localizer["ExpContracts"]</h1>
         <h2>@Model.Company.CompanyName</h2>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.Company)">
+        <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.Company)">
         </a>
     </div>
     <table class="table table-sm table-hover table-collapse-seperate">
@@ -42,7 +89,7 @@ else
             <tr>
                 @if (AddExpeditionContract)
                 {
-                    <th rowspan="2" class ="evol-fitcontent-column borders" style="text-align: center"><img onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["ExpContractAdd"]" /></th>
+                    <th rowspan="2" class="evol-fitcontent-column borders" style="text-align: center"><img onclick="openPopupAdd()" style="background:none; width:35px;height:35px;" class="grow" src="~/images/add.png" title="@localizer["ExpContractAdd"]" /></th>
                 }
                 <th rowspan ="2">@localizer["ContractNr"]</th>
                 <th colspan="8">@localizer["Client"]</th>
@@ -59,35 +106,14 @@ else
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
-            @if (AddExpeditionContract)
-            {
-                <tr id="Hide|" style="display: none">
-                    <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ConfigExpContract" asp-route-expcompanyjson="@JsonConvert.SerializeObject(Model.Company)">
-                    <td style="align-items:center; display:flex" class="borders">
-                        <img onclick="CancelRow('')" type="image"class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png"/>
-                    </td>
-                    <input style="display: none" id=ExpCompanyID name=ExpCompanyID value="@Model.Company.ID"/>
-                    <td><input id=ContractNr name=ContractNr type="number" min="0" max="2147483647" style="width: 100%" value="0" /></td>
-                    <td><input id=ClientNr name=ClientNr type="number" min="0" max="2147483647" style="width: 100%" value="0" /></td>
-                    <td><input id=ClientName name=ClientName type="text" maxlength="90" style="width: 100%"  /></td>
-                    <td><input id=ClientNIF name=ClientNIF type="text" maxlength="9" style="width: 100%" /></td>
-                    <td><input id=ClientAddress name=ClientAddress type="text" maxlength="100" style="width: 100%" /></td>
-                    <td><input id=ClientPostalCode name=ClientPostalCode type="text" maxlength="10" style="width: 100%" /></td>
-                    <td><input id=ClientPostalCodeDescription name=ClientPostalCodeDescription type="text" maxlength="50" style="width: 100%" /></td>
-                    <td><input id=CompanyExpeditionCode name=CompanyExpeditionCode type="text" maxlength="2" style="width: 100%" /></td>
-                    <td><input id=PurchaseOrderNr name=PurchaseOrderNr type="number" min="0" max="999999999999999999" style="width: 100%" /></td>
-                    </form>
-                </tr>
-            }
             @foreach(ExpContractElement c in Model.ExpeditionContracts)
             {
                 value = c.ContractID.ToString();
-                <tr id="Show|@value">
+                <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
                     @if (AddExpeditionContract)
                     {
                         <td class="evol-fitcontent-column borders" style="text-align: center">
-                            <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ExpContractChange"]" />
+                            <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ExpContractChange"]" />
                         </td>
                     }
                     <td>@c.ContractNr</td>
@@ -102,25 +128,54 @@ else
                 </tr>
                 @if (AddExpeditionContract)
                 {
-                    <tr id="Hide|@value" style="display: none">
-                        <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Expedition" asp-action="ConfigExpContract" asp-route-expcompanyjson="@JsonConvert.SerializeObject(Model.Company)">
-                        <td style="align-items:center; display:flex" class="borders">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
-                            </td>
-                            <input style="display: none" id=ExpCompanyID name=ExpCompanyID value="@c.ExpCompanyID" />
-                            <input style="display: none" id=ContractID name=ContractID value="@c.ContractID" />
-                            <td><input id=ContractNr name=ContractNr type="number" min="0" max="2147483647" style="width: 100%" value="@c.ContractNr" /></td>
-                            <td><input id=ClientNr name=ClientNr type="number" min="0" max="2147483647" style="width: 100%" value="@c.ClientNr" /></td>
-                            <td><input id=ClientName name=ClientName type="text" maxlength="90" style="width: 100%" value="@c.ClientName" /></td>
-                            <td><input id=ClientNIF name=ClientNIF type="text" maxlength="9" style="width: 100%" value="@c.ClientNIF" /></td>
-                            <td><input id=ClientAddress name=ClientAddress type="text" maxlength="100" style="width: 100%" value="@c.ClientAddress" /></td>
-                            <td><input id=ClientPostalCode name=ClientPostalCode type="text" maxlength="10" style="width: 100%" value="@c.ClientPostalCode" /></td>
-                            <td><input id=ClientPostalCodeDescription name=ClientPostalCodeDescription type="text" maxlength="50" style="width: 100%" value="@c.ClientPostalCodeDescription" /></td>
-                            <td><input id=CompanyExpeditionCode name=CompanyExpeditionCode type="text" maxlength="2" style="width: 100%" value="@c.CompanyExpeditionCode" /></td>
-                            <td><input id=PurchaseOrderNr name=PurchaseOrderNr type="number" min="0" max="999999999999999999" style="width: 100%" value="@c.PurchaseOrderNr" /></td>
-                         </form>
-                    </tr>
+                    <div class="popup-container confirmPopupEdit FormEdit" id="Edit|@value" style="display: none;">
+                        <div class="bgGradient">
+                            <div class="popup" style="width: 1000px; max-width: 1000px">
+                                <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="Expedition" asp-action="ConfigExpContract" asp-route-expcompanyjson="@JsonConvert.SerializeObject(Model.Company)">
+                                    <h1>@localizer["PopupMessageAdd"]</h1>
+                                    <div class="form-inputs">
+                                        <input style="display: none" id=ExpCompanyID name=ExpCompanyID value="@c.ExpCompanyID" />
+                                        <input style="display: none" id=ContractID name=ContractID value="@c.ContractID" />
+                                        <h6>@localizer["ContractNr"]</h6>
+                                        <input id=ContractNr name=ContractNr type="number" min="0" max="2147483647" style="width: 100%" value="@c.ContractNr" />
+                                        <div class="popup-div">
+                                            <h6>(@localizer["Client"]) @localizer["ClientNr"]</h6>
+                                            <h6>(@localizer["Client"]) @localizer["ClientName"]</h6>
+                                        </div>
+                                        <div class="popup-div">
+                                            <input id=ClientNr name=ClientNr type="number" min="0" max="2147483647" style="width: 100%" value="@c.ClientNr" />
+                                            <input id=ClientName name=ClientName type="text" maxlength="90" style="width: 100%" value="@c.ClientName" />
+                                        </div>
+                                        <div class="popup-div">
+                                            <h6>(@localizer["Client"]) @localizer["ClientNIF"]</h6>
+                                            <h6>(@localizer["Client"]) @localizer["ClientAddress"]</h6>
+                                        </div>
+                                        <div class="popup-div">
+                                            <input id=ClientNIF name=ClientNIF type="text" maxlength="9" style="width: 100%" value="@c.ClientNIF" />
+                                            <input id=ClientAddress name=ClientAddress type="text" maxlength="100" style="width: 100%" value="@c.ClientAddress" />
+                                        </div>
+                                        <div class="popup-div">
+
+                                            <h6>(@localizer["Client"]) @localizer["ClientPostalCode"]</h6>
+                                            <h6>(@localizer["Client"]) @localizer["ClientPostalCodeDescription"]</h6>
+                                        </div>
+                                        <div class="popup-div">
+                                            <input id=ClientPostalCode name=ClientPostalCode type="text" maxlength="10" style="width: 100%" value="@c.ClientPostalCode" />
+                                            <input id=ClientPostalCodeDescription name=ClientPostalCodeDescription type="text" maxlength="50" style="width: 100%" value="@c.ClientPostalCodeDescription" />
+                                        </div>
+                                        <h6>@localizer["CompanyExpeditionCode"]</h6>
+                                        <input id=CompanyExpeditionCode name=CompanyExpeditionCode type="text" maxlength="2" style="width: 100%" value="@c.CompanyExpeditionCode" />
+                                        <h6>@localizer["PurchaseOrderNr"]</h6>
+                                        <input id=PurchaseOrderNr name=PurchaseOrderNr type="number" min="0" max="999999999999999999" style="width: 100%" value="@c.PurchaseOrderNr" />
+                                    </div>
+                                    <div class="popup-buttons">
+                                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
+                                        <button class="popup-button" onclick="return closePopup()">Cancelar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 }
             }
         </tbody>
@@ -138,27 +193,31 @@ else
           return false;
         }
       }
-        function CancelRow(value) {
-            eShide('Hide|' + value);
-            eSshow('Show|' + value);
-            var obj = document.getElementById("AddFrm|" + value);
-            obj.disabled = true;
-            return false;
+        function openPopupEdit(value) {
+            document.getElementById("Edit|" + value).style.display = "flex";
         }
-        function EditRow(value) {
-            eShide('Show|' + value);
-            eSshow('Hide|' + value);
-            var obj = document.getElementById("AddFrm|" + value);
-            obj.disabled = false;
-
-            let str = 'Hide|' + value;
-            trElements = document.querySelectorAll('tr[id^="Hide|"]');
-            trElements.forEach(tElement => {
-                if (tElement.id != str) {
-                    let val = tElement.id.substring(5);
-                    CancelRow(val);
-                }
-            });
+        function openPopupAdd() {
+            document.getElementById("ClientNr").value = "0";
+            document.getElementById("ContractNr").value = "0";
+            document.getElementById("ClientName").value = "";
+            document.getElementById("ClientNIF").value = "";
+            document.getElementById("ClientAddress").value = "";
+            document.getElementById("ClientPostalCode").value = "";
+            document.getElementById("ClientPostalCodeDescription").value = "";
+            document.getElementById("CompanyExpeditionCode").value = "";
+            document.getElementById("PurchaseOrderNr").value = "";
+            document.getElementById("confirmPopupAdd").style.display = "flex";
+        }
+        function confirmBtn() {
+            return true;
+        }
+        function closePopup() {
+            document.getElementById("confirmPopupAdd").style.display = "none";
+            var elements = document.querySelectorAll(".confirmPopupEdit");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.display = "none";
+            }
+            return false;
         }
     </script>
 }

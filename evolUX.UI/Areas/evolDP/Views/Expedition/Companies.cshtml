@@ -82,22 +82,22 @@ else
                 <tr>
                     <td class="evol-fitcontent-column borders">
                         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(expCompany)" asp-route-typesJson="@JsonConvert.SerializeObject(expCompanyTypeList)">
-                            <img style="background:none; width:35px;height:35px;" src="~/images/config.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
+                            <img style="background:none; width:35px;height:35px;" class="rotate_01" src="~/images/config.png" title="@localizer["ExpCompanyDetail"]: @expCompany.CompanyName" />
                         </a>
                         <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpContracts" asp-route-expCompanyJson="@JsonConvert.SerializeObject(expCompany)">
-                            <img style="background:none; width:35px;height:35px;" src="~/images/contract.png" title="@localizer["ExpContracts"]: @expCompany.CompanyName" />
+                            <img style="background:none; width:35px;height:35px;" class="grow" src="~/images/contract.png" title="@localizer["ExpContracts"]: @expCompany.CompanyName" />
                         </a>
                         @if (ExistsExpeditionRegist)
                         {
                             <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpRegistRange" asp-route-expCompanyJson="@JsonConvert.SerializeObject(expCompany)">
-                            <img style="background:none; width:35px;height:35px;" src="~/images/RegistredMail.png" title="@localizer["ExpRegistRange"]: @expCompany.CompanyName" />
+                                <img style="background:none; width:35px;height:35px;" class="grow" src="~/images/RegistredMail.png" title="@localizer["ExpRegistRange"]: @expCompany.CompanyName" />
                         </a>
                         }
                     </td>
                     <td>@expCompany.CompanyName
                         @if (expCompanyTypeList.Count() > 0)
                         {
-                            <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                         }
                     </td>
                     <td>@expCompany.CompanyCode</td>
@@ -108,11 +108,11 @@ else
                 </tr>
                 @if (expCompanyTypeList.Count() > 0)
                 {
-                    <tr id="@nameValue" style="display: none">
-                        <td></td>
+                    <tr id="@nameValue" class="borders" style="display: none">
+                        <td class="borders"></td>
                         <td colspan="6">
                             <table class="table table-sm table-hover table-collapse-seperate">
-                            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                            <thead id="bootstrap-overrides" class="table-info">
                                 <tr>
                                     <th>@localizer["ExpeditionType"]</th>
                                     <th title="@localizer["RegistModeTip"]">@localizer["RegistMode"]</th>
