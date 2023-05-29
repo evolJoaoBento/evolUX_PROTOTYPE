@@ -1,8 +1,12 @@
 ﻿using Dapper;
 using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Data.Context;
+using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
+using Shared.Models.Areas.Finishing;
 using System.Data;
+using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace evolUX.API.Areas.evolDP.Repositories
 {
@@ -14,7 +18,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes(string fullFillMaterialCode)
+        public async Task<IEnumerable<FullfillMaterialCode>> GetFulfillMaterialCodes(string fullFillMaterialCode)
         {
             string sql = @"RD_UX_GET_FULLFILL_MATERIALCODE";
             var parameters = new DynamicParameters();
@@ -22,14 +26,17 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 parameters.Add("FullFillMaterialCode", fullFillMaterialCode, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<FulfillMaterialCode> result = await connection.QueryAsync<FulfillMaterialCode>(sql, parameters, commandType: CommandType.StoredProcedure);
+                IEnumerable<FullfillMaterialCode> result = await connection.QueryAsync<FullfillMaterialCode>(sql, parameters, commandType: CommandType.StoredProcedure);
                 return result;
             }
         }
-        
-        public async Task<IEnumerable<MaterialType>> GetMaterialTypes()
+
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes(bool groupCodes, string materialTypeCode)
         {
             string sql = @"RD_UX_GET_MATERIAL_TYPE";
+            var parameters = new DynamicParameters();
+            parameters.Add("GroupCodes", groupCodes, DbType.Boolean);
+            parameters.Add("MaterialTypeCode", materialTypeCode, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<MaterialType> result = await connection.QueryAsync<MaterialType>(sql, parameters, commandType: CommandType.StoredProcedure);
@@ -110,7 +117,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return result;
             }
         }
-        
+
         public async Task<int> SetMaterialGroup(MaterialElement group, DataTable serviceCompanyList)
         {
             string sql = @"RD_UX_SET_MATERIAL_GROUP";
@@ -181,7 +188,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 var dt = _context.ToDataTable(obs);
                 if (dt != null)
                 {
-                    int lastMaterialID = - 1;
+                    int lastMaterialID = -1;
                     string value;
                     MaterialElement material = new MaterialElement();
                     List<MaterialCostElement> materialCost = new List<MaterialCostElement>();
@@ -204,7 +211,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                                 material.MaterialWeight = double.Parse(r["MaterialWeight"].ToString());
                             material.MaterialRef = (string)r["MaterialRef"];
                             if (!r.IsNull("FullFillSheets"))
-                                material.FullFillSheets = (int)r["FullFillSheets"]; 
+                                material.FullFillSheets = (int)r["FullFillSheets"];
                             if (!r.IsNull("FullFillMaterialCode"))
                                 material.FullFillMaterialCode = (string)r["FullFillMaterialCode"];
                             if (!r.IsNull("ExpeditionMinWeight"))
@@ -281,7 +288,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 return materialID;
             }
         }
- 
+
         public async Task<IEnumerable<MaterialCostElement>> GetMaterialCost(int materialID, DataTable serviceCompanyList)
         {
             string sql = @"RD_UX_GET_MATERIAL_COST";
