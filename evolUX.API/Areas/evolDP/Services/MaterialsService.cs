@@ -13,14 +13,19 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             _repository = repository;
         }
-        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes(string fullFillMaterialCode)
+        public async Task<IEnumerable<FullfillMaterialCode>> GetFulfillMaterialCodes(string fullFillMaterialCode)
         {
-            IEnumerable<FulfillMaterialCode> result = await _repository.Materials.GetFulfillMaterialCodes(fullFillMaterialCode);
+            IEnumerable<FullfillMaterialCode> result = await _repository.Materials.GetFulfillMaterialCodes(fullFillMaterialCode);
             return result;
         }
-        public async Task<IEnumerable<MaterialType>> GetMaterialTypes()
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes(bool groupCodes, string materialTypeCode)
         {
-            IEnumerable<MaterialType> result = await _repository.Materials.GetMaterialTypes();
+            IEnumerable<MaterialType> result = await _repository.Materials.GetMaterialTypes(groupCodes, materialTypeCode);
+            return result;
+        }
+        public async Task<IEnumerable<MaterialElement>> GetMaterialGroups(int groupID, string groupCode, int materialTypeID, string materialTypeCode, DataTable serviceCompanyList)
+        {
+            IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterialGroups(groupID, groupCode, materialTypeID, materialTypeCode, serviceCompanyList);
             return result;
         }
         public async Task<MaterialElement> SetMaterialGroup(MaterialElement group, DataTable serviceCompanyList)

@@ -10,6 +10,10 @@ using Shared.Models.Areas.evolDP;
 using Shared.ViewModels.Areas.Core;
 using Shared.ViewModels.Areas.evolDP;
 using System.Data;
+using System.Data.SqlTypes;
+using System.Globalization;
+using System.Reflection.Emit;
+using System.Text.RegularExpressions;
 
 namespace evolUX.UI.Areas.evolDP.Controllers
 {
@@ -25,9 +29,8 @@ namespace evolUX.UI.Areas.evolDP.Controllers
         {
             try
             {
-                string expCompanyList = HttpContext.Session.GetString("evolDP/ExpeditionCompanies");
                 MaterialTypeViewModel result = new MaterialTypeViewModel();
-                result.MaterialTypeList = await _materialsService.GetMaterialTypes();
+                result.MaterialTypeList = await _materialsService.GetMaterialTypes(true, "");
                 if (result != null && result.MaterialTypeList != null && result.MaterialTypeList.Count() > 0)
                 {
                     result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
@@ -70,7 +73,70 @@ namespace evolUX.UI.Areas.evolDP.Controllers
             }
 
         }
-        
+
+        public async Task<IActionResult> MaterialGoupsList(string materialTypeJSON)
+        {
+            try
+            {
+                MaterialType materialType = JsonConvert.DeserializeObject<MaterialType>(materialTypeJSON);
+                string serviceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
+                MaterialViewModel result = new MaterialViewModel();
+                result.MaterialTypeCode = materialType.MaterialTypeCode;
+                result.MaterialList = await _materialsService.GetMaterialGroups(materialType.MaterialTypeCode, serviceCompanyList);
+                result.FullfillMaterialCodes = await _materialsService.GetFulfillMaterialCodes();
+                result.ServiceCompanies = JsonConvert.DeserializeObject<List<Company>>(serviceCompanyList);
+                string CompaniesList = HttpContext.Session.GetString("evolDP/Companies");
+                result.Companies = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
+                ((List<Company>)result.Companies).AddRange(result.ServiceCompanies);
+                if (result.MaterialList != null && (result.MaterialTypeCode.ToUpper() == "STATION" || result.MaterialList.Count() > 0))
+                {
+                    result.MaterialTypeList = await _materialsService.GetMaterialTypes(materialType.MaterialTypeCode);
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+                    return View(result);
+                }
+                else
+                {
+                    MaterialElement materialGroup = new MaterialElement();
+                    materialGroup.GroupID = 0;
+                    return RedirectToAction("MaterialList", "Materials", new { Area = "evolDP", materialGroupJSON = JsonConvert.SerializeObject(materialGroup), materialTypeCode = materialType.MaterialTypeCode });
+                }
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                return View("Error", viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", viewModel);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+
+        }
+
         public async Task<IActionResult> ChangeMaterialGroup(IFormCollection form, string materialTypeCode)
         {
             try
@@ -149,7 +215,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 if (!string.IsNullOrEmpty(str))
                 {
                     string[] mPos = str.Split(new char[] { ',' });
-                    for(int i = 0; i < mPos.Length; i++) { costElement.MaterialBinPosition += Int32.Parse(mPos[i]); }
+                    for (int i = 0; i < mPos.Length; i++) { costElement.MaterialBinPosition += Int32.Parse(mPos[i]); }
                 }
 
                 string serviceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
@@ -163,7 +229,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 result.Companies = JsonConvert.DeserializeObject<List<Company>>(CompaniesList);
                 ((List<Company>)result.Companies).AddRange(result.ServiceCompanies);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
-                return View("MaterialList",result);
+                return View("MaterialList", result);
             }
             catch (FlurlHttpException ex)
             {
@@ -279,7 +345,7 @@ namespace evolUX.UI.Areas.evolDP.Controllers
                 material.MaterialRef = form["MaterialRef"].ToString();
                 material.MaterialCode = form["MaterialCode"].ToString();
                 if (string.IsNullOrEmpty(material.MaterialCode))
-                        material.MaterialCode = material.MaterialRef;
+                    material.MaterialCode = material.MaterialRef;
                 material.MaterialDescription = form["MaterialDescription"].ToString();
                 material.MaterialTypeID = int.Parse(form["MaterialTypeID"].ToString());
 
