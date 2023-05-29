@@ -20,9 +20,9 @@ namespace evolUX.API.Areas.evolDP.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int serviceCompanyID)
+        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int serviceCompanyID, int materialTypeID)
         {
-            IEnumerable<ServiceCompanyRestriction> result = await _repository.ServiceProvision.GetServiceCompanyRestrictions(serviceCompanyID, 0);
+            IEnumerable<ServiceCompanyRestriction> result = await _repository.ServiceProvision.GetServiceCompanyRestrictions(serviceCompanyID, materialTypeID);
             return result;
         }
         public async Task SetServiceCompanyRestriction(int serviceCompanyID, int materialTypeID, int materialPosition, int fileSheetsCutoffLevel, bool restrictionMode)

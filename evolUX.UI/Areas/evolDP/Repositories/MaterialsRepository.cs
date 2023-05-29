@@ -9,6 +9,7 @@ using evolUX.API.Models;
 using Shared.ViewModels.Areas.Finishing;
 using Shared.Models.Areas.evolDP;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace evolUX.UI.Areas.evolDP.Repositories
 {
@@ -90,6 +91,30 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<MaterialElement>();
+        }
+        public async Task<IEnumerable<MaterialCostElement>> GetMaterialCost(int materialID, string serviceCompanyList)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("MaterialID", materialID);
+            dictionary.Add("ServiceCompanyList", serviceCompanyList);
+            var response = await _flurlClient.Request("/API/evolDP/Materials/GetMaterialCost")
+                    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                    .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<IEnumerable<MaterialCostElement>>();
+        }
+        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int materialTypeID)
+        {
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("MaterialTypeID", materialTypeID);
+
+            var response = await _flurlClient.Request("/API/evolDP/ServiceProvision/GetServiceCompanyRestrictions")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<IEnumerable<ServiceCompanyRestriction>>();
         }
     }
 }

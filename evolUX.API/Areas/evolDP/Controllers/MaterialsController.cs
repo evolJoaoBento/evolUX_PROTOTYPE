@@ -296,6 +296,47 @@ namespace evolUX.API.Areas.evolDP.Controllers
             }
         }
 
+        [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
+        [ActionName("GetMaterialCost")]
+        public async Task<ActionResult<IEnumerable<MaterialElement>>> GetMaterialCost([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                int materialID = 0;
+                dictionary.TryGetValue("MaterialID", out obj);
+                if (obj != null)
+                    materialID = Convert.ToInt32(obj.ToString());
+
+                DataTable serviceCompanyList = new DataTable();
+                dictionary.TryGetValue("ServiceCompanyList", out obj);
+                if (obj != null)
+                {
+                    string serviceCompanyListJSON = Convert.ToString(obj);
+                    serviceCompanyList = JsonConvert.DeserializeObject<DataTable>(serviceCompanyListJSON).DefaultView.ToTable(false, "ID");
+                }
+                else
+                {
+                    serviceCompanyList.Columns.Add("ID", typeof(int));
+                }
+
+                var result = await _materials.GetMaterialCost(materialID, serviceCompanyList);
+                _logger.LogInfo("GetMaterialCost Get");
+                return Ok(result);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside GetMaterialCost action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
+
 
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]

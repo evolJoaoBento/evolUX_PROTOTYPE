@@ -52,6 +52,11 @@ namespace evolUX.API.Areas.evolDP.Services
             else
                 return new MaterialElement();
         }
+        public async Task<IEnumerable<MaterialCostElement>> GetMaterialCost(int materialID, DataTable serviceCompanyList)
+        {
+            var response = await _repository.Materials.GetMaterialCost(materialID, serviceCompanyList);
+            return response;
+        }
         public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMedia(int? envMediaID)
         {
             var envelopeMediaList = await _repository.Materials.GetEnvelopeMedia(envMediaID);

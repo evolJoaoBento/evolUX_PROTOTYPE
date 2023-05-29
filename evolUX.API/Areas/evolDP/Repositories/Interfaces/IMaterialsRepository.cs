@@ -11,6 +11,7 @@ namespace evolUX.API.Areas.evolDP.Repositories.Interfaces
         public Task<int> SetMaterialGroup(MaterialElement group, DataTable serviceCompanyList);
         public Task<IEnumerable<MaterialElement>> GetMaterials(int materialID, string materialRef, string materialCode, int groupID, int materialTypeID, string materialTypeCode, DataTable serviceCompanyList);
         public Task<int> SetMaterial(MaterialElement material, DataTable serviceCompanyList);
+        public Task<IEnumerable<MaterialCostElement>> GetMaterialCost(int materialID, DataTable serviceCompanyList);
         public Task<IEnumerable<EnvelopeMediaGroup>> GetEnvelopeMediaGroups(int? envMediaGroupID);
         public Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMedia(int? envMediaID);
     }

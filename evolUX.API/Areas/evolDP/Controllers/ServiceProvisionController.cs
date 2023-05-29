@@ -37,12 +37,16 @@ namespace evolUX.API.Areas.evolDP.Controllers
             try
             {
                 object obj;
-                dictionary.TryGetValue("ServiceCompanyID", out obj);
                 int value = 0;
                 int serviceCompanyID = 0;
+                dictionary.TryGetValue("ServiceCompanyID", out obj);
                 if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
                     serviceCompanyID = value;
-                var restrictions = await _serviceProvision.GetServiceCompanyRestrictions(serviceCompanyID);
+                int materialTypeID = 0;
+                dictionary.TryGetValue("MaterialTypeID", out obj);
+                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                    materialTypeID = value; 
+                var restrictions = await _serviceProvision.GetServiceCompanyRestrictions(serviceCompanyID, materialTypeID);
                 _logger.LogInfo("ServiceCompany Restrictions  Get");
                 return Ok(restrictions);
             }

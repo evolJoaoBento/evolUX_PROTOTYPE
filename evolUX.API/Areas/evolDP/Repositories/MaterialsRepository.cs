@@ -100,6 +100,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                         {
                             MaterialCostElement costElement = new MaterialCostElement();
                             ((List<MaterialCostElement>)group.CostList).Add(costElement);
+                            costElement.GroupID = groupID;
                             costElement.ServiceCompanyID = (int)r["ServiceCompanyID"];
                             costElement.CostDate = (int)r["CostDate"];
                             costElement.MaterialBinPosition = int.Parse(r["MaterialBinPosition"].ToString());
@@ -224,6 +225,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
                         {
                             MaterialCostElement costElement = new MaterialCostElement();
                             ((List<MaterialCostElement>)material.CostList).Add(costElement);
+                            costElement.MaterialID = materialID;
                             costElement.ServiceCompanyID = (int)r["ServiceCompanyID"];
                             costElement.CostDate = (int)r["CostDate"];
                             costElement.MaterialBinPosition = int.Parse(r["MaterialBinPosition"].ToString());
@@ -274,15 +276,47 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 if (mCost.MaterialCost >= 0)
                     parameters.Add("MaterialCost", mCost.MaterialCost, DbType.Double);
                 if (mCost.MaterialBinPosition >= 0)
-                {
-                    if (mCost.ServiceCompanyID > 0 && mCost.ServiceCompanyMaterialPosition > 0)
-                        parameters.Add("MaterialBinPosition", mCost.ServiceCompanyMaterialPosition, DbType.Int32);
-                    else
-                        parameters.Add("MaterialBinPosition", mCost.MaterialBinPosition, DbType.Int32);
-                }
+                    parameters.Add("MaterialBinPosition", mCost.MaterialBinPosition, DbType.Int32);
             }
             parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
 
+            parameters.Add("@ReturnID", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                await connection.ExecuteAsync(sql, parameters, commandType: CommandType.StoredProcedure);
+                int materialID = parameters.Get<int>("@ReturnID");
+                return materialID;
+            }
+        }
+ 
+        public async Task<IEnumerable<MaterialCostElement>> GetMaterialCost(int materialID, DataTable serviceCompanyList)
+        {
+            string sql = @"RD_UX_GET_MATERIAL_COST";
+            var parameters = new DynamicParameters();
+            if (materialID > 0)
+                parameters.Add("MaterialID", materialID, DbType.Int64);
+            parameters.Add("ServiceCompanyList", serviceCompanyList.AsTableValuedParameter("IDlist"));
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                IEnumerable<MaterialCostElement> result = await connection.QueryAsync<MaterialCostElement>(sql, parameters, commandType: CommandType.StoredProcedure);
+                return result;
+            }
+        }
+
+        public async Task<int> SetMaterialCost(MaterialCostElement material)
+        {
+            string sql = @"RD_UX_SET_MATERIAL";
+            var parameters = new DynamicParameters();
+            parameters.Add("MaterialID", material.MaterialID, DbType.Int64);
+            parameters.Add("ServiceCompanyID", material.ServiceCompanyID, DbType.Int64);
+            if (material.ProviderCompanyID > 0)
+                parameters.Add("ProviderCompanyID", material.ProviderCompanyID, DbType.Int64);
+            if (material.CostDate >= 0)
+                parameters.Add("CostDate", material.CostDate, DbType.Int64);
+            if (material.MaterialCost >= 0)
+                parameters.Add("MaterialCost", material.MaterialCost, DbType.Double);
+            if (material.MaterialBinPosition >= 0)
+                parameters.Add("MaterialBinPosition", material.MaterialBinPosition, DbType.Int32);
             parameters.Add("@ReturnID", dbType: DbType.Int32, direction: ParameterDirection.ReturnValue);
             using (var connection = _context.CreateConnectionEvolDP())
             {

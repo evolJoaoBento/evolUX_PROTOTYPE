@@ -269,6 +269,32 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_SET_MATERIAL_COST] AS' 
 END
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RD_UX_GET_MATERIAL_COST]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[RD_UX_GET_MATERIAL_COST] AS' 
+END
+GO
+ALTER  PROCEDURE [dbo].[RD_UX_GET_MATERIAL_COST]
+	@MaterialID int = NULL,
+	@ServiceCompanyList IDList READONLY
+AS
+	SET NOCOUNT ON
+	SELECT mc.ServiceCompanyID, mc.MaterialID, mc.ProviderCompanyID, mc.CostDate, mc.MaterialCost, mc.MaterialBinPosition, scr.MaterialPosition ServiceCompanyMaterialPosition
+		FROM RD_MATERIAL m WITH(NOLOCK)
+		INNER JOIN
+			RD_MATERIAL_COST mc WITH(NOLOCK)
+		ON m.MaterialID = mc.MaterialID
+		INNER JOIN
+			@ServiceCompanyList s
+		ON s.ID = mc.ServiceCompanyID
+		LEFT OUTER JOIN
+			RD_SERVICE_COMPANY_RESTRICTION scr WITH(NOLOCK)
+		ON scr.ServiceCompanyID = mc.ServiceCompanyID
+			AND scr.MaterialTypeID = m.MaterialTypeID
+	WHERE m.MaterialID = ISNULL(@MaterialID,m.MaterialID)
+	ORDER BY mc.ServiceCompanyID ASC, mc.CostDate DESC 
+RETURN
+GO
 ALTER  PROCEDURE [dbo].[RD_UX_SET_MATERIAL_COST]
 	@MaterialID int,
 	@ServiceCompanyID int,
