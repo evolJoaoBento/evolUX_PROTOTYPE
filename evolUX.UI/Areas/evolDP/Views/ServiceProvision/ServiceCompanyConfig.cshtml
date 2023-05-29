@@ -88,7 +88,7 @@ else
         <h2>@headerDesc1</h2>
     </div>
     <div>
-        <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany"
+        <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany"
             asp-route-servicecompanyjson="@JsonConvert.SerializeObject(Model.ServiceCompany)">
         </a>
     </div>
@@ -98,7 +98,7 @@ else
         <h2>@headerDesc2
             @if (AddServiceCompany && Model.CostDate == 0 && servicesNotInList.Count() > 0)
             {
-                <img onclick="EditRow('@value')" class="evol-image" src="~/images/add.png" title="@localizer["ServiceCompanyConfigAdd"]" />
+                    <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/add.png" title="@localizer["ServiceCompanyConfigAdd"]" />
             }
         </h2>
         @if(!string.IsNullOrEmpty(headerDesc3))
@@ -119,14 +119,14 @@ else
                     <th>@localizer["Formula"]</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="bootstrap-overrides">
                 <tr>
                     <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ConfigServiceCompanyConfig"
                   asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
                   asp-route-servicecompany="@JsonConvert.SerializeObject(Model.ServiceCompany)">
-                        <td style="align-items:center; display:flex">
-                            <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                        <td class="borders" style="align-items:center; display:flex">
+                        <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td>
                             <select id="ServiceID" name="ServiceID">
@@ -162,11 +162,11 @@ else
             <div id ="TitlePage">
                 <h2>
                 @serviceDesc
-                <img onclick="EditRow('@value')" class="evol-image" src="~/images/add.png" title="@localizer["ServiceCompanyConfigAdd"]" />
+                    <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/add.png" title="@localizer["ServiceCompanyConfigAdd"]" />
                 </h2>
                 <h3>
                     [@matchCode]
-                    <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                    <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
                 </h3>
             </div>
         }
@@ -182,14 +182,14 @@ else
                     <th>@localizer["Formula"]</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="bootstrap-overrides">
                 <tr>
                     <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ConfigServiceCompanyConfig"
                             asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
                             asp-route-servicecompany="@JsonConvert.SerializeObject(Model.ServiceCompany)">
-                    <td style="align-items:center; display:flex">
-                        <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                    <td class="borders" style="align-items:center; display:flex">
+                        <img onclick="CancelRow('@value')" type="image" class="evol-image float" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <td>@serviceDesc
                         <input style="display: none" id="ServiceID" name="ServiceID" type="text" value="@service" />
@@ -223,11 +223,11 @@ else
                 startDateDesc = startDateDT.ToShortDateString();
 
             value = "S" + cDate.ServiceID.ToString() + "|" + cDate.CostDate.ToString();
-            <tr id="Show|@value">
+            <tr id="Show|@value" ondblclick="EditRow('@value')">
                 @if (AddServiceCompany)
                 {
-                    <td class ="evol-fitcontent-column">
-                        <img onclick="EditRow('@value')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyConfig"]"/>
+                    <td class ="evol-fitcontent-column borders">
+                        <img onclick="EditRow('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyConfig"]"/>
                     </td>
                 }
                 <td>@startDateDesc</td>
@@ -240,9 +240,8 @@ else
                   <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyConfig"
                   asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
                       asp-route-serviceompany="@JsonConvert.SerializeObject(Model.ServiceCompany)">
-                    <td style="align-items:center; display:flex">
-                        <img onclick="CancelRow('@value')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
+                    <td style="align-items:center; display:flex; justify-content:center; margin-top: 3px" class="borders" >
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                     </td>
                     <input style="display: none" id="ServiceID" name="ServiceID" type="text" value="@cDate.ServiceID" />
                     <td>
@@ -296,5 +295,23 @@ else
                 }
             });
         }
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                });
+            }
+        });
     </script>
 }

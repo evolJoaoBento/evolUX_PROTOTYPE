@@ -18,7 +18,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
         public MaterialsRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
-        public async Task<IEnumerable<FullfillMaterialCode>> GetFulfillMaterialCodes()
+        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes()
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             var response = await _flurlClient.Request("/API/evolDP/Materials/GetFulfillMaterialCodes")
@@ -26,14 +26,11 @@ namespace evolUX.UI.Areas.evolDP.Repositories
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<IEnumerable<FullfillMaterialCode>>();
+            return await response.GetJsonAsync<IEnumerable<FulfillMaterialCode>>();
         }
-        public async Task<IEnumerable<MaterialType>> GetMaterialTypes(bool groupCodes, string materialTypeCode)
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes()
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            dictionary.Add("GroupCodes", groupCodes);
-            dictionary.Add("MaterialTypeCode", materialTypeCode);
-
             var response = await _flurlClient.Request("/API/evolDP/Materials/GetMaterialTypes")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);

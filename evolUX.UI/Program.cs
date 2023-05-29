@@ -90,6 +90,7 @@ builder.Services.AddControllersWithViews(options =>
 {
     options.Filters.Add(new AuthorizeFilter("Cookie"));
     options.Filters.Add<BreadcrumbActionFilter>();
+    options.Filters.Add<SessionActionFilter>();
 });
 
 builder.Services.AddDistributedMemoryCache();

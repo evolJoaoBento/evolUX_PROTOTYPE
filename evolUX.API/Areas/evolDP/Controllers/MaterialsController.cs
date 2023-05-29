@@ -6,10 +6,6 @@ using evolUX.API.Areas.evolDP.Services.Interfaces;
 using System.Data.SqlClient;
 using evolUX.API.Areas.evolDP.Services;
 using Shared.Models.Areas.evolDP;
-using evolUX.API.Models;
-using Newtonsoft.Json;
-using System.Data;
-using System.Collections.Generic;
 
 namespace evolUX.API.Areas.evolDP.Controllers
 {
@@ -29,7 +25,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         [HttpGet]
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Manager")]//TODO: need to ask about authorization here
         [ActionName("GetFulfillMaterialCodes")]
-        public async Task<ActionResult<IEnumerable<FullfillMaterialCode>>> GetFulfillMaterialCodes([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<IEnumerable<FulfillMaterialCode>>> GetFulfillMaterialCodes([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -60,21 +56,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         {
             try
             {
-                object obj;
-                bool groupCodes = false;
-                string materialTypeCode = "";
-                dictionary.TryGetValue("GroupCodes", out obj);
-                if (obj != null)
-                    groupCodes = bool.Parse(Convert.ToString(obj).ToString());
-                dictionary.TryGetValue("MaterialTypeCode", out obj);
-                if (obj!= null)
-                    materialTypeCode = Convert.ToString(obj).ToString();
-                bool serviceCompanyRestriction = false;
-                dictionary.TryGetValue("ServiceCompanyRestriction", out obj);
-                if (obj != null)
-                    serviceCompanyRestriction = Convert.ToBoolean(obj.ToString());
-
-                var result = await _materials.GetMaterialTypes(groupCodes, materialTypeCode);
+                var result = await _materials.GetMaterialTypes();
                 _logger.LogInfo("GetMaterialTypes Get");
                 return Ok(result);
             }

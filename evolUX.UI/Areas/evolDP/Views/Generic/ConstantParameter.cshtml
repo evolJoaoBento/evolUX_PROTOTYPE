@@ -18,6 +18,11 @@
 <script>
     const deleteMsgParameter = '@localizer["deleteMsgParameter"]';
 </script>
+<head>
+    <link rel="stylesheet" runat="server" media="screen" href="~/css/site.css" />
+
+</head>
+
 @if (Model == null || Model.ConstantsList == null || Model.ConstantsList.Count() == 0)
 {
     <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
@@ -37,7 +42,7 @@ else
            <tr>
                 @if (AddConstantParameter)
                 {
-                    <th class="evol-fitcontent-column" style="text-align: center"><img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddParameter"]" /></th>
+                    <th style="text-align: center" class="borders"><img class="evol-image grow" onclick="EditRow('')" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddParameter"]" /></th>
                 }
                 <th>@localizer["ParameterRef"]</th>
                 <th>@localizer["ParameterValue"]</th>
@@ -48,10 +53,10 @@ else
             @if (AddConstantParameter)
             {
                 <tr id="Hide|" style="display: none">
-                    <form id="AddParameterFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Generic" asp-action="ConfigParameter" asp-route-source="Add">
-                        <td style ="align-items:center; display:flex">
-                           <img onclick="CancelRow('')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]"/>
-                           <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png"/>
+                    <form id="AddParameterFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Client" asp-action="ConfigParameter" asp-route-source="Add">
+                        <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
+                            <img class="evol-image float" onclick="CancelRow('')" type="image" style="background:none; width:25px;height:25px;" src="~/images/cancel.png" title="@localizer["Cancel"]" />
+                            <input class="evol-image float" onclick="return true" type="image" value="@localizer["SubmitChange"]" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
                         </td>
                         <td><input id=ParameterRef name=ParameterRef type="text" maxlength="20" style="width: 100%" /></td>
                         <td><input id=ParameterValue name=ParameterValue type="number" maxlength="10" style="width: 100%" /></td>
@@ -61,15 +66,15 @@ else
             }
             @foreach(ConstantParameter c in Model.ConstantsList)
             {
-                <tr id="Parameter|@c.ParameterID">
+                <tr id="Parameter|@c.ParameterID" ondblclick="EditRow('@c.ParameterID')">
                     @if (AddConstantParameter)
                     {
-                        <td style="align-items:center; display:flex">
-                            <img onclick="EditRow('@c.ParameterID')" class="evol-image" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
+                        <td style="align-items:center; display:flex; justify-content: center" class="borders">
+                            <img class="evol-image float wobble" onclick="EditRow('@c.ParameterID')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
                             @if (DeleteConstantParameter)
                             {
                                 <a asp-area="evolDP" asp-controller="Client" asp-action="DeleteParameter" asp-route-exceptionID="@c.ParameterID">
-                                    <img onclick="return confirmParameterDelete()" class="evol-image" src="~/images/delete.png" title="@localizer["DeleteParameter"] @localizer["ParameterRef"] = @c.ParameterRef"  />
+                                    <img onclick="return confirmParameterDelete()" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
                                 </a>
                             }
                         </td>
@@ -81,11 +86,10 @@ else
                 @if (AddConstantParameter)
                 {
                     <tr id="Hide|@c.ParameterID" style="display: none">
-                        <form id="AddParameterFrm|@c.ParameterID" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="Generic" asp-action="ConfigParameter" asp-route-source="Edit">
-                            <td style ="align-items:center; display:flex">
-                                <img onclick="CancelRow('@c.ParameterID')" type="image" class="evol-image" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                                <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image" name="Submit" src="~/images/Ok.png" />
-                                <input style="visibility:hidden" id=ParameterID name=ParameterID value="@c.ParameterID" />
+                        <form id="AddParameterFrm|@c.ParameterID" class="align-content-center" asp-area="evolDP" asp-controller="Client" asp-action="ConfigParameter" asp-route-source="Edit">
+                        <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" style="background:none; width:25px;height:25px;" name="Submit" src="~/images/Ok.png" />
+                            <input style="display:none" id=ParameterID name=ParameterID value="@c.ParameterID" />
                             </td>
                             <td><input id=ParameterRef name=ParameterRef type="text" maxlength="20" style="width: 100%" value="@c.ParameterRef" /></td>
                             <td><input id=ParameterValue name=ParameterValue type="number" maxlength="10" style="width: 100%" value="@c.ParameterValue" /></td>
@@ -131,5 +135,27 @@ else
                 }
             });
         }
+
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
+            return false;
+        }
+
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    if (/^Hide\|\d+/.test(tElement.id)) {
+                        let val = tElement.id.substring(5);
+                        CancelRow(val);
+                    }
+                });
+            }
+        });
     </script>
 }

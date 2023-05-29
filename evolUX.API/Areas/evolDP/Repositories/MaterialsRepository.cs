@@ -1,12 +1,8 @@
 ﻿using Dapper;
 using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Data.Context;
-using evolUX.API.Models;
 using Shared.Models.Areas.evolDP;
-using Shared.Models.Areas.Finishing;
 using System.Data;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
 
 namespace evolUX.API.Areas.evolDP.Repositories
 {
@@ -18,7 +14,7 @@ namespace evolUX.API.Areas.evolDP.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<FullfillMaterialCode>> GetFulfillMaterialCodes(string fullFillMaterialCode)
+        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes(string fullFillMaterialCode)
         {
             string sql = @"RD_UX_GET_FULLFILL_MATERIALCODE";
             var parameters = new DynamicParameters();
@@ -26,17 +22,14 @@ namespace evolUX.API.Areas.evolDP.Repositories
                 parameters.Add("FullFillMaterialCode", fullFillMaterialCode, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                IEnumerable<FullfillMaterialCode> result = await connection.QueryAsync<FullfillMaterialCode>(sql, parameters, commandType: CommandType.StoredProcedure);
+                IEnumerable<FulfillMaterialCode> result = await connection.QueryAsync<FulfillMaterialCode>(sql, parameters, commandType: CommandType.StoredProcedure);
                 return result;
             }
         }
         
-        public async Task<IEnumerable<MaterialType>> GetMaterialTypes(bool groupCodes, string materialTypeCode)
+        public async Task<IEnumerable<MaterialType>> GetMaterialTypes()
         {
             string sql = @"RD_UX_GET_MATERIAL_TYPE";
-            var parameters = new DynamicParameters();
-            parameters.Add("GroupCodes", groupCodes, DbType.Boolean);
-            parameters.Add("MaterialTypeCode", materialTypeCode, DbType.String);
             using (var connection = _context.CreateConnectionEvolDP())
             {
                 IEnumerable<MaterialType> result = await connection.QueryAsync<MaterialType>(sql, parameters, commandType: CommandType.StoredProcedure);
