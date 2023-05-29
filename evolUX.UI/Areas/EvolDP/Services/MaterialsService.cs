@@ -1,4 +1,5 @@
-﻿using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
+﻿using evolUX.API.Models;
+using evolUX.UI.Areas.evolDP.Repositories.Interfaces;
 using evolUX.UI.Areas.evolDP.Services.Interfaces;
 using Flurl.Http;
 using Shared.Models.Areas.evolDP;
@@ -34,5 +35,26 @@ namespace evolUX.UI.Areas.evolDP.Services
         //    return response;
         //}
 
+        }
+        public async Task<IEnumerable<MaterialElement>> GetMaterials(int groupID, string materialTypeCode, string serviceCompanyList)
+        {
+            var response = await _materialsRepository.GetMaterials(groupID, materialTypeCode, serviceCompanyList);
+            return response;
+        }
+        public async Task<MaterialElement> SetMaterial(MaterialElement material, string materialTypeCode, string serviceCompanyList)
+        {
+            var response = await _materialsRepository.SetMaterial(material, materialTypeCode, serviceCompanyList);
+            return response;
+        }
+        public async Task<IEnumerable<MaterialCostElement>> GetMaterialCost(int materialID, string serviceCompanyList)
+        {
+            var response = await _materialsRepository.GetMaterialCost(materialID, serviceCompanyList);
+            return response;
+        }
+        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int materialTypeID)
+        {
+            var response = await _materialsRepository.GetServiceCompanyRestrictions(materialTypeID);
+            return response;
+        }
     }
 }

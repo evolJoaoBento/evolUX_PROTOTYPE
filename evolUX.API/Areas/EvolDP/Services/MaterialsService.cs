@@ -23,6 +23,33 @@ namespace evolUX.API.Areas.evolDP.Services
             IEnumerable<MaterialType> result = await _repository.Materials.GetMaterialTypes();
             return result;
         }
+        public async Task<MaterialElement> SetMaterialGroup(MaterialElement group, DataTable serviceCompanyList)
+        {
+            int groupID = await _repository.Materials.SetMaterialGroup(group, serviceCompanyList);
+            IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterialGroups(groupID, "", 0, "", serviceCompanyList);
+            return result?.First();
+        }
+        public async Task<IEnumerable<MaterialElement>> GetMaterials(int materialID, string materialRef, string materialCode, int groupID, int materialTypeID, string materialTypeCode, DataTable serviceCompanyList)
+        {
+            IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterials(materialID, materialRef, materialCode, groupID, materialTypeID, materialTypeCode, serviceCompanyList);
+            return result;
+        }
+        public async Task<MaterialElement> SetMaterial(MaterialElement material, string materialTypeCode, DataTable serviceCompanyList)
+        {
+            int materialID = await _repository.Materials.SetMaterial(material, serviceCompanyList);
+            if (material.GroupID > 0)
+            {
+                IEnumerable<MaterialElement> result = await _repository.Materials.GetMaterialGroups(material.GroupID, "", string.IsNullOrEmpty(materialTypeCode) ? material.MaterialTypeID : 0, materialTypeCode, serviceCompanyList);
+                return result?.First();
+            }
+            else
+                return new MaterialElement();
+        }
+        public async Task<IEnumerable<MaterialCostElement>> GetMaterialCost(int materialID, DataTable serviceCompanyList)
+        {
+            var response = await _repository.Materials.GetMaterialCost(materialID, serviceCompanyList);
+            return response;
+        }
         public async Task<IEnumerable<EnvelopeMedia>> GetEnvelopeMedia(int? envMediaID)
         {
             var envelopeMediaList = await _repository.Materials.GetEnvelopeMedia(envMediaID);
