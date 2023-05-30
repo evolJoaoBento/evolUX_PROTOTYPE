@@ -49,17 +49,31 @@ else
     <script>
         const deleteMsgServiceType = '@localizer["deleteMsgServiceType"]: "@serviceTask.ServiceTaskDesc"';
     </script>
-    <div class="popup-container" id="confirmPopupEdit" style="display: none;">
-        <div class="bgGradient">
-            <div class="popup">
-                <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlowDetail">
-                    <h1>@localizer["PopupMessageEdit"]</h1>
-                    <div class="form-inputs">
-                        <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="@serviceTask.ServiceTaskID" />
-                        <h6>@localizer["ServiceTaskCode"]</h6>
-                        <input id=ServiceTaskCode name=ServiceTaskCode type="text" maxlength="15" value="@serviceTask.ServiceTaskCode" readonly />
-                        <h6>@localizer["ServiceTaskDesc"]</h6>
-                        <input id=ServiceTaskDesc name=ServiceTaskDesc type="text" maxlength="256" style="width: 100%" value="@serviceTask.ServiceTaskDesc" />
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                <th rowspan="2" class="evol-fitcontent-column" style="text-align:center;border: none;background-color: transparent;vertical-align:middle">
+                </th>
+                <th style="vertical-align:middle" rowspan="2">@localizer["ServiceTaskCode"]</th>
+                <th style="vertical-align:middle" rowspan="2">@localizer["ServiceTaskDesc"]</th>
+                <th style="vertical-align:middle" colspan="3">@localizer["ServiceTaskConfigs"]</th>
+            </tr>
+            <tr>
+                <th style="vertical-align:middle" title="@localizer["ComplementServiceTaskTip"]">@localizer["ComplementServiceTask"]</th>
+                <th style="vertical-align:middle" title="@localizer["ExternalExpeditionModeTip"]">@localizer["ExternalExpeditionMode"]</th>
+                <th style="vertical-align:middle" title="@localizer["StationExceededDescTip"]">@localizer["StationExceededDesc"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            <tr id="Hide|" style="display: none">
+                <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceTask" asp-route-source="ServiceWorkFlowDetail">
+                <td style="align-items:center; display:flex;" class="borders">
+                    <input onclick="return true" type="image" value="@localizer["SubmitAdd"]" style="width:30px;height:30px" class="evol-image float" name="Submit" src="~/images/Ok.png" />
+                    <input style="display: none" id=ServiceTaskID name=ServiceTaskID type="number" value="@serviceTask.ServiceTaskID" />
+                </td>
+                <td>@serviceTask.ServiceTaskCode<input style="display: none" id=ServiceTaskCode name=ServiceTaskCode type="text" maxlength="15" value="@serviceTask.ServiceTaskCode" /></td>
+                <td><input id=ServiceTaskDesc name=ServiceTaskDesc type="text" maxlength="256" style="width: 100%" value="@serviceTask.ServiceTaskDesc" /></td>
+                <td>
                         @{
                             List<ServiceTypeElement> complementList = new List<ServiceTypeElement>();
                             foreach (ServiceTypeElement ste in serviceTask.ServiceTypes)
@@ -80,13 +94,14 @@ else
                                 }
                             }
                         }
-                        <h6>@localizer["ComplementServiceTask"]</h6>
-                        <select id=ComplementServiceTaskID name=ComplementServiceTaskID>
+                    <select id=ComplementServiceTaskID name=ComplementServiceTaskID style="max-width: 300px">
                             @foreach (ServiceTaskElement s in Model.ServiceTasksList.Where(x => complementList.All(b => x.ServiceTypes.Any(a => a.ServiceTypeCode == b.ServiceTypeCode))).ToList())
                             {
                                 <option value="@s.ServiceTaskID">[@s.ServiceTaskCode] @s.ServiceTaskDesc</option>
                             }
-                        </select>
+                    </select>
+                </td>
+                <td>
                         @{
                             List<int> eModeList = new List<int>();
                             eModeList.Add(0);
@@ -98,18 +113,17 @@ else
                                 eModeList.Add(-1);
                             }
                         }
-                        <h6>@localizer["ExternalExpeditionMode"]</h6>
-                        <select id=ExternalExpeditionMode name=ExternalExpeditionMode>
+                    <select id=ExternalExpeditionMode name=ExternalExpeditionMode style="max-width: 300px">
                             @{
                                 localValue = serviceTask.ExternalExpeditionMode == null ? "-1" : serviceTask.ExternalExpeditionMode.ToString();
                             }
-                            <option value="@localValue">
-                                @{
+                             <option value="@localValue">
+                                    @{
                                     localValue = "ExternalExpeditionMode" + localValue;
-                                }
-                                @localizer[localValue]
+                                    }
+                                    @localizer[localValue]
                             </option>
-                            @foreach (int i in eModeList)
+                            @foreach(int i in eModeList)
                             {
                                 <option value="@i">
                                     @{
@@ -119,60 +133,15 @@ else
                                 </option>
                             }
                         </select>
-                        <h6>@localizer["StationExceededDesc"]</h6>
-                        <input id=StationExceededDesc name=StationExceededDesc type="text" maxlength="50" style="width: 100%" value="@serviceTask.StationExceededDesc" />
-                    </div>
-                    <div class="popup-buttons">
-                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
-                        <button class="popup-button" onclick="return closePopup()">Cancelar</button>
-                    </div>
+                    </td>
+                    <td><input id=StationExceededDesc name=StationExceededDesc type="text" maxlength="50" style="width: 100%" value="@serviceTask.StationExceededDesc"/></td>
                 </form>
-            </div>
-        </div>
-    </div>
-    <div class="popup-container" id="confirmPopupAdd" style="display: none;">
-        <div class="bgGradient">
-            <div class="popup">
-                <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="AddServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID">
-                    <h1>@localizer["PopupMessageAdd"]</h1>
-                    <div class="form-inputs">
-                        <h6>@localizer["SelectServiceTask"]</h6>
-                        <select id=ServiceTypeID name=ServiceTypeID>
-                            @foreach (ServiceTypeElement st in Model.ServiceTypesList.Where(x => serviceTask.ServiceTypes.Where(y => y.ServiceTypeID == x.ServiceTypeID).ToList().Count() == 0).ToList())
-                            {
-                                <option value="@st.ServiceTypeID">@st.ServiceTypeDesc [@st.ServiceTypeCode]</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="popup-buttons">
-                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
-                        <button class="popup-button" onclick="return closePopup()">Cancelar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <table class="table table-sm table-hover table-collapse-seperate">
-        <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr>
-                <th rowspan="2" class="evol-fitcontent-column" style="text-align:center;border: none;background-color: transparent;vertical-align:middle">
-                </th>
-                <th style="vertical-align:middle" rowspan="2">@localizer["ServiceTaskCode"]</th>
-                <th style="vertical-align:middle" rowspan="2">@localizer["ServiceTaskDesc"]</th>
-                <th style="vertical-align:middle" colspan="3">@localizer["ServiceTaskConfigs"]</th>
             </tr>
-            <tr>
-                <th style="vertical-align:middle" title="@localizer["ComplementServiceTaskTip"]">@localizer["ComplementServiceTask"]</th>
-                <th style="vertical-align:middle" title="@localizer["ExternalExpeditionModeTip"]">@localizer["ExternalExpeditionMode"]</th>
-                <th style="vertical-align:middle" title="@localizer["StationExceededDescTip"]">@localizer["StationExceededDesc"]</th>
-            </tr>
-        </thead>
-        <tbody id="bootstrap-overrides">
-            <tr id="Show|" ondblclick="openPopupEdit()">
+            <tr id="Show|" ondblclick="EditRow('')">
                 <td class="evol-fitcontent-column-one borders" style="border: none;background-color: transparent;">
                     @if (AddServiceTask)
                     {
-                        <img onclick="openPopupEdit()" style="width:30px;height:30px" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
+                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
                     }
                 </td>
                 <td>@serviceTask.ServiceTaskCode</td>
@@ -193,16 +162,35 @@ else
         </tbody>
     </table>
     <table class="table table-sm table-hover table-collapse-seperate">
-        <thead id="bootstrap-overrides" class="table-info">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
-                    <img onclick="openPopupAdd()" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddServiceType"]" />
+                    <img onclick="EditRow('Type')" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddServiceType"]" />
                 </th>
                 <th>@localizer["ServiceTypeDesc"]</th>
                 <th>@localizer["ServiceTypeCode"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
+            @if (AddServiceTask)
+            {
+                <tr id="Hide|Type" style="display: none">
+                    <form id="AddFrm|Type" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="AddServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID">
+                    <td style="align-items:center; display:flex;border:none;background-color:transparent" class="borders">
+                        <input onclick="return true" type="image" value="@localizer["SubmitChange"]" style="width:30px;height:30px" class="evol-image float" name="Submit" src="~/images/Ok.png" />
+                    </td>
+                    <td colspan="2">
+                        <b>@localizer["SelectServiceTask"]: </b>
+                        <select id=ServiceTypeID name=ServiceTypeID>
+                                @foreach (ServiceTypeElement st in Model.ServiceTypesList.Where(x => serviceTask.ServiceTypes.Where(y => y.ServiceTypeID == x.ServiceTypeID).ToList().Count() == 0).ToList())
+                                {
+                                <option value="@st.ServiceTypeID">@st.ServiceTypeDesc [@st.ServiceTypeCode]</option>
+                            }
+                            </select>
+                        </td>
+                    </form>
+                </tr>
+            }
             @foreach (ServiceTypeElement s in serviceTask.ServiceTypes)
             {
                 value = s.ServiceTypeID.ToString();
@@ -275,7 +263,7 @@ else
             @foreach (ExpCodeElement expCode in Model.ExpCodes)
             {
                 <tr>
-                    <td class="evol-fitcontent-column-one borders" style="border:none;background-color:transparent">
+                    <td class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
                         <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)"
                    asp-route-serviceTaskDesc="@serviceTask.ServiceTaskDesc" asp-route-expCompanyName="@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName" asp-route-source="ServiceWorkFlowDetail">
                             <img style="width:30px;height:30px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
@@ -301,6 +289,29 @@ else
 @section Scripts
     {
     <script type="text/javascript">
+        function CancelRow(value) {
+            eShide('Hide|' + value);
+            eSshow('Show|' + value);
+
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = true;
+            return false;
+        }
+        function EditRow(value) {
+            eShide('Show|' + value);
+            eSshow('Hide|' + value);
+            var obj = document.getElementById("AddFrm|" + value);
+            obj.disabled = false;
+
+            let str = 'Hide|' + value;
+            trElements = document.querySelectorAll('tr[id^="Hide|"]');
+            trElements.forEach(tElement => {
+                if (tElement.id != str) {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                }
+            });
+        }
         function confirmServiceTypeDelete(value) {
             if (confirm(deleteMsgServiceType.replace("@@#ServiceTypeCode#@@", value))) {
                 // User clicked "OK", handle the deletion
@@ -310,19 +321,24 @@ else
                 return false;
             }
         }
-        function openPopupEdit() {
-            document.getElementById("confirmPopupEdit").style.display = "flex";
-        }
-        function openPopupAdd() {
-            document.getElementById("confirmPopupAdd").style.display = "flex";
-        }
-        function confirmBtn() {
-            return true;
-        }
-        function closePopup() {
-            document.getElementById("confirmPopupEdit").style.display = "none";
-            document.getElementById("confirmPopupAdd").style.display = "none";
+        function isClickInsideTr(element) {
+            while (element) {
+                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
+                    return true;
+                }
+                element = element.parentElement;
+            }
             return false;
         }
+
+        document.addEventListener('click', function (event) {
+            if (!isClickInsideTr(event.target)) {
+                trElements = document.querySelectorAll('tr[id^="Hide|"]');
+                trElements.forEach(tElement => {
+                    let val = tElement.id.substring(5);
+                    CancelRow(val);
+                });
+            }
+        });
     </script>
 }

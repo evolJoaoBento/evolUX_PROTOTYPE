@@ -78,18 +78,49 @@ else
     string idValue = "arrow" + level.ToString();
     string nameValue = "";
     Company serviceCompany = Model.ServiceCompany;
-    FullfillMaterialCode fCode;  
+    FulfillMaterialCode fCode;  
     <script>
         const deleteServiceCompanyExpLevelMsg = '@localizer["deleteServiceCompanyExpLevelMsg"]"';
     </script>
-
+    <div class="popup-container" id="confirmPopupAdd" style="display: none;">
+        <div class="bgGradient">
+            <div class="popup">
+                <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyExpLevel"
+                  asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
+                  asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
+                  asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
+                  asp-route-explevel="-1">
+                    <h1>@localizer["PopupMessageAdd"]</h1>
+                    <div class="form-inputs">
+                        <h6>@localizer["ExpLevel"]</h6>
+                        <input type="text" id="ExpLevel" name="ExpLevel" maxlength="5" value="" readonly />
+                        <h6>@localizer["FullFillMaterialCode"]</h6>
+                        <select id="ServiceCompanyID" name="ServiceCompanyID">
+                            @foreach (FulfillMaterialCode f in Model.FulfillMaterialCodes)
+                            {
+                                <option value="@f.FullFillMaterialCode">@f.Description</option>
+                            }
+                        </select>
+                        <h6>@localizer["DocMaxSheets"]</h6>
+                        <input type="number" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="0" />
+                        <h6>@localizer["Barcode"]</h6>
+                        <input type="text" id="Barcode" name="Barcode" maxlength="256" value="" title="@localizer["BarcodeTip"]" />
+                    </div>
+                    <div class="popup-buttons">
+                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
+                        <button class="popup-button" onclick="return closePopup()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if (AddServiceCompanyExpCodes)
                 {
                     <th class="evol-fitcontent-column-one" style="text-align:center;border:none;background-color:transparent">
-                        <img onclick="EditRow('')" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddServiceCompanyExpLevel"]" />
+                        <img onclick="openPopupAdd()" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddServiceCompanyExpLevel"]" />
                     </th>
                 }
                 <th>@localizer["ExpLevel"]</th>
@@ -101,38 +132,12 @@ else
         <tbody id="bootstrap-overrides">
             @foreach (ServiceCompanyExpCodeConfig config in Model.Configs)
             {
-               @if (AddServiceCompanyExpCodes)
-                {
-                    <tr id="Hide|" style="display: none">
-                        <form id="AddFrm|" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyExpLevel"
-                  asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
-                  asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
-                  asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
-                  asp-route-explevel="-1">
-                        <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
-                            <img onclick="CancelRow('')" type="image" class="evol-image grow" src="~/images/cancel.png" title="@localizer["Cancel"]" />
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
-                        </td>
-                        <td></td>
-                        <td>
-                            <select id="ServiceCompanyID" name="ServiceCompanyID">
-                            @foreach (FullfillMaterialCode f in Model.FulfillMaterialCodes)
-                            {
-                                <option value="@f.FullFillMaterialCode">@f.Description</option>
-                            }
-                            </select>
-                        </td>
-                        <td><input type="number" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="0" /></td>
-                        <td><input type="text" id="Barcode" name="Barcode" maxlength="256" value="" title="@localizer["BarcodeTip"]" /></td>
-                        </form>
-                    </tr>
-                }
                 value = config.ExpLevel.ToString();
-                <tr id="Show|@value" ondblclick="EditRow('@value')">
+                <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
                     @if (AddServiceCompanyExpCodes)
                     {
                         <td style="align-items:center; display:flex" class="borders">
-                            <img onclick="EditRow('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyExpLevel"]" />
+                            <img onclick="openPopupEdit('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyExpLevel"]" />
                             @if (DeleteServiceCompanyExpCodes)
                             {
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceCompanyExpLevel" 
@@ -152,32 +157,38 @@ else
                 </tr>
                 @if (AddServiceCompanyExpCodes)
                 {
-                    <tr id="Hide|@value" style="display: none">
-                        <form id="AddFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyExpLevel"
-                  asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
-                  asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
-                  asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
-                  asp-route-explevel="@config.ExpLevel">
-                        <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
-                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image grow" name="Submit" src="~/images/Ok.png" />
-                        </td>
-                        <td>@config.ExpLevel</td>
-                        <td>
-                            <select id="ServiceCompanyID" name="ServiceCompanyID">
-                            @{
-                                fCode = Model.FulfillMaterialCodes.FirstOrDefault(x => x.FullFillMaterialCode == config.FullFillMaterialCode);
-                            }
-                                <option value="@fCode.FullFillMaterialCode">@fCode.Description</option>
-                                    @foreach (FullfillMaterialCode f in Model.FulfillMaterialCodes.Where(x => x.FullFillMaterialCode != config.FullFillMaterialCode))
-                            {
-                                <option value="@f.FullFillMaterialCode">@f.Description</option>
-                            }
-                            </select>
-                        </td>
-                        <td><input type="number" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="@config.DocMaxSheets" /></td>
-                        <td><input type="text" id="Barcode" name="Barcode" maxlength="256" value="@config.Barcode" title="@localizer["BarcodeTip"]" /></td>
-                        </form>
-                    </tr>
+                    <div class="popup-container confirmPopupEdit FormEdit" id="Edit|@value" style="display: none;">
+                        <div class="bgGradient">
+                            <div class="popup">
+                                <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyExpLevel"
+                          asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
+                          asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
+                          asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
+                          asp-route-explevel="@config.ExpLevel">
+                                    <h1>@localizer["PopupMessageEdit"]</h1>
+                                    <div class="form-inputs">
+                                        <input type="text" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="@config.ExpLevel" readonly />
+                                        <select id="ServiceCompanyID" name="ServiceCompanyID">
+                                            @{
+                                                fCode = Model.FulfillMaterialCodes.FirstOrDefault(x => x.FullFillMaterialCode == config.FullFillMaterialCode);
+                                            }
+                                            <option value="@fCode.FullFillMaterialCode">@fCode.Description</option>
+                                            @foreach (FulfillMaterialCode f in Model.FulfillMaterialCodes.Where(x => x.FullFillMaterialCode != config.FullFillMaterialCode))
+                                            {
+                                                <option value="@f.FullFillMaterialCode">@f.Description</option>
+                                            }
+                                        </select>
+                                        <input type="number" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="@config.DocMaxSheets" />
+                                        <input type="text" id="Barcode" name="Barcode" maxlength="256" value="@config.Barcode" title="@localizer["BarcodeTip"]" />
+                                    </div>
+                                    <div class="popup-buttons">
+                                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
+                                        <button class="popup-button" onclick="return closePopup()">Cancelar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 }
             }
         </tbody>
@@ -187,29 +198,6 @@ else
 @section Scripts
     {
     <script type="text/javascript">
-        function CancelRow(value) {
-            eShide('Hide|' + value);
-            eSshow('Show|' + value);
-
-            var obj = document.getElementById("AddFrm|" + value);
-            obj.disabled = true;
-            return false;
-        }
-        function EditRow(value) {
-            eShide('Show|' + value);
-            eSshow('Hide|' + value);
-            var obj = document.getElementById("AddFrm|" + value);
-            obj.disabled = false;
-
-            let str = 'Hide|' + value;
-            trElements = document.querySelectorAll('tr[id^="Hide|"]');
-            trElements.forEach(tElement => {
-                if (tElement.id != str) {
-                    let val = tElement.id.substring(5);
-                    CancelRow(val);
-                }
-            });
-        }
         function confirmServiceCompanyExpLevelDelete() {
             if (confirm(deleteServiceCompanyExpLevelMsg)) {
                 // User clicked "OK", handle the deletion
@@ -219,25 +207,24 @@ else
                 return false;
             }
         }
-        function isClickInsideTr(element) {
-            while (element) {
-                if (element.id.includes('Hide|') || element.classList.contains('evol-image')) {
-                    return true;
-                }
-                element = element.parentElement;
+        function openPopupAdd() {
+            document.getElementById("DocMaxSheets").value = "";
+            document.getElementById("Barcode").value = "";
+            document.getElementById("confirmPopupAdd").style.display = "flex";
+        }
+        function openPopupEdit(value) {
+            document.getElementById("Edit|" + value).style.display = "flex";
+        }
+        function confirmBtn() {
+            return true;
+        }
+        function closePopup() {
+            document.getElementById("confirmPopupAdd").style.display = "none";
+            var elements = document.querySelectorAll(".confirmPopupEdit");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.display = "none";
             }
             return false;
         }
-        document.addEventListener('click', function (event) {
-            if (!isClickInsideTr(event.target)) {
-                trElements = document.querySelectorAll('tr[id^="Hide|"]');
-                trElements.forEach(tElement => {
-                    if (/^Hide\|\d+/.test(tElement.id)) {
-                        let val = tElement.id.substring(5);
-                        CancelRow(val);
-                    }
-                });
-            }
-        });
     </script>
 }
