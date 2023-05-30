@@ -102,6 +102,20 @@ else
                     <td>@e.ExceptionCode</td>
                     <td>@e.ExceptionDescription</td>
                 </tr>
+                @if (AddExceptionLevel)
+                {
+                    <tr id="Hide|@value" style="display: none">
+                        <form id="AddExceptionFrm|@value" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="ConfigExceptionLevel" asp-route-source="Edit" asp-route-Level="@Model.Level">
+                        <td style="align-items:center; display:flex; justify-content:center; margin-top:3px" class="borders">
+                            <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
+                            <input style="display: none" id=ExceptionLevelID name=ExceptionLevelID value="@e.ExceptionLevelID" />
+                            </td>
+                            <td>@e.ExceptionLevelID</td>
+                            <td><input id=ExceptionCode name=ExceptionCode type="text" maxlength="4" style="width: 100%" value="@e.ExceptionCode" /></td>
+                            <td><input id=ExceptionDescription name=ExceptionDescription type="text" maxlength="256" style="width: 100%" value="@e.ExceptionDescription" /></td>
+                        </form>
+                    </tr>
+                }
             }
         </tbody>
     </table>

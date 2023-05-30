@@ -117,8 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddMaterial" xml:space="preserve">
+    <value>Adicionar Material</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Todos os Materiais</value>
+  </data>
+  <data name="ChangeMaterial" xml:space="preserve">
+    <value>Alterar configuração do Material</value>
+  </data>
+  <data name="CostDate" xml:space="preserve">
+    <value>Entrada em vigor</value>
+    <comment>Effective Date</comment>
+  </data>
   <data name="EmptyField" xml:space="preserve">
-    <value>&lt;empty&gt;</value>
+    <value>&lt;vazio&gt;</value>
+  </data>
+  <data name="EmptyFullFillMaterialCode" xml:space="preserve">
+    <value>Não aplicável</value>
   </data>
   <data name="Envelope" xml:space="preserve">
     <value>Envelopes</value>
@@ -126,37 +142,118 @@
   <data name="Envelope_Icon" xml:space="preserve">
     <value>envelope.png</value>
   </data>
+  <data name="ExpeditionMinWeight" xml:space="preserve">
+    <value>Escalão de Expedição (g)</value>
+  </data>
+  <data name="ExpeditionMinWeight_Tip" xml:space="preserve">
+    <value>Escalão mínimo de expedição (grama) quando o material é incluído</value>
+  </data>
   <data name="FeedPaper" xml:space="preserve">
-    <value>Loose leaf printing papers</value>
+    <value>Papeis para Impressão em folha solta</value>
   </data>
   <data name="FeedPaper_Icon" xml:space="preserve">
     <value>paper.png</value>
   </data>
+  <data name="FullFillMaterialCode" xml:space="preserve">
+    <value>Formato do Envelope</value>
+  </data>
+  <data name="FullFillMaterialCode_Tip" xml:space="preserve">
+    <value>Formato mínimo do envelope para poder conter o material</value>
+  </data>
+  <data name="FullFillSheets" xml:space="preserve">
+    <value>N.º Folhas</value>
+  </data>
+  <data name="FullFillSheets_Tip" xml:space="preserve">
+    <value>Equivalência em n.º de folhas para a envelopagem (grossura)</value>
+  </data>
+  <data name="MaterialBinPosition" xml:space="preserve">
+    <value>Posições Permitidas</value>
+  </data>
+  <data name="MaterialBinPosition_Tip" xml:space="preserve">
+    <value>Posições permitidas nas máquinas</value>
+  </data>
+  <data name="MaterialCode" xml:space="preserve">
+    <value>Código</value>
+  </data>
+  <data name="MaterialCode_Tip" xml:space="preserve">
+    <value>Código de material único dentro do tipo de material</value>
+  </data>
+  <data name="MaterialCost" xml:space="preserve">
+    <value>Custo do material</value>
+  </data>
+  <data name="MaterialCostConfig" xml:space="preserve">
+    <value>Configuração dos Custos do Material</value>
+  </data>
+  <data name="MaterialDescription" xml:space="preserve">
+    <value>Descrição</value>
+  </data>
+  <data name="MaterialGroup" xml:space="preserve">
+    <value>Grupo de Materiais</value>
+  </data>
+  <data name="MaterialRef" xml:space="preserve">
+    <value>Referência</value>
+  </data>
+  <data name="MaterialRef_Tip" xml:space="preserve">
+    <value>Código de material único para todos os tipos de material</value>
+  </data>
   <data name="MaterialType" xml:space="preserve">
-    <value>Material Types</value>
+    <value>Tipo de Material</value>
+  </data>
+  <data name="MaterialWeight" xml:space="preserve">
+    <value>Peso (g)</value>
+  </data>
+  <data name="MaterialWeight_Tip" xml:space="preserve">
+    <value>Peso médio de uma unidade do material (grama)</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nome</value>
   </data>
   <data name="NoModelData" xml:space="preserve">
-    <value>No Data</value>
+    <value>Sem Dados</value>
   </data>
   <data name="Paper" xml:space="preserve">
-    <value>Printing papers</value>
+    <value>Papeis para impressão</value>
+  </data>
+  <data name="PaperMaterialBinPosition" xml:space="preserve">
+    <value>Bandejas Permitidas</value>
   </data>
   <data name="Paper_Icon" xml:space="preserve">
     <value>paper.png</value>
   </data>
+  <data name="Provider" xml:space="preserve">
+    <value>Fornecedor</value>
+  </data>
+  <data name="ProviderCompany" xml:space="preserve">
+    <value>Fornecedor</value>
+  </data>
+  <data name="Provider_Tip" xml:space="preserve">
+    <value>Custos e características do material no fornecedor</value>
+  </data>
   <data name="RollPaper" xml:space="preserve">
-    <value>Roll printing papers</value>
+    <value>Papeis para impressão em papel contínuo</value>
   </data>
   <data name="RollPaper_Icon" xml:space="preserve">
     <value>paper.png</value>
   </data>
+  <data name="ServiceCompany" xml:space="preserve">
+    <value>Companhia de Prestação de Serviços</value>
+  </data>
+  <data name="ServiceCompanyCosts" xml:space="preserve">
+    <value>Custo/Companhia de Prestação de Serviços</value>
+  </data>
   <data name="Station" xml:space="preserve">
-    <value>Enveloping inserts</value>
+    <value>Adicionais de envelopagem</value>
+  </data>
+  <data name="StationMaterialBinPosition" xml:space="preserve">
+    <value>Estações Permitidas</value>
   </data>
   <data name="Station_Icon" xml:space="preserve">
     <value>newspaper.png</value>
   </data>
-  <data name="Submit" xml:space="preserve">
-    <value>List Materials</value>
+  <data name="SubmitAdd" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
+  <data name="SubmitChange" xml:space="preserve">
+    <value>Alterar</value>
   </data>
 </root>

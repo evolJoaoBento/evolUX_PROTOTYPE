@@ -37,12 +37,16 @@ namespace evolUX.API.Areas.evolDP.Controllers
             try
             {
                 object obj;
-                dictionary.TryGetValue("ServiceCompanyID", out obj);
                 int value = 0;
-                int? serviceCompanyID = null;
+                int serviceCompanyID = 0;
+                dictionary.TryGetValue("ServiceCompanyID", out obj);
                 if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
                     serviceCompanyID = value;
-                var restrictions = await _serviceProvision.GetServiceCompanyRestrictions(serviceCompanyID);
+                int materialTypeID = 0;
+                dictionary.TryGetValue("MaterialTypeID", out obj);
+                if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
+                    materialTypeID = value; 
+                var restrictions = await _serviceProvision.GetServiceCompanyRestrictions(serviceCompanyID, materialTypeID);
                 _logger.LogInfo("ServiceCompany Restrictions  Get");
                 return Ok(restrictions);
             }
@@ -108,10 +112,10 @@ namespace evolUX.API.Areas.evolDP.Controllers
             {
                 object obj;
                 int value = 0;
-                int? serviceCompanyID = null;
-                int? serviceTypeID = null;
-                int? serviceID = null;
-                int? costDate = null;
+                int serviceCompanyID = 0;
+                int serviceTypeID = 0;
+                int serviceID = 0;
+                int costDate = -1;
                 dictionary.TryGetValue("ServiceCompanyID", out obj);
                 if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
                     serviceCompanyID = value;
@@ -150,10 +154,10 @@ namespace evolUX.API.Areas.evolDP.Controllers
             {
                 object obj;
                 int value = 0;
-                int? serviceCompanyID = null;
-                int? serviceTypeID = null;
-                int? serviceID = null;
-                int? costDate = null;
+                int serviceCompanyID = 0;
+                int serviceTypeID = 0;
+                int serviceID = 0;
+                int costDate = -1;
                 dictionary.TryGetValue("ServiceCompanyID", out obj);
                 if (obj != null && Int32.TryParse(Convert.ToString(obj), out value))
                     serviceCompanyID = value;
@@ -194,7 +198,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
                 int serviceCompanyID = Int32.Parse(Convert.ToString(obj));
                 int serviceTypeID = 0;
                 int serviceID = 0;
-                int costDate = 0;
+                int costDate = -1;
                 int value = 0;
                 dictionary.TryGetValue("ServiceTypeID", out obj);
                 string str = Convert.ToString(obj).ToString();
@@ -335,7 +339,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
         {
             try
             {
-                ServiceTypeViewModel viewModel = await _serviceProvision.GetServiceTypes(null);
+                ServiceTypeViewModel viewModel = await _serviceProvision.GetServiceTypes(0);
                 _logger.LogInfo("GetServiceTypes Get");
                 return Ok(viewModel);
             }
@@ -394,7 +398,7 @@ namespace evolUX.API.Areas.evolDP.Controllers
             {
                 object obj;
                 dictionary.TryGetValue("ServiceTaskID", out obj);
-                int? serviceTaskID = null;
+                int serviceTaskID = 0;
                 int value = 0;
                 if (obj != null && Int32.TryParse(Convert.ToString(obj), out value) && value > 0)
                     serviceTaskID = value;
