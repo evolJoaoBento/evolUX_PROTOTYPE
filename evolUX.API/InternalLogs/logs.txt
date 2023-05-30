@@ -12,3 +12,8 @@ Info: User joao.bento@evolsolutions.pt logged in at 5/26/2023 12:19:24 PM
 Info: User evolUXuser logged in at 5/26/2023 12:23:25 PM
 Info: User joao.bento@evolsolutions.pt logged in at 5/26/2023 12:23:36 PM
 Info: User evolUXuser logged in at 5/26/2023 12:23:40 PM
+Info: User evolUXuser logged in at 30/05/2023 12:16:00
+Info: ProductionRunReport Get
+Info: GetCompanyBusiness Get
+Info: GetCompanyBusiness Get
+Info: GetProjects Get
