@@ -42,8 +42,10 @@ else
     int level0 = 0, level1 = 0;
     string id0Value = "arrow" + level0.ToString();
     string name0Value = "level0|" + level0.ToString();
+    string arrowid0 = "arrow0|";
     string id1Value = "arrow" + level1.ToString();
     string name1Value = "level1|" + level1.ToString();
+    string arrowid1 = "arrow1|";
     string costDateDesc;
     List<ServiceCompanyServiceResume> serviceTypeConfigs;
     <div id="TitlePage">
@@ -228,21 +230,22 @@ else
             {
                 level0++;
                 name0Value = "level" + level0.ToString();
+                arrowid0 = "arrow0|" + level0.ToString();
                 id0Value = "arrow" + name0Value;
                 serviceTypeConfigs = Model.Configs.Where(x => x.ServiceTypeID == sType).ToList();
                     <tr>
-                        <td style="align-items:center; display:flex" class="borders">
+                        <td style="align-items:center; display:flex" class="borders collapsible" id="@id0Value" onclick="javascript:showDetail('@name0Value','@arrowid0')">
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
                                 asp-route-serviceCompanyConfigsJson="@JsonConvert.SerializeObject(serviceTypeConfigs)" asp-route-servicetypeid="@sType">
                                 <img class="evol-image float" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
                             </a>
-                            <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@name0Value')" id="@id0Value"></a>
+                            <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid0">
                     </td>
                         <td colspan="2">@serviceTypeConfigs.First().ServiceTypeDesc</td>
                 </tr>
                     <tr id="@name0Value" style="display: none" class="borders">
-                    <td colspan="2">
-                        <table class="table table-sm table-hover table-collapse-seperate">
+                    <td colspan="2" class="table-collapse">
+                        <table class="table table-sm table-hover table-collapse-seperate" style="padding-top: 10px">
                             <thead id="bootstrap-overrides" class="table-info">
                                 <th class="evol-fitcontent-column"></th>
                                 <th>@localizer["Service"]</th>
@@ -253,20 +256,21 @@ else
                                     List<ServiceCompanyServiceResume> sList = serviceTypeConfigs.Where(x => x.ServiceID == s).ToList();
                                     level1++;
                                     name1Value = "detail" + level1.ToString();
+                                    arrowid1 = "arrow1|" + level1.ToString();
                                     id1Value = "arrow" + name1Value;
                                     <tr>
-                                            <td style="align-items:center; display:flex;margin-left: 30px" class="borders">
+                                        <td style="align-items:center; display:flex;margin-left: 30px" class="borders collapsible" id="@id1Value" onclick="javascript:showDetail('@name1Value','@arrowid1')">
                                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
                                                 asp-route-servicetypeid="@sType" asp-route-serviceid="@s">
                                                 <img class="evol-image float" src="~/images/cost.png" title="@localizer["ServiceCompanyConfig"]" />
                                             </a>
-                                                <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@name1Value')" id="@id1Value"></a>
+                                            <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid1">
                                         </td>
                                         <td>@sList.First().ServiceDesc</td>
                                     </tr>
                                     <tr id="@name1Value" class="borders" style="display: none">
-                                        <td colspan="2">
-                                            <table class="table table-sm table-hover table-collapse-seperate">
+                                        <td colspan="2" class="table-collapse">
+                                            <table class="table table-sm table-hover table-collapse-seperate" style="padding-top: 10px">
                                                 <thead id="bootstrap-overrides" class="table-info">
                                                     <tr>
                                                         <th class ="evol-fitcontent-column">

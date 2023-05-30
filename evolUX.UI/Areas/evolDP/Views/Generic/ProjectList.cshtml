@@ -57,6 +57,7 @@ else
         string startStyle = "none";
         string Level0Name = "level";
         string Level1Name = "detail";
+        string arrowid = "arrow";
 
         int count = 0;
         int level = 0;
@@ -69,23 +70,26 @@ else
             @{
                 count++;
                 nameValue = Level0Name + count.ToString();
+                arrowid = arrowid + level.ToString();
                 idValue = "arrow" + nameValue;
             }
             <thead>
                 @if (ViewBag.hasMultipleCompanyBusiness)
                 {
                     <tr>
-                            <th style="border-style: solid;" class="evol-fitcontent-column borders">
                             @if (ViewBag.OnlyOneSelected)
                             {
                                 startStyle = "";
-                                    <a class="evol-arrow bx bxs-chevron-up grow" href="javascript:hideDetail('@nameValue')" id="@idValue"> </a>
+                                <th style="border-style: solid;" class="evol-fitcontent-column borders" id="@idValue" onclick="javascript:hideDetail('@nameValue','@arrowid')">
+                                    <a class="evol-arrow bx bxs-chevron-up grow" id="@arrowid"></a>
+                                </th>
                             }
                             else
                             {
-                                    <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                                <th style="border-style: solid;" class="evol-fitcontent-column borders" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
+                                    <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
+                                </th>
                             }
-                        </th>
                         <th colspan="5">
                             @b.BusinessDescription [@b.Type]
                         </th>
@@ -94,7 +98,7 @@ else
                 else
                 {
                     <tr>
-                        <th><a class="evol-arrow bx bxs-chevron-up borders" href="javascript:hideDetail('@nameValue')" id="@idValue"></a></th>
+                        <th id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')"><a class="evol-arrow bx bxs-chevron-up borders" id="@arrowid"></a></th>
                         <th colspan="5">@b.Type</th>
                     </tr>
                 }
@@ -104,14 +108,15 @@ else
                 {
                     level++;
                     nameValue = Level1Name + level.ToString();
+                    arrowid = "arrow" + level.ToString();
                     idValue = "arrow" + nameValue;
                     <tr>
-                            <th class="borders"><a class="evol-arrow bx bxs-chevrons-down grow" href="javascript:showDetails('@nameValue')" id="@idValue"></th>
+                            <th class="borders collapsible" id="@idValue" onclick="javascript:showDetails('@nameValue','@arrowid')"><a class="evol-arrow bx bxs-chevrons-down grow" id="@arrowid"></th>
                         <th>@localizer["ProjectCode"]: @p.ProjectCode</th>
                     </tr>
                     <tr id="@nameValue" style="display: none">
-                        <td colspan="2">
-                            <table class="table table-bordered table-sm table-striped">
+                        <td colspan="2" class="table-collapse">
+                            <table class="table table-bordered table-sm table-striped collapsed-table">
                                 <thead>
                                     <th>@localizer["Version"]</th>
                                     <th>@localizer["StartTimeStamp"]</th>

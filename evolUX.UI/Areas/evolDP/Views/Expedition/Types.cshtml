@@ -29,6 +29,7 @@ else
     int level = 0;
     string idValue = "arrow" + level.ToString();
     string nameValue = "";
+    string arrowid = "arrow";
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
@@ -44,15 +45,16 @@ else
                 level++;
                 nameValue = Level0Name + level.ToString();
                 idValue = "arrow" + nameValue;
+                arrowid = "arrow" + level.ToString();
                 value = t.Description;
                 <tr>                    
                     @if (t.ExpCompanyTypesList.Count() > 0)
                     {
-                        <td style="align-items:center; display:flex" class="borders">
+                        <td style="align-items:center; display:flex" class="borders collapsible" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
                             <a asp-area="evolDP" asp-controller="Expedition" asp-action="TypeDetail" asp-route-expeditiontypeJson="@JsonConvert.SerializeObject(t)">
                                 <img class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @value" />
                             </a>
-                            <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
                         </td>
                     }
                     else
@@ -66,8 +68,8 @@ else
                 @if (t.ExpCompanyTypesList.Count() > 0)
                 {
                 <tr id="@nameValue" class="borders" style="display: none">
-                    <td colspan="4">
-                        <table class="table table-sm table-hover table-collapse-seperate">
+                    <td colspan="4" class="table-collapse">
+                        <table class="table table-sm table-hover table-collapse-seperate collapsed-table">
                             <thead id="bootstrap-overrides" class="table-info">
                                 <tr>
                                         <th class="evol-fitcontent-column borders"></th>

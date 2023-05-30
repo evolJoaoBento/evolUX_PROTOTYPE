@@ -47,15 +47,17 @@ else
     string value = "";
     string Level0Name = "level";
     int level0 = 0;
+    string arrowid0 = "arrow0|";
     string idValue0 = "arrow" + level0.ToString();
     string nameValue0 = "";
 
     string Level1Name = "detail";
     int level1 = 0;
     string idValue1 = "arrow" + level1.ToString();
+    string arrowid1 = "arrow1|";
     string nameValue1 = "";
     <table class="table table-sm table-hover table-collapse-seperate">
-        <thead id="bootstrap-overrides" class="table-info sticky-header">
+        <thead id="bootstrap-overrides" class="table-info">
             <tr>
                 <th style="border:none;background-color:transparent"></th>
                 <th>@localizer["ExpCompany"]</th>
@@ -67,17 +69,18 @@ else
                 ServiceCompanyExpCodeElement sElement = Model.ServiceCompanyExpCodes.FirstOrDefault(x => x.ExpCompanyID == expCompanyID);
                 level0++;
                 nameValue0 = Level0Name + level0.ToString();
+                arrowid0 = "arrow0|" + level0.ToString();
                 idValue0 = "arrow" + nameValue0;
                 <tr>
-                    <td class="evol-fitcontent-column borders" style="text-align:center; border:none;background-color:transparent">
-                        <a class="evol-arrow bx bxs-chevron-down arrow grow" href="javascript:showDetail('@nameValue0')" id="@idValue0"></a>
+                    <td class="evol-fitcontent-column borders" id="@idValue0" onclick="javascript:showDetail('@nameValue0','@arrowid0')">
+                        <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid0">
                     </td>
                     <td id="row|@nameValue0" class="evol-normal-row">@sElement.ExpCompanyName</td>
                 </tr>
                 <tr id="@nameValue0" class="borders" style="display: none">
-                    <td colspan="2" style="border:none;background-color:transparent">
-                        <table class="table table-sm table-hover table-collapse-seperate">
-                            <thead id="bootstrap-overrides" class="table-info sticky-header">
+                    <td colspan="2" class="table-collapse">
+                        <table class="table table-sm table-hover table-collapse-seperate" style="padding-top: 10px">
+                            <thead id="bootstrap-overrides" class="table-info">
                                 <tr>
                                     <th style="border:none;background-color:transparent"></th>
                                     <th>@localizer["ServiceTask"]</th>
@@ -89,17 +92,18 @@ else
                                     sElement = Model.ServiceCompanyExpCodes.FirstOrDefault(x => x.ExpCompanyID == expCompanyID && x.ServiceTaskID == sTaskID);
                                     level1++;
                                     nameValue1 = Level1Name + level1.ToString();
+                                    arrowid1 = "arrow1|" + level1.ToString();
                                     idValue1 = "arrow" + nameValue1;
                                     <tr>
-                                        <td class="evol-fitcontent-column borders" style="text-align:center; border:none;background-color:transparent">
-                                            <a class="evol-arrow bx bxs-chevron-down arrow grow" href="javascript:showDetail('@nameValue1')" id="@idValue1"></a>
+                                        <td class="evol-fitcontent-column borders collapsible" id="@idValue1" onclick="javascript:showDetail('@nameValue1','@arrowid1')">
+                                            <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid1">
                                         </td>
                                         <td id="row|@nameValue1" class="evol-normal-row">@sElement.ServiceTaskDesc</td>
                                     </tr>
                                     <tr id="@nameValue1" class="borders" style="display: none">
-                                        <td colspan="2" style="border:none;background-color:transparent">
-                                            <table class="table table-sm table-hover table-collapse-seperate">
-                                                <thead id="bootstrap-overrides" class="table-info sticky-header">
+                                        <td colspan="2" class="table-collapse">
+                                            <table class="table table-sm table-hover table-collapse-seperate collapsed-table">
+                                                <thead id="bootstrap-overrides" class="table-info">
                                                     <tr>
                                                         <th rowspan="2" class="evol-fitcontent-column" style="border:none;background-color:transparent"></th>
                                                         <th colspan="4">@localizer["ExpCenter"]</th>
