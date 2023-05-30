@@ -38,6 +38,7 @@ else
     <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="Types">
     </a>
     string value = "";
+    string valueid = "";
     string Level0Name = "level";
 
     int level = 0;
@@ -68,41 +69,40 @@ else
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
-            @foreach(ExpCompanyType c in expeditionType.ExpCompanyTypesList)
+            @foreach(ExpCompanyType companytype in expeditionType.ExpCompanyTypesList)
             {
-                value = expeditionType.ExpeditionType.ToString();
-                <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
+                valueid = companytype.ExpCompanyID.ToString();
+                <tr id="Show|@value" ondblclick="openPopupEdit('@valueid')">
                     @if (AddExpeditionType)
                     {
                         <td style="text-align: center" class="borders">
-                            <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
+                            <img onclick="openPopupEdit('@valueid')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeExpCompanyType"]" />
                         </td>
                     }
                     @if (expeditionType.ExpCompanyTypesList.Count() > 1)
                     {
-                        <td>@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName</td>
+                        <td>@Model.ExpCompanies.Where(x => x.ID == companytype.ExpCompanyID).First().CompanyName</td>
                     }
                     @{
-                        value = c.RegistMode ? "checked" : "";
+                        value = companytype.RegistMode ? "checked" : "";
                     }
                     <td><input type="checkbox" id="RegistMode" @value disabled /></td>
-                    @{value = c.SeparationMode ? "checked": "";}
+                    @{value = companytype.SeparationMode ? "checked": "";}
                     <td><input type="checkbox" id="SeparationMode" @value disabled /></td>
-                    @{value = c.BarcodeRegistMode != null ? ((bool)c.BarcodeRegistMode ? "1" : "0") : "0";}
+                    @{value = companytype.BarcodeRegistMode != null ? ((bool)companytype.BarcodeRegistMode ? "1" : "0") : "0";}
                     <td>@value</td>
-                    @{value = c.GenerateDetailRegist ? "checked": "";}
+                    @{value = companytype.GenerateDetailRegist ? "checked": "";}
                     <td><input type="checkbox" id="GenerateDetailRegist" @value disabled /></td>
-                    @{value = c.DRFlagRegistado ? "checked": "";}
+                    @{value = companytype.DRFlagRegistado ? "checked": "";}
                     <td><input type="checkbox" id="DRFlagRegistado" @value disabled /></td>
-                    @{value = c.DRFlagEncomenda ? "checked": "";}
+                    @{value = companytype.DRFlagEncomenda ? "checked": "";}
                     <td><input type="checkbox" id="DRFlagEncomenda" @value disabled /></td>
-                    @{value = c.DRFlagPessoal ? "checked": "";}
+                    @{value = companytype.DRFlagPessoal ? "checked": "";}
                     <td><input type="checkbox" id="DRFlagPessoal" @value disabled /></td>
                 </tr>   
                 @if (AddExpeditionType)
                 {
-                    value = expeditionType.ExpeditionType.ToString();
-                    <div class="popup-container confirmPopupEdit FormEdit" id="Edit|@value" style="display: none;">
+                    <div class="popup-container confirmPopupEdit FormEdit" id="Edit|@valueid" style="display: none;">
                         <div class="bgGradient">
                             <div class="popup">
                                 <form class="justify-content-center FormEdit" asp-area="evolDP" asp-controller="Expedition" asp-action="ChangeExpCompanyType"
@@ -112,43 +112,43 @@ else
                                         @if (expeditionType.ExpCompanyTypesList.Count() > 1)
                                         {
                                             <h6>@localizer["ExpCompany"]</h6>
-                                            <input type="text" id="Company" name="Company" value="@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName" readonly/>
+                                            <input type="text" id="Company" name="Company" value="@Model.ExpCompanies.Where(x => x.ID == companytype.ExpCompanyID).First().CompanyName" readonly/>
                                         }
                                         @{
-                                            value = c.RegistMode ? "checked" : "";
+                                            value = companytype.RegistMode ? "checked" : "";
                                         }
                                         <h6>@localizer["RegistMode"]</h6>
                                         <input style="margin-bottom: 10px; width: 20px" onchange="RegistModeChange()" type="checkbox" id="RegistMode" name="RegistMode" @value />
                                         @{
-                                            value = c.SeparationMode ? "checked" : "";
+                                            value = companytype.SeparationMode ? "checked" : "";
                                         }
                                         <h6>@localizer["SeparationMode"]</h6>
                                         <input style="margin-bottom: 10px; width: 20px" type="checkbox" id="SeparationMode" name="SeparationMode" @value />
                                         @{
-                                            value = c.BarcodeRegistMode != null ? ((bool)c.BarcodeRegistMode ? "1" : "0") : "0";
+                                            value = companytype.BarcodeRegistMode != null ? ((bool)companytype.BarcodeRegistMode ? "1" : "0") : "0";
                                         }
                                         <h6>@localizer["BarcodeRegistMode"]</h6>
                                         <input type="number" min="0" max="1" id="BarcodeRegistMode" name="BarcodeRegistMode" value="@value" />
                                         @{
-                                            value = c.GenerateDetailRegist ? "checked" : "";
+                                            value = companytype.GenerateDetailRegist ? "checked" : "";
                                             nameValue = value + "DRFlagGenerateDetailRegist";
                                         }
                                         <h6>@localizer["GenerateDetailRegist"]</h6>
                                         <input style="margin-bottom: 10px; width: 20px" type="checkbox" id="@nameValue" @value disabled />
                                         @{
-                                            value = c.DRFlagRegistado ? "checked" : "";
+                                            value = companytype.DRFlagRegistado ? "checked" : "";
                                             nameValue = value + "DRFlagRegistado";
                                         }
                                         <h6>@localizer["DRFlagRegistado"]</h6>
                                         <input style="margin-bottom: 10px; width: 20px" type="checkbox" id="@nameValue" @value disabled />
                                         @{
-                                            value = c.DRFlagEncomenda ? "checked" : "";
+                                            value = companytype.DRFlagEncomenda ? "checked" : "";
                                             nameValue = value + "DRFlagEncomenda";
                                         }
                                         <h6>@localizer["DRFlagEncomenda"]</h6>
                                         <input style="margin-bottom: 10px; width: 20px" type="checkbox" id="@nameValue" @value disabled />
                                         @{
-                                            value = c.DRFlagPessoal ? "checked" : "";
+                                            value = companytype.DRFlagPessoal ? "checked" : "";
                                             nameValue = value + "DRFlagPessoal";
                                         }
                                         <h6>@localizer["DRFlagPessoal"]</h6>

@@ -7,3 +7,68 @@ Info: User evolUXuser logged in at 5/26/2023 9:57:55 AM
 Info: User evolUXuser logged in at 5/26/2023 9:57:56 AM
 Info: User evolUXuser logged in at 5/26/2023 10:01:24 AM
 Info: User evolUXuser logged in at 5/26/2023 10:05:53 AM
+Info: User evolUXuser logged in at 29/05/2023 09:02:57
+Info: GetCompanyBusiness Get
+Info: DocCodeGroup Get
+Info: DocCode Get
+Info: DocCodeConfig Get
+Info: GetExceptionLevel Get
+Info: GetCompanyBusiness Get
+Info: GetProjects Get
+Info: GetCompanyBusiness Get
+Info: GetProjects Get
+Info: GetParameters Get
+Info: GetMaterialTypes Get
+Info: GetMaterialTypes Get
+Info: GetServiceTypes Get
+Info: GetServiceTasks Get
+Info: GetAvailableServiceTypes Get
+Info: GetServiceTasks Get
+Info: GetAvailableServiceTypes Get
+Info: Expedition Company Configs Resume Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: ServiceCompany Configs Resume Get
+Info: Expedition Type Get
+Info: Expedition Zone Get
+Info: Expedition Companies Get
+Info: ExpContracts Get
+Info: Expedition Company Type Get
+Info: Expedition Company Configs Resume Get
+Info: Expedition Type Get
+Info: Expedition Companies Get
+Info: Expedition Company Type Get
+Info: Expedition Company Configs Resume Get
+Info: Expedition Type Get
+Info: Expedition Companies Get
+Info: Expedition Company Type Get
+Info: Expedition Company Configs Resume Get
+Info: Expedition Type Get
+Info: ExpContracts Get
+Info: Expedition Company Type Get
+Info: Expedition Company Configs Resume Get
+Info: Expedition Type Get
+Info: PendingRegist Get
+Info: GetPendingRecoveries Get
+Info: ProductionRunReport Get
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 30/05/2023 09:40:20
+Info: DocCodeGroup Get
+Info: DocCode Get
+Info: DocCodeConfig Get
+Info: Expedition Type Get
+Info: User evolUXuser logged in at 30/05/2023 10:28:43
+Info: Expedition Type Get
+Info: User evolUXuser logged in at 30/05/2023 11:15:47
+Info: Expedition Type Get
+Info: Expedition Type Get
+Info: User evolUXuser logged in at 30/05/2023 11:27:24
+Info: Expedition Type Get
+Info: User evolUXuser logged in at 30/05/2023 11:31:21
+Info: Expedition Type Get
+Info: User evolUXuser logged in at 30/05/2023 11:49:28
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
