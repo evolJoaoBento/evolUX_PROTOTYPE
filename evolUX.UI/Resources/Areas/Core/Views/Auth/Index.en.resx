@@ -117,6 +117,27 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ExpeditionCompanies" xml:space="preserve">
+    <value>Expedition Companies</value>
+  </data>
+  <data name="FinishingCompanies" xml:space="preserve">
+    <value>Finishing Companies</value>
+  </data>
+  <data name="JobsInExecution" xml:space="preserve">
+    <value>Jobs in Execution</value>
+  </data>
+  <data name="ProcessingServers" xml:space="preserve">
+    <value>Processing Servers</value>
+  </data>
+  <data name="Tasks" xml:space="preserve">
+    <value>Tasks</value>
+  </data>
+  <data name="Used" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Users</value>
+  </data>
   <data name="Welcome" xml:space="preserve">
     <value>Welcome</value>
   </data>
