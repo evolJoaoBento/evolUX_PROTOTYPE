@@ -132,9 +132,6 @@
   <data name="Tasks" xml:space="preserve">
     <value>Tarefas</value>
   </data>
-  <data name="Used" xml:space="preserve">
-    <value>Usados</value>
-  </data>
   <data name="Users" xml:space="preserve">
     <value>Utilizadores</value>
   </data>
