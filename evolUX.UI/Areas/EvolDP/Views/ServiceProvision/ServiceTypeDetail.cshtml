@@ -52,6 +52,7 @@ else
     int level = 0;
     string idValue = "arrow" + level.ToString();
     string nameValue = "";
+    string arrowid = "arrow";
     colWidth = 0;
     if (AddServiceTask)
         colWidth++;
@@ -106,6 +107,7 @@ else
                 value = s.ServiceID.ToString();
                 level++;
                 nameValue = Level0Name + level.ToString();
+                arrowid = "arrow" + level.ToString();
                 idValue = "arrow" + nameValue;
                 @if (AddServiceTask)
                 {
@@ -137,16 +139,25 @@ else
                 <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
                     @if (colWidth > 0)
                     {
-                    <td class="evol-fitcontent-column borders" style="align-items:center; display:flex">
-                        @if (AddServiceTask)
-                        {
-                                <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeService"]" />
-                        }
                         @if (s.CompanyList.Count() > 0)
                         {
-                                <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                            <td class="borders collapsible" style="align-items:center; display:flex; justify-content: center" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
+                                @if (AddServiceTask)
+                                {
+                                    <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeService"]" />
+                                }
+                                <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
+                            </td>
                         }
-                    </td>
+                        else
+                        {
+                            <td class="borders" style="align-items:center; display:flex; justify-content: center">
+                                @if (AddServiceTask)
+                                {
+                                    <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeService"]" />
+                                }
+                            </td>
+                        }
                     }
                     <td>@s.ServiceDesc
                     </td>
@@ -156,8 +167,8 @@ else
                 @if (s.CompanyList.Count() > 0)
                 {
                     <tr id="@nameValue" class="borders" style="display: none">
-                        <td colspan="@colspan">
-                            <table class="table table-sm table-hover table-collapse-seperate">
+                        <td colspan="@colspan" class="table-collapse">
+                            <table class="table table-sm table-hover table-collapse-seperate collapsed-table">
                                 <thead id="bootstrap-overrides" class="table-info">
                                     <tr>
                                         <th>@localizer["ServiceCompany"]</th>

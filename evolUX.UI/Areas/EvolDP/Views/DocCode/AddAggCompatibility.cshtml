@@ -101,7 +101,7 @@ else
                 <td>@docCode.DocDescription</td>
             </tr>
             <tr>
-                <td colspan="8">
+                <td colspan="8" class="table-collapse">
                     <form id="AddAggCompatibilityFrm" asp-area="evolDP" asp-controller="DocCode" asp-action="ChangeCompatibility" asp-route-doccodeJson="@JsonConvert.SerializeObject(docCode)"
                       data-ajax="true"
                       data-ajax-method="POST">

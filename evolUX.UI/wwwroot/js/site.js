@@ -134,45 +134,79 @@ function findObj(n, d) {
     return x;
 }
 
-/*******************************************************************************
-Function that shows the detail by selecting the respective button
-    startName: Element Start Name
-********************************************************************************/
-function showDetail(startName) {
+function showDetailL(startName) {
     eSshow(startName);
     changeClass('arrow' + startName, 'bxs-chevron-down', 'bxs-chevron-up');
-    document.getElementById('arrow' + startName).href = "javascript:hideDetail('" + startName + "');";
-    changeClass('row|' + startName, 'evol-normal-row', 'evol-highlight-row');
+    document.getElementById('arrow' + startName).href = "javascript:hideDetailL('" + startName + "');";;
 }
 
 /*******************************************************************************
 Function that hides the detail by selecting the respective button
     startName: Element Start Name
 ********************************************************************************/
-function hideDetail(startName) {
+function hideDetailL(startName) {
     eShide(startName);
     changeClass('arrow' + startName, 'bxs-chevron-up', 'bxs-chevron-down');
-    document.getElementById('arrow' + startName).href = "javascript:showDetail('" + startName + "');";
-    changeClass('row|' + startName, 'evol-highlight-row', 'evol-normal-row');
+    document.getElementById('arrow' + startName).href = "javascript:showDetailL('" + startName + "');";
+}
+
+/*******************************************************************************
+Function that shows the detail by selecting the respective button
+    startName: Element Start Name
+********************************************************************************/
+function showDetail(startName, arrow) {
+    if (event.target.tagName.toLowerCase() === 'img') {
+        // Código para evitar a execução do clique na imagem
+        return;
+    }
+
+    eSshow(startName);
+    changeClass(arrow, 'bxs-chevron-down', 'bxs-chevron-up');
+    document.getElementById('arrow' + startName).setAttribute('onclick', "javascript:hideDetail('" + startName + "','" + arrow + "');");
+}
+
+/*******************************************************************************
+Function that hides the detail by selecting the respective button
+    startName: Element Start Name
+********************************************************************************/
+function hideDetail(startName, arrow) {
+    if (event.target.tagName.toLowerCase() === 'img') {
+        // Código para evitar a execução do clique na imagem
+        return;
+    }
+
+    eShide(startName);
+    changeClass(arrow, 'bxs-chevron-up', 'bxs-chevron-down');
+    document.getElementById('arrow' + startName).setAttribute('onclick', "javascript:showDetail('" + startName + "','" + arrow + "');");
 }
 /*******************************************************************************
 Function that shows the detail by selecting the respective button
     startName: Element Start Name
 ********************************************************************************/
-function showDetails(startName) {
+function showDetails(startName, arrow) {
+    if (event.target.tagName.toLowerCase() === 'img') {
+        // Código para evitar a execução do clique na imagem
+        return;
+    }
+
     eSshow(startName);
-    changeClass('arrow' + startName, 'bxs-chevrons-down', 'bxs-chevrons-up');
-    document.getElementById('arrow' + startName).href = "javascript:hideDetails('" + startName + "');";
+    changeClass(arrow, 'bxs-chevrons-down', 'bxs-chevrons-up');
+    document.getElementById('arrow' + startName).setAttribute('onclick', "javascript:hideDetails('" + startName + "','" + arrow + "');");
 }
 
 /*******************************************************************************
 Function that hides the detail by selecting the respective button
     startName: Element Start Name
 ********************************************************************************/
-function hideDetails(startName) {
+function hideDetails(startName, arrow) {
+    if (event.target.tagName.toLowerCase() === 'img') {
+        // Código para evitar a execução do clique na imagem
+        return;
+    }
+
     eShide(startName);
-    changeClass('arrow' + startName, 'bxs-chevrons-up', 'bxs-chevrons-down');
-    document.getElementById('arrow' + startName).href = "javascript:showDetails('" + startName + "');";
+    changeClass(arrow, 'bxs-chevrons-up', 'bxs-chevrons-down');
+    document.getElementById('arrow' + startName).setAttribute('onclick', "javascript:showDetails('" + startName + "','" + arrow + "');");
 }
 /*******************************************************************************
 Function that check all checkbox with specific elemnent name 
@@ -290,6 +324,11 @@ var i;
 
 for (i = 0; i < coll.length; i++) {
     coll[i].addEventListener("click", function () {
+        if (event.target.tagName.toLowerCase() === 'img') {
+            // Código para evitar a execução do clique na imagem
+            return;
+        }
+
         this.classList.toggle("active");
         var content = this.nextElementSibling.querySelector('td').querySelector('div');
         if (content.style.height) {

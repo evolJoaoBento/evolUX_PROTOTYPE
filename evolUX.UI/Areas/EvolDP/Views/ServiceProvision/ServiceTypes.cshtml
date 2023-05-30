@@ -51,6 +51,7 @@ else
     int level = 0;
     string idValue = "arrow" + level.ToString();
     string nameValue = "";
+    string arrowid = "arrow";
     colWidth = 1;
     if (AddServiceTask)
         colWidth++;
@@ -93,30 +94,43 @@ else
             {
                 level++;
                 nameValue = Level0Name + level.ToString();
+                arrowid = "arrow" + level.ToString();
                 idValue = "arrow" + nameValue;
                 value = t.ServiceTypeID.ToString();
                 <tr id="Show|@value" ondblclick="openPopupEdit('@t.ServiceTypeID')">
-                    <td style="align-items:center; display:flex; justify-content:center" class="borders">
-                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceTypeDetail" asp-route-servicetypeJson="@JsonConvert.SerializeObject(t)">
-                            <img class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @t.ServiceTypeDesc" />
-                        </a>
-                        @if (AddServiceTask)
-                        {
-                            <img onclick="openPopupEdit('@t.ServiceTypeID')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceType"]" />
-                        }
-                        @if (t.ServicesList.Count() > 0)
-                        {
-                            <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
-                        }
-                    </td>
+                    @if (t.ServicesList.Count() > 0)
+                    {
+                        <td style="align-items:center; display:flex; justify-content:center" class="borders collapsible" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceTypeDetail" asp-route-servicetypeJson="@JsonConvert.SerializeObject(t)">
+                                <img class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @t.ServiceTypeDesc" />
+                            </a>
+                            @if (AddServiceTask)
+                            {
+                                <img onclick="openPopupEdit('@t.ServiceTypeID')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceType"]" />
+                            }
+                            <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="align-items:center; display:flex; justify-content:center" class="borders">
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceTypeDetail" asp-route-servicetypeJson="@JsonConvert.SerializeObject(t)">
+                                <img class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @t.ServiceTypeDesc" />
+                            </a>
+                            @if (AddServiceTask)
+                            {
+                                <img onclick="openPopupEdit('@t.ServiceTypeID')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceType"]" />
+                            }
+                        </td>
+                    }
                     <td>@t.ServiceTypeDesc</td>
                     <td>@t.ServiceTypeCode</td>
                 </tr>
                 @if (t.ServicesList.Count() > 0)
                 {
                 <tr id="@nameValue" class="borders" style="display: none">
-                    <td colspan="4">
-                        <table class="table table-sm table-hover table-collapse-seperate">
+                    <td colspan="4" class="table-collapse">
+                        <table class="table table-sm table-hover table-collapse-seperate collapsed-table">
                             <thead id="bootstrap-overrides" class="table-info">
                                 <tr>
                                     <th>@localizer["ServiceDesc"]</th>

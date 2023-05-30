@@ -25,6 +25,7 @@ else
 
     int level = 0;
     string idValue = "arrow" + level.ToString();
+    string arrowid = "arrow";
     string nameValue = "";
     <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
@@ -39,22 +40,27 @@ else
             {
                 level++;
                 nameValue = Level0Name + level.ToString();
+                arrowid = "arrow" + level.ToString();
                 idValue = "arrow" + nameValue;
                 <tr>
-                    <td class="borders">
-                        @if (z.ExpCompanyZonesList.Count() > 0)
-                        {
-                            <a class="evol-arrow bx bxs-chevron-down" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
-                        }
-                    </td>
+                    @if (z.ExpCompanyZonesList.Count() > 0)
+                    {
+                        <td class="borders collapsible" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
+                            <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
                     <td style="text-align: center">@z.ExpeditionZone</td>
                     <td>@z.ExpeditionZoneDesc</td>
                 </tr>
                 @if (z.ExpCompanyZonesList.Count() > 0)
                 {
                     <tr id="@nameValue" class="borders" style="display: none">
-                        <td colspan="3">
-                            <table class="table table-sm table-hover table-collapse-seperate">
+                        <td colspan="3" class="table-collapse">
+                            <table class="table table-sm table-hover table-collapse-seperate collapsed-table">
                                 <thead id="bootstrap-overrides" class="table-info">
                                     <tr>
                                         <th class="evol-fitcontent-column borders"></th>

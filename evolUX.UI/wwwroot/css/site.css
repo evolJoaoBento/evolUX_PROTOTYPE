@@ -691,16 +691,61 @@ label {
         transition: background-color 0.2s ease-in-out; /* transition the color smoothly */
     }
 
+     {
+        width: 2px !important;
+        height: calc(100% + 1px) !important;
+    }
+
+    .table-collapse .collapsible::before,
+    .collapsible.borders::before {
+        width: 2px !important;
+        height: calc(100% + 1px) !important;
+    }
+
     .collapsible:hover::before {
         background-color: var(--evolflow-color);
     }
 
+.bx.bxs-chevrons-up:hover {
+    color: var(--evolNew-color) !important;
+}
+
+.bx.bxs-chevrons-up {
+    color: var(--evoldp-color) !important;
+}
+
+.bx.bxs-chevrons-down:hover {
+    color: var(--evolflow-color) !important;
+}
+
+.bx.bxs-chevron-up:hover {
+    color: var(--evolNew-color) !important;
+}
+
+.bx.bxs-chevron-up {
+    color: var(--evoldp-color) !important;
+}
+
+.bx.bxs-chevron-down:hover {
+    color: var(--evolflow-color) !important;
+}
+
+.collapsed-table {
+    border-left: 2px solid var(--evoldp-color);
+    padding-top: 10px;
+}
+
+.table-collapse {
+    border: none !important;
+    padding: 0 !important;
+}
+
 .content {
     overflow: scroll;
     height: 0;
-    width:92vw;
+    width: 92vw;
     transition: all 0.8s ease;
-    opacity:0;
+    opacity: 0;
 }
 
     .content p {

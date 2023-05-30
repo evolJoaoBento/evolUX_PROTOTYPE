@@ -27,6 +27,7 @@ else
     string value = "";
     string docTypeDesc = "";
     string Level0Name = "level";
+    string arrowid = "arrow";
 
     int level = 0;
     string idValue = "arrow" + level.ToString();
@@ -43,14 +44,15 @@ else
                 {
                     level++;
                     nameValue = Level0Name + level.ToString();
+                    arrowid = "arrow" + level.ToString();
                     idValue = "arrow" + nameValue;
                     <tr>
-                    <td class="borders"><a class=" bx bxs-chevron-down grow evol-arrow" href="javascript:showDetail('@nameValue')" id="@idValue"></a></td>
+                    <td class="borders collapsible" id="@idValue" onclick="javascript:showDetails('@nameValue','@arrowid')"><a class="evol-arrow bx bxs-chevrons-down grow" id="@arrowid"></td>
                         <td>@dg.DocLayout</td>
                     </tr>
                     <tr id="@nameValue"  style="display: none" class="borders">
-                        <td colspan="2">
-                            <table class="table table-sm table-hover table-collapse-seperate">
+                        <td colspan="2" class="table-collapse">
+                        <table class="table table-sm table-hover table-collapse-seperate collapsed-table">
                                 <thead id="bootstrap-overrides" class="table-info">
                                     <tr>
                                         <th class="borders"></th>

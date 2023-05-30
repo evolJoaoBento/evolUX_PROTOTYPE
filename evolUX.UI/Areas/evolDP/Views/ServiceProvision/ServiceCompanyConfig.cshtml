@@ -50,6 +50,7 @@ else
     string value = "";
     int level0 = 0, level1 = 0;
     string idValue = "arrow" + level0.ToString();
+    string arrowid = "arrow";
     string nameValue = "";
     string headerDesc1 = Model.Configs.First().ServiceTypeDesc;
     string headerDesc2 = "";
@@ -150,6 +151,7 @@ else
         value = "Service|" + service.ToString();
         level0++;
         nameValue = "level0|" + level0.ToString();
+        arrowid = "arrow" + level0.ToString();
         idValue = "arrow" + nameValue;
         if (Model.ServiceID == 0)
         {
@@ -160,7 +162,7 @@ else
                 </h2>
                 <h3>
                     [@matchCode]
-                    <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetail('@nameValue')" id="@idValue"></a>
+                    <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetailL('@nameValue')" id="@idValue"></a>
                 </h3>
             </div>
         }
