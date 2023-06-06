@@ -188,6 +188,9 @@ else
             }
         </tbody>
     </table>
+    <script>
+        var headerDesc = "@headerDesc";
+    </script>
 }
 @section Scripts
     {
@@ -204,7 +207,6 @@ else
             document.getElementById("Edit|" + value).style.display = "flex";
         }
         function openPopupAdd() {
-            var headerDesc = document.getElementById('headerDesc').getAttribute('data-value');
             document.getElementById('popupMessage').innerHTML = '@localizer["PopupMessageAdd"]: ' + headerDesc;
             document.getElementById("ServiceDesc").value = "";
             document.getElementById("ServiceCode").value = "";
