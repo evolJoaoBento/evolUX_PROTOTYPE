@@ -60,7 +60,7 @@ namespace evolUX.UI.Areas.Finishing.Controllers
             }
             catch (ErrorViewModelException ex)
             {
-                return PartialView("Error", ex.ViewModel);
+                return PartialView("VarError", ex.ViewModel);
             }
             catch (HttpUnauthorizedException ex)
             {

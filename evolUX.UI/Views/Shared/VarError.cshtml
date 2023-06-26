@@ -1,7 +1,8 @@
-﻿@using Microsoft.AspNetCore.Mvc.Localization
-@using Shared.ViewModels.Areas.Core
-@model MessageViewModel
-@inject IViewLocalizer localizer
+﻿@using Shared.ViewModels.Areas.Core
+@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
 
 <style>
     .alert {
@@ -16,10 +17,15 @@
     }
 </style>
 
-<div class="alert">
-    @localizer[Model.MessageDetail]
-    <button class="popup-button" onclick="closeAlert()">OK</button>
-</div>
+@if (Model?.ShowRequestID ?? false)
+{
+    <environment names="Development">
+        <div class="alert">
+            Message: @Model?.ErrorResult?.Message
+            <button class="popup-button" onclick="closeAlert()">OK</button>
+        </div>
+    </environment>
+}
 
 <script>
     function closeAlert() {

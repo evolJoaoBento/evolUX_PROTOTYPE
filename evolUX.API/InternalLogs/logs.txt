@@ -72,3 +72,105 @@ Info: User evolUXuser logged in at 30/05/2023 11:49:28
 Info: RegistTotalRecover Get
 Info: RegistTotalRecover Get
 Info: RegistTotalRecover Get
+Info: User evolUXuser logged in at 31/05/2023 09:03:42
+Info: Expedition Type Get
+Info: RegistTotalRecover Get
+Info: GetPendingRecoveries Get
+Info: RegistDetailRecover Get
+Info: RegistDetailRecover Get
+Info: RegistDetailRecover Get
+Info: RegistDetailRecover Get
+Info: User evolUXuser logged in at 31/05/2023 09:15:33
+Info: User evolUXuser logged in at 31/05/2023 09:15:46
+Error: Something went wrong inside Logincredentials action: System error.
+Info: User evolUXuser logged in at 31/05/2023 09:19:35
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: User evolUXuser logged in at 31/05/2023 09:33:31
+Info: User evolUXuser logged in at 31/05/2023 12:19:03
+Info: RegistDetailRecover Get
+Info: RegistDetailRecover Get
+Info: GetPendingRecoveries Get
+Info: User evolUXuser logged in at 05/06/2023 09:47:16
+Info: RegistTotalRecover Get
+Info: User evolUXuser logged in at 05/06/2023 11:19:45
+Info: User evolUXuser logged in at 05/06/2023 11:46:38
+Info: User evolUXuser logged in at 05/06/2023 12:25:33
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: GetPendingRecoveries Get
+Info: RegistDetailRecover Get
+Info: RegistDetailRecover Get
+Info: RegistTotalRecover Get
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 06/06/2023 09:09:40
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: User evolUXuser logged in at 06/06/2023 10:07:22
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: User evolUXuser logged in at 06/06/2023 10:48:57
+Info: RegistTotalRecover Get
+Info: GetPendingRecoveries Get
+Info: RegistTotalRecover Get
+Info: User evolUXuser logged in at 06/06/2023 11:08:30
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: User evolUXuser logged in at 06/06/2023 11:32:47
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: User evolUXuser logged in at 06/06/2023 12:33:18
+Info: RegistTotalRecover Get
+Info: GetCompanyBusiness Get
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 09/06/2023 11:57:52
+Info: RegistTotalRecover Get
+Info: GetCompanyBusiness Get
+Info: GetCompanyBusiness Get
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 09/06/2023 13:52:08
+Info: RegistTotalRecover Get
+Info: RegistTotalRecover Get
+Info: RegistDetailRecover Get
+Info: RegistDetailRecover Get
+Info: RegistDetailRecover Get
+Info: RegistDetailRecover Get
+Info: RegistDetailRecover Get
+Info: RegistDetailRecover Get
+Info: Expedition Type Get
+Info: User evolUXuser logged in at 16/06/2023 10:36:58
+Info: ProductionRunReport Get
+Info: ProductionReport Get
+Info: ProductionReportFilters Get
+Info: PendingRegist Get
+Info: ProductionRunReport Get
+Info: ProductionReport Get
+Info: ProductionReportFilters Get
