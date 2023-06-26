@@ -437,12 +437,29 @@
                             </div>
                         </div>
                     </form>
-                    <div class="auth-error">
-                        @if (@errorMessage != null)
-                        {
-                            <p style="margin:0;">@errorMessage</p>
-                        }
-                    </div>
+                    @if (@errorMessage != null)
+                    {
+                        <script>
+                            function closePopup() {
+                                document.getElementById('errorPopup').style.display = 'none';
+                            }
+                        </script>
+                        <div class="popup-container" id="errorPopup">
+                                <div class="bgGradient bgGradientAnimation">
+                                    <div class="popup">
+                                        <h1 style="color: red">@localizer["LoginAlert"]</h1>
+                                        <div style="display: flex">
+                                            <div class="form-inputs">
+                                                <p style="margin:0; color: red">@errorMessage</p>
+                                            </div>
+                                            <div class="popup-buttons">
+                                                <button class="popup-button" onclick="closePopup()">OK</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    }
                     <div class="social-login">
                         <h1 style="font-family:Arial, Helvetica, sans-serif, monospace; font-size: 15px; color:grey">Faça log in por:</h1>
                         <div style="margin-top: 30px" class="pick-login">

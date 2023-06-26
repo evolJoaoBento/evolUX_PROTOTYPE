@@ -126,6 +126,9 @@
   <data name="JobsInExecution" xml:space="preserve">
     <value>Jobs in Execution</value>
   </data>
+  <data name="LoginAlert" xml:space="preserve">
+    <value>Login Failed</value>
+  </data>
   <data name="ProcessingServers" xml:space="preserve">
     <value>Processing Servers</value>
   </data>

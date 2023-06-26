@@ -1061,3 +1061,19 @@ label {
     border-radius: 12px;
     background: linear-gradient(60deg, #4bb1de,#501db4, #e5813a, #fa1212);
 }
+
+@keyframes myAnimation {
+    from {
+        transform: translateY(-250%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(-195%);
+        opacity: 1;
+    }
+}
+
+.bgGradientAnimation {
+    animation: myAnimation 1s ease-in;
+    transform:translateY(-195%);
+}
