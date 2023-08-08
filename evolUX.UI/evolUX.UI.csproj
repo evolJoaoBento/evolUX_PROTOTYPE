@@ -68,6 +68,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Reports\Controllers\" />
+    <Folder Include="Areas\Reports\Models\" />
+    <Folder Include="Areas\Reports\Views\" />
+    <Folder Include="Areas\Reports\Services\" />
+    <Folder Include="Areas\Reports\Repositories\" />
     <Folder Include="wwwroot\expedition\" />
   </ItemGroup>
 
