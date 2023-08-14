@@ -7,15 +7,32 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Reports\Models\**" />
+    <Compile Remove="Areas\Reports\Views\**" />
     <Compile Remove="Properties\.config\**" />
     <Compile Remove="Wiki\obj\**" />
+    <Content Remove="Areas\Reports\Models\**" />
+    <Content Remove="Areas\Reports\Views\**" />
     <Content Remove="Properties\.config\**" />
     <Content Remove="Wiki\obj\**" />
+    <EmbeddedResource Remove="Areas\Reports\Models\**" />
+    <EmbeddedResource Remove="Areas\Reports\Views\**" />
     <EmbeddedResource Remove="Properties\.config\**" />
     <EmbeddedResource Remove="Wiki\obj\**" />
+    <None Remove="Areas\Reports\Models\**" />
+    <None Remove="Areas\Reports\Views\**" />
     <None Remove="Properties\.config\**" />
     <None Remove="Wiki\obj\**" />
     <_WebToolingArtifacts Remove="Properties\.config\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Reports\Repositories\Interfaces\IAuthService.cs" />
+    <Compile Remove="Areas\Reports\Repositories\Interfaces\IloggerServices.cs" />
+    <Compile Remove="Areas\Reports\Repositories\Interfaces\IUserService.cs" />
+    <Compile Remove="Areas\Reports\Services\Interfaces\IAuthService.cs" />
+    <Compile Remove="Areas\Reports\Services\Interfaces\IloggerServices.cs" />
+    <Compile Remove="Areas\Reports\Services\Interfaces\IUserService.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,10 +53,10 @@
 
   <ItemGroup>
     <Folder Include="Areas\Reports\Controllers\" />
-    <Folder Include="Areas\Reports\Models\" />
     <Folder Include="Areas\Reports\Repositories\" />
+    <Folder Include="Areas\Reports\Repositories\Interfaces\" />
     <Folder Include="Areas\Reports\Services\" />
-    <Folder Include="Areas\Reports\Views\" />
+    <Folder Include="Areas\Reports\Services\Interfaces\" />
   </ItemGroup>
 
 </Project>

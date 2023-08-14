@@ -8,6 +8,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Reports\Models\**" />
+    <Compile Remove="Areas\Reports\Services\NovaPasta\**" />
+    <Content Remove="Areas\Reports\Models\**" />
+    <Content Remove="Areas\Reports\Services\NovaPasta\**" />
+    <EmbeddedResource Remove="Areas\Reports\Models\**" />
+    <EmbeddedResource Remove="Areas\Reports\Services\NovaPasta\**" />
+    <None Remove="Areas\Reports\Models\**" />
+    <None Remove="Areas\Reports\Services\NovaPasta\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Reports\Repositories\Interfaces\IAuthService.cs" />
+    <Compile Remove="Areas\Reports\Repositories\Interfaces\IloggerServices.cs" />
+    <Compile Remove="Areas\Reports\Repositories\Interfaces\IUserService.cs" />
+    <Compile Remove="Areas\Reports\Services\Interfaces\IAuthService.cs" />
+    <Compile Remove="Areas\Reports\Services\Interfaces\IloggerServices.cs" />
+    <Compile Remove="Areas\Reports\Services\Interfaces\IUserService.cs" />
     <Compile Remove="Views\Shared\VarError.cshtml.cs" />
   </ItemGroup>
 
@@ -69,10 +86,6 @@
 
   <ItemGroup>
     <Folder Include="Areas\Reports\Controllers\" />
-    <Folder Include="Areas\Reports\Models\" />
-    <Folder Include="Areas\Reports\Views\" />
-    <Folder Include="Areas\Reports\Services\" />
-    <Folder Include="Areas\Reports\Repositories\" />
     <Folder Include="wwwroot\expedition\" />
   </ItemGroup>
 

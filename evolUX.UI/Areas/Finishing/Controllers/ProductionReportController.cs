@@ -127,23 +127,9 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                 }
                 return View(result);
             }
-            catch (FlurlHttpException ex)
+            catch (ErrorViewModelException ex)
             {
-                // For error responses that take a known shape
-                //TError e = ex.GetResponseJson<TError>();
-                // For error responses that take an unknown shape
-                ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.RequestID = ex.Source;
-                viewModel.ErrorResult = new ErrorResult();
-                viewModel.ErrorResult.Code = (int)ex.StatusCode;
-                viewModel.ErrorResult.Message = ex.Message;
-                return View("Error", viewModel);
-            }
-            catch(HttpNotFoundException ex)
-            {
-                ErrorViewModel viewModel = new ErrorViewModel();
-                viewModel.ErrorResult = await ex.response.GetJsonAsync<ErrorResult>();
-                return View("Error", viewModel);
+                return View("Error", ex.ViewModel);
             }
             catch(HttpUnauthorizedException ex)
             {
