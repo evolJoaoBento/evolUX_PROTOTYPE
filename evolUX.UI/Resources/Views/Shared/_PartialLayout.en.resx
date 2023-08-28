@@ -450,4 +450,7 @@
   <data name="ActionUserTasks" xml:space="preserve">
     <value>User Tasks</value>
   </data>
+  <data name="ActionRetentionReport_Link" xml:space="preserve">
+    <value>/Reports/RetentionReport/Index</value>
+  </data>
 </root>

@@ -1,5 +1,6 @@
 ﻿using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Areas.Finishing.Repositories.Interfaces;
+using evolUX.API.Areas.Reports.Repositories.Interfaces;
 
 namespace evolUX.API.Areas.Core.Repositories.Interfaces
 {
@@ -40,5 +41,7 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
         IPendingRecoverRepository PendingRecover { get; }
 
         IExpeditionReportRepository ExpeditionReport { get; }
+
+        IRetentionReportRepository RetentionReport { get; }
     }
 }

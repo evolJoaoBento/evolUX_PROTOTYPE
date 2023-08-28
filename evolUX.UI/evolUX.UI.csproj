@@ -82,10 +82,16 @@
     <EmbeddedResource Update="Resources\Areas\Finishing\Views\ProductionReport\ProductionReport.en.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Shared\_PartialLayout.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Views\Shared\_PartialLayout.pt.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Reports\Controllers\" />
+    <Folder Include="Resources\Areas\Reports\Controllers\" />
     <Folder Include="wwwroot\expedition\" />
   </ItemGroup>
 

@@ -3,6 +3,8 @@ using evolUX.API.Areas.evolDP.Repositories;
 using evolUX.API.Areas.evolDP.Repositories.Interfaces;
 using evolUX.API.Areas.Finishing.Repositories;
 using evolUX.API.Areas.Finishing.Repositories.Interfaces;
+using evolUX.API.Areas.Reports.Repositories;
+using evolUX.API.Areas.Reports.Repositories.Interfaces;
 using evolUX.API.Data.Context;
 
 namespace evolUX.API.Areas.Core.Repositories
@@ -25,10 +27,11 @@ namespace evolUX.API.Areas.Core.Repositories
         private IPrintedFilesRepository _printedFiles;
         private IFulfiledFilesRepository _fullfilledFiles;
         private IRecoverRepository _recover;
-        private IPendingRegistRepository _pendingRegistRepository;
-        private IPostalObjectRepository _postalObjectRepository;
-        private IPendingRecoverRepository _pendingRecoverRepository;
-        private IExpeditionReportRepository _expeditionReportRepository;
+        private IPendingRegistRepository _pendingRegist;
+        private IPostalObjectRepository _postalObject;
+        private IPendingRecoverRepository _pendingRecover;
+        private IExpeditionReportRepository _expeditionReport;
+        private IRetentionReportRepository _retentionReport;
 
 
         public WrapperRepository(DapperContext context)
@@ -203,33 +206,33 @@ namespace evolUX.API.Areas.Core.Repositories
         {
             get
             {
-                if (_pendingRegistRepository == null)
+                if (_pendingRegist == null)
                 {
-                    _pendingRegistRepository = new PendingRegistRepository(_context);
+                    _pendingRegist = new PendingRegistRepository(_context);
                 }
-                return _pendingRegistRepository;
+                return _pendingRegist;
             }
         }
         public IPostalObjectRepository PostalObject
         {
             get
             {
-                if (_postalObjectRepository == null)
+                if (_postalObject == null)
                 {
-                    _postalObjectRepository = new PostalObjectRepository(_context);
+                    _postalObject = new PostalObjectRepository(_context);
                 }
-                return _postalObjectRepository;
+                return _postalObject;
             }
         }
         public IPendingRecoverRepository PendingRecover
         {
             get
             {
-                if (_pendingRecoverRepository == null)
+                if (_pendingRecover == null)
                 {
-                    _pendingRecoverRepository = new PendingRecoverRepository(_context);
+                    _pendingRecover = new PendingRecoverRepository(_context);
                 }
-                return _pendingRecoverRepository;
+                return _pendingRecover;
             }
         }
 
@@ -237,11 +240,22 @@ namespace evolUX.API.Areas.Core.Repositories
         {
             get
             {
-                if (_expeditionReportRepository == null)
+                if (_expeditionReport == null)
                 {
-                    _expeditionReportRepository = new ExpeditionReportRepository(_context);
+                    _expeditionReport = new ExpeditionReportRepository(_context);
                 }
-                return _expeditionReportRepository;
+                return _expeditionReport;
+            }
+        }
+        public IRetentionReportRepository RetentionReport
+        {
+            get
+            {
+                if (_retentionReport == null)
+                {
+                    _retentionReport = new RetentionReportRepository(_context);
+                }
+                return _retentionReport;
             }
         }
     }

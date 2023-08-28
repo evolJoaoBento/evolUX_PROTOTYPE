@@ -36,8 +36,7 @@ namespace evolUX.API.Areas.Finishing.Controllers
         {
             try
             {
-                ProductionRunReportViewModel viewmodel = new ProductionRunReportViewModel();
-                viewmodel.ProductionRunReport = await _productionReportService.GetProductionRunReport(ServiceCompanyID);
+                ProductionRunReportViewModel viewmodel = await _productionReportService.GetProductionRunReport(ServiceCompanyID);
                 _logger.LogInfo("ProductionRunReport Get");
                 return Ok(viewmodel);
             }

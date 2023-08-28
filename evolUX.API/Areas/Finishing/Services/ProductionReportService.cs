@@ -20,7 +20,17 @@ namespace evolUX.API.Areas.Finishing.Services
             _repository = repository;
             _print = print;
         }
+        public async Task<ProductionRunReportViewModel> GetProductionRunReport(int ServiceCompanyID)
+        {
+            ProductionRunReportViewModel viewmodel = new ProductionRunReportViewModel();
+            viewmodel.ProductionRunReport = await _repository.ProductionReport.GetProductionRunReport(ServiceCompanyID);
+            if (viewmodel.ProductionRunReport == null)
+            {
+                throw new Exception();//MAKE BETTER EXCEPTION
+            }
 
+            return viewmodel;
+        }
 
         public async Task<ProductionReportViewModel> GetProductionReport(IEnumerable<int> profileList, DataTable runIDList, int serviceCompanyID, bool filterOnlyPrint)
         {
@@ -134,15 +144,6 @@ namespace evolUX.API.Areas.Finishing.Services
             return productionReport;
         }
 
-        public async Task<IEnumerable<ProductionRunInfo>> GetProductionRunReport(int ServiceCompanyID)
-        {
-            IEnumerable<ProductionRunInfo> productionRunReport = await _repository.ProductionReport.GetProductionRunReport(ServiceCompanyID);
-            if (productionRunReport == null)
-            {
-
-            }
-
-            return productionRunReport;
-        }
+        
     }
 }

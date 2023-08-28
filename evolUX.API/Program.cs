@@ -17,6 +17,8 @@ using System.Text;
 using System.Text.Json.Serialization;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
 using evolUX.API.Areas.Core.Repositories;
+using evolUX.API.Areas.Reports.Services.Interfaces;
+using evolUX.API.Areas.Reports.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +53,9 @@ builder.Services.AddSingleton<IRecoverService, RecoverService>();
 builder.Services.AddSingleton<IPostalObjectService, PostalObjectService>();
 builder.Services.AddSingleton<IPendingRecoverService, PendingRecoverService>();
 builder.Services.AddSingleton<IExpeditionReportService, ExpeditionReportService>();
+
+//Reports
+builder.Services.AddSingleton<IRetentionReportService, RetentionReportService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

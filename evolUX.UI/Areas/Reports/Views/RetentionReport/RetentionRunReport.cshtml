@@ -1,0 +1,138 @@
+﻿@using Shared.Models.Areas.Reports
+@using Shared.ViewModels.Areas.Reports
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@model RetentionRunReportViewModel
+
+@*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
+@*{
+    //bool PrintFile = false;
+
+    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
+    int totalFilesLeftToPrint = Model.ProductionRunReport.Sum(x => x.FilesLeftToPrint);
+    int totalRecFilesLeftToPrint = Model.ProductionRunReport.Sum(x => x.RecFilesLeftToPrint);
+}*@
+<div class="d-flex justify-content-center" >
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+      <span class="sr-only">Loading...</span>
+    </div>
+</div>
+@if (Model == null || Model.RetentionRunReport == null)
+{
+    <div id="ResultPage">
+        <h3 class="display-4 text-center">@localizer["NoModelData"]</h3>
+    </div>
+}
+else
+{
+    @if (Model.RetentionRunReport.Count() == 0)
+    {
+        <div id="ResultPage">
+            <h3 class="display-4 text-center">@localizer["NoPendingRetentions"]</h3>
+        </div>
+    }
+    else
+    {
+        <div id="TitlePage">
+            <h1>
+                @localizer["RetentionRunStatus"]
+                @*@Model.BusinessAreaID*@
+            </h1>
+        </div>
+        @*@if (!string.IsNullOrEmpty(ViewBag.Source))
+        {
+            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="Reports" asp-controller="RetentionReport" asp-action="Index"></a>
+        }*@
+                @*string ServiceCompanyName = "";
+                if (ViewBag.hasMultipleServiceCompanies)
+                {
+                    ServiceCompanyName += TempData["ServiceCompanyName"];
+                }*@
+
+            <div class="my-3">
+                <table class="table table-sm table-hover">
+                    <thead id="bootstrap-overrides" class="sticky-header">
+                        <tr>
+                            <th class="borders" rowspan="3" style="text-align:center;vertical-align:middle"></th>
+                        <th colspan="5" scope="rowgroup" style="text-align:center;vertical-align:middle">
+                                @localizer["Retentions"]
+                                @Model.DateRef.ToString()
+                            </th>
+                        </tr>
+                        <tr>
+                            <th rowspan="2" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["RunsDate"]</th>
+                            <th rowspan="1" colspan="2" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["TypeDoc"]</th>
+                            <th rowspan="2" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["RetentionsDocuments"]</th>
+                            <th rowspan="2" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["MaxDateOfProd"]</th>
+                        </tr>
+                        <tr>
+                            <th rowspan="1" colspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Layout"]</th>
+                            <th rowspan="1" colspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Subtype"]</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bootstrap-overrides">
+                    @{
+                        int RunsCountTotal = 0;
+                        int RetentionsTotal = 0;
+                    }
+                        @foreach (RetentionRunInfo retention in Model.RetentionRunReport)
+                        {
+                            <tr>
+                                @{
+                                    DateTime rDate;
+                                    string runDate = retention.RunDate.ToString();
+                                    if (DateTime.TryParseExact(retention.RunDate.ToString(), "yyyyMMdd",
+                                    System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
+                                        runDate = rDate.ToShortDateString();
+                                    //string RunName = runDate + " [" + retention.RunSequence + "]";
+                                }
+
+                                <td class="borders" style="text-align:center;vertical-align:middle">
+                                    @if (/*retention.FilesLeftToPrint > 0 || retention.RecFilesLeftToPrint > 0*/ true)
+                                    {
+                                        <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionReport" asp-route-runidlist="@retention.RunID" asp-route-businessareaid="@retention.BusinessAreaID">
+                                            <img class="evol-image grow" src="~/images/report_orange.png" />
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionReport" asp-route-runidlist="@retention.RunID" asp-route-servicecompanyid="@retention.BusinessAreaID">
+                                            <img class="evol-image grow" src="~/images/report.png" />
+                                        </a>
+                                    }
+                                    @*@if (PrintFile && (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0))
+                                    {
+                                    <a class='bx bx-printer' style="color:rgb(245 126 72)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
+                                    }
+                                    *@
+                                </td>
+
+                                <td class="headcol">@retention.RunDate</td>
+                                @{
+                                    RunsCountTotal ++;
+                                }
+                                <td>@retention.DocTypeLayout</td>
+                                <td>@retention.DocTypeSubtype</td>
+                                <td>@retention.RetentionDocs</td>
+                                @{
+                                    RetentionsTotal += retention.RetentionDocs;
+                                }
+                                <td>@retention.MaxProduction</td>
+                            </tr>
+                        }
+                        <tr class="table-end">
+                            <td class="table-end-data headcol borders">Total</td>
+                            <td class="table-end-data">@RunsCountTotal</td>
+                            <td></td>
+                            <td></td>
+                            <td class="table-end-data">@RetentionsTotal</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+    }
+}
+
+
+

@@ -205,3 +205,56 @@ Info: ProductionRunReport Get
 Info: ProductionRunReport Get
 Info: ProductionRunReport Get
 Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 17/08/2023 10:21:31
+Info: ProductionRunReport Get
+Info: ProductionRunReport Get
+Info: ProductionReport Get
+Info: ProductionReportFilters Get
+Info: ProductionReport Get
+Info: ProductionReportFilters Get
+Info: User evolUXuser logged in at 18/08/2023 10:00:44
+Info: ProductionRunReport Get
+Info: User evolUXuser logged in at 21/08/2023 11:32:59
+Info: ProductionRunReport Get
+Info: User evolUXuser logged in at 22/08/2023 10:33:05
+Info: ProductionRunReport Get
+Info: ProductionRunReport Get
+Info: User evolUXuser logged in at 22/08/2023 12:58:56
+Info: ProductionRunReport Get
+Info: User evolUXuser logged in at 24/08/2023 09:30:32
+Info: User evolUXuser logged in at 24/08/2023 11:10:24
+Info: User evolUXuser logged in at 24/08/2023 11:17:33
+Info: User evolUXuser logged in at 24/08/2023 11:22:13
+Info: User evolUXuser logged in at 24/08/2023 11:24:41
+Info: ChangeCulture Get
+Info: User evolUXuser logged in at 24/08/2023 11:29:21
+Info: ChangeCulture Get
+Info: User evolUXuser logged in at 24/08/2023 11:32:07
+Info: ChangeCulture Get
+Info: User evolUXuser logged in at 24/08/2023 12:13:15
+Info: ChangeCulture Get
+Info: User evolUXuser logged in at 24/08/2023 12:23:28
+Info: User evolUXuser logged in at 24/08/2023 12:24:49
+Info: User evolUXuser logged in at 24/08/2023 12:30:39
+Info: User evolUXuser logged in at 24/08/2023 12:34:58
+Info: User evolUXuser logged in at 25/08/2023 09:18:54
+Info: RetentionReport Get
+Info: ChangeCulture Get
+Info: ChangeCulture Get
+Info: ChangeCulture Get
+Info: ChangeCulture Get
+Info: ChangeCulture Get
+Info: ChangeCulture Get
+Info: ProductionRunReport Get
+Info: ProductionRunReport Get
+Info: ProductionRunReport Get
+Info: ProductionRunReport Get
+Info: ChangeCulture Get
+Info: ChangeCulture Get
+Info: ChangeCulture Get
+Info: ChangeCulture Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: User evolUXuser logged in at 25/08/2023 12:10:40
+Info: User evolUXuser logged in at 25/08/2023 12:10:57
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))

@@ -10,6 +10,7 @@ using evolUX.UI.Areas.Finishing.Repositories;
 using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using evolUX.UI.Areas.Finishing.Services;
 using evolUX.UI.Areas.Finishing.Services.Interfaces;
+using evolUX.UI.Areas.Reports.Services.Interfaces;
 using evolUX.UI.Filters;
 using Flurl.Http.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -17,6 +18,11 @@ using Microsoft.AspNetCore.Authentication.Negotiate;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Options;
 using System.Globalization;
+using evolUX.UI.Areas.Reports.Repositories.Interfaces;
+using evolUX.UI.Areas.Reports.Services;
+using evolUX.UI.Areas.Reports.Repositories;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -82,6 +88,10 @@ builder.Services.AddSingleton<IPendingRecoverService, PendingRecoverService>();
 builder.Services.AddSingleton<IPendingRecoverRepository, PendingRecoverRepository>();
 builder.Services.AddSingleton<IExpeditionReportService, ExpeditionReportService>();
 builder.Services.AddSingleton<IExpeditionReportRepository, ExpeditionReportRepository>();
+
+//Reports
+builder.Services.AddSingleton<IRetentionReportService, RetentionReportService>();
+builder.Services.AddSingleton<IRetentionReportRepository, Dummy>();
 
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
