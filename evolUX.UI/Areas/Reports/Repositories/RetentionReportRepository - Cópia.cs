@@ -33,21 +33,56 @@ namespace evolUX.UI.Areas.Reports.Repositories
 
         public async Task<RetentionReportViewModel> GetRetentionReport(List<int> runIDList, int businessAreaID)
         {
-            DataTable RunIDList = new DataTable();
-            RunIDList.Columns.Add("ID", typeof(int));
-            foreach (int runID in runIDList)
-                RunIDList.Rows.Add(runID);
+            //DataTable RunIDList = new DataTable();
+            //RunIDList.Columns.Add("ID", typeof(int));
+            //foreach (int runID in runIDList)
+            //    RunIDList.Rows.Add(runID);
 
-            Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            dictionary.Add("RunIDList", RunIDList);
-            dictionary.Add("BusinessAreaID", businessAreaID);
+            //Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            //dictionary.Add("RunIDList", RunIDList);
+            //dictionary.Add("BusinessAreaID", businessAreaID);
 
-            var response = await _flurlClient.Request("/API/reports/RetentionReport/GetRetentionReport")
-                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                .SendJsonAsync(HttpMethod.Get, dictionary);
-            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
-            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<RetentionReportViewModel>();
+            //var response = await _flurlClient.Request("/API/reports/RetentionReport/GetRetentionReport")
+            //    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+            //    .SendJsonAsync(HttpMethod.Get, dictionary);
+            //if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            //if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            //return await response.GetJsonAsync<RetentionReportViewModel>();
+            var response = new RetentionReportViewModel();
+            List<RetentionInfo> Batata = new List<RetentionInfo>();
+            Batata.Add(new RetentionInfo());
+            Batata.Add(new RetentionInfo());
+            Batata.Add(new RetentionInfo());
+            response.RetentionReport = Batata;
+
+            return response;
+        }
+
+        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(List<int> runIDList, int businessAreaID)
+        {
+            //DataTable RunIDList = new DataTable();
+            //RunIDList.Columns.Add("ID", typeof(int));
+            //foreach (int runID in runIDList)
+            //    RunIDList.Rows.Add(runID);
+
+            //Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            //dictionary.Add("RunIDList", RunIDList);
+            //dictionary.Add("BusinessAreaID", businessAreaID);
+
+            //var response = await _flurlClient.Request("/API/reports/RetentionReport/GetRetentionReport")
+            //    .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+            //    .SendJsonAsync(HttpMethod.Get, dictionary);
+            //if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            //if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            //return await response.GetJsonAsync<RetentionReportViewModel>();
+            var response = new RetentionInfoReportViewModel();
+            List<RetentionInfo> Batata = new List<RetentionInfo>();
+            Batata.Add(new RetentionInfo());
+            Batata.Add(new RetentionInfo());
+            Batata.Add(new RetentionInfo());
+            response.RetentionReport = Batata;
+
+            return response;
         }
     }
 }

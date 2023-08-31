@@ -49,5 +49,24 @@ namespace evolUX.UI.Areas.Reports.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return await response.GetJsonAsync<RetentionReportViewModel>();
         }
+
+        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(List<int> runIDList, int businessAreaID)
+        {
+            DataTable RunIDList = new DataTable();
+            RunIDList.Columns.Add("ID", typeof(int));
+            foreach (int runID in runIDList)
+                RunIDList.Rows.Add(runID);
+
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("RunIDList", RunIDList);
+            dictionary.Add("BusinessAreaID", businessAreaID);
+
+            var response = await _flurlClient.Request("/API/reports/RetentionReport/GetRetentionInfoReport")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<RetentionInfoReportViewModel>();
+        }
     }
 }

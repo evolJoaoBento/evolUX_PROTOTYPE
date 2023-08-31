@@ -3,7 +3,7 @@ using Shared.Models.Areas.Reports;
 
 namespace Shared.ViewModels.Areas.Reports
 {
-    public class RetentionReportViewModel: ItemPermissions
+    public class RetentionInfoReportViewModel: ItemPermissions
     {
         public int BusinessAreaID { get; set; }
         public string BusinessAreaCode { get; set; }

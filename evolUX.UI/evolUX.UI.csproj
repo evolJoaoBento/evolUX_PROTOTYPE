@@ -35,6 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Areas\Reports\Views\RetentionReport\RetentionInfoReport.cshtml" />
+    <None Include="Areas\Reports\Views\RetentionReport\RetentionReport.cshtml" />
     <None Include="wwwroot\css\EvolsolutionsV8.ttf" />
   </ItemGroup>
 

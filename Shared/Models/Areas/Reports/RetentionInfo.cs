@@ -1,6 +1,6 @@
 ﻿namespace Shared.Models.Areas.Reports
 {
-    public class RetentionRunInfo
+    public class RetentionInfo
     {
         public string BusinessAreaID { get; set; }
         public DateTime DateRef { get; set; }

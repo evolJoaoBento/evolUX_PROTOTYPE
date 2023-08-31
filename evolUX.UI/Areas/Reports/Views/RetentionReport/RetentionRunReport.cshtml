@@ -88,28 +88,17 @@ else
                                 }
 
                                 <td class="borders" style="text-align:center;vertical-align:middle">
-                                    @if (/*retention.FilesLeftToPrint > 0 || retention.RecFilesLeftToPrint > 0*/ true)
-                                    {
-                                        <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionReport" asp-route-runidlist="@retention.RunID" asp-route-businessareaid="@retention.BusinessAreaID">
-                                            <img class="evol-image grow" src="~/images/report_orange.png" />
-                                        </a>
-                                    }
-                                    else
-                                    {
-                                        <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionReport" asp-route-runidlist="@retention.RunID" asp-route-servicecompanyid="@retention.BusinessAreaID">
-                                            <img class="evol-image grow" src="~/images/report.png" />
-                                        </a>
-                                    }
-                                    @*@if (PrintFile && (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0))
-                                    {
-                                    <a class='bx bx-printer' style="color:rgb(245 126 72)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
-                                    }
-                                    *@
                                 </td>
 
-                                <td class="headcol">@retention.RunDate</td>
+                                <td class="headcol">
+                                    @retention.RunDate
+                                <a style="float:right" asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionReport" asp-route-runidlist="@retention.RunID" asp-route-businessareaid="@retention.BusinessAreaID">
+                                    <img class="evol-image grow" style="height:20px; width:20px" src="~/images/info.png" />
+                                    </a>
+                                </td>
                                 @{
                                     RunsCountTotal ++;
+
                                 }
                                 <td>@retention.DocTypeLayout</td>
                                 <td>@retention.DocTypeSubtype</td>

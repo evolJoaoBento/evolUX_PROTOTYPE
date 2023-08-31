@@ -9,5 +9,6 @@ namespace evolUX.UI.Areas.Reports.Services.Interfaces
     {
         public Task<RetentionRunReportViewModel> GetRetentionRunReport(int BusinessAreaID, DateTime DateRef);
         public Task<RetentionReportViewModel> GetRetentionReport(List<int> runIDList, int businessAreaID);
+        public Task<RetentionInfoReportViewModel> GetRetentionInfoReport(List<int> runIDList, int businessAreaID);
     }
 }

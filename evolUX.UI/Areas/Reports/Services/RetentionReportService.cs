@@ -79,6 +79,36 @@ namespace evolUX.UI.Areas.Reports.Services
                 throw new ErrorViewModelException(viewModel);
             }
         }
-        
+
+        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(List<int> runIDList, int businessAreaID)
+        {
+            try
+            {
+                var response = await _retentionReportRepository.GetRetentionInfoReport(runIDList, businessAreaID);
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                // For error responses that take a known shape
+                //TError e = ex.GetResponseJson<TError>();
+                // For error responses that take an unknown shape
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.HResult;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+        }
+
     }
 }

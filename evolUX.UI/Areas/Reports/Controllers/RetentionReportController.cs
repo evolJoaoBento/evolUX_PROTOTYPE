@@ -174,7 +174,7 @@ namespace evolUX.UI.Areas.Reports.Controllers
                 if (result != null && result.RetentionReport != null && result.RetentionReport.Count() > 0)
                 {
                     result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
-                    //TempData["ServiceCompanyCode"] = result.ProductionReport.First().ServiceCompanyCode;
+                    //TempData["ServiceCompanyCode"] = result.ProductionReport.First().ServiceCompanyCode;C:\Users\ZivileSink\Documents\evolUX_PROTOTYPE\evolUX.UI\Areas\Reports\Views\RetentionReport\RetentionReport.cshtml
                 }
                 return View(result);
             }
@@ -184,6 +184,56 @@ namespace evolUX.UI.Areas.Reports.Controllers
                 //TError e = ex.GetResponseJson<TError>();
                 // For error responses that take an unknown shape
 
+                var resultError = await ex.GetResponseJsonAsync<ErrorResult>();
+                return View("Error", resultError);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                var resultError = await ex.response.GetJsonAsync<ErrorResult>();
+                return View("Error", resultError);
+            }
+            catch (HttpUnauthorizedException ex)
+            {
+                if (ex.response.Headers.Contains("Token-Expired"))
+                {
+                    var header = ex.response.Headers.FirstOrDefault("Token-Expired");
+                    var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
+
+                    return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth", new { Area = "Core" });
+                }
+            }
+        }
+
+        public async Task<IActionResult> RetentionInfoReport(string RunIDList, int BusinessAreaID)
+        {
+            try
+            {
+                List<int> runIDList = new List<int>();
+                string[] runIDListStr = RunIDList.Split('|');
+                if (string.IsNullOrEmpty(RunIDList) || runIDListStr.Length == 0)
+                {
+                    return PartialView("MessageView", new MessageViewModel(_localizer["Missing Runs"]));
+                }
+                foreach (string r in runIDListStr)
+                    runIDList.Add(int.Parse(r));
+
+                string profileList = HttpContext.Session.GetString("evolUX/Profiles");
+                RetentionReportViewModel result = await _retentionReportService.GetRetentionReport(runIDList, BusinessAreaID);
+
+                if (result != null && result.RetentionReport != null && result.RetentionReport.Count() > 0)
+                {
+                    result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
+                }
+                return View(result);
+            }
+
+            catch (FlurlHttpException ex)
+            {
                 var resultError = await ex.GetResponseJsonAsync<ErrorResult>();
                 return View("Error", resultError);
             }

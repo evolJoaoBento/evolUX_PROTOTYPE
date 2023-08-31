@@ -258,3 +258,41 @@ Info: RetentionReport Get
 Info: User evolUXuser logged in at 25/08/2023 12:10:40
 Info: User evolUXuser logged in at 25/08/2023 12:10:57
 Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 29/08/2023 09:29:30
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: User evolUXuser logged in at 8/29/2023 10:37:58 AM
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: User evolUXuser logged in at 8/29/2023 11:31:07 AM
+Info: User evolUXuser logged in at 8/29/2023 11:31:23 AM
+Info: RetentionReport Get
+Info: User evolUXuser logged in at 8/30/2023 9:41:15 AM
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: RetentionReport Get
+Info: GetCompanyBusiness Get
+Info: DocCodeGroup Get
+Info: DocCode Get
+Info: DocCodeConfig Get
+Info: GetExceptionLevel Get
+Info: GetMaterialTypes Get
+Info: GetServiceTypes Get
+Info: GetServiceTasks Get
+Info: GetAvailableServiceTypes Get
+Info: User evolUXuser logged in at 8/31/2023 8:54:20 AM
+Info: User evolUXuser logged in at 8/31/2023 8:57:36 AM
