@@ -76,11 +76,11 @@ namespace evolUX.UI.Areas.Reports.Repositories
             //if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             //return await response.GetJsonAsync<RetentionReportViewModel>();
             var response = new RetentionInfoReportViewModel();
-            List<RetentionInfo> Batata = new List<RetentionInfo>();
-            Batata.Add(new RetentionInfo());
-            Batata.Add(new RetentionInfo());
-            Batata.Add(new RetentionInfo());
-            response.RetentionReport = Batata;
+            List<RetentionInfoInfo> Batata = new List<RetentionInfoInfo>();
+            Batata.Add(new RetentionInfoInfo());
+            Batata.Add(new RetentionInfoInfo());
+            Batata.Add(new RetentionInfoInfo());
+            response.RetentionInfoReport = Batata;
 
             return response;
         }

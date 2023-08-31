@@ -2,7 +2,7 @@
 @using Shared.ViewModels.Areas.Reports
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IViewLocalizer localizer
-@model RetentionReportViewModel
+@model RetentionInfoReportViewModel
 
 @*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
 @*{
@@ -17,7 +17,7 @@
         <span class="sr-only">Loading...</span>
     </div>
 </div>
-@if (Model == null || Model.RetentionReport == null)
+@if (Model == null || Model.RetentionInfoReport == null)
 {
     <div id="ResultPage">
         <h3 class="display-4 text-center">@localizer["NoModelData"]</h3>
@@ -25,7 +25,7 @@
 }
 else
 {
-    @if (Model.RetentionReport.Count() == 0)
+    @if (Model.RetentionInfoReport.Count() == 0)
     {
         <div id="ResultPage">
             <h3 class="display-4 text-center">@localizer["NoPendingRetentions"]</h3>
@@ -35,7 +35,7 @@ else
     {
         <div id="TitlePage">
             <h1>
-                @localizer["RetentionRunStatus"]
+                @localizer["DocDetail"]
                 @*@Model.BusinessAreaID*@
             </h1>
         </div>
@@ -53,19 +53,16 @@ else
             <table class="table table-sm table-hover">
                 <thead id="bootstrap-overrides" class="sticky-header">
                     <tr>
-                        <th class="borders" rowspan="3" style="text-align:center;vertical-align:middle"></th>
-                        <th colspan="2" style="text-align:center;vertical-align:middle">@localizer["DocDetail"]</th>
-                    </tr>
-                    <tr>
                         <th scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Field"]</th>
                         <th scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Value"]</th>
                     </tr>
                 </thead>
                 <tbody id="bootstrap-overrides">
-                    @foreach (RetentionInfo retention in Model.RetentionReport)
+                    @foreach (RetentionInfoInfo retention in Model.RetentionInfoReport)
                     {
                         <tr>
                             @{
+                                //var retention = RetentionInfo in Model.RetentionInfoReport
                                 DateTime rDate;
                                 string runDate = retention.RunDate.ToString();
                                 if (DateTime.TryParseExact(retention.RunDate.ToString(), "yyyyMMdd",
@@ -74,30 +71,150 @@ else
                                 //string RunName = runDate + " [" + retention.RunSequence + "]";
                             }
 
-                            <td class="borders" style="text-align:center;vertical-align:middle">
-                                @if (/*retention.FilesLeftToPrint > 0 || retention.RecFilesLeftToPrint > 0*/ true)
-                                {
-                                    <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runidlist="@retention.RunID" asp-route-businessareaid="@retention.BusinessAreaID">
-                                        <img class="evol-image grow" src="~/images/report_orange.png" />
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runidlist="@retention.RunID" asp-route-businessareaid="@retention.BusinessAreaID">
-                                        <img class="evol-image grow" src="~/images/report.png" />
-                                    </a>
-                                }
-                                @*@if (PrintFile && (p.FilesLeftToPrint > 0 || p.RecFilesLeftToPrint > 0))
-                    {
-                    <a class='bx bx-printer' style="color:rgb(245 126 72)" asp-area="Finishing" asp-controller="ProductionReport" asp-action="ProductionReportPrinter" asp-route-runidlist="@p.RunID" asp-route-servicecompanyid="@p.ServiceCompanyID" asp-route-runname=@RunName></a>
-                    }
-                    *@
+                            <td>@localizer["ID"]</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocID</td>
+                        </tr>
+                        <tr>
+                            <td>@localizer["DocType"]</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td>@localizer["Description"]</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocDescription</td>
+                        </tr>
+                        <tr>
+                            <td>
+                            @localizer["State"] <br>
+                            @localizer["Date"]
                             </td>
-                    
-                            <td class="headcol">@retention.DocTypeLayout</td>
-                            <td>@retention.DocID</td>
-                            <td>@retention.DocDescription</td>
-                            <td>@retention.MaxRetention</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">
+                            @retention.DocState <br>
+                            @retention.DocDate
+                            </td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["PrintCost"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["MaterialsCost"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Template"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Product"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Company"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Network"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ClientSegment"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Periodity"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["CECode"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ClientType"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ClientNr"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["NrDoc"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["DescDoc"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["NIF"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ApoliceNr"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["CertificateNr"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ProcessNr"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["AccountProduct"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["AccountNr"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["AccountPlan"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["AccountSubProduct"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["SubsDoc"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["DocDate"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["FiscalYear"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Via"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["CostCenter"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Ports"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["NIB"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["AdressCompany"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["AdressProduct"]</td>
+                            <td>@retention.DocTypeLayout</td>
+                        </tr>
+                        <tr>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["AdressNr"]</td>
+                            <td>@retention.DocTypeLayout</td>
                         </tr>
                     }
                 </tbody>

@@ -112,9 +112,8 @@ namespace evolUX.UI.Areas.Reports.Controllers
 
             //TempData["BusinessAreaID"] = businessAreaValue[0];
             //TempData["BusinessAreaCode"] = BusinessAreaCode;
-            TempData["BusinessAreaName"] = BusinessAreaID;
             TempData["DateRef"] = DateRef;
-            TempData["Description"] = Description;
+            TempData["BusinessAreaName"] = Description;
             TempData["BusinessID"] = BusinessID;
             TempData["BusinessCode"] = BusinessCode;
             try
@@ -223,9 +222,9 @@ namespace evolUX.UI.Areas.Reports.Controllers
                     runIDList.Add(int.Parse(r));
 
                 string profileList = HttpContext.Session.GetString("evolUX/Profiles");
-                RetentionReportViewModel result = await _retentionReportService.GetRetentionReport(runIDList, BusinessAreaID);
+                RetentionInfoReportViewModel result = await _retentionReportService.GetRetentionInfoReport(runIDList, BusinessAreaID);
 
-                if (result != null && result.RetentionReport != null && result.RetentionReport.Count() > 0)
+                if (result != null && result.RetentionInfoReport != null && result.RetentionInfoReport.Count() > 0)
                 {
                     result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 }

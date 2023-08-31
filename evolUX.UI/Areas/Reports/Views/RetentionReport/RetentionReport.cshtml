@@ -35,8 +35,8 @@ else
     {
         <div id="TitlePage">
             <h1>
-                @localizer["RetentionRunStatus"]
-                @*@Model.BusinessAreaID*@
+                @localizer["RetentionDocsFor"]
+                @TempData["BusinessAreaName"]
             </h1>
         </div>
         @*@if (!string.IsNullOrEmpty(ViewBag.Source))
