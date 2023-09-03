@@ -22,7 +22,7 @@
         public decimal MaterialsCost { get; set; }
         public string Template { get; set; }
         public string ProductBranch { get; set; }
-        public string Company { get; set; }
+        public string DocCompany { get; set; }
         public string Network { get; set; }
         public string ClientSegment { get; set; }
         public string Periodicity { get; set; }
