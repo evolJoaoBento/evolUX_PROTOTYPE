@@ -224,7 +224,7 @@ namespace evolUX.UI.Areas.Reports.Controllers
                 string profileList = HttpContext.Session.GetString("evolUX/Profiles");
                 RetentionInfoReportViewModel result = await _retentionReportService.GetRetentionInfoReport(runIDList, BusinessAreaID);
 
-                if (result != null && result.RetentionInfoReport != null && result.RetentionInfoReport.Count() > 0)
+                if (result != null && result.RetentionInfo != null)
                 {
                     result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 }

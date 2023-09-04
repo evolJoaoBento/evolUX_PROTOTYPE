@@ -17,20 +17,12 @@
         <span class="sr-only">Loading...</span>
     </div>
 </div>
-@if (Model == null || Model.RetentionInfoReport == null)
+@if (Model == null || Model.RetentionInfo == null)
 {
     <div id="ResultPage">
         <h3 class="display-4 text-center">@localizer["NoModelData"]</h3>
     </div>
 }
-else
-{
-    @if (Model.RetentionInfoReport.Count() == 0)
-    {
-        <div id="ResultPage">
-            <h3 class="display-4 text-center">@localizer["NoPendingRetentions"]</h3>
-        </div>
-    }
     else
     {
         <div id="TitlePage">
@@ -57,11 +49,9 @@ else
                     </tr>
                 </thead>
                 <tbody id="bootstrap-overrides">
-                    @foreach (RetentionInfoInfo retention in Model.RetentionInfoReport)
-                    {
                         <tr>
-                            @{
-                                //var retention = RetentionInfo in Model.RetentionInfoReport
+                        @{
+                                var retention = Model.RetentionInfo;
                                 DateTime rDate;
                                 string runDate = retention.RunDate.ToString();
                                 if (DateTime.TryParseExact(retention.RunDate.ToString(), "yyyyMMdd",
@@ -71,7 +61,7 @@ else
                             }
 
                             <td>@localizer["ID"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocID</td>
+                            <td scope="colgroup" style="text-align:center">@retention.DocID</td>
                         </tr>
                         <tr>
                             <td>@localizer["DocType"]</td>
@@ -215,12 +205,7 @@ else
                             <td>@localizer["AdressNr"]</td>
                             <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.AdressNr</td>
                         </tr>
-                    }
                 </tbody>
             </table>
         </div>
     }
-}
-
-
-

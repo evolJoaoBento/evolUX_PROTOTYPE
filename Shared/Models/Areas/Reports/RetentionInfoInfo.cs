@@ -17,7 +17,7 @@
         public string NrApolice { get; set; }
         public string Product { get; set; }
         public string DocState { get; set; }
-        public string DocDate { get; set; }
+        public DateTime DocDate { get; set; }
         public decimal PrintCost { get; set; }
         public decimal MaterialsCost { get; set; }
         public string Template { get; set; }

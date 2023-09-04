@@ -8,6 +8,6 @@ namespace Shared.ViewModels.Areas.Reports
         public int BusinessAreaID { get; set; }
         public string BusinessAreaCode { get; set; }
         public string BusinessAreaName { get; set; }
-        public IEnumerable<RetentionInfoInfo> RetentionInfoReport { get; set; }
+        public RetentionInfoInfo RetentionInfo { get; set; }
     }
 }

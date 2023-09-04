@@ -4,9 +4,34 @@
 @using Shared.ViewModels.Areas.Reports
 @inject IViewLocalizer localizer
 @model BusinessAreasViewModel
-<div class="d-flex justify-content-center" >
+<style>
+    .area-div{
+        flex: 1;
+        flex-grow: 1;
+        margin: 5px;
+        height: 200px;
+        padding-top: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-bottom: 10px;
+        box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .area-div::before{
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background-image: linear-gradient(to bottom, rgba(233,60,82,1) 3%, rgba(245,126,72,1) 15%, rgba(87,82,150,1) 44%, rgba(90, 205, 239, 1) 62%);
+    }
+</style>
+<div class="d-flex justify-content-center">
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
-      <span class="sr-only">Loading...</span>
+        <span class="sr-only">Loading...</span>
     </div>
 </div>
 @if (Model == null)
@@ -24,10 +49,10 @@ else
         <h1>@localizer["RetentionRunStatus"]</h1>
     </div>
 
-    <table class="table table-sm table-hover table-collapse-seperate">
+    @*<table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
-                <th class="evol-fitcontent-column borders" style="text-align:center"><img class="evol-image" style="width:40px;height:40px" src="~/images/status_print_provider.png" title="@localizer["BusinessAreaTip"]" /></th>
+                <th class="evol-fitcontent-column borders" style="text-align:center"></th>
                 <th style="vertical-align:middle">@localizer["BusinessArea"]</th>
             </tr>
         </thead>
@@ -44,8 +69,19 @@ else
                 </tr>
             }
         </tbody>
-    </table>
+    </table>*@
+
+    <div style="display: flex; flex-wrap: nowrap; justify-content: space-around">
+        @foreach (Business b in Model.BusinessAreas)
+        {
+            <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionRunReport" asp-route-BusinessID="@b.BusinessID" asp-route-BusinessCode="@b.BusinessCode" asp-route-description="@b.Description" asp-route-source="Index">
+                <div class="area-div">
+                    @b.Description
+                </div>
+            </a>
+        }
+    </div>
 }
-    
+
 
 
