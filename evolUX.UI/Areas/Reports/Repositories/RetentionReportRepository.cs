@@ -19,11 +19,11 @@ namespace evolUX.UI.Areas.Reports.Repositories
         {
         }
 
-        public async Task<RetentionRunReportViewModel> GetRetentionRunReport(int BusinessAreaID, DateTime DateRef)
+        public async Task<RetentionRunReportViewModel> GetRetentionRunReport(int BusinessAreaID, int RefDate)
         {
             var response = await _flurlClient.Request("/API/reports/RetentionReport/RetentionRunReport")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                .SetQueryParam("DateRef", DateRef.ToString())
+                .SetQueryParam("DateRef", RefDate.ToString())
                 .SendJsonAsync(HttpMethod.Get, BusinessAreaID);
                 
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);

@@ -20,11 +20,11 @@ namespace evolUX.API.Areas.Reports.Services
             _repository = repository;
         }
 
-        public async Task<RetentionRunReportViewModel> GetRetentionRunReport(int BusinessAreaID, DateTime DateRef)
+        public async Task<RetentionRunReportViewModel> GetRetentionRunReport(int BusinessAreaID, int RefDate)
         {
             RetentionRunReportViewModel viewmodel = new RetentionRunReportViewModel();
-            viewmodel.RetentionRunReport = await _repository.RetentionReport.GetRetentionRunReport(BusinessAreaID, DateRef);
-            viewmodel.DateRef = DateRef;
+            viewmodel.RetentionRunReport = await _repository.RetentionReport.GetRetentionRunReport(BusinessAreaID, RefDate);
+            viewmodel.RefDate = RefDate;
             if (viewmodel.RetentionRunReport == null)
             {
                 throw new Exception();//MAKE BETTER EXCEPTION
@@ -34,7 +34,17 @@ namespace evolUX.API.Areas.Reports.Services
         }
 
         public async Task<RetentionReportViewModel> GetRetentionReport(DataTable runIDList, int businessAreaID)
-        {
+            {
+                RetentionReportViewModel viewmodel = new RetentionReportViewModel();
+                viewmodel.RetentionReport = await _repository.RetentionReport.GetRetentionReport(runIDList, businessAreaID);
+                viewmodel.BusinessAreaID = businessAreaID;
+                if (viewmodel.RetentionReport == null)
+                {
+                    throw new Exception();//MAKE BETTER EXCEPTION
+                }
+
+                return viewmodel;
+
             //IEnumerable<RetentionRunInfo> retentionReport = await _repository.RetentionReport.GetRetentionReport(runIDList, businessAreaID);
             //RetentionReportViewModel viewmodel = new RetentionReportViewModel();
             //if (retentionReport == null || retentionReport.Count() == 0)

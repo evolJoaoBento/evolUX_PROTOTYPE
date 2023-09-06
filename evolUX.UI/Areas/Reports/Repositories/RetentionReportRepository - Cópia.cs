@@ -19,11 +19,10 @@ namespace evolUX.UI.Areas.Reports.Repositories
         {
         }
 
-        public async Task<RetentionRunReportViewModel> GetRetentionRunReport(int BusinessAreaID, DateTime DateRef)
+        public async Task<RetentionRunReportViewModel> GetRetentionRunReport(int BusinessAreaID, int RefDate)
         {
             var response = new RetentionRunReportViewModel();
             List<RetentionRunInfo> Batata = new List<RetentionRunInfo>();
-            Batata.Add(new RetentionRunInfo());
             Batata.Add(new RetentionRunInfo());
             Batata.Add(new RetentionRunInfo());
             response.RetentionRunReport = Batata;
@@ -50,7 +49,6 @@ namespace evolUX.UI.Areas.Reports.Repositories
             //return await response.GetJsonAsync<RetentionReportViewModel>();
             var response = new RetentionReportViewModel();
             List<RetentionInfo> Batata = new List<RetentionInfo>();
-            Batata.Add(new RetentionInfo());
             Batata.Add(new RetentionInfo());
             Batata.Add(new RetentionInfo());
             response.RetentionReport = Batata;

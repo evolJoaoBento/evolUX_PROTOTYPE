@@ -126,33 +126,34 @@ namespace evolUX.API.Areas.Reports.Repositories
         //    }
         //}
 
-        //public async Task<IEnumerable<ProductionDetailInfo>> GetProductionReport(DataTable runIDList, int serviceCompanyID)
-        //{
-        //    string sql = @"RP_UX_PRODUCTION_SUBSET_REPORT"; // @"RP_UX_PRODUCTION_SUBSET_REPORT";
-        //    var parameters = new DynamicParameters();
-        //    parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
+        public async Task<IEnumerable<RetentionInfo>> GetRetentionReport(DataTable runIDList, int BusinessAreaID)
+        {
+            string sql = @"RPC_UX_RETENTION_LIST"; // @"RP_UX_PRODUCTION_SUBSET_REPORT";
+            var parameters = new DynamicParameters();
+            parameters.Add("RunID", runIDList.Rows[0][0], DbType.Int64);
+            parameters.Add("BusinessID", BusinessAreaID, DbType.Int64);
 
-        //    parameters.Add("RunIDList", runIDList.AsTableValuedParameter("IDlist"));
+            //parameters.Add("RunIDList", runIDList.AsTableValuedParameter("IDlist"));
 
-        //    using (var connection = _context.CreateConnectionEvolDP())
-        //    {
-        //        //pass all servicecompany runid
+            using (var connection = _context.CreateConnectionEvolDP())
+            {
+                //pass all servicecompany runid
 
-        //        IEnumerable<ProductionDetailInfo> productionSubsetReport = await connection.QueryAsync<ProductionDetailInfo>(sql, parameters,
-        //                    commandType: CommandType.StoredProcedure);
-        //        return productionSubsetReport;
-        //    }
-        //}
+                IEnumerable<RetentionInfo> retentionReport = await connection.QueryAsync<RetentionInfo>(sql, parameters,
+                            commandType: CommandType.StoredProcedure);
+                return retentionReport;
+            }
+        }
 
 
         //FOR REFERENCE https://stackoverflow.com/questions/33087629/dapper-dynamic-parameters-with-table-valued-parameters
-        public async Task<IEnumerable<RetentionRunInfo>> GetRetentionRunReport(int BusinessAreaID, DateTime DateRef)
+        public async Task<IEnumerable<RetentionRunInfo>> GetRetentionRunReport(int BusinessAreaID, int RefDate)
         {
 
-            string sql = @"RP_UX_RETENTION_RUN_REPORT";
+            string sql = @"RPC_UX_RETENTION_RESUME";
             var parameters = new DynamicParameters();
-            parameters.Add("BusinessAreaName", BusinessAreaID, DbType.Int64);
-            parameters.Add("DateRef", DateRef);
+            //parameters.Add("BusinessAreaName", BusinessAreaID, DbType.Int64);
+            //parameters.Add("RefDate", DateRef);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -177,6 +178,8 @@ namespace evolUX.API.Areas.Reports.Repositories
             }
 
         }
+
+
 
         //public async Task<string> GetServiceCompanyCode(int serviceCompanyID)
         //{

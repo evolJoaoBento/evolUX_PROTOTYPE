@@ -6,6 +6,6 @@ namespace Shared.ViewModels.Areas.Reports
     public class RetentionRunReportViewModel: ItemPermissions
     {
         public IEnumerable<RetentionRunInfo> RetentionRunReport { get; set; }
-        public DateTime DateRef { get; set; }
+        public int RefDate { get; set; }
     }
 }

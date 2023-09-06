@@ -10,6 +10,7 @@ using Shared.ViewModels.Areas.Core;
 using Shared.Models.Areas.Finishing;
 using evolUX.UI.Areas.Reports.Services.Interfaces;
 using evolUX.UI.Areas.Reports.Repositories.Interfaces;
+using Microsoft.VisualBasic;
 
 namespace evolUX.UI.Areas.Reports.Services
 {
@@ -20,11 +21,11 @@ namespace evolUX.UI.Areas.Reports.Services
         {
             _retentionReportRepository = retentionReportRepository;
         }
-        public async Task<RetentionRunReportViewModel> GetRetentionRunReport(int BusinessAreaID, DateTime DateRef)
+        public async Task<RetentionRunReportViewModel> GetRetentionRunReport(int BusinessAreaID, int RefDate)
         {
             try
             {
-                RetentionRunReportViewModel viewModel = await _retentionReportRepository.GetRetentionRunReport(BusinessAreaID, DateRef);
+                RetentionRunReportViewModel viewModel = await _retentionReportRepository.GetRetentionRunReport(BusinessAreaID, RefDate);
                 return viewModel;
             }
             catch (FlurlHttpException ex)

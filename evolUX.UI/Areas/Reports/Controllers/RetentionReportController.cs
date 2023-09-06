@@ -102,7 +102,7 @@ namespace evolUX.UI.Areas.Reports.Controllers
 
         }
 
-        public async Task<IActionResult> RetentionRunReport(/*string businessAreaValues, string source*/ int BusinessAreaID, DateTime DateRef, string BusinessID, int BusinessCode, string Description)
+        public async Task<IActionResult> RetentionRunReport(/*string businessAreaValues, string source*/ int BusinessAreaID, int RefDate, string BusinessID, int BusinessCode, string Description)
         {
             //ViewBag.Source = source;
             //string[] businessAreaValue = businessAreaValues.Split('|');
@@ -112,14 +112,14 @@ namespace evolUX.UI.Areas.Reports.Controllers
 
             //TempData["BusinessAreaID"] = businessAreaValue[0];
             //TempData["BusinessAreaCode"] = BusinessAreaCode;
-            TempData["DateRef"] = DateRef;
+            TempData["DateRef"] = RefDate;
             TempData["BusinessAreaName"] = Description;
             TempData["BusinessID"] = BusinessID;
             TempData["BusinessCode"] = BusinessCode;
             try
             {
 
-                RetentionRunReportViewModel result = await _retentionReportService.GetRetentionRunReport(BusinessAreaID, DateRef);
+                RetentionRunReportViewModel result = await _retentionReportService.GetRetentionRunReport(BusinessAreaID, RefDate);
                 result.SetPermissions(HttpContext.Session.GetString("evolUX/Permissions"));
                 //DataTable BusinessAreaDT = JsonConvert.DeserializeObject<DataTable>(HttpContext.Session.GetString("evolDP/BusinessAreas"));
                 //if (BusinessAreaDT.Rows.Count > 1)

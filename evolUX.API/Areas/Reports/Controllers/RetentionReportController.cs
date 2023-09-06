@@ -32,11 +32,11 @@ namespace evolUX.API.Areas.Reports.Controllers
         //THE SERVICECOMPANYLIST SHOULD USE A SESSION VARIABLE IN THE UI LAYER
         [HttpGet]
         [ActionName("RetentionRunReport")]
-        public async Task<ActionResult<RetentionRunReportViewModel>> GetRetentionRunReport([FromBody] int BusinessAreaID, [FromQuery] DateTime DateRef)
+        public async Task<ActionResult<RetentionRunReportViewModel>> GetRetentionRunReport([FromBody] int BusinessAreaID, [FromQuery] int RunDate)
         {
             try
             {
-                RetentionRunReportViewModel viewmodel = await _retentionReportService.GetRetentionRunReport(BusinessAreaID, DateRef);
+                RetentionRunReportViewModel viewmodel = await _retentionReportService.GetRetentionRunReport(BusinessAreaID, RunDate);
                 _logger.LogInfo("RetentionRunReport Get");
                 return Ok(viewmodel);
             }
@@ -63,7 +63,6 @@ namespace evolUX.API.Areas.Reports.Controllers
                 dictionary.TryGetValue("RunIDList", out obj);
                 string RunIDListJSON = Convert.ToString(obj);
                 DataTable RunIDList = JsonConvert.DeserializeObject<DataTable>(RunIDListJSON);
-
                 dictionary.TryGetValue("BusinessAreaID", out obj);
                 int BusinessAreaID = Convert.ToInt32(obj.ToString());
                 
