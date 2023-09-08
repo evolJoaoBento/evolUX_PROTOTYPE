@@ -347,3 +347,43 @@ Info: RetentionReport Get
 Info: DocCodeGroup Get
 Info: DocCode Get
 Info: DocCodeConfig Get
+Info: User evolUXuser logged in at 9/8/2023 9:13:17 AM
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Unable to cast object of type 'System.Linq.EmptyPartition`1[Shared.Models.Areas.Reports.RetentionInfoInfo]' to type 'Shared.Models.Areas.Reports.RetentionInfoInfo'.
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Unable to cast object of type 'System.Linq.EmptyPartition`1[Shared.Models.Areas.Reports.RetentionInfoInfo]' to type 'Shared.Models.Areas.Reports.RetentionInfoInfo'.
+Error: Something went wrong inside Get DocCode action: Unable to cast object of type 'System.Linq.EmptyPartition`1[Shared.Models.Areas.Reports.RetentionInfoInfo]' to type 'Shared.Models.Areas.Reports.RetentionInfoInfo'.
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Info: ChangeCulture Get
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.

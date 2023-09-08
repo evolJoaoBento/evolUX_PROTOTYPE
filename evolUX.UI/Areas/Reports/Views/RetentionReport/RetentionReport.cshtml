@@ -84,13 +84,13 @@ else
                             <td class="borders" style="text-align:center;vertical-align:middle">
                                 @if (/*retention.FilesLeftToPrint > 0 || retention.RecFilesLeftToPrint > 0*/ true)
                                 {
-                                    <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runidlist="@retention.RunID" asp-route-businessareaid="@retention.BusinessAreaID">
+                                    <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runid="@retention.RunID" asp-route-fileid="@retention.FileID">
                                         <img class="evol-image grow" src="~/images/report.png" />
                                     </a>
                                 }
                                 else
                                 {
-                                    <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runidlist="@retention.RunID" asp-route-businessareaid="@retention.BusinessAreaID">
+                                    <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runid="@retention.RunID" asp-route-fileid="@retention.FileID">
                                         <img class="evol-image grow" src="~/images/report.png" />
                                     </a>
                                 }

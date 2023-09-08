@@ -52,24 +52,24 @@
                         <tr>
                         @{
                                 var retention = Model.RetentionInfo;
-                                DateTime rDate;
-                                string runDate = retention.RunDate.ToString();
-                                if (DateTime.TryParseExact(retention.RunDate.ToString(), "yyyyMMdd",
-                                System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
-                                    runDate = rDate.ToShortDateString();
+                                //DateTime rDate;
+                                //string runDate = retention.RunDate.ToString();
+                                //if (DateTime.TryParseExact(retention.RunDate.ToString(), "yyyyMMdd",
+                                //System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
+                                //    runDate = rDate.ToShortDateString();
                                 //string RunName = runDate + " [" + retention.RunSequence + "]";
                             }
 
                             <td>@localizer["ID"]</td>
-                            <td scope="colgroup" style="text-align:center">@retention.DocID</td>
+                            <td scope="colgroup" style="text-align:center">@retention.RunID</td>
                         </tr>
                         <tr>
                             <td>@localizer["DocType"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocTypeLayout</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocLayout @retention.DocType</td>
                         </tr>
                         <tr>
                             <td>@localizer["Description"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocDescription</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DescDoc</td>
                         </tr>
                         <tr>
                             <td>
@@ -77,8 +77,8 @@
                             @localizer["Date"]
                             </td>
                             <td scope="colgroup" style="text-align:center;vertical-align:middle">
-                            @retention.DocState <br>
-                            @retention.DocDate
+                            @retention.ProductionStateID <br>
+                            @retention
                             </td>
                         </tr>
                         <tr>
@@ -87,23 +87,23 @@
                         </tr>
                         <tr>
                             <td>@localizer["MaterialsCost"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.MaterialsCost</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.MaterialCost</td>
                         </tr>
                         <tr>
                             <td>@localizer["Template"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.Template</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.TemplateID</td>
                         </tr>
                         <tr>
                             <td>@localizer["Product"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.ProductBranch</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.Product</td>
                         </tr>
                         <tr>
                             <td>@localizer["Company"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocCompany</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.Firm</td>
                         </tr>
                         <tr>
                             <td>@localizer["Network"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.Network</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.Branch</td>
                         </tr>
                         <tr>
                             <td>@localizer["ClientSegment"]</td>
@@ -127,11 +127,11 @@
                         </tr>
                         <tr>
                             <td>@localizer["NrDoc"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.NrDoc</td>
+                    <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocSourceNr</td>
                         </tr>
                         <tr>
                             <td>@localizer["DescDoc"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DescDoc</td>
+                    <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocDescription</td>
                         </tr>
                         <tr>
                             <td>@localizer["NIF"]</td>
@@ -139,7 +139,7 @@
                         </tr>
                         <tr>
                             <td>@localizer["ApoliceNr"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.NrApolice</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.PolicyNr</td>
                         </tr>
                         <tr>
                             <td>@localizer["CertificateNr"]</td>
@@ -147,7 +147,7 @@
                         </tr>
                         <tr>
                             <td>@localizer["ProcessNr"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.ProcessNr</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.SinisterProcessNr</td>
                         </tr>
                         <tr>
                             <td>@localizer["AccountProduct"]</td>
@@ -167,11 +167,11 @@
                         </tr>
                         <tr>
                             <td>@localizer["SubsDoc"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.SubsDoc</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.ReplaceFlag</td>
                         </tr>
                         <tr>
                             <td>@localizer["DocDate"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocumentDate</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.DocDate</td>
                         </tr>
                         <tr>
                             <td>@localizer["FiscalYear"]</td>
@@ -179,7 +179,7 @@
                         </tr>
                         <tr>
                             <td>@localizer["Via"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.Via</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.CopyNr</td>
                         </tr>
                         <tr>
                             <td>@localizer["CostCenter"]</td>
@@ -187,7 +187,7 @@
                         </tr>
                         <tr>
                             <td>@localizer["Ports"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.Ports</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.ExpPaymentFlag</td>
                         </tr>
                         <tr>
                             <td>@localizer["NIB"]</td>
@@ -199,11 +199,11 @@
                         </tr>
                         <tr>
                             <td>@localizer["AdressProduct"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.AdressProduct</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.AdressProductAccount</td>
                         </tr>
                         <tr>
                             <td>@localizer["AdressNr"]</td>
-                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.AdressNr</td>
+                            <td scope="colgroup" style="text-align:center;vertical-align:middle">@retention.AdressAccountNr</td>
                         </tr>
                 </tbody>
             </table>

@@ -81,5 +81,33 @@ namespace evolUX.API.Areas.Reports.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
+
+        [HttpGet]
+        [ActionName("GetRetentionInfoReport")]
+        public async Task<ActionResult<RetentionInfoReportViewModel>> GetRetentionInfoReport([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("RunID", out obj);
+                int RunID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("FileID", out obj);
+                int FileID = Convert.ToInt32(obj.ToString());
+
+                RetentionInfoReportViewModel viewmodel = await _retentionReportService.GetRetentionInfoReport(RunID, FileID);
+                _logger.LogInfo("RetentionInfoReport Get");
+                return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get DocCode action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
     }
 }

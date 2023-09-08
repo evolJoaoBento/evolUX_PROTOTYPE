@@ -8,5 +8,6 @@ namespace evolUX.API.Areas.Reports.Services.Interfaces
     {
         public Task<RetentionRunReportViewModel> GetRetentionRunReport(int BusinessAreaID, int RefDate);
         public Task<RetentionReportViewModel> GetRetentionReport(DataTable runIDList, int businessAreaID);
+        public Task<RetentionInfoReportViewModel> GetRetentionInfoReport(int RunID, int FileID);
     }
 }

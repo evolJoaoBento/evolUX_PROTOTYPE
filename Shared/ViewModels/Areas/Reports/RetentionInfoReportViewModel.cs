@@ -5,9 +5,8 @@ namespace Shared.ViewModels.Areas.Reports
 {
     public class RetentionInfoReportViewModel: ItemPermissions
     {
-        public int BusinessAreaID { get; set; }
-        public string BusinessAreaCode { get; set; }
-        public string BusinessAreaName { get; set; }
+        public int FileID { get; set; }
+        public int RunID { get; set; }
         public RetentionInfoInfo RetentionInfo { get; set; }
     }
 }

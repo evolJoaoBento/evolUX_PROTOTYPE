@@ -208,21 +208,11 @@ namespace evolUX.UI.Areas.Reports.Controllers
             }
         }
 
-        public async Task<IActionResult> RetentionInfoReport(string RunIDList, int BusinessAreaID)
+        public async Task<IActionResult> RetentionInfoReport(int RunID, int FileID)
         {
             try
             {
-                List<int> runIDList = new List<int>();
-                string[] runIDListStr = RunIDList.Split('|');
-                if (string.IsNullOrEmpty(RunIDList) || runIDListStr.Length == 0)
-                {
-                    return PartialView("MessageView", new MessageViewModel(_localizer["Missing Runs"]));
-                }
-                foreach (string r in runIDListStr)
-                    runIDList.Add(int.Parse(r));
-
-                string profileList = HttpContext.Session.GetString("evolUX/Profiles");
-                RetentionInfoReportViewModel result = await _retentionReportService.GetRetentionInfoReport(runIDList, BusinessAreaID);
+                RetentionInfoReportViewModel result = await _retentionReportService.GetRetentionInfoReport(RunID, FileID);
 
                 if (result != null && result.RetentionInfo != null)
                 {
@@ -231,15 +221,9 @@ namespace evolUX.UI.Areas.Reports.Controllers
                 return View(result);
             }
 
-            catch (FlurlHttpException ex)
+            catch (ErrorViewModelException ex)
             {
-                var resultError = await ex.GetResponseJsonAsync<ErrorResult>();
-                return View("Error", resultError);
-            }
-            catch (HttpNotFoundException ex)
-            {
-                var resultError = await ex.response.GetJsonAsync<ErrorResult>();
-                return View("Error", resultError);
+                return View("Error", ex.ViewModel);
             }
             catch (HttpUnauthorizedException ex)
             {

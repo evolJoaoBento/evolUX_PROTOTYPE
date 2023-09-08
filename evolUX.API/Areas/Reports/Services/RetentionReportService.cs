@@ -119,5 +119,18 @@ namespace evolUX.API.Areas.Reports.Services
             //}
             return null;
         }
+
+        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(int RunID, int FileID)
+        {
+            RetentionInfoReportViewModel viewmodel = new RetentionInfoReportViewModel();
+            viewmodel.RetentionInfo = await _repository.RetentionReport.GetRetentionInfoReport(RunID, FileID);
+            viewmodel.RunID = RunID;
+            if (viewmodel.RetentionInfo == null)
+            {
+                throw new Exception();//MAKE BETTER EXCEPTION
+            }
+
+            return viewmodel;
+        }
     }
 }
