@@ -208,11 +208,11 @@ namespace evolUX.UI.Areas.Reports.Controllers
             }
         }
 
-        public async Task<IActionResult> RetentionInfoReport(int RunID, int FileID)
+        public async Task<IActionResult> RetentionInfoReport(int RunID, int FileID, int SetID, int DocID)
         {
             try
             {
-                RetentionInfoReportViewModel result = await _retentionReportService.GetRetentionInfoReport(RunID, FileID);
+                RetentionInfoReportViewModel result = await _retentionReportService.GetRetentionInfoReport(RunID, FileID, SetID, DocID);
 
                 if (result != null && result.RetentionInfo != null)
                 {

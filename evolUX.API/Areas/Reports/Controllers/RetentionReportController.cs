@@ -93,8 +93,12 @@ namespace evolUX.API.Areas.Reports.Controllers
                 int RunID = Convert.ToInt32(obj.ToString());
                 dictionary.TryGetValue("FileID", out obj);
                 int FileID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("SetID", out obj);
+                int SetID = Convert.ToInt32(obj.ToString());
+                dictionary.TryGetValue("DocID", out obj);
+                int DocID = Convert.ToInt32(obj.ToString());
 
-                RetentionInfoReportViewModel viewmodel = await _retentionReportService.GetRetentionInfoReport(RunID, FileID);
+                RetentionInfoReportViewModel viewmodel = await _retentionReportService.GetRetentionInfoReport(RunID, FileID, SetID, DocID);
                 _logger.LogInfo("RetentionInfoReport Get");
                 return Ok(viewmodel);
             }

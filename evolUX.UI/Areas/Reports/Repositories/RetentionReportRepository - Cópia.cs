@@ -56,7 +56,7 @@ namespace evolUX.UI.Areas.Reports.Repositories
             return response;
         }
 
-        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(int RunID, int FileID)
+        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(int RunID, int FileID, int SetID, int DocID)
         {
             //DataTable RunIDList = new DataTable();
             //RunIDList.Columns.Add("ID", typeof(int));

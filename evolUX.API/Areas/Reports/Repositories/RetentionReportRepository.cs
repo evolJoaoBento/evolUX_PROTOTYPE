@@ -180,19 +180,17 @@ namespace evolUX.API.Areas.Reports.Repositories
 
         }
 
-        public async Task<RetentionInfoInfo> GetRetentionInfoReport(int RunID, int FileID)
+        public async Task<RetentionInfoInfo> GetRetentionInfoReport(int RunID, int FileID, int SetID, int DocID)
         {
-            string sql = @"RPC_UX_DOCUMENT_STATUS"; // @"RP_UX_PRODUCTION_SUBSET_REPORT";
+            string sql = @"RPC_UX_DOCUMENT_STATUS";
             var parameters = new DynamicParameters();
             parameters.Add("RunID", RunID, DbType.Int64);
             parameters.Add("FileID", FileID, DbType.Int64);
-
-            //parameters.Add("RunIDList", runIDList.AsTableValuedParameter("IDlist"));
+            parameters.Add("SetID", SetID, DbType.Int64);
+            parameters.Add("DocID", DocID, DbType.Int64);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
-                //pass all servicecompany runid
-
                 RetentionInfoInfo retentionInfoReport = await connection.QueryFirstOrDefaultAsync<RetentionInfoInfo>(sql, parameters,
                             commandType: CommandType.StoredProcedure);
                 return retentionInfoReport;

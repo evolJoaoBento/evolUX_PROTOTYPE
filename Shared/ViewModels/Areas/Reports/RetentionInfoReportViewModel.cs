@@ -7,6 +7,8 @@ namespace Shared.ViewModels.Areas.Reports
     {
         public int FileID { get; set; }
         public int RunID { get; set; }
+        public int SetID { get; set; }
+        public int DocID { get; set; }
         public RetentionInfoInfo RetentionInfo { get; set; }
     }
 }

@@ -3,11 +3,14 @@
     public class RetentionInfoInfo
     {
         public int RunID { get; set; } //ID
+        public int FileID { get; set; } //ID2
+        public int SetID { get; set; } //ID3
+        public int DocID { get; set; } //ID4
         public string DocLayout { get; set; } //Tipo de documento
         public string DocType { get; set; } //Tipo de documento
         public string DescDoc { get; set; } //Descrição
-        public string ProductionStateID { get; set; } //Estado
-        public int PostObjID  { get; set; } //Data/Hora
+        public string ProductionStateID { get; set; } //Data/Hora
+        public int PostObjID  { get; set; } //Estado
         public decimal PrintCost { get; set; } //Custo de Impressão
         public decimal MaterialCost { get; set; } //Custo de Materiais
         public string TemplateID { get; set; } //Template
@@ -23,15 +26,15 @@
         public string DocDescription { get; set; } //Descrição do Documento
         public int NIF { get; set; } //NIF
         public string PolicyNr { get; set; } //Nº da Apólice
-        public int CertificateNr { get; set;} //Nº de Certificado
-        public int SinisterProcessNr { get; set; } //Nº de Processo de Sinistro
+        public string CertificateNr { get; set;} //Nº de Certificado
+        public string SinisterProcessNr { get; set; } //Nº de Processo de Sinistro
         public string AccountProduct { get; set; } //Produto da conta
         public int AccountNr { get; set; } //Nº da Conta
         public string AccountPlan { get; set; } //Plano da Conta
         public string AccountSubProduct { get; set; } //SubProduto da Conta
         public string ReplaceFlag { get; set;} //Documento de substituição
         public int DocDate { get; set; } //Data do Documento
-        public DateTime FiscalYear { get; set; } //Ano Fiscal
+        public int FiscalYear { get; set; } //Ano Fiscal
         public int CopyNr { get; set; } //Via
         public int CostCenter { get; set; } //Centro de Custo
         public string ExpPaymentFlag { get; set; } //Inclusão de Portes
@@ -40,9 +43,9 @@
         public string AdressProductAccount { get; set; } //Produto da Conta da Morada
         public int AdressAccountNr { get; set; } //Nº da Conta da Morada
 
-        public int FileID { get; set; }
-        public int SetID { get; set; }
-        public int DocID { get; set; }
+        
+        
+        
         public string AccountNrStr { get; set; }
     }
 }

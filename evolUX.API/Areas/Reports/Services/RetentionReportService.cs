@@ -120,10 +120,10 @@ namespace evolUX.API.Areas.Reports.Services
             return null;
         }
 
-        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(int RunID, int FileID)
+        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(int RunID, int FileID, int SetID, int DocID)
         {
             RetentionInfoReportViewModel viewmodel = new RetentionInfoReportViewModel();
-            viewmodel.RetentionInfo = await _repository.RetentionReport.GetRetentionInfoReport(RunID, FileID);
+            viewmodel.RetentionInfo = await _repository.RetentionReport.GetRetentionInfoReport(RunID, FileID, SetID, DocID);
             viewmodel.RunID = RunID;
             if (viewmodel.RetentionInfo == null)
             {

@@ -387,3 +387,51 @@ Error: Something went wrong inside Get DocCode action: Exception of type 'System
 Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
 Info: ChangeCulture Get
 Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Info: User evolUXuser logged in at 9/11/2023 11:00:16 AM
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Info: ChangeCulture Get
+Info: ChangeCulture Get
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Info: RetentionRunReport Get
+Info: RetentionRunReport Get
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 9/11/2023 11:28:55 AM
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 9/11/2023 12:03:58 PM
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Exception of type 'System.Exception' was thrown.
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Error parsing column 25 (CertificateNr=           - String)
+Error: Something went wrong inside Get DocCode action: Error parsing column 25 (CertificateNr=           - String)
+Error: Something went wrong inside Get DocCode action: Error parsing column 25 (CertificateNr=           - String)
+Error: Something went wrong inside Get DocCode action: Error parsing column 25 (CertificateNr=           - String)
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Error parsing column 26 (SinisterProcessNr=           - String)
+Error: Something went wrong inside Get DocCode action: Error parsing column 26 (SinisterProcessNr=           - String)
+Error: Something went wrong inside Get DocCode action: Error parsing column 26 (SinisterProcessNr=           - String)
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Error: Something went wrong inside Get DocCode action: Error parsing column 33 (FiscalYear=2023 - Int16)
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Info: RetentionInfoReport Get
+Info: RetentionInfoReport Get
+Info: RetentionInfoReport Get
+Info: RetentionInfoReport Get
+Info: RetentionInfoReport Get

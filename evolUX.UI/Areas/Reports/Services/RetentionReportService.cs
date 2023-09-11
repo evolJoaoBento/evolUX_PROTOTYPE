@@ -81,11 +81,11 @@ namespace evolUX.UI.Areas.Reports.Services
             }
         }
 
-        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(int RunID, int FileID)
+        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(int RunID, int FileID, int SetID, int DocID)
         {
             try
             {
-                var response = await _retentionReportRepository.GetRetentionInfoReport(RunID, FileID);
+                var response = await _retentionReportRepository.GetRetentionInfoReport(RunID, FileID, SetID, DocID);
                 return response;
             }
             catch (FlurlHttpException ex)

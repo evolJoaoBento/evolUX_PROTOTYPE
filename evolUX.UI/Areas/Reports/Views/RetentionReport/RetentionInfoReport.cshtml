@@ -61,7 +61,7 @@
                             }
 
                             <td>@localizer["ID"]</td>
-                            <td scope="colgroup" style="text-align:center">@retention.RunID</td>
+                            <td scope="colgroup" style="text-align:center">@retention.RunID, @retention.FileID, @retention.SetID, @retention.DocID</td>
                         </tr>
                         <tr>
                             <td>@localizer["DocType"]</td>
@@ -77,8 +77,8 @@
                             @localizer["Date"]
                             </td>
                             <td scope="colgroup" style="text-align:center;vertical-align:middle">
-                            @retention.ProductionStateID <br>
-                            @retention
+                            @retention.PostObjID <br>
+                            @retention.ProductionStateID
                             </td>
                         </tr>
                         <tr>

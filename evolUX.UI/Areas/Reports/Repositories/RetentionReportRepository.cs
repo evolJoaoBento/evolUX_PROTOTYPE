@@ -50,11 +50,13 @@ namespace evolUX.UI.Areas.Reports.Repositories
             return await response.GetJsonAsync<RetentionReportViewModel>();
         }
 
-        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(int RunID, int FileID)
+        public async Task<RetentionInfoReportViewModel> GetRetentionInfoReport(int RunID, int FileID, int SetID, int DocID)
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("RunID", RunID);
             dictionary.Add("FileID", FileID);
+            dictionary.Add("SetID", SetID);
+            dictionary.Add("DocID", DocID);
 
             var response = await _flurlClient.Request("/API/reports/RetentionReport/GetRetentionInfoReport")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
