@@ -1,0 +1,35 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Shared.ViewModels.Areas.Reports
+@inject IViewLocalizer localizer
+@model 
+
+<div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status" id="myLoader" style="display:none">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+@if (Model == null)
+{
+    <div id="ResultPage">
+        <h3 class="display-4 text-center">@localizer["NoModelData"]</h3>
+    </div>
+}
+else
+{
+    <div id="TitlePage">
+        <h1>@localizer["RetentionRunStatus"]</h1>
+    </div>
+
+    <div style="display: flex; flex-wrap: nowrap; justify-content: space-around">
+        @foreach (Business b in Model.BusinessAreas)
+        {
+            <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionRunReport" asp-route-BusinessID="@b.BusinessID" asp-route-BusinessCode="@b.BusinessCode" asp-route-description="@b.Description" asp-route-source="Index">
+                <div class="area-div">
+                    @b.Description
+                </div>
+            </a>
+        }
+    </div>
+}
