@@ -36,19 +36,8 @@ else
         <div id="TitlePage">
             <h1>
                 @localizer["RetentionRunStatus"]
-                @*@Model.BusinessAreaID*@
             </h1>
         </div>
-        @*@if (!string.IsNullOrEmpty(ViewBag.Source))
-        {
-            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="Reports" asp-controller="RetentionReport" asp-action="Index"></a>
-        }*@
-                @*string ServiceCompanyName = "";
-                if (ViewBag.hasMultipleServiceCompanies)
-                {
-                    ServiceCompanyName += TempData["ServiceCompanyName"];
-                }*@
-
             <div class="my-3">
                 <table class="table table-sm table-hover">
                     <thead id="bootstrap-overrides" class="sticky-header">

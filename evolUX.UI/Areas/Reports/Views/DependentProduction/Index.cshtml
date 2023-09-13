@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Shared.ViewModels.Areas.Reports
 @inject IViewLocalizer localizer
-@model 
+@model DependentProductionViewModel
 
 <div class="d-flex justify-content-center">
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
@@ -19,17 +19,163 @@
 else
 {
     <div id="TitlePage">
-        <h1>@localizer["RetentionRunStatus"]</h1>
+        <h1>@localizer["JobsControl"]</h1>
     </div>
 
-    <div style="display: flex; flex-wrap: nowrap; justify-content: space-around">
-        @foreach (Business b in Model.BusinessAreas)
-        {
-            <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionRunReport" asp-route-BusinessID="@b.BusinessID" asp-route-BusinessCode="@b.BusinessCode" asp-route-description="@b.Description" asp-route-source="Index">
-                <div class="area-div">
-                    @b.Description
-                </div>
-            </a>
-        }
+    <div class="my-3">
+        <table class="table table-sm table-hover">
+            <thead id="bootstrap-overrides" class="sticky-header">
+                <tr class="collapsible active">
+                    <th class="borders" rowspan="2" style="text-align:center;vertical-align:middle"></th>
+                    <th colspan="7" scope="rowgroup" style="text-align:center;vertical-align:middle">
+                        @localizer["DependentPrints"]
+                    </th>
+                </tr>
+                <tr>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">
+                        @localizer["RunsDate"] </br>
+                        @localizer["BusinessName"]
+                    </th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpType"]</th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpCompany"]</th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["PrintType"]</th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Files"]</th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">Docs</th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Prints"]</th>
+                </tr>
+            </thead>
+            <tbody id="bootstrap-overrides">
+                @{
+                    int FilesTotalP = 0;
+                    int DocsTotalP = 0;
+                    int PrintsTotalP = 0;
+                }
+                @foreach (DependentPrintsInfo dependent in Model.DependentPrintProduction)
+                {
+                    <tr>
+                        @{
+                            DateTime rDate;
+                            string runDate = dependent.RunDate.ToString();
+                            if (DateTime.TryParseExact(dependent.RunDate.ToString(), "yyyyMMdd",
+                            System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
+                                runDate = rDate.ToShortDateString();
+                            //string RunName = runDate + " [" + retention.RunSequence + "]";
+                        }
+
+                        <td class="borders" style="text-align:center;vertical-align:middle"</td>
+                        <td>
+                            @dependent.DocTypeLayout
+
+
+                        </td>
+                        <td>@dependent.ExpType</td>
+                        <td>@dependent.ExpCompany</td>
+                        <td>@dependent.PrintType</td>
+                        <td>@dependent.Files</td>
+                        @{
+                            FilesTotalP += dependent.Files;
+                        }
+                        <td>@dependent.Docs</td>
+                        @{
+                            DocsTotalP += dependent.Docs;
+                        }
+                        <td>@dependent.Prints</td>
+                        @{
+                            PrintsTotalP += dependent.Prints;
+                        }
+                    </tr>
+                }
+                <tr class="table-end">
+                    <td></td>
+                    <td class="table-end-data">Total</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="table-end-data">@FilesTotalP</td>
+                    <td class="table-end-data">@DocsTotalP</td>
+                    <td class="table-end-data">@PrintsTotalP</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="my-3">
+        <table class="table table-sm table-hover">
+            <thead id="bootstrap-overrides" class="sticky-header">
+                <tr class="collapsible active">
+                    <th class="borders" rowspan="2" style="text-align:center;vertical-align:middle"></th>
+                    <th colspan="8" scope="rowgroup" style="text-align:center;vertical-align:middle">
+                        @localizer["DependentEnvs"]
+                    </th>
+                </tr>
+                <tr>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">
+                        @localizer["RunsDate"] </br>
+                        @localizer["BusinessName"]
+                    </th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpType"]</th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpCompany"]</th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["EnvFormat"]</th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["EnvType"]</th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Files"]</th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">Docs</th>
+                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Envs"]</th>
+                </tr>
+            </thead>
+            <tbody id="bootstrap-overrides">
+                @{
+                    int FilesTotalE = 0;
+                    int DocsTotalE = 0;
+                    int EnvsTotalE = 0;
+                }
+                @foreach (DependentEnvsInfo dependent in Model.DependentEnvProduction)
+                {
+                    <tr>
+                        @{
+                            DateTime rDate;
+                            string runDate = dependent.RunDate.ToString();
+                            if (DateTime.TryParseExact(dependent.RunDate.ToString(), "yyyyMMdd",
+                            System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
+                                runDate = rDate.ToShortDateString();
+                            //string RunName = runDate + " [" + retention.RunSequence + "]";
+                        }
+
+                        <td class="borders" style="text-align:center;vertical-align:middle"</td>
+                        <td>
+                            @dependent.DocTypeLayout
+
+
+                        </td>
+                        <td>@dependent.ExpType</td>
+                        <td>@dependent.ExpCompany</td>
+                        <td>@dependent.EnvFormat</td>
+                        <td>@dependent.EnvType</td>
+                        <td>@dependent.Files</td>
+                        @{
+                            FilesTotalP += dependent.Files;
+                        }
+                        <td>@dependent.Docs</td>
+                        @{
+                            DocsTotalP += dependent.Docs;
+                        }
+                        <td>@dependent.Envs</td>
+                        @{
+                            EnvsTotalE += dependent.Envs;
+                        }
+                    </tr>
+                }
+                <tr class="table-end">
+                    <td></td>
+                    <td class="table-end-data">Total</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="table-end-data">@FilesTotalP</td>
+                    <td class="table-end-data">@DocsTotalP</td>
+                    <td class="table-end-data">@EnvsTotalE</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 }
