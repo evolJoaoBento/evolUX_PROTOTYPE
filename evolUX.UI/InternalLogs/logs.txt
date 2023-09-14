@@ -82,3 +82,4 @@ Info: O utilizador evolUXuser fez login 9/11/2023 11:00:18 AM - ZivileSink
 Info: O utilizador evolUXuser fez login 11/09/2023 11:28:57 - ZivileSink
 Info: O utilizador evolUXuser fez login 11/09/2023 12:04:00 - ZivileSink
 Info: O utilizador evolUXuser fez login 13/09/2023 09:51:08 - ZivileSink
+Info: O utilizador evolUXuser fez login 14/09/2023 11:27:34 - ZivileSink
