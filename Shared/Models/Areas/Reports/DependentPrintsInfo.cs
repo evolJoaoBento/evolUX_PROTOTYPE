@@ -1,6 +1,6 @@
 ﻿namespace Shared.Models.Areas.Reports
 {
-    internal class DependentPrintsInfo
+    public class DependentPrintsInfo
     {
         public int EndTimeStamp { get; set; } //Data/Hora da impressão
         public int Description { get; set; } //Nome da área de negócio

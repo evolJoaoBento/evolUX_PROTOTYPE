@@ -50,13 +50,13 @@ else
                     int DocsTotalP = 0;
                     int PrintsTotalP = 0;
                 }
-                @foreach (DependentPrintsInfo dependent in Model.DependentPrintProduction)
+                @foreach (DependentPrintsInfo print in Model.DependentPrintProduction)
                 {
                     <tr>
                         @{
                             DateTime rDate;
-                            string runDate = dependent.RunDate.ToString();
-                            if (DateTime.TryParseExact(dependent.RunDate.ToString(), "yyyyMMdd",
+                            string runDate = print.RunDate.ToString();
+                            if (DateTime.TryParseExact(print.RunDate.ToString(), "yyyyMMdd",
                             System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
                                 runDate = rDate.ToShortDateString();
                             //string RunName = runDate + " [" + retention.RunSequence + "]";
@@ -64,24 +64,24 @@ else
 
                         <td class="borders" style="text-align:center;vertical-align:middle"</td>
                         <td>
-                            @dependent.DocTypeLayout
+                            @print.DocTypeLayout
 
 
                         </td>
-                        <td>@dependent.ExpType</td>
-                        <td>@dependent.ExpCompany</td>
-                        <td>@dependent.PrintType</td>
-                        <td>@dependent.Files</td>
+                        <td>@print.ExpType</td>
+                        <td>@print.ExpCompany</td>
+                        <td>@print.PrintType</td>
+                        <td>@print.Files</td>
                         @{
-                            FilesTotalP += dependent.Files;
+                            FilesTotalP += print.Files;
                         }
-                        <td>@dependent.Docs</td>
+                        <td>@print.Docs</td>
                         @{
-                            DocsTotalP += dependent.Docs;
+                            DocsTotalP += print.Docs;
                         }
-                        <td>@dependent.Prints</td>
+                        <td>@print.Prints</td>
                         @{
-                            PrintsTotalP += dependent.Prints;
+                            PrintsTotalP += print.Prints;
                         }
                     </tr>
                 }
@@ -128,13 +128,13 @@ else
                     int DocsTotalE = 0;
                     int EnvsTotalE = 0;
                 }
-                @foreach (DependentEnvsInfo dependent in Model.DependentEnvProduction)
+                @foreach (DependentEnvsInfo fullfill in Model.DependentEnvProduction)
                 {
                     <tr>
                         @{
                             DateTime rDate;
-                            string runDate = dependent.RunDate.ToString();
-                            if (DateTime.TryParseExact(dependent.RunDate.ToString(), "yyyyMMdd",
+                            string runDate = fullfill.RunDate.ToString();
+                            if (DateTime.TryParseExact(fullfill.RunDate.ToString(), "yyyyMMdd",
                             System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
                                 runDate = rDate.ToShortDateString();
                             //string RunName = runDate + " [" + retention.RunSequence + "]";
@@ -142,25 +142,25 @@ else
 
                         <td class="borders" style="text-align:center;vertical-align:middle"</td>
                         <td>
-                            @dependent.DocTypeLayout
+                            @fullfill.DocTypeLayout
 
 
                         </td>
-                        <td>@dependent.ExpType</td>
-                        <td>@dependent.ExpCompany</td>
-                        <td>@dependent.EnvFormat</td>
-                        <td>@dependent.EnvType</td>
-                        <td>@dependent.Files</td>
+                        <td>@fullfill.ExpType</td>
+                        <td>@fullfill.ExpCompany</td>
+                        <td>@fullfill.EnvFormat</td>
+                        <td>@fullfill.EnvType</td>
+                        <td>@fullfill.Files</td>
                         @{
-                            FilesTotalP += dependent.Files;
+                            FilesTotalP += fullfill.Files;
                         }
-                        <td>@dependent.Docs</td>
+                        <td>@fullfill.Docs</td>
                         @{
-                            DocsTotalP += dependent.Docs;
+                            DocsTotalP += fullfill.Docs;
                         }
-                        <td>@dependent.Envs</td>
+                        <td>@fullfill.Envs</td>
                         @{
-                            EnvsTotalE += dependent.Envs;
+                            EnvsTotalE += fullfill.Envs;
                         }
                     </tr>
                 }
