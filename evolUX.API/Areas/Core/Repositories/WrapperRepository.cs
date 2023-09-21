@@ -32,6 +32,7 @@ namespace evolUX.API.Areas.Core.Repositories
         private IPendingRecoverRepository _pendingRecover;
         private IExpeditionReportRepository _expeditionReport;
         private IRetentionReportRepository _retentionReport;
+        private IDependentProductionRepository _dependentProduction;
 
 
         public WrapperRepository(DapperContext context)
@@ -120,7 +121,7 @@ namespace evolUX.API.Areas.Core.Repositories
                 return _expeditionType;
             }
         }
-       
+
         public IServiceProvisionRepository ServiceProvision
         {
             get
@@ -256,6 +257,17 @@ namespace evolUX.API.Areas.Core.Repositories
                     _retentionReport = new RetentionReportRepository(_context);
                 }
                 return _retentionReport;
+            }
+        }
+        public IDependentProductionRepository DependentProduction
+        {
+            get
+            {
+                if (_dependentProduction == null)
+                {
+                    _dependentProduction = new DependentProductionRepository(_context);
+                }
+                return _dependentProduction;
             }
         }
     }

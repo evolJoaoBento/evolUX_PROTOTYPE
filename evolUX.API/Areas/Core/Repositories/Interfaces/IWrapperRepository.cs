@@ -43,5 +43,7 @@ namespace evolUX.API.Areas.Core.Repositories.Interfaces
         IExpeditionReportRepository ExpeditionReport { get; }
 
         IRetentionReportRepository RetentionReport { get; }
+
+        IDependentProductionRepository DependentProduction { get; }
     }
 }

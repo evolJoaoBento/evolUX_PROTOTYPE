@@ -19,5 +19,18 @@ namespace evolUX.API.Areas.Reports.Services
         {
             _repository = repository;
         }
+    
+
+        public async Task<DependentProductionViewModel> GetDependentProduction(DataTable ServiceCompanyList)
+        {
+            DependentProductionViewModel viewmodel = new DependentProductionViewModel();
+            viewmodel.DependentPrintProduction = await _repository.DependentProduction.GetDependentPrintsProduction(ServiceCompanyList);
+            if (viewmodel.DependentPrintProduction == null)
+            {
+                throw new Exception();//MAKE BETTER EXCEPTION
+            }
+
+            return viewmodel;
+        }
     }
 }

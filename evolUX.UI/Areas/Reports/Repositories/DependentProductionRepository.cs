@@ -18,5 +18,40 @@ namespace evolUX.UI.Areas.Reports.Repositories
         public DependentProductionRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
         {
         }
+        public async Task<DependentProductionViewModel> GetDependentPrintsProduction(List<int> serviceCompanyList)
+        {
+            DataTable ServiceCompanyList = new DataTable();
+            ServiceCompanyList.Columns.Add("ID", typeof(int));
+            foreach (int runID in serviceCompanyList)
+                ServiceCompanyList.Rows.Add(runID);
+
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ServiceCompanyList", ServiceCompanyList);
+
+            var response = await _flurlClient.Request("/API/reports/DependentProduction/GetDependentPrintsProduction")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<DependentProductionViewModel>();
+        }
+
+        public async Task<DependentProductionViewModel> GetDependentFullfillProduction(List<int> serviceCompanyList)
+        {
+            DataTable ServiceCompanyList = new DataTable();
+            ServiceCompanyList.Columns.Add("ID", typeof(int));
+            foreach (int runID in serviceCompanyList)
+                ServiceCompanyList.Rows.Add(runID);
+
+            Dictionary<string, object> dictionary = new Dictionary<string, object>();
+            dictionary.Add("ServiceCompanyList", ServiceCompanyList);
+
+            var response = await _flurlClient.Request("/API/reports/DependentProduction/GetDependentFullfillProduction")
+                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
+                .SendJsonAsync(HttpMethod.Get, dictionary);
+            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
+            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
+            return await response.GetJsonAsync<DependentProductionViewModel>();
+        }
     }
 }

@@ -465,4 +465,7 @@
   <data name="ActionRetentionReport_Link" xml:space="preserve">
     <value>/Reports/RetentionReport/Index</value>
   </data>
+  <data name="ActionPendingProductionReport_Link" xml:space="preserve">
+    <value>/Reports/DependentProduction/Index</value>
+  </data>
 </root>

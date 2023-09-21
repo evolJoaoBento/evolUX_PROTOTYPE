@@ -1,17 +1,9 @@
-﻿using evolUX.UI.Areas.Finishing.Services.Interfaces;
-using Shared.ViewModels.Areas.Finishing;
-using Shared.ViewModels.Areas.Reports;
+﻿using Shared.ViewModels.Areas.Reports;
 using Flurl.Http;
-using System.Data;
-using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
 using evolUX.UI.Exceptions;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
-using Shared.Models.Areas.Finishing;
-using evolUX.UI.Areas.Reports.Services.Interfaces;
 using evolUX.UI.Areas.Reports.Repositories.Interfaces;
-using Microsoft.VisualBasic;
-
 
 namespace evolUX.UI.Areas.Reports.Services
 {
@@ -21,6 +13,32 @@ namespace evolUX.UI.Areas.Reports.Services
         public DependentProductionService(IDependentProductionRepository dependentProductionRepository)
         {
             _dependentProductionRepository = dependentProductionRepository;
+        }
+        public async Task<DependentProductionViewModel> GetDependentPrintsProduction(List<int> ServiceCompanyList)
+        {
+            try
+            {
+                var response = await _dependentProductionRepository.GetDependentPrintsProduction(ServiceCompanyList);
+                return response;
+            }
+            catch (FlurlHttpException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.StatusCode;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
+            catch (HttpNotFoundException ex)
+            {
+                ErrorViewModel viewModel = new ErrorViewModel();
+                viewModel.RequestID = ex.Source;
+                viewModel.ErrorResult = new ErrorResult();
+                viewModel.ErrorResult.Code = (int)ex.HResult;
+                viewModel.ErrorResult.Message = ex.Message;
+                throw new ErrorViewModelException(viewModel);
+            }
         }
     }
 }

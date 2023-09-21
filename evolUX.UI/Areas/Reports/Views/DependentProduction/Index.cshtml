@@ -1,4 +1,5 @@
-﻿@using Shared.Models.Areas.evolDP
+﻿@using Shared.Models.Areas.Reports;
+@using Shared.Models.Areas.evolDP
 @using Shared.ViewModels.Areas.evolDP
 @using Microsoft.AspNetCore.Mvc.Localization
 @using Shared.ViewModels.Areas.Reports
@@ -33,7 +34,7 @@ else
                 </tr>
                 <tr>
                     <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">
-                        @localizer["RunsDate"] </br>
+                        @localizer["RunsDate"] <br>
                         @localizer["BusinessName"]
                     </th>
                     <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpType"]</th>
@@ -53,35 +54,25 @@ else
                 @foreach (DependentPrintsInfo print in Model.DependentPrintProduction)
                 {
                     <tr>
-                        @{
-                            DateTime rDate;
-                            string runDate = print.RunDate.ToString();
-                            if (DateTime.TryParseExact(print.RunDate.ToString(), "yyyyMMdd",
-                            System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
-                                runDate = rDate.ToShortDateString();
-                            //string RunName = runDate + " [" + retention.RunSequence + "]";
-                        }
-
-                        <td class="borders" style="text-align:center;vertical-align:middle"</td>
+                        <td class="borders" style="text-align:center;vertical-align:middle"></td>
                         <td>
-                            @print.DocTypeLayout
-
-
+                            @print.FileTimeStamp<br>
+                            @print.BusinessDesc
                         </td>
-                        <td>@print.ExpType</td>
-                        <td>@print.ExpCompany</td>
-                        <td>@print.PrintType</td>
-                        <td>@print.Files</td>
+                        <td>@print.ExpeditionType</td>
+                        <td>@print.ExpCode</td>
+                        <td>@print.PlexCode</td>
+                        <td>@print.TotalFiles</td>
                         @{
-                            FilesTotalP += print.Files;
+                            FilesTotalP += print.TotalFiles;
                         }
-                        <td>@print.Docs</td>
+                        <td>@print.TotalDocs</td>
                         @{
-                            DocsTotalP += print.Docs;
+                            DocsTotalP += print.TotalDocs;
                         }
-                        <td>@print.Prints</td>
+                        <td>@print.TotalPrint</td>
                         @{
-                            PrintsTotalP += print.Prints;
+                            PrintsTotalP += print.TotalPrint;
                         }
                     </tr>
                 }
@@ -110,7 +101,7 @@ else
                 </tr>
                 <tr>
                     <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">
-                        @localizer["RunsDate"] </br>
+                        @localizer["RunsDate"] <br>
                         @localizer["BusinessName"]
                     </th>
                     <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpType"]</th>
@@ -128,39 +119,38 @@ else
                     int DocsTotalE = 0;
                     int EnvsTotalE = 0;
                 }
-                @foreach (DependentEnvsInfo fullfill in Model.DependentEnvProduction)
+                @foreach (DependentFullfillInfo fullfill in Model.DependentFullfillProduction)
                 {
                     <tr>
                         @{
-                            DateTime rDate;
-                            string runDate = fullfill.RunDate.ToString();
-                            if (DateTime.TryParseExact(fullfill.RunDate.ToString(), "yyyyMMdd",
-                            System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
-                                runDate = rDate.ToShortDateString();
-                            //string RunName = runDate + " [" + retention.RunSequence + "]";
+                        //    DateTime rDate;
+                        //    string runDate = fullfill.RunDate.ToString();
+                        //    if (DateTime.TryParseExact(fullfill.RunDate.ToString(), "yyyyMMdd",
+                        //    System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
+                        //        runDate = rDate.ToShortDateString();
+                        //    //string RunName = runDate + " [" + retention.RunSequence + "]";
                         }
 
-                        <td class="borders" style="text-align:center;vertical-align:middle"</td>
+                        <td class="borders" style="text-align:center;vertical-align:middle"></td>
                         <td>
-                            @fullfill.DocTypeLayout
-
-
+                            @fullfill.FileTimeStamp<br>
+                            @fullfill.BusinessDesc
                         </td>
-                        <td>@fullfill.ExpType</td>
-                        <td>@fullfill.ExpCompany</td>
-                        <td>@fullfill.EnvFormat</td>
-                        <td>@fullfill.EnvType</td>
-                        <td>@fullfill.Files</td>
+                        <td>@fullfill.ExpeditionType</td>
+                        <td>@fullfill.ExpCode</td>
+                        <td>@fullfill.FullFillMaterialCode</td>
+                        <td>@fullfill.ServiceFullFillMaterialCode</td>
+                        <td>@fullfill.TotalFiles</td>
                         @{
-                            FilesTotalP += fullfill.Files;
+                            FilesTotalP += fullfill.TotalFiles;
                         }
-                        <td>@fullfill.Docs</td>
+                        <td>@fullfill.TotalDocs</td>
                         @{
-                            DocsTotalP += fullfill.Docs;
+                            DocsTotalP += fullfill.TotalDocs;
                         }
-                        <td>@fullfill.Envs</td>
+                        <td>@fullfill.TotalPostObjs</td>
                         @{
-                            EnvsTotalE += fullfill.Envs;
+                            EnvsTotalE += fullfill.TotalPostObjs;
                         }
                     </tr>
                 }

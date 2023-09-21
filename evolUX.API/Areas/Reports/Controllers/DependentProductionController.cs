@@ -28,5 +28,33 @@ namespace evolUX.API.Areas.Reports.Controllers
             _logger = logger;
             _dependentProductionService = dependentProductionService;
         }
+    
+
+        [HttpGet]
+        [ActionName("GetDependentProduction")]
+        public async Task<ActionResult<DependentProductionViewModel>> GetDependentProduction([FromBody] Dictionary<string, object> dictionary)
+        {
+            try
+            {
+                object obj;
+                dictionary.TryGetValue("ServiceCompanyList", out obj);
+                string ServiceCompanyListJSON = Convert.ToString(obj);
+                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+
+                DependentProductionViewModel viewmodel = await _dependentProductionService.GetDependentProduction(ServiceCompanyList);
+                _logger.LogInfo("DependentProduction Get");
+                return Ok(viewmodel);
+            }
+            catch (SqlException ex)
+            {
+                return StatusCode(503, "Internal Server Error");
+            }
+            catch (Exception ex)
+            {
+                //log error
+                _logger.LogError($"Something went wrong inside Get DocCode action: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
+            }
+        }
     }
 }
