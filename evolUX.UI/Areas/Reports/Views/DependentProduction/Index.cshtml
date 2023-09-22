@@ -122,15 +122,6 @@ else
                 @foreach (DependentFullfillInfo fullfill in Model.DependentFullfillProduction)
                 {
                     <tr>
-                        @{
-                        //    DateTime rDate;
-                        //    string runDate = fullfill.RunDate.ToString();
-                        //    if (DateTime.TryParseExact(fullfill.RunDate.ToString(), "yyyyMMdd",
-                        //    System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
-                        //        runDate = rDate.ToShortDateString();
-                        //    //string RunName = runDate + " [" + retention.RunSequence + "]";
-                        }
-
                         <td class="borders" style="text-align:center;vertical-align:middle"></td>
                         <td>
                             @fullfill.FileTimeStamp<br>

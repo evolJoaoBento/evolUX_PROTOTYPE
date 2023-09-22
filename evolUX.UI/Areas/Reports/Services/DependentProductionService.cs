@@ -14,11 +14,11 @@ namespace evolUX.UI.Areas.Reports.Services
         {
             _dependentProductionRepository = dependentProductionRepository;
         }
-        public async Task<DependentProductionViewModel> GetDependentPrintsProduction(List<int> ServiceCompanyList)
+        public async Task<DependentProductionViewModel> GetDependentPrintsProduction(int RunID, List<int> ServiceCompanyList)
         {
             try
             {
-                var response = await _dependentProductionRepository.GetDependentPrintsProduction(ServiceCompanyList);
+                var response = await _dependentProductionRepository.GetDependentPrintsProduction(RunID, ServiceCompanyList);
                 return response;
             }
             catch (FlurlHttpException ex)

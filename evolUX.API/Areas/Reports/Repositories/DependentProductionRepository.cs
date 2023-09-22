@@ -20,11 +20,12 @@ namespace evolUX.API.Areas.Reports.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<DependentPrintsInfo>> GetDependentPrintsProduction(DataTable ServiceCompanyList)
+        public async Task<IEnumerable<DependentPrintsInfo>> GetDependentPrintsProduction(int RunID, DataTable ServiceCompanyList)
         {
             string sql = @"RPC_UX_SERVICECOMPANY_PENDING_WORK_PRINT";
             var parameters = new DynamicParameters();
-            parameters.Add("ServiceCompanyList", ServiceCompanyList.Rows[0][0], DbType.Int64);
+            parameters.Add("ServiceCompanyList", ServiceCompanyList.AsTableValuedParameter("IDlist"));
+            parameters.Add("RunID", RunID, DbType.Int64);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {
@@ -34,11 +35,12 @@ namespace evolUX.API.Areas.Reports.Repositories
                 return dependentPrints;
             }
         }
-        public async Task<IEnumerable<DependentFullfillInfo>> GetDependentFullfillProduction(DataTable ServiceCompanyList)
+        public async Task<IEnumerable<DependentFullfillInfo>> GetDependentFullfillProduction(int RunID, DataTable ServiceCompanyList)
         {
             string sql = @"RPC_UX_SERVICECOMPANY_PENDING_WORK_FULLFILL";
             var parameters = new DynamicParameters();
-            parameters.Add("ServiceCompanyList", ServiceCompanyList.Rows[0][0], DbType.Int64);
+            parameters.Add("ServiceCompanyList", ServiceCompanyList.AsTableValuedParameter("IDlist"));
+            parameters.Add("RunID", RunID, DbType.Int64);
 
             using (var connection = _context.CreateConnectionEvolDP())
             {

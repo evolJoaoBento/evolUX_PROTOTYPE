@@ -1,17 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using evolUX.API.Areas.Core.Services.Interfaces;
-//using Shared.Models.Areas.Finishing;
 using Shared.ViewModels.Areas.Reports;
-using Shared.Models.Areas.Finishing;
 using evolUX.API.Areas.Reports.Services.Interfaces;
-//using Shared.Models.Areas.Reports;
 using System.Data;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
 using System.Data.SqlClient;
-using evolUX.API.Areas.Reports.Services;
 
 namespace evolUX.API.Areas.Reports.Controllers
 {
@@ -32,7 +26,7 @@ namespace evolUX.API.Areas.Reports.Controllers
 
         [HttpGet]
         [ActionName("GetDependentProduction")]
-        public async Task<ActionResult<DependentProductionViewModel>> GetDependentProduction([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<DependentProductionViewModel>> GetDependentPrintsProduction([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
@@ -40,8 +34,10 @@ namespace evolUX.API.Areas.Reports.Controllers
                 dictionary.TryGetValue("ServiceCompanyList", out obj);
                 string ServiceCompanyListJSON = Convert.ToString(obj);
                 DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+                dictionary.TryGetValue("RunID", out obj);
+                int RunID = Convert.ToInt32(obj.ToString());
 
-                DependentProductionViewModel viewmodel = await _dependentProductionService.GetDependentProduction(ServiceCompanyList);
+                DependentProductionViewModel viewmodel = await _dependentProductionService.GetDependentPrintsProduction(RunID, ServiceCompanyList);
                 _logger.LogInfo("DependentProduction Get");
                 return Ok(viewmodel);
             }

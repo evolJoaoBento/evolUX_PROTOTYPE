@@ -1,14 +1,7 @@
-﻿using evolUX.API.Areas.Reports.Services.Interfaces;
-using Shared.ViewModels.Areas.Reports;
+﻿using Shared.ViewModels.Areas.Reports;
 using Shared.Models.Areas.Reports;
 using System.Data;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
-using Shared.Models.Areas.Core;
-using System.Xml;
-using Shared.Models.General;
-using evolUX.API.Models;
-using System.Collections.Generic;
-using Shared.ViewModels.Areas.Finishing;
 
 namespace evolUX.API.Areas.Reports.Services
 {
@@ -19,18 +12,27 @@ namespace evolUX.API.Areas.Reports.Services
         {
             _repository = repository;
         }
-    
-
-        public async Task<DependentProductionViewModel> GetDependentProduction(DataTable ServiceCompanyList)
+        
+        public async Task<DependentProductionViewModel> GetDependentPrintsProduction(int RunID, DataTable ServiceCompanyList)
         {
+            IEnumerable<DependentPrintsInfo> dependentProduction = await _repository.DependentProduction.GetDependentPrintsProduction(RunID, ServiceCompanyList);
             DependentProductionViewModel viewmodel = new DependentProductionViewModel();
-            viewmodel.DependentPrintProduction = await _repository.DependentProduction.GetDependentPrintsProduction(ServiceCompanyList);
+            IEnumerable<DependentFullfillInfo> FileList = await _repository.DependentProduction.GetDependentFullfillProduction(RunID, ServiceCompanyList);
+
+            viewmodel.DependentPrintProduction;
+            viewmodel.DependentFullFillProduction;
+
             if (viewmodel.DependentPrintProduction == null)
             {
                 throw new Exception();//MAKE BETTER EXCEPTION
             }
 
             return viewmodel;
+
+            if (viewmodel.DependentFullfillProduction == null)
+            {
+                throw new Exception();//MAKE BETTER EXCEPTION
+            }
         }
     }
 }

@@ -145,7 +145,7 @@ namespace evolUX.API.Areas.Finishing.Repositories
 
         public async Task<IEnumerable<ProductionDetailInfo>> GetProductionReport(DataTable runIDList, int serviceCompanyID)
         {
-            string sql = @"RP_UX_PRODUCTION_SUBSET_REPORT"; // @"RP_UX_PRODUCTION_SUBSET_REPORT";
+            string sql = @"RP_UX_PRODUCTION_SUBSET_REPORT";
             var parameters = new DynamicParameters();
             parameters.Add("ServiceCompanyID", serviceCompanyID, DbType.Int64);
 

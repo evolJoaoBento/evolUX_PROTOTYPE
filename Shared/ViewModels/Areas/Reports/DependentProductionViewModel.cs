@@ -7,6 +7,7 @@ namespace Shared.ViewModels.Areas.Reports
     public class DependentProductionViewModel : ItemPermissions
     {
         public DataTable ServiceCompanyList { get; set; }
+        public int RunID { get; set; }
         public IEnumerable<DependentPrintsInfo> DependentPrintProduction { get; set; }
         public IEnumerable<DependentFullfillInfo> DependentFullfillProduction { get; set; }
     }
