@@ -1,7 +1,4 @@
 ﻿using Shared.ViewModels.Areas.Reports;
-using Flurl.Http;
-using System.Data;
-using Shared.Models.Areas.Finishing;
 
 namespace evolUX.UI.Areas.Reports.Services.Interfaces
 {

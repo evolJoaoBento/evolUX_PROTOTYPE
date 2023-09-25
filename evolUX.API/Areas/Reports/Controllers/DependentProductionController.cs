@@ -25,7 +25,7 @@ namespace evolUX.API.Areas.Reports.Controllers
     
 
         [HttpGet]
-        [ActionName("GetDependentProduction")]
+        [ActionName("GetDependentPrintsProduction")]
         public async Task<ActionResult<DependentProductionViewModel>> GetDependentPrintsProduction([FromBody] Dictionary<string, object> dictionary)
         {
             try

@@ -15,24 +15,24 @@ namespace evolUX.API.Areas.Reports.Services
         
         public async Task<DependentProductionViewModel> GetDependentPrintsProduction(int RunID, DataTable ServiceCompanyList)
         {
-            IEnumerable<DependentPrintsInfo> dependentProduction = await _repository.DependentProduction.GetDependentPrintsProduction(RunID, ServiceCompanyList);
+            IEnumerable<DependentPrintsInfo> dependentPrintProduction = await _repository.DependentProduction.GetDependentPrintsProduction(RunID, ServiceCompanyList);
+            IEnumerable<DependentFullfillInfo> dependentFullfillProduction = await _repository.DependentProduction.GetDependentFullfillProduction(RunID, ServiceCompanyList);
             DependentProductionViewModel viewmodel = new DependentProductionViewModel();
-            IEnumerable<DependentFullfillInfo> FileList = await _repository.DependentProduction.GetDependentFullfillProduction(RunID, ServiceCompanyList);
 
-            viewmodel.DependentPrintProduction;
-            viewmodel.DependentFullFillProduction;
+            viewmodel.DependentPrintProduction = dependentPrintProduction;
+            viewmodel.DependentFullfillProduction = dependentFullfillProduction;
 
             if (viewmodel.DependentPrintProduction == null)
             {
                 throw new Exception();//MAKE BETTER EXCEPTION
             }
 
-            return viewmodel;
-
             if (viewmodel.DependentFullfillProduction == null)
             {
                 throw new Exception();//MAKE BETTER EXCEPTION
             }
+
+            return viewmodel;
         }
     }
 }

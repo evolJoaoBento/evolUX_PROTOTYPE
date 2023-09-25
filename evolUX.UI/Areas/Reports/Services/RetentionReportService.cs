@@ -1,16 +1,10 @@
-﻿using evolUX.UI.Areas.Finishing.Services.Interfaces;
-using Shared.ViewModels.Areas.Finishing;
-using Shared.ViewModels.Areas.Reports;
-using Flurl.Http;
-using System.Data;
-using evolUX.UI.Areas.Finishing.Repositories.Interfaces;
+﻿using Shared.ViewModels.Areas.Reports;
 using evolUX.UI.Exceptions;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
-using Shared.Models.Areas.Finishing;
 using evolUX.UI.Areas.Reports.Services.Interfaces;
 using evolUX.UI.Areas.Reports.Repositories.Interfaces;
-using Microsoft.VisualBasic;
+using Flurl.Http;
 
 namespace evolUX.UI.Areas.Reports.Services
 {

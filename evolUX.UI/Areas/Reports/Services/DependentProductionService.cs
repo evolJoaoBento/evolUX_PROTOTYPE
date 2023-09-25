@@ -4,10 +4,11 @@ using evolUX.UI.Exceptions;
 using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
 using evolUX.UI.Areas.Reports.Repositories.Interfaces;
+using evolUX.UI.Areas.Reports.Services.Interfaces;
 
 namespace evolUX.UI.Areas.Reports.Services
 {
-    public class DependentProductionService
+    public class DependentProductionService : IDependentProductionService
     {
         private readonly IDependentProductionRepository _dependentProductionRepository;
         public DependentProductionService(IDependentProductionRepository dependentProductionRepository)

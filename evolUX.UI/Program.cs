@@ -92,6 +92,8 @@ builder.Services.AddSingleton<IExpeditionReportRepository, ExpeditionReportRepos
 //Reports
 builder.Services.AddSingleton<IRetentionReportService, RetentionReportService>();
 builder.Services.AddSingleton<IRetentionReportRepository, RetentionReportRepository>();
+builder.Services.AddSingleton<IDependentProductionRepository, DependentProductionRepository>();
+builder.Services.AddSingleton<IDependentProductionService, DependentProductionService>();
 
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
