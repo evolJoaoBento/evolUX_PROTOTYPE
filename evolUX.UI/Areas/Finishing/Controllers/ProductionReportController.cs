@@ -146,7 +146,6 @@ namespace evolUX.UI.Areas.Finishing.Controllers
                     return RedirectToAction("Index", "Auth", new { Area = "Core" });
                 }
             }
-            
         }
 
         public async Task<IActionResult> ProductionReport(string RunIDList, int ServiceCompanyID, string RunName)

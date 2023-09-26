@@ -26,18 +26,16 @@ namespace evolUX.API.Areas.Reports.Controllers
 
         [HttpGet]
         [ActionName("GetDependentPrintsProduction")]
-        public async Task<ActionResult<DependentProductionViewModel>> GetDependentPrintsProduction([FromBody] Dictionary<string, object> dictionary)
+        public async Task<ActionResult<DependentProductionViewModel>> GetDependentPrintsProduction([FromBody] int i)
         {
             try
             {
                 object obj;
-                dictionary.TryGetValue("ServiceCompanyList", out obj);
-                string ServiceCompanyListJSON = Convert.ToString(obj);
-                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
-                dictionary.TryGetValue("RunID", out obj);
-                int RunID = Convert.ToInt32(obj.ToString());
+                //dictionary.TryGetValue("ServiceCompanyList", out obj);
+                //string ServiceCompanyListJSON = Convert.ToString(obj);
+                DataTable ServiceCompanyList= null; //= JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
 
-                DependentProductionViewModel viewmodel = await _dependentProductionService.GetDependentPrintsProduction(RunID, ServiceCompanyList);
+                DependentProductionViewModel viewmodel = await _dependentProductionService.GetDependentPrintsProduction(ServiceCompanyList);
                 _logger.LogInfo("DependentProduction Get");
                 return Ok(viewmodel);
             }

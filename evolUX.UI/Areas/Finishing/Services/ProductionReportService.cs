@@ -54,6 +54,7 @@ namespace evolUX.UI.Areas.Finishing.Services
                 var response = await _productionReportRepository.GetProductionReport(profileList, runIDList, serviceCompanyID, filterOnlyPrint);
                 return response;
             }
+
             catch (FlurlHttpException ex)
             {
                 // For error responses that take a known shape

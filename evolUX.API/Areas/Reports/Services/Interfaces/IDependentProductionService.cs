@@ -6,6 +6,6 @@ namespace evolUX.API.Areas.Reports.Services.Interfaces
 {
     public interface IDependentProductionService
     {
-        public Task<DependentProductionViewModel> GetDependentPrintsProduction(int RunID, DataTable ServiceCompanyList);
+        public Task<DependentProductionViewModel> GetDependentPrintsProduction(DataTable ServiceCompanyList);
     }
 }

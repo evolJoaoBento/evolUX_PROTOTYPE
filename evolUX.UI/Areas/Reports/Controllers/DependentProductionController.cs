@@ -7,6 +7,7 @@ using Shared.ViewModels.Areas.Core;
 using Microsoft.Extensions.Localization;
 using Shared.ViewModels.Areas.Reports;
 using evolUX.UI.Areas.Reports.Services.Interfaces;
+using Newtonsoft.Json;
 
 namespace evolUX.UI.Areas.Reports.Controllers
 {
@@ -22,20 +23,13 @@ namespace evolUX.UI.Areas.Reports.Controllers
             _localizer = localizer;
         }
 
-        public async Task<IActionResult> Index(int RunID, string ServiceCompanyList)
+        public async Task<IActionResult> Index()
         {
+            string ServiceCompanyList = HttpContext.Session.GetString("evolDP/ServiceCompanies");
             try
             {
-                List<int> serviceCompanyList = new List<int>();
-                string[] serviceCompanyListStr = ServiceCompanyList.Split('|');
-                if (string.IsNullOrEmpty(ServiceCompanyList) || serviceCompanyListStr.Length == 0)
-                {
-                    return PartialView("MessageView", new MessageViewModel(_localizer["Missing Runs"]));
-                }
-                foreach (string s in serviceCompanyListStr)
-                    serviceCompanyList.Add(int.Parse(s));
-
-                DependentProductionViewModel result = await _dependentProductionService.GetDependentPrintsProduction(RunID, serviceCompanyList);
+                DataTable ServiceCompanies = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyList);
+                DependentProductionViewModel result = await _dependentProductionService.GetDependentPrintsProduction(ServiceCompanies);
 
                 if (result != null && result.DependentPrintProduction != null && result.DependentPrintProduction.Count() > 0)
                 {
@@ -43,16 +37,9 @@ namespace evolUX.UI.Areas.Reports.Controllers
                 }
                 return View(result);
             }
-            catch (FlurlHttpException ex)
+            catch (ErrorViewModelException ex)
             {
-
-                var resultError = await ex.GetResponseJsonAsync<ErrorResult>();
-                return View("Error", resultError);
-            }
-            catch (HttpNotFoundException ex)
-            {
-                var resultError = await ex.response.GetJsonAsync<ErrorResult>();
-                return View("Error", resultError);
+                return View("Error", ex.ViewModel);
             }
             catch (HttpUnauthorizedException ex)
             {
@@ -60,6 +47,7 @@ namespace evolUX.UI.Areas.Reports.Controllers
                 {
                     var header = ex.response.Headers.FirstOrDefault("Token-Expired");
                     var returnUrl = Request.Path.Value;
+                    //var url = Url.RouteUrl("MyAreas", )
 
                     return RedirectToAction("Refresh", "Auth", new { Area = "Core", returnUrl = returnUrl });
                 }

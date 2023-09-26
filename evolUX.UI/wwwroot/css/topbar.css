@@ -73,7 +73,8 @@
     margin: 0;
     font-size: 35px;
     color: lightgrey;
-    position:center;
+    position: center;
+    user-select: none;
 }
 
     

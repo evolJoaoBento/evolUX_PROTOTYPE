@@ -5,6 +5,7 @@ using Shared.Models.Areas.Core;
 using Shared.ViewModels.Areas.Core;
 using evolUX.UI.Areas.Reports.Repositories.Interfaces;
 using evolUX.UI.Areas.Reports.Services.Interfaces;
+using System.Data;
 
 namespace evolUX.UI.Areas.Reports.Services
 {
@@ -15,11 +16,11 @@ namespace evolUX.UI.Areas.Reports.Services
         {
             _dependentProductionRepository = dependentProductionRepository;
         }
-        public async Task<DependentProductionViewModel> GetDependentPrintsProduction(int RunID, List<int> ServiceCompanyList)
+        public async Task<DependentProductionViewModel> GetDependentPrintsProduction(DataTable ServiceCompanyList)
         {
             try
             {
-                var response = await _dependentProductionRepository.GetDependentPrintsProduction(RunID, ServiceCompanyList);
+                var response = await _dependentProductionRepository.GetDependentPrintsProduction(ServiceCompanyList);
                 return response;
             }
             catch (FlurlHttpException ex)
