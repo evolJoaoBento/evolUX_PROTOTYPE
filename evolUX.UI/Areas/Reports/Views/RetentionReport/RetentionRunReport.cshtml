@@ -42,14 +42,14 @@ else
                 <table class="table table-sm table-hover">
                     <thead id="bootstrap-overrides" class="sticky-header">
                         <tr>
-                            <th class="borders" rowspan="3" style="text-align:center;vertical-align:middle"></th>
+                            <th class="borders" rowspan="3" style="text-align:center;vertical-align:middle; width: 50px"></th>
                         <th colspan="5" scope="rowgroup" style="text-align:center;vertical-align:middle">
                                 @localizer["Retentions"]
                                 @Model.RefDate.ToString()
                             </th>
                         </tr>
                         <tr>
-                            <th rowspan="2" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["RunsDate"]</th>
+                            <th rowspan="2" scope="colgroup" style="text-align:center;vertical-align:middle; width: 250px">@localizer["RunsDate"]</th>
                             <th rowspan="1" colspan="2" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["TypeDoc"]</th>
                             <th rowspan="2" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["RetentionsDocuments"]</th>
                             <th rowspan="2" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["MaxDateOfProd"]</th>
@@ -76,10 +76,8 @@ else
                                     //string RunName = runDate + " [" + retention.RunSequence + "]";
                                 }
 
-                                <td class="borders" style="text-align:center;vertical-align:middle">
-                                </td>
-
-                                <td class="headcol">
+                                <td class="borders" style="text-align:center;vertical-align:middle; width: 50px"></td>
+                                <td class="headcol" style="text-align:center;width: 250px">
                                     @retention.RunDate
                                 <a style="float:right" asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionReport" asp-route-runidlist="@retention.RunID" asp-route-businessareaid="@retention.BusinessAreaID">
                                     <img class="evol-image grow" style="height:20px; width:20px" src="~/images/info.png" />
@@ -89,22 +87,22 @@ else
                                     RunsCountTotal ++;
 
                                 }
-                                <td>@retention.DocTypeLayout</td>
-                                <td>@retention.DocTypeSubtype</td>
-                                <td>@retention.RetentionDocs</td>
+                                <td style="text-align:center;">@retention.DocTypeLayout</td>
+                                <td style="text-align:center;">@retention.DocTypeSubtype</td>
+                                <td style="text-align:center;width: 250px">@retention.RetentionDocs</td>
                                 @{
                                     RetentionsTotal += retention.RetentionDocs;
                                 }
-                                <td>@retention.MaxProduction</td>
+                                <td style="text-align:center;width: 250px">@retention.MaxProduction</td>
                             </tr>
                         }
                         <tr class="table-end">
-                            <td class="table-end-data headcol borders">Total</td>
-                            <td class="table-end-data">@RunsCountTotal</td>
+                            <td class="table-end-data headcol borders" style="width: 50px">Total</td>
+                            <td class="table-end-data" style="width: 250px">@RunsCountTotal</td>
                             <td></td>
                             <td></td>
-                            <td class="table-end-data">@RetentionsTotal</td>
-                            <td></td>
+                            <td class="table-end-data" style="width: 250px">@RetentionsTotal</td>
+                            <td style="width: 250px"></td>
                         </tr>
                     </tbody>
                 </table>
