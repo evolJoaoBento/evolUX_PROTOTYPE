@@ -499,3 +499,6 @@ Info: RetentionRunReport Get
 Info: RetentionRunReport Get
 Info: RetentionRunReport Get
 Info: RetentionRunReport Get
+Info: User evolUXuser logged in at 9/28/2023 9:47:34 AM
+Error: Something went wrong inside Logincredentials action: The process cannot access the file 'C:\Users\ZivileSink\Documents\GitHub\evolUX_PROTOTYPE\evolUX.API\InternalLogs\logs.txt' because it is being used by another process.
+Info: User evolUXuser logged in at 9/28/2023 10:10:13 AM

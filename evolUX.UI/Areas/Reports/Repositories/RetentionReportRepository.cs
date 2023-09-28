@@ -62,23 +62,4 @@ namespace evolUX.UI.Areas.Reports.Repositories
             return await response.GetJsonAsync<RetentionInfoReportViewModel>();
         }
     }
-
-    public class DependentProductionRepository : RepositoryBase, IDependentProductionRepository
-    {
-        public DependentProductionRepository(IFlurlClientFactory flurlClientFactory, IHttpContextAccessor httpContextAccessor, IConfiguration configuration) : base(flurlClientFactory, httpContextAccessor, configuration)
-        {
-        }
-        public async Task<DependentProductionViewModel> GetDependentPrintsProduction(DataTable serviceCompanyList)
-        {
-            //Dictionary<string, object> dictionary = new Dictionary<string, object>();
-            //dictionary.Add("ServiceCompanyList", serviceCompanyList);
-
-            var response = await _flurlClient.Request("api/reports/RetentionReport/DependentPrintsProduction")
-                .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
-                .SendJsonAsync(HttpMethod.Get, serviceCompanyList);
-            if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
-            if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<DependentProductionViewModel>();
-        }
-    }
 }

@@ -6,6 +6,7 @@ using System.Data;
 using Newtonsoft.Json;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
 using System.Data.SqlClient;
+using evolUX.API.Areas.Reports.Services;
 
 namespace evolUX.API.Areas.Reports.Controllers
 {
@@ -16,11 +17,13 @@ namespace evolUX.API.Areas.Reports.Controllers
         private readonly IWrapperRepository _repository;
         private readonly ILoggerService _logger;
         private readonly IRetentionReportService _retentionReportService;
-        public RetentionReportController(IWrapperRepository repository, ILoggerService logger, IRetentionReportService retentionReportService)
+        private readonly IDependentProductionService _dependentProductionService;
+        public RetentionReportController(IWrapperRepository repository, ILoggerService logger, IRetentionReportService retentionReportService, IDependentProductionService dependentProductionService)
         {
             _repository = repository;
             _logger = logger;
             _retentionReportService = retentionReportService;
+            _dependentProductionService = dependentProductionService;
         }
 
 
@@ -108,30 +111,17 @@ namespace evolUX.API.Areas.Reports.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-    }
-    //public class DependentProductionController : ControllerBase
-    //{
-    //    private readonly IWrapperRepository _repository;
-    //    private readonly ILoggerService _logger;
-    //    private readonly IDependentProductionService _dependentProductionService;
-    //    public DependentProductionController(IWrapperRepository repository, ILoggerService logger, IDependentProductionService dependentProductionService)
-    //    {
-    //        _repository = repository;
-    //        _logger = logger;
-    //        _dependentProductionService = dependentProductionService;
-    //    }
-
 
         [HttpGet]
-        [ActionName("DependentPrintsProduction")]
-        public async Task<ActionResult<DependentProductionViewModel>> GetDependentPrintsProduction([FromBody] int i)
+        [ActionName("Index")]
+        public async Task<ActionResult<DependentProductionViewModel>> GetDependentPrintsProduction([FromBody] Dictionary<string, object> dictionary)
         {
             try
             {
                 object obj;
-                //dictionary.TryGetValue("ServiceCompanyList", out obj);
-                //string ServiceCompanyListJSON = Convert.ToString(obj);
-                DataTable ServiceCompanyList = null; //= JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
+                dictionary.TryGetValue("ServiceCompanyList", out obj);
+                string ServiceCompanyListJSON = Convert.ToString(obj);
+                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
 
                 DependentProductionViewModel viewmodel = await _dependentProductionService.GetDependentPrintsProduction(ServiceCompanyList);
                 _logger.LogInfo("DependentProduction Get");
@@ -148,5 +138,5 @@ namespace evolUX.API.Areas.Reports.Controllers
                 return StatusCode(500, "Internal Server Error");
             }
         }
-    //}
+    }
 }
