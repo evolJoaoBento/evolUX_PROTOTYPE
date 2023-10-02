@@ -56,6 +56,7 @@ builder.Services.AddSingleton<IExpeditionReportService, ExpeditionReportService>
 
 //Reports
 builder.Services.AddSingleton<IRetentionReportService, RetentionReportService>();
+builder.Services.AddSingleton<IDependentProductionService, DependentProductionService>();
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

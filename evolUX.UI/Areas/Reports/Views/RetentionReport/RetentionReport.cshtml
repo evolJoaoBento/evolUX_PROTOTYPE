@@ -5,13 +5,6 @@
 @model RetentionReportViewModel
 
 @*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
-@*{
-    //bool PrintFile = false;
-
-    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
-    int totalFilesLeftToPrint = Model.ProductionRunReport.Sum(x => x.FilesLeftToPrint);
-    int totalRecFilesLeftToPrint = Model.ProductionRunReport.Sum(x => x.RecFilesLeftToPrint);
-}*@
 <div class="d-flex justify-content-center">
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
         <span class="sr-only">Loading...</span>
@@ -39,16 +32,6 @@ else
                 @TempData["BusinessAreaName"]
             </h1>
         </div>
-        @*@if (!string.IsNullOrEmpty(ViewBag.Source))
-        {
-            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="Reports" asp-controller="RetentionReport" asp-action="Index"></a>
-        }*@
-        @*string ServiceCompanyName = "";
-                if (ViewBag.hasMultipleServiceCompanies)
-                {
-                    ServiceCompanyName += TempData["ServiceCompanyName"];
-                }*@
-
         <div class="my-3">
             <table class="table table-sm table-hover">
                 <thead id="bootstrap-overrides" class="sticky-header">
@@ -82,19 +65,9 @@ else
                             }
 
                             <td class="borders" style="text-align:center;vertical-align:middle">
-                                @if (/*retention.FilesLeftToPrint > 0 || retention.RecFilesLeftToPrint > 0*/ true)
-                                {
-                                    <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runid="@retention.RunID" asp-route-fileid="@retention.FileID" asp-route-setid="@retention.SetID" asp-route-docid="@retention.DocID">
-                                        <img class="evol-image grow" src="~/images/report.png" />
-                                    </a>
-                                }
-                                else
-                                {
-                                    <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runid="@retention.RunID" asp-route-fileid="@retention.FileID" asp-route-setid="@retention.SetID" asp-route-docid="@retention.DocID">
-                                        <img class="evol-image grow" src="~/images/report.png" />
-                                    </a>
-                                }
-                                
+                                <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runid="@retention.RunID" asp-route-fileid="@retention.FileID" asp-route-setid="@retention.SetID" asp-route-docid="@retention.DocID">
+                                    <img class="evol-image grow" src="~/images/report.png" />
+                                </a>
                             </td>
                     
                             <td class="headcol">@retention.DocLayout@retention.DocType</td>

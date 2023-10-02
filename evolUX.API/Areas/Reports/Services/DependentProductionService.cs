@@ -2,10 +2,11 @@
 using Shared.Models.Areas.Reports;
 using System.Data;
 using evolUX.API.Areas.Core.Repositories.Interfaces;
+using evolUX.API.Areas.Reports.Services.Interfaces;
 
 namespace evolUX.API.Areas.Reports.Services
 {
-    public class DependentProductionService
+    public class DependentProductionService : IDependentProductionService
     {
         private readonly IWrapperRepository _repository;
         public DependentProductionService(IWrapperRepository repository)

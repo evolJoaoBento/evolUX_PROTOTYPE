@@ -5,13 +5,6 @@
 @model RetentionRunReportViewModel
 
 @*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
-@*{
-    //bool PrintFile = false;
-
-    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
-    int totalFilesLeftToPrint = Model.ProductionRunReport.Sum(x => x.FilesLeftToPrint);
-    int totalRecFilesLeftToPrint = Model.ProductionRunReport.Sum(x => x.RecFilesLeftToPrint);
-}*@
 <div class="d-flex justify-content-center" >
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
       <span class="sr-only">Loading...</span>
@@ -73,7 +66,6 @@ else
                                     if (DateTime.TryParseExact(retention.RunDate.ToString(), "yyyyMMdd",
                                     System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
                                         runDate = rDate.ToShortDateString();
-                                    //string RunName = runDate + " [" + retention.RunSequence + "]";
                                 }
 
                                 <td class="borders" style="text-align:center;vertical-align:middle; width: 50px"></td>
@@ -98,10 +90,10 @@ else
                         }
                         <tr class="table-end">
                             <td class="table-end-data headcol borders" style="width: 50px">Total</td>
-                            <td class="table-end-data" style="width: 250px">@RunsCountTotal</td>
+                            <td class="table-end-data" style="text-align:center;width: 250px">@RunsCountTotal</td>
                             <td></td>
                             <td></td>
-                            <td class="table-end-data" style="width: 250px">@RetentionsTotal</td>
+                            <td class="table-end-data" style="text-align:center;width: 250px">@RetentionsTotal</td>
                             <td style="width: 250px"></td>
                         </tr>
                     </tbody>

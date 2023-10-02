@@ -51,6 +51,7 @@ namespace evolUX.UI.Areas.Reports.Repositories
             List<RetentionInfo> Batata = new List<RetentionInfo>();
             Batata.Add(new RetentionInfo());
             Batata.Add(new RetentionInfo());
+            
             response.RetentionReport = Batata;
 
             return response;

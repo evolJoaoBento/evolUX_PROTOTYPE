@@ -33,7 +33,7 @@ namespace evolUX.UI.Areas.Reports.Repositories
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             dictionary.Add("ServiceCompanyList", RunIDList);
 
-            var response = await _flurlClient.Request("/API/Reports/RetentionReport/Index")
+            var response = await _flurlClient.Request("/API/Reports/DependentProduction/Index")
                 .AllowHttpStatus(HttpStatusCode.NotFound, HttpStatusCode.Unauthorized)
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);

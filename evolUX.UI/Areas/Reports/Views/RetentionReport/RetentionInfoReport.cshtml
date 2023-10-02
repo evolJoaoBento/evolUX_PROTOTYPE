@@ -5,13 +5,6 @@
 @model RetentionInfoReportViewModel
 
 @*https://www.w3.org/WAI/tutorials/tables/irregular/  https://datatables.net/extensions/buttons/examples/column_visibility/index.html*@
-@*{
-    //bool PrintFile = false;
-
-    if (Model.Permissions.Find(x => x == "PrintFile") != null) { PrintFile = true; }
-    int totalFilesLeftToPrint = Model.ProductionRunReport.Sum(x => x.FilesLeftToPrint);
-    int totalRecFilesLeftToPrint = Model.ProductionRunReport.Sum(x => x.RecFilesLeftToPrint);
-}*@
 <div class="d-flex justify-content-center">
     <div class="spinner-border" role="status" id="myLoader" style="display:none">
         <span class="sr-only">Loading...</span>
@@ -30,16 +23,6 @@
                 @localizer["DocDetail"]
             </h1>
         </div>
-        @*@if (!string.IsNullOrEmpty(ViewBag.Source))
-        {
-            <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="Reports" asp-controller="RetentionReport" asp-action="Index"></a>
-        }*@
-        @*string ServiceCompanyName = "";
-                if (ViewBag.hasMultipleServiceCompanies)
-                {
-                    ServiceCompanyName += TempData["ServiceCompanyName"];
-                }*@
-
         <div class="my-3">
             <table class="table table-sm table-hover">
                 <thead id="bootstrap-overrides" class="sticky-header">
@@ -51,15 +34,8 @@
                 <tbody id="bootstrap-overrides">
                         <tr>
                         @{
-                                var retention = Model.RetentionInfo;
-                                //DateTime rDate;
-                                //string runDate = retention.RunDate.ToString();
-                                //if (DateTime.TryParseExact(retention.RunDate.ToString(), "yyyyMMdd",
-                                //System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
-                                //    runDate = rDate.ToShortDateString();
-                                //string RunName = runDate + " [" + retention.RunSequence + "]";
-                            }
-
+                            var retention = Model.RetentionInfo;
+                        }
                             <td>@localizer["ID"]</td>
                             <td scope="colgroup" style="text-align:center">@retention.RunID, @retention.FileID, @retention.SetID, @retention.DocID</td>
                         </tr>

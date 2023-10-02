@@ -33,6 +33,7 @@ else
                     </th>
                 </tr>
                 <tr>
+                    <th rowspan="2" scope="colgroup" style="text-align:center;vertical-align:middle"></th>
                     <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">
                         @localizer["RunsDate"] <br>
                         @localizer["BusinessName"]
@@ -115,9 +116,9 @@ else
             </thead>
             <tbody id="bootstrap-overrides">
                 @{
-                    int FilesTotalE = 0;
-                    int DocsTotalE = 0;
-                    int EnvsTotalE = 0;
+                    int FilesTotalF = 0;
+                    int DocsTotalF = 0;
+                    int EnvsTotalF = 0;
                 }
                 @foreach (DependentFullfillInfo fullfill in Model.DependentFullfillProduction)
                 {
@@ -133,15 +134,15 @@ else
                         <td>@fullfill.ServiceFullFillMaterialCode</td>
                         <td>@fullfill.TotalFiles</td>
                         @{
-                            FilesTotalP += fullfill.TotalFiles;
+                            FilesTotalF += fullfill.TotalFiles;
                         }
                         <td>@fullfill.TotalDocs</td>
                         @{
-                            DocsTotalP += fullfill.TotalDocs;
+                            DocsTotalF += fullfill.TotalDocs;
                         }
                         <td>@fullfill.TotalPostObjs</td>
                         @{
-                            EnvsTotalE += fullfill.TotalPostObjs;
+                            EnvsTotalF += fullfill.TotalPostObjs;
                         }
                     </tr>
                 }
@@ -152,9 +153,9 @@ else
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td class="table-end-data">@FilesTotalP</td>
-                    <td class="table-end-data">@DocsTotalP</td>
-                    <td class="table-end-data">@EnvsTotalE</td>
+                    <td class="table-end-data">@FilesTotalF</td>
+                    <td class="table-end-data">@DocsTotalF</td>
+                    <td class="table-end-data">@EnvsTotalF</td>
                 </tr>
             </tbody>
         </table>

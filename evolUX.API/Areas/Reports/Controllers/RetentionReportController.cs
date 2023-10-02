@@ -17,13 +17,11 @@ namespace evolUX.API.Areas.Reports.Controllers
         private readonly IWrapperRepository _repository;
         private readonly ILoggerService _logger;
         private readonly IRetentionReportService _retentionReportService;
-        private readonly IDependentProductionService _dependentProductionService;
-        public RetentionReportController(IWrapperRepository repository, ILoggerService logger, IRetentionReportService retentionReportService, IDependentProductionService dependentProductionService)
+        public RetentionReportController(IWrapperRepository repository, ILoggerService logger, IRetentionReportService retentionReportService)
         {
             _repository = repository;
             _logger = logger;
             _retentionReportService = retentionReportService;
-            _dependentProductionService = dependentProductionService;
         }
 
 
@@ -98,33 +96,6 @@ namespace evolUX.API.Areas.Reports.Controllers
 
                 RetentionInfoReportViewModel viewmodel = await _retentionReportService.GetRetentionInfoReport(RunID, FileID, SetID, DocID);
                 _logger.LogInfo("RetentionInfoReport Get");
-                return Ok(viewmodel);
-            }
-            catch (SqlException ex)
-            {
-                return StatusCode(503, "Internal Server Error");
-            }
-            catch (Exception ex)
-            {
-                //log error
-                _logger.LogError($"Something went wrong inside Get DocCode action: {ex.Message}");
-                return StatusCode(500, "Internal Server Error");
-            }
-        }
-
-        [HttpGet]
-        [ActionName("Index")]
-        public async Task<ActionResult<DependentProductionViewModel>> GetDependentPrintsProduction([FromBody] Dictionary<string, object> dictionary)
-        {
-            try
-            {
-                object obj;
-                dictionary.TryGetValue("ServiceCompanyList", out obj);
-                string ServiceCompanyListJSON = Convert.ToString(obj);
-                DataTable ServiceCompanyList = JsonConvert.DeserializeObject<DataTable>(ServiceCompanyListJSON);
-
-                DependentProductionViewModel viewmodel = await _dependentProductionService.GetDependentPrintsProduction(ServiceCompanyList);
-                _logger.LogInfo("DependentProduction Get");
                 return Ok(viewmodel);
             }
             catch (SqlException ex)
