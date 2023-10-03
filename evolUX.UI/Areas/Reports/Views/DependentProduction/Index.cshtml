@@ -23,141 +23,160 @@ else
         <h1>@localizer["JobsControl"]</h1>
     </div>
 
-    <div class="my-3">
-        <table class="table table-sm table-hover">
-            <thead id="bootstrap-overrides" class="sticky-header">
-                <tr class="collapsible active">
-                    <th class="borders" rowspan="2" style="text-align:center;vertical-align:middle"></th>
-                    <th colspan="7" scope="rowgroup" style="text-align:center;vertical-align:middle">
-                        @localizer["DependentPrints"]
-                    </th>
-                </tr>
-                <tr>
-                    <th rowspan="2" scope="colgroup" style="text-align:center;vertical-align:middle"></th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">
-                        @localizer["RunsDate"] <br>
-                        @localizer["BusinessName"]
-                    </th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpType"]</th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpCompany"]</th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["PrintType"]</th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Files"]</th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">Docs</th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Prints"]</th>
-                </tr>
-            </thead>
-            <tbody id="bootstrap-overrides">
-                @{
-                    int FilesTotalP = 0;
-                    int DocsTotalP = 0;
-                    int PrintsTotalP = 0;
-                }
-                @foreach (DependentPrintsInfo print in Model.DependentPrintProduction)
-                {
-                    <tr>
-                        <td class="borders" style="text-align:center;vertical-align:middle"></td>
-                        <td>
-                            @print.FileTimeStamp<br>
-                            @print.BusinessDesc
-                        </td>
-                        <td>@print.ExpeditionType</td>
-                        <td>@print.ExpCode</td>
-                        <td>@print.PlexCode</td>
-                        <td>@print.TotalFiles</td>
-                        @{
-                            FilesTotalP += print.TotalFiles;
-                        }
-                        <td>@print.TotalDocs</td>
-                        @{
-                            DocsTotalP += print.TotalDocs;
-                        }
-                        <td>@print.TotalPrint</td>
-                        @{
-                            PrintsTotalP += print.TotalPrint;
-                        }
-                    </tr>
-                }
-                <tr class="table-end">
-                    <td></td>
-                    <td class="table-end-data">Total</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="table-end-data">@FilesTotalP</td>
-                    <td class="table-end-data">@DocsTotalP</td>
-                    <td class="table-end-data">@PrintsTotalP</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <table id="table-form" class="table justify-content-lg-start">
+        <thead></thead>
+        <tbody>
+            <tr class="collapsible">
+                <td style="width:400px">@localizer["DependentPrints"]</td>
+                <td style="width:400px"></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="my-3">
+                        <table class="table table-sm table-hover">
+                            <thead id="bootstrap-overrides" class="sticky-header">
+                                <tr>
+                                    <th class="borders" rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle"></th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">
+                                        @localizer["RunsDate"] <br>
+                                        @localizer["BusinessName"]
+                                    </th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpType"]</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpCompany"]</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["PrintType"]</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Files"]</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">Docs</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Prints"]</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bootstrap-overrides">
+                                @{
+                                    int FilesTotalP = 0;
+                                    int DocsTotalP = 0;
+                                    int PrintsTotalP = 0;
+                                }
+                                @foreach (DependentPrintsInfo print in Model.DependentPrintProduction)
+                                {
+                                    <tr>
+                                        <td class="borders" style="text-align:center;vertical-align:middle"></td>
+                                        <td>
+                                            @print.FileTimeStamp<br>
+                                            @print.BusinessDesc
+                                        </td>
+                                        <td>@print.ExpeditionType</td>
+                                        <td>@print.ExpCode</td>
+                                        <td>@print.PlexCode</td>
+                                        <td>@print.TotalFiles</td>
+                                        @{
+                                            FilesTotalP += print.TotalFiles;
+                                        }
+                                        <td>@print.TotalDocs</td>
+                                        @{
+                                            DocsTotalP += print.TotalDocs;
+                                        }
+                                        <td>@print.TotalPrint</td>
+                                        @{
+                                            PrintsTotalP += print.TotalPrint;
+                                        }
+                                    </tr>
+                                }
+                                <tr class="table-end">
+                                    <td class ="borders"></td>
+                                    <td class="table-end-data">Total</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="table-end-data">@FilesTotalP</td>
+                                    <td class="table-end-data">@DocsTotalP</td>
+                                    <td class="table-end-data">@PrintsTotalP</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-    <div class="my-3">
-        <table class="table table-sm table-hover">
-            <thead id="bootstrap-overrides" class="sticky-header">
-                <tr class="collapsible active">
-                    <th class="borders" rowspan="2" style="text-align:center;vertical-align:middle"></th>
-                    <th colspan="8" scope="rowgroup" style="text-align:center;vertical-align:middle">
-                        @localizer["DependentEnvs"]
-                    </th>
-                </tr>
-                <tr>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">
-                        @localizer["RunsDate"] <br>
-                        @localizer["BusinessName"]
-                    </th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpType"]</th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpCompany"]</th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["EnvFormat"]</th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["EnvType"]</th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Files"]</th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">Docs</th>
-                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Envs"]</th>
-                </tr>
-            </thead>
-            <tbody id="bootstrap-overrides">
-                @{
-                    int FilesTotalF = 0;
-                    int DocsTotalF = 0;
-                    int EnvsTotalF = 0;
-                }
-                @foreach (DependentFullfillInfo fullfill in Model.DependentFullfillProduction)
-                {
-                    <tr>
-                        <td class="borders" style="text-align:center;vertical-align:middle"></td>
-                        <td>
-                            @fullfill.FileTimeStamp<br>
-                            @fullfill.BusinessDesc
-                        </td>
-                        <td>@fullfill.ExpeditionType</td>
-                        <td>@fullfill.ExpCode</td>
-                        <td>@fullfill.FullFillMaterialCode</td>
-                        <td>@fullfill.ServiceFullFillMaterialCode</td>
-                        <td>@fullfill.TotalFiles</td>
-                        @{
-                            FilesTotalF += fullfill.TotalFiles;
-                        }
-                        <td>@fullfill.TotalDocs</td>
-                        @{
-                            DocsTotalF += fullfill.TotalDocs;
-                        }
-                        <td>@fullfill.TotalPostObjs</td>
-                        @{
-                            EnvsTotalF += fullfill.TotalPostObjs;
-                        }
-                    </tr>
-                }
-                <tr class="table-end">
-                    <td></td>
-                    <td class="table-end-data">Total</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td class="table-end-data">@FilesTotalF</td>
-                    <td class="table-end-data">@DocsTotalF</td>
-                    <td class="table-end-data">@EnvsTotalF</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <table id="table-form" class="table">
+        <thead></thead>
+        <tbody>
+            <tr class="collapsible">
+                <td style="width:400px">@localizer["DependentEnvs"]</td>
+                <td style="width:400px"></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <div class="my-3">
+                        <table class="table table-sm table-hover">
+                            <thead id="bootstrap-overrides" class="sticky-header">
+                                <tr>
+                                    <th class="borders" rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle"></th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">
+                                        @localizer["RunsDate"] <br>
+                                        @localizer["BusinessName"]
+                                    </th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpType"]</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ExpCompany"]</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["EnvFormat"]</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["EnvType"]</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Files"]</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">Docs</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Envs"]</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bootstrap-overrides">
+                                @{
+                                    int FilesTotalF = 0;
+                                    int DocsTotalF = 0;
+                                    int EnvsTotalF = 0;
+                                }
+                                @foreach (DependentFullfillInfo fullfill in Model.DependentFullfillProduction)
+                                {
+                                    <tr>
+                                        <td class="borders" style="text-align:center;vertical-align:middle"></td>
+                                        <td>
+                                            @fullfill.FileTimeStamp<br>
+                                            @fullfill.BusinessDesc
+                                        </td>
+                                        <td>@fullfill.ExpeditionType</td>
+                                        <td>@fullfill.ExpCode</td>
+                                        <td>@fullfill.FullFillMaterialCode</td>
+                                        <td>@fullfill.ServiceFullFillMaterialCode</td>
+                                        <td>@fullfill.TotalFiles</td>
+                                        @{
+                                            FilesTotalF += fullfill.TotalFiles;
+                                        }
+                                        <td>@fullfill.TotalDocs</td>
+                                        @{
+                                            DocsTotalF += fullfill.TotalDocs;
+                                        }
+                                        <td>@fullfill.TotalPostObjs</td>
+                                        @{
+                                            EnvsTotalF += fullfill.TotalPostObjs;
+                                        }
+                                    </tr>
+                                }
+                                <tr class="table-end">
+                                    <td class="borders"></td>
+                                    <td class="table-end-data">Total</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="table-end-data">@FilesTotalF</td>
+                                    <td class="table-end-data">@DocsTotalF</td>
+                                    <td class="table-end-data">@EnvsTotalF</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 }

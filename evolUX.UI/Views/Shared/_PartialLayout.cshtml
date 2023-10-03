@@ -14,7 +14,7 @@
 
         string cultureCode = CultureInfo.CurrentCulture.Name;
         if (!string.IsNullOrEmpty(cultureCode))
-            cultureCode = cultureCode.Substring(0, 2); 
+            cultureCode = cultureCode.Substring(0, 2);
             
         int itemCount = 0;
         string menuDesc1;
@@ -59,7 +59,7 @@
                     </a>
                     <i class='bx bxs-chevron-down arrow' style="color:var(--evol-grey)"></i>
                 </div>
-                <ul class="sub-menu">
+                <ul class="sub-menu" style="border-radius: 40px">
                     <li><a class="link_name">@menuDesc1</a></li>
                     @foreach(var actionLevel2 in actionLevel1.ChildActions)
                     {

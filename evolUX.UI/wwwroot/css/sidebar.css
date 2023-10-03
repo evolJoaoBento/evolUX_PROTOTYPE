@@ -11,7 +11,7 @@
     color: var(--evol-black);
     word-wrap: break-word;
     border-top-right-radius: 40px;
-    border-bottom-right-radius: 50px;
+    border-bottom-right-radius: 40px;
 }
     .sidebar::before {
         content: "";
@@ -23,7 +23,7 @@
         top: 0;
         left: 0;
         border-top-right-radius: 40px;
-        border-bottom-right-radius: 50px;
+        border-bottom-right-radius: 40px;
     }
 
 
