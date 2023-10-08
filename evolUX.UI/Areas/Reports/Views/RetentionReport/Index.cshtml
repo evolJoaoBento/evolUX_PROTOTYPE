@@ -53,7 +53,7 @@ else
         @foreach (Business b in Model.BusinessAreas)
         {
             <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionRunReport" asp-route-BusinessID="@b.BusinessID" asp-route-BusinessCode="@b.BusinessCode" asp-route-description="@b.Description" asp-route-source="Index">
-                <div class="area-div">
+                <div class="area-div evol-font">
                     @b.Description
                 </div>
             </a>

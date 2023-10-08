@@ -584,3 +584,51 @@ Info: DependentProduction Get
 Info: DependentProduction Get
 Info: DependentProduction Get
 Info: DependentProduction Get
+Info: User evolUXuser logged in at 04/10/2023 09:40:41
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Info: RetentionInfoReport Get
+Info: DependentProduction Get
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 05/10/2023 16:46:16
+Info: PendingRegist Get
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 05/10/2023 21:28:02
+Info: RetentionRunReport Get
+Info: ProductionRunReport Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: RetentionRunReport Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Info: DependentProduction Get
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 06/10/2023 08:53:27
+Info: DependentProduction Get
+Info: RetentionRunReport Get
+Info: RetentionReport Get
+Info: RetentionInfoReport Get
+Info: DependentProduction Get
