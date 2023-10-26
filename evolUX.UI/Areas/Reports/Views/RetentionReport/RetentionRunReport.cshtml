@@ -68,8 +68,8 @@ else
                                         runDate = rDate.ToShortDateString();
                                 }
 
-                                <td class="borders" style="text-align:center;vertical-align:middle; width: 50px"></td>
-                                <td class="headcol" style="text-align:center;width: 250px">
+                                <td class="borders" style="text-align:center;vertical-align:middle; width: 50px;"></td>
+                                <td class="headcol" style="text-align:center;width: 250px; box-shadow: -100px 5px 5px #888888">
                                     @retention.RunDate
                                 <a style="float:right" asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionReport" asp-route-runidlist="@retention.RunID" asp-route-businessareaid="@retention.BusinessAreaID">
                                     <img class="evol-image grow" style="height:20px; width:20px" src="~/images/info.png" />
