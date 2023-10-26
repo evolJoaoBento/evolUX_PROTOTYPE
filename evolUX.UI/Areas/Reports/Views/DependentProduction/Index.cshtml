@@ -26,7 +26,7 @@ else
     <table id="table-form" class="table justify-content-lg-start">
         <thead></thead>
         <tbody>
-            <tr class="collapsible">
+            <tr>
                 <td style="width:400px">@localizer["DependentPrints"]</td>
                 <td style="width:400px"></td>
                 <td></td>
@@ -61,7 +61,7 @@ else
                                 {
                                     <tr>
                                         <td class="borders" style="text-align:center;vertical-align:middle"></td>
-                                        <td>
+                                        <td class="headcol">
                                             @print.FileTimeStamp<br>
                                             @print.BusinessDesc
                                         </td>
@@ -82,15 +82,21 @@ else
                                         }
                                     </tr>
                                 }
+                                
+                            </tbody>
+                        </table>
+                        <table>
+                            <thead></thead>
+                            <tbody>
                                 <tr class="table-end">
                                     <td class ="borders"></td>
-                                    <td class="table-end-data">Total</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="table-end-data">@FilesTotalP</td>
-                                    <td class="table-end-data">@DocsTotalP</td>
-                                    <td class="table-end-data">@PrintsTotalP</td>
+                                    <td class="table-end-data borders">Total</td>
+                                    <td class="borders"></td>
+                                    <td class="borders"></td>
+                                    <td class="borders"></td>
+                                    <td class="table-end-data borders">@FilesTotalP</td>
+                                    <td class="table-end-data borders">@DocsTotalP</td>
+                                    <td class="table-end-data borders">@PrintsTotalP</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -100,10 +106,10 @@ else
         </tbody>
     </table>
 
-    <table id="table-form" class="table">
+    @* <table id="table-form" class="table">
         <thead></thead>
         <tbody>
-            <tr class="collapsible">
+            <tr>
                 <td style="width:400px">@localizer["DependentEnvs"]</td>
                 <td style="width:400px"></td>
                 <td></td>
@@ -139,7 +145,7 @@ else
                                 {
                                     <tr>
                                         <td class="borders" style="text-align:center;vertical-align:middle"></td>
-                                        <td>
+                                        <td class="headcol">
                                             @fullfill.FileTimeStamp<br>
                                             @fullfill.BusinessDesc
                                         </td>
@@ -163,14 +169,14 @@ else
                                 }
                                 <tr class="table-end">
                                     <td class="borders"></td>
-                                    <td class="table-end-data">Total</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="table-end-data">@FilesTotalF</td>
-                                    <td class="table-end-data">@DocsTotalF</td>
-                                    <td class="table-end-data">@EnvsTotalF</td>
+                                    <td class="table-end-data borders">Total</td>
+                                    <td class="borders"></td>
+                                    <td class="borders"></td>
+                                    <td class="borders"></td>
+                                    <td class="borders"></td>
+                                    <td class="table-end-data borders">@FilesTotalF</td>
+                                    <td class="table-end-data borders">@DocsTotalF</td>
+                                    <td class="table-end-data borders">@EnvsTotalF</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -178,5 +184,5 @@ else
                 </td>
             </tr>
         </tbody>
-    </table>
+    </table> *@
 }
