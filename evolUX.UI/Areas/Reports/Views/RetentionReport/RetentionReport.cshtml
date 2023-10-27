@@ -33,13 +33,13 @@ else
             </h1>
         </div>
         <div class="my-3">
-            <table class="table table-sm table-hover">
+            <table class="table table-sm table-hover table-shadow">
                 <thead id="bootstrap-overrides" class="sticky-header">
                     <tr>
                         <th class="borders" rowspan="3" style="text-align:center;vertical-align:middle"></th>
                     </tr>
                     <tr>
-                        <th scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["TypeDoc"]</th>
+                        <th scope="colgroup" style="text-align:center;vertical-align:middle; padding: 10px; border-top-left-radius: 20px;">@localizer["TypeDoc"]</th>
                         <th scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["DocID"]</th>
                         <th scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Description"]</th>
                         <th scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["MaxDateOfReten"]</th>
@@ -47,40 +47,75 @@ else
                         {
                             <th scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["DocNumber"]</th>
                             <th scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["ApoliceNr"]</th>
-                            <th scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Product"]</th>
+                            <th scope="colgroup" style="text-align:center;vertical-align:middle;  padding: 10px; border-top-right-radius: 20px;">@localizer["Product"]</th>
                         }
                     </tr>
                 </thead>
                 <tbody id="bootstrap-overrides">
                     @foreach (RetentionInfo retention in Model.RetentionReport)
                     {
-                        <tr>
-                            @{
-                                DateTime rDate;
-                                string runDate = retention.RunDate.ToString();
-                                if (DateTime.TryParseExact(retention.RunDate.ToString(), "yyyyMMdd",
-                                System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
-                                    runDate = rDate.ToShortDateString();
-                                //string RunName = runDate + " [" + retention.RunSequence + "]";
-                            }
+                        if (retention == Model.RetentionReport.Last())
+                        {
+                            <tr>
+                                @{
+                                    DateTime rDate;
+                                    string runDate = retention.RunDate.ToString();
+                                    if (DateTime.TryParseExact(retention.RunDate.ToString(), "yyyyMMdd",
+                                    System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
+                                        runDate = rDate.ToShortDateString();
+                                    //string RunName = runDate + " [" + retention.RunSequence + "]";
+                                }
 
-                            <td class="borders" style="text-align:center;vertical-align:middle">
-                                <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runid="@retention.RunID" asp-route-fileid="@retention.FileID" asp-route-setid="@retention.SetID" asp-route-docid="@retention.DocID">
-                                    <img class="evol-image grow" src="~/images/report.png" />
-                                </a>
-                            </td>
-                    
-                            <td class="headcol">@retention.DocLayout@retention.DocType</td>
-                            <td>@retention.DocID</td>
-                            <td>@retention.FileID</td>
-                            <td>@retention.ProdMaxDate</td>
-                            if()
-                            {
+                                <td class="borders" style="text-align:center;vertical-align:middle; box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF">
+                                    <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runid="@retention.RunID" asp-route-fileid="@retention.FileID" asp-route-setid="@retention.SetID" asp-route-docid="@retention.DocID">
+                                        <img class="evol-image grow" src="~/images/report.png" />
+                                    </a>
+                                </td>
+
+                                <td class="headcol" style="padding: 10px; border-bottom-left-radius: 20px;">@retention.DocLayout@retention.DocType</td>
+                                <td>@retention.DocID</td>
+                                <td>@retention.FileID</td>
+                                <td>@retention.ProdMaxDate</td>
+
+                                if()
+                                {
                                 <td>@retention.SetID</td>
                                 <td>@retention.NrApolice</td>
-                                <td>@retention.Product</td>
-                            }
-                        </tr>
+                                <td style="border-bottom-right-radius: 20px;">@retention.Product</td>
+                                }
+                            </tr>
+                        }
+
+                        else
+                        {
+                            <tr>
+                                @{
+                                    DateTime rDate;
+                                    string runDate = retention.RunDate.ToString();
+                                    if (DateTime.TryParseExact(retention.RunDate.ToString(), "yyyyMMdd",
+                                    System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out rDate))
+                                        runDate = rDate.ToShortDateString();
+                                    //string RunName = runDate + " [" + retention.RunSequence + "]";
+                                }
+
+                                <td class="borders" style="text-align:center;vertical-align:middle">
+                                    <a asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionInfoReport" asp-route-runid="@retention.RunID" asp-route-fileid="@retention.FileID" asp-route-setid="@retention.SetID" asp-route-docid="@retention.DocID">
+                                        <img class="evol-image grow" src="~/images/report.png" />
+                                    </a>
+                                </td>
+                    
+                                <td class="headcol">@retention.DocLayout@retention.DocType</td>
+                                <td>@retention.DocID</td>
+                                <td>@retention.FileID</td>
+                                <td>@retention.ProdMaxDate</td>
+                                if()
+                                {
+                                    <td>@retention.SetID</td>
+                                    <td>@retention.NrApolice</td>
+                                    <td>@retention.Product</td>
+                                }
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>

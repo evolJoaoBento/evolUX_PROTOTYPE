@@ -55,7 +55,7 @@ else
                 }
 
             <div class="my-3">
-                <table class="table table-sm table-hover table-collapse-seperate" style="border-radius: 25px">
+                <table class="table table-sm table-hover table-collapse-seperate table-shadow" style="border-radius: 25px">
                     <thead id="bootstrap-overrides" class="sticky-header">
                         <tr>
                             <th class="borders" rowspan="3" style="text-align:center;vertical-align:middle">
@@ -66,9 +66,9 @@ else
                                     </a>
                                 }
                             </th>
-                            <th rowspan="3" scope="rowgroup" style="vertical-align:middle">
+                            <th rowspan="3" scope="rowgroup" style="vertical-align:middle; padding: 10px; border-top-left-radius: 20px;">
                                 <div class="highlight-data">@ServiceCompanyName</div>@localizer["RunDescription"]</th> @*BusinessDesc + [BusinessID] + RunDate + (RunSequence + [RunID])*@
-                            <th colspan="20" scope="rowgroup" style="vertical-align:middle">@localizer["Files"]</th>
+                            <th colspan="20" scope="rowgroup" style="vertical-align:middle; padding: 10px; border-top-right-radius: 20px;">@localizer["Files"]</th>
                         </tr>
                         <tr>
                             <th colspan="2" scope="colgroup" style="vertical-align:middle">@localizer["TotalToPrint"]</th>
@@ -232,8 +232,8 @@ else
                                 </tr>
                         }
                         <tr class="table-end">
-                            <td class="table-end-data headcol borders">Total</td>
-                            <td class="table-end-data">@OriginalsTotal</td> @*Originals*@
+                            <td class="table-end-data headcol borders" style="box-shadow: 0px 10px 10px #FFFFFF; background-color: #FFFFFF">Total</td>
+                            <td class="table-end-data" style="border-bottom-left-radius: 20px;">@OriginalsTotal</td> @*Originals*@
                             <td class="table-end-data">@RecupTotal</td> @*Recup*@
                             <td class="table-end-data">@ProcessedTotal</td>
                             <td></td>
@@ -252,7 +252,7 @@ else
                             <td></td>
                             <td class="table-end-data">@ExpeditionTotal</td>
                             <td></td>
-                            <td></td>
+                            <td style="border-bottom-right-radius: 20px;"></td>
                         </tr>
                     </tbody>
                 </table>

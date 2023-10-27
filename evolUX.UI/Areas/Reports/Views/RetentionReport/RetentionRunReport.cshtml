@@ -32,11 +32,11 @@ else
             </h1>
         </div>
             <div class="my-3">
-                <table class="table table-sm table-hover">
+                <table class="table table-sm table-hover table-shadow">
                     <thead id="bootstrap-overrides" class="sticky-header">
                         <tr>
                             <th class="borders" rowspan="3" style="text-align:center;vertical-align:middle; width: 50px;"></th>
-                        <th colspan="5" scope="rowgroup" class="border-radius-up" style="text-align:center;vertical-align:middle;">
+                        <th colspan="5" scope="rowgroup" class="border-radius-up" style="text-align:center;vertical-align:middle;padding: 10px; border-top-left-radius: 20px; border-top-right-radius: 20px;">
                                 @localizer["Retentions"]
                                 @Model.RefDate.ToString()
                             </th>
@@ -69,7 +69,7 @@ else
                                 }
 
                                 <td class="borders" style="text-align:center;vertical-align:middle; width: 50px;"></td>
-                                <td class="headcol" style="text-align:center;width: 250px; box-shadow: -100px 5px 5px #888888">
+                                <td class="headcol" style="text-align:center;width: 250px;">
                                     @retention.RunDate
                                 <a style="float:right" asp-area="Reports" asp-controller="RetentionReport" asp-action="RetentionReport" asp-route-runidlist="@retention.RunID" asp-route-businessareaid="@retention.BusinessAreaID">
                                     <img class="evol-image grow" style="height:20px; width:20px" src="~/images/info.png" />
@@ -89,12 +89,12 @@ else
                             </tr>
                         }
                         <tr class="table-end">
-                            <td class="table-end-data headcol borders" style="width: 50px">Total</td>
-                            <td class="table-end-data" style="text-align:center;width: 250px">@RunsCountTotal</td>
+                            <td class="table-end-data headcol borders" style="width: 50px;box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF">Total</td>
+                            <td class="table-end-data" style="text-align:center;width: 250px;  padding: 10px; border-bottom-left-radius: 20px;">@RunsCountTotal</td>
                             <td></td>
                             <td></td>
                             <td class="table-end-data" style="text-align:center;width: 250px">@RetentionsTotal</td>
-                            <td style="width: 250px"></td>
+                        <td style="width: 250px;  border-bottom-right-radius: 20px;"></td>
                         </tr>
                     </tbody>
                 </table>

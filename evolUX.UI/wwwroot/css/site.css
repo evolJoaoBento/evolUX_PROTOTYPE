@@ -613,6 +613,12 @@ thead{
     margin-right: 10px;
     border-radius: 25px;
 }
+
+.table-shadow {
+    border-collapse: separate;
+    border-spacing: 0;
+    box-shadow: 15px 15px 15px rgba(0, 0, 0, 0.2);
+}
 .evol-footer {
     z-index: 1;
     position: fixed;

@@ -35,11 +35,11 @@ else
             <tr>
                 <td colspan="4">
                     <div class="my-3">
-                        <table class="table table-sm table-hover">
+                        <table class="table table-sm table-hover table-shadow">
                             <thead id="bootstrap-overrides" class="sticky-header">
                                 <tr>
                                     <th class="borders" rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle"></th>
-                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle;padding: 10px; border-top-left-radius: 20px;">
                                         @localizer["RunsDate"] <br>
                                         @localizer["BusinessName"]
                                     </th>
@@ -48,7 +48,7 @@ else
                                     <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["PrintType"]</th>
                                     <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Files"]</th>
                                     <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">Docs</th>
-                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Prints"]</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle; padding: 10px; border-top-right-radius: 20px;">@localizer["Prints"]</th>
                                 </tr>
                             </thead>
                             <tbody id="bootstrap-overrides">
@@ -82,21 +82,15 @@ else
                                         }
                                     </tr>
                                 }
-                                
-                            </tbody>
-                        </table>
-                        <table>
-                            <thead></thead>
-                            <tbody>
                                 <tr class="table-end">
                                     <td class ="borders"></td>
-                                    <td class="table-end-data borders">Total</td>
-                                    <td class="borders"></td>
-                                    <td class="borders"></td>
-                                    <td class="borders"></td>
-                                    <td class="table-end-data borders">@FilesTotalP</td>
-                                    <td class="table-end-data borders">@DocsTotalP</td>
-                                    <td class="table-end-data borders">@PrintsTotalP</td>
+                                    <td class="table-end-data" style="text-align:center;vertical-align:middle; padding: 10px; border-bottom-left-radius: 20px;">Total</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="table-end-data" style="padding: 10px">@FilesTotalP</td>
+                                    <td class="table-end-data" style="padding: 10px">@DocsTotalP</td>
+                                    <td class="table-end-data" style="padding: 10px; border-bottom-right-radius: 20px;">@PrintsTotalP</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -106,7 +100,7 @@ else
         </tbody>
     </table>
 
-    @* <table id="table-form" class="table">
+    <table id="table-form" class="table">
         <thead></thead>
         <tbody>
             <tr>
@@ -118,11 +112,11 @@ else
             <tr>
                 <td colspan="4">
                     <div class="my-3">
-                        <table class="table table-sm table-hover">
+                        <table class="table table-sm table-hover table-shadow">
                             <thead id="bootstrap-overrides" class="sticky-header">
                                 <tr>
                                     <th class="borders" rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle"></th>
-                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle; padding: 10px; border-top-left-radius: 20px;">
                                         @localizer["RunsDate"] <br>
                                         @localizer["BusinessName"]
                                     </th>
@@ -132,7 +126,7 @@ else
                                     <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["EnvType"]</th>
                                     <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Files"]</th>
                                     <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">Docs</th>
-                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle">@localizer["Envs"]</th>
+                                    <th rowspan="1" scope="colgroup" style="text-align:center;vertical-align:middle; padding: 10px; border-top-right-radius: 20px;">@localizer["Envs"]</th>
                                 </tr>
                             </thead>
                             <tbody id="bootstrap-overrides">
@@ -169,14 +163,14 @@ else
                                 }
                                 <tr class="table-end">
                                     <td class="borders"></td>
-                                    <td class="table-end-data borders">Total</td>
-                                    <td class="borders"></td>
-                                    <td class="borders"></td>
-                                    <td class="borders"></td>
-                                    <td class="borders"></td>
-                                    <td class="table-end-data borders">@FilesTotalF</td>
-                                    <td class="table-end-data borders">@DocsTotalF</td>
-                                    <td class="table-end-data borders">@EnvsTotalF</td>
+                                    <td class="table-end-data" style="text-align:center;vertical-align:middle; padding: 10px; border-bottom-left-radius: 20px;">Total</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="table-end-data" style="padding: 10px">@FilesTotalF</td>
+                                    <td class="table-end-data" style="padding: 10px">@DocsTotalF</td>
+                                    <td class="table-end-data" style="padding: 10px; border-bottom-right-radius: 20px;">@EnvsTotalF</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -184,5 +178,5 @@ else
                 </td>
             </tr>
         </tbody>
-    </table> *@
+    </table> 
 }
