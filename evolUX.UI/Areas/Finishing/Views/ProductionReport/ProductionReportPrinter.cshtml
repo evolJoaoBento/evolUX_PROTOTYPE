@@ -243,7 +243,7 @@ else
                                         @*<b class="btn collapsible justify-content-center"></b>*@
                                         <div class="content">
 
-                                            <table name="table-form-2" class="table table-sm table-hover table-collapse-seperate">
+                                            <table name="table-form-2" class="table table-sm table-hover table-collapse-seperate table-shadow">
                                                 <col>
                                                 <col>
                                                 <col>
@@ -262,11 +262,11 @@ else
                                                 <colgroup span="5"></colgroup>
                                                 <thead id="bootstrap-overrides" class="table-info">
                                                     <tr class="text-center">
-                                                        <th class="headcol" rowspan="3" scope="col">@localizer["Files"]</th>@*FileName RegistShortFileName*@
+                                                        <th class="headcol" rowspan="3" scope="col" style="padding: 10px; border-top-left-radius: 20px">@localizer["Files"]</th>@*FileName RegistShortFileName*@
                                                         <th rowspan="3" scope="col">@localizer["ServiceTaskCode"]</th>@*ServiceTaskCode*@
                                                         <th colspan="@printingSpan" scope="colgroup">@localizer["Printing"]</th>
                                                         <th colspan="@envelopingSpan" scope="colgroup">@localizer["Fullfilling"]</th>
-                                                        <th colspan="5" scope="colgroup">@localizer["Expedition"]</th>
+                                                        <th colspan="5" scope="colgroup" style="padding: 10px; border-top-right-radius: 20px;">@localizer["Expedition"]</th>
                                                     </tr>
                                                     <tr class="text-center">
                                                         <th rowspan="2" scope="col">@localizer["PrinterOperator"]</th>@*PrinterOperator + Printer*@
@@ -394,7 +394,7 @@ else
                                                     }
                                                     <tr class="table-end">
                                                         <b>
-                                                        <td class="table-end-data headcol">@localizer["Totals"]</td></b>
+                                                        <td class="table-end-data headcol" style="padding: 10px; border-bottom-left-radius: 20px;">@localizer["Totals"]</td></b>
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
@@ -420,7 +420,7 @@ else
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td></td>
+                                                        <td style="border-bottom-right-radius: 20px;"></td>
                                                         @*<td><a asp-area="EvolDP" asp-controller="DocCode" asp-action="DocCodeLevel1" asp-route-doclayout="@p.DocLayout" asp-route-docsubtype="@p.DocType">Mais</a></td>*@
                                                     </tr>
                                                 </tbody>

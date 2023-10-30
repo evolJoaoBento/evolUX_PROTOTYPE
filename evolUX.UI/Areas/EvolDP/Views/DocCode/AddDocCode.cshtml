@@ -86,9 +86,9 @@ else
         }
     </div>
 <form id="AddDocDocConfigFrm" class="d-flex justify-content-center m-5" asp-area="evolDP" asp-controller="DocCode" asp-action="RegistDocCodeConfig" asp-route-source="@sourceDesc">
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr><td colspan="2">@localizer["DocCode"]</td></tr>
+                <tr><td colspan="2" style="padding: 10px; border-top-left-radius: 20px; border-top-right-radius: 20px">@localizer["DocCode"]</td></tr>
         </thead>
         <tbody id="bootstrap-overrides">
             @if (sourceDesc != "AddDoc")
@@ -433,7 +433,7 @@ else
         {
         <tfoot id="bootstrap-overrides">
             <tr>
-                <td colspan="2">
+                        <td colspan="2" style="padding: 10px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px">
                     <input type="submit" value="@localizer[submitTag]" name="Submit" class="btn btn-block btn-outline-info" />
                 </td>
             </tr>

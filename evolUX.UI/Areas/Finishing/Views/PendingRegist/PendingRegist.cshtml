@@ -35,11 +35,11 @@ else
     }
     else
     {
-         <table class="table table-sm table-hover table-collapse-seperate">
+         <table class="table table-sm table-hover table-collapse-seperate table-shadow">
             <thead id="bootstrap-overrides" class="sticky-header">
                 <tr>
-                    <th colspan="3">@localizer["Run"]</th>
-                    <th colspan="4">@localizer["Files"]</th>
+                    <th colspan="3" style="padding: 10px; border-top-left-radius: 20px;">@localizer["Run"]</th>
+                    <th colspan="4" style="padding: 10px; border-top-right-radius: 20px;">@localizer["Files"]</th>
                 </tr>
                 <tr>
                     <th>@localizer["RunDescription"]</th>
@@ -97,13 +97,13 @@ else
                     </tr>
                 }
                 <tr style="background:var(--lightestgrey); border: var(--orange)">
-                    <td style="background:var(--lightergrey);"><b>@localizer["Totals"]</b></td>
+                    <td style="background:var(--lightergrey); padding: 10px; border-bottom-left-radius: 20px;"><b>@localizer["Totals"]</b></td>
                     <td style="background:var(--lightergrey);"><b>@TotalPrint</b></td>
                     <td style="background:var(--lightergrey);"><b>@TotalPostObjs</b></td>
                     <td style="background:var(--lightergrey);"><b>@ProcessedTotal</b></td>
                     <td style="background:var(--lightergrey);"><b>@ToPrintTotal</b></td>
                     <td style="background:var(--lightergrey);"><b>@ToRegistPrintTotal</b></td>
-                    <td style="background:var(--lightergrey);"><b>@ToRegistFullFillTotal</b></td>
+                    <td style="background:var(--lightergrey); padding: 10px; border-bottom-right-radius: 20px;"><b>@ToRegistFullFillTotal</b></td>
                </tr>
             </tbody>
         </table>

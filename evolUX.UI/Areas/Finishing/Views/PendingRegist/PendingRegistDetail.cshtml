@@ -23,7 +23,7 @@
 @if (Model.PendingRegistDetail.ToRegistPrintFiles.Count > 0)
 {
     int cols = 9;
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         @if (ViewBag.hasMultipleServiceCompanies)
         {
             cols += 1;
@@ -60,7 +60,7 @@
                         {
                         <td>@p.ServiceCompanyCode</td>
                         }
-                        <td>@p.FileName</td>
+                        <td style="padding: 10px; border-bottom-left-radius: 20px;">@p.FileName</td>
                         <td>@p.RunID</td>
                         <td>@p.FileID</td>
                         <td>@p.TimeStamp</td>
@@ -68,7 +68,7 @@
                         <td>@p.Machine</td>
                         <td>@p.TotalPrint</td>
                         <td>@p.TotalPostObjs</td>
-                        <td>@p.FullFillMaterialCode</td>
+                        <td style="padding: 10px; border-bottom-right-radius: 20px;">@p.FullFillMaterialCode</td>
                     </tr>
                 }
             }

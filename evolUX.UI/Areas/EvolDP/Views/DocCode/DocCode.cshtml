@@ -55,65 +55,114 @@ else
         </a>
     </div>
    
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th class="evol-fitcontent-column borders"></th>
-                <th>@localizer["DocLayout"]</th>
+                <th style="padding: 10px; border-top-left-radius: 20px">@localizer["DocLayout"]</th>
                 <th>@localizer["DocType"]</th>
                 <th>@ExceptionLevel1IDLabel</th>
                 <th>@ExceptionLevel2IDLabel</th>
                 <th>@ExceptionLevel3IDLabel</th>
                 <th>@localizer["DocDescription"]</th>
-                <th>@localizer["PrintMatchCode"]</th>
+                <th style="padding: 10px; border-top-right-radius: 20px">@localizer["PrintMatchCode"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
             @foreach (var p in Model.DocCodeList)
             {
-                @if (p.ExceptionLevel1 == null || string.IsNullOrEmpty(p.ExceptionLevel1.ExceptionDescription))
+                if (p == Model.DocCodeList.Last())
                 {
-                    eLevel1Desc = localizer["EmptyField"].Value;
-                }
-                else
-                {
-                    eLevel1Desc = p.ExceptionLevel1.ExceptionDescription;
-                }
-                @if (p.ExceptionLevel2 == null || string.IsNullOrEmpty(p.ExceptionLevel2.ExceptionDescription))
-                {
-                    eLevel2Desc = localizer["EmptyField"].Value;
-                }
-                else
-                {
-                    eLevel2Desc = p.ExceptionLevel2.ExceptionDescription;
-                }
-                @if (p.ExceptionLevel3 == null || string.IsNullOrEmpty(p.ExceptionLevel3.ExceptionDescription))
-                {
-                    eLevel3Desc = localizer["EmptyField"].Value;
-                }
-                else
-                {
-                    eLevel3Desc = p.ExceptionLevel3.ExceptionDescription;
-                }
-                value = p.DocLayout + "/" + docTypeDesc + "/" + eLevel1Desc + "/" + eLevel2Desc + "/" + eLevel3Desc;
-                <tr>
-                    <td style="align-items:center; display:flex" class="borders">
-                        <a asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(p)">
-                            <img class="evol-image grow" src="~/images/config.png" title="@localizer["DocCodeConfigDetail"]: @value" />
-                        </a>
-                    </td>
-                    <td>@p.DocLayout</td>
-                    <td>@docTypeDesc</td>
-                    <td>@eLevel1Desc</td>
-                    <td>@eLevel2Desc</td>
-                    <td>@eLevel3Desc</td>
-                    <td>@p.DocDescription</td>
-                    @if (!string.IsNullOrEmpty(p.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                    @if (p.ExceptionLevel1 == null || string.IsNullOrEmpty(p.ExceptionLevel1.ExceptionDescription))
                     {
-                        value = p.PrintMatchCode;
+                        eLevel1Desc = localizer["EmptyField"].Value;
                     }
-                    <td>@value</td>
-                </tr>
+                    else
+                    {
+                        eLevel1Desc = p.ExceptionLevel1.ExceptionDescription;
+                    }
+                    @if (p.ExceptionLevel2 == null || string.IsNullOrEmpty(p.ExceptionLevel2.ExceptionDescription))
+                    {
+                        eLevel2Desc = localizer["EmptyField"].Value;
+                    }
+                    else
+                    {
+                        eLevel2Desc = p.ExceptionLevel2.ExceptionDescription;
+                    }
+                    @if (p.ExceptionLevel3 == null || string.IsNullOrEmpty(p.ExceptionLevel3.ExceptionDescription))
+                    {
+                        eLevel3Desc = localizer["EmptyField"].Value;
+                    }
+                    else
+                    {
+                        eLevel3Desc = p.ExceptionLevel3.ExceptionDescription;
+                    }
+                    value = p.DocLayout + "/" + docTypeDesc + "/" + eLevel1Desc + "/" + eLevel2Desc + "/" + eLevel3Desc;
+                    <tr>
+                        <td style="align-items:center; display:flex" class="borders">
+                            <a asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(p)">
+                                <img class="evol-image grow" src="~/images/config.png" title="@localizer["DocCodeConfigDetail"]: @value" />
+                            </a>
+                        </td>
+                        <td style="padding: 10px; border-bottom-left-radius: 20px">@p.DocLayout</td>
+                        <td>@docTypeDesc</td>
+                        <td>@eLevel1Desc</td>
+                        <td>@eLevel2Desc</td>
+                        <td>@eLevel3Desc</td>
+                        <td>@p.DocDescription</td>
+                        @if (!string.IsNullOrEmpty(p.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                        {
+                            value = p.PrintMatchCode;
+                        }
+                        <td style="border-bottom-right-radius: 20px;">@value</td>
+                    </tr>
+                }
+                else
+                {
+                    @if (p.ExceptionLevel1 == null || string.IsNullOrEmpty(p.ExceptionLevel1.ExceptionDescription))
+                    {
+                        eLevel1Desc = localizer["EmptyField"].Value;
+                    }
+                    else
+                    {
+                        eLevel1Desc = p.ExceptionLevel1.ExceptionDescription;
+                    }
+                    @if (p.ExceptionLevel2 == null || string.IsNullOrEmpty(p.ExceptionLevel2.ExceptionDescription))
+                    {
+                        eLevel2Desc = localizer["EmptyField"].Value;
+                    }
+                    else
+                    {
+                        eLevel2Desc = p.ExceptionLevel2.ExceptionDescription;
+                    }
+                    @if (p.ExceptionLevel3 == null || string.IsNullOrEmpty(p.ExceptionLevel3.ExceptionDescription))
+                    {
+                        eLevel3Desc = localizer["EmptyField"].Value;
+                    }
+                    else
+                    {
+                        eLevel3Desc = p.ExceptionLevel3.ExceptionDescription;
+                    }
+                    value = p.DocLayout + "/" + docTypeDesc + "/" + eLevel1Desc + "/" + eLevel2Desc + "/" + eLevel3Desc;
+                    <tr>
+                        <td style="align-items:center; display:flex" class="borders">
+                            <a asp-area="evolDP" asp-controller="DocCode" asp-action="GetDocCodeConfig" asp-route-doccodeJson="@JsonConvert.SerializeObject(p)">
+                                <img class="evol-image grow" src="~/images/config.png" title="@localizer["DocCodeConfigDetail"]: @value" />
+                            </a>
+                        </td>
+                        <td>@p.DocLayout</td>
+                        <td>@docTypeDesc</td>
+                        <td>@eLevel1Desc</td>
+                        <td>@eLevel2Desc</td>
+                        <td>@eLevel3Desc</td>
+                        <td>@p.DocDescription</td>
+                        @if (!string.IsNullOrEmpty(p.PrintMatchCode) || (value = localizer["PrintMatchCodeEmpty"].Value) == " PrintMatchCodeEmpty")
+                        {
+                            value = p.PrintMatchCode;
+                        }
+                        <td>@value</td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

@@ -70,52 +70,52 @@ else
         <a class='bx bx-left-arrow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Generic" asp-action="Companies">
         </a>
     }
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if (AddDocCode)
                 {
                     <th class="evol-fitcontent-column borders"></th>
                 }
-                <th>@localizer["CompanyCode"]</th>
+                <th style="padding: 10px; border-top-left-radius: 20px;">@localizer["CompanyCode"]</th>
                 <th>@localizer["CompanyName"]</th>
                 <th>@localizer["CompanyAddress"]</th>
                 <th>@localizer["CompanyPostalCode"]</th>
                 <th>@localizer["CompanyPostalCodeDescription"]</th>
-                <th>@localizer["CompanyCountry"]</th>
+                <th style="padding: 10px; border-top-right-radius: 20px;">@localizer["CompanyCountry"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
             <tr id="Show|Company" ondblclick="openPopupEditCompany()">
                 @if (AddDocCode)
                 {
-                    <td class="borders" style="text-align: center">
+                    <td class="borders" style="text-align: center; box-shadow: 10px 50px 20px #FFFFFF">
                         <img onclick="openPopupEditCompany()" class="evol-image wobble" src="~/images/edit.png" title="@localizer["CompanyChange"]" />
                     </td>
                 }
-                <td>@company.CompanyCode</td>
+                <td style="padding: 10px; border-bottom-left-radius: 20px;">@company.CompanyCode</td>
                 <td>@company.CompanyName</td>
                 <td>@company.CompanyAddress</td>
                 <td>@company.CompanyPostalCode</td>
                 <td>@company.CompanyPostalCodeDescription</td>
-                <td>@company.CompanyCountry</td>
+                <td style="border-bottom-right-radius: 20px;">@company.CompanyCountry</td>
             </tr>
         </tbody>
     </table>
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if (AddDocCode)
                 {
                     <th rowspan="2" class="evol-fitcontent-column borders"></th>
                 }
-                <th rowspan="2">@localizer["BusinessCode"]</th>
+                <th rowspan="2" style="padding: 10px; border-top-left-radius: 20px;">@localizer["BusinessCode"]</th>
                 <th rowspan="2">@localizer["BusinessDescription"]</th>
                 <th rowspan="2" title="@localizer["FileSheetsCutoffLevelTip"]">@localizer["FileSheetsCutoffLevel"]</th>
                 <th colspan="3">@localizer["InternalExpedition"]</th>
                 <th rowspan="2" title="@localizer["ExternalExpeditionModeTip"]">@localizer["ExternalExpeditionMode"]</th>
                 <th rowspan="2" title="@localizer["TotalBannerPagesTip"]">@localizer["TotalBannerPages"]</th>
-                <th rowspan="2" title="@localizer["PostObjOrderModeTip"]">@localizer["PostObjOrderMode"]</th>
+                <th rowspan="2" title="@localizer["PostObjOrderModeTip"]" style="padding: 10px; border-top-right-radius: 20px;">@localizer["PostObjOrderMode"]</th>
             </tr>
             <tr>
                 <th title="@localizer["InternalExpeditionModeTip"]">@localizer["InternalExpeditionMode"]</th>

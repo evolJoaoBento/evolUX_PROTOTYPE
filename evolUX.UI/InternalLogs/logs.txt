@@ -106,3 +106,4 @@ Info: O utilizador evolUXuser fez login 23/10/2023 10:10:34 - Zivile
 Info: O utilizador evolUXuser fez login 23/10/2023 20:44:10 - Zivile
 Info: O utilizador evolUXuser fez login 26/10/2023 10:52:43 - Zivile
 Info: O utilizador evolUXuser fez login 27/10/2023 08:14:32 - ZivileSink
+Info: O utilizador evolUXuser fez login 30/10/2023 09:09:11 - ZivileSink
