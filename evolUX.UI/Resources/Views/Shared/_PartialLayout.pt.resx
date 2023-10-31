@@ -391,7 +391,7 @@
     <value>Expurgos</value>
   </data>
   <data name="ActionPurgeParameters" xml:space="preserve">
-    <value>Parâmetros Expurgos</value>
+    <value>Parâmetros de Expurgos</value>
   </data>
   <data name="ActionPurgeParameters_Link" xml:space="preserve">
     <value>/evolDP/Generic/ConstantParameter</value>

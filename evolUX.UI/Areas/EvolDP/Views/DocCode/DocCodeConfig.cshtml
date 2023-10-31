@@ -62,11 +62,11 @@ else
         }
     </div>
  
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <tbody id="bootstrap-overrides">
             <tr>
-                <th>@localizer["DocCodeID"]</th>
-                <td>@docCode.DocCodeID</td>
+                <th style="border-top-left-radius: 20px">@localizer["DocCodeID"]</th>
+                <td style="border-top-right-radius: 20px">@docCode.DocCodeID</td>
             </tr>
             <tr>
                 <th>@localizer["DocLayout"]</th>
@@ -202,8 +202,8 @@ else
                     <td>@dConfig.ArchCaducityDate</td>
                 </tr>
                 <tr>
-                    <th>@localizer["CaducityDate"]</th>
-                    <td>@dConfig.CaducityDate</td>
+                    <th style="border-bottom-left-radius: 20px">@localizer["CaducityDate"]</th>
+                    <td style="border-bottom-right-radius: 20px">@dConfig.CaducityDate</td>
                 </tr>
             }
         </tbody>

@@ -83,7 +83,7 @@ else
             </div>
         </div>
     </div>
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if (colWidth > 0)
@@ -96,9 +96,9 @@ else
                     }
                     </th>
                 }
-                <th>@localizer["ServiceDesc"]</th>
+                <th style="border-top-left-radius: 20px;">@localizer["ServiceDesc"]</th>
                 <th>@localizer["ServiceCode"]</th>
-                <th title="@localizer["MatchCodeTip"]">@localizer["MatchCode"]</th>
+                <th title="@localizer["MatchCodeTip"]" style = "border-top-right-radius: 20px;">@localizer["MatchCode"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">

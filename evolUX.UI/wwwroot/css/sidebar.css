@@ -12,6 +12,7 @@
     word-wrap: break-word;
     border-top-right-radius: 40px;
     border-bottom-right-radius: 40px;
+    box-shadow: 3px 15px 5px rgba(0, 0, 0, 0.2);
 }
     .sidebar::before {
         content: "";
@@ -24,6 +25,7 @@
         left: 0;
         border-top-right-radius: 40px;
         border-bottom-right-radius: 40px;
+        box-shadow: 3px 15px 5px rgba(0, 0, 0, 0.2);
     }
 
 
@@ -176,6 +178,7 @@
         display: block;
         pointer-events: none;
         transition: 0s;
+        box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
     }
 
     .sidebar .nav-links li .sub-menu li {

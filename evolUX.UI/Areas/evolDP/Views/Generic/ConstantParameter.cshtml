@@ -59,38 +59,61 @@ else
     string errorMessage = TempData["Message"]?.ToString();
     TempData["Message"] = "";
 
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
            <tr>
                 @if (AddConstantParameter)
                 {
                     <th style="text-align: center" class="borders"><img class="evol-image grow" onclick="openPopupAdd()" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddParameter"]" /></th>
                 }
-                <th>@localizer["ParameterRef"]</th>
+                <th style="border-top-left-radius: 20px;">@localizer["ParameterRef"]</th>
                 <th>@localizer["ParameterValue"]</th>
-                <th>@localizer["ParameterDescription"]</th>
+                <th style="border-top-right-radius: 20px;">@localizer["ParameterDescription"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
             @foreach(ConstantParameter c in Model.ConstantsList)
             {
-                <tr id="Parameter|@c.ParameterID" ondblclick="openPopupEdit('@c.ParameterID')">
-                    @if (AddConstantParameter)
-                    {
-                        <td style="align-items:center; display:flex; justify-content: center" class="borders">
-                            <img class="evol-image float wobble" onclick="openPopupEdit('@c.ParameterID')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
-                            @if (DeleteConstantParameter)
-                            {
-                                <a asp-area="evolDP" asp-controller="Client" asp-action="DeleteParameter" asp-route-exceptionID="@c.ParameterID">
-                                    <img onclick="return confirmParameterDelete()" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
-                                </a>
-                            }
-                        </td>
-                    }
-                    <td>@c.ParameterRef</td>
-                    <td>@c.ParameterValue</td>
-                    <td>@c.ParameterDescription</td>
-                </tr>
+                if (c == Model.ConstantsList.Last())
+                {
+                    <tr id="Parameter|@c.ParameterID" ondblclick="openPopupEdit('@c.ParameterID')">
+                        @if (AddConstantParameter)
+                        {
+                            <td style="align-items:center; display:flex; justify-content: center; box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF" class="borders">
+                                <img class="evol-image float wobble" onclick="openPopupEdit('@c.ParameterID')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
+                                @if (DeleteConstantParameter)
+                                {
+                                    <a asp-area="evolDP" asp-controller="Client" asp-action="DeleteParameter" asp-route-exceptionID="@c.ParameterID">
+                                        <img onclick="return confirmParameterDelete()" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
+                                    </a>
+                                }
+                            </td>
+                        }
+                        <td style="border-bottom-left-radius: 20px;">@c.ParameterRef</td>
+                        <td>@c.ParameterValue</td>
+                        <td style="border-bottom-right-radius: 20px;">@c.ParameterDescription</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr id="Parameter|@c.ParameterID" ondblclick="openPopupEdit('@c.ParameterID')">
+                        @if (AddConstantParameter)
+                        {
+                            <td style="align-items:center; display:flex; justify-content: center" class="borders">
+                                <img class="evol-image float wobble" onclick="openPopupEdit('@c.ParameterID')" style="background:none; width:25px;height:25px;" src="~/images/edit.png" title="@localizer["ChangeParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
+                                @if (DeleteConstantParameter)
+                                {
+                                    <a asp-area="evolDP" asp-controller="Client" asp-action="DeleteParameter" asp-route-exceptionID="@c.ParameterID">
+                                        <img onclick="return confirmParameterDelete()" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteParameter"] @localizer["ParameterRef"] = @c.ParameterRef" />
+                                    </a>
+                                }
+                            </td>
+                        }
+                        <td>@c.ParameterRef</td>
+                        <td>@c.ParameterValue</td>
+                        <td>@c.ParameterDescription</td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
