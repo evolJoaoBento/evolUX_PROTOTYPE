@@ -152,14 +152,14 @@ else
             </div>
         </div>
     </div>
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow" style="margin-bottom: 40px;">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th rowspan="2" class="evol-fitcontent-column" style="text-align:center;border: none;background-color: transparent;vertical-align:middle">
                 </th>
-                <th style="vertical-align:middle" rowspan="2">@localizer["ServiceTaskCode"]</th>
+                <th style="vertical-align:middle; border-top-left-radius: 20px;" rowspan="2">@localizer["ServiceTaskCode"]</th>
                 <th style="vertical-align:middle" rowspan="2">@localizer["ServiceTaskDesc"]</th>
-                <th style="vertical-align:middle" colspan="3">@localizer["ServiceTaskConfigs"]</th>
+                <th style="vertical-align:middle; border-top-right-radius: 20px;" colspan="3">@localizer["ServiceTaskConfigs"]</th>
             </tr>
             <tr>
                 <th style="vertical-align:middle" title="@localizer["ComplementServiceTaskTip"]">@localizer["ComplementServiceTask"]</th>
@@ -169,13 +169,13 @@ else
         </thead>
         <tbody id="bootstrap-overrides">
             <tr id="Show|" ondblclick="openPopupEdit()">
-                <td class="evol-fitcontent-column-one borders" style="border: none;background-color: transparent;">
+                <td class="evol-fitcontent-column-one borders" style="border: none; box-shadow: 10px 20px 10px #FFFFFF; background-color: #FFFFFF;">
                     @if (AddServiceTask)
                     {
                         <img onclick="openPopupEdit()" style="width:30px;height:30px" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
                     }
                 </td>
-                <td>@serviceTask.ServiceTaskCode</td>
+                <td style="border-bottom-left-radius: 20px;">@serviceTask.ServiceTaskCode</td>
                 <td>
                     @serviceTask.ServiceTaskDesc
                 </td>
@@ -188,44 +188,65 @@ else
                     }
                     @localizer[localValue]
                 </td>
-                <td>@serviceTask.StationExceededDesc</td>
+                <td style="border-bottom-right-radius: 20px;">@serviceTask.StationExceededDesc</td>
             </tr>
         </tbody>
     </table>
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow" style="margin-bottom: 40px;">
         <thead id="bootstrap-overrides" class="table-info">
             <tr>
                 <th class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
                     <img onclick="openPopupAdd()" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddServiceType"]" />
                 </th>
-                <th>@localizer["ServiceTypeDesc"]</th>
-                <th>@localizer["ServiceTypeCode"]</th>
+                <th style="border-top-left-radius: 20px;">@localizer["ServiceTypeDesc"]</th>
+                <th style="border-top-right-radius: 20px;">@localizer["ServiceTypeCode"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
             @foreach (ServiceTypeElement s in serviceTask.ServiceTypes)
             {
                 value = s.ServiceTypeID.ToString();
-                <tr>
-                    @if (AddServiceTask)
-                    {
-                    <td class="evol-fitcontent-column-one borders" style="border: none;background-color: transparent;vertical-align:middle">
-                            @if (DeleteServiceTask)
-                            {
-                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID"  asp-route-servicetypeID="@s.ServiceTypeID">
-                                    <img onclick="return confirmServiceTypeDelete('@s.ServiceTypeCode')" style="width:30px;height:30px" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteServiceType"] = @s.ServiceTypeCode" />
-                            </a>
-                            }
-                    </td>
-                    }
-                    <td>@s.ServiceTypeDesc</td>
-                    <td>@s.ServiceTypeCode</td>
-                </tr>
+                if(s == serviceTask.ServiceTypes.Last())
+                {
+                    <tr>
+                        @if (AddServiceTask)
+                        {
+                            <td class="evol-fitcontent-column-one borders" style="border: none; vertical-align:middle; box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF">
+                                @if (DeleteServiceTask)
+                                {
+                                    <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID"  asp-route-servicetypeID="@s.ServiceTypeID">
+                                            <img onclick="return confirmServiceTypeDelete('@s.ServiceTypeCode')" style="width:30px;height:30px" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteServiceType"] = @s.ServiceTypeCode" />
+                                    </a>
+                                }
+                            </td>
+                        }
+                        <td style="border-bottom-left-radius: 20px;">@s.ServiceTypeDesc</td>
+                        <td style="border-bottom-right-radius: 20px;">@s.ServiceTypeCode</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        @if (AddServiceTask)
+                        {
+                            <td class="evol-fitcontent-column-one borders" style="border: none;background-color: transparent;vertical-align:middle">
+                                @if (DeleteServiceTask)
+                                {
+                                    <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID" asp-route-servicetypeID="@s.ServiceTypeID">
+                                        <img onclick="return confirmServiceTypeDelete('@s.ServiceTypeCode')" style="width:30px;height:30px" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteServiceType"] = @s.ServiceTypeCode" />
+                                    </a>
+                                }
+                            </td>
+                        }
+                        <td>@s.ServiceTypeDesc</td>
+                        <td>@s.ServiceTypeCode</td>
+                    </tr>
+                }
             }
         </tbody>
     </table>
 
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th class="evol-fitcontent-column-one" style="border:none;background-color:transparent">
@@ -234,14 +255,14 @@ else
                         <img onclick="EditRow('ExpCode')" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddExpCode"]" />
                     }
                 </th>
-                <th>@localizer["ExpCompany"]</th>
+                <th style="border-top-left-radius: 20px;">@localizer["ExpCompany"]</th>
                 <th>@localizer["ExpCode"]</th>
                 <th>@localizer["ExpCodeDesc"]</th>
                 <th>@localizer["Priority"]</th>
                 <th title="@localizer["DefaultExpCenterCodeTip"]">@localizer["DefaultExpCenterCode"]</th>
                 <th title="@localizer["DefaultExpCompanyZoneTip"]">@localizer["DefaultExpCompanyZone"]</th>
                 <th title="@localizer["CheckExpCompanySepCodesTip"]">@localizer["CheckExpCompanySepCodes"]</th>
-                <th title="@localizer["PostalCodeStartTip"]">@localizer["PostalCodeStart"]</th>
+                <th title="@localizer["PostalCodeStartTip"]" style="border-top-right-radius: 20px;">@localizer["PostalCodeStart"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
@@ -274,25 +295,50 @@ else
             }
             @foreach (ExpCodeElement expCode in Model.ExpCodes)
             {
-                <tr>
-                    <td class="evol-fitcontent-column-one borders" style="border:none;background-color:transparent">
-                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)"
-                   asp-route-serviceTaskDesc="@serviceTask.ServiceTaskDesc" asp-route-expCompanyName="@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName" asp-route-source="ServiceWorkFlowDetail">
-                            <img style="width:30px;height:30px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
-                        </a>
-                    </td>
-                    <td>@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName</td>
-                    <td>@expCode.ExpCode</td>
-                    <td>@expCode.ExpCodeDesc</td>
-                    <td>@expCode.Priority</td>
-                    <td>@expCode.DefaultExpCenterCode</td>
-                    <td>@expCode.DefaultExpCompanyZone</td>
-                    @{
-                        value = expCode.CheckExpCompanySepCodes ? "checked" : "";
-                    }
-                    <td><input type="checkbox" id="CheckExpCompanySepCodes" disabled @value /></td>
-                    <td>@expCode.PostalCodeStart</td>
-                </tr>
+                if(expCode == Model.ExpCodes.Last())
+                {
+                    <tr>
+                        <td class="evol-fitcontent-column-one borders" style="border:none;background-color:transparent">
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)"
+                       asp-route-serviceTaskDesc="@serviceTask.ServiceTaskDesc" asp-route-expCompanyName="@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName" asp-route-source="ServiceWorkFlowDetail">
+                                <img style="width:30px;height:30px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
+                            </a>
+                        </td>
+                        <td style="border-bottom-left-radius: 20px;">@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName</td>
+                        <td>@expCode.ExpCode</td>
+                        <td>@expCode.ExpCodeDesc</td>
+                        <td>@expCode.Priority</td>
+                        <td>@expCode.DefaultExpCenterCode</td>
+                        <td>@expCode.DefaultExpCompanyZone</td>
+                        @{
+                            value = expCode.CheckExpCompanySepCodes ? "checked" : "";
+                        }
+                        <td><input type="checkbox" id="CheckExpCompanySepCodes" disabled @value /></td>
+                        <td style="border-bottom-right-radius: 20px;">@expCode.PostalCodeStart</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td class="evol-fitcontent-column-one borders" style="border:none;background-color:transparent">
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)"
+                           asp-route-serviceTaskDesc="@serviceTask.ServiceTaskDesc" asp-route-expCompanyName="@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName" asp-route-source="ServiceWorkFlowDetail">
+                                <img style="width:30px;height:30px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
+                            </a>
+                        </td>
+                        <td>@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName</td>
+                        <td>@expCode.ExpCode</td>
+                        <td>@expCode.ExpCodeDesc</td>
+                        <td>@expCode.Priority</td>
+                        <td>@expCode.DefaultExpCenterCode</td>
+                        <td>@expCode.DefaultExpCompanyZone</td>
+                        @{
+                            value = expCode.CheckExpCompanySepCodes ? "checked" : "";
+                        }
+                        <td><input type="checkbox" id="CheckExpCompanySepCodes" disabled @value /></td>
+                        <td>@expCode.PostalCodeStart</td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

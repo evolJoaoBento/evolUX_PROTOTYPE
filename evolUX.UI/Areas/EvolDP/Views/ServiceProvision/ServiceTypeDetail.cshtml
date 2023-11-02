@@ -136,50 +136,91 @@ else
                         </div>
                     </div>
                 }
-                <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
-                    @if (colWidth > 0)
-                    {
-                        @if (s.CompanyList.Count() > 0)
+                if (s == Model.Type.ServicesList.Last())
+                {
+                    <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
+                        @if (colWidth > 0)
                         {
-                            <td class="borders collapsible" style="align-items:center; display:flex; justify-content: center" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
-                                @if (AddServiceTask)
-                                {
-                                    <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeService"]" />
-                                }
-                                <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
-                            </td>
+                            @if (s.CompanyList.Count() > 0)
+                            {
+                                <td class="borders collapsible" style="align-items:center; display:flex; justify-content: center; box-shadow: 7px 10px 10px #FFFFFF; background-color: #FFFFFF" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
+                                    @if (AddServiceTask)
+                                    {
+                                        <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeService"]" />
+                                    }
+                                    <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="borders" style="align-items:center; display:flex; justify-content: center; box-shadow: 7px 10px 10px #FFFFFF; background-color: #FFFFFF">
+                                    @if (AddServiceTask)
+                                    {
+                                        <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeService"]" />
+                                    }
+                                </td>
+                            }
                         }
-                        else
+                        <td style="border-bottom-left-radius: 20px;">@s.ServiceDesc</td>
+                        <td>@s.ServiceCode</td>
+                        <td style="border-bottom-right-radius: 20px;">@s.MatchCode</td>
+                    </tr>
+                }
+                else
+                {
+                    <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
+                        @if (colWidth > 0)
                         {
-                            <td class="borders" style="align-items:center; display:flex; justify-content: center">
-                                @if (AddServiceTask)
-                                {
-                                    <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeService"]" />
-                                }
-                            </td>
+                            @if (s.CompanyList.Count() > 0)
+                            {
+                                <td class="borders collapsible" style="align-items:center; display:flex; justify-content: center" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
+                                    @if (AddServiceTask)
+                                    {
+                                        <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeService"]" />
+                                    }
+                                    <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="borders" style="align-items:center; display:flex; justify-content: center">
+                                    @if (AddServiceTask)
+                                    {
+                                        <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeService"]" />
+                                    }
+                                </td>
+                            }
                         }
-                    }
-                    <td>@s.ServiceDesc
-                    </td>
-                    <td>@s.ServiceCode</td>
-                    <td>@s.MatchCode</td>
-                </tr>
+                        <td>@s.ServiceDesc</td>
+                        <td>@s.ServiceCode</td>
+                        <td>@s.MatchCode</td>
+                    </tr>
+                }
                 @if (s.CompanyList.Count() > 0)
                 {
                     <tr id="@nameValue" class="borders" style="display: none">
                         <td colspan="@colspan" class="table-collapse">
-                            <table class="table table-sm table-hover table-collapse-seperate collapsed-table">
+                            <table class="table table-sm table-hover table-collapse-seperate collapsed-table table-shadow">
                                 <thead id="bootstrap-overrides" class="table-info">
                                     <tr>
-                                        <th>@localizer["ServiceCompany"]</th>
+                                        <th style="border-top-left-radius: 20px; border-top-right-radius: 20px;">@localizer["ServiceCompany"]</th>
                                     </tr>
                                 </thead>
                                 <tbody id="bootstrap-overrides">
                                     @foreach (int c in s.CompanyList)
                                     {
-                                        <tr>
-                                            <td>@Model.ServiceCompanies.FirstOrDefault(x => x.ID == c).CompanyName</td>
-                                        </tr>
+                                        if (c == s.CompanyList.Last())
+                                        {
+                                            <tr>
+                                                <td style="border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;">@Model.ServiceCompanies.FirstOrDefault(x => x.ID == c).CompanyName</td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td>@Model.ServiceCompanies.FirstOrDefault(x => x.ID == c).CompanyName</td>
+                                            </tr>
+                                        }
                                     }
                                 </tbody>
                             </table>
