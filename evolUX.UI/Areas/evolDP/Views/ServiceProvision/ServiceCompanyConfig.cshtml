@@ -225,9 +225,9 @@ else
                             <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyConfig"]"/>
                         </td>
                     }
-                            <td style="border-bottom-left-radius: 20px;">@startDateDesc</td>
+                    <td style="border-bottom-left-radius: 20px;">@startDateDesc</td>
                     <td>@cDate.ServiceCost</td>
-                    <td>@cDate.Formula</td>
+                    <td style="border-bottom-right-radius: 20px;">@cDate.Formula</td>
                 </tr>
                 @if (AddServiceCompany)
                 {

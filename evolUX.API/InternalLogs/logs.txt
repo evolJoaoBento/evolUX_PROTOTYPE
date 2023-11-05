@@ -1409,3 +1409,110 @@ Info: ServiceCompany Restrictions  Get
 Info: ServiceCompany Configs Resume Get
 Info: Expedition Company Configs Get
 Info: GetServices Get
+Info: User evolUXuser logged in at 03/11/2023 16:38:47
+Info: GetCompanyBusiness Get
+Info: DocCodeGroup Get
+Info: DocCode Get
+Info: DocCodeConfigOptions Get
+Info: DocCode Get
+Info: DocCodeConfig Get
+Info: DocCodeConfig Get
+Info: DocCodeConfigOptions Get
+Info: DocCodeConfig Get
+Info: DocCodeGroup Get
+Info: GetExceptionLevel Get
+Info: GetExceptionLevel Get
+Info: GetExceptionLevel Get
+Info: GetCompanyBusiness Get
+Info: GetProjects Get
+Info: GetCompanyBusiness Get
+Info: GetProjects Get
+Info: GetCompanyBusiness Get
+Info: GetParameters Get
+Info: GetParameters Get
+Info: GetMaterialTypes Get
+Info: GetMaterialTypes Get
+Info: GetServiceTypes Get
+Info: ServiceCompanyList Get
+Info: ServiceCompanyList Get
+Info: ServiceCompanyList Get
+Info: ServiceCompanyList Get
+Info: ServiceCompanyList Get
+Info: ServiceCompanyList Get
+Info: GetServiceTasks Get
+Info: GetAvailableServiceTypes Get
+Info: GetServiceTasks Get
+Info: GetAvailableServiceTypes Get
+Info: Expedition Company Configs Resume Get
+Info: Expedition Zone Get
+Info: GetServiceCompanyExpCodeConfigsGet
+Info: GetFulfillMaterialCodes Get
+Info: GetServiceTypes Get
+Info: GetServiceTasks Get
+Info: GetAvailableServiceTypes Get
+Info: GetServiceTasks Get
+Info: GetAvailableServiceTypes Get
+Info: Expedition Company Configs Resume Get
+Info: GetServiceTasks Get
+Info: GetAvailableServiceTypes Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: ServiceCompany Configs Resume Get
+Info: Expedition Company Configs Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: ServiceCompany Configs Resume Get
+Info: Expedition Company Configs Get
+Info: GetServices Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: ServiceCompany Configs Resume Get
+Info: Expedition Company Configs Get
+Info: GetServices Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: ServiceCompany Configs Resume Get
+Info: Expedition Company Configs Resume Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: ServiceCompany Configs Resume Get
+Info: Expedition Company Configs Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: ServiceCompany Configs Resume Get
+Info: Expedition Company Configs Resume Get
+Info: Expedition Company Configs Resume Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: ServiceCompany Configs Resume Get
+Info: Expedition Company Configs Resume Get
+Info: GetServiceCompanyExpCodeConfigsGet
+Info: GetFulfillMaterialCodes Get
+Info: Expedition Company Configs Resume Get
+Info: Expedition Company Configs Resume Get
+Error: Something went wrong inside refresh action: One or more errors occurred. (A network-related or instance-specific error occurred while establishing a connection to SQL Server. The server was not found or was not accessible. Verify that the instance name is correct and that SQL Server is configured to allow remote connections. (provider: Named Pipes Provider, error: 40 - Could not open a connection to SQL Server))
+Info: User evolUXuser logged in at 05/11/2023 20:03:29
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: ServiceCompany Configs Resume Get
+Info: Expedition Company Configs Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: ServiceCompany Configs Resume Get
+Info: Expedition Company Configs Get
+Info: GetServices Get
+Info: Expedition Company Configs Get
+Info: GetServices Get
+Info: Companies Get
+Info: ServiceCompany Restrictions  Get
+Info: ServiceCompany Configs Resume Get
+Info: Expedition Company Configs Resume Get
+Info: GetServiceCompanyExpCodeConfigsGet
+Info: GetFulfillMaterialCodes Get
+Info: Expedition Company Configs Resume Get
