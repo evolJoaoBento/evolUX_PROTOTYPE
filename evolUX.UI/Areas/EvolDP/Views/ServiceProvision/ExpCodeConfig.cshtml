@@ -133,56 +133,30 @@ else
             @foreach (ServiceCompanyExpCodeConfig config in Model.Configs)
             {
                 value = config.ExpLevel.ToString();
-                if(config == Model.Configs.Last())
-                {
-                    <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
-                        @if (AddServiceCompanyExpCodes)
-                        {
-                            <td style="align-items:center; display:flex; box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF" class="borders">
-                                <img onclick="openPopupEdit('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyExpLevel"]" />
-                                @if (DeleteServiceCompanyExpCodes)
-                                {
-                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceCompanyExpLevel" 
-                                    asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
-                                    asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
-                                    asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
-                                    asp-route-explevel="@config.ExpLevel">
-                                        <img onclick="return confirmServiceCompanyExpLevelDelete()" class="evol-image grow" src="~/images/delete.png" title="@localizer["DeleteServiceCompanyExpLevel"] = @config.ExpLevel" />
-                                </a>
-                                }                        
-                            </td>
-                        }
-                        <td style="border-bottom-left-radius: 20px;">@config.ExpLevel</td>
-                        <td>@config.FullFillMaterialCode</td>
-                        <td>@config.DocMaxSheets</td>
-                        <td style="border-bottom-right-radius: 20px;">@config.Barcode</td>
-                    </tr>
-                }
-                else
-                {
-                    <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
-                        @if (AddServiceCompanyExpCodes)
-                        {
-                            <td style="align-items:center; display:flex" class="borders">
-                                <img onclick="openPopupEdit('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyExpLevel"]" />
-                                @if (DeleteServiceCompanyExpCodes)
-                                {
-                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceCompanyExpLevel" 
-                                    asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
-                                    asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
-                                    asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
-                                    asp-route-explevel="@config.ExpLevel">
-                                        <img onclick="return confirmServiceCompanyExpLevelDelete()" class="evol-image grow" src="~/images/delete.png" title="@localizer["DeleteServiceCompanyExpLevel"] = @config.ExpLevel" />
-                                </a>
-                                }                        
-                            </td>
-                        }
-                        <td>@config.ExpLevel</td>
-                        <td>@config.FullFillMaterialCode</td>
-                        <td>@config.DocMaxSheets</td>
-                        <td>@config.Barcode</td>
-                       </tr>                    
-                }
+
+                <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
+                    @if (AddServiceCompanyExpCodes)
+                    {
+                        <td style="align-items:center; display:flex; @(config == Model.Configs.Last() ? "box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF " : "")" class="borders">
+                            <img onclick="openPopupEdit('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyExpLevel"]" />
+                            @if (DeleteServiceCompanyExpCodes)
+                            {
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceCompanyExpLevel" 
+                                asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
+                                asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
+                                asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
+                                asp-route-explevel="@config.ExpLevel">
+                                    <img onclick="return confirmServiceCompanyExpLevelDelete()" class="evol-image grow" src="~/images/delete.png" title="@localizer["DeleteServiceCompanyExpLevel"] = @config.ExpLevel" />
+                            </a>
+                            }                        
+                        </td>
+                    }
+                    <td class="@(config == Model.Configs.Last() ? "last-row-l" : "")">@config.ExpLevel</td>
+                    <td>@config.FullFillMaterialCode</td>
+                    <td>@config.DocMaxSheets</td>
+                    <td class="@(config == Model.Configs.Last() ? "last-row-r" : "")">@config.Barcode</td>
+                </tr>
+
                 @if (AddServiceCompanyExpCodes)
                 {
                     <div class="popup-container confirmPopupEdit FormEdit" id="Edit|@value" style="display: none;">

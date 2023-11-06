@@ -216,103 +216,52 @@ else
 
             value = "S" + cDate.ServiceID.ToString() + "|" + cDate.CostDate.ToString();
 
-            if(cDate == Model.Configs.Where(x => x.ServiceID == service).Distinct().ToList().Last())
-            {
-                <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
-                    @if (AddServiceCompany)
-                    {
-                                <td class="evol-fitcontent-column borders" style="box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF">
-                            <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyConfig"]"/>
-                        </td>
-                    }
-                    <td style="border-bottom-left-radius: 20px;">@startDateDesc</td>
-                    <td>@cDate.ServiceCost</td>
-                    <td style="border-bottom-right-radius: 20px;">@cDate.Formula</td>
-                </tr>
+
+            <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
                 @if (AddServiceCompany)
                 {
-                    <div class="popup-container confirmPopupEdit FormEdit" id="Edit|@value" style="display: none;">
-                        <div class="bgGradient">
-                            <div class="popup">
-                                <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ConfigServiceCompanyConfig"
-                                    asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
-                                    asp-route-servicecompany="@JsonConvert.SerializeObject(Model.ServiceCompany)">
-                                    <h1>@localizer["PopupMessageEdit"]</h1>
-                                    <div class="form-inputs">
-                                        <input style="display: none" id="ServiceID" name="ServiceID" type="text" value="@cDate.ServiceID" />
-                                        <h6>@localizer["Service"]</h6>
-                                        <input id="Service" name="Service" type="text" value="@serviceDesc" readonly />
-                                        <h6>@localizer["CostDate"]</h6>
-                                        <input style="display: none" id="CostDate" name="CostDate" type="text" value="@cDate.CostDate" />
-                                        <input id="CostDateView" name="CostDateView" type="text" value="@startDateDesc" readonly />
-                                        @{
-                                            doubleStr = cDate.ServiceCost.ToString("F2");
-                                            if (decimalSeparator == ",")
-                                                doubleStr = doubleStr.Replace(",", ".");
-                                        }
-                                        <h6>@localizer["ServiceCost"]</h6>
-                                        <input type="number" min="0" max="1000000" step="0.01" id="ServiceCost" name="ServiceCost" value="@doubleStr" />
-                                        <h6>@localizer["Formula"]</h6>
-                                        <input type="text" id="Formula" name="Formula" maxlength="1000" value="@cDate.Formula" />
-                                    </div>
-                                    <div class="popup-buttons">
-                                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
-                                        <button type="button" class="popup-button" onclick="return closePopup()">Cancelar</button>
-                                    </div>
-                                </form>
-                            </div>
+                    <td class="evol-fitcontent-column borders" style="(cDate == Model.Configs.Where(x => x.ServiceID == service).Distinct().ToList().Last() ? " box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF " : " ")">
+                        <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyConfig"]"/>
+                    </td>
+                }
+                <td class="@(cDate == Model.Configs.Where(x => x.ServiceID == service).Distinct().ToList().Last() ? "last-row-l" : "")">@startDateDesc</td>
+                <td>@cDate.ServiceCost</td>
+                        <td class="@(cDate == Model.Configs.Where(x => x.ServiceID == service).Distinct().ToList().Last() ? "last-row-r" : "")">@cDate.Formula</td>
+            </tr>
+            @if (AddServiceCompany)
+            {
+                <div class="popup-container confirmPopupEdit FormEdit" id="Edit|@value" style="display: none;">
+                    <div class="bgGradient">
+                        <div class="popup">
+                            <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ConfigServiceCompanyConfig"
+                                asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
+                                asp-route-servicecompany="@JsonConvert.SerializeObject(Model.ServiceCompany)">
+                                <h1>@localizer["PopupMessageEdit"]</h1>
+                                <div class="form-inputs">
+                                    <input style="display: none" id="ServiceID" name="ServiceID" type="text" value="@cDate.ServiceID" />
+                                    <h6>@localizer["Service"]</h6>
+                                    <input id="Service" name="Service" type="text" value="@serviceDesc" readonly />
+                                    <h6>@localizer["CostDate"]</h6>
+                                    <input style="display: none" id="CostDate" name="CostDate" type="text" value="@cDate.CostDate" />
+                                    <input id="CostDateView" name="CostDateView" type="text" value="@startDateDesc" readonly />
+                                    @{
+                                        doubleStr = cDate.ServiceCost.ToString("F2");
+                                        if (decimalSeparator == ",")
+                                            doubleStr = doubleStr.Replace(",", ".");
+                                    }
+                                    <h6>@localizer["ServiceCost"]</h6>
+                                    <input type="number" min="0" max="1000000" step="0.01" id="ServiceCost" name="ServiceCost" value="@doubleStr" />
+                                    <h6>@localizer["Formula"]</h6>
+                                    <input type="text" id="Formula" name="Formula" maxlength="1000" value="@cDate.Formula" />
+                                </div>
+                                <div class="popup-buttons">
+                                    <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
+                                    <button type="button" class="popup-button" onclick="return closePopup()">Cancelar</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                }
-                else
-                {
-                    <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
-                        @if (AddServiceCompany)
-                        {
-                            <td class="evol-fitcontent-column borders">
-                                <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyConfig"]" />
-                            </td>
-                        }
-                        <td>@startDateDesc</td>
-                        <td>@cDate.ServiceCost</td>
-                        <td>@cDate.Formula</td>
-                    </tr>
-                    @if (AddServiceCompany)
-                    {
-                        <div class="popup-container confirmPopupEdit FormEdit" id="Edit|@value" style="display: none;">
-                            <div class="bgGradient">
-                                <div class="popup">
-                                    <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ConfigServiceCompanyConfig"
-                        asp-route-pagecostdate="@Model.CostDate" asp-route-pageservicetypeid="@Model.Configs.First().ServiceTypeID" asp-route-pageserviceid="@Model.ServiceID"
-                        asp-route-servicecompany="@JsonConvert.SerializeObject(Model.ServiceCompany)">
-                                        <h1>@localizer["PopupMessageEdit"]</h1>
-                                        <div class="form-inputs">
-                                            <input style="display: none" id="ServiceID" name="ServiceID" type="text" value="@cDate.ServiceID" />
-                                            <h6>@localizer["Service"]</h6>
-                                            <input id="Service" name="Service" type="text" value="@serviceDesc" readonly />
-                                            <h6>@localizer["CostDate"]</h6>
-                                            <input style="display: none" id="CostDate" name="CostDate" type="text" value="@cDate.CostDate" />
-                                            <input id="CostDateView" name="CostDateView" type="text" value="@startDateDesc" readonly />
-                                            @{
-                                                doubleStr = cDate.ServiceCost.ToString("F2");
-                                                if (decimalSeparator == ",")
-                                                    doubleStr = doubleStr.Replace(",", ".");
-                                            }
-                                            <h6>@localizer["ServiceCost"]</h6>
-                                            <input type="number" min="0" max="1000000" step="0.01" id="ServiceCost" name="ServiceCost" value="@doubleStr" />
-                                            <h6>@localizer["Formula"]</h6>
-                                            <input type="text" id="Formula" name="Formula" maxlength="1000" value="@cDate.Formula" />
-                                        </div>
-                                        <div class="popup-buttons">
-                                            <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
-                                            <button type="button" class="popup-button" onclick="return closePopup()">Cancelar</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                }
+                </div>
             }
         }
         </tbody>

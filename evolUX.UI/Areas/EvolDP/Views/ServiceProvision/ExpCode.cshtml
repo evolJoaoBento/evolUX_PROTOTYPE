@@ -152,98 +152,53 @@ else
                 serviceCompany = Model.ServiceCompanies.FirstOrDefault(x => x.ID == c.ServiceCompanyID);
                 expZone = Model.Zones.FirstOrDefault(x => x.ExpeditionZone == c.ExpeditionZone);
                 value = c.ExpCenterCode.ToString();
-                if(c == Model.ExpCenters.Last())
-                {
-                    <tr id="Show|@value" ondblclick="openPopupEditExpedition('@value')">
-                        @if (AddExpCode)
-                        {
-                            <td class="evol-fitcontent-column borders" style="align-items:center; display:flex; box-shadow: 20px 20px 10px #FFFFFF; background-color: #FFFFFF">
-                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCodeConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
-                                   asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@c.ExpCenterCode"
-                                   asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
-                                   <img style="margin-bottom:1px" class="evol-image grow" src="~/images/config.png" title="@localizer["ConfigServiceCompanyExpCode"]" />
-                                </a>
-                                <img onclick="openPopupEditExpedition('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeExpCenter"]" />
-                            </td>
-                        }
-                        <td style="border-bottom-left-radius: 20px;">@c.ExpCenterCode</td>
-                        @if (string.IsNullOrEmpty(c.Description1))
-                        {
-                            localValue = localizer["EmptyField"].Value;
-                        }
-                        else
-                        {
-                            localValue = c.Description1;
-                        }
-                        <td>@localValue</td>
-                        @if (string.IsNullOrEmpty(c.Description2))
-                        {
-                            localValue = localizer["EmptyField"].Value;
-                        }
-                        else
-                        {
-                            localValue = c.Description2;
-                        }
-                        <td>@localValue</td>
-                        @if (string.IsNullOrEmpty(c.Description3))
-                        {
-                            localValue = localizer["EmptyField"].Value;
-                        }
-                        else
-                        {
-                            localValue = c.Description3;
-                        }
-                        <td>@localValue</td>
-                        <td>@serviceCompany.CompanyName</td>
-                        <td style="border-bottom-right-radius: 20px;">@c.ExpeditionZoneDesc</td>
-                    </tr>
-                }
-                else
-                {
-                    <tr id="Show|@value" ondblclick="openPopupEditExpedition('@value')">
-                        @if (AddExpCode)
-                        {
-                            <td class="evol-fitcontent-column borders" style="align-items:center; display:flex">
-                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCodeConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
+
+                <tr id="Show|@value" ondblclick="openPopupEditExpedition('@value')">
+                    @if (AddExpCode)
+                    {
+                        <td class="evol-fitcontent-column borders" style="align-items:center; display:flex; @(c == Model.ExpCenters.Last() ? "box-shadow: 20px 20px 10px #FFFFFF; background-color: #FFFFFF " : "")">
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCodeConfig" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
                                 asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@c.ExpCenterCode"
                                 asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
-                                    <img style="margin-bottom:1px" class="evol-image grow" src="~/images/config.png" title="@localizer["ConfigServiceCompanyExpCode"]" />
-                                </a>
-                                <img onclick="openPopupEditExpedition('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeExpCenter"]" />
-                            </td>
-                        }
-                        <td>@c.ExpCenterCode</td>
-                        @if (string.IsNullOrEmpty(c.Description1))
-                        {
-                            localValue = localizer["EmptyField"].Value;
-                        }
-                        else
-                        {
-                            localValue = c.Description1;
-                        }
-                        <td>@localValue</td>
-                        @if (string.IsNullOrEmpty(c.Description2))
-                        {
-                            localValue = localizer["EmptyField"].Value;
-                        }
-                        else
-                        {
-                            localValue = c.Description2;
-                        }
-                        <td>@localValue</td>
-                        @if (string.IsNullOrEmpty(c.Description3))
-                        {
-                            localValue = localizer["EmptyField"].Value;
-                        }
-                        else
-                        {
-                            localValue = c.Description3;
-                        }
-                        <td>@localValue</td>
-                        <td>@serviceCompany.CompanyName</td>
-                        <td>@c.ExpeditionZoneDesc</td>
-                    </tr>
-                }
+                                <img style="margin-bottom:1px" class="evol-image grow" src="~/images/config.png" title="@localizer["ConfigServiceCompanyExpCode"]" />
+                            </a>
+                            <img onclick="openPopupEditExpedition('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeExpCenter"]" />
+                        </td>
+                    }
+                    <td class="@(c == Model.ExpCenters.Last() ? "last-row-l" : "")">
+                        @c.ExpCenterCode
+                    </td>
+                    @if (string.IsNullOrEmpty(c.Description1))
+                    {
+                        localValue = localizer["EmptyField"].Value;
+                    }
+                    else
+                    {
+                        localValue = c.Description1;
+                    }
+                    <td>@localValue</td>
+                    @if (string.IsNullOrEmpty(c.Description2))
+                    {
+                        localValue = localizer["EmptyField"].Value;
+                    }
+                    else
+                    {
+                        localValue = c.Description2;
+                    }
+                    <td>@localValue</td>
+                    @if (string.IsNullOrEmpty(c.Description3))
+                    {
+                        localValue = localizer["EmptyField"].Value;
+                    }
+                    else
+                    {
+                        localValue = c.Description3;
+                    }
+                    <td>@localValue</td>
+                    <td>@serviceCompany.CompanyName</td>
+                    <td class="@(c == Model.ExpCenters.Last() ? "last-row-r" : "")">@c.ExpeditionZoneDesc</td>
+                </tr>
+
                 @if (AddExpCode)
                 {
                     <div class="popup-container confirmPopupEditExpedition FormEdit" id="Edit|@value" style="display: none;">

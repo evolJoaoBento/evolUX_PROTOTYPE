@@ -182,94 +182,49 @@ else
                         </div>
                     </div>
                 }
-                if (st == Model.ServiceTasksList.Last())
-                {
-                    <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
-                        @if (st.ServiceTypes.Count() > 0)
-                        {
-                            <td style="align-items:center; display:flex;border: none; box-shadow: 5px 20px 10px #FFFFFF; background-color: #FFFFFF" class="borders collapsible" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
-                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
-                                    <img style="margin-bottom: 1px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
-                                </a>
-                                @if (AddServiceTask)
-                                {
-                                    <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
-                                }
-                                <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
-                            </td>
-                        }
-                        else
-                        {
-                            <td style="align-items:center; display:flex;border: none; box-shadow: 5px 20px 10px #FFFFFF; background-color: #FFFFFF" class="borders">
-                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
-                                    <img style="margin-bottom: 1px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
-                                </a>
-                                @if (AddServiceTask)
-                                {
-                                    <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
-                                }
-                            </td>
-                        }
-                        <td style="border-bottom-left-radius: 20px;">@st.ServiceTaskCode</td>
-                        <td>
-                            @st.ServiceTaskDesc
-                        </td>
-                        <td>
-                            @Model.ServiceTasksList.FirstOrDefault(x => x.ServiceTaskID == st.ComplementServiceTaskID)?.ServiceTaskDesc
-                        </td>
-                        <td>
-                            @{
-                                localValue = "ExternalExpeditionMode" + st.ExternalExpeditionMode;
+
+                <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
+                    @if (st.ServiceTypes.Count() > 0)
+                    {
+                        <td style="align-items:center; display:flex;border: none; @(st == Model.ServiceTasksList.Last() ? "box-shadow: 5px 20px 10px #FFFFFF; background-color: #FFFFFF " : "")" class="borders collapsible" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
+                                <img style="margin-bottom: 1px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
+                            </a>
+                            @if (AddServiceTask)
+                            {
+                                <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
                             }
-                            @localizer[localValue]
+                            <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
                         </td>
-                        <td style="border-bottom-right-radius: 20px;">@st.StationExceededDesc</td>
-                    </tr>
-                }
-                else
-                {
-                    <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
-                        @if (st.ServiceTypes.Count() > 0)
-                        {
-                            <td style="align-items:center; display:flex;border: none;background-color: transparent;" class="borders collapsible" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
-                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
-                                    <img style="margin-bottom: 1px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
-                                </a>
-                                @if (AddServiceTask)
-                                {
-                                    <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
-                                }
-                                <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
-                            </td>
-                        }
-                        else
-                        {
-                            <td style="align-items:center; display:flex;border: none;background-color: transparent;" class="borders">
-                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
-                                    <img style="margin-bottom: 1px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
-                                </a>
-                                @if (AddServiceTask)
-                                {
-                                    <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
-                                }
-                            </td>
-                        }
-                        <td>@st.ServiceTaskCode</td>
-                        <td>
-                            @st.ServiceTaskDesc
-                        </td>
-                        <td>
-                            @Model.ServiceTasksList.FirstOrDefault(x => x.ServiceTaskID == st.ComplementServiceTaskID)?.ServiceTaskDesc
-                        </td>
-                        <td>
-                            @{
-                                localValue = "ExternalExpeditionMode" + st.ExternalExpeditionMode;
+                    }
+                    else
+                    {
+                        <td style="align-items:center; display:flex;border: none; @(st == Model.ServiceTasksList.Last() ? "box-shadow: 5px 20px 10px #FFFFFF; background-color: #FFFFFF " : "")" class="borders">
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
+                                <img style="margin-bottom: 1px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
+                            </a>
+                            @if (AddServiceTask)
+                            {
+                                <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceTask"]" />
                             }
-                            @localizer[localValue]
                         </td>
-                        <td>@st.StationExceededDesc</td>
-                    </tr>
-                }
+                    }
+                    <td class="@(st == Model.ServiceTasksList.Last() ? "last-row-l" : "")">@st.ServiceTaskCode</td>
+                    <td>
+                        @st.ServiceTaskDesc
+                    </td>
+                    <td>
+                        @Model.ServiceTasksList.FirstOrDefault(x => x.ServiceTaskID == st.ComplementServiceTaskID)?.ServiceTaskDesc
+                    </td>
+                    <td>
+                        @{
+                            localValue = "ExternalExpeditionMode" + st.ExternalExpeditionMode;
+                        }
+                        @localizer[localValue]
+                    </td>
+                    <td class="@(st == Model.ServiceTasksList.Last() ? "last-row-r" : "")">@st.StationExceededDesc</td>
+                </tr>
+
                 @if (st.ServiceTypes.Count() > 0)
                 {
                 <tr id="@nameValue" class="borders" style="display: none">
@@ -285,20 +240,10 @@ else
                                 <tbody id="bootstrap-overrides">
                                         @foreach (ServiceTypeElement s in st.ServiceTypes)
                                         {
-                                            if(s == st.ServiceTypes.Last())
-                                            {
-                                                <tr>
-                                                    <td style="border-bottom-left-radius: 20px;">@s.ServiceTypeDesc</td>
-                                                    <td style="border-bottom-right-radius: 20px;">@s.ServiceTypeCode</td>
-                                                </tr>
-                                            }
-                                            else
-                                            {
-                                                <tr>
-                                                    <td>@s.ServiceTypeDesc</td>
-                                                    <td>@s.ServiceTypeCode</td>
-                                                </tr>
-                                            }
+                                            <tr>
+                                                <td class="@(s == st.ServiceTypes.Last() ? "last-row-l" : "")">@s.ServiceTypeDesc</td>
+                                                <td class="@(s == st.ServiceTypes.Last() ? "last-row-r" : "")">@s.ServiceTypeCode</td>
+                                            </tr>
                                         }
                                 </tbody>
                             </table>

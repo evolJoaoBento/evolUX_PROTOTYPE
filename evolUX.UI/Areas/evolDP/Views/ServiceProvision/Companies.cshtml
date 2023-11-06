@@ -65,56 +65,29 @@ else
                 idValue = "arrow" + nameValue;
                 value = serviceCompany.ID.ToString();
 
-                if (serviceCompany == Model.ServiceCompanies.Last())
-                {
-                    <tr>
-                        <td class="evol-fitcontent-column borders" style="box-shadow: 10px 20px 10px #FFFFFF; background-color: #FFFFFF">
-                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)" asp-route-restrictionsJson="@JsonConvert.SerializeObject(serviceCompanyRestrictionsList)">
-                                <img style="background:none; width:35px;height:35px;" class="rotate_01" src="~/images/config.png" title="@localizer["ServiceCompanyDetail"]: @serviceCompany.CompanyName" />
-                            </a>
-                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyExpCodes" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)">
-                                <img style="background:none; width:35px;height:35px;" class="float" src="~/images/envelopes.png" title="@localizer["ServiceCompanyExpCodes"]: @serviceCompany.CompanyName" />
-                            </a>
-                        </td>
-                        <td style="border-bottom-left-radius: 20px;">
-                            @serviceCompany.CompanyName
-                            @if (serviceCompanyRestrictionsList.Count() > 0)
-                            {
-                                <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetailL('@nameValue')" id="@idValue"></a>
-                            }
-                        </td>
-                        <td>@serviceCompany.CompanyCode</td>
-                        <td>@serviceCompany.CompanyAddress</td>
-                        <td>@serviceCompany.CompanyPostalCode</td>
-                        <td>@serviceCompany.CompanyPostalCodeDescription</td>
-                        <td style="border-bottom-right-radius: 20px;">@serviceCompany.CompanyCountry</td>
-                    </tr>
-                }
-                else
-                {
-                    <tr>
-                        <td class="evol-fitcontent-column borders">
-                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)" asp-route-restrictionsJson="@JsonConvert.SerializeObject(serviceCompanyRestrictionsList)">
-                                <img style="background:none; width:35px;height:35px;" class="rotate_01" src="~/images/config.png" title="@localizer["ServiceCompanyDetail"]: @serviceCompany.CompanyName" />
-                            </a>
-                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyExpCodes" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)">
-                                <img style="background:none; width:35px;height:35px;" class="float" src="~/images/envelopes.png" title="@localizer["ServiceCompanyExpCodes"]: @serviceCompany.CompanyName" />
-                            </a>
-                        </td>
-                        <td>
-                            @serviceCompany.CompanyName
-                            @if (serviceCompanyRestrictionsList.Count() > 0)
-                            {
-                                <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetailL('@nameValue')" id="@idValue"></a>
-                            }
-                        </td>
-                        <td>@serviceCompany.CompanyCode</td>
-                        <td>@serviceCompany.CompanyAddress</td>
-                        <td>@serviceCompany.CompanyPostalCode</td>
-                        <td>@serviceCompany.CompanyPostalCodeDescription</td>
-                        <td>@serviceCompany.CompanyCountry</td>
-                    </tr>
-                }
+                <tr>
+                    <td class="evol-fitcontent-column borders" style="@(serviceCompany == Model.ServiceCompanies.Last() ? "box-shadow: 10px 20px 10px #FFFFFF; background-color: #FFFFFF " : "")">
+                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompany" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)" asp-route-restrictionsJson="@JsonConvert.SerializeObject(serviceCompanyRestrictionsList)">
+                            <img style="background:none; width:35px;height:35px;" class="rotate_01" src="~/images/config.png" title="@localizer["ServiceCompanyDetail"]: @serviceCompany.CompanyName" />
+                        </a>
+                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyExpCodes" asp-route-servicecompanyJson="@JsonConvert.SerializeObject(serviceCompany)">
+                            <img style="background:none; width:35px;height:35px;" class="float" src="~/images/envelopes.png" title="@localizer["ServiceCompanyExpCodes"]: @serviceCompany.CompanyName" />
+                        </a>
+                    </td>
+                    <td class="@(serviceCompany == Model.ServiceCompanies.Last() ? "last-row-l" : "")">
+                        @serviceCompany.CompanyName
+                        @if (serviceCompanyRestrictionsList.Count() > 0)
+                        {
+                            <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetailL('@nameValue')" id="@idValue"></a>
+                        }
+                    </td>
+                    <td>@serviceCompany.CompanyCode</td>
+                    <td>@serviceCompany.CompanyAddress</td>
+                    <td>@serviceCompany.CompanyPostalCode</td>
+                    <td>@serviceCompany.CompanyPostalCodeDescription</td>
+                    <td class="@(serviceCompany == Model.ServiceCompanies.Last() ? "last-row-r" : "")">@serviceCompany.CompanyCountry</td>
+                </tr>
+
                 @if (serviceCompanyRestrictionsList.Count() > 0)
                 {
                     <tr id="@nameValue" class="borders" style="display: none">
@@ -132,57 +105,28 @@ else
                                 <tbody id="bootstrap-overrides">
                                     @foreach (ServiceCompanyRestriction r in serviceCompanyRestrictionsList)
                                     {
-                                        if (r == serviceCompanyRestrictionsList.Last())
-                                        {
-                                            <tr>
-                                                @{
-                                                    value = @localizer[r.MaterialTypeCode].Value;
-                                                    if (value == r.MaterialTypeCode)
-                                                        value = r.MaterialTypeDesc;
-                                                }
-                                                <td style="border-bottom-left-radius: 20px;">@value</td>
-                                                <td>
-                                                    @r.MaterialPosition @localizer["MaterialPositionType" + r.MaterialTypeCode]</td>
-                                                @if (r.MaterialTypeCode.ToUpper() == "STATION")
-                                                {
-                                                    <td></td>
-                                                    <td style="border-bottom-right-radius: 20px;">
-                                                        @localizer["RestrictionMode" + (r.RestrictionMode ? "1" : "0")]
-                                                    </td>
-                                                }
-                                                else
-                                                {
-                                                    <td>@r.FileSheetsCutoffLevel</td>
-                                                    <td style="border-bottom-right-radius: 20px;"></td>
-                                                }
-                                            </tr>
-                                        }
-                                        else
-                                        {
-                                            <tr>
-                                                @{
-                                                    value = @localizer[r.MaterialTypeCode].Value;
-                                                    if (value == r.MaterialTypeCode)
-                                                        value = r.MaterialTypeDesc;
-                                                }
-                                                <td>@value</td>
-                                                <td>
-                                                    @r.MaterialPosition @localizer["MaterialPositionType" + r.MaterialTypeCode]
+                                        <tr>
+                                            @{
+                                                value = @localizer[r.MaterialTypeCode].Value;
+                                                if (value == r.MaterialTypeCode)
+                                                    value = r.MaterialTypeDesc;
+                                            }
+                                            <td class="@(r == serviceCompanyRestrictionsList.Last() ? "last-row-l" : "")">@value</td>
+                                            <td>
+                                                @r.MaterialPosition @localizer["MaterialPositionType" + r.MaterialTypeCode]</td>
+                                            @if (r.MaterialTypeCode.ToUpper() == "STATION")
+                                            {
+                                                <td></td>
+                                                <td class="@(r == serviceCompanyRestrictionsList.Last() ? "last-row-r" : "")">
+                                                    @localizer["RestrictionMode" + (r.RestrictionMode ? "1" : "0")]
                                                 </td>
-                                                @if (r.MaterialTypeCode.ToUpper() == "STATION")
-                                                {
-                                                    <td></td>
-                                                    <td>
-                                                        @localizer["RestrictionMode" + (r.RestrictionMode ? "1" : "0")]
-                                                    </td>
-                                                }
-                                                else
-                                                {
-                                                    <td>@r.FileSheetsCutoffLevel</td>
-                                                    <td></td>
-                                                }
-                                            </tr>
-                                        }
+                                            }
+                                            else
+                                            {
+                                                <td>@r.FileSheetsCutoffLevel</td>
+                                                <td class="@(r == serviceCompanyRestrictionsList.Last() ? "last-row-r" : "")"></td>
+                                            }
+                                        </tr>
                                     }
                                 </tbody>
                             </table>

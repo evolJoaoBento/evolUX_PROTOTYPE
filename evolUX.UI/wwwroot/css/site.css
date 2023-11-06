@@ -378,6 +378,22 @@ tr.table-end .headcol b {
     color: var(--orange)
 }
 
+.head-l {
+    border-top-left-radius: 20px;
+}
+
+.head-r {
+    border-top-right-radius: 20px;
+}
+
+.last-row-r {
+    border-bottom-right-radius: 20px;
+}
+
+.last-row-l {
+    border-bottom-left-radius: 20px;
+}
+
 /*td.table-end-data {
     background-clip: text;
     -webkit-background-clip: text;

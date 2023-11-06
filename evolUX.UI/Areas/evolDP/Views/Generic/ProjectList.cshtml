@@ -139,30 +139,15 @@ else
                                 }                                
                                 @foreach (VersionElement v in p.VersionList)
                                 {
-                                    if (v == p.VersionList.Last())
-                                    {
-                                        <tr>
-                                            <td style="border-bottom-left-radius: 20px">@string.Format("{0:00}_{1:00}_{2:00}_{3:00}",v.Major, v.Minor, v.Revision, v.Patch)</td>
-                                            @{
-                                                idValue = string.Format("{0:00000000}{1:000000}", v.StartDate, v.StartTime);
-                                                        nameValue = string.Format("{3:00}/{4:00}/{5:0000} {0:00}:{1:00}:{2:00}", Int32.Parse(idValue.Substring(8, 2)), Int32.Parse(idValue.Substring(10, 2)), Int32.Parse(idValue.Substring(12, 2)), Int32.Parse(idValue.Substring(6, 2)), Int32.Parse(idValue.Substring(4, 2)), Int32.Parse(idValue.Substring(0, 4)));
-                                            }
-                                            <td>@nameValue</td>
-                                            <td style="border-bottom-right-radius: 20px;">@v.Description</td>
-                                        </tr>
-                                    }
-                                    else
-                                    {
-                                        <tr>
-                                            <td>@string.Format("{0:00}_{1:00}_{2:00}_{3:00}",v.Major, v.Minor, v.Revision, v.Patch)</td>
-                                            @{
-                                                idValue = string.Format("{0:00000000}{1:000000}", v.StartDate, v.StartTime);
-                                                        nameValue = string.Format("{3:00}/{4:00}/{5:0000} {0:00}:{1:00}:{2:00}", Int32.Parse(idValue.Substring(8, 2)), Int32.Parse(idValue.Substring(10, 2)), Int32.Parse(idValue.Substring(12, 2)), Int32.Parse(idValue.Substring(6, 2)), Int32.Parse(idValue.Substring(4, 2)), Int32.Parse(idValue.Substring(0, 4)));
-                                            }
-                                            <td>@nameValue</td>
-                                            <td>@v.Description</td>
-                                        </tr>
-                                    }
+                                    <tr>
+                                        <td class="@(v == p.VersionList.Last() ? "last-row-l" : "")">@string.Format("{0:00}_{1:00}_{2:00}_{3:00}",v.Major, v.Minor, v.Revision, v.Patch)</td>
+                                        @{
+                                            idValue = string.Format("{0:00000000}{1:000000}", v.StartDate, v.StartTime);
+                                                    nameValue = string.Format("{3:00}/{4:00}/{5:0000} {0:00}:{1:00}:{2:00}", Int32.Parse(idValue.Substring(8, 2)), Int32.Parse(idValue.Substring(10, 2)), Int32.Parse(idValue.Substring(12, 2)), Int32.Parse(idValue.Substring(6, 2)), Int32.Parse(idValue.Substring(4, 2)), Int32.Parse(idValue.Substring(0, 4)));
+                                        }
+                                        <td>@nameValue</td>
+                                        <td class="@(v == p.VersionList.Last() ? "last-row-r" : "")">@v.Description</td>
+                                    </tr>
                                 }
                                 </tbody>
                             </table>

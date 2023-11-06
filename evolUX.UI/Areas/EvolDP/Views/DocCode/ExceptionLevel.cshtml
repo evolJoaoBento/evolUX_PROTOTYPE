@@ -86,46 +86,23 @@ else
             {
                 value = Model.Level.ToString() + "|" + e.ExceptionLevelID.ToString();
 
-                if (e == Model.ExceptionslevelList.Last())
-                {
-                    <tr id="Exception|@value" ondblclick="openPopupEdit('@e.ExceptionLevelID','@value')">
-                        @if (AddExceptionLevel)
-                        {
-                            <td style="align-items:center; display:flex; box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF" class="borders">
-                                <img onclick="openPopupEdit('@e.ExceptionLevelID','@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
-                                @if (DeleteExceptionLevel)
-                                {
-                                    <a asp-area="evolDP" asp-controller="DocCode" asp-action="DeleteExceptionLevel" asp-route-level="@Model.Level" asp-route-exceptionID="@e.ExceptionLevelID">
-                                        <img onclick="return confirmExceptionDelete()" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
-                                    </a>
-                                }
-                            </td>
-                        }
-                        <td style="border-bottom-left-radius: 20px">@e.ExceptionLevelID</td>
-                        <td>@e.ExceptionCode</td>
-                        <td style="border-bottom-right-radius: 20px">@e.ExceptionDescription</td>
-                    </tr>
-                }
-                else
-                {
-                    <tr id="Exception|@value" ondblclick="openPopupEdit('@e.ExceptionLevelID','@value')">
-                        @if (AddExceptionLevel)
-                        {
-                            <td style="align-items:center; display:flex" class="borders">
-                                <img onclick="openPopupEdit('@e.ExceptionLevelID','@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
-                                @if (DeleteExceptionLevel)
-                                {
-                                    <a asp-area="evolDP" asp-controller="DocCode" asp-action="DeleteExceptionLevel" asp-route-level="@Model.Level" asp-route-exceptionID="@e.ExceptionLevelID">
-                                        <img onclick="return confirmExceptionDelete()" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
-                                    </a>
-                                }
-                            </td>
-                        }
-                        <td>@e.ExceptionLevelID</td>
-                        <td>@e.ExceptionCode</td>
-                        <td>@e.ExceptionDescription</td>
-                    </tr>
-                }
+                <tr id="Exception|@value" ondblclick="openPopupEdit('@e.ExceptionLevelID','@value')">
+                    @if (AddExceptionLevel)
+                    {
+                        <td style="align-items:center; display:flex; box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF" class="borders">
+                            <img onclick="openPopupEdit('@e.ExceptionLevelID','@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
+                            @if (DeleteExceptionLevel)
+                            {
+                                <a asp-area="evolDP" asp-controller="DocCode" asp-action="DeleteExceptionLevel" asp-route-level="@Model.Level" asp-route-exceptionID="@e.ExceptionLevelID">
+                                    <img onclick="return confirmExceptionDelete()" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteException"] @ExceptionLevelIDLabel @localizer["Code"] = @e.ExceptionCode" />
+                                </a>
+                            }
+                        </td>
+                    }
+                    <td class="@(e == Model.ExceptionslevelList.Last() ? "last-row-l" : "")">@e.ExceptionLevelID</td>
+                    <td>@e.ExceptionCode</td>
+                    <td class="@(e == Model.ExceptionslevelList.Last() ? "last-row-r" : "")">@e.ExceptionDescription</td>
+                </tr>
             }
         </tbody>
     </table>

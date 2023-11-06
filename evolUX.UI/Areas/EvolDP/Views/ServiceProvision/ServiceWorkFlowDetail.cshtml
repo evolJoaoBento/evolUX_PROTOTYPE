@@ -206,42 +206,21 @@ else
             @foreach (ServiceTypeElement s in serviceTask.ServiceTypes)
             {
                 value = s.ServiceTypeID.ToString();
-                if(s == serviceTask.ServiceTypes.Last())
-                {
-                    <tr>
-                        @if (AddServiceTask)
-                        {
-                            <td class="evol-fitcontent-column-one borders" style="border: none; vertical-align:middle; box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF">
-                                @if (DeleteServiceTask)
-                                {
-                                    <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID"  asp-route-servicetypeID="@s.ServiceTypeID">
-                                            <img onclick="return confirmServiceTypeDelete('@s.ServiceTypeCode')" style="width:30px;height:30px" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteServiceType"] = @s.ServiceTypeCode" />
-                                    </a>
-                                }
-                            </td>
-                        }
-                        <td style="border-bottom-left-radius: 20px;">@s.ServiceTypeDesc</td>
-                        <td style="border-bottom-right-radius: 20px;">@s.ServiceTypeCode</td>
-                    </tr>
-                }
-                else
-                {
-                    <tr>
-                        @if (AddServiceTask)
-                        {
-                            <td class="evol-fitcontent-column-one borders" style="border: none;background-color: transparent;vertical-align:middle">
-                                @if (DeleteServiceTask)
-                                {
-                                    <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID" asp-route-servicetypeID="@s.ServiceTypeID">
+                <tr>
+                    @if (AddServiceTask)
+                    {
+                        <td class="evol-fitcontent-column-one borders" style="border: none; vertical-align:middle; box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF">
+                            @if (DeleteServiceTask)
+                            {
+                                <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceType" asp-route-servicetaskID="@serviceTask.ServiceTaskID"  asp-route-servicetypeID="@s.ServiceTypeID">
                                         <img onclick="return confirmServiceTypeDelete('@s.ServiceTypeCode')" style="width:30px;height:30px" class="evol-image float" src="~/images/delete.png" title="@localizer["DeleteServiceType"] = @s.ServiceTypeCode" />
-                                    </a>
-                                }
-                            </td>
-                        }
-                        <td>@s.ServiceTypeDesc</td>
-                        <td>@s.ServiceTypeCode</td>
-                    </tr>
-                }
+                                </a>
+                            }
+                        </td>
+                    }
+                    <td class="@(s == serviceTask.ServiceTypes.Last() ? "last-row-l" : "")">@s.ServiceTypeDesc</td>
+                    <td class="@(s == serviceTask.ServiceTypes.Last() ? "last-row-r" : "")">@s.ServiceTypeCode</td>
+                </tr>
             }
         </tbody>
     </table>
@@ -295,50 +274,25 @@ else
             }
             @foreach (ExpCodeElement expCode in Model.ExpCodes)
             {
-                if(expCode == Model.ExpCodes.Last())
-                {
-                    <tr>
-                        <td class="evol-fitcontent-column-one borders" style="border:none;background-color:transparent">
-                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)"
-                       asp-route-serviceTaskDesc="@serviceTask.ServiceTaskDesc" asp-route-expCompanyName="@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName" asp-route-source="ServiceWorkFlowDetail">
-                                <img style="width:30px;height:30px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
-                            </a>
-                        </td>
-                        <td style="border-bottom-left-radius: 20px;">@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName</td>
-                        <td>@expCode.ExpCode</td>
-                        <td>@expCode.ExpCodeDesc</td>
-                        <td>@expCode.Priority</td>
-                        <td>@expCode.DefaultExpCenterCode</td>
-                        <td>@expCode.DefaultExpCompanyZone</td>
-                        @{
-                            value = expCode.CheckExpCompanySepCodes ? "checked" : "";
-                        }
-                        <td><input type="checkbox" id="CheckExpCompanySepCodes" disabled @value /></td>
-                        <td style="border-bottom-right-radius: 20px;">@expCode.PostalCodeStart</td>
-                    </tr>
-                }
-                else
-                {
-                    <tr>
-                        <td class="evol-fitcontent-column-one borders" style="border:none;background-color:transparent">
-                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)"
-                           asp-route-serviceTaskDesc="@serviceTask.ServiceTaskDesc" asp-route-expCompanyName="@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName" asp-route-source="ServiceWorkFlowDetail">
-                                <img style="width:30px;height:30px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
-                            </a>
-                        </td>
-                        <td>@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName</td>
-                        <td>@expCode.ExpCode</td>
-                        <td>@expCode.ExpCodeDesc</td>
-                        <td>@expCode.Priority</td>
-                        <td>@expCode.DefaultExpCenterCode</td>
-                        <td>@expCode.DefaultExpCompanyZone</td>
-                        @{
-                            value = expCode.CheckExpCompanySepCodes ? "checked" : "";
-                        }
-                        <td><input type="checkbox" id="CheckExpCompanySepCodes" disabled @value /></td>
-                        <td>@expCode.PostalCodeStart</td>
-                    </tr>
-                }
+                <tr>
+                    <td class="evol-fitcontent-column-one borders" style="border:none;background-color:transparent">
+                        <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)"
+                    asp-route-serviceTaskDesc="@serviceTask.ServiceTaskDesc" asp-route-expCompanyName="@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName" asp-route-source="ServiceWorkFlowDetail">
+                            <img style="width:30px;height:30px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["ExpCodeConfig"]" />
+                        </a>
+                    </td>
+                    <td class="@(expCode == Model.ExpCodes.Last() ? "last-row-l" : "")">@Model.ExpCompanies.FirstOrDefault(x => x.ID == expCode.ExpCompanyID)?.CompanyName</td>
+                    <td>@expCode.ExpCode</td>
+                    <td>@expCode.ExpCodeDesc</td>
+                    <td>@expCode.Priority</td>
+                    <td>@expCode.DefaultExpCenterCode</td>
+                    <td>@expCode.DefaultExpCompanyZone</td>
+                    @{
+                        value = expCode.CheckExpCompanySepCodes ? "checked" : "";
+                    }
+                    <td><input type="checkbox" id="CheckExpCompanySepCodes" disabled @value /></td>
+                    <td class="@(expCode == Model.ExpCodes.Last() ? "last-row-r" : "")">@expCode.PostalCodeStart</td>
+                </tr>
             }
         </tbody>
     </table>
