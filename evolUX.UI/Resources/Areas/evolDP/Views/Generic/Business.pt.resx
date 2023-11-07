@@ -196,10 +196,10 @@
     <value>ID</value>
   </data>
   <data name="InternalCodeLen" xml:space="preserve">
-    <value>N.º de digitos no código interno</value>
+    <value>N.º de digitos do código interno</value>
   </data>
   <data name="InternalCodeStart" xml:space="preserve">
-    <value>Início do código interno no código de separação de expedição</value>
+    <value>Início do código interno</value>
   </data>
   <data name="InternalCodeStartTip" xml:space="preserve">
     <value>Valor da posição, dentro do código de separação de expedição, onde o código interno se inicia, esta posição é contabilizada do dígito (-) significativo para o (+) significativo</value>

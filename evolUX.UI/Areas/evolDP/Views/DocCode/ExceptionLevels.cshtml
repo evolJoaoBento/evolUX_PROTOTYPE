@@ -1,0 +1,28 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+
+<div id="TitlePage">
+    <h1>@localizer["ExceptionLevels"]</h1>
+</div>
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    for (int level = 1; level < 4; level ++)
+    {
+        string eLevelDesc = string.Format("ExceptionLevel{0}ID",level);
+        string ExceptionLevelIDLabel = TempData[eLevelDesc]?.ToString();
+        if (string.IsNullOrEmpty(ExceptionLevelIDLabel))
+            ExceptionLevelIDLabel = localizer[eLevelDesc].Value;
+        <div id="TitlePage">
+            <h2>
+                <a asp-area="evolDP" asp-controller="DocCode" asp-action="ExceptionLevel" asp-route-level="@level">
+                    <img style="background:none; width:35px;height:35px;" class="rotate_01" src="~/images/config.png" />
+                </a>@ExceptionLevelIDLabel
+            </h2>
+        </div>
+    }
+}

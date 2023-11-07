@@ -38,6 +38,13 @@ else
         <thead>
         </thead>
         <tbody>
+    string Level1Name = "detail";
+    int count = 0;
+    string idValue = "";
+    string nameValue = "";
+    string cValue = "";
+    <div id="response" class="d-flex justify-content-center">
+    </div>
             @foreach (ProdExpeditionElement eInfo in Model.ProductionReport)
             {
 
@@ -46,6 +53,7 @@ else
 
                     @foreach (ProdMaterialElement mInfo in sInfo.MediaMaterialList)
                     {
+                        int servicespan = 0;
                         int PrintTotal = 0;
                         int PostObjsTotal = 0;
                         Dictionary<string, int> PaperTotal = new Dictionary<string, int>();
@@ -79,6 +87,7 @@ else
                                             {
                                                 envelopingSpan += mInfo.FileList.First().StationTotals.Keys.Count;
                                             }
+                                            servicespan += envelopingSpan;
                                         }
                                         <colgroup span="@envelopingSpan"></colgroup>
                                         <colgroup span="5"></colgroup>
@@ -247,3 +256,4 @@ else
             }
     </table>
 }
+

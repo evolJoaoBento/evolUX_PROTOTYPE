@@ -314,7 +314,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
             return;
         }
-        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes()
+        public async Task<IEnumerable<FullfillMaterialCode>> GetFulfillMaterialCodes()
         {
             Dictionary<string, object> dictionary = new Dictionary<string, object>();
             var response = await _flurlClient.Request("/API/evolDP/Materials/GetFulfillMaterialCodes")
@@ -322,7 +322,7 @@ namespace evolUX.UI.Areas.evolDP.Repositories
                 .SendJsonAsync(HttpMethod.Get, dictionary);
             if (response.StatusCode == (int)HttpStatusCode.NotFound) throw new HttpNotFoundException(response);
             if (response.StatusCode == (int)HttpStatusCode.Unauthorized) throw new HttpUnauthorizedException(response);
-            return await response.GetJsonAsync<IEnumerable<FulfillMaterialCode>>();
+            return await response.GetJsonAsync<IEnumerable<FullfillMaterialCode>>();
         }
         public async Task<IEnumerable<ServiceCompanyExpCodeConfig>> GetServiceCompanyExpCodeConfigs(string expCode, int serviceCompanyID, string expCenterCode)
         {

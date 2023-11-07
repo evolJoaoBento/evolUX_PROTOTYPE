@@ -5,7 +5,8 @@ END
 GO
 --Configuração de restrições (listar/alterar)
 ALTER  PROCEDURE [dbo].[RD_UX_GET_SERVICE_COMPANY_RESTRICTIONS]
-	@ServiceCompanyID int = NULL
+	@ServiceCompanyID int = NULL,
+	@MaterialTypeID int = NULL
 AS
 BEGIN
 	SELECT
@@ -22,7 +23,9 @@ BEGIN
 		RD_MATERIAL_TYPE mt WITH(NOLOCK)
 	ON	scr.MaterialTypeID = mt.MaterialTypeID
 	WHERE (@ServiceCompanyID is NULL OR scr.ServiceCompanyID = @ServiceCompanyID)
-		AND mt.MaterialTypeCode not in ('RollPaper')
+		AND ((@MaterialTypeID is NULL AND mt.MaterialTypeCode not in ('RollPaper'))
+			OR 
+			scr.MaterialTypeID = @MaterialTypeID)
 	ORDER BY scr.ServiceCompanyID, mt.MaterialTypeID
 END
 GO
