@@ -114,7 +114,7 @@ else
             </div>
         </div>
     </div>
-    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
+    <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if (AddServiceCompanyExpCodes)
@@ -123,21 +123,20 @@ else
                         <img onclick="openPopupAdd()" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddServiceCompanyExpLevel"]" />
                     </th>
                 }
-                <th style="border-top-left-radius: 20px;">@localizer["ExpLevel"]</th>
+                <th>@localizer["ExpLevel"]</th>
                 <th>@localizer["FullFillMaterialCode"]</th>
                 <th>@localizer["DocMaxSheets"]</th>
-                <th style="border-top-right-radius: 20px;">@localizer["Barcode"]</th>
+                <th>@localizer["Barcode"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
             @foreach (ServiceCompanyExpCodeConfig config in Model.Configs)
             {
                 value = config.ExpLevel.ToString();
-
                 <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
                     @if (AddServiceCompanyExpCodes)
                     {
-                        <td style="align-items:center; display:flex; @(config == Model.Configs.Last() ? "box-shadow: 10px 10px 10px #FFFFFF; background-color: #FFFFFF " : "")" class="borders">
+                        <td style="align-items:center; display:flex" class="borders">
                             <img onclick="openPopupEdit('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyExpLevel"]" />
                             @if (DeleteServiceCompanyExpCodes)
                             {
@@ -151,12 +150,11 @@ else
                             }                        
                         </td>
                     }
-                    <td class="@(config == Model.Configs.Last() ? "last-row-l" : "")">@config.ExpLevel</td>
+                    <td>@config.ExpLevel</td>
                     <td>@config.FullFillMaterialCode</td>
                     <td>@config.DocMaxSheets</td>
-                    <td class="@(config == Model.Configs.Last() ? "last-row-r" : "")">@config.Barcode</td>
+                    <td>@config.Barcode</td>
                 </tr>
-
                 @if (AddServiceCompanyExpCodes)
                 {
                     <div class="popup-container confirmPopupEdit FormEdit" id="Edit|@value" style="display: none;">

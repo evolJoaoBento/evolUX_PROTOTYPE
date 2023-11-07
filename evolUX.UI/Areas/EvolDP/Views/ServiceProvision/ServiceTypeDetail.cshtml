@@ -82,7 +82,7 @@ else
             </div>
         </div>
     </div>
-    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
+    <table class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if (colWidth > 0)
@@ -95,9 +95,9 @@ else
                     }
                     </th>
                 }
-                <th style="border-top-left-radius: 20px;">@localizer["ServiceDesc"]</th>
+                <th>@localizer["ServiceDesc"]</th>
                 <th>@localizer["ServiceCode"]</th>
-                <th title="@localizer["MatchCodeTip"]" style = "border-top-right-radius: 20px;">@localizer["MatchCode"]</th>
+                <th title="@localizer["MatchCodeTip"]">@localizer["MatchCode"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
@@ -140,7 +140,7 @@ else
                     {
                         @if (s.CompanyList.Count() > 0)
                         {
-                            <td class="borders collapsible" style="align-items:center; display:flex; justify-content: center; @(s == Model.Type.ServicesList.Last() ? "box-shadow: 7px 10px 10px #FFFFFF; background-color: #FFFFFF" : "")" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
+                            <td class="borders collapsible" style="align-items:center; display:flex; justify-content: center" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
                                 @if (AddServiceTask)
                                 {
                                     <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeService"]" />
@@ -150,7 +150,7 @@ else
                         }
                         else
                         {
-                            <td class="borders" style="align-items:center; display:flex; justify-content: center; @(s == Model.Type.ServicesList.Last() ? "box-shadow: 7px 10px 10px #FFFFFF; background-color: #FFFFFF" : "")">
+                            <td class="borders" style="align-items:center; display:flex; justify-content: center">
                                 @if (AddServiceTask)
                                 {
                                     <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeService"]" />
@@ -158,26 +158,26 @@ else
                             </td>
                         }
                     }
-                    <td class="@(s == Model.Type.ServicesList.Last() ? "last-row-l" : "")">@s.ServiceDesc</td>
+                    <td>@s.ServiceDesc
+                    </td>
                     <td>@s.ServiceCode</td>
-                    <td class="@(s == Model.Type.ServicesList.Last() ? "last-row-r" : "")">@s.MatchCode</td>
+                    <td>@s.MatchCode</td>
                 </tr>
-
                 @if (s.CompanyList.Count() > 0)
                 {
                     <tr id="@nameValue" class="borders" style="display: none">
                         <td colspan="@colspan" class="table-collapse">
-                            <table class="table table-sm table-hover table-collapse-seperate collapsed-table table-shadow">
+                            <table class="table table-sm table-hover table-collapse-seperate collapsed-table">
                                 <thead id="bootstrap-overrides" class="table-info">
                                     <tr>
-                                        <th style="border-top-left-radius: 20px; border-top-right-radius: 20px;">@localizer["ServiceCompany"]</th>
+                                        <th>@localizer["ServiceCompany"]</th>
                                     </tr>
                                 </thead>
                                 <tbody id="bootstrap-overrides">
                                     @foreach (int c in s.CompanyList)
                                     {
                                         <tr>
-                                            <td class="@(c == s.CompanyList.Last() ? "last-row-l last-row-r" : "")">@Model.ServiceCompanies.FirstOrDefault(x => x.ID == c).CompanyName</td>
+                                            <td>@Model.ServiceCompanies.FirstOrDefault(x => x.ID == c).CompanyName</td>
                                         </tr>
                                     }
                                 </tbody>

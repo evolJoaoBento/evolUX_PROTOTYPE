@@ -70,7 +70,7 @@ else
             </div>
         </div>
     </div>
-    <table id="Show|" class="table table-sm table-hover table-collapse-seperate table-shadow">
+    <table id="Show|" class="table table-sm table-hover table-collapse-seperate">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
 
@@ -80,9 +80,9 @@ else
                         <img onclick="openPopupAdd('')" style="background:none; width:35px;height:35px;" class="grow" src="~/images/add.png" title="@localizer["AddServiceTask"]" />
                     }
                 </th>
-                <th style="vertical-align:middle; border-top-left-radius: 20px;" rowspan="2">@localizer["ServiceTaskCode"]</th>
+                <th style="vertical-align:middle" rowspan="2">@localizer["ServiceTaskCode"]</th>
                 <th style="vertical-align:middle" rowspan="2">@localizer["ServiceTaskDesc"]</th>
-                <th style="vertical-align:middle; border-top-right-radius: 20px;" colspan="3">@localizer["ServiceTaskConfigs"]</th>
+                <th style="vertical-align:middle" colspan="3">@localizer["ServiceTaskConfigs"]</th>
             </tr>
             <tr>
                 <th style="vertical-align:middle" title="@localizer["ComplementServiceTaskTip"]">@localizer["ComplementServiceTask"]</th>
@@ -182,11 +182,10 @@ else
                         </div>
                     </div>
                 }
-
                 <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
                     @if (st.ServiceTypes.Count() > 0)
                     {
-                        <td style="align-items:center; display:flex;border: none; @(st == Model.ServiceTasksList.Last() ? "box-shadow: 5px 20px 10px #FFFFFF; background-color: #FFFFFF " : "")" class="borders collapsible" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
+                        <td style="align-items:center; display:flex;border: none;background-color: transparent;" class="borders collapsible" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
                                 <img style="margin-bottom: 1px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
                             </a>
@@ -199,7 +198,7 @@ else
                     }
                     else
                     {
-                        <td style="align-items:center; display:flex;border: none; @(st == Model.ServiceTasksList.Last() ? "box-shadow: 5px 20px 10px #FFFFFF; background-color: #FFFFFF " : "")" class="borders">
+                        <td style="align-items:center; display:flex;border: none;background-color: transparent;" class="borders">
                             <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceWorkFlowDetail" asp-route-servicetaskID="@st.ServiceTaskID">
                                 <img style="margin-bottom: 1px" class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @st.ServiceTaskDesc" />
                             </a>
@@ -209,7 +208,7 @@ else
                             }
                         </td>
                     }
-                    <td class="@(st == Model.ServiceTasksList.Last() ? "last-row-l" : "")">@st.ServiceTaskCode</td>
+                    <td>@st.ServiceTaskCode</td>
                     <td>
                         @st.ServiceTaskDesc
                     </td>
@@ -222,27 +221,26 @@ else
                         }
                         @localizer[localValue]
                     </td>
-                    <td class="@(st == Model.ServiceTasksList.Last() ? "last-row-r" : "")">@st.StationExceededDesc</td>
+                    <td>@st.StationExceededDesc</td>
                 </tr>
-
                 @if (st.ServiceTypes.Count() > 0)
                 {
                 <tr id="@nameValue" class="borders" style="display: none">
                         <td style="border:none;background-color:transparent"></td>
                         <td colspan="3" class="table-collapse">
-                            <table class="table table-sm table-hover table-collapse-seperate collapsed-table table-shadow" style="border-left: none">
+                            <table class="table table-sm table-hover table-collapse-seperate collapsed-table" style="border-left: none">
                                 <thead id="bootstrap-overrides" class="table-info">
                                     <tr>
-                                        <th style="border-top-left-radius: 20px;" padding: 10px;>@localizer["ServiceTypeDesc"]</th>
-                                        <th style="border-top-right-radius: 20px;">@localizer["ServiceTypeCode"]</th>
+                                        <th>@localizer["ServiceTypeDesc"]</th>
+                                        <th>@localizer["ServiceTypeCode"]</th>
                                     </tr>
                                 </thead>
                                 <tbody id="bootstrap-overrides">
                                         @foreach (ServiceTypeElement s in st.ServiceTypes)
                                         {
                                             <tr>
-                                                <td class="@(s == st.ServiceTypes.Last() ? "last-row-l" : "")">@s.ServiceTypeDesc</td>
-                                                <td class="@(s == st.ServiceTypes.Last() ? "last-row-r" : "")">@s.ServiceTypeCode</td>
+                                                <td>@s.ServiceTypeDesc</td>
+                                                <td>@s.ServiceTypeCode</td>
                                             </tr>
                                         }
                                 </tbody>
