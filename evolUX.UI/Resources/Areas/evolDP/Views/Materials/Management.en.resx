@@ -120,10 +120,16 @@
   <data name="EmptyField" xml:space="preserve">
     <value>&lt;empty&gt;</value>
   </data>
-  <data name="ENVELOPE" xml:space="preserve">
+  <data name="Envelope" xml:space="preserve">
+    <value>Envelopes</value>
+  </data>
+  <data name="Envelope_Icon" xml:space="preserve">
     <value>envelope.png</value>
   </data>
-  <data name="FEEDPAPER" xml:space="preserve">
+  <data name="FeedPaper" xml:space="preserve">
+    <value>Loose leaf printing papers</value>
+  </data>
+  <data name="FeedPaper_Icon" xml:space="preserve">
     <value>paper.png</value>
   </data>
   <data name="MaterialType" xml:space="preserve">
@@ -132,10 +138,22 @@
   <data name="NoModelData" xml:space="preserve">
     <value>No Data</value>
   </data>
-  <data name="ROLLPAPER" xml:space="preserve">
-    <value>presspaper.png</value>
+  <data name="Paper" xml:space="preserve">
+    <value>Printing papers</value>
   </data>
-  <data name="STATION" xml:space="preserve">
+  <data name="Paper_Icon" xml:space="preserve">
+    <value>paper.png</value>
+  </data>
+  <data name="RollPaper" xml:space="preserve">
+    <value>Roll printing papers</value>
+  </data>
+  <data name="RollPaper_Icon" xml:space="preserve">
+    <value>paper.png</value>
+  </data>
+  <data name="Station" xml:space="preserve">
+    <value>Enveloping inserts</value>
+  </data>
+  <data name="Station_Icon" xml:space="preserve">
     <value>newspaper.png</value>
   </data>
   <data name="Submit" xml:space="preserve">

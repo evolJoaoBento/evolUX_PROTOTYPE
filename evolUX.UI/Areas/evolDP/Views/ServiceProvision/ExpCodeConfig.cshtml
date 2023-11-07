@@ -1,0 +1,230 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model ServiceCompanyExpCodeConfigViewModel;
+@{
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    string source = TempData["Source"].ToString();
+    bool AddServiceCompany = false;
+    bool AddServiceTask = false;
+    bool DeleteServiceTask = false;
+    bool ExportServiceTask = false;
+    bool AddServiceCompanyExpCodes = false;
+    bool AddExpCode = false;
+    bool DeleteExpCode = false;
+    bool ExportExpCode = false;
+    bool DeleteServiceCompanyExpCodes = false;
+
+    if (Model.Permissions.Find(x => x == "AddServiceCompanyExpCodes") != null) { AddServiceCompanyExpCodes = true; }
+    DeleteServiceCompanyExpCodes = AddServiceCompanyExpCodes;
+    if (Model.Permissions.Find(x => x == "AddServiceCompany") != null) { AddServiceCompany = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceTask") != null) { AddServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "DeleteServiceTask") != null) { DeleteServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "ExportServiceTask") != null) { ExportServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "AddExpCode") != null) { AddExpCode = true; }
+    if (Model.Permissions.Find(x => x == "DeleteExpCode") != null) { DeleteExpCode = true; }
+    if (Model.Permissions.Find(x => x == "ExportExpCode") != null) { ExportExpCode = true; }
+    if (source == "ServiceWorkFlowDetail")
+    {
+        <div id="TitlePage">
+            <h1>@localizer["ExpCodeConfig"]</h1>
+            <h2><b>@TempData["ServiceTaskDesc"] / @TempData["ExpCompanyName"]</b></h2>
+            @if (Model != null)
+            {
+                <h2>
+                    @Model.ServiceCompany.CompanyName / @localizer["ExpCenter"] [@Model.ExpCenterCode]
+                </h2>
+            }
+            <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ExpCode" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)"
+               asp-route-expcodejson="@JsonConvert.SerializeObject(Model.ExpCode)" asp-route-expcentercode="@Model.ExpCenterCode"
+               asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]">
+            </a>
+        </div>
+    }
+    else
+    {
+        <div id="TitlePage">
+            <h1>@localizer["ExpCodeConfig"]</h1>
+            @if (Model != null)
+            {
+                <h2>
+                    <b>
+                        @Model.ServiceCompany.CompanyName
+                    </b>
+                </h2>
+            }
+            <h2>@TempData["ServiceTaskDesc"] / @TempData["ExpCompanyName"] / @localizer["ExpCenter"] [@Model.ExpCenterCode]</h2>
+            <a class='bx bx-left-arrow grow' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceCompanyExpCodes" asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(Model.ServiceCompany)">
+            </a>
+        </div>
+    }
+}
+@if (Model == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    ExpCodeElement expCode = Model.ExpCode;
+    string localValue;
+    string value = "";
+    string Level0Name = "level";
+
+    int level = 0;
+    string idValue = "arrow" + level.ToString();
+    string nameValue = "";
+    Company serviceCompany = Model.ServiceCompany;
+    FullfillMaterialCode fCode;  
+    <script>
+        const deleteServiceCompanyExpLevelMsg = '@localizer["deleteServiceCompanyExpLevelMsg"]"';
+    </script>
+    <div class="popup-container" id="confirmPopupAdd" style="display: none;">
+        <div class="bgGradient">
+            <div class="popup">
+                <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyExpLevel"
+                  asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
+                  asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
+                  asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
+                  asp-route-explevel="-1">
+                    <h1>@localizer["PopupMessageAdd"]</h1>
+                    <div class="form-inputs">
+                        <h6>@localizer["ExpLevel"]</h6>
+                        <input type="text" id="ExpLevel" name="ExpLevel" maxlength="5" value="" readonly />
+                        <h6>@localizer["FullFillMaterialCode"]</h6>
+                        <select id="ServiceCompanyID" name="ServiceCompanyID">
+                            @foreach (FullfillMaterialCode f in Model.FulfillMaterialCodes)
+                            {
+                                <option value="@f.FullFillMaterialCode">@f.Description</option>
+                            }
+                        </select>
+                        <h6>@localizer["DocMaxSheets"]</h6>
+                        <input type="number" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="0" />
+                        <h6>@localizer["Barcode"]</h6>
+                        <input type="text" id="Barcode" name="Barcode" maxlength="256" value="" title="@localizer["BarcodeTip"]" />
+                    </div>
+                    <div class="popup-buttons">
+                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
+                        <button class="popup-button" onclick="return closePopup()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                @if (AddServiceCompanyExpCodes)
+                {
+                    <th class="evol-fitcontent-column-one" style="text-align:center;border:none;background-color:transparent">
+                        <img onclick="openPopupAdd()" style="width:30px;height:30px" class="evol-image grow" src="~/images/add.png" title="@localizer["AddServiceCompanyExpLevel"]" />
+                    </th>
+                }
+                <th>@localizer["ExpLevel"]</th>
+                <th>@localizer["FullFillMaterialCode"]</th>
+                <th>@localizer["DocMaxSheets"]</th>
+                <th>@localizer["Barcode"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @foreach (ServiceCompanyExpCodeConfig config in Model.Configs)
+            {
+                value = config.ExpLevel.ToString();
+                <tr id="Show|@value" ondblclick="openPopupEdit('@value')">
+                    @if (AddServiceCompanyExpCodes)
+                    {
+                        <td style="align-items:center; display:flex" class="borders">
+                            <img onclick="openPopupEdit('@value')" class="evol-image grow" src="~/images/edit.png" title="@localizer["ChangeServiceCompanyExpLevel"]" />
+                            @if (DeleteServiceCompanyExpCodes)
+                            {
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="DeleteServiceCompanyExpLevel" 
+                                asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
+                                asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
+                                asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
+                                asp-route-explevel="@config.ExpLevel">
+                                    <img onclick="return confirmServiceCompanyExpLevelDelete()" class="evol-image grow" src="~/images/delete.png" title="@localizer["DeleteServiceCompanyExpLevel"] = @config.ExpLevel" />
+                            </a>
+                            }                        
+                        </td>
+                    }
+                    <td>@config.ExpLevel</td>
+                    <td>@config.FullFillMaterialCode</td>
+                    <td>@config.DocMaxSheets</td>
+                    <td>@config.Barcode</td>
+                </tr>
+                @if (AddServiceCompanyExpCodes)
+                {
+                    <div class="popup-container confirmPopupEdit FormEdit" id="Edit|@value" style="display: none;">
+                        <div class="bgGradient">
+                            <div class="popup">
+                                <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ChangeServiceCompanyExpLevel"
+                          asp-route-serviceCompanyJson="@JsonConvert.SerializeObject(serviceCompany)"
+                          asp-route-expcodejson="@JsonConvert.SerializeObject(expCode)" asp-route-expcentercode="@Model.ExpCenterCode"
+                          asp-route-source="@source" asp-route-servicetaskdesc="@TempData["ServiceTaskDesc"]" asp-route-expcompanyname="@TempData["ExpCompanyName"]"
+                          asp-route-explevel="@config.ExpLevel">
+                                    <h1>@localizer["PopupMessageEdit"]</h1>
+                                    <div class="form-inputs">
+                                        <input type="text" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="@config.ExpLevel" readonly />
+                                        <select id="ServiceCompanyID" name="ServiceCompanyID">
+                                            @{
+                                                fCode = Model.FulfillMaterialCodes.FirstOrDefault(x => x.FullFillMaterialCode == config.FullFillMaterialCode);
+                                            }
+                                            <option value="@fCode.FullFillMaterialCode">@fCode.Description</option>
+                                            @foreach (FullfillMaterialCode f in Model.FulfillMaterialCodes.Where(x => x.FullFillMaterialCode != config.FullFillMaterialCode))
+                                            {
+                                                <option value="@f.FullFillMaterialCode">@f.Description</option>
+                                            }
+                                        </select>
+                                        <input type="number" id="DocMaxSheets" name="DocMaxSheets" max="2147483647" value="@config.DocMaxSheets" />
+                                        <input type="text" id="Barcode" name="Barcode" maxlength="256" value="@config.Barcode" title="@localizer["BarcodeTip"]" />
+                                    </div>
+                                    <div class="popup-buttons">
+                                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
+                                        <button class="popup-button" onclick="return closePopup()">Cancelar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </tbody>
+    </table>
+
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+        function confirmServiceCompanyExpLevelDelete() {
+            if (confirm(deleteServiceCompanyExpLevelMsg)) {
+                // User clicked "OK", handle the deletion
+                return true;
+            } else {
+                // User clicked "Cancel", do nothing
+                return false;
+            }
+        }
+        function openPopupAdd() {
+            document.getElementById("DocMaxSheets").value = "";
+            document.getElementById("Barcode").value = "";
+            document.getElementById("confirmPopupAdd").style.display = "flex";
+        }
+        function openPopupEdit(value) {
+            document.getElementById("Edit|" + value).style.display = "flex";
+        }
+        function confirmBtn() {
+            return true;
+        }
+        function closePopup() {
+            document.getElementById("confirmPopupAdd").style.display = "none";
+            var elements = document.querySelectorAll(".confirmPopupEdit");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.display = "none";
+            }
+            return false;
+        }
+    </script>
+}

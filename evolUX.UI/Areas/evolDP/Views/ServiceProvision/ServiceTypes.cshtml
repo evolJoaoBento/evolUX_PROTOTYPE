@@ -1,0 +1,184 @@
+﻿@using Shared.Models.Areas.evolDP
+@using Shared.ViewModels.Areas.evolDP
+@using Newtonsoft.Json;
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer localizer
+@inject IConfiguration configuration
+
+@model ServiceTypeViewModel;
+@{
+    int colWidth;
+    string siteURL = configuration.GetValue<string>("evolUXSiteURL");
+    bool AddServiceCompany = false;
+    bool AddServiceTask = false;
+    bool DeleteServiceTask = false;
+    bool ExportServiceTask = false;
+    bool AddServiceCompanyExpCodes = false;
+    bool AddExpCode = false;
+    bool DeleteExpCode = false;
+    bool ExportExpCode = false;
+
+    if (Model.Permissions.Find(x => x == "AddServiceCompanyExpCodes") != null) { AddServiceCompanyExpCodes = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceCompany") != null) { AddServiceCompany = true; }
+    if (Model.Permissions.Find(x => x == "AddServiceTask") != null) { AddServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "DeleteServiceTask") != null) { DeleteServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "ExportServiceTask") != null) { ExportServiceTask = true; }
+    if (Model.Permissions.Find(x => x == "AddExpCode") != null) { AddExpCode = true; }
+    if (Model.Permissions.Find(x => x == "DeleteExpCode") != null) { DeleteExpCode = true; }
+    if (Model.Permissions.Find(x => x == "ExportExpCode") != null) { ExportExpCode = true; }
+}
+<div id="TitlePage">
+    <h1>@localizer["ServiceType"]</h1>
+</div>
+
+@if (AddServiceTask && Model != null && Model.Types != null && Model.Types.Count() == 0)
+{
+    <div>
+        <th width="120px" style="text-align: center"><img onclick="EditRow('')" style="background:none; width:30px;height:30px;" src="~/images/add.png" title="@localizer["AddServiceType"]" /></th>
+    </div>
+}
+
+
+@if (Model == null)
+{
+    <tr><td colspan="5" class="text-center">@localizer["NoModelData"]</td></tr>
+}
+else
+{
+    string value = "";
+    string Level0Name = "level";
+
+    int level = 0;
+    string idValue = "arrow" + level.ToString();
+    string nameValue = "";
+    string arrowid = "arrow";
+    colWidth = 1;
+    if (AddServiceTask)
+        colWidth++;
+    if (Model.Types.Where(x => x.ServicesList.Count() > 0).ToList().Count() > 0)
+        colWidth++;
+    colWidth = 30 * colWidth;
+    <div class="popup-container" id="confirmPopupEdit" style="display: none;">
+        <div class="bgGradient">
+            <div class="popup">
+                <form class="align-content-center FormEdit" asp-area="evolDP" asp-controller="ServiceProvision" asp-action="SetServiceType">
+                    <h1 id="popupMessage"></h1>
+                    <div class="form-inputs">
+                        <input style="display: none" id=ServiceTypeID name=ServiceTypeID value="" />
+                        <h6>@localizer["ServiceTypeDesc"]</h6>
+                        <input id=ServiceTypeDesc name=ServiceTypeDesc type="text" maxlength="256" style="width: 100%" value="" />
+                        <h6>@localizer["ServiceTypeCode"]</h6>
+                        <input id=ServiceTypeCode name=ServiceTypeCode type="text" maxlength="15" style="width: 100%" value="" />
+                    </div>
+                    <div class="popup-buttons">
+                        <button class="popup-button" id="confirmEdit" name="Submit" onclick="return confirmBtn()" value="@localizer["SubmitChange"]">Confirmar</button>
+                        <button class="popup-button" onclick="return closePopup()">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <table class="table table-sm table-hover table-collapse-seperate">
+        <thead id="bootstrap-overrides" class="table-info sticky-header">
+            <tr>
+                @if (AddServiceTask && Model.Types.Count() > 0)
+                {
+                    <th width="@colWidth px" style="text-align: center" class="borders evol-image"><img onclick="openPopupAdd()" class="grow" style="background:none; width:35px;height:35px;" src="~/images/add.png" title="@localizer["AddServiceType"]" /></th>
+                }
+                <th>@localizer["ServiceTypeDesc"]</th>
+                <th>@localizer["ServiceTypeCode"]</th>
+            </tr>
+        </thead>
+        <tbody id="bootstrap-overrides">
+            @foreach (var t in Model.Types)
+            {
+                level++;
+                nameValue = Level0Name + level.ToString();
+                arrowid = "arrow" + level.ToString();
+                idValue = "arrow" + nameValue;
+                value = t.ServiceTypeID.ToString();
+                <tr id="Show|@value" ondblclick="openPopupEdit('@t.ServiceTypeID')">
+                    @if (t.ServicesList.Count() > 0)
+                    {
+                        <td style="align-items:center; display:flex; justify-content:center" class="borders collapsible" id="@idValue" onclick="javascript:showDetail('@nameValue','@arrowid')">
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceTypeDetail" asp-route-servicetypeJson="@JsonConvert.SerializeObject(t)">
+                                <img class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @t.ServiceTypeDesc" />
+                            </a>
+                            @if (AddServiceTask)
+                            {
+                                <img onclick="openPopupEdit('@t.ServiceTypeID')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceType"]" />
+                            }
+                            <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid"></a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td style="align-items:center; display:flex; justify-content:center" class="borders">
+                            <a asp-area="evolDP" asp-controller="ServiceProvision" asp-action="ServiceTypeDetail" asp-route-servicetypeJson="@JsonConvert.SerializeObject(t)">
+                                <img class="evol-image rotate_01" src="~/images/config.png" title="@localizer["List"]: @t.ServiceTypeDesc" />
+                            </a>
+                            @if (AddServiceTask)
+                            {
+                                <img onclick="openPopupEdit('@t.ServiceTypeID')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeServiceType"]" />
+                            }
+                        </td>
+                    }
+                    <td>@t.ServiceTypeDesc</td>
+                    <td>@t.ServiceTypeCode</td>
+                </tr>
+                @if (t.ServicesList.Count() > 0)
+                {
+                <tr id="@nameValue" class="borders" style="display: none">
+                    <td colspan="4" class="table-collapse">
+                        <table class="table table-sm table-hover table-collapse-seperate collapsed-table">
+                            <thead id="bootstrap-overrides" class="table-info">
+                                <tr>
+                                    <th>@localizer["ServiceDesc"]</th>
+                                    <th>@localizer["ServiceCode"]</th>
+                                    <th title="@localizer["MatchCodeTip"]">@localizer["MatchCode"]</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bootstrap-overrides">
+                                    @foreach (ServiceElement s in t.ServicesList)
+                                    {
+                                        <tr>
+                                            <td>@s.ServiceDesc</td>
+                                            <td>@s.ServiceCode</td>
+                                            <td>@s.MatchCode</td>
+                                        </tr>
+                                    }
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                }
+            }
+        </tbody>
+    </table>
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+        function openPopupEdit(value) {
+            document.getElementById("popupMessage").innerHTML = '@localizer["PopupMessageEdit"]';
+            document.getElementById("ServiceTypeID").value = value
+            document.getElementById("ServiceTypeDesc").value = document.getElementById("Show|" + value).querySelector("td:nth-child(2)").textContent;
+            document.getElementById("ServiceTypeCode").value = document.getElementById("Show|" + value).querySelector("td:nth-child(3)").textContent;
+            document.getElementById("confirmPopupEdit").style.display = "flex";
+        }
+        function openPopupAdd() {
+            document.getElementById('popupMessage').innerHTML = '@localizer["PopupMessageAdd"]';
+            document.getElementById("ServiceTypeID").value = "";
+            document.getElementById("ServiceTypeDesc").value = "";
+            document.getElementById("ServiceTypeCode").value = "";
+            document.getElementById("confirmPopupEdit").style.display = "flex";
+        }
+        function confirmBtn() {
+            return true;
+        }
+        function closePopup() {
+            document.getElementById("confirmPopupEdit").style.display = "none";
+            return false;
+        }
+    </script>
+}

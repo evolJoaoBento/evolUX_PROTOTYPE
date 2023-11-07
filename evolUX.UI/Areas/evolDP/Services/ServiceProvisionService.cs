@@ -157,7 +157,7 @@ namespace evolUX.UI.Areas.evolDP.Services
             var response = await _serviceProvisionRepository.GetServiceCompanyExpCodeConfigs(expCode, serviceCompanyID, expCenterCode);
             return response;
         }
-        public async Task<IEnumerable<FulfillMaterialCode>> GetFulfillMaterialCodes()
+        public async Task<IEnumerable<FullfillMaterialCode>> GetFulfillMaterialCodes()
         {
             var response = await _serviceProvisionRepository.GetFulfillMaterialCodes();
             return response;

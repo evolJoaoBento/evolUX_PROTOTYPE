@@ -9,6 +9,6 @@ namespace Shared.ViewModels.Areas.evolDP
         public Company ServiceCompany { get; set; }
         public string ExpCenterCode { get; set; }
         public IEnumerable<ServiceCompanyExpCodeConfig> Configs { get; set; } = Enumerable.Empty<ServiceCompanyExpCodeConfig>();
-        public IEnumerable<FulfillMaterialCode> FulfillMaterialCodes { get; set; }
+        public IEnumerable<FullfillMaterialCode> FulfillMaterialCodes { get; set; }
     }
 }

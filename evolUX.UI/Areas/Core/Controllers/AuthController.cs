@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Models.Areas.Core;
+using Shared.Models.General;
 using System.Data;
 using System.Net;
 using System.Security.Claims;
@@ -58,7 +59,8 @@ namespace evolUX.UI.Areas.Core.Controllers
         }
 
 
-        [Authorize(AuthenticationSchemes = NegotiateDefaults.AuthenticationScheme)]
+        // [Authorize(AuthenticationSchemes = NegotiateDefaults.AuthenticationScheme)]
+        [AllowAnonymous]
         public async Task<IActionResult> LoginWindowsAuthentication(string returnUrl)
         {
             try
@@ -113,6 +115,56 @@ namespace evolUX.UI.Areas.Core.Controllers
         //{
         //    return View();
         //}
+
+        [Authorize(AuthenticationSchemes="AzureAd")]
+        public async Task<IActionResult> LoginADAuthentication(string returnUrl)
+        {
+            try
+            {
+                var username = User.Identity?.Name;
+                //chamada à api para ter o jwt e o user
+                var response = await _authService.GetTokenAndUser(username);
+                //var header = response.Headers.FirstOrDefault(h => h.Name == "").Value;
+                if (response.StatusCode == ((int)HttpStatusCode.NotFound))
+                {
+                    var resultError = response.GetJsonAsync<ErrorResult>().Result;
+                    TempData["resultError"] = JsonSerializer.Serialize(resultError);
+                    return RedirectToAction("Index", "Auth");
+                }
+                var result = response.GetJsonAsync<AuthenticateResponse>().Result;
+                await SetSessionVariables(result);
+
+                SetJWTCookie(result.AccessToken);
+                SetRTCookie(result.RefreshToken);
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, result.Username),
+                    new Claim(ClaimTypes.NameIdentifier, result.Id.ToString()),
+                };
+                claims.AddRange(result.Roles.Select(role => new Claim(ClaimTypes.Role, role.Description)));
+                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+                                                new ClaimsPrincipal(claimsIdentity),
+                                                new AuthenticationProperties
+                                                {
+                                                    IsPersistent = false
+                                                });
+
+                if (!string.IsNullOrEmpty(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Auth");
+                }
+            }
+            catch (ErrorViewModelException ex)
+            {
+                TempData["errorMessage"] = ex.ViewModel?.ErrorResult?.Message;
+                return RedirectToAction("Index", "Auth");
+            }
+        }
 
         [AllowAnonymous]
         public async Task<IActionResult> LoginCredentials(UserLogin model, string returnUrl = null)

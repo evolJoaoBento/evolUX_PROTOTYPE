@@ -20,9 +20,9 @@ namespace evolUX.API.Areas.evolDP.Services
             _repository = repository;
         }
 
-        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int? serviceCompanyID)
+        public async Task<IEnumerable<ServiceCompanyRestriction>> GetServiceCompanyRestrictions(int serviceCompanyID, int materialTypeID)
         {
-            IEnumerable<ServiceCompanyRestriction> result = await _repository.ServiceProvision.GetServiceCompanyRestrictions(serviceCompanyID);
+            IEnumerable<ServiceCompanyRestriction> result = await _repository.ServiceProvision.GetServiceCompanyRestrictions(serviceCompanyID, materialTypeID);
             return result;
         }
         public async Task SetServiceCompanyRestriction(int serviceCompanyID, int materialTypeID, int materialPosition, int fileSheetsCutoffLevel, bool restrictionMode)
@@ -31,12 +31,12 @@ namespace evolUX.API.Areas.evolDP.Services
             return;
         }
 
-        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int? serviceCompanyID, int? serviceTypeID, int? serviceID, int? costDate)
+        public async Task<IEnumerable<ServiceCompanyServiceResume>> GetServiceCompanyConfigsResume(int serviceCompanyID, int serviceTypeID, int serviceID, int costDate)
         {
             IEnumerable<ServiceCompanyServiceResume> result = await _repository.ServiceProvision.GetServiceCompanyConfigsResume(serviceCompanyID, serviceTypeID, serviceID, costDate);
             return result;
         }
-        public async Task<IEnumerable<int>> GetServiceCompanyList(int? serviceCompanyID, int? serviceTypeID, int? serviceID, int? costDate)
+        public async Task<IEnumerable<int>> GetServiceCompanyList(int serviceCompanyID, int serviceTypeID, int serviceID, int costDate)
         {
             IEnumerable<ServiceCompanyServiceResume> result = await _repository.ServiceProvision.GetServiceCompanyConfigsResume(serviceCompanyID, serviceTypeID, serviceID, costDate);
             return result.Select(x => x.ServiceCompanyID).Distinct().ToList();
@@ -71,10 +71,10 @@ namespace evolUX.API.Areas.evolDP.Services
         
         public async Task<IEnumerable<ServiceTypeElement>> GetAvailableServiceTypes()
         {
-            return await _repository.ServiceProvision.GetServiceTypes(null);
+            return await _repository.ServiceProvision.GetServiceTypes(0);
         }
 
-        public async Task<ServiceTypeViewModel> GetServiceTypes(int? serviceTypeID)
+        public async Task<ServiceTypeViewModel> GetServiceTypes(int serviceTypeID)
         {
             ServiceTypeViewModel viewModel = new ServiceTypeViewModel();
             viewModel.Types = await _repository.ServiceProvision.GetServiceTypes(serviceTypeID);
@@ -93,7 +93,7 @@ namespace evolUX.API.Areas.evolDP.Services
         {
             await _repository.ServiceProvision.SetServiceType(serviceTypeID, serviceTypeCode, serviceTypeDesc);
         }
-        public async Task<IEnumerable<ServiceTaskElement>> GetServiceTasks(int? serviceTaskID)
+        public async Task<IEnumerable<ServiceTaskElement>> GetServiceTasks(int serviceTaskID)
         {
             IEnumerable<ServiceTaskElement> result = await _repository.ServiceProvision.GetServiceTasks(serviceTaskID);
             if (result != null)

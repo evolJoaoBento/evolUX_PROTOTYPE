@@ -53,11 +53,24 @@ namespace evolUX.UI.Areas.Core.Repositories
 
         public async Task<Dictionary<string, string>> GetSessionVariables(int ID)
         {
-            var response = await _flurlClient.Request("/API/Core/Session/SessionVariables")
-                .SetQueryParam("User", ID)
-                .GetAsync();
+            try
+            {
+                var response = await _flurlClient.Request("/API/Core/Session/SessionVariables")
+                    .SetQueryParam("User", ID)
+                    .GetAsync();
 
-            return await response.GetJsonAsync<Dictionary<string, string>>();
+                return await response.GetJsonAsync<Dictionary<string, string>>();
+            }catch(FlurlHttpException ex)
+            {
+                if(ex.StatusCode == 401)
+                {
+                    throw new UnauthorizedAccessException(ex.Message);
+                }
+                else
+                {
+                    throw ex;
+                }
+            }
         }
     }
 }

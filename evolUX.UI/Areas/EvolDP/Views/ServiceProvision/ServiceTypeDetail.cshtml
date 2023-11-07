@@ -39,7 +39,6 @@
 else
 {
     string headerDesc = Model.Type.ServiceTypeDesc;
-    <span id="headerDesc" data-value="@headerDesc" style="display:none"></span>
 
     <div id="TitlePage">
         <h1>@localizer["ServiceTypeDetail"]: @headerDesc</h1>
@@ -189,6 +188,9 @@ else
             }
         </tbody>
     </table>
+    <script>
+        var headerDesc = "@headerDesc";
+    </script>
 }
 @section Scripts
     {
@@ -205,7 +207,6 @@ else
             document.getElementById("Edit|" + value).style.display = "flex";
         }
         function openPopupAdd() {
-            var headerDesc = document.getElementById('headerDesc').getAttribute('data-value');
             document.getElementById('popupMessage').innerHTML = '@localizer["PopupMessageAdd"]: ' + headerDesc;
             document.getElementById("ServiceDesc").value = "";
             document.getElementById("ServiceCode").value = "";
