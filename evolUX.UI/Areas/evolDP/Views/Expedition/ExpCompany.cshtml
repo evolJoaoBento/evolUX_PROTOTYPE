@@ -108,19 +108,19 @@ else
         </a>
         }
     </div>
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
            <tr>
                 @if(AddExpCompany)
                 {
                     <th class="evol-fitcontent-column borders"></th>
                 }
-                <th>@localizer["CompanyCode"]</th>
+                <th class="head-l">@localizer["CompanyCode"]</th>
                 <th>@localizer["CompanyName"]</th>
                 <th>@localizer["CompanyAddress"]</th>
                 <th>@localizer["CompanyPostalCode"]</th>
                 <th>@localizer["CompanyPostalCodeDescription"]</th>
-                <th>@localizer["CompanyCountry"]</th>
+                <th class="head-r">@localizer["CompanyCountry"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
@@ -131,16 +131,16 @@ else
                         <img onclick="openPopupEdit()" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeCompany"]" />
                 </td>
                 }
-                <td>@expCompany.CompanyCode</td>
+                <td class="last-row-l">@expCompany.CompanyCode</td>
                 <td>@expCompany.CompanyName</td>
                 <td>@expCompany.CompanyAddress</td>
                 <td>@expCompany.CompanyPostalCode</td>
                 <td>@expCompany.CompanyPostalCodeDescription</td>
-                <td>@expCompany.CompanyCountry</td>
+                <td class="last-row-r">@expCompany.CompanyCountry</td>
             </tr>
         </tbody>
     </table>
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if (AddExpeditionType)
@@ -152,12 +152,12 @@ else
                     }
                 </th>
                 }
-                <th rowspan="2">@localizer["ExpeditionType"]</th>
+                <th rowspan="2" class="head-l">@localizer["ExpeditionType"]</th>
                 <th rowspan="2" title="@localizer["RegistModeTip"]">@localizer["RegistMode"]</th>
                 <th rowspan="2" title="@localizer["SeparationModeTip"]">@localizer["SeparationMode"]</th>
                 <th rowspan="2" title="@localizer["BarcodeRegistModeTip"]">@localizer["BarcodeRegistMode"]</th>
                 <th rowspan="2" title="@localizer["GenerateDetailRegistTip"]">@localizer["GenerateDetailRegist"]</th>
-                <th colspan="3">@localizer["DRFlags"]</th>
+                <th colspan="3" class="head-r">@localizer["DRFlags"]</th>
             </tr>
             <tr>
                 <th>@localizer["DRFlagRegistado"]</th>
@@ -182,7 +182,7 @@ else
                         <td style="align-items:center; display:flex" class="borders">
                             <input onclick="return true" type="image" value="@localizer["SubmitChange"]" class="evol-image float" name="Submit" src="~/images/Ok.png" />
                         </td>
-                        <td>
+                        <td class="@(e == expCompanyTypes.Last() ? "last-row-l" : "")">
                             <select id="ExpeditionType" name="ExpeditionType">
                                     @foreach (ExpeditionTypeElement x in expCompanyTypesNotIn)
                                     {
@@ -196,7 +196,7 @@ else
                         <td><input type="checkbox" id="DRFlagGenerateDetailRegist" disabled /></td>
                         <td><input type="checkbox" id="DRFlagRegistado" disabled /></td>
                         <td><input type="checkbox" id="DRFlagEncomenda" disabled /></td>
-                        <td><input type="checkbox" id="DRFlagPessoal" disabled /></td>
+                        <td class="@(e == expCompanyTypes.Last() ? "last-row-r" : "")"><input type="checkbox" id="DRFlagPessoal" disabled /></td>
                         </form>
                     </tr>
                 }
@@ -211,7 +211,7 @@ else
                             </a>*@
                         </td>
                     }
-                    <td>@e.ExpeditionTypeDesc</td>
+                    <td class="@(e == expCompanyTypes.Last() ? "last-row-l" : "")">@e.ExpeditionTypeDesc</td>
                     @{
                         value = e.RegistMode ? "checked" : "";
                     }
@@ -239,7 +239,7 @@ else
                     @{
                         value = e.DRFlagPessoal ? "checked" : "";
                     }
-                    <td><input type="checkbox" id="DRFlagPessoal" @value disabled /></td>
+                    <td class="@(e == expCompanyTypes.Last() ? "last-row-r" : "")"><input type="checkbox" id="DRFlagPessoal" @value disabled /></td>
                 </tr>
                 @if (AddExpeditionType)
                 {
@@ -318,7 +318,7 @@ else
         <div id="TitlePage">
             <h3>@localizer["ExpCompanyConfig"]</h3>
         </div>
-        <table class="table table-sm table-hover table-collapse-seperate">
+        <table class="table table-sm table-hover table-collapse-seperate table-shadow">
             <thead id="bootstrap-overrides" class="table-info">
             <tr>
                     <th class="evol-fitcontent-column borders" style="text-align: center">
@@ -327,7 +327,7 @@ else
                             <img onclick="openPopupAdd()" style="background:none; width:30px;height:30px;" class="grow" src="~/images/add.png" title="@localizer["ExpCompanyConfigAdd"]" />
                     }
                 </th>
-                <th>@localizer["StartDate"]</th>
+                <th class="head-l head-r">@localizer["StartDate"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
@@ -364,14 +364,14 @@ else
                     </a>
                             <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid0">
                     </td>
-                    <td colspan="2">@startDateDesc</td>
+                    <td class="@(sDate == Model.Configs.Select(x => x.StartDate).Distinct().ToList().Last() ? "last-row-l last-row-r" : "")" colspan="2">@startDateDesc</td>
                 </tr>
                 <tr id="@name0Value" class="borders" style="display: none">
                     <td colspan="2" class="table-collapse">
-                        <table class="table table-sm table-hover table-collapse-seperate" style="padding-top: 10px">
+                        <table class="table table-sm table-hover table-collapse-seperate table-shadow" style="padding-top: 10px">
                             <thead id="bootstrap-overrides" class="table-info">
                                 <th class="evol-fitcontent-column borders"></th>
-                                <th>@localizer["ExpeditionType"]</th>
+                                <th class="head-l head-r">@localizer["ExpeditionType"]</th>
                             </thead>
                             <tbody id="bootstrap-overrides">
                                 @foreach(var tType in Model.Configs.Where(x => x.StartDate == sDate).Select(x=> x.ExpeditionType).Distinct().ToList())
@@ -382,21 +382,21 @@ else
                                     arrowid1 = "arrow1|" + level1.ToString();
                                     id1Value = "arrow" + name1Value;
                                     <tr>
-                                            <td style="align-items:center; display:flex;margin-left: 30px" class="borders collapsible" id="@id1Value" onclick="javascript:showDetail('@name1Value','@arrowid1')">
+                                        <td style="align-items:center; display:flex;margin-left: 30px" class="borders collapsible" id="@id1Value" onclick="javascript:showDetail('@name1Value','@arrowid1')">
                                             <a asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompanyConfig" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.ExpCompany)" asp-route-startdate="@sDate" asp-route-expeditiontype="@tType">
                                                 <img class="evol-image grow" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
                                             </a>
                                                 <a class="evol-arrow bx bxs-chevron-down grow" id="@arrowid1">
                                         </td>
-                                        <td>@typeList.First().ExpeditionTypeDesc</td>
+                                            <td class="@(tType == Model.Configs.Where(x => x.StartDate == sDate).Select(x=> x.ExpeditionType).Distinct().ToList().Last() ? "last-row-l last-row-r" : "")">@typeList.First().ExpeditionTypeDesc</td>
                                     </tr>
                                     <tr id="@name1Value" class="borders" style="display: none">
                                         <td colspan="2" class="table-collapse">
-                                            <table class="table table-sm table-hover table-collapse-seperate" style="padding-top: 10px">
-                                                <thead id="bootstrap-overrides" class="table-info borders">
+                                            <table class="table table-sm table-hover table-collapse-seperate table-shadow" style="padding-top: 10px">
+                                                <thead id="bootstrap-overrides" class="table-info">
                                                     <tr>
                                                         <th class="evol-fitcontent-column borders">
-                                                        <th>@localizer["ExpeditionZone"]</th>
+                                                        <th class="head-l head-r">@localizer["ExpeditionZone"]</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody id="bootstrap-overrides">
@@ -408,7 +408,7 @@ else
                                                                     <img class="evol-image grow" src="~/images/cost.png" title="@localizer["ExpCompanyConfig"]" />
                                                                 </a>
                                                             </td>
-                                                            <td>@typeList.Where(x => x.ExpeditionZone == zZone).First().ExpeditionZoneDesc</td>
+                                                                <td class="@(zZone == typeList.Select(x => x.ExpeditionZone).Distinct().ToList().Last() ? "last-row-l last-row-r" : "")">@typeList.Where(x => x.ExpeditionZone == zZone).First().ExpeditionZoneDesc</td>
                                                         </tr>
                                                     }
                                                 </tbody>

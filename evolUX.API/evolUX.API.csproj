@@ -51,4 +51,19 @@
     <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\EvolFlow\Controllers\" />
+    <Folder Include="Areas\EvolFlow\Repositories\Interfaces\" />
+    <Folder Include="Areas\EvolFlow\Services\Interfaces\" />
+    <Folder Include="Areas\Processing\Controllers\" />
+    <Folder Include="Areas\Processing\Repositories\Interfaces\" />
+    <Folder Include="Areas\Processing\Services\Interfaces\" />
+    <Folder Include="Areas\Maintenance\Controllers\" />
+    <Folder Include="Areas\Maintenance\Repositories\Interfaces\" />
+    <Folder Include="Areas\Maintenance\Services\Interfaces\" />
+    <Folder Include="Areas\UserOptions\Controllers\" />
+    <Folder Include="Areas\UserOptions\Repositories\Interfaces\" />
+    <Folder Include="Areas\UserOptions\Services\Interfaces\" />
+  </ItemGroup>
+
 </Project>

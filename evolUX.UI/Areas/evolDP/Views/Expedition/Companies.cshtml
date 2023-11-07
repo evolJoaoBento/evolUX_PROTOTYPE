@@ -44,16 +44,16 @@ else
     <div id="TitlePage">
         <h1>@localizer["ExpCompanyList"]</h1>
     </div>
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
            <tr>
                 <th class ="evol-fitcontent-column borders"></th>
-                <th>@localizer["CompanyName"]</th>
+                <th class="head-l">@localizer["CompanyName"]</th>
                 <th>@localizer["CompanyCode"]</th>
                 <th>@localizer["CompanyAddress"]</th>
                 <th>@localizer["CompanyPostalCode"]</th>
                 <th>@localizer["CompanyPostalCodeDescription"]</th>
-                <th>@localizer["CompanyCountry"]</th>
+                <th class="head-r">@localizer["CompanyCountry"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
@@ -94,7 +94,7 @@ else
                         </a>
                         }
                     </td>
-                    <td>@expCompany.CompanyName
+                    <td class="@(expCompany == Model.ExpCompanies.Last() ? "last-row-l" : "")">@expCompany.CompanyName
                         @if (expCompanyTypeList.Count() > 0)
                         {
                             <a class="evol-arrow bx bxs-chevron-down grow" href="javascript:showDetailL('@nameValue')" id="@idValue"></a>
@@ -104,27 +104,27 @@ else
                     <td>@expCompany.CompanyAddress</td>
                     <td>@expCompany.CompanyPostalCode</td>
                     <td>@expCompany.CompanyPostalCodeDescription</td>
-                    <td>@expCompany.CompanyCountry</td>
+                    <td class="@(expCompany == Model.ExpCompanies.Last() ? "last-row-r" : "")">@expCompany.CompanyCountry</td>
                 </tr>
                 @if (expCompanyTypeList.Count() > 0)
                 {
                     <tr id="@nameValue" class="borders" style="display: none">
                         <td class="borders"></td>
                         <td colspan="6" class="table-collapse">
-                            <table class="table table-sm table-hover table-collapse-seperate" style="padding-top: 5px">
+                            <table class="table table-sm table-hover table-collapse-seperate table-shadow" style="padding-top: 5px">
                             <thead id="bootstrap-overrides" class="table-info">
                                 <tr>
-                                    <th>@localizer["ExpeditionType"]</th>
+                                    <th class="head-l">@localizer["ExpeditionType"]</th>
                                     <th title="@localizer["RegistModeTip"]">@localizer["RegistMode"]</th>
                                     <th title="@localizer["SeparationModeTip"]">@localizer["SeparationMode"]</th>
-                                    <th title="@localizer["BarcodeRegistModeTip"]">@localizer["BarcodeRegistMode"]</th>
+                                    <th class="head-r" title="@localizer["BarcodeRegistModeTip"]">@localizer["BarcodeRegistMode"]</th>
                                 </tr>
                             </thead>
                             <tbody id="bootstrap-overrides">
                                 @foreach (ExpeditionTypeElement c in expCompanyTypeList)
                                 {
                                     <tr>
-                                        <td>@c.Description</td>
+                                        <td class="@(c == expCompanyTypeList.Last() ? "last-row-l" : "")">@c.Description</td>
                                         @{
                                             value = c.ExpCompanyTypesList.First().RegistMode ? "checked" : "";
                                         }
@@ -136,7 +136,7 @@ else
                                         @{
                                             value = c.ExpCompanyTypesList.First().BarcodeRegistMode != null ? ((bool)c.ExpCompanyTypesList.First().BarcodeRegistMode ? "1" : "0") : "0";
                                         }
-                                        <td>@value</td>
+                                        <td class="@(c == expCompanyTypeList.Last() ? "last-row-r" : "")">@value</td>
                                     </tr>
                                 }
                             </tbody>

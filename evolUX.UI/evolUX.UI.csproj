@@ -93,7 +93,54 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\EvolFLow\Controllers\" />
+    <Folder Include="Areas\EvolFLow\Repositories\Interfaces\" />
+    <Folder Include="Areas\EvolFLow\Services\Interfaces\" />
+    <Folder Include="Areas\Processing\Controllers\" />
+    <Folder Include="Areas\Processing\Repositories\Interfaces\" />
+    <Folder Include="Areas\Processing\Services\Interfaces\" />
+    <Folder Include="Areas\Maintenance\Controllers\" />
+    <Folder Include="Areas\Maintenance\Repositories\Interfaces\" />
+    <Folder Include="Areas\Maintenance\Services\Interfaces\" />
+    <Folder Include="Areas\Reports\Views\IntegrationsReport\" />
+    <Folder Include="Areas\Reports\Views\AnomaliesControl\" />
+    <Folder Include="Areas\Reports\Views\InvoicingControl\" />
+    <Folder Include="Areas\Reports\Views\MaterialProduction\" />
+    <Folder Include="Areas\Reports\Views\ProductionReport\" />
+    <Folder Include="Areas\UserOptions\Controllers\" />
+    <Folder Include="Areas\UserOptions\Repositories\Interfaces\" />
+    <Folder Include="Areas\UserOptions\Services\Interfaces\" />
+    <Folder Include="Resources\Areas\EvolFLow\Controllers\" />
+    <Folder Include="Resources\Areas\EvolFLow\Views\ConfiguredFlows\" />
+    <Folder Include="Resources\Areas\EvolFLow\Views\DataModel\" />
+    <Folder Include="Resources\Areas\EvolFLow\Views\" />
+    <Folder Include="Resources\Areas\EvolFLow\Views\SchedulerRules\" />
+    <Folder Include="Resources\Areas\EvolFLow\Views\Resources\" />
+    <Folder Include="Resources\Areas\Maintenance\Views\ErrorManagement\" />
+    <Folder Include="Resources\Areas\Maintenance\Views\EvolDP\" />
+    <Folder Include="Resources\Areas\Maintenance\Views\EvolFlow\" />
+    <Folder Include="Resources\Areas\Maintenance\Views\HelpPages\" />
+    <Folder Include="Resources\Areas\Maintenance\Controllers\" />
+    <Folder Include="Resources\Areas\Maintenance\Views\" />
+    <Folder Include="Resources\Areas\Maintenance\Views\SupportInfo\" />
+    <Folder Include="Resources\Areas\Processing\Views\ExecuteFlows\" />
+    <Folder Include="Resources\Areas\Processing\Views\JobsControl\" />
+    <Folder Include="Resources\Areas\Processing\Controllers\" />
+    <Folder Include="Resources\Areas\Processing\Views\" />
+    <Folder Include="Resources\Areas\Processing\Views\UserTasks\" />
+    <Folder Include="Resources\Areas\Processing\Views\OnlineOrders\" />
     <Folder Include="Resources\Areas\Reports\Controllers\" />
+    <Folder Include="Resources\Areas\Reports\Views\AnomaliesControl\" />
+    <Folder Include="Resources\Areas\Reports\Views\IntegrationsReport\" />
+    <Folder Include="Resources\Areas\Reports\Views\InvoicingControl\" />
+    <Folder Include="Resources\Areas\Reports\Views\MaterialProduction\" />
+    <Folder Include="Resources\Areas\Reports\Views\RecoveryReport\" />
+    <Folder Include="Resources\Areas\Reports\Views\ProductionReport\" />
+    <Folder Include="Resources\Areas\UserOptions\Controllers\" />
+    <Folder Include="Resources\Areas\UserOptions\Views\" />
+    <Folder Include="Resources\Areas\UserOptions\Views\UserOptions\" />
+    <Folder Include="Resources\Areas\UserOptions\Views\ProfileOptions\" />
+    <Folder Include="Resources\Areas\UserOptions\Views\PasswordOptions\" />
     <Folder Include="wwwroot\expedition\" />
   </ItemGroup>
 

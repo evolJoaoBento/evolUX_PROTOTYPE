@@ -45,7 +45,7 @@ else
     string idValue = "arrow" + level.ToString();
     string nameValue = "";
 
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if (AddExpeditionType)
@@ -54,13 +54,13 @@ else
                 }
                 @if (expeditionType.ExpCompanyTypesList.Count() > 1)
                 {
-                    <th rowspan="2" title="@localizer["ExpCompany"]">@localizer["ExpCompany"]</th>
+                    <th rowspan="2" title="@localizer["ExpCompany"]" class="head-l">@localizer["ExpCompany"]</th>
                 }
                 <th rowspan="2" title="@localizer["RegistModeTip"]">@localizer["RegistMode"]</th>
                 <th rowspan="2" title="@localizer["SeparationModeTip"]">@localizer["SeparationMode"]</th>
                 <th rowspan="2" title="@localizer["BarcodeRegistModeTip"]">@localizer["BarcodeRegistMode"]</th>
                 <th rowspan="2" title="@localizer["GenerateDetailRegistTip"]">@localizer["GenerateDetailRegist"]</th>
-                <th colspan="3">@localizer["DRFlags"]</th>
+                <th colspan="3" class="head-r">@localizer["DRFlags"]</th>
             </tr>
             <tr>
                 <th>@localizer["DRFlagRegistado"]</th>
@@ -81,7 +81,7 @@ else
                     }
                     @if (expeditionType.ExpCompanyTypesList.Count() > 1)
                     {
-                        <td>@Model.ExpCompanies.Where(x => x.ID == companytype.ExpCompanyID).First().CompanyName</td>
+                        <td class="@(companytype == expeditionType.ExpCompanyTypesList.Last() ? "last-row-l" : "")">@Model.ExpCompanies.Where(x => x.ID == companytype.ExpCompanyID).First().CompanyName</td>
                     }
                     @{
                         value = companytype.RegistMode ? "checked" : "";
@@ -98,7 +98,7 @@ else
                     @{value = companytype.DRFlagEncomenda ? "checked": "";}
                     <td><input type="checkbox" id="DRFlagEncomenda" @value disabled /></td>
                     @{value = companytype.DRFlagPessoal ? "checked": "";}
-                    <td><input type="checkbox" id="DRFlagPessoal" @value disabled /></td>
+                    <td class="@(companytype == expeditionType.ExpCompanyTypesList.Last() ? "last-row-r" : "")"><input type="checkbox" id="DRFlagPessoal" @value disabled /></td>
                 </tr>   
                 @if (AddExpeditionType)
                 {

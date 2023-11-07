@@ -84,15 +84,15 @@ else
         <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.Company)">
         </a>
     </div>
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if (AddExpeditionContract)
                 {
                     <th rowspan="2" class="evol-fitcontent-column borders" style="text-align: center"><img onclick="openPopupAdd()" style="background:none; width:35px;height:35px;" class="grow" src="~/images/add.png" title="@localizer["ExpContractAdd"]" /></th>
                 }
-                <th rowspan ="2">@localizer["ContractNr"]</th>
-                <th colspan="8">@localizer["Client"]</th>
+                <th rowspan ="2" class="head-l">@localizer["ContractNr"]</th>
+                <th colspan="8" class="head-r">@localizer["Client"]</th>
             </tr>
             <tr>
                 <th>@localizer["ClientNr"]</th>
@@ -116,7 +116,7 @@ else
                             <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ExpContractChange"]" />
                         </td>
                     }
-                    <td>@c.ContractNr</td>
+                    <td class="@(c == Model.ExpeditionContracts.Last() ? "last-row-l" : "")">@c.ContractNr</td>
                     <td>@c.ClientNr</td>
                     <td>@c.ClientName</td>
                     <td>@c.ClientNIF</td>
@@ -124,7 +124,7 @@ else
                     <td>@c.ClientPostalCode</td>
                     <td>@c.ClientPostalCodeDescription</td>
                     <td>@c.CompanyExpeditionCode</td>
-                    <td>@c.PurchaseOrderNr</td>
+                    <td class="@(c == Model.ExpeditionContracts.Last() ? "last-row-r" : "")">@c.PurchaseOrderNr</td>
                 </tr>
                 @if (AddExpeditionContract)
                 {

@@ -38,13 +38,18 @@ namespace evolUX.UI.Areas.Reports.Controllers
                     List<Business> sList = new List<Business>();
                     foreach (DataRow row in BusinessAreas.Rows)
                     {
-                        sList.Add(new Business
+                        string description = (string)row["Description"];
+
+                        if (!string.IsNullOrEmpty(description))
                         {
-                            BusinessID = Int32.Parse(row["ID"].ToString()),
-                            BusinessCode = (string)row["BusinessCode"],
-                            Description = (string)row["Description"],
-                            CompanyID = Int32.Parse(row["CompanyID"].ToString())
-                        });
+                            sList.Add(new Business
+                            {
+                                BusinessID = Int32.Parse(row["ID"].ToString()),
+                                BusinessCode = (string)row["BusinessCode"],
+                                Description = description,
+                                CompanyID = Int32.Parse(row["CompanyID"].ToString())
+                            });
+                        }
                     }
                     result.BusinessAreas = sList;
                     return View(result);

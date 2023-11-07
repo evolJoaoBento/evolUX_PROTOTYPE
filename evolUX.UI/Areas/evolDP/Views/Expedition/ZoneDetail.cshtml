@@ -32,37 +32,37 @@ else
     int level = 0;
     string idValue = "arrow" + level.ToString();
     string nameValue = "";
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
            <tr>
-                <th>@localizer["Zone"]</th>
+                <th class="head-l">@localizer["Zone"]</th>
                 <th>@localizer["ExpCompany"]</th>
-                <th>@localizer["ExpCenterCode"]</th>
+                <th class="head-r">@localizer["ExpCenterCode"]</th>
              </tr>
         </thead>
         <tbody id="bootstrap-overrides">
             <tr>
-                <td>@Model.Zones.First().ExpeditionZoneDesc</td>
+                <td class="last-row-l">@Model.Zones.First().ExpeditionZoneDesc</td>
                 <td>@expCompanyName</td>
-                <td>@expCenterCode</td>
+                <td class="last-row-r">@expCenterCode</td>
             </tr>
             <tr class="borders">
                 <td colspan="3" class="table-collapse">
-                    <table class="table table-sm table-hover table-collapse-seperate">
+                    <table class="table table-sm table-hover table-collapse-seperate table-shadow" style="margin-top: 20px;">
                         <thead id="bootstrap-overrides" class="table-info">
                             <tr>
-                                <th>@localizer["ServiceCompany"]</th>
+                                <th class="head-l">@localizer["ServiceCompany"]</th>
                                 <th>@localizer["ServiceTask"]</th>
-                                <th>@localizer["Priority"]</th>
+                                <th class="head-r">@localizer["Priority"]</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach(ExpCompanyZone c in Model.Zones.First().ExpCompanyZonesList)
                             {
                             <tr>
-                                <td>@c.ServiceCompanyName</td>
+                                <td class="@(c == Model.Zones.First().ExpCompanyZonesList.Last() ? "last-row-l" : "")">@c.ServiceCompanyName</td>
                                 <td>@c.ServiceTaskDesc</td>
-                                <td>@c.Priority</td>
+                                <td class="@(c == Model.Zones.First().ExpCompanyZonesList.Last() ? "last-row-r" : "")">@c.Priority</td>
                             </tr>
                             }
                         </tbody>

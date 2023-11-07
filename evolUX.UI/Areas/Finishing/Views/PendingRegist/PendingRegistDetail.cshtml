@@ -29,7 +29,7 @@
             cols += 1;
         }
         <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr><td colspan="@cols" class="text-center">@localizer["FilesLeftToRegistPrint"]</td></tr>
+            <tr><td colspan="@cols" class="text-center head-l head-r">@localizer["FilesLeftToRegistPrint"]</td></tr>
             <tr class="text-center">
                 @if (ViewBag.hasMultipleServiceCompanies)
                 {
@@ -60,7 +60,7 @@
                         {
                         <td>@p.ServiceCompanyCode</td>
                         }
-                        <td style="padding: 10px; border-bottom-left-radius: 20px;">@p.FileName</td>
+                        <td class="@(p == Model.PendingRegistDetail.ToRegistPrintFiles.Last() ? "last-row-l" : "")">@p.FileName</td>
                         <td>@p.RunID</td>
                         <td>@p.FileID</td>
                         <td>@p.TimeStamp</td>
@@ -68,7 +68,7 @@
                         <td>@p.Machine</td>
                         <td>@p.TotalPrint</td>
                         <td>@p.TotalPostObjs</td>
-                        <td style="padding: 10px; border-bottom-right-radius: 20px;">@p.FullFillMaterialCode</td>
+                        <td class="@(p == Model.PendingRegistDetail.ToRegistPrintFiles.Last() ? "last-row-r" : "")">@p.FullFillMaterialCode</td>
                     </tr>
                 }
             }
@@ -82,13 +82,13 @@ else
 @if (Model.PendingRegistDetail.ToRegistFullfillFiles.Count > 0)
 {
     int cols = 8;
-        <table class="table table-sm table-hover table-collapse-seperate">
+        <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         @if (ViewBag.hasMultipleServiceCompanies)
         {
             cols += 1;
         }
         <thead id="bootstrap-overrides" class="table-info sticky-header">
-            <tr><td colspan="@cols" class="text-center">@localizer["FilesLeftToRegistFullfill"]</td></tr>
+            <tr><td colspan="@cols" class="text-center head-l head-r">@localizer["FilesLeftToRegistFullfill"]</td></tr>
             <tr class="text-center">
                 @if (ViewBag.hasMultipleServiceCompanies)
                 {
@@ -118,14 +118,14 @@ else
                         {
                             <td>@p.ServiceCompanyCode</td>
                         }
-                        <td class="headcol" style="background: var(--lightestgrey)">@p.FileName</td>
+                        <td class="headcol @(p == Model.PendingRegistDetail.ToRegistFullfillFiles.Last() ? "last-row-l" : "")" style="background: var(--lightestgrey)">@p.FileName</td>
                         <td>@p.RunID</td>
                         <td>@p.FileID</td>
                         <td>@p.TimeStamp</td>
                         <td>@p.Operator</td>
                         <td>@p.TotalPrint</td>
                         <td>@p.TotalPostObjs</td>
-                        <td>@p.FullFillMaterialCode</td>
+                        <td class="@(p == Model.PendingRegistDetail.ToRegistFullfillFiles.Last() ? "last-row-r" : "")">@p.FullFillMaterialCode</td>
                     </tr>
                 }
             }

@@ -176,14 +176,14 @@ else
             </h3>
         </div>
         }
-        <table id="@nameValue" style="@startDisplay; padding-right:20px" class="table table-sm table-hover table-collapse-seperate">
+        <table id="@nameValue" style="@startDisplay; padding-right:20px" class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if(AddExpeditionType)
                 {
                 <th class ="evol-fitcontent-column"></th>
                 }
-                <th>@localizer["ExpeditionType"]</th>
+                <th class="head-l">@localizer["ExpeditionType"]</th>
                 <th>@localizer["ExpeditionZone"]</th>
                 <th>@localizer["ExpCompanyLevel"]</th>
                 <th>@localizer["MaxWeight"]</th>
@@ -192,7 +192,7 @@ else
                 <th>@localizer["ExpColumnB"]</th>
                 <th>@localizer["ExpColumnE"]</th>
                 <th>@localizer["ExpColumnI"]</th>
-                <th>@localizer["ExpColumnF"]</th>
+                <th class="head-r">@localizer["ExpColumnF"]</th>
             </tr>
         </thead>
         <tbody  id="bootstrap-overrides">
@@ -206,7 +206,7 @@ else
                         <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ChangeExpCompanyConfig"]"/>
                     </td>
                 }
-                <td>@type.ExpeditionTypeDesc</td>
+                <td class="@(t == Model.Configs.Where(x=> x.ExpeditionType == type.ExpeditionType && x.ExpeditionZone == zone.ExpeditionZone).Last() ? "last-row-l" : "")">@type.ExpeditionTypeDesc</td>
                 <td>@zone.ExpeditionZoneDesc</td>
                 <td>@t.ExpCompanyLevel</td>
                 <td>
@@ -224,7 +224,7 @@ else
                 <td>@t.ExpColumnB</td>
                 <td>@t.ExpColumnE</td>
                 <td>@t.ExpColumnI</td>
-                <td>
+                <td class="@(t == Model.Configs.Where(x=> x.ExpeditionType == type.ExpeditionType && x.ExpeditionZone == zone.ExpeditionZone).Last() ? "last-row-r" : "")">
                     @if (string.IsNullOrEmpty(t.ExpColumnF))
                     {
                         @emptyExpColumnFDesc

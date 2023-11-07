@@ -27,12 +27,12 @@ else
     string idValue = "arrow" + level.ToString();
     string arrowid = "arrow";
     string nameValue = "";
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 <th class="evol-fitcontent-column borders"></th>
-                <th>@localizer["Zone"]</th>
-                <th>@localizer["Description"]</th>
+                <th class="head-l">@localizer["Zone"]</th>
+                <th class="head-r">@localizer["Description"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
@@ -53,19 +53,19 @@ else
                     {
                         <td></td>
                     }
-                    <td style="text-align: center">@z.ExpeditionZone</td>
-                    <td>@z.ExpeditionZoneDesc</td>
+                    <td style="text-align: center" class="@(z == Model.Zones.Last() ? "last-row-l" : "")">@z.ExpeditionZone</td>
+                    <td class="@(z == Model.Zones.Last() ? "last-row-r" : "")">@z.ExpeditionZoneDesc</td>
                 </tr>
                 @if (z.ExpCompanyZonesList.Count() > 0)
                 {
                     <tr id="@nameValue" class="borders" style="display: none">
                         <td colspan="3" class="table-collapse">
-                            <table class="table table-sm table-hover table-collapse-seperate collapsed-table">
+                            <table class="table table-sm table-hover table-collapse-seperate collapsed-table table-shadow">
                                 <thead id="bootstrap-overrides" class="table-info">
                                     <tr>
                                         <th class="evol-fitcontent-column borders"></th>
-                                        <th>@localizer["ExpCompany"]</th>
-                                        <th>@localizer["ExpCenterCode"]</th>
+                                        <th class="head-l">@localizer["ExpCompany"]</th>
+                                        <th class="head-r">@localizer["ExpCenterCode"]</th>
                                     </tr>
                                 </thead>
                                 <tbody id="bootstrap-overrides">
@@ -83,8 +83,26 @@ else
                                                     <img class="evol-image" src="~/images/detail.png" title="@localizer["List"]: @value" />
                                                 </a>
                                             </td>
-                                            <td>@Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName</td>
-                                            <td>@c.ExpCenterCode</td>
+                                            @if (c == z.ExpCompanyZonesList.Select(item => new { item.ExpCompanyID, item.ExpCenterCode })
+                                            .DistinctBy(item => new { item.ExpCompanyID, item.ExpCenterCode })
+                                            .ToList().Last())
+                                        {
+                                            <td class="last-row-l">
+                                                @Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName
+                                            </td>
+                                            <td class="last-row-r"> 
+                                                @c.ExpCenterCode
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @Model.ExpCompanies.Where(x => x.ID == c.ExpCompanyID).First().CompanyName
+                                            </td>
+                                            <td>
+                                                @c.ExpCenterCode
+                                            </td>
+                                        }
                                         </tr>
                                     }
                                 </tbody>

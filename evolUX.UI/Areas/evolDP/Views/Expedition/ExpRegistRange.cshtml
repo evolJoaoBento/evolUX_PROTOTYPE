@@ -72,19 +72,19 @@ else
         <a class='bx bx-left-arrow grow_01' style="color:rgb(90 205 239)" asp-area="evolDP" asp-controller="Expedition" asp-action="ExpCompany" asp-route-expcompanyJson="@JsonConvert.SerializeObject(Model.Company)">
         </a>
     </div>
-    <table class="table table-sm table-hover table-collapse-seperate">
+    <table class="table table-sm table-hover table-collapse-seperate table-shadow">
         <thead id="bootstrap-overrides" class="table-info sticky-header">
             <tr>
                 @if (AddExpRegistRange)
                 {
                     <th class="evol-fitcontent-column borders" style="text-align: center"><img onclick="openPopupAdd()" style="background:none; width:35px;height:35px;"  class="grow" src="~/images/add.png" title="@localizer["ExpRegistRangeAdd"]" /></th>
                 }
-                <th>@localizer["CompanyRegistCode"]</th>
+                <th class="head-l">@localizer["CompanyRegistCode"]</th>
                 <th>@localizer["StartExpeditionID"]</th>
                 <th>@localizer["EndExpeditionID"]</th>
                 <th>@localizer["RegistCodePrefix"]</th>
                 <th>@localizer["RegistCodeSuffix"]</th>
-                <th>@localizer["LastExpeditionID"]</th>
+                <th class="head-r">@localizer["LastExpeditionID"]</th>
             </tr>
         </thead>
         <tbody id="bootstrap-overrides">
@@ -98,12 +98,12 @@ else
                             <img onclick="openPopupEdit('@value')" class="evol-image wobble" src="~/images/edit.png" title="@localizer["ExpRegistRangeChange"]" />
                         </td>
                     }
-                    <td>@e.CompanyRegistCode</td>
+                    <td class="@(e== Model.ExpeditionRegistIDs.Last() ? "last-row-l" : "")">@e.CompanyRegistCode</td>
                     <td>@e.StartExpeditionID</td>
                     <td>@e.EndExpeditionID</td>
                     <td>@e.RegistCodePrefix</td>
                     <td>@e.RegistCodeSuffix</td>
-                    <td>@e.LastExpeditionID</td>
+                    <td class="@(e== Model.ExpeditionRegistIDs.Last() ? "last-row-r" : "")">@e.LastExpeditionID</td>
                 </tr>
                 @if (AddExpRegistRange)
                 {
